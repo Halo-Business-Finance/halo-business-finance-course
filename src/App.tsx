@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { AppSidebar } from "@/components/AppSidebar";
 import Index from "./pages/Index";
 import Progress from "./pages/Progress";
+import Certificates from "./pages/Certificates";
+import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -73,6 +75,8 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/progress" element={<Progress />} />
+                  <Route path="/certificates" element={<Certificates />} />
+                  <Route path="/resources" element={<Resources />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
