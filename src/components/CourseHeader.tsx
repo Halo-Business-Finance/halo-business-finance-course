@@ -12,13 +12,13 @@ interface CourseHeaderProps {
 
 const CourseHeader = ({ progress, totalModules, completedModules }: CourseHeaderProps) => {
   return (
-    <div className="relative overflow-hidden bg-gradient-hero rounded-2xl shadow-hero">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+    <div className="relative overflow-hidden bg-gradient-hero rounded-2xl shadow-hero border border-border">
+      <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
       <div className="relative px-8 py-12 lg:px-12 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <Badge variant="success" className="text-sm">
+              <Badge variant="success" className="text-sm font-medium">
                 Halo Business Finance Certification Program
               </Badge>
               <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
@@ -54,7 +54,7 @@ const CourseHeader = ({ progress, totalModules, completedModules }: CourseHeader
                 <span className="text-sm font-medium">Course Progress</span>
                 <span className="text-sm">{completedModules}/{totalModules} modules</span>
               </div>
-              <Progress value={progress} className="h-3 bg-white/20" />
+              <Progress value={progress} className="h-3 bg-white/30" />
               <p className="text-sm text-white/80">
                 {progress}% complete - Keep up the great work!
               </p>
