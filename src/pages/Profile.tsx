@@ -1,12 +1,18 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X } from "lucide-react";
 
 const ProfilePage = () => {
-  const userInfo = {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
     name: "Sarah Johnson",
     email: "sarah.johnson@company.com",
     phone: "+1 (555) 123-4567",
@@ -15,7 +21,9 @@ const ProfilePage = () => {
     title: "Finance Manager",
     company: "Tech Solutions Inc.",
     avatar: "/placeholder.svg"
-  };
+  });
+
+  const [editForm, setEditForm] = useState(userInfo);
 
   const achievements = [
     { name: "Business Finance Foundations", date: "July 15, 2024", type: "Certificate" },
@@ -29,6 +37,27 @@ const ProfilePage = () => {
     completedModules: 2,
     inProgressModules: 1,
     averageScore: 94
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setUserInfo(editForm);
+    setIsEditDialogOpen(false);
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been successfully updated.",
+    });
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const resetForm = () => {
+    setEditForm(userInfo);
   };
 
   return (
@@ -72,7 +101,120 @@ const ProfilePage = () => {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span>Joined {userInfo.joinDate}</span>
               </div>
-              <Button className="w-full mt-4">Edit Profile</Button>
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full mt-4 gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogDescription>
+                      Update your personal information and contact details.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={handleEditSubmit} className="space-y-4 mt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={editForm.name.split(' ')[0] || ''}
+                          onChange={(e) => {
+                            const lastName = editForm.name.split(' ')[1] || '';
+                            handleInputChange('name', `${e.target.value} ${lastName}`.trim());
+                          }}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={editForm.name.split(' ')[1] || ''}
+                          onChange={(e) => {
+                            const firstName = editForm.name.split(' ')[0] || '';
+                            handleInputChange('name', `${firstName} ${e.target.value}`.trim());
+                          }}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={editForm.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        id="location"
+                        value={editForm.location}
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Job Title</Label>
+                      <Input
+                        id="title"
+                        value={editForm.title}
+                        onChange={(e) => handleInputChange('title', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        id="company"
+                        value={editForm.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          resetForm();
+                          setIsEditDialogOpen(false);
+                        }}
+                        className="gap-2"
+                      >
+                        <X className="h-4 w-4" />
+                        Cancel
+                      </Button>
+                      <Button type="submit" className="gap-2">
+                        <Save className="h-4 w-4" />
+                        Save Changes
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
 
