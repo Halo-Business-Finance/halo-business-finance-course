@@ -60,7 +60,9 @@ export function AppSidebar() {
   useEffect(() => {
     // Check initial auth state
     const checkUser = async () => {
+      console.log('AppSidebar: Checking initial user auth state...');
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('AppSidebar: Initial user state:', user);
       setUser(user);
       setLoading(false);
     };
@@ -70,6 +72,7 @@ export function AppSidebar() {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('AppSidebar: Auth state change:', event, session?.user);
         setUser(session?.user ?? null);
         setLoading(false);
       }
@@ -79,16 +82,18 @@ export function AppSidebar() {
   }, []);
 
   const handleSignOut = async () => {
+    console.log('AppSidebar: handleSignOut called');
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
+      console.log('AppSidebar: Sign out successful');
       toast({
         title: "Signed out",
         description: "You have been successfully signed out.",
       });
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('AppSidebar: Error signing out:', error);
       toast({
         title: "Error",
         description: "Failed to sign out. Please try again.",
@@ -98,6 +103,7 @@ export function AppSidebar() {
   };
 
   const handleSignIn = () => {
+    console.log('AppSidebar: handleSignIn called');
     // For now, we'll show a toast. Later this can open a sign-in modal or redirect
     toast({
       title: "Sign In",
@@ -276,25 +282,32 @@ export function AppSidebar() {
             <SidebarMenu>
               {!loading && (
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    {user ? (
+                  {user ? (
+                    <SidebarMenuButton asChild>
                       <button 
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black"
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded"
                       >
                         <LogOut className="h-4 w-4 text-red-600" />
                         {!collapsed && <span className="text-black">Sign Out</span>}
                       </button>
-                    ) : (
+                    </SidebarMenuButton>
+                  ) : (
+                    <SidebarMenuButton asChild>
                       <button 
                         onClick={handleSignIn}
-                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black"
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded"
                       >
                         <LogIn className="h-4 w-4 text-green-600" />
                         {!collapsed && <span className="text-black">Sign In</span>}
                       </button>
-                    )}
-                  </SidebarMenuButton>
+                    </SidebarMenuButton>
+                  )}
+                </SidebarMenuItem>
+              )}
+              {loading && (
+                <SidebarMenuItem>
+                  <div className="text-xs text-muted-foreground p-2">Loading...</div>
                 </SidebarMenuItem>
               )}
             </SidebarMenu>
