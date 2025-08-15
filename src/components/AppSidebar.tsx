@@ -57,13 +57,31 @@ export function AppSidebar() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
-        return <Badge variant="completed" className="ml-auto text-xs">✓</Badge>;
+        return (
+          <div className="relative">
+            <Badge variant="completed" className="text-xs px-2 py-0.5 bg-gradient-success text-white shadow-lg">
+              ✓
+            </Badge>
+            <div className="absolute -inset-0.5 bg-gradient-success rounded opacity-20 animate-pulse"></div>
+          </div>
+        );
       case "in-progress":
-        return <Badge variant="progress" className="ml-auto text-xs">●</Badge>;
+        return (
+          <div className="relative">
+            <Badge variant="progress" className="text-xs px-2 py-0.5 bg-gradient-primary text-white shadow-lg animate-pulse">
+              ●
+            </Badge>
+            <div className="absolute -inset-0.5 bg-gradient-primary rounded opacity-30 animate-pulse"></div>
+          </div>
+        );
       case "locked":
-        return <Badge variant="outline" className="ml-auto text-xs">🔒</Badge>;
+        return <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60">🔒</Badge>;
       default:
-        return <Badge variant="success" className="ml-auto text-xs">○</Badge>;
+        return (
+          <Badge variant="success" className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-white shadow-md hover:shadow-lg transition-shadow duration-300">
+            ○
+          </Badge>
+        );
     }
   };
 
@@ -114,8 +132,15 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>
             <div className="flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              {!collapsed && "Course Modules"}
+              <div className="relative">
+                <Target className="h-4 w-4" />
+                <div className="absolute -inset-1 bg-gradient-primary rounded-full opacity-20 animate-pulse"></div>
+              </div>
+              {!collapsed && (
+                <span className="bg-gradient-primary bg-clip-text text-transparent font-semibold">
+                  Course Modules
+                </span>
+              )}
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -127,15 +152,43 @@ export function AppSidebar() {
                       to={module.url} 
                       className={({ isActive }) => `${getNavCls(isActive)} ${
                         module.status === "locked" ? "opacity-60 pointer-events-none" : ""
-                      }`}
+                      } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5`}
                     >
-                      <span className="text-xs w-6 text-center">{index + 1}</span>
-                      {!collapsed && (
-                        <>
-                          <span className="flex-1 text-xs">{module.title}</span>
-                          {getStatusBadge(module.status)}
-                        </>
-                      )}
+                      <div className="relative z-10 flex items-center w-full">
+                        <div className={`
+                          w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
+                          ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
+                            module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
+                            module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-foreground" :
+                            "bg-muted/50 text-muted-foreground"}
+                        `}>
+                          {module.status === "completed" ? "✓" : 
+                           module.status === "in-progress" ? "●" : 
+                           module.status === "locked" ? "🔒" : index + 1}
+                        </div>
+                        
+                        {!collapsed && (
+                          <>
+                            <div className="flex-1 ml-3">
+                              <span className="text-xs font-medium leading-tight block">
+                                {module.title}
+                              </span>
+                              {module.status === "in-progress" && (
+                                <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
+                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse"></div>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="ml-2">
+                              {getStatusBadge(module.status)}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      
+                      {/* Hover effect overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
