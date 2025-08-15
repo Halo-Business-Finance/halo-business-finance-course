@@ -52,38 +52,83 @@ export type Database = {
       }
       active_sessions: {
         Row: {
+          browser_fingerprint: Json | null
+          click_count: number | null
           created_at: string
           device_fingerprint: string | null
           expires_at: string
           id: string
+          idle_time_seconds: number | null
           ip_address: unknown | null
           is_active: boolean
+          keyboard_activity_count: number | null
           last_activity: string
+          last_security_check: string | null
+          mouse_activity_count: number | null
+          page_url: string | null
+          page_views: number | null
+          referrer: string | null
+          risk_factors: Json | null
+          screen_resolution: string | null
+          scroll_activity_count: number | null
+          security_alerts_count: number | null
+          session_duration_seconds: number | null
           session_token: string
+          timezone: string | null
           user_agent: string | null
           user_id: string
         }
         Insert: {
+          browser_fingerprint?: Json | null
+          click_count?: number | null
           created_at?: string
           device_fingerprint?: string | null
           expires_at: string
           id?: string
+          idle_time_seconds?: number | null
           ip_address?: unknown | null
           is_active?: boolean
+          keyboard_activity_count?: number | null
           last_activity?: string
+          last_security_check?: string | null
+          mouse_activity_count?: number | null
+          page_url?: string | null
+          page_views?: number | null
+          referrer?: string | null
+          risk_factors?: Json | null
+          screen_resolution?: string | null
+          scroll_activity_count?: number | null
+          security_alerts_count?: number | null
+          session_duration_seconds?: number | null
           session_token: string
+          timezone?: string | null
           user_agent?: string | null
           user_id: string
         }
         Update: {
+          browser_fingerprint?: Json | null
+          click_count?: number | null
           created_at?: string
           device_fingerprint?: string | null
           expires_at?: string
           id?: string
+          idle_time_seconds?: number | null
           ip_address?: unknown | null
           is_active?: boolean
+          keyboard_activity_count?: number | null
           last_activity?: string
+          last_security_check?: string | null
+          mouse_activity_count?: number | null
+          page_url?: string | null
+          page_views?: number | null
+          referrer?: string | null
+          risk_factors?: Json | null
+          screen_resolution?: string | null
+          scroll_activity_count?: number | null
+          security_alerts_count?: number | null
+          session_duration_seconds?: number | null
           session_token?: string
+          timezone?: string | null
           user_agent?: string | null
           user_id?: string
         }
@@ -3143,6 +3188,36 @@ export type Database = {
         }
         Relationships: []
       }
+      security_configuration: {
+        Row: {
+          config_key: string
+          config_value: Json
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value: Json
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       security_events: {
         Row: {
           created_at: string
@@ -3235,6 +3310,57 @@ export type Database = {
           notification_type?: string
           severity?: string
           title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      session_activity_log: {
+        Row: {
+          action_type: string | null
+          activity_type: string
+          device_fingerprint: string | null
+          element_id: string | null
+          geolocation: Json | null
+          id: string
+          ip_address: unknown | null
+          page_url: string | null
+          performance_metrics: Json | null
+          risk_indicators: Json | null
+          session_id: string | null
+          timestamp: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type?: string | null
+          activity_type: string
+          device_fingerprint?: string | null
+          element_id?: string | null
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          performance_metrics?: Json | null
+          risk_indicators?: Json | null
+          session_id?: string | null
+          timestamp?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string | null
+          activity_type?: string
+          device_fingerprint?: string | null
+          element_id?: string | null
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          performance_metrics?: Json | null
+          risk_indicators?: Json | null
+          session_id?: string | null
+          timestamp?: string
+          user_agent?: string | null
           user_id?: string
         }
         Relationships: []
@@ -3980,6 +4106,10 @@ export type Database = {
         Args: { p_key: string }
         Returns: string
       }
+      get_security_config: {
+        Args: { p_config_key: string }
+        Returns: Json
+      }
       get_user_role: {
         Args: { p_user_id?: string }
         Returns: Database["public"]["Enums"]["user_role"]
@@ -4247,6 +4377,10 @@ export type Database = {
           p_record_id: string
           p_table_name: string
         }
+        Returns: boolean
+      }
+      validate_critical_operation_access: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       validate_document_access: {
