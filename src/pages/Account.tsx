@@ -65,7 +65,7 @@ const AccountPage = () => {
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .maybeSingle();
 
       if (error) {
@@ -80,18 +80,18 @@ const AccountPage = () => {
 
       if (profile) {
         const profileData = {
-          name: profile.name || "",
+          name: `${profile.first_name || ""} ${profile.last_name || ""}`.trim(),
           email: profile.email || "",
-          phone: profile.phone || "",
-          location: profile.location || "",
-          joinDate: profile.join_date ? new Date(profile.join_date).toLocaleDateString('en-US', { 
+          phone: "", // Not in profiles table
+          location: "", // Not in profiles table  
+          joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
           }) : "",
-          title: profile.title || "",
-          company: profile.company || "",
-          avatar: profile.avatar_url || "/placeholder.svg"
+          title: "", // Not in profiles table
+          company: "", // Not in profiles table
+          avatar: "/placeholder.svg" // Not in profiles table
         };
         setUserInfo(profileData);
         setEditForm(profileData);
@@ -142,16 +142,17 @@ const AccountPage = () => {
         return;
       }
 
+      const nameParts = editForm.name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
       const { error } = await supabase
         .from('profiles')
         .upsert({
-          user_id: user.id,
-          name: editForm.name,
+          id: user.id,
+          first_name: firstName,
+          last_name: lastName,
           email: editForm.email,
-          phone: editForm.phone,
-          location: editForm.location,
-          title: editForm.title,
-          company: editForm.company,
           avatar_url: editForm.avatar
         });
 
