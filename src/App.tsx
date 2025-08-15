@@ -18,25 +18,27 @@ const App = () => (
       <BrowserRouter>
         <SidebarProvider>
           <div className="min-h-screen flex w-full">
-            {/* Global header with sidebar trigger */}
-            <header className="fixed top-0 left-0 right-0 h-12 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
-              <SidebarTrigger className="ml-4" />
-              <div className="flex-1 flex items-center justify-center">
-                <h1 className="text-sm font-medium text-muted-foreground">
-                  Halo Business Finance Learning Platform
-                </h1>
-              </div>
-            </header>
-
             <AppSidebar />
             
-            <main className="flex-1 pt-12 relative z-10">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
+            <div className="flex-1 flex flex-col">
+              {/* Header positioned above main content, not overlapping sidebar */}
+              <header className="h-12 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4">
+                <SidebarTrigger />
+                <div className="flex-1 flex items-center justify-center">
+                  <h1 className="text-sm font-medium text-muted-foreground">
+                    Halo Business Finance Learning Platform
+                  </h1>
+                </div>
+              </header>
+
+              <main className="flex-1 relative z-10">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+            </div>
           </div>
         </SidebarProvider>
       </BrowserRouter>
