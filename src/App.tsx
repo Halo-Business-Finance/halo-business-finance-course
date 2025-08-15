@@ -31,14 +31,14 @@ const HeaderContent = () => {
 
   return (
     <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
-      <SidebarTrigger className="text-halo-navy hover:bg-halo-navy/10 hover:text-halo-navy" />
+      <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />
       
       <div className="flex items-center gap-2">
         <Button 
           variant="ghost" 
           size="sm" 
           onClick={goBack}
-          className="h-8 w-8 p-0 text-halo-navy hover:bg-halo-navy/10 hover:text-halo-navy border border-halo-navy/20"
+          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -46,7 +46,7 @@ const HeaderContent = () => {
           variant="ghost" 
           size="sm" 
           onClick={goForward}
-          className="h-8 w-8 p-0 text-halo-navy hover:bg-halo-navy/10 hover:text-halo-navy border border-halo-navy/20"
+          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>

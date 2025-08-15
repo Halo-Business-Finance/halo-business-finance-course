@@ -52,7 +52,7 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   
   const getNavCls = (isActiveState: boolean) =>
-    isActiveState ? "bg-halo-navy/10 text-halo-navy font-medium border-r-2 border-halo-navy" : "text-halo-navy hover:bg-halo-navy/10 hover:text-halo-navy";
+    isActiveState ? "bg-black/10 text-black font-medium border-r-2 border-black" : "text-black hover:bg-black/10 hover:text-black";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -118,8 +118,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-halo-navy" />
-                      {!collapsed && <span className="text-halo-navy">{item.title}</span>}
+                      <item.icon className="h-4 w-4 text-black" />
+                      {!collapsed && <span className="text-black">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -133,7 +133,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>
             <div className="flex items-center gap-2">
               <div className="relative">
-                <Target className="h-4 w-4" />
+                <Target className="h-4 w-4 text-black" />
                 <div className="absolute -inset-1 bg-gradient-primary rounded-full opacity-20 animate-pulse"></div>
               </div>
               {!collapsed && (
@@ -152,14 +152,14 @@ export function AppSidebar() {
                       to={module.url} 
                       className={({ isActive }) => `${getNavCls(isActive)} ${
                         module.status === "locked" ? "opacity-60 pointer-events-none" : ""
-                      } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5`}
+                      } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
                     >
                       <div className="relative z-10 flex items-center w-full">
                         <div className={`
                           w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
                           ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
                             module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
-                            module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-foreground" :
+                            module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
                             "bg-muted/50 text-muted-foreground"}
                         `}>
                           {module.status === "completed" ? "✓" : 
@@ -170,7 +170,7 @@ export function AppSidebar() {
                         {!collapsed && (
                           <>
                             <div className="flex-1 ml-3">
-                              <span className="text-xs font-medium leading-tight block">
+                              <span className="text-xs font-medium leading-tight block text-black">
                                 {module.title}
                               </span>
                               {module.status === "in-progress" && (
@@ -188,7 +188,7 @@ export function AppSidebar() {
                       </div>
                       
                       {/* Hover effect overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -206,8 +206,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-halo-navy" />
-                      {!collapsed && <span className="text-halo-navy">{item.title}</span>}
+                      <item.icon className="h-4 w-4 text-black" />
+                      {!collapsed && <span className="text-black">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
