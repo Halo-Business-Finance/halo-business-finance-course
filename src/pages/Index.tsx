@@ -2,13 +2,26 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import CourseHeader from "@/components/CourseHeader";
 import ModuleCard from "@/components/ModuleCard";
+import ModuleDetail from "@/components/ModuleDetail";
 import StatsCard from "@/components/StatsCard";
+import LearningObjectives from "@/components/LearningObjectives";
+import InstructorInfo from "@/components/InstructorInfo";
 import { courseData, statsData } from "@/data/courseData";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
 const Index = () => {
   const { toast } = useToast();
   const [modules, setModules] = useState(courseData.modules);
+  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+
+  const learningObjectives = [
+    "Analyze financial statements and assess business creditworthiness using industry-standard methodologies",
+    "Differentiate between various loan products including SBA 7(a), 504, conventional, and bridge financing options",
+    "Navigate capital markets and understand the role of financial intermediaries in business lending",
+    "Apply risk assessment techniques and regulatory compliance standards in commercial lending decisions",
+    "Structure financing solutions that align with client needs and risk tolerance parameters",
+    "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
+  ];
 
   const handleModuleStart = (moduleId: string) => {
     const module = modules.find(m => m.id === moduleId);
@@ -23,19 +36,12 @@ const Index = () => {
       return;
     }
 
-    toast({
-      title: "Starting Module",
-      description: `Beginning "${module.title}" - good luck with your learning!`,
-    });
+    // Show module details
+    setSelectedModule(moduleId);
+  };
 
-    // Update module status to in-progress if available
-    if (module.status === "available") {
-      setModules(prev => prev.map(m => 
-        m.id === moduleId 
-          ? { ...m, status: "in-progress" as const, progress: 5 }
-          : m
-      ));
-    }
+  const closeModuleDetail = () => {
+    setSelectedModule(null);
   };
 
   const iconMap = {
@@ -56,8 +62,14 @@ const Index = () => {
         />
       </div>
 
-      {/* Stats Overview */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 space-y-12">
+        {/* Learning Objectives */}
+        <LearningObjectives objectives={learningObjectives} />
+
+        {/* Instructor Information */}
+        <InstructorInfo />
+
+        {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {statsData.map((stat, index) => {
             const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
@@ -73,16 +85,14 @@ const Index = () => {
             );
           })}
         </div>
-      </div>
 
-      {/* Course Modules */}
-      <div className="container mx-auto px-4 pb-16">
-        <div className="space-y-8">
+        {/* Course Modules */}
+        <div className="space-y-8 pb-16">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl font-bold">Course Modules</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Progress through our comprehensive curriculum designed to build your expertise 
-              in business finance from the ground up.
+            <h2 className="text-3xl font-bold">Curriculum Overview</h2>
+            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Our comprehensive 8-module curriculum follows Stanford and Wharton's proven pedagogical approach, 
+              combining theoretical foundations with practical applications in business finance and lending.
             </p>
           </div>
 
@@ -102,6 +112,14 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Module Detail Modal */}
+      {selectedModule && (
+        <ModuleDetail 
+          module={modules.find(m => m.id === selectedModule)!}
+          onClose={closeModuleDetail}
+        />
+      )}
     </div>
   );
 };

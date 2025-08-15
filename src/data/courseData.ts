@@ -19,67 +19,87 @@ export interface CourseData {
 export const courseData: CourseData = {
   totalProgress: 35,
   completedModules: 2,
-  totalModules: 6,
+  totalModules: 8,
   modules: [
     {
       id: "foundations",
       title: "Business Finance Foundations",
-      description: "Learn the fundamental concepts of business finance, including basic terminology, financial statements, and the role of finance in business operations.",
-      duration: "45 min",
-      lessons: 6,
+      description: "Establish a solid foundation in business finance principles, financial statement analysis, and fundamental concepts essential for understanding modern corporate finance.",
+      duration: "2.5 hours",
+      lessons: 12,
       progress: 100,
       status: "completed",
-      topics: ["Financial Statements", "Cash Flow", "ROI Basics", "Business Metrics"]
+      topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"]
     },
     {
-      id: "financial-analysis",
-      title: "Financial Analysis Techniques",
-      description: "Master essential financial analysis methods used to evaluate business performance, including ratio analysis and trend analysis.",
-      duration: "60 min",
-      lessons: 8,
+      id: "capital-markets",
+      title: "Capital Markets & Financial Systems",
+      description: "Comprehensive study of capital markets, including equity and debt markets, market efficiency, institutional investors, and the role of financial intermediaries in the economy.",
+      duration: "3 hours",
+      lessons: 15,
       progress: 100,
       status: "completed",
-      topics: ["Ratio Analysis", "Trend Analysis", "Benchmarking", "Performance Metrics"]
+      topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"]
     },
     {
-      id: "funding-solutions",
-      title: "Business Funding Solutions",
-      description: "Explore various funding options available to businesses, from traditional loans to alternative financing methods that Halo specializes in.",
-      duration: "55 min",
-      lessons: 7,
+      id: "sba-loans",
+      title: "SBA Loan Programs & Structures",
+      description: "Deep dive into Small Business Administration loan programs, including 7(a), 504, and microloans. Learn eligibility requirements, application processes, and risk assessment.",
+      duration: "2 hours",
+      lessons: 10,
       progress: 45,
       status: "in-progress",
-      topics: ["Traditional Loans", "Alternative Financing", "Credit Assessment", "Funding Strategies"]
+      topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"]
     },
     {
-      id: "credit-assessment",
-      title: "Credit Assessment & Risk Management",
-      description: "Understand how to assess creditworthiness, manage financial risk, and make informed lending decisions in business finance.",
-      duration: "50 min",
-      lessons: 6,
+      id: "conventional-loans",
+      title: "Conventional Business Lending",
+      description: "Master traditional bank lending products including term loans, lines of credit, equipment financing, and commercial real estate loans. Understand underwriting standards and pricing.",
+      duration: "2.5 hours",
+      lessons: 13,
       progress: 0,
       status: "available",
-      topics: ["Credit Scoring", "Risk Assessment", "Documentation", "Decision Making"]
+      topics: ["Term Loans", "Lines of Credit", "Equipment Financing", "Commercial Real Estate", "Underwriting Standards", "Credit Analysis", "Loan Pricing", "Collateral Requirements"]
     },
     {
-      id: "customer-relations",
-      title: "Customer Relations in Finance",
-      description: "Develop skills in customer communication, relationship building, and providing excellent service in financial services.",
-      duration: "40 min",
-      lessons: 5,
+      id: "bridge-loans",
+      title: "Bridge Financing & Short-Term Solutions",
+      description: "Explore bridge loans, asset-based lending, and other short-term financing solutions. Learn when and how to structure these products for optimal client outcomes.",
+      duration: "1.5 hours",
+      lessons: 8,
       progress: 0,
       status: "locked",
-      topics: ["Communication Skills", "Customer Service", "Relationship Building", "Problem Resolution"]
+      topics: ["Bridge Loan Structures", "Asset-Based Lending", "Invoice Factoring", "Short-Term Financing", "Exit Strategies", "Risk Mitigation", "Pricing Models"]
     },
     {
-      id: "industry-compliance",
-      title: "Industry Standards & Compliance",
-      description: "Learn about regulatory requirements, industry best practices, and compliance standards in business finance and lending.",
-      duration: "65 min",
+      id: "alternative-finance",
+      title: "Alternative Financing Solutions",
+      description: "Comprehensive overview of non-traditional financing options including merchant cash advances, revenue-based financing, and peer-to-peer lending platforms.",
+      duration: "2 hours",
+      lessons: 11,
+      progress: 0,
+      status: "locked",
+      topics: ["Merchant Cash Advances", "Revenue-Based Financing", "P2P Lending", "Crowdfunding", "Fintech Solutions", "Alternative Credit Scoring", "Industry Trends"]
+    },
+    {
+      id: "credit-risk",
+      title: "Credit Analysis & Risk Management",
+      description: "Advanced credit analysis techniques, risk assessment methodologies, and portfolio management strategies used in commercial lending and business finance.",
+      duration: "2.5 hours",
+      lessons: 12,
+      progress: 0,
+      status: "locked",
+      topics: ["Financial Statement Analysis", "Cash Flow Modeling", "Industry Analysis", "Credit Scoring Models", "Portfolio Risk", "Loss Mitigation", "Regulatory Compliance"]
+    },
+    {
+      id: "regulatory-compliance",
+      title: "Banking Regulations & Compliance",
+      description: "Navigate the complex regulatory environment including BSA/AML, fair lending practices, consumer protection laws, and industry best practices for compliance management.",
+      duration: "2 hours",
       lessons: 9,
       progress: 0,
       status: "locked",
-      topics: ["Regulatory Framework", "Compliance Standards", "Documentation", "Best Practices"]
+      topics: ["BSA/AML Requirements", "Fair Lending Laws", "UDAAP Prevention", "Consumer Protection", "Documentation Standards", "Audit Preparation", "Regulatory Reporting"]
     }
   ]
 };
@@ -88,12 +108,12 @@ export const statsData = [
   {
     title: "Modules Completed",
     value: 2,
-    description: "out of 6 modules",
+    description: "out of 8 modules",
     trend: { value: 15, isPositive: true }
   },
   {
     title: "Learning Time",
-    value: "3.2hrs",
+    value: "12.5hrs",
     description: "total time invested",
     trend: { value: 22, isPositive: true }
   },
