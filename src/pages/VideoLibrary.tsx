@@ -6,25 +6,81 @@ import { PlayCircle, Clock, Users, BookOpen } from "lucide-react";
 const VideoLibraryPage = () => {
   const videoCategories = [
     {
-      title: "Foundation Courses",
+      title: "Business Finance Fundamentals",
       videos: [
         {
-          title: "Business Finance Fundamentals",
-          description: "Core concepts every finance professional should know",
-          duration: "42:30",
+          title: "Introduction to Business Finance",
+          description: "Overview of business finance principles and concepts",
+          duration: "32:45",
           videoType: "youtube" as const,
           youtubeId: "dQw4w9WgXcQ",
           videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           instructor: "Dr. Sarah Martinez"
         },
         {
-          title: "Financial Statement Analysis",
-          description: "How to read and analyze financial statements",
-          duration: "38:15",
+          title: "Time Value of Money",
+          description: "Understanding present and future value calculations",
+          duration: "28:30",
           videoType: "youtube" as const,
           youtubeId: "dQw4w9WgXcQ",
           videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           instructor: "Prof. Michael Chen"
+        },
+        {
+          title: "Financial Statement Analysis",
+          description: "How to read and analyze financial statements",
+          duration: "45:20",
+          videoType: "youtube" as const,
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          instructor: "Dr. Lisa Wang"
+        },
+        {
+          title: "Cash Flow Management",
+          description: "Managing and forecasting business cash flows",
+          duration: "35:15",
+          videoType: "file" as const,
+          videoUrl: "/cash-flow-management.mp4",
+          instructor: "Jennifer Rodriguez"
+        }
+      ]
+    },
+    {
+      title: "Commercial Finance Fundamentals",
+      videos: [
+        {
+          title: "Commercial Lending Basics",
+          description: "Introduction to commercial lending principles",
+          duration: "40:30",
+          videoType: "youtube" as const,
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          instructor: "David Thompson"
+        },
+        {
+          title: "Credit Analysis Fundamentals",
+          description: "How to evaluate commercial credit applications",
+          duration: "48:45",
+          videoType: "file" as const,
+          videoUrl: "/credit-analysis-fundamentals.mp4",
+          instructor: "Robert Kim"
+        },
+        {
+          title: "Commercial Real Estate Finance",
+          description: "Financing commercial real estate transactions",
+          duration: "52:20",
+          videoType: "youtube" as const,
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          instructor: "Dr. Amanda Foster"
+        },
+        {
+          title: "Working Capital Finance",
+          description: "Short-term financing solutions for businesses",
+          duration: "36:10",
+          videoType: "file" as const,
+          videoUrl: "/working-capital-finance.mp4",
+          instructor: "Mark Sullivan"
         }
       ]
     },
