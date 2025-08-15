@@ -2,7 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users } from "lucide-react";
+import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play } from "lucide-react";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 const ResourcesPage = () => {
   const documents = [
@@ -41,25 +42,35 @@ const ResourcesPage = () => {
       title: "Introduction to Capital Markets",
       description: "Overview of capital market structures and participants",
       duration: "45:30",
-      category: "lecture"
+      category: "lecture",
+      videoType: "youtube" as const,
+      youtubeId: "dQw4w9WgXcQ", // Example YouTube ID
+      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     },
     {
       title: "SBA Loan Process Walkthrough",
       description: "Complete walkthrough of the SBA loan application process",
       duration: "32:15",
-      category: "tutorial"
+      category: "tutorial",
+      videoType: "file" as const,
+      videoUrl: "/sample-video.mp4" // Example file path
     },
     {
       title: "Risk Assessment Techniques",
       description: "Advanced techniques for evaluating credit risk",
       duration: "28:45",
-      category: "lecture"
+      category: "lecture",
+      videoType: "youtube" as const,
+      youtubeId: "dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     },
     {
       title: "Case Study: Bridge Financing",
       description: "Real-world example of bridge financing structure",
       duration: "15:20",
-      category: "case-study"
+      category: "case-study",
+      videoType: "file" as const,
+      videoUrl: "/case-study-video.mp4"
     }
   ];
 
@@ -185,28 +196,28 @@ const ResourcesPage = () => {
                 Video Library
               </CardTitle>
               <CardDescription>
-                Instructional videos and recorded lectures
+                Interactive training videos and lectures
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4">
+              <div className="grid gap-6">
                 {videos.map((video) => (
-                  <div key={video.title} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Video className="h-4 w-4 text-blue-500" />
-                      <div>
-                        <h3 className="font-medium text-foreground">{video.title}</h3>
-                        <p className="text-sm text-muted-foreground">{video.description}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">{video.category}</Badge>
-                          <span className="text-xs text-muted-foreground">{video.duration}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline">
-                      Watch
-                    </Button>
-                  </div>
+                  <VideoPlayer
+                    key={video.title}
+                    title={video.title}
+                    description={video.description}
+                    duration={video.duration}
+                    videoType={video.videoType}
+                    videoUrl={video.videoUrl}
+                    youtubeId={video.youtubeId}
+                    onProgress={(progress) => {
+                      console.log(`${video.title} progress: ${progress}%`);
+                    }}
+                    onComplete={() => {
+                      console.log(`${video.title} completed`);
+                    }}
+                    className="w-full"
+                  />
                 ))}
               </div>
             </CardContent>

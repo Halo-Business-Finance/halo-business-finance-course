@@ -10,6 +10,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import Index from "./pages/Index";
 import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
+import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -78,6 +79,7 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/progress" element={<Progress />} />
                   <Route path="/certificates" element={<Certificates />} />
+                  <Route path="/videos" element={<VideoLibrary />} />
                   <Route path="/resources" element={<Resources />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
