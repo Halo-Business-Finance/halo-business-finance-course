@@ -82,14 +82,14 @@ const AccountPage = () => {
         const profileData = {
           name: `${profile.first_name || ""} ${profile.last_name || ""}`.trim(),
           email: profile.email || "",
-          phone: "", // Not in profiles table
+          phone: profile.phone_number || "",
           location: "", // Not in profiles table  
           joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
           }) : "",
-          title: "", // Not in profiles table
+          title: profile.job_title || "",
           company: "", // Not in profiles table
           avatar: "/placeholder.svg" // Not in profiles table
         };
@@ -153,7 +153,8 @@ const AccountPage = () => {
           first_name: firstName,
           last_name: lastName,
           email: editForm.email,
-          avatar_url: editForm.avatar
+          phone_number: editForm.phone,
+          job_title: editForm.title
         });
 
       if (error) {
