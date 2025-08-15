@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { 
   BookOpen, 
   Home, 
@@ -7,8 +8,12 @@ import {
   Settings, 
   Award,
   Target,
-  FileText
+  FileText,
+  LogIn,
+  LogOut
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 import {
   Sidebar,
@@ -49,6 +54,56 @@ const accountItems = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check initial auth state
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+
+    checkUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleSignIn = () => {
+    // For now, we'll show a toast. Later this can open a sign-in modal or redirect
+    toast({
+      title: "Sign In",
+      description: "Sign-in functionality will be implemented soon.",
+    });
+  };
   
   const getNavCls = (isActiveState: boolean) =>
     isActiveState ? "bg-black/10 text-black font-medium border-r-2 border-black" : "text-black hover:bg-black/10 hover:text-black";
@@ -211,6 +266,37 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Authentication */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {!loading && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    {user ? (
+                      <button 
+                        onClick={handleSignOut}
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black"
+                      >
+                        <LogOut className="h-4 w-4 text-red-600" />
+                        {!collapsed && <span className="text-black">Sign Out</span>}
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={handleSignIn}
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black"
+                      >
+                        <LogIn className="h-4 w-4 text-green-600" />
+                        {!collapsed && <span className="text-black">Sign In</span>}
+                      </button>
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
