@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,17 +12,19 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const AccountPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({
-    name: "Sarah Johnson",
-    email: "sarah.johnson@company.com",
-    phone: "+1 (555) 123-4567",
-    location: "New York, NY",
-    joinDate: "January 15, 2024",
-    title: "Finance Manager",
-    company: "Tech Solutions Inc.",
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    joinDate: "",
+    title: "",
+    company: "",
     avatar: "/placeholder.svg"
   });
 
@@ -42,14 +44,143 @@ const AccountPage = () => {
     averageScore: 94
   };
 
-  const handleEditSubmit = (e: React.FormEvent) => {
+  // Load profile data on component mount
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to view your profile.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error loading profile:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load profile data.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (profile) {
+        const profileData = {
+          name: profile.name || "",
+          email: profile.email || "",
+          phone: profile.phone || "",
+          location: profile.location || "",
+          joinDate: profile.join_date ? new Date(profile.join_date).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }) : "",
+          title: profile.title || "",
+          company: profile.company || "",
+          avatar: profile.avatar_url || "/placeholder.svg"
+        };
+        setUserInfo(profileData);
+        setEditForm(profileData);
+      } else {
+        // Create a new profile with default values
+        const defaultProfile = {
+          name: user.user_metadata?.full_name || "",
+          email: user.email || "",
+          phone: "",
+          location: "",
+          joinDate: new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          title: "",
+          company: "",
+          avatar: "/placeholder.svg"
+        };
+        setUserInfo(defaultProfile);
+        setEditForm(defaultProfile);
+      }
+    } catch (error) {
+      console.error('Error in loadProfile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load profile data.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setUserInfo(editForm);
-    setIsEditDialogOpen(false);
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    });
+    setIsLoading(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to save your profile.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          user_id: user.id,
+          name: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          location: editForm.location,
+          title: editForm.title,
+          company: editForm.company,
+          avatar_url: editForm.avatar
+        });
+
+      if (error) {
+        console.error('Error saving profile:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save profile changes.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setUserInfo(editForm);
+      setIsEditDialogOpen(false);
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+    } catch (error) {
+      console.error('Error in handleEditSubmit:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save profile changes.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -62,6 +193,22 @@ const AccountPage = () => {
   const resetForm = () => {
     setEditForm(userInfo);
   };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center gap-2 mb-6">
+          <User className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">Account</h1>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="text-lg">Loading profile...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6 space-y-6">
