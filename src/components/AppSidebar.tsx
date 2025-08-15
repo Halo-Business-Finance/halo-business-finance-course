@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { 
   BookOpen, 
@@ -54,6 +54,7 @@ const accountItems = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -103,12 +104,8 @@ export function AppSidebar() {
   };
 
   const handleSignIn = () => {
-    console.log('AppSidebar: handleSignIn called');
-    // For now, we'll show a toast. Later this can open a sign-in modal or redirect
-    toast({
-      title: "Sign In",
-      description: "Sign-in functionality will be implemented soon.",
-    });
+    console.log('AppSidebar: handleSignIn called - navigating to auth page');
+    navigate('/auth');
   };
   
   const getNavCls = (isActiveState: boolean) =>

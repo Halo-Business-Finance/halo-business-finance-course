@@ -13,6 +13,7 @@ import Certificates from "./pages/Certificates";
 import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
 import Account from "./pages/Account";
+import Auth from "./pages/Auth";
 import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 
@@ -81,7 +82,8 @@ const App = () => (
                   <Route path="/certificates" element={<Certificates />} />
                   <Route path="/videos" element={<VideoLibrary />} />
                   <Route path="/resources" element={<Resources />} />
-            <Route path="/account" element={<Account />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/auth" element={<Auth />} />
                   <Route path="/module/:moduleId" element={<ModulePage />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
