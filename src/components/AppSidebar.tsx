@@ -52,7 +52,7 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   
   const getNavCls = (isActiveState: boolean) =>
-    isActiveState ? "bg-primary/10 text-primary font-medium border-r-2 border-primary" : "hover:bg-muted/50";
+    isActiveState ? "bg-halo-navy/10 text-halo-navy font-medium border-r-2 border-halo-navy" : "text-halo-navy hover:bg-halo-navy/10 hover:text-halo-navy";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -118,8 +118,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4" />
-                      {!collapsed && <span>{item.title}</span>}
+                      <item.icon className="h-4 w-4 text-halo-navy" />
+                      {!collapsed && <span className="text-halo-navy">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -206,8 +206,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4" />
-                      {!collapsed && <span>{item.title}</span>}
+                      <item.icon className="h-4 w-4 text-halo-navy" />
+                      {!collapsed && <span className="text-halo-navy">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
