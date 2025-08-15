@@ -12,8 +12,7 @@ import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
 import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
+import Account from "./pages/Account";
 import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 
@@ -82,8 +81,7 @@ const App = () => (
                   <Route path="/certificates" element={<Certificates />} />
                   <Route path="/videos" element={<VideoLibrary />} />
                   <Route path="/resources" element={<Resources />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/settings" element={<Settings />} />
+            <Route path="/account" element={<Account />} />
                   <Route path="/module/:moduleId" element={<ModulePage />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

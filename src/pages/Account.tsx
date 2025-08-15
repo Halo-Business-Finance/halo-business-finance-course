@@ -1,0 +1,694 @@
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "@/hooks/use-toast";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
+
+const AccountPage = () => {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    name: "Sarah Johnson",
+    email: "sarah.johnson@company.com",
+    phone: "+1 (555) 123-4567",
+    location: "New York, NY",
+    joinDate: "January 15, 2024",
+    title: "Finance Manager",
+    company: "Tech Solutions Inc.",
+    avatar: "/placeholder.svg"
+  });
+
+  const [editForm, setEditForm] = useState(userInfo);
+
+  const achievements = [
+    { name: "Business Finance Foundations", date: "July 15, 2024", type: "Certificate" },
+    { name: "Capital Markets Specialist", date: "July 22, 2024", type: "Certificate" },
+    { name: "First Course Completed", date: "July 15, 2024", type: "Badge" },
+    { name: "Quick Learner", date: "July 20, 2024", type: "Badge" }
+  ];
+
+  const learningStats = {
+    totalHours: "7.5",
+    completedModules: 2,
+    inProgressModules: 1,
+    averageScore: 94
+  };
+
+  const handleEditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setUserInfo(editForm);
+    setIsEditDialogOpen(false);
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been successfully updated.",
+    });
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setEditForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const resetForm = () => {
+    setEditForm(userInfo);
+  };
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="flex items-center gap-2 mb-6">
+        <User className="h-6 w-6 text-primary" />
+        <h1 className="text-2xl font-bold text-foreground">Account</h1>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Profile Info */}
+        <div className="lg:col-span-1 space-y-6">
+          <Card>
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <Avatar className="w-24 h-24">
+                  <AvatarImage src={userInfo.avatar} alt={userInfo.name} />
+                  <AvatarFallback className="text-xl bg-primary text-primary-foreground">
+                    {userInfo.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <CardTitle>{userInfo.name}</CardTitle>
+              <CardDescription>{userInfo.title}</CardDescription>
+              <Badge variant="secondary" className="mt-2">{userInfo.company}</Badge>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-2 text-sm">
+                <Mail className="h-4 w-4 text-muted-foreground" />
+                <span>{userInfo.email}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Phone className="h-4 w-4 text-muted-foreground" />
+                <span>{userInfo.phone}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <span>{userInfo.location}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <span>Joined {userInfo.joinDate}</span>
+              </div>
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full mt-4 gap-2">
+                    <Edit className="h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogDescription>
+                      Update your personal information and contact details.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={handleEditSubmit} className="space-y-4 mt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={editForm.name.split(' ')[0] || ''}
+                          onChange={(e) => {
+                            const lastName = editForm.name.split(' ')[1] || '';
+                            handleInputChange('name', `${e.target.value} ${lastName}`.trim());
+                          }}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={editForm.name.split(' ')[1] || ''}
+                          onChange={(e) => {
+                            const firstName = editForm.name.split(' ')[0] || '';
+                            handleInputChange('name', `${firstName} ${e.target.value}`.trim());
+                          }}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={editForm.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        id="location"
+                        value={editForm.location}
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Job Title</Label>
+                      <Input
+                        id="title"
+                        value={editForm.title}
+                        onChange={(e) => handleInputChange('title', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        id="company"
+                        value={editForm.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          resetForm();
+                          setIsEditDialogOpen(false);
+                        }}
+                        className="gap-2"
+                      >
+                        <X className="h-4 w-4" />
+                        Cancel
+                      </Button>
+                      <Button type="submit" className="gap-2">
+                        <Save className="h-4 w-4" />
+                        Save Changes
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+          </Card>
+
+          {/* Learning Stats */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5" />
+                Learning Stats
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{learningStats.totalHours}</div>
+                  <div className="text-xs text-muted-foreground">Hours Studied</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-accent">{learningStats.completedModules}</div>
+                  <div className="text-xs text-muted-foreground">Completed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{learningStats.inProgressModules}</div>
+                  <div className="text-xs text-muted-foreground">In Progress</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-accent">{learningStats.averageScore}%</div>
+                  <div className="text-xs text-muted-foreground">Avg Score</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          <Tabs defaultValue="profile" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-6">
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="privacy">Privacy</TabsTrigger>
+              <TabsTrigger value="preferences">Preferences</TabsTrigger>
+              <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="profile">
+              <Tabs defaultValue="activity" className="space-y-6">
+                <TabsList>
+                  <TabsTrigger value="activity">Recent Activity</TabsTrigger>
+                  <TabsTrigger value="goals">Learning Goals</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="activity">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        Recent Activity
+                      </CardTitle>
+                      <CardDescription>
+                        Your latest learning activities and progress
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3 p-4 border rounded-lg">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <div>
+                            <p className="font-medium">Completed SBA Loan Programs Module 3</p>
+                            <p className="text-sm text-muted-foreground">2 hours ago</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 border rounded-lg">
+                          <div className="w-2 h-2 bg-accent rounded-full"></div>
+                          <div>
+                            <p className="font-medium">Earned Capital Markets Specialist Certificate</p>
+                            <p className="text-sm text-muted-foreground">5 days ago</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 border rounded-lg">
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
+                          <div>
+                            <p className="font-medium">Started SBA Loan Programs Module</p>
+                            <p className="text-sm text-muted-foreground">1 week ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="goals">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Target className="h-5 w-5" />
+                        Learning Goals
+                      </CardTitle>
+                      <CardDescription>
+                        Track your progress toward learning objectives
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="font-medium">Complete SBA Loan Programs</h3>
+                            <span className="text-sm text-muted-foreground">65% Complete</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-primary h-2 rounded-full w-[65%]"></div>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-2">Target: End of this month</p>
+                        </div>
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="font-medium">Earn 3 Professional Certificates</h3>
+                            <span className="text-sm text-muted-foreground">2 of 3 Complete</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-accent h-2 rounded-full w-[67%]"></div>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-2">Target: End of next month</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            <TabsContent value="achievements">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="h-5 w-5" />
+                    Achievements & Certificates
+                  </CardTitle>
+                  <CardDescription>
+                    Your earned certificates and learning milestones
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {achievements.map((achievement, index) => (
+                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <Award className="h-5 w-5 text-accent" />
+                          <div>
+                            <h3 className="font-medium">{achievement.name}</h3>
+                            <p className="text-sm text-muted-foreground">Earned on {achievement.date}</p>
+                          </div>
+                        </div>
+                        <Badge variant={achievement.type === "Certificate" ? "completed" : "secondary"}>
+                          {achievement.type}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="account">
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <User className="h-5 w-5" />
+                      Account Information
+                    </CardTitle>
+                    <CardDescription>
+                      Update your personal information and contact details
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input id="firstName" defaultValue="Sarah" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input id="lastName" defaultValue="Johnson" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input id="email" type="email" defaultValue="sarah.johnson@company.com" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" defaultValue="+1 (555) 123-4567" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input id="company" defaultValue="Tech Solutions Inc." />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Job Title</Label>
+                      <Input id="title" defaultValue="Finance Manager" />
+                    </div>
+                    <Button>Save Changes</Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Password & Security</CardTitle>
+                    <CardDescription>
+                      Manage your password and security settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentPassword">Current Password</Label>
+                      <Input id="currentPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">New Password</Label>
+                      <Input id="newPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                      <Input id="confirmPassword" type="password" />
+                    </div>
+                    <Button variant="outline">Change Password</Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="notifications">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bell className="h-5 w-5" />
+                    Notification Preferences
+                  </CardTitle>
+                  <CardDescription>
+                    Choose what notifications you want to receive
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Course Progress Updates</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get notified when you complete modules or earn certificates
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>New Course Announcements</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive updates about new courses and modules
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Webinar Reminders</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get reminders before live webinars and events
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Weekly Progress Summary</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive a weekly summary of your learning progress
+                        </p>
+                      </div>
+                      <Switch />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Marketing Communications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive information about Halo services and updates
+                        </p>
+                      </div>
+                      <Switch />
+                    </div>
+                  </div>
+                  <Button>Save Notification Settings</Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="privacy">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Privacy & Data
+                  </CardTitle>
+                  <CardDescription>
+                    Control your privacy settings and data preferences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Profile Visibility</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Allow other learners to see your profile and achievements
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Learning Analytics</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Share anonymous learning data to improve the platform
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Activity Tracking</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Track your learning activities for progress reports
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                  </div>
+                  <div className="pt-4 border-t">
+                    <h3 className="font-medium mb-2">Data Management</h3>
+                    <div className="space-y-2">
+                      <Button variant="outline" className="w-full justify-start">
+                        Download My Data
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        Request Data Deletion
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="preferences">
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Palette className="h-5 w-5" />
+                      Display Preferences
+                    </CardTitle>
+                    <CardDescription>
+                      Customize your learning experience
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Theme</Label>
+                      <Select defaultValue="system">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select theme" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">Light</SelectItem>
+                          <SelectItem value="dark">Dark</SelectItem>
+                          <SelectItem value="system">System</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Font Size</Label>
+                      <Select defaultValue="medium">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select font size" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="small">Small</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="large">Large</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Reduce Motion</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Minimize animations and transitions
+                        </p>
+                      </div>
+                      <Switch />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Globe className="h-5 w-5" />
+                      Language & Region
+                    </CardTitle>
+                    <CardDescription>
+                      Set your language and regional preferences
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Language</Label>
+                      <Select defaultValue="en">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">English</SelectItem>
+                          <SelectItem value="es">Español</SelectItem>
+                          <SelectItem value="fr">Français</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Time Zone</Label>
+                      <Select defaultValue="est">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select time zone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="est">Eastern Time (EST)</SelectItem>
+                          <SelectItem value="cst">Central Time (CST)</SelectItem>
+                          <SelectItem value="mst">Mountain Time (MST)</SelectItem>
+                          <SelectItem value="pst">Pacific Time (PST)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Date Format</Label>
+                      <Select defaultValue="mdy">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select date format" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="mdy">MM/DD/YYYY</SelectItem>
+                          <SelectItem value="dmy">DD/MM/YYYY</SelectItem>
+                          <SelectItem value="ymd">YYYY-MM-DD</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button>Save Preferences</Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AccountPage;
