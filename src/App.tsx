@@ -11,6 +11,8 @@ import Index from "./pages/Index";
 import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
 import Resources from "./pages/Resources";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,6 +79,8 @@ const App = () => (
                   <Route path="/progress" element={<Progress />} />
                   <Route path="/certificates" element={<Certificates />} />
                   <Route path="/resources" element={<Resources />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
