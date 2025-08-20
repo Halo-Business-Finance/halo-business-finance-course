@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppSidebar } from "@/components/AppSidebar";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Progress from "./pages/Progress";
@@ -25,6 +25,7 @@ const queryClient = new QueryClient();
 
 const HeaderContent = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const goBack = () => {
     navigate(-1);
@@ -33,6 +34,8 @@ const HeaderContent = () => {
   const goForward = () => {
     navigate(1);
   };
+
+  if (!user) return null;
 
   return (
     <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
@@ -66,6 +69,61 @@ const HeaderContent = () => {
   );
 };
 
+const AppContent = () => {
+  const { user } = useAuth();
+
+  return (
+    <div className="min-h-screen flex w-full">
+      {user && <AppSidebar />}
+      
+      <div className="flex-1 flex flex-col">
+        <HeaderContent />
+
+        <main className="flex-1 relative z-10">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/progress" element={
+              <ProtectedRoute>
+                <Progress />
+              </ProtectedRoute>
+            } />
+            <Route path="/certificates" element={
+              <ProtectedRoute>
+                <Certificates />
+              </ProtectedRoute>
+            } />
+            <Route path="/videos" element={<VideoLibrary />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/account" element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            } />
+            <Route path="/auth" element={
+              <ProtectedRoute requireAuth={false}>
+                <Auth />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/login" element={
+              <ProtectedRoute requireAuth={false}>
+                <AdminAuth />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/dashboard" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/module/:moduleId" element={<ModulePage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -74,54 +132,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <SidebarProvider>
-            <div className="min-h-screen flex w-full">
-              <AppSidebar />
-              
-              <div className="flex-1 flex flex-col">
-                <HeaderContent />
-
-                <main className="flex-1 relative z-10">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/progress" element={
-                      <ProtectedRoute>
-                        <Progress />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/certificates" element={
-                      <ProtectedRoute>
-                        <Certificates />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/videos" element={<VideoLibrary />} />
-                    <Route path="/resources" element={<Resources />} />
-                    <Route path="/account" element={
-                      <ProtectedRoute>
-                        <Account />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/auth" element={
-                      <ProtectedRoute requireAuth={false}>
-                        <Auth />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/admin/login" element={
-                      <ProtectedRoute requireAuth={false}>
-                        <AdminAuth />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/admin/dashboard" element={
-                      <ProtectedRoute>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/module/:moduleId" element={<ModulePage />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
-            </div>
+            <AppContent />
           </SidebarProvider>
         </AuthProvider>
       </BrowserRouter>
