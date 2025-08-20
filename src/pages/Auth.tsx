@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { LogIn, UserPlus, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogIn, UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, AlertTriangle } from "lucide-react";
+import { validateEmail, validatePassword, validateName, sanitizeInput, authRateLimiter } from "@/utils/validation";
 
 const AuthPage = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState<'weak' | 'medium' | 'strong'>('weak');
+  const [rateLimitWarning, setRateLimitWarning] = useState<string>('');
 
   // Sign In Form State
   const [signInData, setSignInData] = useState({
@@ -29,13 +35,62 @@ const AuthPage = () => {
     fullName: ""
   });
 
+  // Redirect authenticated users
+  useEffect(() => {
+    if (!loading && user) {
+      const redirectUrl = sessionStorage.getItem('redirectUrl');
+      if (redirectUrl) {
+        sessionStorage.removeItem('redirectUrl');
+        navigate(redirectUrl, { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [user, loading, navigate]);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Clear any previous rate limit warnings
+    setRateLimitWarning('');
+    
+    // Check rate limiting
+    const clientId = `signin_${signInData.email}`;
+    const rateLimitCheck = authRateLimiter.isAllowed(clientId);
+    
+    if (!rateLimitCheck.allowed) {
+      const minutes = Math.ceil((rateLimitCheck.timeUntilReset || 0) / (1000 * 60));
+      setRateLimitWarning(`Too many sign-in attempts. Please try again in ${minutes} minutes.`);
+      return;
+    }
+
+    // Validate inputs
+    const emailValidation = validateEmail(signInData.email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Invalid Email",
+        description: emailValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!signInData.password) {
+      toast({
+        title: "Password Required",
+        description: "Please enter your password.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
+      const sanitizedEmail = sanitizeInput(signInData.email);
+      
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: signInData.email,
+        email: sanitizedEmail,
         password: signInData.password,
       });
 
@@ -49,11 +104,22 @@ const AuthPage = () => {
       }
 
       if (data.user) {
+        // Reset rate limiter on successful login
+        authRateLimiter.reset(clientId);
+        
         toast({
           title: "Welcome back!",
           description: "You have been successfully signed in.",
         });
-        navigate("/");
+        
+        // Check for redirect URL
+        const redirectUrl = sessionStorage.getItem('redirectUrl');
+        if (redirectUrl) {
+          sessionStorage.removeItem('redirectUrl');
+          navigate(redirectUrl, { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       }
     } catch (error) {
       console.error('Sign in error:', error);
@@ -69,6 +135,50 @@ const AuthPage = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Clear any previous rate limit warnings
+    setRateLimitWarning('');
+    
+    // Check rate limiting
+    const clientId = `signup_${signUpData.email}`;
+    const rateLimitCheck = authRateLimiter.isAllowed(clientId);
+    
+    if (!rateLimitCheck.allowed) {
+      const minutes = Math.ceil((rateLimitCheck.timeUntilReset || 0) / (1000 * 60));
+      setRateLimitWarning(`Too many sign-up attempts. Please try again in ${minutes} minutes.`);
+      return;
+    }
+
+    // Validate all inputs
+    const nameValidation = validateName(signUpData.fullName);
+    if (!nameValidation.isValid) {
+      toast({
+        title: "Invalid Name",
+        description: nameValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const emailValidation = validateEmail(signUpData.email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Invalid Email",
+        description: emailValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const passwordValidation = validatePassword(signUpData.password);
+    if (!passwordValidation.isValid) {
+      toast({
+        title: "Invalid Password",
+        description: passwordValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
 
     if (signUpData.password !== signUpData.confirmPassword) {
       toast({
@@ -79,27 +189,20 @@ const AuthPage = () => {
       return;
     }
 
-    if (signUpData.password.length < 6) {
-      toast({
-        title: "Password Too Short",
-        description: "Password must be at least 6 characters long.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     setIsLoading(true);
 
     try {
+      const sanitizedName = sanitizeInput(signUpData.fullName);
+      const sanitizedEmail = sanitizeInput(signUpData.email);
       const redirectUrl = `${window.location.origin}/`;
       
       const { data, error } = await supabase.auth.signUp({
-        email: signUpData.email,
+        email: sanitizedEmail,
         password: signUpData.password,
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            full_name: signUpData.fullName,
+            full_name: sanitizedName,
           }
         }
       });
@@ -114,6 +217,9 @@ const AuthPage = () => {
       }
 
       if (data.user) {
+        // Reset rate limiter on successful signup
+        authRateLimiter.reset(clientId);
+        
         toast({
           title: "Account Created!",
           description: "Please check your email to verify your account.",
@@ -126,6 +232,7 @@ const AuthPage = () => {
           confirmPassword: "",
           fullName: ""
         });
+        setPasswordStrength('weak');
       }
     } catch (error) {
       console.error('Sign up error:', error);
@@ -139,6 +246,27 @@ const AuthPage = () => {
     }
   };
 
+  // Handle password strength checking
+  const handlePasswordChange = (password: string) => {
+    setSignUpData({...signUpData, password});
+    const validation = validatePassword(password);
+    setPasswordStrength(validation.strength || 'weak');
+  };
+
+  // Show loading while checking auth state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
+        <Card className="w-full max-w-md">
+          <CardContent className="p-8 text-center space-y-4">
+            <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent mx-auto" />
+            <p className="text-muted-foreground">Loading...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <div className="w-full max-w-md space-y-6">
@@ -151,6 +279,17 @@ const AuthPage = () => {
           <h1 className="text-2xl font-bold">Halo Learning</h1>
           <p className="text-muted-foreground">Finance Training Platform</p>
         </div>
+        
+        {rateLimitWarning && (
+          <Card className="border-destructive/50 bg-destructive/5">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <p className="text-sm font-medium">{rateLimitWarning}</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <Tabs defaultValue="signin" className="space-y-4">
           <TabsList className="grid w-full grid-cols-2">
@@ -272,7 +411,7 @@ const AuthPage = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
                         value={signUpData.password}
-                        onChange={(e) => setSignUpData({...signUpData, password: e.target.value})}
+                        onChange={(e) => handlePasswordChange(e.target.value)}
                         className="pl-10 pr-10"
                         required
                       />
@@ -284,6 +423,24 @@ const AuthPage = () => {
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
+                    {signUpData.password && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Shield className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">Password Strength:</span>
+                          <span className={`text-xs font-medium ${
+                            passwordStrength === 'strong' ? 'text-green-600' :
+                            passwordStrength === 'medium' ? 'text-yellow-600' : 'text-red-600'
+                          }`}>
+                            {passwordStrength.charAt(0).toUpperCase() + passwordStrength.slice(1)}
+                          </span>
+                        </div>
+                        <Progress 
+                          value={passwordStrength === 'strong' ? 100 : passwordStrength === 'medium' ? 66 : 33} 
+                          className="h-1"
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-2">

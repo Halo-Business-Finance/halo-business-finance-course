@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppSidebar } from "@/components/AppSidebar";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
@@ -68,30 +70,48 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SidebarProvider>
-          <div className="min-h-screen flex w-full">
-            <AppSidebar />
-            
-            <div className="flex-1 flex flex-col">
-              <HeaderContent />
+        <AuthProvider>
+          <SidebarProvider>
+            <div className="min-h-screen flex w-full">
+              <AppSidebar />
+              
+              <div className="flex-1 flex flex-col">
+                <HeaderContent />
 
-              <main className="flex-1 relative z-10">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/progress" element={<Progress />} />
-                  <Route path="/certificates" element={<Certificates />} />
-                  <Route path="/videos" element={<VideoLibrary />} />
-                  <Route path="/resources" element={<Resources />} />
-                  <Route path="/account" element={<Account />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/module/:moduleId" element={<ModulePage />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
+                <main className="flex-1 relative z-10">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/progress" element={
+                      <ProtectedRoute>
+                        <Progress />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/certificates" element={
+                      <ProtectedRoute>
+                        <Certificates />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/videos" element={<VideoLibrary />} />
+                    <Route path="/resources" element={<Resources />} />
+                    <Route path="/account" element={
+                      <ProtectedRoute>
+                        <Account />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/auth" element={
+                      <ProtectedRoute requireAuth={false}>
+                        <Auth />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/module/:moduleId" element={<ModulePage />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+              </div>
             </div>
-          </div>
-        </SidebarProvider>
+          </SidebarProvider>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

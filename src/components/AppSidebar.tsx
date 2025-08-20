@@ -12,8 +12,7 @@ import {
   LogIn,
   LogOut
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Sidebar,
@@ -55,56 +54,21 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check initial auth state
-    const checkUser = async () => {
-      console.log('AppSidebar: Checking initial user auth state...');
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('AppSidebar: Initial user state:', user);
-      setUser(user);
-      setLoading(false);
-    };
-
-    checkUser();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('AppSidebar: Auth state change:', event, session?.user);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const { user, loading, signOut } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
-    console.log('AppSidebar: handleSignOut called');
+    setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      console.log('AppSidebar: Sign out successful');
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
-      });
+      await signOut();
     } catch (error) {
-      console.error('AppSidebar: Error signing out:', error);
-      toast({
-        title: "Error",
-        description: "Failed to sign out. Please try again.",
-        variant: "destructive"
-      });
+      console.error('Sign out error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignIn = () => {
-    console.log('AppSidebar: handleSignIn called - navigating to auth page');
     navigate('/auth');
   };
   
@@ -283,10 +247,11 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <button 
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded"
+                        disabled={isLoading}
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded disabled:opacity-50"
                       >
                         <LogOut className="h-4 w-4 text-red-600" />
-                        {!collapsed && <span className="text-black">Sign Out</span>}
+                        {!collapsed && <span className="text-black">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                       </button>
                     </SidebarMenuButton>
                   ) : (
