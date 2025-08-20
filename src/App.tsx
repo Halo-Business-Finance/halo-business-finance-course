@@ -71,9 +71,6 @@ const HeaderContent = () => {
 
 const AppContent = () => {
   const { user, loading } = useAuth();
-  
-  // Debug logging
-  console.log('App - User state:', { user: !!user, loading, userEmail: user?.email });
 
   return (
     <div className="min-h-screen flex w-full">
