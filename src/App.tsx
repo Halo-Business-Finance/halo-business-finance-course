@@ -16,6 +16,8 @@ import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
 import Account from "./pages/Account";
 import Auth from "./pages/Auth";
+import AdminAuth from "./pages/AdminAuth";
+import AdminDashboard from "./pages/AdminDashboard";
 import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 
@@ -101,6 +103,16 @@ const App = () => (
                     <Route path="/auth" element={
                       <ProtectedRoute requireAuth={false}>
                         <Auth />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/login" element={
+                      <ProtectedRoute requireAuth={false}>
+                        <AdminAuth />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/dashboard" element={
+                      <ProtectedRoute>
+                        <AdminDashboard />
                       </ProtectedRoute>
                     } />
                     <Route path="/module/:moduleId" element={<ModulePage />} />
