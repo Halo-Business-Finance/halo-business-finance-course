@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, Users2, CheckCircle } from "lucide-react";
 import { Module } from "@/data/courseData";
 import { LoanExamples } from "@/components/LoanExamples";
+import { useNavigate } from "react-router-dom";
 
 interface ModuleDetailProps {
   module: Module;
@@ -12,6 +13,12 @@ interface ModuleDetailProps {
 }
 
 const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
+  const navigate = useNavigate();
+
+  const handleContinueLearning = () => {
+    navigate(`/module/${module.id}`);
+    onClose(); // Close the popup after navigation
+  };
   const lessons = [
     {
       title: "Introduction & Overview",
@@ -132,6 +139,7 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
             <Button 
               className="w-full" 
               variant={module.status === "completed" ? "success" : "default"}
+              onClick={handleContinueLearning}
             >
               {module.status === "completed" 
                 ? "Review Module" 
