@@ -128,7 +128,6 @@ const AccountPage = () => {
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -145,6 +144,14 @@ const AccountPage = () => {
       const nameParts = editForm.name.split(' ');
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
+
+      console.log('Saving profile with data:', {
+        firstName,
+        lastName,
+        email: editForm.email,
+        phone: editForm.phone,
+        title: editForm.title
+      });
 
       const { error } = await supabase
         .from('profiles')
@@ -167,21 +174,25 @@ const AccountPage = () => {
         return;
       }
 
-      setUserInfo(editForm);
+      console.log('Profile saved successfully, updating UI');
+      setUserInfo({ ...editForm });
       setIsEditDialogOpen(false);
+      
       toast({
-        title: "Profile Updated",
+        title: "Success!",
         description: "Your profile has been successfully updated.",
       });
+      
+      // Reload the profile data to ensure UI consistency
+      await loadProfile();
+      
     } catch (error) {
       console.error('Error in handleEditSubmit:', error);
       toast({
-        title: "Error",
+        title: "Error", 
         description: "Failed to save profile changes.",
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
