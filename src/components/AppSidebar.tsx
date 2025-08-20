@@ -35,16 +35,7 @@ const mainNavItems = [
   { title: "Resources", url: "/resources", icon: FileText },
 ];
 
-const courseModules = [
-  { title: "Business Finance Foundations", url: "/module/foundations", status: "completed" },
-  { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
-  { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
-  { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
-  { title: "Bridge Financing", url: "/module/bridge-loans", status: "locked" },
-  { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
-  { title: "Credit Analysis", url: "/module/credit-risk", status: "locked" },
-  { title: "Compliance", url: "/module/regulatory-compliance", status: "locked" },
-];
+const courseModules: Array<{title: string, url: string, status: string}> = [];
 
 const accountItems = [
   { title: "Account", url: "/account", icon: User },
@@ -166,54 +157,64 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {courseModules.map((module, index) => (
-                <SidebarMenuItem key={module.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={module.url} 
-                      className={({ isActive }) => `${getNavCls(isActive)} ${
-                        module.status === "locked" ? "opacity-60 pointer-events-none" : ""
-                      } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
-                    >
-                      <div className="relative z-10 flex items-center w-full">
-                        <div className={`
-                          w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
-                          ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
-                            module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
-                            module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
-                            "bg-muted/50 text-muted-foreground"}
-                        `}>
-                          {module.status === "completed" ? "✓" : 
-                           module.status === "in-progress" ? "●" : 
-                           module.status === "locked" ? "🔒" : index + 1}
+              {courseModules.length > 0 ? (
+                courseModules.map((module, index) => (
+                  <SidebarMenuItem key={module.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink 
+                        to={module.url} 
+                        className={({ isActive }) => `${getNavCls(isActive)} ${
+                          module.status === "locked" ? "opacity-60 pointer-events-none" : ""
+                        } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
+                      >
+                        <div className="relative z-10 flex items-center w-full">
+                          <div className={`
+                            w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
+                            ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
+                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
+                              module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
+                              "bg-muted/50 text-muted-foreground"}
+                          `}>
+                            {module.status === "completed" ? "✓" : 
+                             module.status === "in-progress" ? "●" : 
+                             module.status === "locked" ? "🔒" : index + 1}
+                          </div>
+                          
+                          <div className="ml-3 flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate transition-colors duration-200">
+                              {module.title}
+                            </p>
+                          </div>
+                          
+                          {!collapsed && module.status === "completed" && (
+                            <Badge variant="success" className="ml-2 text-xs px-2 py-0.5 bg-gradient-success">
+                              Done
+                            </Badge>
+                          )}
+                          
+                          {!collapsed && module.status === "in-progress" && (
+                            <Badge variant="default" className="ml-2 text-xs px-2 py-0.5 bg-gradient-primary">
+                              Active
+                            </Badge>
+                          )}
                         </div>
                         
-                        {!collapsed && (
-                          <>
-                            <div className="flex-1 ml-3">
-                              <span className="text-xs font-medium leading-tight block text-black">
-                                {module.title}
-                              </span>
-                              {module.status === "in-progress" && (
-                                <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
-                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse"></div>
-                                </div>
-                              )}
-                            </div>
-                            
-                            <div className="ml-2">
-                              {getStatusBadge(module.status)}
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      
-                      {/* Hover effect overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              ) : (
+                <div className="px-3 py-6 text-center">
+                  <Target className="h-8 w-8 mx-auto mb-2 text-muted-foreground/30" />
+                  {!collapsed && (
+                    <>
+                      <p className="text-xs text-muted-foreground mb-1">No modules yet</p>
+                      <p className="text-xs text-muted-foreground/70">Content coming soon</p>
+                    </>
+                  )}
+                </div>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
