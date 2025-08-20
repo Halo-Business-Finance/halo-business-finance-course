@@ -134,6 +134,51 @@ export type Database = {
         }
         Relationships: []
       }
+      additional_borrowers: {
+        Row: {
+          borrower_order: number
+          contact_entity_id: string
+          created_at: string
+          id: string
+          is_primary: boolean
+          lead_id: string
+          updated_at: string
+        }
+        Insert: {
+          borrower_order?: number
+          contact_entity_id: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          lead_id: string
+          updated_at?: string
+        }
+        Update: {
+          borrower_order?: number
+          contact_entity_id?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          lead_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "additional_borrowers_contact_entity_id_fkey"
+            columns: ["contact_entity_id"]
+            isOneToOne: false
+            referencedRelation: "contact_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "additional_borrowers_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_bot_activity: {
         Row: {
           activity_type: string
@@ -920,27 +965,35 @@ export type Database = {
           bdo_name: string | null
           bdo_telephone: string | null
           business_address: string | null
+          business_city: string | null
           business_name: string | null
+          business_state: string | null
+          business_zip_code: string | null
           call_notes: string | null
           created_at: string
           credit_score: number | null
           current_processing_rate: number | null
           email: string
           existing_loan_amount: number | null
+          first_name: string | null
           id: string
           income: number | null
           interest_rate: number | null
+          last_name: string | null
           loan_amount: number | null
           loan_type: string | null
           location: string | null
           maturity_date: string | null
+          mobile_phone: string | null
           monthly_processing_volume: number | null
           naics_code: string | null
           name: string
           net_operating_income: number | null
           notes: string | null
+          ownership_percentage: number | null
           ownership_structure: string | null
           owns_property: boolean | null
+          personal_email: string | null
           phone: string | null
           pos_system: string | null
           priority: string | null
@@ -959,27 +1012,35 @@ export type Database = {
           bdo_name?: string | null
           bdo_telephone?: string | null
           business_address?: string | null
+          business_city?: string | null
           business_name?: string | null
+          business_state?: string | null
+          business_zip_code?: string | null
           call_notes?: string | null
           created_at?: string
           credit_score?: number | null
           current_processing_rate?: number | null
           email: string
           existing_loan_amount?: number | null
+          first_name?: string | null
           id?: string
           income?: number | null
           interest_rate?: number | null
+          last_name?: string | null
           loan_amount?: number | null
           loan_type?: string | null
           location?: string | null
           maturity_date?: string | null
+          mobile_phone?: string | null
           monthly_processing_volume?: number | null
           naics_code?: string | null
           name: string
           net_operating_income?: number | null
           notes?: string | null
+          ownership_percentage?: number | null
           ownership_structure?: string | null
           owns_property?: boolean | null
+          personal_email?: string | null
           phone?: string | null
           pos_system?: string | null
           priority?: string | null
@@ -998,27 +1059,35 @@ export type Database = {
           bdo_name?: string | null
           bdo_telephone?: string | null
           business_address?: string | null
+          business_city?: string | null
           business_name?: string | null
+          business_state?: string | null
+          business_zip_code?: string | null
           call_notes?: string | null
           created_at?: string
           credit_score?: number | null
           current_processing_rate?: number | null
           email?: string
           existing_loan_amount?: number | null
+          first_name?: string | null
           id?: string
           income?: number | null
           interest_rate?: number | null
+          last_name?: string | null
           loan_amount?: number | null
           loan_type?: string | null
           location?: string | null
           maturity_date?: string | null
+          mobile_phone?: string | null
           monthly_processing_volume?: number | null
           naics_code?: string | null
           name?: string
           net_operating_income?: number | null
           notes?: string | null
+          ownership_percentage?: number | null
           ownership_structure?: string | null
           owns_property?: boolean | null
+          personal_email?: string | null
           phone?: string | null
           pos_system?: string | null
           priority?: string | null
@@ -3314,6 +3383,113 @@ export type Database = {
         }
         Relationships: []
       }
+      sensitive_data_access_logs: {
+        Row: {
+          access_reason: string | null
+          admin_user_id: string
+          created_at: string
+          data_type: string
+          fields_accessed: string[] | null
+          id: string
+          ip_address: unknown | null
+          permission_id: string | null
+          session_id: string | null
+          target_user_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          access_reason?: string | null
+          admin_user_id: string
+          created_at?: string
+          data_type: string
+          fields_accessed?: string[] | null
+          id?: string
+          ip_address?: unknown | null
+          permission_id?: string | null
+          session_id?: string | null
+          target_user_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          access_reason?: string | null
+          admin_user_id?: string
+          created_at?: string
+          data_type?: string
+          fields_accessed?: string[] | null
+          id?: string
+          ip_address?: unknown | null
+          permission_id?: string | null
+          session_id?: string | null
+          target_user_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sensitive_data_access_logs_permission_id_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "sensitive_data_permissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sensitive_data_permissions: {
+        Row: {
+          access_count: number | null
+          admin_user_id: string
+          business_justification: string
+          created_at: string
+          expires_at: string | null
+          granted_at: string
+          granted_by: string
+          id: string
+          is_active: boolean
+          last_accessed: string | null
+          permission_type: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          target_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          access_count?: number | null
+          admin_user_id: string
+          business_justification: string
+          created_at?: string
+          expires_at?: string | null
+          granted_at?: string
+          granted_by: string
+          id?: string
+          is_active?: boolean
+          last_accessed?: string | null
+          permission_type: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          target_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          access_count?: number | null
+          admin_user_id?: string
+          business_justification?: string
+          created_at?: string
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string
+          id?: string
+          is_active?: boolean
+          last_accessed?: string | null
+          permission_type?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          target_user_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       session_activity_log: {
         Row: {
           action_type: string | null
@@ -3918,7 +4094,7 @@ export type Database = {
       }
       cleanup_expired_sessions: {
         Args: Record<PropertyKey, never>
-        Returns: number
+        Returns: undefined
       }
       cleanup_expired_sessions_optimized: {
         Args: Record<PropertyKey, never>
@@ -4110,6 +4286,47 @@ export type Database = {
         Args: { p_config_key: string }
         Returns: Json
       }
+      get_unmasked_contact_entity: {
+        Args: { contact_id: string }
+        Returns: {
+          annual_revenue: number
+          average_transaction_size: number
+          bank_lender_name: string
+          bdo_email: string
+          bdo_name: string
+          bdo_telephone: string
+          business_address: string
+          business_name: string
+          call_notes: string
+          created_at: string
+          credit_score: number
+          current_processing_rate: number
+          email: string
+          existing_loan_amount: number
+          id: string
+          income: number
+          interest_rate: number
+          loan_amount: number
+          loan_type: string
+          maturity_date: string
+          monthly_processing_volume: number
+          naics_code: string
+          name: string
+          net_operating_income: number
+          notes: string
+          ownership_structure: string
+          owns_property: boolean
+          phone: string
+          pos_system: string
+          priority: string
+          processor_name: string
+          property_payment_amount: number
+          stage: string
+          updated_at: string
+          user_id: string
+          year_established: number
+        }[]
+      }
       get_user_role: {
         Args: { p_user_id?: string }
         Returns: Database["public"]["Enums"]["user_role"]
@@ -4215,6 +4432,16 @@ export type Database = {
           verified_at: string
         }[]
       }
+      grant_sensitive_data_permission: {
+        Args: {
+          p_admin_user_id: string
+          p_business_justification: string
+          p_expires_hours?: number
+          p_permission_type: string
+          p_target_user_id: string
+        }
+        Returns: string
+      }
       has_role: {
         Args:
           | {
@@ -4222,6 +4449,14 @@ export type Database = {
               user_id?: string
             }
           | { required_role: string; user_id?: string }
+        Returns: boolean
+      }
+      has_sensitive_data_permission: {
+        Args: {
+          p_admin_user_id: string
+          p_permission_type: string
+          p_target_user_id: string
+        }
         Returns: boolean
       }
       initiate_gdpr_data_deletion: {
@@ -4265,6 +4500,16 @@ export type Database = {
           p_severity?: string
           p_user_agent?: string
           p_user_id?: string
+        }
+        Returns: string
+      }
+      log_sensitive_data_access: {
+        Args: {
+          p_access_reason?: string
+          p_admin_user_id: string
+          p_data_type: string
+          p_fields_accessed: string[]
+          p_target_user_id: string
         }
         Returns: string
       }
@@ -4400,8 +4645,16 @@ export type Database = {
         Args: { password: string }
         Returns: Json
       }
+      validate_secure_input: {
+        Args: { field_rules?: Json; input_data: Json }
+        Returns: Json
+      }
       validate_secure_session_token: {
         Args: { p_session_token: string; p_user_id: string }
+        Returns: boolean
+      }
+      validate_sensitive_table_access: {
+        Args: { requesting_user_id?: string; table_name?: string }
         Returns: boolean
       }
       validate_session_security: {

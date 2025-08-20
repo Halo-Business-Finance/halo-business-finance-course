@@ -114,7 +114,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const assignRole = async (userId: string, role: string) => {
+  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
       // Call the database function to assign role
       const { data, error } = await supabase.rpc('assign_user_role', {
