@@ -8,9 +8,10 @@ interface CourseHeaderProps {
   progress: number;
   totalModules: number;
   completedModules: number;
+  onContinueLearning: () => void;
 }
 
-const CourseHeader = ({ progress, totalModules, completedModules }: CourseHeaderProps) => {
+const CourseHeader = ({ progress, totalModules, completedModules, onContinueLearning }: CourseHeaderProps) => {
   return (
     <div className="relative overflow-hidden bg-gradient-hero rounded-2xl shadow-hero border border-border">
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
@@ -60,7 +61,7 @@ const CourseHeader = ({ progress, totalModules, completedModules }: CourseHeader
               </p>
             </div>
 
-            <Button variant="hero" size="lg" className="shadow-lg">
+            <Button variant="hero" size="lg" className="shadow-lg" onClick={onContinueLearning}>
               Continue Learning
             </Button>
           </div>

@@ -44,6 +44,14 @@ const Index = () => {
     setSelectedModule(null);
   };
 
+  const handleContinueLearning = () => {
+    // Find the first available or in-progress module
+    const nextModule = modules.find(m => m.status === "in-progress" || m.status === "available");
+    if (nextModule) {
+      handleModuleStart(nextModule.id);
+    }
+  };
+
   const iconMap = {
     0: BookOpen,
     1: Clock,
@@ -59,6 +67,7 @@ const Index = () => {
           progress={courseData.totalProgress}
           totalModules={courseData.totalModules}
           completedModules={courseData.completedModules}
+          onContinueLearning={handleContinueLearning}
         />
       </div>
 
