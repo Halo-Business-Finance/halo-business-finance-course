@@ -1,19 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Video, Users2, CheckCircle } from "lucide-react";
+import { Module } from "@/data/courseData";
+import { LoanExamples } from "@/components/LoanExamples";
 
 interface ModuleDetailProps {
-  module: {
-    id: string;
-    title: string;
-    description: string;
-    duration: string;
-    lessons: number;
-    progress: number;
-    status: string;
-    topics: string[];
-  };
+  module: Module;
   onClose: () => void;
 }
 
@@ -73,47 +67,66 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          <div>
-            <h4 className="font-semibold mb-3">Learning Topics</h4>
-            <div className="flex flex-wrap gap-2">
-              {module.topics.map((topic, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {topic}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-3">Course Structure</h4>
-            <div className="space-y-3">
-              {lessons.map((lesson, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-3 p-3 rounded-lg border ${
-                    lesson.completed ? "bg-accent/10" : "bg-muted/20"
-                  }`}
-                >
-                  <div className={`${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
-                    {lesson.completed ? (
-                      <CheckCircle className="h-5 w-5" />
-                    ) : (
-                      getTypeIcon(lesson.type)
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-medium text-sm">{lesson.title}</div>
-                    <div className="text-xs text-muted-foreground">{lesson.duration}</div>
-                  </div>
-                  {lesson.completed && (
-                    <Badge variant="success" className="text-xs">
-                      Complete
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="structure">Course Structure</TabsTrigger>
+              <TabsTrigger value="examples">Loan Examples</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="overview" className="space-y-4 mt-6">
+              <div>
+                <h4 className="font-semibold mb-3">Learning Topics</h4>
+                <div className="flex flex-wrap gap-2">
+                  {module.topics.map((topic, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {topic}
                     </Badge>
-                  )}
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="structure" className="space-y-4 mt-6">
+              <div>
+                <h4 className="font-semibold mb-3">Course Structure</h4>
+                <div className="space-y-3">
+                  {lessons.map((lesson, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center gap-3 p-3 rounded-lg border ${
+                        lesson.completed ? "bg-accent/10" : "bg-muted/20"
+                      }`}
+                    >
+                      <div className={`${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
+                        {lesson.completed ? (
+                          <CheckCircle className="h-5 w-5" />
+                        ) : (
+                          getTypeIcon(lesson.type)
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">{lesson.title}</div>
+                        <div className="text-xs text-muted-foreground">{lesson.duration}</div>
+                      </div>
+                      {lesson.completed && (
+                        <Badge variant="success" className="text-xs">
+                          Complete
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="examples" className="mt-6">
+              <LoanExamples 
+                examples={module.loanExamples} 
+                moduleTitle={module.title}
+              />
+            </TabsContent>
+          </Tabs>
 
           <div className="pt-4 border-t">
             <Button 
