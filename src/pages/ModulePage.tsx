@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { BookOpen, Clock, CheckCircle, Play, FileText, Award, ArrowRight, ArrowL
 
 const ModulePage = () => {
   const { moduleId } = useParams();
+  const navigate = useNavigate();
 
   const moduleData: Record<string, any> = {
     "foundations": {
@@ -212,7 +213,7 @@ const ModulePage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button variant="outline">View Prerequisites</Button>
+            <Button variant="outline" onClick={() => navigate("/")}>View Prerequisites</Button>
           </CardContent>
         </Card>
       </div>
@@ -357,7 +358,13 @@ const ModulePage = () => {
                           <p className="text-sm text-muted-foreground">{resource.type} • {resource.size}</p>
                         </div>
                       </div>
-                      <Button size="sm">Download</Button>
+                      <Button size="sm" onClick={() => {
+                        // Simulate download
+                        const link = document.createElement('a');
+                        link.href = '#';
+                        link.download = resource.title;
+                        link.click();
+                      }}>Download</Button>
                     </div>
                   ))}
                 </div>
@@ -394,7 +401,15 @@ const ModulePage = () => {
                     <div className="text-sm text-muted-foreground">Time Limit</div>
                   </div>
                 </div>
-                <Button className="w-full" disabled={module.status === "available"}>
+                <Button 
+                  className="w-full" 
+                  disabled={module.status === "available"}
+                  onClick={() => {
+                    if (module.status !== "available") {
+                      alert(`Quiz functionality coming soon! This would start the ${module.quiz.questions}-question quiz.`);
+                    }
+                  }}
+                >
                   {module.status === "completed" ? "Retake Quiz" : 
                    module.status === "in-progress" ? "Take Quiz" : "Complete Module First"}
                 </Button>
@@ -406,12 +421,12 @@ const ModulePage = () => {
 
       {/* Navigation */}
       <div className="flex justify-between">
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
           Previous Module
         </Button>
-        <Button className="gap-2">
-          Next Module
+        <Button className="gap-2" onClick={() => navigate("/")}>
+          Back to Dashboard
           <ArrowRight className="h-4 w-4" />
         </Button>
       </div>

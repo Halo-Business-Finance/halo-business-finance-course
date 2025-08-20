@@ -177,7 +177,12 @@ const ResourcesPage = () => {
                         </div>
                       </div>
                     </div>
-                    <Button size="sm" className="gap-1">
+                    <Button size="sm" className="gap-1" onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = '#';
+                      link.download = doc.title;
+                      link.click();
+                    }}>
                       <Download className="h-4 w-4" />
                       Download
                     </Button>
@@ -247,7 +252,9 @@ const ResourcesPage = () => {
                         <Badge variant="outline" className="mt-1">{tool.type}</Badge>
                       </div>
                     </div>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => {
+                      alert(`${tool.title} would open in a new window. Tool functionality coming soon!`);
+                    }}>
                       Launch Tool
                     </Button>
                   </div>
@@ -282,7 +289,17 @@ const ResourcesPage = () => {
                         </Badge>
                       </div>
                     </div>
-                    <Button size="sm" variant={webinar.status === "upcoming" ? "default" : "outline"}>
+                    <Button 
+                      size="sm" 
+                      variant={webinar.status === "upcoming" ? "default" : "outline"}
+                      onClick={() => {
+                        if (webinar.status === "upcoming") {
+                          alert(`Registration for "${webinar.title}" coming soon!`);
+                        } else {
+                          alert(`Recording for "${webinar.title}" will open soon!`);
+                        }
+                      }}
+                    >
                       {webinar.status === "upcoming" ? "Register" : "Watch Recording"}
                     </Button>
                   </div>

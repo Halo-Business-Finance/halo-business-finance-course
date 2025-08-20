@@ -2,8 +2,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Award, Download, Calendar, CheckCircle, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CertificatesPage = () => {
+  const navigate = useNavigate();
   const certificates = [
     {
       name: "Business Finance Foundations",
@@ -141,11 +143,18 @@ const CertificatesPage = () => {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button size="sm" className="gap-1">
+                    <Button size="sm" className="gap-1" onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = '#';
+                      link.download = `${certificate.name}-Certificate.pdf`;
+                      link.click();
+                    }}>
                       <Download className="h-4 w-4" />
                       Download Certificate
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => {
+                      window.open(`/credential/${certificate.credentialId}`, '_blank');
+                    }}>
                       View Credential
                     </Button>
                   </div>
@@ -168,7 +177,7 @@ const CertificatesPage = () => {
               )}
 
               {certificate.status === "available" && (
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" onClick={() => navigate("/")}>
                   Start Learning Path
                 </Button>
               )}
