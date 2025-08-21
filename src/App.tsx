@@ -3,8 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BrowserRouter, Routes, Route, useNavigate, NavLink } from "react-router-dom";
+import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -100,10 +100,23 @@ const HeaderContent = () => {
         </h1>
       </div>
       
-      <div className="flex items-center mr-4">
+      <div className="flex items-center mr-4 gap-4">
         <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
+        <NavLink 
+          to="/account" 
+          className={({ isActive }) => 
+            `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+              isActive 
+                ? "bg-black/10 text-black font-medium" 
+                : "text-black hover:bg-black/10 hover:text-black"
+            }`
+          }
+        >
+          <User className="h-4 w-4" />
+          <span className="text-sm">Account</span>
+        </NavLink>
       </div>
     </header>
   );

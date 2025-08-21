@@ -4,8 +4,6 @@ import {
   BookOpen, 
   Home, 
   BarChart3, 
-  User, 
-  Settings, 
   Award,
   Target,
   FileText,
@@ -45,10 +43,6 @@ const courseModules = [
   { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
   { title: "Credit Analysis", url: "/module/credit-risk", status: "locked" },
   { title: "Compliance", url: "/module/regulatory-compliance", status: "locked" },
-];
-
-const accountItems = [
-  { title: "Account", url: "/account", icon: User },
 ];
 
 export function AppSidebar() {
@@ -218,25 +212,6 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Account */}
-        <SidebarGroup className="mt-auto">
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {accountItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-black" />
-                      {!collapsed && <span className="text-black">{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
