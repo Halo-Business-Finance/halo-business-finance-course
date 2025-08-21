@@ -1037,13 +1037,6 @@ export type Database = {
             foreignKeyName: "fk_user_roles_profiles"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profile_summary"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "fk_user_roles_profiles"
-            columns: ["user_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
@@ -1051,50 +1044,14 @@ export type Database = {
             foreignKeyName: "fk_user_roles_profiles"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles_public"
+            referencedRelation: "safe_profiles"
             referencedColumns: ["user_id"]
           },
         ]
       }
     }
     Views: {
-      profile_summary: {
-        Row: {
-          avatar_url: string | null
-          city: string | null
-          company: string | null
-          created_at: string | null
-          id: string | null
-          name: string | null
-          state: string | null
-          title: string | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          id?: string | null
-          name?: string | null
-          state?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          id?: string | null
-          name?: string | null
-          state?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      profiles_public: {
+      safe_profiles: {
         Row: {
           avatar_url: string | null
           city: string | null
@@ -1181,6 +1138,17 @@ export type Database = {
           p_title: string
         }
         Returns: string
+      }
+      get_admin_profile_data: {
+        Args: { target_user_id: string }
+        Returns: {
+          email: string
+          full_profile: Json
+          location: string
+          name: string
+          phone: string
+          user_id: string
+        }[]
       }
       get_masked_profile_data: {
         Args: { target_user_id: string }
