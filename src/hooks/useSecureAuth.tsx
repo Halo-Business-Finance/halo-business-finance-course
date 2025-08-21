@@ -33,7 +33,7 @@ export const useSecureAuth = () => {
       }
 
       try {
-        // Check user role
+        // Use secure RPC function instead of direct table access
         const { data: userRole } = await supabase.rpc('get_user_role');
         
         // Check enrollment status

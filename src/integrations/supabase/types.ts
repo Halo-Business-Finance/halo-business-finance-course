@@ -1555,68 +1555,7 @@ export type Database = {
       }
     }
     Views: {
-      user_session_info: {
-        Row: {
-          created_at: string | null
-          device_id: string | null
-          expires_at: string | null
-          geolocation: Json | null
-          id: string | null
-          ip_address: unknown | null
-          is_active: boolean | null
-          last_activity_at: string | null
-          risk_score: number | null
-          security_level: number | null
-          session_type: string | null
-          terminated_at: string | null
-          termination_reason: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          device_id?: string | null
-          expires_at?: string | null
-          geolocation?: Json | null
-          id?: string | null
-          ip_address?: unknown | null
-          is_active?: boolean | null
-          last_activity_at?: string | null
-          risk_score?: number | null
-          security_level?: number | null
-          session_type?: string | null
-          terminated_at?: string | null
-          termination_reason?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          device_id?: string | null
-          expires_at?: string | null
-          geolocation?: Json | null
-          id?: string | null
-          ip_address?: unknown | null
-          is_active?: boolean | null
-          last_activity_at?: string | null
-          risk_score?: number | null
-          security_level?: number | null
-          session_type?: string | null
-          terminated_at?: string | null
-          termination_reason?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_sessions_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "user_devices"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       analyze_security_events: {
