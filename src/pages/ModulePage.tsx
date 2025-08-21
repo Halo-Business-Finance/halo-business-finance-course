@@ -36,6 +36,8 @@ const ModulePage = () => {
       try {
         setLoading(true);
         
+        console.log('ModuleId from URL:', moduleId); // Debug log
+        
         // Fetch module basic info
         const { data: moduleData, error: moduleError } = await supabase
           .from('course_modules')
@@ -43,6 +45,8 @@ const ModulePage = () => {
           .eq('module_id', moduleId)
           .eq('is_active', true)
           .single();
+
+        console.log('Query result:', { moduleData, moduleError }); // Debug log
 
         if (moduleError) {
           console.error('Error fetching module:', moduleError);
@@ -116,6 +120,57 @@ const ModulePage = () => {
           <p className="text-muted-foreground mb-4">
             The requested module "{moduleId}" could not be found.
           </p>
+        </div>
+        
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-lg font-semibold mb-4">Available Modules:</h2>
+          <div className="grid gap-3">
+            <Card className="p-4">
+              <div className="flex justify-between items-center">
+                <div className="text-left">
+                  <h3 className="font-medium">Halo Business Finance Foundations</h3>
+                  <p className="text-sm text-muted-foreground">foundations</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate("/module/foundations")}
+                >
+                  Go to Module
+                </Button>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex justify-between items-center">
+                <div className="text-left">
+                  <h3 className="font-medium">Capital Markets & Lending Systems</h3>
+                  <p className="text-sm text-muted-foreground">capital-markets</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate("/module/capital-markets")}
+                >
+                  Go to Module
+                </Button>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="flex justify-between items-center">
+                <div className="text-left">
+                  <h3 className="font-medium">Risk Management & Analysis</h3>
+                  <p className="text-sm text-muted-foreground">risk-management</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate("/module/risk-management")}
+                >
+                  Go to Module
+                </Button>
+              </div>
+            </Card>
+          </div>
         </div>
         
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
