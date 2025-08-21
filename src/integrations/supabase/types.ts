@@ -1037,6 +1037,13 @@ export type Database = {
             foreignKeyName: "fk_user_roles_profiles"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profile_summary"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "fk_user_roles_profiles"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
@@ -1051,6 +1058,42 @@ export type Database = {
       }
     }
     Views: {
+      profile_summary: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          company: string | null
+          created_at: string | null
+          id: string | null
+          name: string | null
+          state: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          state?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          state?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles_public: {
         Row: {
           avatar_url: string | null
