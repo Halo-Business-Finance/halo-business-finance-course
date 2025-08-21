@@ -10,13 +10,16 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { CaseStudyModal } from "@/components/CaseStudyModal";
 import { useAdminRole } from "@/hooks/useAdminRole";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const ModulePage = () => {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const { isAdmin } = useAdminRole();
   const [activeTab, setActiveTab] = useState("lessons");
+  const [module, setModule] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<{
     id: number;
     title: string;
@@ -25,14 +28,47 @@ const ModulePage = () => {
     duration: string;
   } | null>(null);
 
-  const module = courseData.modules.find(m => m.id === moduleId);
-  
+  useEffect(() => {
+    const fetchModule = async () => {
+      try {
+        setLoading(true);
+        const { data: modules, error } = await supabase
+          .from('course_modules')
+          .select('*')
+          .eq('module_id', moduleId)
+          .eq('is_active', true)
+          .single();
+
+        if (error) {
+          console.error('Error fetching module:', error);
+          setModule(null);
+        } else {
+          setModule(modules);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        setModule(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (moduleId) {
+      fetchModule();
+    }
+  }, [moduleId]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6 text-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-4 text-muted-foreground">Loading module...</p>
+      </div>
+    );
+  }
+
   // Add debugging and better error handling
   if (!module) {
-    const availableModules = courseData.modules.map(m => ({ id: m.id, title: m.title }));
-    console.log('Available modules:', availableModules);
-    console.log('Requested moduleId:', moduleId);
-    
     return (
       <div className="container mx-auto p-6 text-center space-y-6">
         <div>
@@ -40,29 +76,6 @@ const ModulePage = () => {
           <p className="text-muted-foreground mb-4">
             The requested module "{moduleId}" could not be found.
           </p>
-        </div>
-        
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4">Available Modules:</h2>
-          <div className="grid gap-3">
-            {courseData.modules.map((mod) => (
-              <Card key={mod.id} className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-center">
-                  <div className="text-left">
-                    <h3 className="font-medium">{mod.title}</h3>
-                    <p className="text-sm text-muted-foreground">ID: {mod.id}</p>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => navigate(`/module/${mod.id}`)}
-                  >
-                    Go to Module
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
         </div>
         
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
@@ -73,21 +86,25 @@ const ModulePage = () => {
     );
   }
 
-  const getStatusBadge = (status: string) => {
+  // Get fallback data from courseData for content that's not in database yet
+  const fallbackModule = courseData.modules.find(m => m.id === moduleId);
+  
+  const getStatusBadge = (status?: string) => {
     switch (status) {
       case "completed":
-        return <Badge variant="completed" className="gap-1"><CheckCircle className="h-3 w-3" />Completed</Badge>;
+        return <Badge variant="default" className="gap-1"><CheckCircle className="h-3 w-3" />Completed</Badge>;
       case "in-progress":
-        return <Badge variant="progress">In Progress</Badge>;
+        return <Badge variant="secondary">In Progress</Badge>;
       case "locked":
         return <Badge variant="outline" className="opacity-60">🔒 Locked</Badge>;
       default:
-        return <Badge variant="success">Available</Badge>;
+        return <Badge variant="default">Available</Badge>;
     }
   };
 
-  // Show locked content only to non-admin users
-  if (module.status === "locked" && !isAdmin) {
+  // Show locked content only to non-admin users  
+  const isLocked = module.prerequisites?.length > 0; // Database modules don't have status field yet
+  if (isLocked && !isAdmin) {
     return (
       <div className="container mx-auto p-6">
         <Card>
@@ -119,7 +136,7 @@ const ModulePage = () => {
           <h1 className="text-3xl font-bold text-foreground">{module.title}</h1>
           <p className="text-muted-foreground mt-2">{module.description}</p>
         </div>
-        {getStatusBadge(module.status)}
+        {getStatusBadge("available")}
       </div>
 
       {/* Progress and Stats */}
@@ -127,28 +144,28 @@ const ModulePage = () => {
         <Card>
           <CardContent className="p-4 text-center">
             <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.duration}</div>
+            <div className="text-2xl font-bold">{module.duration || "2 hours"}</div>
             <div className="text-sm text-muted-foreground">Duration</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <BookOpen className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.lessons}</div>
+            <div className="text-2xl font-bold">{module.lessons_count || 0}</div>
             <div className="text-sm text-muted-foreground">Lessons</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Play className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.videos?.length || 0}</div>
+            <div className="text-2xl font-bold">{fallbackModule?.videos?.length || 0}</div>
             <div className="text-sm text-muted-foreground">Videos</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Award className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.lessons}</div>
+            <div className="text-2xl font-bold">{module.lessons_count || 0}</div>
             <div className="text-sm text-muted-foreground">Quiz Questions</div>
           </CardContent>
         </Card>
