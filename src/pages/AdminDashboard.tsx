@@ -116,38 +116,60 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load user roles directly - this matches the UI expectations
+      // Load user roles directly with profile information
       let userRolesData = [];
       
       try {
-        // Fetch user roles with profile information
+        // Fetch user roles with profile information using the new foreign key relationship
         const { data: roles, error: rolesError } = await supabase
           .from('user_roles')
           .select(`
             *,
-            profiles!inner (
+            profiles (
               name,
               email,
               phone,
               title,
-              company
+              company,
+              city,
+              state,
+              join_date
             )
           `)
           .order('created_at', { ascending: false });
 
         if (rolesError) throw rolesError;
         userRolesData = roles || [];
-      } catch (directError) {
-        console.warn('Direct query failed, trying without profile join:', directError);
-        
-        // Fallback to roles without profile join
-        const { data: roles, error: rolesError } = await supabase
-          .from('user_roles')
-          .select('*')
-          .order('created_at', { ascending: false });
 
-        if (rolesError) throw rolesError;
-        userRolesData = roles || [];
+        console.log('Loaded user roles with profiles:', userRolesData);
+      } catch (directError) {
+        console.warn('Failed to load user roles with profiles:', directError);
+        
+        // Fallback: Load roles and profiles separately
+        const [rolesResponse, profilesResponse] = await Promise.all([
+          supabase
+            .from('user_roles')
+            .select('*')
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('profiles')
+            .select('user_id, name, email, phone, title, company, city, state, join_date')
+        ]);
+
+        if (rolesResponse.error) throw rolesResponse.error;
+        if (profilesResponse.error) throw profilesResponse.error;
+
+        // Manually join the data
+        const roles = rolesResponse.data || [];
+        const profiles = profilesResponse.data || [];
+        const profileMap = new Map(profiles.map(p => [p.user_id, p]));
+
+        userRolesData = roles.map(role => ({
+          ...role,
+          profiles: profileMap.get(role.user_id) || null
+        }));
+
+        console.log('Loaded user roles with manual join:', userRolesData);
       }
 
       // Fetch other data in parallel
