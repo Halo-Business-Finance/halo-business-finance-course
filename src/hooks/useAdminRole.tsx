@@ -18,29 +18,24 @@ export const useAdminRole = () => {
       }
 
       try {
-        // Use the new secure functions to check roles
-        const { data: isAdminData, error: isAdminError } = await supabase
-          .rpc('check_user_has_role', { check_role: 'admin' });
-          
-        const { data: isSuperAdminData, error: isSuperAdminError } = await supabase
-          .rpc('check_user_has_role', { check_role: 'super_admin' });
+        // Get the user's role from the database in one call
+        const { data: roleData, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('is_active', true)
+          .single();
 
-        if (isAdminError || isSuperAdminError) {
-          console.error('Error checking role status:', { isAdminError, isSuperAdminError });
+        if (roleError && roleError.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+          console.error('Error checking role status:', roleError);
           setIsAdmin(false);
           setUserRole(null);
         } else {
-          const hasAdminRole = isAdminData || isSuperAdminData;
-          setIsAdmin(hasAdminRole || false);
+          const role = roleData?.role;
+          const hasAdminRole = role === 'admin' || role === 'super_admin';
           
-          // Determine specific role
-          if (isSuperAdminData) {
-            setUserRole('super_admin');
-          } else if (isAdminData) {
-            setUserRole('admin');
-          } else {
-            setUserRole(null);
-          }
+          setIsAdmin(hasAdminRole);
+          setUserRole(role || null);
         }
       } catch (error) {
         console.error('Error in checkAdminRole:', error);

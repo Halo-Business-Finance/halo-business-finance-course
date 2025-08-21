@@ -69,7 +69,7 @@ interface AdminStats {
   totalUsers: number;
   activeAdmins: number;
   securityEvents: number;
-  systemHealth: 'good' | 'warning' | 'critical';
+  systemHealth: 'excellent' | 'good' | 'warning' | 'critical';
 }
 
 interface Instructor {
@@ -94,7 +94,7 @@ const AdminDashboard = () => {
     totalUsers: 0,
     activeAdmins: 0,
     securityEvents: 0,
-    systemHealth: 'good'
+    systemHealth: 'excellent'
   });
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
@@ -298,7 +298,9 @@ const AdminDashboard = () => {
         totalUsers,
         activeAdmins,
         securityEvents: recentEvents,
-        systemHealth: recentEvents > 10 ? 'critical' : recentEvents > 5 ? 'warning' : 'good'
+        systemHealth: recentEvents > 10 ? 'critical' : 
+                      recentEvents > 5 ? 'warning' : 
+                      recentEvents > 0 ? 'good' : 'excellent'
       });
     } catch (error: any) {
       console.error('Error loading dashboard data:', error);
@@ -677,9 +679,10 @@ const AdminDashboard = () => {
           <CardContent>
             <div className="text-2xl font-bold">
               <Badge variant={
-                stats.systemHealth === 'good' ? 'default' : 
-                stats.systemHealth === 'warning' ? 'secondary' : 'destructive'
-              }>
+                stats.systemHealth === 'excellent' ? 'default' :
+                stats.systemHealth === 'good' ? 'secondary' : 
+                stats.systemHealth === 'warning' ? 'outline' : 'destructive'
+              } className={stats.systemHealth === 'excellent' ? 'bg-green-500 hover:bg-green-600' : ''}>
                 {stats.systemHealth.toUpperCase()}
               </Badge>
             </div>
