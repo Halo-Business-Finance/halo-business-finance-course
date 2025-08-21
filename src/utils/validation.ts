@@ -1,7 +1,25 @@
 // Input sanitization and validation utilities
 
 export const sanitizeInput = (input: string): string => {
-  return input.trim().replace(/[<>]/g, '');
+  if (!input || typeof input !== 'string') return '';
+  
+  return input
+    .trim()
+    // Remove HTML/XML tags
+    .replace(/<[^>]*>/g, '')
+    // Remove script tags content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Remove javascript: protocols
+    .replace(/javascript:/gi, '')
+    // Remove on* event handlers
+    .replace(/\bon\w+\s*=/gi, '')
+    // Remove data URLs
+    .replace(/data:\s*[^;]*;/gi, '')
+    // Encode HTML entities for remaining angle brackets
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // Remove null bytes
+    .replace(/\0/g, '');
 };
 
 export const validateEmail = (email: string): { isValid: boolean; message?: string } => {
@@ -80,29 +98,54 @@ export const validateName = (name: string): { isValid: boolean; message?: string
   return { isValid: true };
 };
 
-// Rate limiting utility
+// Rate limiting utility with localStorage persistence
 class RateLimiter {
-  private attempts: Map<string, { count: number; lastAttempt: number }> = new Map();
+  private storageKey: string;
   private maxAttempts: number;
   private windowMs: number;
 
-  constructor(maxAttempts: number = 5, windowMs: number = 15 * 60 * 1000) { // 5 attempts per 15 minutes
+  constructor(maxAttempts: number = 5, windowMs: number = 15 * 60 * 1000, storageKey: string = 'rate_limit_data') {
     this.maxAttempts = maxAttempts;
     this.windowMs = windowMs;
+    this.storageKey = storageKey;
+  }
+
+  private getStoredData(): Map<string, { count: number; lastAttempt: number }> {
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      if (!stored) return new Map();
+      
+      const data = JSON.parse(stored);
+      return new Map(Object.entries(data));
+    } catch {
+      return new Map();
+    }
+  }
+
+  private setStoredData(data: Map<string, { count: number; lastAttempt: number }>): void {
+    try {
+      const obj = Object.fromEntries(data);
+      localStorage.setItem(this.storageKey, JSON.stringify(obj));
+    } catch {
+      // Fail silently if localStorage is not available
+    }
   }
 
   isAllowed(identifier: string): { allowed: boolean; timeUntilReset?: number } {
     const now = Date.now();
-    const record = this.attempts.get(identifier);
+    const attempts = this.getStoredData();
+    const record = attempts.get(identifier);
 
     if (!record) {
-      this.attempts.set(identifier, { count: 1, lastAttempt: now });
+      attempts.set(identifier, { count: 1, lastAttempt: now });
+      this.setStoredData(attempts);
       return { allowed: true };
     }
 
     // Reset if window has passed
     if (now - record.lastAttempt > this.windowMs) {
-      this.attempts.set(identifier, { count: 1, lastAttempt: now });
+      attempts.set(identifier, { count: 1, lastAttempt: now });
+      this.setStoredData(attempts);
       return { allowed: true };
     }
 
@@ -115,14 +158,38 @@ class RateLimiter {
     // Increment attempts
     record.count++;
     record.lastAttempt = now;
-    this.attempts.set(identifier, record);
+    attempts.set(identifier, record);
+    this.setStoredData(attempts);
 
     return { allowed: true };
   }
 
   reset(identifier: string): void {
-    this.attempts.delete(identifier);
+    const attempts = this.getStoredData();
+    attempts.delete(identifier);
+    this.setStoredData(attempts);
+  }
+
+  // Clean up old entries
+  cleanup(): void {
+    const now = Date.now();
+    const attempts = this.getStoredData();
+    
+    for (const [key, record] of attempts.entries()) {
+      if (now - record.lastAttempt > this.windowMs) {
+        attempts.delete(key);
+      }
+    }
+    
+    this.setStoredData(attempts);
   }
 }
 
-export const authRateLimiter = new RateLimiter(5, 15 * 60 * 1000); // 5 attempts per 15 minutes
+export const authRateLimiter = new RateLimiter(5, 15 * 60 * 1000, 'auth_rate_limit'); // 5 attempts per 15 minutes
+
+// Clean up old rate limit entries periodically
+if (typeof window !== 'undefined') {
+  setInterval(() => {
+    authRateLimiter.cleanup();
+  }, 5 * 60 * 1000); // Clean up every 5 minutes
+}

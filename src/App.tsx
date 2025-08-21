@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import Index from "./pages/Index";
 import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
@@ -110,9 +111,9 @@ const AppContent = () => {
               </ProtectedRoute>
             } />
             <Route path="/admin/dashboard" element={
-              <ProtectedRoute>
+              <AdminProtectedRoute requiredRole="admin">
                 <AdminDashboard />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             } />
             <Route path="/module/:moduleId" element={<ModulePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
