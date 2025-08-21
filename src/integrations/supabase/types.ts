@@ -826,6 +826,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_user_has_role: {
+        Args: { check_role: string }
+        Returns: boolean
+      }
       get_user_role: {
         Args: { check_user_id: string }
         Returns: string
