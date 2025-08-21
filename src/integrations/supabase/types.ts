@@ -1049,13 +1049,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
-          {
-            foreignKeyName: "fk_user_roles_profiles"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "safe_profiles"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
     }
@@ -1072,30 +1065,6 @@ export type Database = {
           state: string | null
           title: string | null
           user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          id?: string | null
-          join_date?: string | null
-          name?: string | null
-          state?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          id?: string | null
-          join_date?: string | null
-          name?: string | null
-          state?: string | null
-          title?: string | null
-          user_id?: string | null
         }
         Relationships: []
       }
@@ -1181,6 +1150,21 @@ export type Database = {
           role_id: string
           role_is_active: boolean
           role_updated_at: string
+          user_id: string
+        }[]
+      }
+      get_safe_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          id: string
+          join_date: string
+          name: string
+          state: string
+          title: string
           user_id: string
         }[]
       }
