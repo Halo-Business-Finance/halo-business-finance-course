@@ -125,13 +125,91 @@ const ModulePage = () => {
       )}
 
       {/* Content Tabs */}
-      <Tabs defaultValue="overview" className="space-y-6">
+      <Tabs defaultValue="lessons" className="space-y-6">
         <TabsList>
+          <TabsTrigger value="lessons">Lessons</TabsTrigger>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="resources">Resources</TabsTrigger>
           <TabsTrigger value="quiz">Quiz</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="lessons">
+          <Card>
+            <CardHeader>
+              <CardTitle>Module Lessons</CardTitle>
+              <CardDescription>Complete the lessons in order to progress through the module</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {(() => {
+                  const lessons = [
+                    {
+                      title: "Introduction & Overview",
+                      type: "video",
+                      duration: "15 min",
+                      completed: module.status === "completed" || module.progress > 0
+                    },
+                    {
+                      title: "Core Concepts",
+                      type: "reading",
+                      duration: "20 min", 
+                      completed: module.status === "completed" || module.progress > 25
+                    },
+                    {
+                      title: "Case Study Analysis",
+                      type: "assignment",
+                      duration: "30 min",
+                      completed: module.status === "completed" || module.progress > 50
+                    },
+                    {
+                      title: "Interactive Quiz",
+                      type: "quiz",
+                      duration: "10 min",
+                      completed: module.status === "completed" || module.progress > 75
+                    }
+                  ];
+
+                  const getTypeIcon = (type: string) => {
+                    switch (type) {
+                      case "video": return <Play className="h-4 w-4" />;
+                      case "reading": return <FileText className="h-4 w-4" />;
+                      case "assignment": return <BookOpen className="h-4 w-4" />;
+                      case "quiz": return <Award className="h-4 w-4" />;
+                      default: return <BookOpen className="h-4 w-4" />;
+                    }
+                  };
+
+                  return lessons.map((lesson, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center gap-3 p-4 rounded-lg border ${
+                        lesson.completed ? "bg-accent/10" : "bg-muted/20"
+                      }`}
+                    >
+                      <div className={`${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
+                        {lesson.completed ? (
+                          <CheckCircle className="h-5 w-5" />
+                        ) : (
+                          getTypeIcon(lesson.type)
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium">{lesson.title}</div>
+                        <div className="text-sm text-muted-foreground">{lesson.duration}</div>
+                      </div>
+                      {lesson.completed && (
+                        <Badge variant="default" className="text-xs bg-accent text-accent-foreground">
+                          Complete
+                        </Badge>
+                      )}
+                    </div>
+                  ));
+                })()}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="overview">
           <Card>
