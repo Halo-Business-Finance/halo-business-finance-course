@@ -154,7 +154,7 @@ const AdminAuthPage = () => {
               <Shield className="text-white h-6 w-6" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold">Admin Portal</h1>
+          <h1 className="text-2xl font-bold">Business Finance Mastery Portal</h1>
           <p className="text-muted-foreground">Administrative Access Only</p>
         </div>
         
