@@ -622,15 +622,6 @@ const AccountPage = () => {
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="location">Address/Location</Label>
-                      <Input 
-                        id="location" 
-                        value={editForm.location} 
-                        onChange={(e) => handleInputChange('location', e.target.value)}
-                        placeholder="Enter address or location"
-                      />
-                    </div>
                     <Button onClick={handleEditSubmit}>Save Changes</Button>
                   </CardContent>
                 </Card>
