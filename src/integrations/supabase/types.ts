@@ -19,6 +19,9 @@ export type Database = {
           action: string
           admin_user_id: string
           created_at: string | null
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details: Json | null
           geolocation: Json | null
           id: string
@@ -35,6 +38,9 @@ export type Database = {
           action: string
           admin_user_id: string
           created_at?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details?: Json | null
           geolocation?: Json | null
           id?: string
@@ -51,6 +57,9 @@ export type Database = {
           action?: string
           admin_user_id?: string
           created_at?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details?: Json | null
           geolocation?: Json | null
           id?: string
@@ -709,6 +718,9 @@ export type Database = {
           company: string | null
           course_progress: boolean | null
           created_at: string
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           date_format: string | null
           email: string | null
           email_notifications: boolean | null
@@ -739,6 +751,9 @@ export type Database = {
           company?: string | null
           course_progress?: boolean | null
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
@@ -769,6 +784,9 @@ export type Database = {
           company?: string | null
           course_progress?: boolean | null
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
@@ -873,6 +891,9 @@ export type Database = {
       security_events: {
         Row: {
           created_at: string
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details: Json | null
           event_type: string
           id: string
@@ -881,6 +902,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details?: Json | null
           event_type: string
           id?: string
@@ -889,6 +913,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           details?: Json | null
           event_type?: string
           id?: string
@@ -1013,11 +1040,110 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "fk_user_roles_profiles"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles_secure"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      profiles_secure: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          company: string | null
+          course_progress: boolean | null
+          created_at: string | null
+          date_format: string | null
+          email: string | null
+          email_notifications: boolean | null
+          font_size: string | null
+          id: string | null
+          join_date: string | null
+          language: string | null
+          location: string | null
+          marketing_communications: boolean | null
+          marketing_emails: boolean | null
+          name: string | null
+          new_courses: boolean | null
+          phone: string | null
+          push_notifications: boolean | null
+          reduced_motion: boolean | null
+          state: string | null
+          theme: string | null
+          timezone: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+          webinar_reminders: boolean | null
+          weekly_progress: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          course_progress?: boolean | null
+          created_at?: string | null
+          date_format?: string | null
+          email?: never
+          email_notifications?: boolean | null
+          font_size?: string | null
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: never
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
+          name?: string | null
+          new_courses?: boolean | null
+          phone?: never
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          course_progress?: boolean | null
+          created_at?: string | null
+          date_format?: string | null
+          email?: never
+          email_notifications?: boolean | null
+          font_size?: string | null
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: never
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
+          name?: string | null
+          new_courses?: boolean | null
+          phone?: never
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       analyze_security_events: {
@@ -1031,6 +1157,17 @@ export type Database = {
           p_reason?: string
           p_target_user_id: string
         }
+        Returns: boolean
+      }
+      can_access_classified_data: {
+        Args: {
+          classification: Database["public"]["Enums"]["data_classification"]
+          resource_owner_id?: string
+        }
+        Returns: boolean
+      }
+      can_view_sensitive_profile_data: {
+        Args: { profile_user_id: string }
         Returns: boolean
       }
       check_rate_limit: {
@@ -1106,6 +1243,14 @@ export type Database = {
         Args: { failure_reason: string; user_email?: string }
         Returns: undefined
       }
+      log_sensitive_data_access: {
+        Args: {
+          access_reason?: string
+          accessed_table: string
+          accessed_user_id: string
+        }
+        Returns: undefined
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -1114,8 +1259,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      security_health_check: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
     }
     Enums: {
+      data_classification: "public" | "internal" | "confidential" | "restricted"
       skill_level: "beginner" | "intermediate" | "expert"
     }
     CompositeTypes: {
@@ -1244,6 +1394,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      data_classification: ["public", "internal", "confidential", "restricted"],
       skill_level: ["beginner", "intermediate", "expert"],
     },
   },
