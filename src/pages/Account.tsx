@@ -160,6 +160,8 @@ const AccountPage = () => {
           title: editForm.title,
           location: editForm.location,
           company: editForm.company
+        }, {
+          onConflict: 'user_id'
         });
 
       if (error) {
