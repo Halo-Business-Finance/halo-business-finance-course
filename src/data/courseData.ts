@@ -27,8 +27,8 @@ export interface CourseData {
 }
 
 export const courseData: CourseData = {
-  totalProgress: 35,
-  completedModules: 2,
+  totalProgress: 0,
+  completedModules: 0,
   totalModules: 8,
   modules: [
     {
@@ -37,8 +37,8 @@ export const courseData: CourseData = {
       description: "Establish a solid foundation in business finance principles, financial statement analysis, and fundamental concepts essential for understanding modern corporate finance.",
       duration: "2.5 hours",
       lessons: 12,
-      progress: 100,
-      status: "completed",
+      progress: 0,
+      status: "available",
       topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"],
       loanExamples: [
         {
@@ -73,8 +73,8 @@ export const courseData: CourseData = {
       description: "Comprehensive study of capital markets, including equity and debt markets, market efficiency, institutional investors, and the role of financial intermediaries in the economy.",
       duration: "3 hours",
       lessons: 15,
-      progress: 100,
-      status: "completed",
+      progress: 0,
+      status: "available",
       topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
       loanExamples: [
         {
@@ -110,8 +110,8 @@ export const courseData: CourseData = {
       description: "Deep dive into Small Business Administration loan programs, including 7(a), 504, and microloans. Learn eligibility requirements, application processes, and risk assessment.",
       duration: "2 hours",
       lessons: 10,
-      progress: 45,
-      status: "in-progress",
+      progress: 0,
+      status: "available",
       topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"],
       loanExamples: [
         {
@@ -364,8 +364,8 @@ export const courseData: CourseData = {
     },
     {
       id: "regulatory-compliance",
-      title: "Regulatory Compliance & Ethics",
-      description: "Navigate the complex regulatory landscape of business finance, including compliance requirements, ethical considerations, and industry best practices for sustainable lending.",
+      title: "Banking Regulations & Compliance",
+      description: "Navigate the complex regulatory environment including BSA/AML, fair lending practices, consumer protection laws, and industry best practices for compliance management.",
       duration: "2 hours",
       lessons: 9,
       progress: 0,
@@ -373,44 +373,43 @@ export const courseData: CourseData = {
       topics: ["BSA/AML Requirements", "Fair Lending Laws", "UDAAP Prevention", "Consumer Protection", "Documentation Standards", "Audit Preparation", "Regulatory Reporting"],
       loanExamples: [
         {
-          title: "BSA/AML Compliance Framework",
-          scenario: "Community Bank must enhance their BSA/AML program after regulatory feedback and implement stronger controls for commercial lending.",
-          loanAmount: "N/A - Compliance Program",
-          loanType: "Regulatory Compliance Enhancement",
-          borrowerProfile: "Community bank with $500M in assets, commercial lending focus",
+          title: "BSA/AML Compliance Case",
+          scenario: "International Import/Export Company requests $500,000 credit facility, requiring enhanced due diligence for money laundering prevention.",
+          loanAmount: "$500,000",
+          loanType: "Commercial Line of Credit",
+          borrowerProfile: "Import/export business with international transactions and cash-intensive operations",
           keyLearningPoints: [
-            "Develop comprehensive Customer Identification Program (CIP)",
-            "Implement enhanced due diligence for high-risk commercial customers",
-            "Create effective suspicious activity monitoring and reporting procedures",
-            "Establish ongoing customer risk assessment and monitoring protocols",
-            "Design staff training programs for BSA/AML compliance awareness"
+            "Conduct enhanced customer due diligence (CDD) procedures",
+            "File Suspicious Activity Reports (SARs) when appropriate",
+            "Implement ongoing monitoring for unusual transaction patterns",
+            "Maintain proper BSA/AML documentation and training records",
+            "Understand beneficial ownership requirements"
           ]
         },
         {
           title: "Fair Lending Compliance Review",
-          scenario: "Regional Lender faces fair lending examination and must demonstrate non-discriminatory lending practices across all business loan products.",
-          loanAmount: "N/A - Compliance Review",
-          loanType: "Fair Lending Assessment",
-          borrowerProfile: "Regional lender with diverse commercial loan portfolio",
+          scenario: "Community Bank's loan portfolio shows potential disparities in approval rates and pricing for minority-owned businesses seeking similar credit.",
+          loanAmount: "Portfolio Review",
+          loanType: "Fair Lending Analysis",
+          borrowerProfile: "Community bank serving diverse market demographics",
           keyLearningPoints: [
-            "Conduct statistical analysis of lending patterns by demographic factors",
-            "Review pricing models for potential disparate impact on protected classes",
-            "Evaluate marketing and outreach strategies for fair lending compliance",
-            "Document legitimate business reasons for any identified disparities",
-            "Implement corrective action plans and enhanced monitoring systems"
+            "Conduct statistical analysis of lending patterns by protected class",
+            "Implement fair lending monitoring and testing procedures",
+            "Document legitimate business justifications for credit decisions",
+            "Train staff on prohibited basis factors and equal treatment",
+            "Establish corrective action plans for identified disparities"
           ]
         },
         {
-          title: "UDAAP Prevention Program",
-          scenario: "Multi-state Commercial Lender must strengthen their UDAAP prevention program following regulatory guidance on unfair, deceptive, or abusive acts or practices.",
-          loanAmount: "N/A - Compliance Program",
-          loanType: "UDAAP Prevention Enhancement",
-          borrowerProfile: "Multi-state commercial lender with complex product offerings",
+          title: "UDAAP Prevention Framework",
+          scenario: "Regional Bank needs to review loan marketing materials and practices to ensure no unfair, deceptive, or abusive acts or practices.",
+          loanAmount: "Compliance Program",
+          loanType: "UDAAP Compliance Review",
+          borrowerProfile: "Regional bank with multiple loan products and marketing channels",
           keyLearningPoints: [
-            "Identify potential UDAAP risks in commercial lending products and practices",
-            "Review marketing materials and sales processes for deceptive practices",
-            "Evaluate fee structures and disclosure practices for fairness and clarity",
-            "Assess customer complaint patterns for UDAAP indicators",
+            "Review loan disclosures and marketing materials for clarity and accuracy",
+            "Evaluate loan pricing and fee structures for reasonableness",
+            "Implement customer complaint monitoring and resolution procedures",
             "Train staff on recognizing and preventing UDAAP violations",
             "Establish ongoing compliance monitoring and testing programs"
           ]
@@ -423,26 +422,26 @@ export const courseData: CourseData = {
 export const statsData = [
   {
     title: "Modules Completed",
-    value: 2,
+    value: 0,
     description: "out of 8 modules",
-    trend: { value: 15, isPositive: true }
+    trend: { value: 0, isPositive: true }
   },
   {
     title: "Learning Time",
-    value: "12.5hrs",
+    value: "0hrs",
     description: "total time invested",
-    trend: { value: 22, isPositive: true }
+    trend: { value: 0, isPositive: true }
   },
   {
     title: "Current Streak",
-    value: "5 days",
+    value: "0 days",
     description: "consecutive learning",
-    trend: { value: 8, isPositive: true }
+    trend: { value: 0, isPositive: true }
   },
   {
     title: "Progress Score",
-    value: "85%",
+    value: "0%",
     description: "average quiz score",
-    trend: { value: 12, isPositive: true }
+    trend: { value: 0, isPositive: true }
   }
 ];
