@@ -37,9 +37,9 @@ const mainNavItems = [
 ];
 
 const courseModules = [
-  { title: "Business Finance Foundations", url: "/module/foundations", status: "completed" },
   { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
   { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
+  { title: "Business Finance Foundations", url: "/module/foundations", status: "completed" },
   { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
   { title: "Bridge Financing", url: "/module/bridge-loans", status: "locked" },
   { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
