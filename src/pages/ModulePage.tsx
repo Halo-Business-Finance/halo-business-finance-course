@@ -38,6 +38,7 @@ const ModulePage = () => {
         setLoading(true);
         
         console.log('ModuleId from URL:', moduleId); // Debug log
+        console.log('Raw moduleId type:', typeof moduleId); // Debug log
         
         // Fetch module basic info
         const { data: moduleData, error: moduleError } = await supabase
@@ -131,6 +132,9 @@ const ModulePage = () => {
           <h1 className="text-2xl font-bold text-foreground mb-4">Module Not Found</h1>
           <p className="text-muted-foreground mb-4">
             The requested module "{moduleId}" could not be found.
+          </p>
+          <p className="text-sm text-muted-foreground mb-4">
+            Debug: Searched for module_id = "{moduleId}" (type: {typeof moduleId})
           </p>
         </div>
         
