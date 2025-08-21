@@ -352,10 +352,147 @@ const ModulePage = () => {
               <CardDescription>Download materials and tools for this module</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8">
-                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Resources Coming Soon</h3>
-                <p className="text-muted-foreground">Module resources and materials will be available soon.</p>
+              <div className="space-y-6">
+                {/* Study Materials */}
+                <div>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    Study Materials
+                  </h3>
+                  <div className="grid gap-3">
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <div>
+                          <p className="font-medium">{module.title} - Study Guide</p>
+                          <p className="text-sm text-muted-foreground">Comprehensive overview and key concepts (PDF, 2.3 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <div>
+                          <p className="font-medium">Key Terms & Definitions</p>
+                          <p className="text-sm text-muted-foreground">Glossary of important terminology (PDF, 0.8 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Templates & Tools */}
+                <div>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <Award className="h-4 w-4 text-accent" />
+                    Templates & Tools
+                  </h3>
+                  <div className="grid gap-3">
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-accent" />
+                        <div>
+                          <p className="font-medium">Financial Analysis Spreadsheet</p>
+                          <p className="text-sm text-muted-foreground">Excel template for ratio calculations (XLSX, 1.2 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-accent" />
+                        <div>
+                          <p className="font-medium">Loan Application Checklist</p>
+                          <p className="text-sm text-muted-foreground">Step-by-step checklist for loan processing (PDF, 0.5 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-accent" />
+                        <div>
+                          <p className="font-medium">Case Study Worksheet</p>
+                          <p className="text-sm text-muted-foreground">Practice exercises and solutions (PDF, 1.5 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Resources */}
+                <div>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" />
+                    Additional Resources
+                  </h3>
+                  <div className="grid gap-3">
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <div>
+                          <p className="font-medium">Industry Best Practices Guide</p>
+                          <p className="text-sm text-muted-foreground">Current standards and procedures (PDF, 3.1 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <div>
+                          <p className="font-medium">Regulatory Updates Summary</p>
+                          <p className="text-sm text-muted-foreground">Latest regulatory changes and compliance notes (PDF, 1.8 MB)</p>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Links */}
+                <div className="bg-muted/20 p-4 rounded-lg">
+                  <h4 className="font-medium mb-2">Quick Access</h4>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
+                      All Resources
+                    </Badge>
+                    <Badge variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
+                      Study Guides Only
+                    </Badge>
+                    <Badge variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
+                      Templates Only
+                    </Badge>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
