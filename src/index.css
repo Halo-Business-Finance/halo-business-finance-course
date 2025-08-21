@@ -120,16 +120,36 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
   
-  /* Font size variations */
-  body.font-small {
-    font-size: 0.875rem; /* 14px */
+  
+  /* Font size variations - more comprehensive approach */
+  body.font-small,
+  body.font-small * {
+    font-size: 0.875rem !important; /* 14px */
+    line-height: 1.5 !important;
   }
   
-  body.font-medium {
-    font-size: 1rem; /* 16px - default */
+  body.font-medium,
+  body.font-medium * {
+    font-size: 1rem !important; /* 16px - default */
+    line-height: 1.5 !important;
   }
   
-  body.font-large {
-    font-size: 1.125rem; /* 18px */
+  body.font-large,
+  body.font-large * {
+    font-size: 1.25rem !important; /* 20px */
+    line-height: 1.4 !important;
   }
+  
+  /* Preserve heading proportions */
+  body.font-small h1 { font-size: 1.875rem !important; }
+  body.font-small h2 { font-size: 1.5rem !important; }
+  body.font-small h3 { font-size: 1.25rem !important; }
+  
+  body.font-medium h1 { font-size: 2.25rem !important; }
+  body.font-medium h2 { font-size: 1.875rem !important; }
+  body.font-medium h3 { font-size: 1.5rem !important; }
+  
+  body.font-large h1 { font-size: 2.75rem !important; }
+  body.font-large h2 { font-size: 2.25rem !important; }
+  body.font-large h3 { font-size: 1.875rem !important; }
 }
