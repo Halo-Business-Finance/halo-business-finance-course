@@ -148,25 +148,33 @@ const ModulePage = () => {
                       title: "Introduction & Overview",
                       type: "video",
                       duration: "15 min",
-                      completed: module.status === "completed" || module.progress > 0
+                      completed: module.status === "completed" || module.progress > 0,
+                      locked: false,
+                      description: "Get an overview of the module content and learning objectives"
                     },
                     {
                       title: "Core Concepts",
                       type: "reading",
                       duration: "20 min", 
-                      completed: module.status === "completed" || module.progress > 25
+                      completed: module.status === "completed" || module.progress > 25,
+                      locked: module.progress === 0 && module.status !== "completed",
+                      description: "Learn the fundamental concepts and terminology"
                     },
                     {
                       title: "Case Study Analysis",
                       type: "assignment",
                       duration: "30 min",
-                      completed: module.status === "completed" || module.progress > 50
+                      completed: module.status === "completed" || module.progress > 50,
+                      locked: module.progress < 25 && module.status !== "completed",
+                      description: "Apply your knowledge to real-world scenarios"
                     },
                     {
                       title: "Interactive Quiz",
                       type: "quiz",
                       duration: "10 min",
-                      completed: module.status === "completed" || module.progress > 75
+                      completed: module.status === "completed" || module.progress > 75,
+                      locked: module.progress < 50 && module.status !== "completed",
+                      description: "Test your understanding of the module material"
                     }
                   ];
 
@@ -180,15 +188,41 @@ const ModulePage = () => {
                     }
                   };
 
+                  const handleLessonClick = (lesson: any, index: number) => {
+                    if (lesson.locked) {
+                      alert("Complete the previous lesson to unlock this one!");
+                      return;
+                    }
+                    
+                    if (lesson.completed) {
+                      alert(`Reviewing: ${lesson.title}`);
+                    } else {
+                      alert(`Starting: ${lesson.title}`);
+                    }
+                  };
+
                   return lessons.map((lesson, index) => (
                     <div
                       key={index}
-                      className={`flex items-center gap-3 p-4 rounded-lg border ${
-                        lesson.completed ? "bg-accent/10" : "bg-muted/20"
+                      onClick={() => handleLessonClick(lesson, index)}
+                      className={`flex items-center gap-3 p-4 rounded-lg border transition-all cursor-pointer ${
+                        lesson.locked 
+                          ? "bg-muted/10 opacity-50 cursor-not-allowed" 
+                          : lesson.completed 
+                          ? "bg-accent/10 hover:bg-accent/15" 
+                          : "bg-muted/20 hover:bg-muted/30"
                       }`}
                     >
-                      <div className={`${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
-                        {lesson.completed ? (
+                      <div className={`${
+                        lesson.locked 
+                          ? "text-muted-foreground" 
+                          : lesson.completed 
+                          ? "text-accent" 
+                          : "text-primary"
+                      }`}>
+                        {lesson.locked ? (
+                          <Lock className="h-5 w-5" />
+                        ) : lesson.completed ? (
                           <CheckCircle className="h-5 w-5" />
                         ) : (
                           getTypeIcon(lesson.type)
@@ -196,13 +230,26 @@ const ModulePage = () => {
                       </div>
                       <div className="flex-1">
                         <div className="font-medium">{lesson.title}</div>
-                        <div className="text-sm text-muted-foreground">{lesson.duration}</div>
+                        <div className="text-sm text-muted-foreground">{lesson.description}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{lesson.duration}</div>
                       </div>
-                      {lesson.completed && (
-                        <Badge variant="default" className="text-xs bg-accent text-accent-foreground">
-                          Complete
-                        </Badge>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {lesson.completed && (
+                          <Badge variant="default" className="text-xs bg-accent text-accent-foreground">
+                            Complete
+                          </Badge>
+                        )}
+                        {lesson.locked && (
+                          <Badge variant="outline" className="text-xs opacity-60">
+                            Locked
+                          </Badge>
+                        )}
+                        {!lesson.locked && !lesson.completed && (
+                          <Badge variant="outline" className="text-xs">
+                            Start
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   ));
                 })()}
