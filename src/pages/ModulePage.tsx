@@ -23,6 +23,7 @@ const ModulePage = () => {
   const [documents, setDocuments] = useState<any[]>([]);
   const [assessments, setAssessments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [allModules, setAllModules] = useState<any[]>([]);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<{
     id: number;
     title: string;
@@ -51,6 +52,17 @@ const ModulePage = () => {
         if (moduleError) {
           console.error('Error fetching module:', moduleError);
           setModule(null);
+          
+          // Fetch all modules for the error page
+          const { data: allModulesData } = await supabase
+            .from('course_modules')
+            .select('module_id, title, description, skill_level, order_index')
+            .eq('is_active', true)
+            .order('order_index');
+            
+          if (allModulesData) {
+            setAllModules(allModulesData);
+          }
           return;
         }
 
@@ -123,53 +135,26 @@ const ModulePage = () => {
         </div>
         
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4">Available Modules:</h2>
+          <h2 className="text-lg font-semibold mb-4">Available Modules ({allModules.length}):</h2>
           <div className="grid gap-3">
-            <Card className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="text-left">
-                  <h3 className="font-medium">Halo Business Finance Foundations</h3>
-                  <p className="text-sm text-muted-foreground">foundations</p>
+            {allModules.map((mod) => (
+              <Card key={mod.module_id} className="p-4">
+                <div className="flex justify-between items-center">
+                  <div className="text-left">
+                    <h3 className="font-medium">{mod.title}</h3>
+                    <p className="text-sm text-muted-foreground">{mod.module_id}</p>
+                    <p className="text-xs text-muted-foreground mt-1 capitalize">{mod.skill_level}</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate(`/module/${mod.module_id}`)}
+                  >
+                    Go to Module
+                  </Button>
                 </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => navigate("/module/foundations")}
-                >
-                  Go to Module
-                </Button>
-              </div>
-            </Card>
-            <Card className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="text-left">
-                  <h3 className="font-medium">Capital Markets & Lending Systems</h3>
-                  <p className="text-sm text-muted-foreground">capital-markets</p>
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => navigate("/module/capital-markets")}
-                >
-                  Go to Module
-                </Button>
-              </div>
-            </Card>
-            <Card className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="text-left">
-                  <h3 className="font-medium">Risk Management & Analysis</h3>
-                  <p className="text-sm text-muted-foreground">risk-management</p>
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => navigate("/module/risk-management")}
-                >
-                  Go to Module
-                </Button>
-              </div>
-            </Card>
+              </Card>
+            ))}
           </div>
         </div>
         
