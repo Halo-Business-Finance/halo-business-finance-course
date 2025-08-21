@@ -116,52 +116,38 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Try secure edge function first, fallback to direct queries if it fails
-      let profilesWithRoles = [];
+      // Load user roles directly - this matches the UI expectations
+      let userRolesData = [];
       
       try {
-        const { data: profilesResponse, error: profilesError } = await supabase.functions.invoke('secure-admin-operations', {
-          body: {
-            operation: 'get_filtered_profiles',
-            limit: 50,
-            offset: 0
-          }
-        });
+        // Fetch user roles with profile information
+        const { data: roles, error: rolesError } = await supabase
+          .from('user_roles')
+          .select(`
+            *,
+            profiles!inner (
+              name,
+              email,
+              phone,
+              title,
+              company
+            )
+          `)
+          .order('created_at', { ascending: false });
 
-        if (profilesError) {
-          throw new Error(`Secure function failed: ${profilesError.message}`);
-        }
-
-        profilesWithRoles = profilesResponse?.profiles || [];
-      } catch (secureError) {
-        console.warn('Secure function unavailable, using direct queries:', secureError);
-        
-        // Fallback to direct database queries
-        const [
-          { data: profiles, error: profilesError },
-          { data: roles, error: rolesError }
-        ] = await Promise.all([
-          supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('user_roles')
-            .select('*')
-            .order('created_at', { ascending: false })
-        ]);
-
-        if (profilesError) throw profilesError;
         if (rolesError) throw rolesError;
+        userRolesData = roles || [];
+      } catch (directError) {
+        console.warn('Direct query failed, trying without profile join:', directError);
+        
+        // Fallback to roles without profile join
+        const { data: roles, error: rolesError } = await supabase
+          .from('user_roles')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-        // Combine profiles with their roles
-        profilesWithRoles = profiles?.map(profile => {
-          const userRoles = roles?.filter(role => role.user_id === profile.user_id) || [];
-          return {
-            ...profile,
-            roles: userRoles.map(r => r.role)
-          };
-        }) || [];
+        if (rolesError) throw rolesError;
+        userRolesData = roles || [];
       }
 
       // Fetch other data in parallel
@@ -183,14 +169,14 @@ const AdminDashboard = () => {
       if (eventsError) throw eventsError;
       if (instructorsError) throw instructorsError;
 
-      setUserRoles(profilesWithRoles);
+      setUserRoles(userRolesData);
       setSecurityEvents(eventsData || []);
       setInstructors(instructorsData || []);
 
       // Calculate stats from the data
-      const totalUsers = profilesWithRoles.length;
-      const activeAdmins = profilesWithRoles.filter((profile: any) => 
-        profile.roles && profile.roles.some((role: string) => ['admin', 'super_admin'].includes(role))
+      const totalUsers = new Set(userRolesData.map((role: UserRole) => role.user_id)).size;
+      const activeAdmins = userRolesData.filter((role: UserRole) => 
+        role.is_active && ['admin', 'super_admin'].includes(role.role)
       ).length;
       const recentEvents = eventsData?.filter(event => 
         event.created_at && new Date(event.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
