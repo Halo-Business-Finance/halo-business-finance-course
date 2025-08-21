@@ -20,33 +20,48 @@ export type Database = {
           admin_user_id: string
           created_at: string | null
           details: Json | null
+          geolocation: Json | null
           id: string
           ip_address: string | null
+          metadata_enhanced: Json | null
+          risk_score: number | null
+          session_id: string | null
           target_resource: string | null
           target_user_id: string | null
           user_agent: string | null
+          user_agent_parsed: Json | null
         }
         Insert: {
           action: string
           admin_user_id: string
           created_at?: string | null
           details?: Json | null
+          geolocation?: Json | null
           id?: string
           ip_address?: string | null
+          metadata_enhanced?: Json | null
+          risk_score?: number | null
+          session_id?: string | null
           target_resource?: string | null
           target_user_id?: string | null
           user_agent?: string | null
+          user_agent_parsed?: Json | null
         }
         Update: {
           action?: string
           admin_user_id?: string
           created_at?: string | null
           details?: Json | null
+          geolocation?: Json | null
           id?: string
           ip_address?: string | null
+          metadata_enhanced?: Json | null
+          risk_score?: number | null
+          session_id?: string | null
           target_resource?: string | null
           target_user_id?: string | null
           user_agent?: string | null
+          user_agent_parsed?: Json | null
         }
         Relationships: []
       }
@@ -711,6 +726,81 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_attempts: {
+        Row: {
+          attempt_count: number
+          created_at: string
+          endpoint: string
+          id: string
+          ip_address: unknown
+          is_blocked: boolean
+          updated_at: string
+          window_start: string
+        }
+        Insert: {
+          attempt_count?: number
+          created_at?: string
+          endpoint: string
+          id?: string
+          ip_address: unknown
+          is_blocked?: boolean
+          updated_at?: string
+          window_start?: string
+        }
+        Update: {
+          attempt_count?: number
+          created_at?: string
+          endpoint?: string
+          id?: string
+          ip_address?: unknown
+          is_blocked?: boolean
+          updated_at?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      security_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          description: string
+          id: string
+          is_resolved: boolean
+          metadata: Json | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          description: string
+          id?: string
+          is_resolved?: boolean
+          metadata?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_resolved?: boolean
+          metadata?: Json | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       security_events: {
         Row: {
           created_at: string
@@ -861,6 +951,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analyze_security_events: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       assign_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -870,9 +964,28 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_rate_limit: {
+        Args: {
+          p_endpoint: string
+          p_ip_address: unknown
+          p_max_attempts?: number
+          p_window_minutes?: number
+        }
+        Returns: Json
+      }
       check_user_has_role: {
         Args: { check_role: string }
         Returns: boolean
+      }
+      create_security_alert: {
+        Args: {
+          p_alert_type: string
+          p_description: string
+          p_metadata?: Json
+          p_severity: string
+          p_title: string
+        }
+        Returns: string
       }
       get_user_role: {
         Args: { check_user_id?: string }
