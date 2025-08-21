@@ -12,6 +12,42 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
+
+// Phone number formatting utility
+const formatPhoneNumber = (phone: string): string => {
+  if (!phone) return "";
+  
+  // Remove all non-digits
+  const digits = phone.replace(/\D/g, "");
+  
+  // Format as (xxx) XXX-XXXX
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  
+  // Return original if not 10 digits
+  return phone;
+};
+
+// Phone input handler that formats as user types
+const handlePhoneInput = (value: string): string => {
+  // Remove all non-digits
+  const digits = value.replace(/\D/g, "");
+  
+  // Limit to 10 digits
+  const limitedDigits = digits.slice(0, 10);
+  
+  // Format progressively
+  if (limitedDigits.length >= 6) {
+    return `(${limitedDigits.slice(0, 3)}) ${limitedDigits.slice(3, 6)}-${limitedDigits.slice(6)}`;
+  } else if (limitedDigits.length >= 3) {
+    return `(${limitedDigits.slice(0, 3)}) ${limitedDigits.slice(3)}`;
+  } else if (limitedDigits.length > 0) {
+    return `(${limitedDigits}`;
+  }
+  
+  return "";
+};
 import { supabase } from "@/integrations/supabase/client";
 
 const AccountPage = () => {
@@ -306,7 +342,7 @@ const AccountPage = () => {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <span>{userInfo.phone}</span>
+                <span>{formatPhoneNumber(userInfo.phone)}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
@@ -531,7 +567,11 @@ const AccountPage = () => {
                       <Input 
                         id="phone" 
                         value={editForm.phone} 
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        onChange={(e) => {
+                          const formattedPhone = handlePhoneInput(e.target.value);
+                          handleInputChange('phone', formattedPhone);
+                        }}
+                        placeholder="(xxx) XXX-XXXX"
                       />
                     </div>
                     <div className="space-y-2">
