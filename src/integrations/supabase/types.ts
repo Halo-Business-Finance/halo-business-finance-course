@@ -817,6 +817,9 @@ export type Database = {
         Row: {
           attempt_count: number
           created_at: string
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           endpoint: string
           id: string
           ip_address: unknown
@@ -827,6 +830,9 @@ export type Database = {
         Insert: {
           attempt_count?: number
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           endpoint: string
           id?: string
           ip_address: unknown
@@ -837,6 +843,9 @@ export type Database = {
         Update: {
           attempt_count?: number
           created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           endpoint?: string
           id?: string
           ip_address?: unknown
@@ -1147,28 +1156,6 @@ export type Database = {
           location: string
           name: string
           phone: string
-          user_id: string
-        }[]
-      }
-      get_masked_profile_data: {
-        Args: { target_user_id: string }
-        Returns: {
-          avatar_url: string
-          city: string
-          company: string
-          created_at: string
-          id: string
-          join_date: string
-          language: string
-          masked_email: string
-          masked_location: string
-          masked_phone: string
-          name: string
-          state: string
-          theme: string
-          timezone: string
-          title: string
-          updated_at: string
           user_id: string
         }[]
       }
