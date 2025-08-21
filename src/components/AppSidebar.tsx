@@ -107,25 +107,6 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarContent>
-        {/* Brand */}
-        <div className="h-16 p-4 border-b flex items-center">
-          {!collapsed ? (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded flex items-center justify-center">
-                <span className="text-white font-bold text-sm">H</span>
-              </div>
-              <div>
-                <p className="font-semibold text-sm">Halo Learning</p>
-                <p className="text-xs text-muted-foreground">Finance Training</p>
-              </div>
-            </div>
-          ) : (
-            <div className="w-8 h-8 bg-gradient-primary rounded flex items-center justify-center mx-auto">
-              <span className="text-white font-bold text-sm">H</span>
-            </div>
-          )}
-        </div>
-
         {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupLabel>Main</SidebarGroupLabel>
