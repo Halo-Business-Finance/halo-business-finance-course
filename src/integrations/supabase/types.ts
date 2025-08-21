@@ -1053,21 +1053,7 @@ export type Database = {
       }
     }
     Views: {
-      safe_profiles: {
-        Row: {
-          avatar_url: string | null
-          city: string | null
-          company: string | null
-          created_at: string | null
-          id: string | null
-          join_date: string | null
-          name: string | null
-          state: string | null
-          title: string | null
-          user_id: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       analyze_security_events: {
