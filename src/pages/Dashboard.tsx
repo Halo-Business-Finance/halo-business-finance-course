@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import ModuleCard from "@/components/ModuleCard";
+import ModuleCard from "@/components/ModuleCard"; // Default export
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
