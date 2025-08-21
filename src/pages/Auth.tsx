@@ -9,7 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogIn, UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, AlertTriangle } from "lucide-react";
+import { LogIn, UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, AlertTriangle, ArrowLeft } from "lucide-react";
 import { validateEmail, validatePassword, validateName, sanitizeInput, authRateLimiter } from "@/utils/validation";
 
 const AuthPage = () => {
@@ -20,6 +20,8 @@ const AuthPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<'weak' | 'medium' | 'strong'>('weak');
   const [rateLimitWarning, setRateLimitWarning] = useState<string>('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   // Sign In Form State
   const [signInData, setSignInData] = useState({
@@ -269,6 +271,63 @@ const AuthPage = () => {
     setPasswordStrength(validation.strength || 'weak');
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!forgotPasswordEmail) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const emailValidation = validateEmail(forgotPasswordEmail);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Invalid Email",
+        description: emailValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
+        redirectTo: `${window.location.origin}/dashboard`
+      });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Password Reset Email Sent",
+        description: "Please check your email for password reset instructions.",
+      });
+
+      setShowForgotPassword(false);
+      setForgotPasswordEmail('');
+    } catch (error) {
+      console.error('Password reset error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Show loading while checking auth state
   if (loading) {
     return (
@@ -322,95 +381,145 @@ const AuthPage = () => {
           <TabsContent value="signin">
             <Card>
               <CardHeader>
-                <CardTitle>Welcome Back</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  {showForgotPassword && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowForgotPassword(false)}
+                      className="p-0 h-auto"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                  )}
+                  {showForgotPassword ? "Reset Password" : "Welcome Back"}
+                </CardTitle>
                 <CardDescription>
-                  Sign in to continue your learning journey
+                  {showForgotPassword 
+                    ? "Enter your email to receive password reset instructions"
+                    : "Sign in to continue your learning journey"
+                  }
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-email"
-                        type="email"
-                        placeholder="Enter your email"
-                        value={signInData.email}
-                        onChange={(e) => setSignInData({...signInData, email: e.target.value})}
-                        className="pl-10"
-                        required
-                      />
+                {showForgotPassword ? (
+                  <form onSubmit={handleForgotPassword} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="forgot-email">Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="forgot-email"
+                          type="email"
+                          placeholder="Enter your email"
+                          value={forgotPasswordEmail}
+                          onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                          className="pl-10"
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        value={signInData.password}
-                        onChange={(e) => setSignInData({...signInData, password: e.target.value})}
-                        className="pl-10 pr-10"
-                        required
-                      />
-                      <button
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? "Sending Reset Email..." : "Send Reset Email"}
+                    </Button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-email">Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signin-email"
+                          type="email"
+                          placeholder="Enter your email"
+                          value={signInData.email}
+                          onChange={(e) => setSignInData({...signInData, email: e.target.value})}
+                          className="pl-10"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-password">Password</Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="signin-password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your password"
+                          value={signInData.password}
+                          onChange={(e) => setSignInData({...signInData, password: e.target.value})}
+                          className="pl-10 pr-10"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? "Signing In..." : "Sign In"}
+                    </Button>
+                    
+                    <div className="text-center">
+                      <Button
+                        variant="link"
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
+                        Forgot password?
+                      </Button>
                     </div>
-                  </div>
-
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing In..." : "Sign In"}
-                  </Button>
-                  
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={async () => {
-                      if (!signInData.email) {
-                        toast({
-                          title: "Email Required",
-                          description: "Please enter your email address first.",
-                          variant: "destructive"
-                        });
-                        return;
-                      }
-                      
-                      const { error } = await supabase.auth.resend({
-                        type: 'signup',
-                        email: signInData.email,
-                        options: {
-                          emailRedirectTo: `${window.location.origin}/dashboard`
+                    
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={async () => {
+                        if (!signInData.email) {
+                          toast({
+                            title: "Email Required",
+                            description: "Please enter your email address first.",
+                            variant: "destructive"
+                          });
+                          return;
                         }
-                      });
-                      
-                      if (error) {
-                        toast({
-                          title: "Error",
-                          description: error.message,
-                          variant: "destructive"
+                        
+                        const { error } = await supabase.auth.resend({
+                          type: 'signup',
+                          email: signInData.email,
+                          options: {
+                            emailRedirectTo: `${window.location.origin}/dashboard`
+                          }
                         });
-                      } else {
-                        toast({
-                          title: "Confirmation Email Sent",
-                          description: "Please check your email for a new confirmation link.",
-                        });
-                      }
-                    }}
-                  >
-                    Resend Confirmation Email
-                  </Button>
-                </form>
+                        
+                        if (error) {
+                          toast({
+                            title: "Error",
+                            description: error.message,
+                            variant: "destructive"
+                          });
+                        } else {
+                          toast({
+                            title: "Confirmation Email Sent",
+                            description: "Please check your email for a new confirmation link.",
+                          });
+                        }
+                      }}
+                    >
+                      Resend Confirmation Email
+                    </Button>
+                  </form>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
