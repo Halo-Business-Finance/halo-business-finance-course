@@ -94,7 +94,7 @@ const HeaderContent = () => {
         </Button>
       </div>
       
-      <div className="flex-1 flex flex-col items-center justify-center">
+      <div className="flex-1 flex items-center justify-center gap-2">
         <h1 className="text-lg font-medium text-black">
           Welcome back, {getFirstName()}!
         </h1>
