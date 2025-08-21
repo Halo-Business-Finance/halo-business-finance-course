@@ -16,11 +16,48 @@ const ModulePage = () => {
 
   const module = courseData.modules.find(m => m.id === moduleId);
   
+  // Add debugging and better error handling
   if (!module) {
+    const availableModules = courseData.modules.map(m => ({ id: m.id, title: m.title }));
+    console.log('Available modules:', availableModules);
+    console.log('Requested moduleId:', moduleId);
+    
     return (
-      <div className="container mx-auto p-6 text-center">
-        <h1 className="text-2xl font-bold text-foreground mb-4">Module Not Found</h1>
-        <p className="text-muted-foreground">The requested module could not be found.</p>
+      <div className="container mx-auto p-6 text-center space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground mb-4">Module Not Found</h1>
+          <p className="text-muted-foreground mb-4">
+            The requested module "{moduleId}" could not be found.
+          </p>
+        </div>
+        
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-lg font-semibold mb-4">Available Modules:</h2>
+          <div className="grid gap-3">
+            {courseData.modules.map((mod) => (
+              <Card key={mod.id} className="p-4 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-center">
+                  <div className="text-left">
+                    <h3 className="font-medium">{mod.title}</h3>
+                    <p className="text-sm text-muted-foreground">ID: {mod.id}</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate(`/module/${mod.id}`)}
+                  >
+                    Go to Module
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+        
+        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Return to Dashboard
+        </Button>
       </div>
     );
   }
