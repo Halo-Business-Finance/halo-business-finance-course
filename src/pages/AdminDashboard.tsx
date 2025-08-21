@@ -102,6 +102,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [deletingUser, setDeletingUser] = useState<string | null>(null);
   const [creatingUser, setCreatingUser] = useState(false);
+  const [realtimeChannel, setRealtimeChannel] = useState<any>(null);
   const [newUserData, setNewUserData] = useState({
     email: '',
     password: '',
@@ -113,6 +114,87 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     loadDashboardData();
+    
+    // Set up real-time subscriptions for live admin dashboard
+    const setupRealtimeSubscriptions = () => {
+      console.log('🔄 Setting up real-time subscriptions...');
+      
+      const channel = supabase
+        .channel('admin-dashboard-updates')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'security_events'
+          },
+          (payload) => {
+            console.log('🚨 New security event:', payload);
+            toast({
+              title: "Security Alert",
+              description: `New ${payload.new.severity} security event detected`,
+              variant: payload.new.severity === 'critical' ? 'destructive' : 'default'
+            });
+            loadDashboardData(); // Refresh data
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'profiles'
+          },
+          (payload) => {
+            console.log('👤 New user registered:', payload);
+            toast({
+              title: "New User",
+              description: `${payload.new.name} has joined Business Finance Mastery`,
+            });
+            loadDashboardData(); // Refresh data
+          }
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'user_roles'
+          },
+          (payload) => {
+            console.log('🔐 User role changed:', payload);
+            if (payload.eventType === 'INSERT') {
+              toast({
+                title: "Role Assigned",
+                description: `New ${payload.new.role} role assigned`,
+              });
+            }
+            loadDashboardData(); // Refresh data
+          }
+        )
+        .subscribe((status) => {
+          console.log('📡 Real-time subscription status:', status);
+          if (status === 'SUBSCRIBED') {
+            console.log('✅ Real-time dashboard active!');
+            toast({
+              title: "Live Dashboard",
+              description: "Real-time monitoring is now active",
+            });
+          }
+        });
+        
+      setRealtimeChannel(channel);
+    };
+
+    setupRealtimeSubscriptions();
+    
+    // Cleanup function
+    return () => {
+      if (realtimeChannel) {
+        console.log('🔌 Cleaning up real-time subscriptions...');
+        supabase.removeChannel(realtimeChannel);
+      }
+    };
   }, []);
 
   const loadDashboardData = async () => {
