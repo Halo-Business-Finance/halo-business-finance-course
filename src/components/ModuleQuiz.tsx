@@ -84,6 +84,66 @@ const getQuizData = (moduleId: string): Question[] => {
         ],
         correctAnswer: 1,
         explanation: "Working capital is the difference between current assets and current liabilities, representing the short-term financial health of a company."
+      },
+      {
+        id: 6,
+        question: "Which of the following is NOT a component of the income statement?",
+        options: [
+          "Revenue",
+          "Cost of Goods Sold",
+          "Accounts Receivable",
+          "Operating Expenses"
+        ],
+        correctAnswer: 2,
+        explanation: "Accounts Receivable is a balance sheet item, not an income statement component. The income statement shows revenues, expenses, and profits over a period."
+      },
+      {
+        id: 7,
+        question: "What does EBITDA stand for?",
+        options: [
+          "Earnings Before Interest, Taxes, Depreciation, and Amortization",
+          "Equity Before Income Tax Deduction Analysis",
+          "Enterprise Business Income and Debt Analysis",
+          "Economic Benefit of Investment Tax Deduction Allowance"
+        ],
+        correctAnswer: 0,
+        explanation: "EBITDA measures a company's operational performance by excluding non-operational expenses like interest, taxes, depreciation, and amortization."
+      },
+      {
+        id: 8,
+        question: "Which financial statement shows how cash moves in and out of a business?",
+        options: [
+          "Balance Sheet",
+          "Income Statement",
+          "Cash Flow Statement",
+          "Statement of Equity"
+        ],
+        correctAnswer: 2,
+        explanation: "The Cash Flow Statement tracks the actual cash receipts and payments, showing operating, investing, and financing activities."
+      },
+      {
+        id: 9,
+        question: "What is the debt-to-equity ratio used to measure?",
+        options: [
+          "Profitability",
+          "Liquidity",
+          "Financial leverage",
+          "Market performance"
+        ],
+        correctAnswer: 2,
+        explanation: "The debt-to-equity ratio measures financial leverage by comparing total debt to total equity, indicating how much debt a company uses to finance its assets."
+      },
+      {
+        id: 10,
+        question: "Which principle requires that expenses be recorded when incurred, not when cash is paid?",
+        options: [
+          "Revenue Recognition Principle",
+          "Matching Principle",
+          "Conservatism Principle",
+          "Materiality Principle"
+        ],
+        correctAnswer: 1,
+        explanation: "The Matching Principle requires that expenses be recorded in the same period as the revenues they help generate, regardless of when cash changes hands."
       }
     ]
   };
