@@ -94,10 +94,13 @@ const HeaderContent = () => {
         </Button>
       </div>
       
-      <div className="flex-1 flex items-center justify-center gap-2">
+      <div className="flex-1 flex items-center justify-center">
         <h1 className="text-lg font-medium text-black">
           Welcome back, {getFirstName()}!
         </h1>
+      </div>
+      
+      <div className="flex items-center">
         <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
