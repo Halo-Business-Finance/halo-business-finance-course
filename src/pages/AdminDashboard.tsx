@@ -756,7 +756,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking User Management button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users');
+                        }
+                      }}
                     >
                       <Lock className="h-4 w-4 mr-2" />
                       User Management
@@ -764,7 +770,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking Authentication Providers button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers');
+                        }
+                      }}
                     >
                       <Shield className="h-4 w-4 mr-2" />
                       Authentication Providers
@@ -772,7 +784,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking URL Configuration button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration');
+                        }
+                      }}
                     >
                       <Settings className="h-4 w-4 mr-2" />
                       URL Configuration
@@ -788,7 +806,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking System Logs button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer');
+                        }
+                      }}
                     >
                       <AlertTriangle className="h-4 w-4 mr-2" />
                       System Logs
@@ -796,7 +820,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking Database Tables button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables');
+                        }
+                      }}
                     >
                       <Database className="h-4 w-4 mr-2" />
                       Database Tables
@@ -804,7 +834,13 @@ const AdminDashboard = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank')}
+                      onClick={() => {
+                        console.log('Clicking Project Settings button');
+                        const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank');
+                        if (!opened) {
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general');
+                        }
+                      }}
                     >
                       <Settings className="h-4 w-4 mr-2" />
                       Project Settings
