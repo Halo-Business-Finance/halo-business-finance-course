@@ -1207,6 +1207,10 @@ export type Database = {
         Args: { profile_data: Json }
         Returns: Json
       }
+      monitor_profile_access_patterns: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -1216,6 +1220,10 @@ export type Database = {
         Returns: boolean
       }
       run_comprehensive_security_analysis: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      run_customer_data_security_monitoring: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -1230,6 +1238,10 @@ export type Database = {
       validate_security_configuration: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      validate_sensitive_profile_access: {
+        Args: { target_user_id: string }
+        Returns: boolean
       }
       verify_profile_access_security: {
         Args: Record<PropertyKey, never>
