@@ -7,6 +7,15 @@ export interface LoanExample {
   keyLearningPoints: string[];
 }
 
+export interface Video {
+  title: string;
+  description: string;
+  duration: string;
+  videoType: "youtube" | "file";
+  videoUrl: string;
+  youtubeId?: string;
+}
+
 export interface Module {
   id: string;
   title: string;
@@ -17,6 +26,7 @@ export interface Module {
   status: "locked" | "available" | "in-progress" | "completed";
   topics: string[];
   loanExamples: LoanExample[];
+  videos: Video[];
 }
 
 export interface CourseData {
@@ -40,6 +50,40 @@ export const courseData: CourseData = {
       progress: 100,
       status: "completed",
       topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"],
+      videos: [
+        {
+          title: "Introduction to Business Finance Fundamentals",
+          description: "Overview of business finance principles and their importance in decision making",
+          duration: "18:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Financial Statement Analysis Deep Dive",
+          description: "Understanding balance sheets, income statements, and cash flow statements",
+          duration: "32:15",
+          videoType: "youtube", 
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Time Value of Money & NPV Calculations",
+          description: "Master present value, future value, and net present value concepts",
+          duration: "25:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ", 
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Working Capital Management Strategies",
+          description: "Learn to optimize cash, inventory, and receivables management",
+          duration: "28:20",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Working Capital Analysis",
@@ -76,6 +120,40 @@ export const courseData: CourseData = {
       progress: 100,
       status: "completed",
       topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
+      videos: [
+        {
+          title: "Capital Markets Overview & Structure",
+          description: "Introduction to primary and secondary markets and their functions",
+          duration: "24:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Equity Markets & Stock Valuation",
+          description: "Understanding stock markets, IPOs, and equity valuation methods",
+          duration: "35:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Bond Markets & Fixed Income Securities",
+          description: "Deep dive into bond pricing, yield curves, and credit risk",
+          duration: "29:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Institutional Investors & Market Making",
+          description: "Role of institutions, market makers, and trading systems",
+          duration: "22:40",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Corporate Bond Issuance",
@@ -113,6 +191,40 @@ export const courseData: CourseData = {
       progress: 45,
       status: "in-progress",
       topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"],
+      videos: [
+        {
+          title: "SBA 7(a) Loan Program Complete Guide",
+          description: "Comprehensive overview of the most popular SBA loan program",
+          duration: "38:20",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "SBA 504 Real Estate & Equipment Financing",
+          description: "Understanding 504 program structure and real estate financing",
+          duration: "32:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "SBA Microloans for Startups",
+          description: "Small loan programs for new businesses and underserved markets",
+          duration: "19:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "SBA Application Process & Documentation",
+          description: "Step-by-step guide to preparing and submitting SBA applications",
+          duration: "26:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "SBA 7(a) General Purpose Loan",
@@ -164,6 +276,40 @@ export const courseData: CourseData = {
       progress: 0,
       status: "available",
       topics: ["Term Loans", "Lines of Credit", "Equipment Financing", "Commercial Real Estate", "Underwriting Standards", "Credit Analysis", "Loan Pricing", "Collateral Requirements"],
+      videos: [
+        {
+          title: "Commercial Term Loans & Underwriting",
+          description: "Understanding traditional term loan structures and bank underwriting",
+          duration: "34:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Lines of Credit & Working Capital Solutions",
+          description: "Revolving credit facilities and managing business cash flow",
+          duration: "27:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Equipment Financing Strategies",
+          description: "Financing business equipment and machinery purchases",
+          duration: "23:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Commercial Real Estate Lending",
+          description: "CRE loan structures, LTV ratios, and DSCR requirements",
+          duration: "31:20",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Commercial Real Estate Acquisition",
@@ -215,6 +361,32 @@ export const courseData: CourseData = {
       progress: 0,
       status: "locked",
       topics: ["Bridge Loan Structures", "Asset-Based Lending", "Invoice Factoring", "Short-Term Financing", "Exit Strategies", "Risk Mitigation", "Pricing Models"],
+      videos: [
+        {
+          title: "Bridge Loan Fundamentals",
+          description: "When and how to use bridge financing for business transactions",
+          duration: "21:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Asset-Based Lending Strategies",
+          description: "Using receivables and inventory as collateral for flexible financing",
+          duration: "28:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Invoice Factoring & Cash Flow Solutions",
+          description: "Converting receivables to immediate cash flow",
+          duration: "18:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Real Estate Bridge Loan",
@@ -266,6 +438,40 @@ export const courseData: CourseData = {
       progress: 0,
       status: "locked",
       topics: ["Merchant Cash Advances", "Revenue-Based Financing", "P2P Lending", "Crowdfunding", "Fintech Solutions", "Alternative Credit Scoring", "Industry Trends"],
+      videos: [
+        {
+          title: "Merchant Cash Advances Explained",
+          description: "Understanding MCA structure, costs, and appropriate use cases",
+          duration: "24:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Revenue-Based Financing for Growth",
+          description: "Equity-free growth capital tied to business performance",
+          duration: "19:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "P2P Lending & Online Platforms",
+          description: "Navigating peer-to-peer and marketplace lending options",
+          duration: "26:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Alternative Credit Scoring & Fintech",
+          description: "How technology is changing business lending decisions",
+          duration: "22:40",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Merchant Cash Advance",
@@ -317,6 +523,40 @@ export const courseData: CourseData = {
       progress: 0,
       status: "locked",
       topics: ["Financial Statement Analysis", "Cash Flow Modeling", "Industry Analysis", "Credit Scoring Models", "Portfolio Risk", "Loss Mitigation", "Regulatory Compliance"],
+      videos: [
+        {
+          title: "Advanced Financial Statement Analysis",
+          description: "Deep dive techniques for analyzing borrower financial health",
+          duration: "42:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Cash Flow Modeling & Projections",
+          description: "Building accurate cash flow models for credit decisions",
+          duration: "38:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Industry Risk Analysis",
+          description: "Evaluating sector-specific risks and market conditions",
+          duration: "31:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Credit Scoring & Risk Models",
+          description: "Modern credit scoring techniques and risk assessment tools",
+          duration: "29:20",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "Turnaround Financing Analysis",
@@ -371,6 +611,40 @@ export const courseData: CourseData = {
       progress: 0,
       status: "locked",
       topics: ["BSA/AML Requirements", "Fair Lending Laws", "UDAAP Prevention", "Consumer Protection", "Documentation Standards", "Audit Preparation", "Regulatory Reporting"],
+      videos: [
+        {
+          title: "BSA/AML Fundamentals for Lenders",
+          description: "Bank Secrecy Act and Anti-Money Laundering compliance requirements",
+          duration: "33:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Fair Lending Laws & Practices",
+          description: "Understanding ECOA, Fair Housing Act, and CRA requirements",
+          duration: "29:30",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "UDAAP Prevention & Consumer Protection",
+          description: "Avoiding unfair, deceptive, or abusive acts and practices",
+          duration: "26:15",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          title: "Regulatory Examination Preparation",
+          description: "Best practices for regulatory exams and audit readiness",
+          duration: "24:20",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
       loanExamples: [
         {
           title: "BSA/AML Compliance Case",
