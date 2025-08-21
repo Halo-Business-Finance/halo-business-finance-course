@@ -179,9 +179,9 @@ export function AppSidebar() {
                           isModuleLocked ? "opacity-60 pointer-events-none" : ""
                         } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
                       >
-                        <div className="relative z-10 flex items-center w-full">
+                        <div className="relative z-10 flex items-start w-full py-1">
                           <div className={`
-                            w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
+                            w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0 mt-0.5
                             ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
                               module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
                               module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
@@ -194,8 +194,8 @@ export function AppSidebar() {
                         
                         {!collapsed && (
                           <>
-                            <div className="flex-1 ml-3">
-                              <span className="text-xs font-medium leading-tight block text-black">
+                            <div className="flex-1 ml-3 min-w-0">
+                              <span className="text-xs font-medium leading-relaxed block text-black break-words">
                                 {module.title}
                               </span>
                               {module.status === "in-progress" && (
@@ -205,18 +205,17 @@ export function AppSidebar() {
                               )}
                             </div>
                             
-                            <div className="ml-2">
+                            <div className="ml-2 flex-shrink-0 self-start mt-0.5">
                               {getStatusBadge(module.status)}
                             </div>
                           </>
-                        )}
-                      </div>
-                      
-                      {/* Hover effect overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                         )}
+                        </div>
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>
