@@ -1,7 +1,27 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Users, 
+  Shield, 
+  AlertTriangle, 
+  Activity, 
+  Database, 
+  Settings,
+  UserCheck,
+  UserX,
+  Lock,
+  Unlock,
+  Crown,
+  Eye,
+  Trash2,
+  GraduationCap,
+  Edit,
+  Plus,
+  Video,
+  FileText,
+  BookOpen
+} from "lucide-react";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -19,24 +39,10 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { InstructorForm } from "@/components/InstructorForm";
-import { 
-  Users, 
-  Shield, 
-  AlertTriangle, 
-  Activity, 
-  Database, 
-  Settings,
-  UserCheck,
-  UserX,
-  Lock,
-  Unlock,
-  Crown,
-  Eye,
-  Trash2,
-  GraduationCap,
-  Edit,
-  Plus
-} from "lucide-react";
+import { VideoManager } from "@/components/admin/VideoManager";
+import { ArticleManager } from "@/components/admin/ArticleManager";
+import { ModuleEditor } from "@/components/admin/ModuleEditor";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserRole {
   id: string;
@@ -434,10 +440,42 @@ const AdminDashboard = () => {
       <Tabs defaultValue="users" className="space-y-4">
         <TabsList>
           <TabsTrigger value="users">User Management</TabsTrigger>
+          <TabsTrigger value="content">Content Management</TabsTrigger>
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="security">Security Events</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="content" className="space-y-4">
+          <Tabs defaultValue="modules" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="modules">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Modules
+              </TabsTrigger>
+              <TabsTrigger value="videos">
+                <Video className="h-4 w-4 mr-2" />
+                Videos
+              </TabsTrigger>
+              <TabsTrigger value="articles">
+                <FileText className="h-4 w-4 mr-2" />
+                Articles
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="modules">
+              <ModuleEditor />
+            </TabsContent>
+
+            <TabsContent value="videos">
+              <VideoManager />
+            </TabsContent>
+
+            <TabsContent value="articles">
+              <ArticleManager />
+            </TabsContent>
+          </Tabs>
+        </TabsContent>
 
         <TabsContent value="users" className="space-y-4">
           <Card>

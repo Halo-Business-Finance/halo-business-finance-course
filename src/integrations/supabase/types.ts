@@ -64,6 +64,110 @@ export type Database = {
           },
         ]
       }
+      content_uploads: {
+        Row: {
+          content_type: string | null
+          created_at: string
+          file_size: number
+          file_type: string
+          filename: string
+          id: string
+          is_processed: boolean | null
+          original_name: string
+          related_content_id: string | null
+          storage_path: string
+          upload_user_id: string
+        }
+        Insert: {
+          content_type?: string | null
+          created_at?: string
+          file_size: number
+          file_type: string
+          filename: string
+          id?: string
+          is_processed?: boolean | null
+          original_name: string
+          related_content_id?: string | null
+          storage_path: string
+          upload_user_id: string
+        }
+        Update: {
+          content_type?: string | null
+          created_at?: string
+          file_size?: number
+          file_type?: string
+          filename?: string
+          id?: string
+          is_processed?: boolean | null
+          original_name?: string
+          related_content_id?: string | null
+          storage_path?: string
+          upload_user_id?: string
+        }
+        Relationships: []
+      }
+      course_articles: {
+        Row: {
+          author_id: string | null
+          category: string | null
+          content: string
+          created_at: string
+          excerpt: string | null
+          featured_image_url: string | null
+          id: string
+          is_published: boolean | null
+          module_id: string | null
+          order_index: number
+          publish_date: string | null
+          reading_time_minutes: number | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string | null
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_published?: boolean | null
+          module_id?: string | null
+          order_index?: number
+          publish_date?: string | null
+          reading_time_minutes?: number | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          category?: string | null
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_published?: boolean | null
+          module_id?: string | null
+          order_index?: number
+          publish_date?: string | null
+          reading_time_minutes?: number | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_articles_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
       course_assessments: {
         Row: {
           assessment_type: string
@@ -253,6 +357,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      course_videos: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_seconds: number | null
+          id: string
+          is_active: boolean | null
+          module_id: string | null
+          order_index: number
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          upload_user_id: string | null
+          video_type: string
+          video_url: string
+          view_count: number | null
+          youtube_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_active?: boolean | null
+          module_id?: string | null
+          order_index?: number
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          upload_user_id?: string | null
+          video_type?: string
+          video_url: string
+          view_count?: number | null
+          youtube_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          id?: string
+          is_active?: boolean | null
+          module_id?: string | null
+          order_index?: number
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          upload_user_id?: string | null
+          video_type?: string
+          video_url?: string
+          view_count?: number | null
+          youtube_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_videos_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
       }
       "Halo Launch Pad Learn": {
         Row: {
