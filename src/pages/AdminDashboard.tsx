@@ -109,6 +109,14 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
+      // Load ALL profiles first (all registered users)
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (profilesError) throw profilesError;
+
       // Load user roles
       const { data: roles, error: rolesError } = await supabase
         .from('user_roles')
@@ -117,20 +125,19 @@ const AdminDashboard = () => {
 
       if (rolesError) throw rolesError;
 
-      // Load profiles for users with roles
-      const userIds = roles?.map(r => r.user_id) || [];
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .in('user_id', userIds);
-
-      if (profilesError) console.warn('Error loading profiles:', profilesError);
-
-      // Combine roles with profiles
-      const rolesWithProfiles = roles?.map(role => ({
-        ...role,
-        profiles: profiles?.find(p => p.user_id === role.user_id) || null
-      })) || [];
+      // Combine profiles with roles (show all users, even without roles)
+      const rolesWithProfiles = profiles?.map(profile => {
+        const userRole = roles?.find(r => r.user_id === profile.user_id);
+        return {
+          id: userRole?.id || `profile-${profile.id}`,
+          user_id: profile.user_id,
+          role: userRole?.role || 'none',
+          is_active: userRole?.is_active || false,
+          created_at: userRole?.created_at || profile.created_at,
+          updated_at: userRole?.updated_at || profile.updated_at,
+          profiles: profile
+        };
+      }) || [];
 
       setUserRoles(rolesWithProfiles);
 
