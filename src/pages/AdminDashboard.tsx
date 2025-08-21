@@ -41,6 +41,13 @@ interface UserRole {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  profiles?: {
+    name: string;
+    email: string;
+    phone: string;
+    title: string;
+    company: string;
+  } | null;
 }
 
 interface SecurityEvent {
@@ -87,7 +94,23 @@ const AdminDashboard = () => {
         .order('created_at', { ascending: false });
 
       if (rolesError) throw rolesError;
-      setUserRoles(roles || []);
+
+      // Load profiles for users with roles
+      const userIds = roles?.map(r => r.user_id) || [];
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('user_id', userIds);
+
+      if (profilesError) console.warn('Error loading profiles:', profilesError);
+
+      // Combine roles with profiles
+      const rolesWithProfiles = roles?.map(role => ({
+        ...role,
+        profiles: profiles?.find(p => p.user_id === role.user_id) || null
+      })) || [];
+
+      setUserRoles(rolesWithProfiles);
 
       // Load recent security events
       const { data: events, error: eventsError } = await supabase
@@ -100,8 +123,8 @@ const AdminDashboard = () => {
       setSecurityEvents(events || []);
 
       // Calculate stats
-      const totalUsers = roles?.length || 0;
-      const activeAdmins = roles?.filter(r => 
+      const totalUsers = rolesWithProfiles?.length || 0;
+      const activeAdmins = rolesWithProfiles?.filter(r => 
         (r.role === 'admin' || r.role === 'super_admin') && r.is_active
       ).length || 0;
       const recentEvents = events?.filter(e => 
@@ -341,6 +364,11 @@ const AdminDashboard = () => {
                     <TableRow key={userRole.id}>
                       <TableCell className="font-mono text-sm">
                         {userRole.user_id.slice(0, 8)}...
+                        {userRole.profiles && (
+                          <div className="text-xs text-muted-foreground">
+                            {userRole.profiles.name || 'No name'}
+                          </div>
+                        )}
                       </TableCell>
                       <TableCell>
                         <Badge variant={getRoleBadgeVariant(userRole.role)}>

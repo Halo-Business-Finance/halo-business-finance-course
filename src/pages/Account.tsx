@@ -65,7 +65,7 @@ const AccountPage = () => {
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
       if (error) {
@@ -80,18 +80,18 @@ const AccountPage = () => {
 
       if (profile) {
         const profileData = {
-          name: `${profile.first_name || ""} ${profile.last_name || ""}`.trim(),
+          name: profile.name || "",
           email: profile.email || "",
-          phone: profile.phone_number || "",
-          location: "", // Not in profiles table  
+          phone: profile.phone || "",
+          location: profile.location || "",
           joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
           }) : "",
-          title: profile.job_title || "",
-          company: "", // Not in profiles table
-          avatar: "/placeholder.svg" // Not in profiles table
+          title: profile.title || "",
+          company: profile.company || "",
+          avatar: profile.avatar_url || "/placeholder.svg"
         };
         setUserInfo(profileData);
         setEditForm(profileData);
@@ -141,27 +141,25 @@ const AccountPage = () => {
         return;
       }
 
-      const nameParts = editForm.name.split(' ');
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
       console.log('Saving profile with data:', {
-        firstName,
-        lastName,
+        name: editForm.name,
         email: editForm.email,
         phone: editForm.phone,
-        title: editForm.title
+        title: editForm.title,
+        location: editForm.location,
+        company: editForm.company
       });
 
       const { error } = await supabase
         .from('profiles')
         .upsert({
-          id: user.id,
-          first_name: firstName,
-          last_name: lastName,
+          user_id: user.id,
+          name: editForm.name,
           email: editForm.email,
-          phone_number: editForm.phone,
-          job_title: editForm.title
+          phone: editForm.phone,
+          title: editForm.title,
+          location: editForm.location,
+          company: editForm.company
         });
 
       if (error) {
