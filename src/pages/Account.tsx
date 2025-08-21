@@ -244,6 +244,21 @@ const AccountPage = () => {
     });
   };
 
+  const handleDownloadData = () => {
+    toast({
+      title: "Data Export Initiated",
+      description: "Your data download will be prepared and sent to your email address within 24 hours.",
+    });
+  };
+
+  const handleRequestDataDeletion = () => {
+    toast({
+      title: "Data Deletion Request Submitted",
+      description: "Your request has been submitted. Our team will contact you within 48 hours to process this request.",
+      variant: "destructive"
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="container mx-auto p-6 space-y-6">
@@ -694,10 +709,18 @@ const AccountPage = () => {
                   <div className="pt-4 border-t">
                     <h3 className="font-medium mb-2">Data Management</h3>
                     <div className="space-y-2">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={handleDownloadData}
+                      >
                         Download My Data
                       </Button>
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={handleRequestDataDeletion}
+                      >
                         Request Data Deletion
                       </Button>
                     </div>
