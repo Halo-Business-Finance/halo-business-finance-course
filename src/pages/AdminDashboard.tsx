@@ -311,7 +311,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'trainee' | 'tech_support_admin' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
+  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'trainee' | 'tech_support_admin' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
       setLoading(true);
       
