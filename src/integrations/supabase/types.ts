@@ -1851,11 +1851,24 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_sensitive_data_access_enhanced: {
+        Args: {
+          p_access_type?: string
+          p_additional_context?: Json
+          p_table_name: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       mask_sensitive_profile_data: {
         Args: { profile_data: Json }
         Returns: Json
       }
       monitor_profile_access_patterns: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      monitor_role_access_patterns: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -1891,6 +1904,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      validate_biometric_access: {
+        Args: { p_target_user_id: string }
+        Returns: boolean
+      }
       validate_geolocation_access: {
         Args: {
           p_country_code?: string
@@ -1899,6 +1916,10 @@ export type Database = {
           p_longitude: number
         }
         Returns: Json
+      }
+      validate_mfa_access: {
+        Args: { p_target_user_id: string }
+        Returns: boolean
       }
       validate_mfa_token: {
         Args: {
