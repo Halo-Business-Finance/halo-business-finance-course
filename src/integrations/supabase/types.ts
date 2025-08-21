@@ -1719,6 +1719,26 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_admin_session_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          device_id: string
+          expires_at: string
+          geolocation: Json
+          id: string
+          ip_address: unknown
+          is_active: boolean
+          last_activity_at: string
+          risk_score: number
+          security_level: number
+          session_type: string
+          terminated_at: string
+          termination_reason: string
+          user_agent: string
+          user_id: string
+        }[]
+      }
       get_authenticated_user_profiles: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1762,6 +1782,25 @@ export type Database = {
       get_user_role: {
         Args: { check_user_id?: string }
         Returns: string
+      }
+      get_user_session_info: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          device_id: string
+          expires_at: string
+          geolocation: Json
+          id: string
+          ip_address: unknown
+          is_active: boolean
+          last_activity_at: string
+          risk_score: number
+          security_level: number
+          session_type: string
+          terminated_at: string
+          termination_reason: string
+          user_agent: string
+        }[]
       }
       has_any_role: {
         Args: { roles: string[] }
