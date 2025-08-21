@@ -168,27 +168,29 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {courseModules.map((module, index) => (
-                <SidebarMenuItem key={module.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={module.url} 
-                      className={({ isActive }) => `${getNavCls(isActive)} ${
-                        module.status === "locked" && !isAdmin ? "opacity-60 pointer-events-none" : ""
-                      } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
-                    >
-                      <div className="relative z-10 flex items-center w-full">
-                        <div className={`
-                          w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
-                          ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
-                            module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
-                            module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
-                            "bg-muted/50 text-muted-foreground"}
-                        `}>
-                          {module.status === "completed" ? "✓" : 
-                           module.status === "in-progress" ? "●" : 
-                           (module.status === "locked" && !isAdmin) ? "🔒" : index + 1}
-                        </div>
+              {courseModules.map((module, index) => {
+                const isModuleLocked = module.status === "locked" && !isAdmin;
+                return (
+                  <SidebarMenuItem key={module.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink 
+                        to={module.url} 
+                        className={({ isActive }) => `${getNavCls(isActive)} ${
+                          isModuleLocked ? "opacity-60 pointer-events-none" : ""
+                        } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
+                      >
+                        <div className="relative z-10 flex items-center w-full">
+                          <div className={`
+                            w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300
+                            ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
+                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
+                              module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
+                              "bg-muted/50 text-muted-foreground"}
+                          `}>
+                            {module.status === "completed" ? "✓" : 
+                             module.status === "in-progress" ? "●" : 
+                             isModuleLocked ? "🔒" : index + 1}
+                          </div>
                         
                         {!collapsed && (
                           <>
@@ -215,7 +217,8 @@ export function AppSidebar() {
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
