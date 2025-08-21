@@ -7,6 +7,26 @@ export interface LoanExample {
   keyLearningPoints: string[];
 }
 
+export interface CaseStudy {
+  title: string;
+  company: string;
+  situation: string;
+  challenge: string;
+  solution: string;
+  outcome: string;
+  lessonsLearned: string[];
+}
+
+export interface Script {
+  title: string;
+  scenario: string;
+  dialogues: {
+    speaker: string;
+    text: string;
+  }[];
+  keyPoints: string[];
+}
+
 export interface Video {
   title: string;
   description: string;
@@ -27,6 +47,8 @@ export interface Module {
   topics: string[];
   loanExamples: LoanExample[];
   videos: Video[];
+  caseStudies: CaseStudy[];
+  scripts: Script[];
 }
 
 export interface CourseData {
@@ -109,6 +131,102 @@ export const courseData: CourseData = {
             "Evaluate equipment as collateral and depreciation impact"
           ]
         }
+      ],
+      caseStudies: [
+        {
+          title: "Tech Startup Financial Analysis",
+          company: "InnovateTech Solutions",
+          situation: "A 3-year-old SaaS company seeking $500K growth capital to expand their sales team and marketing efforts. Revenue has grown from $100K to $2M annually.",
+          challenge: "Limited financial history, negative cash flow due to aggressive growth investments, high customer acquisition costs, and difficulty proving sustainable profitability to traditional lenders.",
+          solution: "Comprehensive financial analysis focusing on unit economics, customer lifetime value, and monthly recurring revenue trends. Developed 18-month cash flow projections incorporating sales team productivity ramp-up.",
+          outcome: "Secured revenue-based financing at 12% cost of capital with repayment tied to monthly revenue percentage. Company achieved break-even in 14 months and increased ARR by 180%.",
+          lessonsLearned: [
+            "SaaS metrics like LTV/CAC ratio are crucial for tech company analysis",
+            "Monthly recurring revenue provides predictable cash flow for lenders",
+            "Growth-stage companies need flexible repayment structures",
+            "Revenue-based financing can bridge gap between debt and equity"
+          ]
+        },
+        {
+          title: "Family Restaurant Working Capital Crisis",
+          company: "Bella's Italian Bistro",
+          situation: "20-year-old family restaurant experiencing cash flow issues due to seasonal decline and equipment repairs. Need $75K to cover payroll and supplier payments through slow winter months.",
+          challenge: "Seasonal revenue pattern, aging equipment, limited collateral, personal guarantees already stretched, and tight timeline for funding need.",
+          solution: "Analyzed 5-year seasonal patterns, structured inventory-based line of credit with seasonal advance rates. Implemented cash flow management system and equipment replacement plan.",
+          outcome: "Avoided closure during slow season, implemented cost controls that improved margins by 15%, secured equipment lease for kitchen upgrades, returned to profitability.",
+          lessonsLearned: [
+            "Seasonal businesses need flexible credit structures",
+            "Historical pattern analysis predicts future cash flow needs",
+            "Working capital solutions must align with business cycles",
+            "Operational improvements often accompany financing solutions"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Initial Client Financial Assessment Meeting",
+          scenario: "First meeting with potential borrower to understand their financial position and funding needs",
+          dialogues: [
+            {
+              speaker: "Loan Officer",
+              text: "Thank you for meeting with me today. Let's start by understanding your business and what brings you to our bank for financing."
+            },
+            {
+              speaker: "Business Owner",
+              text: "We've been operating for 5 years and have steady growth, but we need working capital to take advantage of a large contract opportunity."
+            },
+            {
+              speaker: "Loan Officer",
+              text: "That's great to hear about the growth and opportunity. Can you walk me through your current financial position - annual revenue, monthly cash flow patterns, and existing debt obligations?"
+            },
+            {
+              speaker: "Business Owner",
+              text: "Our revenue last year was $1.2 million, up from $900K the year before. Monthly cash flow varies between $15K to $45K depending on the season."
+            },
+            {
+              speaker: "Loan Officer",
+              text: "I appreciate those details. Now, regarding this contract opportunity - can you tell me about the timeline, payment terms, and how much additional working capital you'll need?"
+            }
+          ],
+          keyPoints: [
+            "Start with open-ended questions to understand the business",
+            "Gather specific financial metrics early in conversation", 
+            "Understand both current position and future opportunity",
+            "Listen for cash flow patterns and seasonal variations"
+          ]
+        },
+        {
+          title: "Explaining Financial Ratios to Business Owners",
+          scenario: "Educational conversation about key financial ratios and their importance in lending decisions",
+          dialogues: [
+            {
+              speaker: "Loan Officer",
+              text: "I'd like to explain some key financial ratios we use to evaluate loan applications. These will help you understand our decision process."
+            },
+            {
+              speaker: "Business Owner", 
+              text: "That would be helpful. I know you look at profitability, but I'm not sure what specific numbers matter most."
+            },
+            {
+              speaker: "Loan Officer",
+              text: "Great question. The debt service coverage ratio is crucial - it shows whether your cash flow can support loan payments. We calculate your net operating income divided by total debt payments."
+            },
+            {
+              speaker: "Business Owner",
+              text: "So if my operating income is $100K and my debt payments are $60K annually, that's 1.67?"
+            },
+            {
+              speaker: "Loan Officer",
+              text: "Exactly! A ratio above 1.25 shows strong ability to service debt. We also look at your current ratio - current assets divided by current liabilities - to measure short-term liquidity."
+            }
+          ],
+          keyPoints: [
+            "Use simple language to explain complex financial concepts",
+            "Provide specific examples using client's numbers when possible",
+            "Focus on ratios most relevant to their loan request",
+            "Explain why these ratios matter for lending decisions"
+          ]
+        }
       ]
     },
     {
@@ -178,6 +296,70 @@ export const courseData: CourseData = {
             "Compare private vs public debt markets",
             "Understand institutional investor requirements",
             "Analyze pricing differences between market types"
+          ]
+        }
+      ],
+      caseStudies: [
+        {
+          title: "Corporate Bond vs Bank Financing Decision",
+          company: "MidAtlantic Manufacturing Corp",
+          situation: "Established manufacturing company needs $5M for facility expansion. Strong credit rating (BBB+) and consistent cash flows. Considering both traditional bank financing and corporate bond issuance.",
+          challenge: "Evaluating cost differences between bank loan at prime + 200bps vs corporate bond at 150bps over treasuries, considering issuance costs, covenants, and market timing.",
+          solution: "Comprehensive analysis of all-in costs including underwriting fees, legal costs, and ongoing compliance. Evaluated market conditions and interest rate environment. Modeled covenant structures and operational flexibility.",
+          outcome: "Chose corporate bond issuance saving 75bps annually in interest costs. Used bank relationship for backup credit facility. Completed expansion 6 months ahead of schedule with enhanced market position.",
+          lessonsLearned: [
+            "All-in cost analysis must include issuance and ongoing costs",
+            "Market timing significantly impacts bond pricing",
+            "Maintain banking relationships even when using capital markets",
+            "Covenant flexibility is worth modest cost premium in many cases"
+          ]
+        },
+        {
+          title: "Private Placement for Healthcare System", 
+          company: "Regional Medical Center Network",
+          situation: "Healthcare network with predictable revenue streams from insurance reimbursements needs $10M for medical equipment and facility upgrades. Wants to avoid public market scrutiny and costs.",
+          challenge: "Structuring private placement to appeal to institutional investors while maintaining operational flexibility. Needed competitive pricing without public rating agency process.",
+          solution: "Targeted insurance companies and pension funds with healthcare investment mandates. Structured 10-year fixed rate notes with step-down pricing based on coverage ratios. Included equipment security provisions.",
+          outcome: "Successfully placed $10M at 200bps over treasuries with 3 institutional investors. Maintained private company flexibility while accessing capital market pricing. Equipment investments improved patient outcomes and operational efficiency.",
+          lessonsLearned: [
+            "Private placements offer middle ground between bank and public financing",
+            "Institutional investors value predictable cash flows from healthcare",
+            "Security provisions can enhance pricing for equipment purchases", 
+            "Relationship management crucial for future financing flexibility"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Capital Markets vs Bank Financing Discussion",
+          scenario: "Advising mid-size company on financing options for major expansion",
+          dialogues: [
+            {
+              speaker: "Financial Advisor",
+              text: "Given your financing needs and company profile, you have several options beyond traditional bank lending. Let's explore capital markets alternatives."
+            },
+            {
+              speaker: "CFO",
+              text: "We've always used bank financing. What advantages would capital markets offer for our $3 million need?"
+            },
+            {
+              speaker: "Financial Advisor", 
+              text: "Capital markets can offer longer terms, potentially lower rates, and less restrictive covenants. However, there are trade-offs in complexity and disclosure requirements."
+            },
+            {
+              speaker: "CFO",
+              text: "What about the costs? I hear bond issuances have significant upfront expenses."
+            },
+            {
+              speaker: "Financial Advisor",
+              text: "True, but at your size, we'd likely look at private placement, which has lower issuance costs. For $3M, you're borderline - let's analyze the break-even point."
+            }
+          ],
+          keyPoints: [
+            "Compare all-in costs including issuance expenses",
+            "Consider company size and complexity thresholds",
+            "Evaluate covenant flexibility and operational impact",
+            "Assess market timing and interest rate environment"
           ]
         }
       ]
@@ -265,6 +447,78 @@ export const courseData: CourseData = {
             "Navigate startup lending when conventional financing isn't available"
           ]
         }
+      ],
+      caseStudies: [
+        {
+          title: "Restaurant Chain SBA 504 Real Estate Purchase",
+          company: "Hometown Burger Franchise",
+          situation: "Successful franchisee operating 3 locations wants to purchase the real estate for their flagship location instead of continuing to rent. Property value $1.2M, strong operating history.",
+          challenge: "Coordinating three-party financing structure (bank, CDC, borrower equity), meeting job creation requirements, navigating SBA bureaucracy, and timing the transaction with lease expiration.",
+          solution: "Structured SBA 504 loan with 50% bank financing ($600K), 40% SBA debenture ($480K), and 10% owner equity ($120K). Documented job retention and creation plan meeting SBA requirements.",
+          outcome: "Closed transaction 30 days before lease expiration. Fixed-rate SBA debenture provided payment certainty. Property appreciated 15% in first year. Owner expanded to 4th location using equity created.",
+          lessonsLearned: [
+            "SBA 504 coordination requires early planning and communication",
+            "Job creation/retention documentation is critical for approval", 
+            "Fixed-rate debenture provides long-term payment stability",
+            "Real estate ownership creates equity for future expansion"
+          ]
+        },
+        {
+          title: "Manufacturing Company 7(a) Acquisition Loan",
+          company: "Precision Parts Acquisition",
+          situation: "Experienced manufacturing executive wants to acquire established competitor for $850K. Strong industry knowledge but limited liquidity for down payment.",
+          challenge: "SBA requires significant owner equity injection, seller financing coordination, business valuation support, and comprehensive due diligence within tight timeline.",
+          solution: "Structured $680K SBA 7(a) loan with 20% down payment ($170K). Negotiated seller note for portion of equity requirement. Completed thorough quality of earnings analysis and environmental assessment.",
+          outcome: "Successfully acquired company and integrated operations within 90 days. Combined entity achieved 25% cost savings through operational synergies. SBA guarantee enabled 85% financing with competitive terms.",
+          lessonsLearned: [
+            "SBA acquisition loans require extensive due diligence",
+            "Seller financing can supplement buyer equity requirements",
+            "Industry experience is crucial for SBA approval",
+            "Integration planning should begin during due diligence"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "SBA Loan Application Consultation",
+          scenario: "Initial meeting with business owner interested in SBA financing options",
+          dialogues: [
+            {
+              speaker: "SBA Lender",
+              text: "I understand you're interested in SBA financing. Let's start by understanding your business and financing needs to determine which SBA program might fit best."
+            },
+            {
+              speaker: "Business Owner",
+              text: "We need $400K for equipment and working capital. I heard SBA loans have better terms than conventional loans."
+            },
+            {
+              speaker: "SBA Lender", 
+              text: "SBA loans can offer longer terms and lower down payments. First, let's verify you meet SBA size standards. What's your annual revenue and employee count?"
+            },
+            {
+              speaker: "Business Owner",
+              text: "We do about $2.5 million annually with 18 employees. We're in manufacturing."
+            },
+            {
+              speaker: "SBA Lender",
+              text: "Perfect, you're well within SBA size standards for manufacturing. For your needs, we'd likely look at the 7(a) program. The SBA guarantee allows us to offer 90% financing with up to 10-year terms for equipment."
+            },
+            {
+              speaker: "Business Owner",
+              text: "What's the process like? I've heard SBA loans take forever."
+            },
+            {
+              speaker: "SBA Lender",
+              text: "While SBA loans do require more documentation than conventional loans, we can typically close within 45-60 days. The key is having your financial statements, tax returns, and business plan ready upfront."
+            }
+          ],
+          keyPoints: [
+            "Verify SBA eligibility early in the conversation",
+            "Match SBA program to specific financing needs",
+            "Set realistic expectations about timeline and documentation",
+            "Emphasize benefits: lower down payment, longer terms, competitive rates"
+          ]
+        }
       ]
     },
     {
@@ -350,6 +604,70 @@ export const courseData: CourseData = {
             "Monitor covenant compliance throughout the year"
           ]
         }
+      ],
+      caseStudies: [
+        {
+          title: "Distribution Company Warehouse Acquisition",
+          company: "Atlantic Logistics Partners",
+          situation: "Growing distribution company operating from leased facilities for 8 years. Found ideal warehouse for purchase at $2.1M. Strong cash flows but limited liquid assets for large down payment.",
+          challenge: "Needed to structure commercial real estate financing with acceptable loan-to-value ratio, meet debt service coverage requirements, coordinate with seller's timeline, and maintain working capital for operations.",
+          solution: "Structured 75% LTV commercial mortgage ($1.575M) with 25-year amortization and 7-year balloon. Required 1.35x debt service coverage ratio. Negotiated 60-day closing to accommodate due diligence.",
+          outcome: "Successfully purchased and occupied facility. Eliminated $18K monthly rent payments. Property appreciated 12% annually. Used equity buildup to finance expansion into adjacent markets.",
+          lessonsLearned: [
+            "Owner-occupied CRE provides stability and equity building",
+            "DSCR requirements must account for rent savings in occupied properties",
+            "Balloon payment structure requires refinancing planning",
+            "Real estate equity becomes valuable collateral for future growth"
+          ]
+        },
+        {
+          title: "Equipment Financing for Manufacturing Expansion", 
+          company: "Precision Machining Solutions",
+          situation: "Job shop manufacturer with strong order backlog needs $750K for new CNC equipment to meet demand. Equipment will increase capacity by 40% and improve margins through automation.",
+          challenge: "Large equipment purchase relative to company size, technology obsolescence risk, seasonal cash flow patterns affecting debt service, and need to maintain working capital during expansion.",
+          solution: "Structured equipment term loan matching 7-year useful life with seasonal payment adjustments. Equipment serves as primary collateral. Included technology upgrade provision for early refinancing.",
+          outcome: "Installed equipment ahead of schedule, achieved 35% capacity increase and 8% margin improvement. Seasonal payment structure managed cash flow effectively. Early technology upgrade option proved valuable after 4 years.",
+          lessonsLearned: [
+            "Match loan terms to equipment useful life and business cash flows",
+            "Technology provisions important for rapidly evolving equipment",
+            "Seasonal payment structures accommodate cyclical businesses",
+            "Equipment financing enables growth that creates additional debt capacity"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Commercial Real Estate Loan Structuring",
+          scenario: "Discussing CRE loan structure and requirements with business owner",
+          dialogues: [
+            {
+              speaker: "Commercial Lender",
+              text: "Let's discuss structuring your commercial real estate purchase. The property is listed at $1.8M - what's your intended use and down payment capability?"
+            },
+            {
+              speaker: "Business Owner",
+              text: "We'll occupy 100% as our headquarters and warehouse. We can put down about $300K, maybe $350K if needed."
+            },
+            {
+              speaker: "Commercial Lender",
+              text: "That's about 17-19% down. For owner-occupied properties, we typically require 20-25% down. The good news is owner-occupied rates are more favorable than investment property."
+            },
+            {
+              speaker: "Business Owner",
+              text: "What about the debt service coverage ratio? Our rent is currently $12K monthly."
+            },
+            {
+              speaker: "Commercial Lender", 
+              text: "Excellent point. We'll add back your current rent when calculating DSCR since you'll save that expense. With your cash flow plus rent savings, you should easily meet our 1.25x minimum coverage requirement."
+            }
+          ],
+          keyPoints: [
+            "Owner-occupied properties have different LTV and rate structures",
+            "Include rent savings in debt service coverage calculations",
+            "Minimum down payment requirements vary by property type",
+            "Emphasize equity building benefits of ownership vs leasing"
+          ]
+        }
       ]
     },
     {
@@ -425,6 +743,70 @@ export const courseData: CourseData = {
             "Structure recourse vs. non-recourse factoring",
             "Calculate factor rates and fees (typically 1-5% of invoice value)",
             "Understand collection responsibilities and customer notification"
+          ]
+        }
+      ],
+      caseStudies: [
+        {
+          title: "Real Estate Development Bridge Financing",
+          company: "Sunrise Commercial Development",
+          situation: "Experienced developer secured contract to purchase prime commercial lot for $2M and build retail center. Needs bridge financing to close on land while securing permanent construction financing.",
+          challenge: "Tight closing timeline (30 days), need for quick approval, higher risk profile of development project, exit strategy coordination with permanent lender, and market timing concerns.",
+          solution: "Structured 18-month bridge loan at 65% LTV ($1.3M) with interest-only payments. Required detailed exit strategy with commitment letter from permanent construction lender. Personal guarantees from principals.",
+          outcome: "Closed land purchase on time, secured permanent construction financing within 12 months. Project completed successfully and leased to national tenants. Developer refinanced bridge loan 2 months early.",
+          lessonsLearned: [
+            "Bridge loans require clear and documented exit strategies", 
+            "Development projects need experienced borrowers with track records",
+            "Market timing risk must be carefully evaluated and priced",
+            "Strong permanent lender relationships crucial for takeout financing"
+          ]
+        },
+        {
+          title: "Asset-Based Lending for Rapid Growth",
+          company: "TechDistribution Inc",
+          situation: "Technology distributor experiencing 200% annual growth but struggling with cash flow timing. Traditional bank credit insufficient for inventory financing needs during rapid expansion.",
+          challenge: "Volatile inventory levels, diverse product mix with different turn rates, accounts receivable concentrated among few large customers, and need for flexible credit facility.",
+          solution: "Structured $500K asset-based line of credit with 80% advance on eligible A/R and 50% on qualified inventory. Monthly borrowing base certificates and quarterly field examinations. Sublimit controls by customer concentration.",
+          outcome: "Enabled company to support growth without dilutive equity financing. Maintained vendor relationships through improved payment terms. Company eventually graduated to traditional credit facilities as cash flows stabilized.",
+          lessonsLearned: [
+            "Asset-based lending suits companies with strong assets but weak cash flows",
+            "Regular monitoring and reporting requirements justify higher pricing",
+            "Borrowing base calculations must reflect real-time asset quality",
+            "ABL can bridge to conventional financing as companies mature"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Bridge Loan Risk Assessment Discussion",
+          scenario: "Evaluating bridge loan request and explaining risk factors and pricing",
+          dialogues: [
+            {
+              speaker: "Bridge Lender", 
+              text: "I understand you need bridge financing to close on this property. Let's discuss the risk factors that affect our pricing and structure."
+            },
+            {
+              speaker: "Real Estate Investor",
+              text: "I have a solid track record and clear exit strategy. Why are bridge loan rates so much higher than traditional financing?"
+            },
+            {
+              speaker: "Bridge Lender",
+              text: "Bridge loans carry higher risk due to shorter terms and transition nature. We're pricing for speed, flexibility, and the possibility that your exit strategy might be delayed."
+            },
+            {
+              speaker: "Real Estate Investor", 
+              text: "My permanent lender has already issued a commitment letter. Doesn't that reduce the risk?"
+            },
+            {
+              speaker: "Bridge Lender",
+              text: "It absolutely helps, and we've factored that into our pricing. However, we still need to underwrite as if we might need to hold the loan longer. That's why we require detailed backup exit strategies."
+            }
+          ],
+          keyPoints: [
+            "Bridge loan pricing reflects speed, flexibility, and transition risk",
+            "Strong exit strategies improve terms but don't eliminate risk premiums",
+            "Backup exit plans required in case primary strategy fails",
+            "Track record and experience significantly impact approval and pricing"
           ]
         }
       ]
@@ -510,6 +892,70 @@ export const courseData: CourseData = {
             "Understand investor-funded loan structures",
             "Compare platform fees vs. traditional loan costs",
             "Evaluate alternative credit scoring models used by platforms"
+          ]
+        }
+      ],
+      caseStudies: [
+        {
+          title: "Restaurant MCA During COVID Recovery",
+          company: "Downtown Café Group",
+          situation: "Restaurant group with 3 locations struggling with inconsistent cash flows during COVID recovery. Traditional lenders hesitant due to industry volatility. Need $150K for equipment repairs and marketing push.",
+          challenge: "Inconsistent revenue patterns, high industry risk perception, limited collateral, urgent timing for summer season preparation, and difficulty projecting stable cash flows for traditional underwriting.",
+          solution: "Merchant cash advance based on credit card processing history. $150K advance with 1.35 factor rate and 15% holdback on daily credit card sales. No personal guarantees required.",
+          outcome: "Obtained funding within 5 days, completed equipment repairs before peak season. Aggressive marketing campaign increased sales 40%. Repaid MCA in 14 months despite initial 18-month projection.",
+          lessonsLearned: [
+            "MCAs provide speed when timing is critical for seasonal businesses",
+            "Factor rates vs APR calculations help borrowers understand true costs",
+            "Daily holdback percentage must align with seasonal cash flow patterns",
+            "Alternative financing bridges gap when traditional lending unavailable"
+          ]
+        },
+        {
+          title: "SaaS Company Revenue-Based Financing",
+          company: "CloudFlow Analytics",
+          situation: "B2B software company with $2M ARR growing at 15% monthly. Needs $500K for sales team expansion but wants to avoid equity dilution. Consistent monthly recurring revenue provides predictable cash flows.",
+          challenge: "Limited assets for traditional collateral, high growth masking current profitability, preference to avoid equity dilution, and need for flexible repayment tied to business performance.",
+          solution: "Revenue-based financing with 6% of monthly revenue repayment until 1.8x loan amount ($900K) is reached. No personal guarantees, minimal covenants, 24-month expected term.",
+          outcome: "Funded expansion of sales team from 5 to 12 reps. ARR increased to $4.2M within 18 months. Repaid RBF in 20 months and secured traditional credit facilities based on improved financial profile.",
+          lessonsLearned: [
+            "RBF aligns lender and borrower interests through revenue sharing",
+            "Predictable recurring revenue streams ideal for RBF structures",
+            "Flexible repayment reduces cash flow stress during growth phases",
+            "RBF can bridge to traditional financing as companies mature"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Explaining MCA Terms and Costs",
+          scenario: "Educating business owner about merchant cash advance structure and costs",
+          dialogues: [
+            {
+              speaker: "Alternative Lender",
+              text: "Let me explain how our merchant cash advance works. We'll advance you $100K and collect $135K through your credit card sales - that's a 1.35 factor rate."
+            },
+            {
+              speaker: "Business Owner",
+              text: "So I'm paying $35K for $100K - that's 35% interest, right?"
+            },
+            {
+              speaker: "Alternative Lender",
+              text: "It's not quite the same as traditional interest. The 35% is the total cost regardless of how long repayment takes. If you repay faster through higher sales, your effective rate is higher. If it takes longer, the rate is lower."
+            },
+            {
+              speaker: "Business Owner",
+              text: "How does the daily collection work? What if I have a slow day?"
+            },
+            {
+              speaker: "Alternative Lender", 
+              text: "We take 18% of your daily credit card sales. If you process $1,000 in cards, we collect $180. On a $500 day, we collect $90. It automatically adjusts to your business flow, which is the main benefit for seasonal or variable businesses."
+            }
+          ],
+          keyPoints: [
+            "Factor rates are total cost, not annual percentage rates",
+            "Daily collections fluctuate with business performance",
+            "Faster repayment increases effective cost, slower decreases it",
+            "Best suited for businesses with consistent card processing volume"
           ]
         }
       ]
@@ -600,6 +1046,74 @@ export const courseData: CourseData = {
             "Build stress testing scenarios for poor seasons"
           ]
         }
+      ],
+      caseStudies: [
+        {
+          title: "Manufacturing Turnaround Credit Analysis",
+          company: "Heritage Metal Works",
+          situation: "Family-owned manufacturing company with 40-year history experiencing declining margins due to foreign competition. Seeks $1M credit facility to modernize equipment and streamline operations.",
+          challenge: "Three consecutive years of declining profits, aging equipment affecting quality, increased competition from lower-cost imports, family succession planning uncertainties, and tight cash flows limiting investment capability.",
+          solution: "Comprehensive 13-week cash flow analysis, industry benchmarking study, management assessment, and operational improvement plan. Structured credit facility with performance milestones and enhanced reporting requirements.",
+          outcome: "Company invested in automation reducing labor costs 25%. Quality improvements won back key customers. EBITDA improved from $200K to $850K over 18 months. Successfully transitioned to next generation management.",
+          lessonsLearned: [
+            "Turnaround situations require operational analysis beyond financial metrics",
+            "Management capability assessment crucial for distressed lending", 
+            "Performance milestones protect lender while supporting borrower success",
+            "Industry trends analysis helps predict future viability"
+          ]
+        },
+        {
+          title: "Retail Chain Expansion Risk Assessment",
+          company: "Regional Home Goods Stores",
+          situation: "Successful 12-store retail chain wants to expand into new metropolitan market with 8 new locations over 24 months. Requesting $3M credit facility to fund buildouts and inventory.",
+          challenge: "Unproven market penetration strategy, significant capital requirements relative to current cash flows, execution risk of rapid expansion, competitive landscape analysis, and inventory management complexity.",
+          solution: "Detailed market analysis of expansion area, store-level profitability modeling, phased funding approach tied to performance metrics, comprehensive competitive assessment, and inventory management system evaluation.",
+          outcome: "Approved phased expansion with funding tied to same-store sales growth and new store performance. Successfully opened 6 stores in 18 months. Market penetration exceeded projections by 20%.",
+          lessonsLearned: [
+            "Expansion lending requires market analysis beyond financial statements",
+            "Phased funding reduces risk while supporting growth objectives",
+            "Same-store sales trends predict expansion success likelihood",
+            "Management depth becomes critical during rapid growth phases"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Credit Risk Assessment Interview",
+          scenario: "Conducting detailed credit analysis interview with management team",
+          dialogues: [
+            {
+              speaker: "Credit Analyst",
+              text: "I'd like to understand your competitive position and market dynamics. Who are your main competitors and how do you differentiate your products?"
+            },
+            {
+              speaker: "CEO",
+              text: "We compete primarily on quality and service. Our main competitors are two national firms, but we've built strong relationships with regional customers over 20 years."
+            },
+            {
+              speaker: "Credit Analyst",
+              text: "That's valuable. How have market conditions affected your business over the past 3 years? I see some revenue volatility in your financials."
+            },
+            {
+              speaker: "CFO",
+              text: "2020 was tough due to supply chain issues, but we've recovered well. The volatility reflects some large project timing - our underlying customer base has been stable."
+            },
+            {
+              speaker: "Credit Analyst",
+              text: "Let's talk about this expansion plan. What gives you confidence you can execute successfully while maintaining current operations quality?"
+            },
+            {
+              speaker: "CEO",
+              text: "We've promoted our operations manager to VP and hired experienced regional managers. We're not trying to do this all at once - it's a carefully planned 18-month rollout."
+            }
+          ],
+          keyPoints: [
+            "Understand competitive positioning and differentiation strategy",
+            "Analyze historical performance in context of market conditions",
+            "Assess management depth and execution capability",
+            "Evaluate expansion plans for reasonableness and timing"
+          ]
+        }
       ]
     },
     {
@@ -688,6 +1202,78 @@ export const courseData: CourseData = {
             "Establish ongoing compliance monitoring and testing programs"
           ]
         }
+      ],
+      caseStudies: [
+        {
+          title: "Multi-State Bank BSA/AML Compliance Overhaul",
+          company: "Community Bank Network",
+          situation: "Regional bank with 25 branches across 3 states received regulatory criticism for inadequate BSA/AML program. Need comprehensive compliance program enhancement within 6 months to avoid enforcement action.",
+          challenge: "Inconsistent procedures across branches, inadequate customer due diligence processes, poor suspicious activity monitoring, staff training deficiencies, and technology system limitations.",
+          solution: "Implemented enterprise-wide BSA/AML compliance program including policy updates, enhanced customer due diligence procedures, automated monitoring systems, comprehensive staff training, and independent testing program.",
+          outcome: "Passed follow-up regulatory examination with satisfactory ratings. Reduced false positive SAR alerts by 60% while increasing legitimate SAR filings. Enhanced customer onboarding process improved efficiency and compliance.",
+          lessonsLearned: [
+            "BSA/AML compliance requires enterprise-wide cultural commitment",
+            "Technology solutions must balance automation with human oversight",
+            "Regular training and testing essential for program effectiveness",
+            "Independent compliance testing provides valuable program validation"
+          ]
+        },
+        {
+          title: "Fair Lending Remediation Program",
+          company: "Metro Community Bank", 
+          situation: "Community bank's internal fair lending analysis revealed potential pricing disparities for minority-owned small businesses. Proactive remediation needed to address concerns before regulatory examination.",
+          challenge: "Statistical analysis showing rate disparities, need to determine legitimate business justifications, customer communication about remediation, staff retraining requirements, and ongoing monitoring system implementation.",
+          solution: "Comprehensive loan file review to identify legitimate business factors, customer outreach program for affected borrowers, enhanced pricing policies and procedures, staff training on prohibited basis factors, and statistical monitoring system.",
+          outcome: "Remediated 47 loans totaling $180K in rate adjustments and fee refunds. Implemented robust fair lending monitoring preventing future issues. Received commendable rating on fair lending during next examination.",
+          lessonsLearned: [
+            "Proactive fair lending monitoring prevents regulatory issues",
+            "Legitimate business justifications must be clearly documented",
+            "Customer remediation requires careful communication and execution",
+            "Statistical monitoring tools essential for ongoing compliance"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "BSA/AML Customer Due Diligence Interview",
+          scenario: "Conducting enhanced due diligence for higher-risk commercial customer",
+          dialogues: [
+            {
+              speaker: "Compliance Officer",
+              text: "Thank you for meeting with me today. As part of our BSA compliance program, I need to ask some additional questions about your business operations."
+            },
+            {
+              speaker: "Business Owner",
+              text: "Of course. I understand you need to be careful about money laundering and such. What do you need to know?"
+            },
+            {
+              speaker: "Compliance Officer",
+              text: "Let's start with your customer base. Can you describe the types of customers you serve and the geographic areas where you do business?"
+            },
+            {
+              speaker: "Business Owner",
+              text: "We serve primarily commercial contractors in the tri-state area. Most payments are by check, though we do get some cash payments for smaller jobs."
+            },
+            {
+              speaker: "Compliance Officer",
+              text: "That's helpful. Regarding the cash payments, what's the typical transaction size and frequency? Do you have any customers who pay unusually large amounts in cash?"
+            },
+            {
+              speaker: "Business Owner", 
+              text: "Cash payments are usually under $500, mostly for emergency repairs. We do have one customer who pays cash monthly around $2,000, but he's been with us for years and owns several rental properties."
+            },
+            {
+              speaker: "Compliance Officer",
+              text: "I appreciate that detail. Can you provide documentation for that customer relationship? We'll need to maintain records of higher-risk relationships for our compliance files."
+            }
+          ],
+          keyPoints: [
+            "Enhanced due diligence requires detailed business operation understanding",
+            "Focus on cash transaction patterns and unusual payment methods",
+            "Document customer relationships that present higher risk profiles", 
+            "Maintain comprehensive records for regulatory examination purposes"
+          ]
+        }
       ]
     }
   ]
@@ -695,27 +1281,31 @@ export const courseData: CourseData = {
 
 export const statsData = [
   {
+    icon: "CheckCircle",
     title: "Modules Completed",
-    value: 2,
-    description: "out of 8 modules",
-    trend: { value: 15, isPositive: true }
+    value: "2",
+    subtitle: "of 8 modules",
+    trend: "+1 this week"
   },
   {
+    icon: "Clock",
     title: "Learning Time",
-    value: "12.5hrs",
-    description: "total time invested",
-    trend: { value: 22, isPositive: true }
+    value: "12.5h",
+    subtitle: "total logged",
+    trend: "+2.5h this week"
   },
   {
+    icon: "Target",
     title: "Current Streak",
-    value: "5 days",
-    description: "consecutive learning",
-    trend: { value: 8, isPositive: true }
+    value: "7 days",
+    subtitle: "learning streak",
+    trend: "Keep it up!"
   },
   {
+    icon: "TrendingUp",
     title: "Progress Score",
     value: "85%",
-    description: "average quiz score",
-    trend: { value: 12, isPositive: true }
+    subtitle: "completion rate",
+    trend: "+5% improvement"
   }
 ];
