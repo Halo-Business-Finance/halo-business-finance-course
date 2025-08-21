@@ -74,7 +74,7 @@ const CertificatesPage = () => {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center gap-2 mb-6">
         <Award className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">Certificates & Credentials</h1>
+        <h1 className="text-2xl font-bold text-foreground">My Certificates & Credentials</h1>
       </div>
 
       {/* Summary Card */}
