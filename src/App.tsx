@@ -95,10 +95,10 @@ const HeaderContent = () => {
       </div>
       
       <div className="flex-1 flex flex-col items-center justify-center">
-        <h1 className="text-lg font-medium text-foreground">
+        <h1 className="text-lg font-medium text-black">
           Welcome back, {getFirstName()}!
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
       </div>
