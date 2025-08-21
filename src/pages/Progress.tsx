@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Clock, CheckCircle, Target } from "lucide-react";
 
 const ProgressPage = () => {
-  const overallProgress = 37.5; // 3 out of 8 modules completed/in-progress
+  const overallProgress = 0; // Fresh start - no modules completed
   
   const moduleProgress = [
-    { name: "Business Finance Foundations", progress: 100, status: "completed", timeSpent: "2h 30m" },
-    { name: "Capital Markets", progress: 100, status: "completed", timeSpent: "3h 15m" },
-    { name: "SBA Loan Programs", progress: 65, status: "in-progress", timeSpent: "1h 45m" },
-    { name: "Conventional Lending", progress: 0, status: "available", timeSpent: "0m" },
+    { name: "Business Finance Foundations", progress: 0, status: "available", timeSpent: "0m" },
+    { name: "Capital Markets", progress: 0, status: "locked", timeSpent: "0m" },
+    { name: "SBA Loan Programs", progress: 0, status: "locked", timeSpent: "0m" },
+    { name: "Conventional Lending", progress: 0, status: "locked", timeSpent: "0m" },
     { name: "Bridge Financing", progress: 0, status: "locked", timeSpent: "0m" },
     { name: "Alternative Finance", progress: 0, status: "locked", timeSpent: "0m" },
     { name: "Credit Analysis", progress: 0, status: "locked", timeSpent: "0m" },
@@ -57,15 +57,15 @@ const ProgressPage = () => {
             <Progress value={overallProgress} className="h-3" />
             <div className="grid grid-cols-3 gap-4 pt-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">2</div>
+                <div className="text-2xl font-bold text-accent">0</div>
                 <div className="text-sm text-muted-foreground">Completed</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">1</div>
+                <div className="text-2xl font-bold text-primary">0</div>
                 <div className="text-sm text-muted-foreground">In Progress</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-muted-foreground">5</div>
+                <div className="text-2xl font-bold text-muted-foreground">8</div>
                 <div className="text-sm text-muted-foreground">Remaining</div>
               </div>
             </div>
