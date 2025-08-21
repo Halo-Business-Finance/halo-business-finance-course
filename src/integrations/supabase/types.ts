@@ -519,6 +519,57 @@ export type Database = {
           },
         ]
       }
+      geolocation_rules: {
+        Row: {
+          country_codes: string[] | null
+          created_at: string | null
+          id: string
+          ip_ranges: unknown[] | null
+          is_active: boolean | null
+          latitude_range: number[] | null
+          longitude_range: number[] | null
+          priority: number | null
+          radius_km: number | null
+          region_codes: string[] | null
+          rule_type: string
+          time_restrictions: Json | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          country_codes?: string[] | null
+          created_at?: string | null
+          id?: string
+          ip_ranges?: unknown[] | null
+          is_active?: boolean | null
+          latitude_range?: number[] | null
+          longitude_range?: number[] | null
+          priority?: number | null
+          radius_km?: number | null
+          region_codes?: string[] | null
+          rule_type: string
+          time_restrictions?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          country_codes?: string[] | null
+          created_at?: string | null
+          id?: string
+          ip_ranges?: unknown[] | null
+          is_active?: boolean | null
+          latitude_range?: number[] | null
+          longitude_range?: number[] | null
+          priority?: number | null
+          radius_km?: number | null
+          region_codes?: string[] | null
+          rule_type?: string
+          time_restrictions?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       "Halo Launch Pad Learn": {
         Row: {
           created_at: string
@@ -933,6 +984,338 @@ export type Database = {
         }
         Relationships: []
       }
+      security_incidents: {
+        Row: {
+          affected_systems: string[] | null
+          affected_users: string[] | null
+          assigned_to: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          incident_type: string
+          indicators: Json | null
+          lessons_learned: string | null
+          reported_by: string | null
+          resolved_at: string | null
+          response_actions: Json | null
+          severity: string
+          status: string | null
+          timeline: Json | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          affected_systems?: string[] | null
+          affected_users?: string[] | null
+          assigned_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          incident_type: string
+          indicators?: Json | null
+          lessons_learned?: string | null
+          reported_by?: string | null
+          resolved_at?: string | null
+          response_actions?: Json | null
+          severity: string
+          status?: string | null
+          timeline?: Json | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          affected_systems?: string[] | null
+          affected_users?: string[] | null
+          assigned_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          incident_type?: string
+          indicators?: Json | null
+          lessons_learned?: string | null
+          reported_by?: string | null
+          resolved_at?: string | null
+          response_actions?: Json | null
+          severity?: string
+          status?: string | null
+          timeline?: Json | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      security_policies: {
+        Row: {
+          applies_to: string[] | null
+          approved_by: string | null
+          created_at: string | null
+          created_by: string | null
+          effective_date: string | null
+          enforcement_level: string | null
+          expiry_date: string | null
+          id: string
+          is_active: boolean | null
+          policy_name: string
+          policy_rules: Json
+          policy_type: string
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          applies_to?: string[] | null
+          approved_by?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          effective_date?: string | null
+          enforcement_level?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          policy_name: string
+          policy_rules: Json
+          policy_type: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          applies_to?: string[] | null
+          approved_by?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          effective_date?: string | null
+          enforcement_level?: string | null
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          policy_name?: string
+          policy_rules?: Json
+          policy_type?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: []
+      }
+      threat_intelligence: {
+        Row: {
+          confidence_score: number | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          first_seen: string | null
+          id: string
+          indicator_type: string
+          indicator_value: string
+          is_active: boolean | null
+          last_seen: string | null
+          metadata: Json | null
+          source: string | null
+          threat_level: number
+          threat_type: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          first_seen?: string | null
+          id?: string
+          indicator_type: string
+          indicator_value: string
+          is_active?: boolean | null
+          last_seen?: string | null
+          metadata?: Json | null
+          source?: string | null
+          threat_level: number
+          threat_type: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          first_seen?: string | null
+          id?: string
+          indicator_type?: string
+          indicator_value?: string
+          is_active?: boolean | null
+          last_seen?: string | null
+          metadata?: Json | null
+          source?: string | null
+          threat_level?: number
+          threat_type?: string
+        }
+        Relationships: []
+      }
+      user_behavior_patterns: {
+        Row: {
+          anomaly_score: number | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          last_updated: string | null
+          pattern_data: Json
+          pattern_type: string
+          sample_count: number | null
+          user_id: string
+        }
+        Insert: {
+          anomaly_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          pattern_data: Json
+          pattern_type: string
+          sample_count?: number | null
+          user_id: string
+        }
+        Update: {
+          anomaly_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          pattern_data?: Json
+          pattern_type?: string
+          sample_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_biometrics: {
+        Row: {
+          biometric_hash: string
+          biometric_type: string
+          created_at: string | null
+          device_id: string | null
+          enrollment_date: string | null
+          failure_count: number | null
+          id: string
+          is_active: boolean | null
+          last_used_at: string | null
+          quality_score: number | null
+          template_data: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          biometric_hash: string
+          biometric_type: string
+          created_at?: string | null
+          device_id?: string | null
+          enrollment_date?: string | null
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_used_at?: string | null
+          quality_score?: number | null
+          template_data?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          biometric_hash?: string
+          biometric_type?: string
+          created_at?: string | null
+          device_id?: string | null
+          enrollment_date?: string | null
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_used_at?: string | null
+          quality_score?: number | null
+          template_data?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_biometrics_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "user_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_devices: {
+        Row: {
+          blocked_at: string | null
+          blocked_reason: string | null
+          browser_info: Json | null
+          created_at: string | null
+          device_fingerprint: string
+          device_name: string | null
+          device_type: string | null
+          first_seen_at: string | null
+          geolocation: Json | null
+          hardware_info: Json | null
+          id: string
+          is_active: boolean | null
+          is_trusted: boolean | null
+          language: string | null
+          last_ip: unknown | null
+          last_seen_at: string | null
+          os_info: Json | null
+          screen_resolution: string | null
+          security_flags: Json | null
+          timezone: string | null
+          trust_level: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          blocked_at?: string | null
+          blocked_reason?: string | null
+          browser_info?: Json | null
+          created_at?: string | null
+          device_fingerprint: string
+          device_name?: string | null
+          device_type?: string | null
+          first_seen_at?: string | null
+          geolocation?: Json | null
+          hardware_info?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_trusted?: boolean | null
+          language?: string | null
+          last_ip?: unknown | null
+          last_seen_at?: string | null
+          os_info?: Json | null
+          screen_resolution?: string | null
+          security_flags?: Json | null
+          timezone?: string | null
+          trust_level?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          blocked_at?: string | null
+          blocked_reason?: string | null
+          browser_info?: Json | null
+          created_at?: string | null
+          device_fingerprint?: string
+          device_name?: string | null
+          device_type?: string | null
+          first_seen_at?: string | null
+          geolocation?: Json | null
+          hardware_info?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_trusted?: boolean | null
+          language?: string | null
+          last_ip?: unknown | null
+          last_seen_at?: string | null
+          os_info?: Json | null
+          screen_resolution?: string | null
+          security_flags?: Json | null
+          timezone?: string | null
+          trust_level?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_enrollments: {
         Row: {
           completion_target_date: string | null
@@ -963,6 +1346,57 @@ export type Database = {
           is_active?: boolean | null
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_mfa: {
+        Row: {
+          backup_codes: string[] | null
+          created_at: string | null
+          failure_count: number | null
+          id: string
+          is_enabled: boolean | null
+          is_primary: boolean | null
+          last_used_at: string | null
+          locked_until: string | null
+          method_name: string | null
+          method_type: string
+          secret_key: string | null
+          updated_at: string | null
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          backup_codes?: string[] | null
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          is_enabled?: boolean | null
+          is_primary?: boolean | null
+          last_used_at?: string | null
+          locked_until?: string | null
+          method_name?: string | null
+          method_type: string
+          secret_key?: string | null
+          updated_at?: string | null
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          backup_codes?: string[] | null
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          is_enabled?: boolean | null
+          is_primary?: boolean | null
+          last_used_at?: string | null
+          locked_until?: string | null
+          method_name?: string | null
+          method_type?: string
+          secret_key?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verified_at?: string | null
         }
         Relationships: []
       }
@@ -1048,6 +1482,74 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      user_sessions: {
+        Row: {
+          created_at: string | null
+          device_id: string | null
+          expires_at: string | null
+          geolocation: Json | null
+          id: string
+          ip_address: unknown | null
+          is_active: boolean | null
+          last_activity_at: string | null
+          risk_score: number | null
+          security_context: Json | null
+          security_level: number | null
+          session_token: string
+          session_type: string | null
+          terminated_at: string | null
+          termination_reason: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          device_id?: string | null
+          expires_at?: string | null
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean | null
+          last_activity_at?: string | null
+          risk_score?: number | null
+          security_context?: Json | null
+          security_level?: number | null
+          session_token: string
+          session_type?: string | null
+          terminated_at?: string | null
+          termination_reason?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          device_id?: string | null
+          expires_at?: string | null
+          geolocation?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean | null
+          last_activity_at?: string | null
+          risk_score?: number | null
+          security_context?: Json | null
+          security_level?: number | null
+          session_token?: string
+          session_type?: string | null
+          terminated_at?: string | null
+          termination_reason?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_sessions_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "user_devices"
+            referencedColumns: ["id"]
           },
         ]
       }
