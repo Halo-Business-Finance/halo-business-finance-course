@@ -186,7 +186,7 @@ const ModulePage = () => {
                   const lessons = [
                     {
                       title: "Introduction & Overview",
-                      type: "video",
+                      type: "overview",
                       duration: "15 min",
                       completed: module.status === "completed" || module.progress > 0,
                       locked: false,
@@ -220,6 +220,7 @@ const ModulePage = () => {
 
                   const getTypeIcon = (type: string) => {
                     switch (type) {
+                      case "overview": return <BookOpen className="h-4 w-4" />;
                       case "video": return <Play className="h-4 w-4" />;
                       case "reading": return <FileText className="h-4 w-4" />;
                       case "assignment": return <BookOpen className="h-4 w-4" />;
@@ -236,6 +237,10 @@ const ModulePage = () => {
                     
                     // Navigate to the appropriate content based on lesson type
                     switch (lesson.type) {
+                      case "overview":
+                        // Switch to overview tab for introduction content
+                        setActiveTab("overview");
+                        break;
                       case "video":
                         // Switch to videos tab to show relevant video content
                         setActiveTab("videos");
