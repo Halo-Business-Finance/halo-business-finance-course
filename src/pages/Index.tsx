@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, BookOpen, Users, Award, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ChatWidget } from "@/components/ChatWidget";
 
 const Index = () => {
   const { user } = useAuth();
@@ -131,6 +132,9 @@ const Index = () => {
           </Link>
         </div>
       </section>
+
+      {/* AI Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
