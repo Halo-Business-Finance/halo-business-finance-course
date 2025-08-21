@@ -116,60 +116,145 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load user roles directly with profile information
+      // Load ALL users from profiles table and their roles (if any)
       let userRolesData = [];
       
       try {
-        // Fetch user roles with profile information using the new foreign key relationship
-        const { data: roles, error: rolesError } = await supabase
-          .from('user_roles')
+        // Fetch all profiles and their associated roles
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
           .select(`
             *,
-            profiles (
-              name,
-              email,
-              phone,
-              title,
-              company,
-              city,
-              state,
-              join_date
+            user_roles (
+              id,
+              role,
+              is_active,
+              created_at,
+              updated_at
             )
           `)
           .order('created_at', { ascending: false });
 
-        if (rolesError) throw rolesError;
-        userRolesData = roles || [];
+        if (profilesError) throw profilesError;
 
-        console.log('Loaded user roles with profiles:', userRolesData);
+        // Transform the data to match the UI expectations
+        userRolesData = profiles?.flatMap(profile => {
+          if (profile.user_roles && profile.user_roles.length > 0) {
+            // User has roles - create an entry for each role
+            return profile.user_roles.map(role => ({
+              id: role.id,
+              user_id: profile.user_id,
+              role: role.role,
+              is_active: role.is_active,
+              created_at: role.created_at,
+              updated_at: role.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }));
+          } else {
+            // User has no roles - show as "no role"
+            return [{
+              id: `no-role-${profile.user_id}`,
+              user_id: profile.user_id,
+              role: 'No Role Assigned',
+              is_active: false,
+              created_at: profile.created_at,
+              updated_at: profile.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }];
+          }
+        }) || [];
+
+        console.log('Loaded all users with their roles:', userRolesData);
+        console.log('Total profiles found:', profiles?.length);
+        console.log('Total role entries created:', userRolesData.length);
       } catch (directError) {
-        console.warn('Failed to load user roles with profiles:', directError);
+        console.warn('Failed to load all users with roles:', directError);
         
-        // Fallback: Load roles and profiles separately
-        const [rolesResponse, profilesResponse] = await Promise.all([
+        // Fallback: Load profiles and roles separately
+        const [profilesResponse, rolesResponse] = await Promise.all([
           supabase
-            .from('user_roles')
+            .from('profiles')
             .select('*')
             .order('created_at', { ascending: false }),
           supabase
-            .from('profiles')
-            .select('user_id, name, email, phone, title, company, city, state, join_date')
+            .from('user_roles')
+            .select('*')
         ]);
 
-        if (rolesResponse.error) throw rolesResponse.error;
         if (profilesResponse.error) throw profilesResponse.error;
+        if (rolesResponse.error) throw rolesResponse.error;
 
-        // Manually join the data
-        const roles = rolesResponse.data || [];
         const profiles = profilesResponse.data || [];
-        const profileMap = new Map(profiles.map(p => [p.user_id, p]));
+        const roles = rolesResponse.data || [];
+        const rolesMap = new Map();
+        
+        // Group roles by user_id
+        roles.forEach(role => {
+          if (!rolesMap.has(role.user_id)) {
+            rolesMap.set(role.user_id, []);
+          }
+          rolesMap.get(role.user_id).push(role);
+        });
 
-        userRolesData = roles.map(role => ({
-          ...role,
-          profiles: profileMap.get(role.user_id) || null
-        }));
+        // Create user role data for all profiles
+        userRolesData = profiles.flatMap(profile => {
+          const userRoles = rolesMap.get(profile.user_id) || [];
+          
+          if (userRoles.length > 0) {
+            return userRoles.map(role => ({
+              ...role,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }));
+          } else {
+            return [{
+              id: `no-role-${profile.user_id}`,
+              user_id: profile.user_id,
+              role: 'No Role Assigned',
+              is_active: false,
+              created_at: profile.created_at,
+              updated_at: profile.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }];
+          }
+        });
 
-        console.log('Loaded user roles with manual join:', userRolesData);
+        console.log('Loaded users with manual fallback logic:', userRolesData);
       }
 
       // Fetch other data in parallel
@@ -444,6 +529,7 @@ const AdminDashboard = () => {
       case 'admin': return 'default';
       case 'manager': return 'secondary';
       case 'user': return 'outline';
+      case 'No Role Assigned': return 'outline';
       default: return 'outline';
     }
   };
