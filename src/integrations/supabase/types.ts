@@ -1132,6 +1132,21 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_authenticated_user_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          id: string
+          join_date: string
+          name: string
+          state: string
+          title: string
+          user_id: string
+        }[]
+      }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1150,21 +1165,6 @@ export type Database = {
           role_id: string
           role_is_active: boolean
           role_updated_at: string
-          user_id: string
-        }[]
-      }
-      get_safe_profiles: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          avatar_url: string
-          city: string
-          company: string
-          created_at: string
-          id: string
-          join_date: string
-          name: string
-          state: string
-          title: string
           user_id: string
         }[]
       }
