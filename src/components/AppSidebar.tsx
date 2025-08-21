@@ -11,8 +11,9 @@ import {
   FileText,
   LogIn,
   LogOut
-} from "lucide-react";
+ } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAdminRole } from "@/hooks/useAdminRole";
 
 import {
   Sidebar,
@@ -55,6 +56,7 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
+  const { isAdmin } = useAdminRole();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
@@ -172,7 +174,7 @@ export function AppSidebar() {
                     <NavLink 
                       to={module.url} 
                       className={({ isActive }) => `${getNavCls(isActive)} ${
-                        module.status === "locked" ? "opacity-60 pointer-events-none" : ""
+                        module.status === "locked" && !isAdmin ? "opacity-60 pointer-events-none" : ""
                       } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
                     >
                       <div className="relative z-10 flex items-center w-full">
@@ -185,7 +187,7 @@ export function AppSidebar() {
                         `}>
                           {module.status === "completed" ? "✓" : 
                            module.status === "in-progress" ? "●" : 
-                           module.status === "locked" ? "🔒" : index + 1}
+                           (module.status === "locked" && !isAdmin) ? "🔒" : index + 1}
                         </div>
                         
                         {!collapsed && (

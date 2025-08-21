@@ -1,16 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Lock, Clock, Play, CheckCircle, BookOpen, Award, FileText, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { VideoPlayer } from "@/components/VideoPlayer";
-import { BookOpen, Clock, CheckCircle, Play, FileText, Award, ArrowRight, ArrowLeft } from "lucide-react";
 import { courseData } from "@/data/courseData";
+import { VideoPlayer } from "@/components/VideoPlayer";
+import { useAdminRole } from "@/hooks/useAdminRole";
 
 const ModulePage = () => {
   const { moduleId } = useParams();
   const navigate = useNavigate();
+  const { isAdmin } = useAdminRole();
 
   const module = courseData.modules.find(m => m.id === moduleId);
   
@@ -36,13 +38,14 @@ const ModulePage = () => {
     }
   };
 
-  if (module.status === "locked") {
+  // Show locked content only to non-admin users
+  if (module.status === "locked" && !isAdmin) {
     return (
       <div className="container mx-auto p-6">
         <Card>
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              🔒
+              <Lock className="h-8 w-8 text-muted-foreground" />
             </div>
             <CardTitle className="text-2xl">{module.title}</CardTitle>
             <CardDescription className="text-base mt-2">
@@ -50,7 +53,10 @@ const ModulePage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button variant="outline" onClick={() => navigate("/")}>View Prerequisites</Button>
+            <Button onClick={() => navigate("/dashboard")} variant="outline">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Return to Dashboard
+            </Button>
           </CardContent>
         </Card>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import CourseHeader from "@/components/CourseHeader";
 import ModuleCard from "@/components/ModuleCard";
 import ModuleDetail from "@/components/ModuleDetail";
@@ -11,6 +12,7 @@ import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
 const Dashboard = () => {
   const { toast } = useToast();
+  const { isAdmin } = useAdminRole();
   const [modules, setModules] = useState(courseData.modules);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
@@ -27,7 +29,8 @@ const Dashboard = () => {
     const module = modules.find(m => m.id === moduleId);
     if (!module) return;
 
-    if (module.status === "locked") {
+    // Allow admins to access all modules
+    if (module.status === "locked" && !isAdmin) {
       toast({
         title: "Module Locked",
         description: "Complete previous modules to unlock this one.",
