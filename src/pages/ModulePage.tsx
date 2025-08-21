@@ -777,7 +777,12 @@ const ModulePage = () => {
                           <span className="font-medium">Duration:</span> 20 minutes | 
                           <span className="font-medium">Difficulty:</span> Intermediate
                         </div>
-                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => alert("Starting Case Study 1: Manufacturing Company Analysis\n\nYou will analyze:\n• 3-year financial statements\n• Equipment loan request for $500K\n• Industry benchmarks\n• Risk assessment factors\n\nThis interactive case study will open shortly...")}
+                        >
                           Start Analysis
                         </Button>
                       </div>
@@ -797,7 +802,12 @@ const ModulePage = () => {
                           <span className="font-medium">Duration:</span> 15 minutes | 
                           <span className="font-medium">Difficulty:</span> Beginner
                         </div>
-                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => alert("Starting Case Study 2: Retail Business Cash Flow Challenge\n\nYou will analyze:\n• Seasonal cash flow patterns\n• Working capital requirements\n• Line of credit structure\n• Repayment capacity\n\nThis interactive case study will open shortly...")}
+                        >
                           Start Analysis
                         </Button>
                       </div>
@@ -817,7 +827,12 @@ const ModulePage = () => {
                           <span className="font-medium">Duration:</span> 25 minutes | 
                           <span className="font-medium">Difficulty:</span> Advanced
                         </div>
-                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => alert("Starting Case Study 3: SBA Loan Scenario\n\nYou will analyze:\n• Healthcare practice expansion\n• SBA 7(a) loan requirements\n• Eligibility criteria\n• Loan structuring options\n• Risk mitigation strategies\n\nThis interactive case study will open shortly...")}
+                        >
                           Start Analysis
                         </Button>
                       </div>
