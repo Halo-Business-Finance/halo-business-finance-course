@@ -36,7 +36,12 @@ const AccountPage = () => {
     emailNotifications: true,
     pushNotifications: false,
     marketingEmails: false,
-    reducedMotion: false
+    reducedMotion: false,
+    courseProgress: true,
+    newCourses: true,
+    webinarReminders: true,
+    weeklyProgress: false,
+    marketingCommunications: false
   });
 
   const [editForm, setEditForm] = useState(userInfo);
@@ -230,6 +235,13 @@ const AccountPage = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleNotificationSettingsSubmit = () => {
+    toast({
+      title: "Notification Settings Saved",
+      description: "Your notification preferences have been updated successfully.",
+    });
   };
 
   if (isLoading) {
@@ -573,7 +585,10 @@ const AccountPage = () => {
                           Get notified when you complete modules or earn certificates
                         </p>
                       </div>
-                      <Switch defaultChecked />
+                      <Switch 
+                        checked={preferences.courseProgress}
+                        onCheckedChange={(checked) => handlePreferenceChange('courseProgress', checked)}
+                      />
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -583,7 +598,10 @@ const AccountPage = () => {
                           Receive updates about new courses and modules
                         </p>
                       </div>
-                      <Switch defaultChecked />
+                      <Switch 
+                        checked={preferences.newCourses}
+                        onCheckedChange={(checked) => handlePreferenceChange('newCourses', checked)}
+                      />
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -593,7 +611,10 @@ const AccountPage = () => {
                           Get reminders before live webinars and events
                         </p>
                       </div>
-                      <Switch defaultChecked />
+                      <Switch 
+                        checked={preferences.webinarReminders}
+                        onCheckedChange={(checked) => handlePreferenceChange('webinarReminders', checked)}
+                      />
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -603,7 +624,10 @@ const AccountPage = () => {
                           Receive a weekly summary of your learning progress
                         </p>
                       </div>
-                      <Switch />
+                      <Switch 
+                        checked={preferences.weeklyProgress}
+                        onCheckedChange={(checked) => handlePreferenceChange('weeklyProgress', checked)}
+                      />
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -613,10 +637,13 @@ const AccountPage = () => {
                           Receive information about Halo services and updates
                         </p>
                       </div>
-                      <Switch />
+                      <Switch 
+                        checked={preferences.marketingCommunications}
+                        onCheckedChange={(checked) => handlePreferenceChange('marketingCommunications', checked)}
+                      />
                     </div>
                   </div>
-                  <Button>Save Notification Settings</Button>
+                  <Button onClick={handleNotificationSettingsSubmit}>Save Notification Settings</Button>
                 </CardContent>
               </Card>
             </TabsContent>
