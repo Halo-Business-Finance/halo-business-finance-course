@@ -126,7 +126,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Course Modules */}
-        <SidebarGroup>
+        <SidebarGroup className="pt-6">
           <SidebarGroupLabel>
             <div className="flex items-center gap-2">
               <div className="relative">
