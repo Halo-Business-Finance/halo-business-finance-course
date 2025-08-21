@@ -23,22 +23,14 @@ import {
   BookOpen,
   Wrench
 } from "lucide-react";
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import { InstructorForm } from "@/components/InstructorForm";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { VideoManager } from "@/components/admin/VideoManager";
@@ -96,6 +88,7 @@ interface Instructor {
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const { userRole } = useAdminRole();
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -107,6 +100,13 @@ const AdminDashboard = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingUser, setDeletingUser] = useState<string | null>(null);
+  const [creatingUser, setCreatingUser] = useState(false);
+  const [newUserData, setNewUserData] = useState({
+    email: '',
+    password: '',
+    fullName: '',
+    role: 'trainee'
+  });
   const [editingInstructor, setEditingInstructor] = useState<Instructor | null>(null);
   const [showInstructorForm, setShowInstructorForm] = useState(false);
 
@@ -417,6 +417,67 @@ const AdminDashboard = () => {
     }
   };
 
+  const createNewUser = async () => {
+    if (!newUserData.email || !newUserData.password) {
+      toast({
+        title: "Error",
+        description: "Email and password are required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setCreatingUser(true);
+
+      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'createAdminAccount',
+          data: {
+            email: newUserData.email,
+            password: newUserData.password,
+            fullName: newUserData.fullName,
+            role: newUserData.role
+          }
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      toast({
+        title: "Success",
+        description: `User ${newUserData.email} created successfully with ${newUserData.role} role.`,
+      });
+
+      // Reset form
+      setNewUserData({
+        email: '',
+        password: '',
+        fullName: '',
+        role: 'trainee'
+      });
+
+      // Refresh data
+      await loadDashboardData();
+
+    } catch (error: any) {
+      console.error('Error creating user:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create user. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setCreatingUser(false);
+    }
+  };
+
   const deleteUser = async (userId: string) => {
     try {
       setLoading(true);
@@ -678,10 +739,96 @@ const AdminDashboard = () => {
         <TabsContent value="users" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>User Roles Management</CardTitle>
-              <CardDescription>
-                Manage user roles and permissions. Use carefully as role changes affect system access.
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>User Roles Management</CardTitle>
+                  <CardDescription>
+                    Manage user roles and permissions. Use carefully as role changes affect system access.
+                  </CardDescription>
+                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      New User
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Create New User</DialogTitle>
+                      <DialogDescription>
+                        Create a new user account with email and password. The user will be assigned the trainee role by default.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <label htmlFor="email" className="text-sm font-medium">Email</label>
+                        <input
+                          id="email"
+                          type="email"
+                          value={newUserData.email}
+                          onChange={(e) => setNewUserData({...newUserData, email: e.target.value})}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder="user@example.com"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <label htmlFor="password" className="text-sm font-medium">Password</label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={newUserData.password}
+                          onChange={(e) => setNewUserData({...newUserData, password: e.target.value})}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder="Enter password"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <label htmlFor="fullName" className="text-sm font-medium">Full Name</label>
+                        <input
+                          id="fullName"
+                          type="text"
+                          value={newUserData.fullName}
+                          onChange={(e) => setNewUserData({...newUserData, fullName: e.target.value})}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <label htmlFor="role" className="text-sm font-medium">Initial Role</label>
+                        <select
+                          id="role"
+                          value={newUserData.role}
+                          onChange={(e) => setNewUserData({...newUserData, role: e.target.value})}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <option value="trainee">Trainee</option>
+                          <option value="admin">Admin</option>
+                          <option value="tech_support_admin">Tech Support Admin</option>
+                          {(userRole === 'super_admin') && (
+                            <option value="super_admin">Super Admin</option>
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <DialogClose asChild>
+                        <Button variant="outline" disabled={creatingUser}>Cancel</Button>
+                      </DialogClose>
+                      <Button onClick={createNewUser} disabled={creatingUser || !newUserData.email || !newUserData.password}>
+                        {creatingUser ? (
+                          <>
+                            <div className="w-4 h-4 animate-spin rounded-full border border-current border-t-transparent mr-2" />
+                            Creating...
+                          </>
+                        ) : (
+                          'Create User'
+                        )}
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </CardHeader>
             <CardContent>
               <Table>
