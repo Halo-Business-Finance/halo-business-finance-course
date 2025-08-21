@@ -65,25 +65,25 @@ export const courseData: CourseData = {
   modules: [
     {
       id: "foundations",
-      title: "Business Finance Foundations",
-      description: "Establish a solid foundation in business finance principles, financial statement analysis, and fundamental concepts essential for understanding modern corporate finance.",
+      title: "Halo Business Finance Foundations",
+      description: "Master the core business finance principles used at Halo Business Finance. This comprehensive module covers financial statement analysis, risk assessment, and decision-making frameworks essential for success in commercial lending and business finance.",
       duration: "2.5 hours",
       lessons: 12,
       progress: 0,
       status: "available",
-      topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"],
+      topics: ["Halo's Financial Analysis Framework", "Commercial Lending Principles", "Risk Assessment Methodologies", "Working Capital Solutions", "Financial Ratios & Metrics", "Cash Flow Analysis for Business Loans"],
       videos: [
         {
-          title: "Introduction to Business Finance Fundamentals",
-          description: "Overview of business finance principles and their importance in decision making",
+          title: "Welcome to Halo Business Finance Training",
+          description: "Introduction to Halo's approach to business finance and commercial lending excellence",
           duration: "18:30",
           videoType: "youtube",
           youtubeId: "dQw4w9WgXcQ",
           videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         },
         {
-          title: "Financial Statement Analysis Deep Dive",
-          description: "Understanding balance sheets, income statements, and cash flow statements",
+          title: "Halo's Financial Statement Analysis Framework",
+          description: "Learn Halo's proprietary methods for analyzing business financial health and creditworthiness",
           duration: "32:15",
           videoType: "youtube", 
           youtubeId: "dQw4w9WgXcQ",
@@ -231,8 +231,8 @@ export const courseData: CourseData = {
     },
     {
       id: "capital-markets",
-      title: "Capital Markets & Financial Systems",
-      description: "Comprehensive study of capital markets, including equity and debt markets, market efficiency, institutional investors, and the role of financial intermediaries in the economy.",
+      title: "Halo Capital Markets & Lending Systems",
+      description: "Explore capital markets through Halo Business Finance's perspective. Learn how institutional funding, secondary markets, and capital allocation impact commercial lending decisions and portfolio management strategies.",
       duration: "3 hours",
       lessons: 15,
       progress: 0,
@@ -366,13 +366,13 @@ export const courseData: CourseData = {
     },
     {
       id: "sba-loans",
-      title: "SBA Loan Programs & Structures",
-      description: "Deep dive into Small Business Administration loan programs, including 7(a), 504, and microloans. Learn eligibility requirements, application processes, and risk assessment.",
+      title: "Halo SBA Lending Excellence Program",
+      description: "Master Halo Business Finance's approach to SBA lending. Learn our proprietary underwriting processes, client onboarding strategies, and risk management techniques for 7(a), 504, and microloan programs.",
       duration: "2 hours",
       lessons: 10,
       progress: 0,
       status: "locked",
-      topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"],
+      topics: ["Halo's SBA 7(a) Process", "504 Program Specialization", "Microloan Strategies", "Halo Eligibility Assessment", "Streamlined Application Process", "Guarantee Optimization", "Portfolio Risk Management", "Client Success Metrics"],
       videos: [
         {
           title: "SBA 7(a) Loan Program Complete Guide",

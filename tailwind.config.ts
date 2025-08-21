@@ -34,6 +34,15 @@ export default {
 					'"Segoe UI Symbol"',
 					'"Noto Color Emoji"'
 				],
+				inter: [
+					'"Inter"',
+					'system-ui',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'"Segoe UI"',
+					'Roboto',
+					'sans-serif'
+				],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -79,7 +88,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				'halo-navy': 'hsl(var(--halo-navy))'
+				'halo-navy': 'hsl(var(--halo-navy))',
+				'halo-orange': 'hsl(var(--halo-orange))',
+				'halo-light-blue': 'hsl(var(--halo-light-blue))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

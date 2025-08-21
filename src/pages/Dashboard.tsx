@@ -7,6 +7,7 @@ import ModuleDetail from "@/components/ModuleDetail";
 import StatsCard from "@/components/StatsCard";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
+import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 import { courseData, statsData } from "@/data/courseData";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
@@ -74,56 +75,59 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 space-y-12">
-        {/* Learning Objectives */}
-        <LearningObjectives objectives={learningObjectives} />
+        <div className="container mx-auto px-4 space-y-12">
+          {/* Learning Objectives */}
+          <LearningObjectives objectives={learningObjectives} />
 
-        {/* Instructor Information */}
-        <InstructorInfo />
+          {/* Instructor Information */}
+          <InstructorInfo />
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsData.map((stat, index) => {
-          const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
-          return (
-            <StatsCard
-              key={stat.title}
-              title={stat.title}
-              value={stat.value}
-              description={stat.subtitle}
-              icon={Icon}
-              trend={{ value: 0, isPositive: true }}
-            />
-          );
-        })}
-        </div>
-
-        {/* Course Modules */}
-        <div className="space-y-8 pb-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl font-bold">Curriculum Overview</h2>
-            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Our comprehensive 8-module curriculum follows Stanford and Wharton's proven pedagogical approach, 
-              combining theoretical foundations with practical applications in business finance and lending.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {modules.map((module) => (
-              <ModuleCard
-                key={module.id}
-                title={module.title}
-                description={module.description}
-                duration={module.duration}
-                lessons={module.lessons}
-                progress={module.progress}
-                status={module.status}
-                onStart={() => handleModuleStart(module.id)}
+          {/* Stats Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {statsData.map((stat, index) => {
+            const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
+            return (
+              <StatsCard
+                key={stat.title}
+                title={stat.title}
+                value={stat.value}
+                description={stat.subtitle}
+                icon={Icon}
+                trend={{ value: 0, isPositive: true }}
               />
-            ))}
+            );
+          })}
           </div>
+
+          {/* Course Modules */}
+          <div className="space-y-8 pb-16">
+            <div className="text-center space-y-4">
+              <h3 className="text-3xl font-bold">Learning Modules</h3>
+              <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Progress through Halo's specialized curriculum designed to develop expertise in business finance, 
+                commercial lending practices, and risk management strategies used in today's financial markets.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {modules.map((module) => (
+                <ModuleCard
+                  key={module.id}
+                  title={module.title}
+                  description={module.description}
+                  duration={module.duration}
+                  lessons={module.lessons}
+                  progress={module.progress}
+                  status={module.status}
+                  onStart={() => handleModuleStart(module.id)}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Halo Brand Footer */}
+          <HaloBrandFooter />
         </div>
-      </div>
 
       {/* Module Detail Modal */}
       {selectedModule && (
