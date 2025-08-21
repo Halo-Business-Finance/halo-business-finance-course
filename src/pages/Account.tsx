@@ -342,8 +342,8 @@ const AccountPage = () => {
                 </Avatar>
               </div>
               <CardTitle>{userInfo.name}</CardTitle>
-              <CardDescription>{userInfo.title}</CardDescription>
               <Badge variant="secondary" className="mt-2">{userInfo.company}</Badge>
+              <CardDescription className="mt-2">{userInfo.title}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 text-sm">
