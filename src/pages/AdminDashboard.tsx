@@ -310,7 +310,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
+  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'trainee' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
       setLoading(true);
       
@@ -531,6 +531,7 @@ const AdminDashboard = () => {
       case 'super_admin': return 'destructive';
       case 'admin': return 'default';
       case 'manager': return 'secondary';
+      case 'trainee': return 'secondary';
       case 'user': return 'outline';
       case 'No Role Assigned': return 'outline';
       default: return 'outline';
@@ -717,6 +718,15 @@ const AdminDashboard = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => assignRole(userRole.user_id, 'trainee')}
+                            disabled={userRole.role === 'trainee'}
+                            title="Assign Trainee Role"
+                          >
+                            <GraduationCap className="h-3 w-3" />
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline"
