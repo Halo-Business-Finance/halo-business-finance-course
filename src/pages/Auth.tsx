@@ -196,6 +196,9 @@ const AuthPage = () => {
       const sanitizedEmail = sanitizeInput(signUpData.email);
       const redirectUrl = `${window.location.origin}/`;
       
+      console.log('Attempting signup with email:', sanitizedEmail);
+      console.log('Redirect URL:', redirectUrl);
+      
       const { data, error } = await supabase.auth.signUp({
         email: sanitizedEmail,
         password: signUpData.password,
@@ -207,7 +210,12 @@ const AuthPage = () => {
         }
       });
 
+      console.log('Signup response:', { data, error });
+      console.log('User created:', !!data.user);
+      console.log('User confirmation sent:', data.user?.email_confirmed_at === null);
+
       if (error) {
+        console.error('Signup error:', error);
         toast({
           title: "Sign Up Failed",
           description: error.message,
@@ -220,10 +228,18 @@ const AuthPage = () => {
         // Reset rate limiter on successful signup
         authRateLimiter.reset(clientId);
         
-        toast({
-          title: "Account Created!",
-          description: "Please check your email to verify your account.",
-        });
+        if (data.user.email_confirmed_at === null) {
+          toast({
+            title: "Account Created!",
+            description: "Please check your email (including spam folder) for a confirmation link from noreply@mail.app.supabase.io",
+            duration: 8000,
+          });
+        } else {
+          toast({
+            title: "Account Created!",
+            description: "You can now sign in to your account.",
+          });
+        }
         
         // Clear the form
         setSignUpData({
