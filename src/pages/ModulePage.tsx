@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { courseData } from "@/data/courseData";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
+import { CaseStudyModal } from "@/components/CaseStudyModal";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useState } from "react";
 
@@ -16,6 +17,13 @@ const ModulePage = () => {
   const navigate = useNavigate();
   const { isAdmin } = useAdminRole();
   const [activeTab, setActiveTab] = useState("lessons");
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<{
+    id: number;
+    title: string;
+    description: string;
+    difficulty: string;
+    duration: string;
+  } | null>(null);
 
   const module = courseData.modules.find(m => m.id === moduleId);
   
@@ -781,7 +789,13 @@ const ModulePage = () => {
                           variant="outline" 
                           size="sm" 
                           className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
-                          onClick={() => alert("Starting Case Study 1: Manufacturing Company Analysis\n\nYou will analyze:\n• 3-year financial statements\n• Equipment loan request for $500K\n• Industry benchmarks\n• Risk assessment factors\n\nThis interactive case study will open shortly...")}
+                          onClick={() => setSelectedCaseStudy({
+                            id: 1,
+                            title: "Case Study 1: Manufacturing Company Analysis",
+                            description: "Analyze financial statements of a mid-sized manufacturing company seeking a $500K equipment loan.",
+                            difficulty: "Intermediate",
+                            duration: "20 minutes"
+                          })}
                         >
                           Start Analysis
                         </Button>
@@ -806,7 +820,13 @@ const ModulePage = () => {
                           variant="outline" 
                           size="sm" 
                           className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
-                          onClick={() => alert("Starting Case Study 2: Retail Business Cash Flow Challenge\n\nYou will analyze:\n• Seasonal cash flow patterns\n• Working capital requirements\n• Line of credit structure\n• Repayment capacity\n\nThis interactive case study will open shortly...")}
+                          onClick={() => setSelectedCaseStudy({
+                            id: 2,
+                            title: "Case Study 2: Retail Business Cash Flow Challenge",
+                            description: "Evaluate a seasonal retail business requesting a working capital line of credit.",
+                            difficulty: "Beginner",
+                            duration: "15 minutes"
+                          })}
                         >
                           Start Analysis
                         </Button>
@@ -831,7 +851,13 @@ const ModulePage = () => {
                           variant="outline" 
                           size="sm" 
                           className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
-                          onClick={() => alert("Starting Case Study 3: SBA Loan Scenario\n\nYou will analyze:\n• Healthcare practice expansion\n• SBA 7(a) loan requirements\n• Eligibility criteria\n• Loan structuring options\n• Risk mitigation strategies\n\nThis interactive case study will open shortly...")}
+                          onClick={() => setSelectedCaseStudy({
+                            id: 3,
+                            title: "Case Study 3: SBA Loan Scenario",
+                            description: "Review a complex SBA 7(a) loan application for a healthcare practice expansion.",
+                            difficulty: "Advanced",
+                            duration: "25 minutes"
+                          })}
                         >
                           Start Analysis
                         </Button>
@@ -1012,6 +1038,13 @@ const ModulePage = () => {
           <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
+
+      {/* Case Study Modal */}
+      <CaseStudyModal 
+        isOpen={selectedCaseStudy !== null}
+        onClose={() => setSelectedCaseStudy(null)}
+        caseStudy={selectedCaseStudy}
+      />
     </div>
   );
 };
