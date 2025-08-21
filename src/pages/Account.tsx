@@ -71,6 +71,7 @@ const AccountPage = () => {
     language: 'en',
     timezone: 'est',
     dateFormat: 'mdy',
+    fontSize: 'medium',
     emailNotifications: true,
     pushNotifications: false,
     marketingEmails: false,
@@ -155,6 +156,7 @@ const AccountPage = () => {
           language: profile.language || 'en',
           timezone: profile.timezone || 'est',
           dateFormat: profile.date_format || 'mdy',
+          fontSize: 'medium', // Default since this field doesn't exist in DB yet
           emailNotifications: profile.email_notifications ?? true,
           pushNotifications: profile.push_notifications ?? false,
           marketingEmails: profile.marketing_emails ?? false,
