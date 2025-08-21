@@ -39,6 +39,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { InstructorForm } from "@/components/InstructorForm";
+import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
@@ -626,6 +627,7 @@ const AdminDashboard = () => {
           <TabsTrigger value="content">Content Management</TabsTrigger>
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="security">Security Events</TabsTrigger>
+          <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
 
@@ -966,6 +968,10 @@ const AdminDashboard = () => {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="monitoring" className="space-y-4">
+          <SecurityDashboard />
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">

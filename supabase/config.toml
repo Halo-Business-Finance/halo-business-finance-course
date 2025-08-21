@@ -9,3 +9,9 @@ max_rows = 1000
 
 [functions.secure-admin-operations]
 verify_jwt = true
+
+[functions.enhanced-auth-security]
+verify_jwt = false
+
+[functions.security-monitor]
+verify_jwt = true
