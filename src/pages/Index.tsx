@@ -19,11 +19,6 @@ const Index = () => {
       <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-8 max-w-4xl mx-auto">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-2xl">H</span>
-              </div>
-            </div>
             
             <h1 className="text-5xl md:text-6xl font-bold leading-tight">
               Master Business Finance
