@@ -40,6 +40,22 @@ const ModulePage = () => {
         console.log('ModuleId from URL:', moduleId); // Debug log
         console.log('Raw moduleId type:', typeof moduleId); // Debug log
         
+        // If someone hit the route template, redirect to first module
+        if (moduleId === ':moduleId' || !moduleId || moduleId.includes(':')) {
+          const { data: firstModule } = await supabase
+            .from('course_modules')
+            .select('module_id')
+            .eq('is_active', true)
+            .order('order_index')
+            .limit(1)
+            .single();
+            
+          if (firstModule) {
+            navigate(`/module/${firstModule.module_id}`, { replace: true });
+            return;
+          }
+        }
+        
         // Fetch module basic info
         const { data: moduleData, error: moduleError } = await supabase
           .from('course_modules')
