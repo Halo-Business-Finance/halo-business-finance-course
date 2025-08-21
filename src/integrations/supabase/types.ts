@@ -1103,6 +1103,10 @@ export type Database = {
         }
         Returns: string
       }
+      detect_potential_data_breach: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_unusual_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1240,6 +1244,10 @@ export type Database = {
         Returns: Json
       }
       validate_sensitive_profile_access: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
+      validate_ultra_secure_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
       }
