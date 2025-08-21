@@ -1844,7 +1844,7 @@ export type Database = {
         Returns: Json
       }
       validate_biometric_access: {
-        Args: { p_target_user_id: string }
+        Args: { target_user_id: string }
         Returns: boolean
       }
       validate_geolocation_access: {
@@ -1857,7 +1857,7 @@ export type Database = {
         Returns: Json
       }
       validate_mfa_access: {
-        Args: { p_target_user_id: string }
+        Args: { target_user_id: string }
         Returns: boolean
       }
       validate_mfa_token: {

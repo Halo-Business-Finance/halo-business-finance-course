@@ -8,6 +8,8 @@ import { Shield, AlertTriangle, Eye, Lock, Activity, Users } from 'lucide-react'
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAdminRole } from '@/hooks/useAdminRole';
+import { RealTimeThreatMonitor } from './RealTimeThreatMonitor';
+import { SecureBiometricAuth } from './SecureBiometricAuth';
 
 interface SecurityMetrics {
   totalSessions: number;
@@ -161,10 +163,12 @@ export const EnhancedSecurityMonitor: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="sessions">Sessions</TabsTrigger>
               <TabsTrigger value="alerts">Alerts</TabsTrigger>
+              <TabsTrigger value="threats">Real-Time Threats</TabsTrigger>
+              <TabsTrigger value="biometric">Biometric Security</TabsTrigger>
               <TabsTrigger value="actions">Actions</TabsTrigger>
             </TabsList>
 
@@ -288,6 +292,14 @@ export const EnhancedSecurityMonitor: React.FC = () => {
                   ))
                 )}
               </div>
+            </TabsContent>
+
+            <TabsContent value="threats" className="space-y-4">
+              <RealTimeThreatMonitor />
+            </TabsContent>
+
+            <TabsContent value="biometric" className="space-y-4">
+              <SecureBiometricAuth />
             </TabsContent>
 
             <TabsContent value="actions" className="space-y-4">
