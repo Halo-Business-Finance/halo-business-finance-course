@@ -27,8 +27,8 @@ export interface CourseData {
 }
 
 export const courseData: CourseData = {
-  totalProgress: 0,
-  completedModules: 0,
+  totalProgress: 35,
+  completedModules: 2,
   totalModules: 8,
   modules: [
     {
@@ -37,8 +37,8 @@ export const courseData: CourseData = {
       description: "Establish a solid foundation in business finance principles, financial statement analysis, and fundamental concepts essential for understanding modern corporate finance.",
       duration: "2.5 hours",
       lessons: 12,
-      progress: 0,
-      status: "available",
+      progress: 100,
+      status: "completed",
       topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"],
       loanExamples: [
         {
@@ -73,8 +73,8 @@ export const courseData: CourseData = {
       description: "Comprehensive study of capital markets, including equity and debt markets, market efficiency, institutional investors, and the role of financial intermediaries in the economy.",
       duration: "3 hours",
       lessons: 15,
-      progress: 0,
-      status: "available",
+      progress: 100,
+      status: "completed",
       topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
       loanExamples: [
         {
@@ -110,8 +110,8 @@ export const courseData: CourseData = {
       description: "Deep dive into Small Business Administration loan programs, including 7(a), 504, and microloans. Learn eligibility requirements, application processes, and risk assessment.",
       duration: "2 hours",
       lessons: 10,
-      progress: 0,
-      status: "available",
+      progress: 45,
+      status: "in-progress",
       topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"],
       loanExamples: [
         {
@@ -422,26 +422,26 @@ export const courseData: CourseData = {
 export const statsData = [
   {
     title: "Modules Completed",
-    value: 0,
+    value: 2,
     description: "out of 8 modules",
-    trend: { value: 0, isPositive: true }
+    trend: { value: 15, isPositive: true }
   },
   {
     title: "Learning Time",
-    value: "0hrs",
+    value: "12.5hrs",
     description: "total time invested",
-    trend: { value: 0, isPositive: true }
+    trend: { value: 22, isPositive: true }
   },
   {
     title: "Current Streak",
-    value: "0 days",
+    value: "5 days",
     description: "consecutive learning",
-    trend: { value: 0, isPositive: true }
+    trend: { value: 8, isPositive: true }
   },
   {
     title: "Progress Score",
-    value: "0%",
+    value: "85%",
     description: "average quiz score",
-    trend: { value: 0, isPositive: true }
+    trend: { value: 12, isPositive: true }
   }
 ];
