@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -28,6 +29,15 @@ const queryClient = new QueryClient();
 const HeaderContent = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const goBack = () => {
     navigate(-1);
@@ -38,6 +48,28 @@ const HeaderContent = () => {
   };
 
   if (!user) return null;
+
+  // Extract first name from email or user metadata
+  const getFirstName = () => {
+    if (user.user_metadata?.full_name) {
+      return user.user_metadata.full_name.split(' ')[0];
+    }
+    if (user.email) {
+      return user.email.split('@')[0];
+    }
+    return 'User';
+  };
+
+  const formatDateTime = (date: Date) => {
+    return date.toLocaleString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
@@ -62,10 +94,13 @@ const HeaderContent = () => {
         </Button>
       </div>
       
-      <div className="flex-1 flex items-center justify-center">
-        <h1 className="text-sm font-medium text-muted-foreground">
-          Halo Business Finance Learning Platform
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <h1 className="text-sm font-medium text-foreground">
+          Welcome back, {getFirstName()}!
         </h1>
+        <p className="text-xs text-muted-foreground">
+          {formatDateTime(currentTime)}
+        </p>
       </div>
     </header>
   );
