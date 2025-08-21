@@ -1,8 +1,81 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, MapPin, Award, Calendar } from "lucide-react";
+import { Users, MapPin, Award } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Instructor {
+  id: string;
+  name: string;
+  title: string;
+  company: string;
+  years_experience: string;
+  bio: string;
+  avatar_initials: string;
+  avatar_color: string;
+  display_order: number;
+  is_active: boolean;
+}
 
 const InstructorInfo = () => {
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadInstructors();
+  }, []);
+
+  const loadInstructors = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('instructors')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      setInstructors(data || []);
+    } catch (error) {
+      console.error('Error loading instructors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-primary" />
+            Course Instructors
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center h-32">
+            <div className="w-6 h-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (instructors.length === 0) {
+    return (
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-primary" />
+            Course Instructors
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">No instructors available at this time.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mb-8">
       <CardHeader>
@@ -12,53 +85,28 @@ const InstructorInfo = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-start gap-4">
-          <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-            SM
-          </div>
-          <div className="flex-1">
-            <h4 className="font-semibold">Sarah Mitchell</h4>
-            <p className="text-sm text-muted-foreground">Senior Vice President, Business Finance</p>
-            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Award className="h-3 w-3" />
-                <span>15+ years experience</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                <span>Halo Business Finance</span>
-              </div>
+        {instructors.map((instructor) => (
+          <div key={instructor.id} className="flex items-start gap-4">
+            <div className={`w-16 h-16 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+              {instructor.avatar_initials}
             </div>
-            <p className="text-sm mt-2">
-              Expert in SBA lending and commercial finance with extensive experience 
-              in business development and client relationship management.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-4">
-          <div className="w-16 h-16 bg-gradient-success rounded-full flex items-center justify-center text-white font-bold text-lg">
-            DT
-          </div>
-          <div className="flex-1">
-            <h4 className="font-semibold">David Thompson</h4>
-            <p className="text-sm text-muted-foreground">Director of Credit Analysis</p>
-            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Award className="h-3 w-3" />
-                <span>12+ years experience</span>
+            <div className="flex-1">
+              <h4 className="font-semibold">{instructor.name}</h4>
+              <p className="text-sm text-muted-foreground">{instructor.title}</p>
+              <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Award className="h-3 w-3" />
+                  <span>{instructor.years_experience}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  <span>{instructor.company}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                <span>Halo Business Finance</span>
-              </div>
+              <p className="text-sm mt-2">{instructor.bio}</p>
             </div>
-            <p className="text-sm mt-2">
-              Specialist in risk assessment and credit analysis with deep knowledge 
-              of regulatory compliance and underwriting standards.
-            </p>
           </div>
-        </div>
+        ))}
       </CardContent>
     </Card>
   );

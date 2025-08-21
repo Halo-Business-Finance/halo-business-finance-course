@@ -59,6 +59,51 @@ export type Database = {
         }
         Relationships: []
       }
+      instructors: {
+        Row: {
+          avatar_color: string
+          avatar_initials: string
+          bio: string
+          company: string
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean
+          name: string
+          title: string
+          updated_at: string
+          years_experience: string
+        }
+        Insert: {
+          avatar_color?: string
+          avatar_initials: string
+          bio: string
+          company?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          title: string
+          updated_at?: string
+          years_experience: string
+        }
+        Update: {
+          avatar_color?: string
+          avatar_initials?: string
+          bio?: string
+          company?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          title?: string
+          updated_at?: string
+          years_experience?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
