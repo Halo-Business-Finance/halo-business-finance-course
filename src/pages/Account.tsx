@@ -58,6 +58,8 @@ const AccountPage = () => {
     email: "",
     phone: "",
     location: "",
+    city: "",
+    state: "",
     joinDate: "",
     title: "",
     company: "",
@@ -136,6 +138,8 @@ const AccountPage = () => {
           email: profile.email || "",
           phone: profile.phone || "",
           location: profile.location || "",
+          city: profile.city || "",
+          state: profile.state || "",
           joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
@@ -154,6 +158,8 @@ const AccountPage = () => {
           email: user.email || "",
           phone: "",
           location: "",
+          city: "",
+          state: "",
           joinDate: new Date().toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
@@ -199,6 +205,8 @@ const AccountPage = () => {
         phone: editForm.phone,
         title: editForm.title,
         location: editForm.location,
+        city: editForm.city,
+        state: editForm.state,
         company: editForm.company
       });
 
@@ -211,6 +219,8 @@ const AccountPage = () => {
           phone: editForm.phone,
           title: editForm.title,
           location: editForm.location,
+          city: editForm.city,
+          state: editForm.state,
           company: editForm.company
         }, {
           onConflict: 'user_id'
@@ -574,20 +584,51 @@ const AccountPage = () => {
                         placeholder="(xxx) XXX-XXXX"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company</Label>
-                      <Input 
-                        id="company" 
-                        value={editForm.company} 
-                        onChange={(e) => handleInputChange('company', e.target.value)}
-                      />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="company">Company</Label>
+                        <Input 
+                          id="company" 
+                          value={editForm.company} 
+                          onChange={(e) => handleInputChange('company', e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="title">Job Title</Label>
+                        <Input 
+                          id="title" 
+                          value={editForm.title} 
+                          onChange={(e) => handleInputChange('title', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="city">City</Label>
+                        <Input 
+                          id="city" 
+                          value={editForm.city} 
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          placeholder="Enter city"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="state">State</Label>
+                        <Input 
+                          id="state" 
+                          value={editForm.state} 
+                          onChange={(e) => handleInputChange('state', e.target.value)}
+                          placeholder="Enter state"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="title">Job Title</Label>
+                      <Label htmlFor="location">Address/Location</Label>
                       <Input 
-                        id="title" 
-                        value={editForm.title} 
-                        onChange={(e) => handleInputChange('title', e.target.value)}
+                        id="location" 
+                        value={editForm.location} 
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        placeholder="Enter address or location"
                       />
                     </div>
                     <Button onClick={handleEditSubmit}>Save Changes</Button>
