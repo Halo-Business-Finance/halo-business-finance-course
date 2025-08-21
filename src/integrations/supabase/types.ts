@@ -1249,7 +1249,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      run_security_configuration_check: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       security_health_check: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      validate_security_configuration: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
