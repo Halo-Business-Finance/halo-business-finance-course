@@ -987,6 +987,27 @@ export type Database = {
         }
         Returns: string
       }
+      get_profiles_with_roles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          profile_city: string
+          profile_company: string
+          profile_created_at: string
+          profile_email: string
+          profile_join_date: string
+          profile_name: string
+          profile_phone: string
+          profile_state: string
+          profile_title: string
+          profile_updated_at: string
+          role: string
+          role_created_at: string
+          role_id: string
+          role_is_active: boolean
+          role_updated_at: string
+          user_id: string
+        }[]
+      }
       get_user_role: {
         Args: { check_user_id?: string }
         Returns: string

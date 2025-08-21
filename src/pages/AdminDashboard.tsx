@@ -121,106 +121,32 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        // Use a direct SQL query to get profiles with their roles
-        // This avoids RLS issues with nested queries
-        const { data: profilesWithRoles, error: profilesError } = await supabase
-          .rpc('get_profiles_with_roles');
+        // Fallback to manual join since RPC may not be available yet
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-        if (profilesError) {
-          console.error('Error fetching profiles with roles:', profilesError);
-          // Fallback to manual join
-          const { data: profiles, error: fallbackError } = await supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false });
+        if (profilesError) throw profilesError;
 
-          if (fallbackError) throw fallbackError;
+        // Manually fetch roles for each user
+        const profilesWithManualRoles = await Promise.all(
+          (profiles || []).map(async (profile) => {
+            const { data: roles } = await supabase
+              .from('user_roles')
+              .select('*')
+              .eq('user_id', profile.user_id)
+              .eq('is_active', true);
+            
+            return {
+              ...profile,
+              user_roles: roles || []
+            };
+          })
+        );
 
-          // Manually fetch roles for each user
-          const profilesWithManualRoles = await Promise.all(
-            profiles.map(async (profile) => {
-              const { data: roles } = await supabase
-                .from('user_roles')
-                .select('*')
-                .eq('user_id', profile.user_id)
-                .eq('is_active', true);
-              
-              return {
-                ...profile,
-                user_roles: roles || []
-              };
-            })
-          );
-
-          userRolesData = profilesWithManualRoles.flatMap(profile => {
-            if (profile.user_roles && profile.user_roles.length > 0) {
-              return profile.user_roles.map(role => ({
-                id: role.id,
-                user_id: profile.user_id,
-                role: role.role,
-                is_active: role.is_active,
-                created_at: role.created_at,
-                updated_at: role.updated_at,
-                profiles: {
-                  name: profile.name,
-                  email: profile.email,
-                  phone: profile.phone,
-                  title: profile.title,
-                  company: profile.company,
-                  city: profile.city,
-                  state: profile.state,
-                  join_date: profile.join_date
-                }
-              }));
-            } else {
-              return [{
-                id: `no-role-${profile.user_id}`,
-                user_id: profile.user_id,
-                role: 'No Role Assigned',
-                is_active: false,
-                created_at: profile.created_at,
-                updated_at: profile.updated_at,
-                profiles: {
-                  name: profile.name,
-                  email: profile.email,
-                  phone: profile.phone,
-                  title: profile.title,
-                  company: profile.company,
-                  city: profile.city,
-                  state: profile.state,
-                  join_date: profile.join_date
-                }
-              }];
-            }
-          });
-        } else {
-          // Transform RPC result to match UI expectations
-          userRolesData = profilesWithRoles.map(row => ({
-            id: row.role_id || `no-role-${row.user_id}`,
-            user_id: row.user_id,
-            role: row.role || 'No Role Assigned',
-            is_active: row.role_is_active || false,
-            created_at: row.role_created_at || row.profile_created_at,
-            updated_at: row.role_updated_at || row.profile_updated_at,
-            profiles: {
-              name: row.profile_name,
-              email: row.profile_email,
-              phone: row.profile_phone,
-              title: row.profile_title,
-              company: row.profile_company,
-              city: row.profile_city,
-              state: row.profile_state,
-              join_date: row.profile_join_date
-            }
-          }));
-        }
-
-        console.log('User roles data loaded:', userRolesData);
-
-        // Transform the data to match the UI expectations
-        userRolesData = profiles?.flatMap(profile => {
+        userRolesData = profilesWithManualRoles.flatMap(profile => {
           if (profile.user_roles && profile.user_roles.length > 0) {
-            // User has roles - create an entry for each role
             return profile.user_roles.map(role => ({
               id: role.id,
               user_id: profile.user_id,
@@ -240,7 +166,6 @@ const AdminDashboard = () => {
               }
             }));
           } else {
-            // User has no roles - show as "no role"
             return [{
               id: `no-role-${profile.user_id}`,
               user_id: profile.user_id,
@@ -260,11 +185,9 @@ const AdminDashboard = () => {
               }
             }];
           }
-        }) || [];
+        });
 
-        console.log('Loaded all users with their roles:', userRolesData);
-        console.log('Total profiles found:', profiles?.length);
-        console.log('Total role entries created:', userRolesData.length);
+        console.log('User roles data loaded:', userRolesData);
       } catch (directError) {
         console.warn('Failed to load all users with roles:', directError);
         
