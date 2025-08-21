@@ -1562,6 +1562,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      analyze_user_behavior_anomaly: {
+        Args: { p_behavior_data: Json }
+        Returns: Json
+      }
       assign_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -1591,6 +1595,14 @@ export type Database = {
         }
         Returns: Json
       }
+      check_threat_indicators: {
+        Args: {
+          p_additional_indicators?: Json
+          p_ip_address: unknown
+          p_user_agent?: string
+        }
+        Returns: Json
+      }
       check_user_has_role: {
         Args: { check_role: string }
         Returns: boolean
@@ -1612,6 +1624,14 @@ export type Database = {
       detect_unusual_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      emergency_security_lockdown: {
+        Args: {
+          p_affected_users?: string[]
+          p_lockdown_type?: string
+          p_reason: string
+        }
+        Returns: Json
       }
       get_admin_profile_data: {
         Args: { target_user_id: string }
@@ -1717,6 +1737,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      register_device_fingerprint: {
+        Args: { p_device_fingerprint: string; p_device_info?: Json }
+        Returns: string
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -1744,6 +1768,23 @@ export type Database = {
       security_health_check: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      validate_geolocation_access: {
+        Args: {
+          p_country_code?: string
+          p_ip_address?: unknown
+          p_latitude: number
+          p_longitude: number
+        }
+        Returns: Json
+      }
+      validate_mfa_token: {
+        Args: {
+          p_backup_code?: boolean
+          p_method_type: string
+          p_token: string
+        }
+        Returns: boolean
       }
       validate_security_configuration: {
         Args: Record<PropertyKey, never>
