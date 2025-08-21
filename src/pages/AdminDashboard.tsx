@@ -2,6 +2,17 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
@@ -19,7 +30,8 @@ import {
   Lock,
   Unlock,
   Crown,
-  Eye
+  Eye,
+  Trash2
 } from "lucide-react";
 
 interface UserRole {
@@ -58,6 +70,7 @@ const AdminDashboard = () => {
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingUser, setDeletingUser] = useState<string | null>(null);
 
   useEffect(() => {
     loadDashboardData();
@@ -163,6 +176,42 @@ const AdminDashboard = () => {
         description: error.message || "Failed to revoke role",
         variant: "destructive"
       });
+    }
+  };
+
+  const deleteUser = async (userId: string) => {
+    try {
+      setDeletingUser(userId);
+      
+      const { data, error } = await supabase.functions.invoke('delete-user', {
+        body: { 
+          userId: userId,
+          currentUserId: user?.id 
+        }
+      });
+
+      if (error) throw error;
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to delete user');
+      }
+      
+      toast({
+        title: "User Deleted",
+        description: `User ${data.deletedUser?.email || userId} has been permanently deleted.`,
+        variant: "destructive"
+      });
+      
+      loadDashboardData(); // Reload data
+    } catch (error: any) {
+      console.error('Delete user error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete user",
+        variant: "destructive"
+      });
+    } finally {
+      setDeletingUser(null);
     }
   };
 
@@ -313,6 +362,7 @@ const AdminDashboard = () => {
                             variant="outline"
                             onClick={() => assignRole(userRole.user_id, 'admin')}
                             disabled={userRole.role === 'admin'}
+                            title="Assign Admin Role"
                           >
                             <UserCheck className="h-3 w-3" />
                           </Button>
@@ -321,6 +371,7 @@ const AdminDashboard = () => {
                             variant="outline"
                             onClick={() => assignRole(userRole.user_id, 'super_admin')}
                             disabled={userRole.role === 'super_admin'}
+                            title="Assign Super Admin Role"
                           >
                             <Crown className="h-3 w-3" />
                           </Button>
@@ -329,9 +380,49 @@ const AdminDashboard = () => {
                             variant="outline"
                             onClick={() => revokeRole(userRole.user_id)}
                             disabled={!userRole.is_active}
+                            title="Revoke Role"
                           >
                             <UserX className="h-3 w-3" />
                           </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={userRole.user_id === user?.id || deletingUser === userRole.user_id}
+                                title={userRole.user_id === user?.id ? "Cannot delete your own account" : "Delete User"}
+                                className="hover:bg-destructive hover:text-destructive-foreground"
+                              >
+                                {deletingUser === userRole.user_id ? (
+                                  <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" />
+                                ) : (
+                                  <Trash2 className="h-3 w-3" />
+                                )}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to permanently delete this user? This action cannot be undone.
+                                  The user will be completely removed from the system including all their data.
+                                  <br /><br />
+                                  <strong>User ID:</strong> {userRole.user_id}
+                                  <br />
+                                  <strong>Role:</strong> {userRole.role}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => deleteUser(userRole.user_id)}
+                                  className="bg-destructive hover:bg-destructive/90"
+                                >
+                                  Delete Permanently
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </TableCell>
                     </TableRow>

@@ -1,0 +1,195 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+serve(async (req) => {
+  console.log('Delete user function called:', req.method)
+  
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    // Verify this is a POST request
+    if (req.method !== 'POST') {
+      throw new Error('Method not allowed')
+    }
+
+    const { userId, currentUserId } = await req.json()
+    console.log('Delete user request:', { userId, currentUserId })
+
+    if (!userId) {
+      throw new Error('User ID is required')
+    }
+
+    if (!currentUserId) {
+      throw new Error('Current user ID is required')
+    }
+
+    // Prevent self-deletion
+    if (userId === currentUserId) {
+      throw new Error('Cannot delete your own account')
+    }
+
+    // Create Supabase admin client with service role key
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
+
+    // Create regular client to verify permissions
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        },
+        global: {
+          headers: {
+            Authorization: req.headers.get('Authorization') ?? ''
+          }
+        }
+      }
+    )
+
+    // Verify current user is admin/super_admin
+    const { data: currentUserRoles, error: roleError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', currentUserId)
+      .eq('is_active', true)
+
+    if (roleError) {
+      console.error('Error checking user roles:', roleError)
+      throw new Error('Failed to verify permissions')
+    }
+
+    const hasAdminRole = currentUserRoles?.some(r => 
+      r.role === 'admin' || r.role === 'super_admin'
+    )
+
+    if (!hasAdminRole) {
+      throw new Error('Insufficient permissions. Admin role required.')
+    }
+
+    // Check if target user exists
+    const { data: targetUser, error: userCheckError } = await supabaseAdmin.auth.admin.getUserById(userId)
+
+    if (userCheckError || !targetUser.user) {
+      console.error('User not found:', userCheckError)
+      throw new Error('User not found')
+    }
+
+    console.log('Target user found:', targetUser.user.email)
+
+    // Get target user's roles to prevent deleting other super admins (optional safety check)
+    const { data: targetUserRoles, error: targetRoleError } = await supabaseAdmin
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+
+    if (targetRoleError) {
+      console.error('Error checking target user roles:', targetRoleError)
+    }
+
+    const targetIsSuperAdmin = targetUserRoles?.some(r => r.role === 'super_admin')
+    const currentIsSuperAdmin = currentUserRoles?.some(r => r.role === 'super_admin')
+
+    // Only super admins can delete other super admins
+    if (targetIsSuperAdmin && !currentIsSuperAdmin) {
+      throw new Error('Only super admins can delete other super admins')
+    }
+
+    // Log the deletion attempt
+    const { error: logError } = await supabaseAdmin
+      .from('security_events')
+      .insert({
+        user_id: currentUserId,
+        event_type: 'user_deletion_attempt',
+        severity: 'high',
+        details: {
+          target_user_id: userId,
+          target_email: targetUser.user.email,
+          deleted_by: currentUserId,
+          timestamp: new Date().toISOString()
+        }
+      })
+
+    if (logError) {
+      console.error('Failed to log security event:', logError)
+    }
+
+    // Delete the user from Supabase Auth
+    const { data: deleteResult, error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId)
+
+    if (deleteError) {
+      console.error('Error deleting user:', deleteError)
+      throw new Error(`Failed to delete user: ${deleteError.message}`)
+    }
+
+    console.log('User deleted successfully:', deleteResult)
+
+    // Log successful deletion
+    const { error: successLogError } = await supabaseAdmin
+      .from('security_events')
+      .insert({
+        user_id: currentUserId,
+        event_type: 'user_deleted',
+        severity: 'critical',
+        details: {
+          target_user_id: userId,
+          target_email: targetUser.user.email,
+          deleted_by: currentUserId,
+          success: true,
+          timestamp: new Date().toISOString()
+        }
+      })
+
+    if (successLogError) {
+      console.error('Failed to log success event:', successLogError)
+    }
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'User deleted successfully',
+        deletedUser: {
+          id: userId,
+          email: targetUser.user.email
+        }
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      },
+    )
+
+  } catch (error: any) {
+    console.error('Delete user error:', error)
+    
+    return new Response(
+      JSON.stringify({ 
+        success: false, 
+        error: error.message || 'An unexpected error occurred' 
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
+      },
+    )
+  }
+})
