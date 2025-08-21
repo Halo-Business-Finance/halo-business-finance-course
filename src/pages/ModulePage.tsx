@@ -9,11 +9,13 @@ import { courseData } from "@/data/courseData";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { useState } from "react";
 
 const ModulePage = () => {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const { isAdmin } = useAdminRole();
+  const [activeTab, setActiveTab] = useState("lessons");
 
   const module = courseData.modules.find(m => m.id === moduleId);
   
@@ -163,7 +165,7 @@ const ModulePage = () => {
       )}
 
       {/* Content Tabs */}
-      <Tabs defaultValue="lessons" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
           <TabsTrigger value="lessons">Lessons</TabsTrigger>
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -232,10 +234,26 @@ const ModulePage = () => {
                       return;
                     }
                     
-                    if (lesson.completed) {
-                      alert(`Reviewing: ${lesson.title}`);
-                    } else {
-                      alert(`Starting: ${lesson.title}`);
+                    // Navigate to the appropriate content based on lesson type
+                    switch (lesson.type) {
+                      case "video":
+                        // Switch to videos tab to show relevant video content
+                        setActiveTab("videos");
+                        break;
+                      case "reading":
+                        // Switch to overview tab for reading content
+                        setActiveTab("overview");
+                        break;
+                      case "assignment":
+                        // Could navigate to a separate assignment page in the future
+                        alert(`Opening assignment: ${lesson.title}`);
+                        break;
+                      case "quiz":
+                        // Switch to quiz tab
+                        setActiveTab("quiz");
+                        break;
+                      default:
+                        setActiveTab("overview");
                     }
                   };
 
