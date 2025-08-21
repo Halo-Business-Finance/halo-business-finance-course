@@ -1625,6 +1625,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_real_time_threats: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_unusual_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1798,6 +1802,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      mask_profile_data_advanced: {
+        Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
+        Returns: Json
       }
       mask_sensitive_profile_data: {
         Args: { profile_data: Json }

@@ -223,7 +223,10 @@ export const RealTimeThreatMonitor: React.FC = () => {
         description: "Analyzing security patterns...",
       });
 
-      // Use existing comprehensive security analysis function
+      // Use the new real-time threat detection function
+      await supabase.rpc('detect_real_time_threats');
+      
+      // Also run comprehensive analysis
       await supabase.rpc('run_comprehensive_security_analysis');
       
       // Reload data to show results
@@ -231,7 +234,7 @@ export const RealTimeThreatMonitor: React.FC = () => {
       
       toast({
         title: "Threat Detection Complete",
-        description: "Security analysis completed successfully.",
+        description: "Real-time security analysis completed successfully.",
       });
     } catch (error) {
       console.error('Error running threat detection:', error);
