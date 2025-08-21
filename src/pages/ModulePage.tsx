@@ -9,6 +9,7 @@ import { courseData } from "@/data/courseData";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { CaseStudyModal } from "@/components/CaseStudyModal";
+import { ChatWidget } from "@/components/ChatWidget";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useState } from "react";
 
@@ -1045,6 +1046,9 @@ const ModulePage = () => {
         onClose={() => setSelectedCaseStudy(null)}
         caseStudy={selectedCaseStudy}
       />
+
+      {/* AI Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };

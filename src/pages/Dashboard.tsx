@@ -8,6 +8,7 @@ import StatsCard from "@/components/StatsCard";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { HaloBrandFooter } from "@/components/HaloBrandFooter";
+import { ChatWidget } from "@/components/ChatWidget";
 import { courseData, statsData } from "@/data/courseData";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
@@ -136,6 +137,9 @@ const Dashboard = () => {
           onClose={closeModuleDetail}
         />
       )}
+
+      {/* AI Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
