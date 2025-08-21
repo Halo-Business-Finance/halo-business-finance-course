@@ -14,7 +14,14 @@ const Index = () => {
   const [modules, setModules] = useState(courseData.modules);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
-  const learningObjectives: string[] = [];
+  const learningObjectives = [
+    "Analyze financial statements and assess business creditworthiness using industry-standard methodologies",
+    "Differentiate between various loan products including SBA 7(a), 504, conventional, and bridge financing options",
+    "Navigate capital markets and understand the role of financial intermediaries in business lending",
+    "Apply risk assessment techniques and regulatory compliance standards in commercial lending decisions",
+    "Structure financing solutions that align with client needs and risk tolerance parameters",
+    "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
+  ];
 
   const handleModuleStart = (moduleId: string) => {
     const module = modules.find(m => m.id === moduleId);
@@ -91,36 +98,27 @@ const Index = () => {
         {/* Course Modules */}
         <div className="space-y-8 pb-16">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl font-bold">Course Curriculum</h2>
+            <h2 className="text-3xl font-bold">Curriculum Overview</h2>
             <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Course modules will appear here once they are configured and ready for learning.
+              Our comprehensive 8-module curriculum follows Stanford and Wharton's proven pedagogical approach, 
+              combining theoretical foundations with practical applications in business finance and lending.
             </p>
           </div>
 
-          {modules.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {modules.map((module) => (
-                <ModuleCard
-                  key={module.id}
-                  title={module.title}
-                  description={module.description}
-                  duration={module.duration}
-                  lessons={module.lessons}
-                  progress={module.progress}
-                  status={module.status}
-                  onStart={() => handleModuleStart(module.id)}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <BookOpen className="h-16 w-16 mx-auto mb-6 text-muted-foreground/30" />
-              <h3 className="text-xl font-semibold mb-2 text-muted-foreground">No Modules Available</h3>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                Course modules are being prepared and will be available soon. Check back later for new content.
-              </p>
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {modules.map((module) => (
+              <ModuleCard
+                key={module.id}
+                title={module.title}
+                description={module.description}
+                duration={module.duration}
+                lessons={module.lessons}
+                progress={module.progress}
+                status={module.status}
+                onStart={() => handleModuleStart(module.id)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
