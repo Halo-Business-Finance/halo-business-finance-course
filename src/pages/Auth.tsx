@@ -348,10 +348,10 @@ const AuthPage = () => {
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center">
             <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">H</span>
+              <span className="text-white font-bold text-sm">BFM</span>
             </div>
           </div>
-          <h1 className="text-2xl font-bold">Halo Learning</h1>
+          <h1 className="text-2xl font-bold">Business Finance Mastery</h1>
           <p className="text-muted-foreground">Finance Training Platform</p>
         </div>
         
@@ -529,7 +529,7 @@ const AuthPage = () => {
               <CardHeader>
                 <CardTitle>Create Account</CardTitle>
                 <CardDescription>
-                  Join Halo Learning to start your finance education
+                  Join Business Finance Mastery to start your finance education
                 </CardDescription>
               </CardHeader>
               <CardContent>
