@@ -119,4 +119,17 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Font size variations */
+  body.font-small {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  body.font-medium {
+    font-size: 1rem; /* 16px - default */
+  }
+  
+  body.font-large {
+    font-size: 1.125rem; /* 18px */
+  }
 }

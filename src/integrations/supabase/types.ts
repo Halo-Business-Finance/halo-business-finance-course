@@ -114,6 +114,7 @@ export type Database = {
           date_format: string | null
           email: string | null
           email_notifications: boolean | null
+          font_size: string | null
           id: string
           join_date: string
           language: string | null
@@ -143,6 +144,7 @@ export type Database = {
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
+          font_size?: string | null
           id?: string
           join_date?: string
           language?: string | null
@@ -172,6 +174,7 @@ export type Database = {
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
+          font_size?: string | null
           id?: string
           join_date?: string
           language?: string | null

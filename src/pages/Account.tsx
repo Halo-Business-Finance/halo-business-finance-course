@@ -104,6 +104,12 @@ const AccountPage = () => {
     loadProfile();
   }, []);
 
+  // Apply font size to body when preferences change
+  useEffect(() => {
+    document.body.className = document.body.className.replace(/font-(small|medium|large)/g, '');
+    document.body.classList.add(`font-${preferences.fontSize}`);
+  }, [preferences.fontSize]);
+
   const loadProfile = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -156,7 +162,7 @@ const AccountPage = () => {
           language: profile.language || 'en',
           timezone: profile.timezone || 'est',
           dateFormat: profile.date_format || 'mdy',
-          fontSize: 'medium', // Default since this field doesn't exist in DB yet
+          fontSize: profile.font_size || 'medium',
           emailNotifications: profile.email_notifications ?? true,
           pushNotifications: profile.push_notifications ?? false,
           marketingEmails: profile.marketing_emails ?? false,
@@ -309,6 +315,7 @@ const AccountPage = () => {
           language: preferences.language,
           timezone: preferences.timezone,
           date_format: preferences.dateFormat,
+          font_size: preferences.fontSize,
           reduced_motion: preferences.reducedMotion
         })
         .eq('user_id', user.id);
@@ -952,7 +959,10 @@ const AccountPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label>Font Size</Label>
-                      <Select defaultValue="medium">
+                      <Select 
+                        value={preferences.fontSize} 
+                        onValueChange={(value) => handlePreferenceChange('fontSize', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select font size" />
                         </SelectTrigger>
