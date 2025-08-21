@@ -442,30 +442,61 @@ const AccountPage = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input id="firstName" defaultValue="Sarah" />
+                        <Input 
+                          id="firstName" 
+                          value={editForm.name.split(' ')[0] || ''} 
+                          onChange={(e) => {
+                            const lastName = editForm.name.split(' ').slice(1).join(' ');
+                            handleInputChange('name', `${e.target.value} ${lastName}`.trim());
+                          }}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input id="lastName" defaultValue="Johnson" />
+                        <Input 
+                          id="lastName" 
+                          value={editForm.name.split(' ').slice(1).join(' ') || ''} 
+                          onChange={(e) => {
+                            const firstName = editForm.name.split(' ')[0] || '';
+                            handleInputChange('name', `${firstName} ${e.target.value}`.trim());
+                          }}
+                        />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" defaultValue="sarah.johnson@company.com" />
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        value={editForm.email} 
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" defaultValue="+1 (555) 123-4567" />
+                      <Input 
+                        id="phone" 
+                        value={editForm.phone} 
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="company">Company</Label>
-                      <Input id="company" defaultValue="Tech Solutions Inc." />
+                      <Input 
+                        id="company" 
+                        value={editForm.company} 
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="title">Job Title</Label>
-                      <Input id="title" defaultValue="Finance Manager" />
+                      <Input 
+                        id="title" 
+                        value={editForm.title} 
+                        onChange={(e) => handleInputChange('title', e.target.value)}
+                      />
                     </div>
-                    <Button>Save Changes</Button>
+                    <Button onClick={handleEditSubmit}>Save Changes</Button>
                   </CardContent>
                 </Card>
 
