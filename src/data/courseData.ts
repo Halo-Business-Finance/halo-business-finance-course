@@ -59,8 +59,8 @@ export interface CourseData {
 }
 
 export const courseData: CourseData = {
-  totalProgress: 35,
-  completedModules: 2,
+  totalProgress: 0,
+  completedModules: 0,
   totalModules: 8,
   modules: [
     {
@@ -69,8 +69,8 @@ export const courseData: CourseData = {
       description: "Establish a solid foundation in business finance principles, financial statement analysis, and fundamental concepts essential for understanding modern corporate finance.",
       duration: "2.5 hours",
       lessons: 12,
-      progress: 100,
-      status: "completed",
+      progress: 0,
+      status: "available",
       topics: ["Financial Statement Analysis", "Time Value of Money", "Risk and Return", "Working Capital Management", "Financial Ratios", "Cash Flow Analysis"],
       videos: [
         {
@@ -235,8 +235,8 @@ export const courseData: CourseData = {
       description: "Comprehensive study of capital markets, including equity and debt markets, market efficiency, institutional investors, and the role of financial intermediaries in the economy.",
       duration: "3 hours",
       lessons: 15,
-      progress: 100,
-      status: "completed",
+      progress: 0,
+      status: "locked",
       topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
       videos: [
         {
@@ -370,8 +370,8 @@ export const courseData: CourseData = {
       description: "Deep dive into Small Business Administration loan programs, including 7(a), 504, and microloans. Learn eligibility requirements, application processes, and risk assessment.",
       duration: "2 hours",
       lessons: 10,
-      progress: 45,
-      status: "in-progress",
+      progress: 0,
+      status: "locked",
       topics: ["SBA 7(a) Loans", "SBA 504 Programs", "SBA Microloans", "Eligibility Criteria", "Application Process", "Guarantee Structure", "Risk Assessment", "Documentation Requirements"],
       videos: [
         {
