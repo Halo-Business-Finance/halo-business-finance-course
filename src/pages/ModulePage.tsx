@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { courseData } from "@/data/courseData";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { useAdminRole } from "@/hooks/useAdminRole";
 
 const ModulePage = () => {
@@ -499,42 +500,11 @@ const ModulePage = () => {
         </TabsContent>
 
         <TabsContent value="quiz">
-          <Card>
-            <CardHeader>
-              <CardTitle>Module Quiz</CardTitle>
-              <CardDescription>Test your knowledge of this module</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">{module.lessons}</div>
-                    <div className="text-sm text-muted-foreground">Questions</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-accent">80%</div>
-                    <div className="text-sm text-muted-foreground">Passing Score</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">30 min</div>
-                    <div className="text-sm text-muted-foreground">Time Limit</div>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full" 
-                  disabled={module.status === "available"}
-                  onClick={() => {
-                    if (module.status !== "available") {
-                      alert(`Quiz functionality coming soon! This would start the module quiz.`);
-                    }
-                  }}
-                >
-                  {module.status === "completed" ? "Retake Quiz" : 
-                   module.status === "in-progress" ? "Take Quiz" : "Complete Module First"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <ModuleQuiz 
+            moduleId={module.id}
+            moduleTitle={module.title}
+            totalQuestions={module.lessons}
+          />
         </TabsContent>
       </Tabs>
 
