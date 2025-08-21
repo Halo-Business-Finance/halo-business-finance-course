@@ -18,23 +18,28 @@ export const useAdminRole = () => {
       }
 
       try {
-        // Check if user has admin role using the is_admin function
+        // Use the new secure functions to check roles
         const { data: isAdminData, error: isAdminError } = await supabase
-          .rpc('is_admin', { check_user_id: user.id });
+          .rpc('check_user_has_role', { check_role: 'admin' });
+          
+        const { data: isSuperAdminData, error: isSuperAdminError } = await supabase
+          .rpc('check_user_has_role', { check_role: 'super_admin' });
 
-        if (isAdminError) {
-          console.error('Error checking admin status:', isAdminError);
+        if (isAdminError || isSuperAdminError) {
+          console.error('Error checking role status:', { isAdminError, isSuperAdminError });
           setIsAdmin(false);
           setUserRole(null);
         } else {
-          setIsAdmin(isAdminData || false);
+          const hasAdminRole = isAdminData || isSuperAdminData;
+          setIsAdmin(hasAdminRole || false);
           
-          // Get the specific role for more detailed permissions
-          const { data: roleData, error: roleError } = await supabase
-            .rpc('get_user_role', { check_user_id: user.id });
-
-          if (!roleError && roleData) {
-            setUserRole(roleData);
+          // Determine specific role
+          if (isSuperAdminData) {
+            setUserRole('super_admin');
+          } else if (isAdminData) {
+            setUserRole('admin');
+          } else {
+            setUserRole(null);
           }
         }
       } catch (error) {

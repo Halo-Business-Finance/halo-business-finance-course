@@ -831,12 +831,20 @@ export type Database = {
         Returns: boolean
       }
       get_user_role: {
-        Args: { check_user_id: string }
+        Args: { check_user_id?: string }
         Returns: string
+      }
+      has_any_role: {
+        Args: { roles: string[] }
+        Returns: boolean
       }
       is_admin: {
         Args: { check_user_id?: string }
         Returns: boolean
+      }
+      log_auth_failure: {
+        Args: { failure_reason: string; user_email?: string }
+        Returns: undefined
       }
       revoke_user_role: {
         Args: {

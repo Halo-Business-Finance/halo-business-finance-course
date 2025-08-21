@@ -26,33 +26,37 @@ export const AdminProtectedRoute = ({
       }
 
       try {
-        // Check user role from database
-        const { data: userRoles, error } = await supabase
-          .from('user_roles')
-          .select('role, is_active')
-          .eq('user_id', user.id)
-          .eq('is_active', true);
-
-        if (error) {
-          console.error('Error checking admin permissions:', error);
-          toast({
-            title: "Permission Error",
-            description: "Failed to verify admin permissions. Please try again.",
-            variant: "destructive"
-          });
-          setHasPermission(false);
-          setLoading(false);
-          return;
+        // Use secure function to check roles without exposing user_roles table
+        let hasAdminRole = false;
+        
+        if (requiredRole === 'super_admin') {
+          const { data: isSuperAdmin, error } = await supabase
+            .rpc('check_user_has_role', { check_role: 'super_admin' });
+            
+          if (error) {
+            console.error('Error checking super admin permissions:', error);
+            throw error;
+          }
+          hasAdminRole = isSuperAdmin || false;
+        } else {
+          // Check for both admin and super_admin roles
+          const [adminCheck, superAdminCheck] = await Promise.all([
+            supabase.rpc('check_user_has_role', { check_role: 'admin' }),
+            supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+          ]);
+          
+          if (adminCheck.error || superAdminCheck.error) {
+            console.error('Error checking admin permissions:', { 
+              adminError: adminCheck.error, 
+              superAdminError: superAdminCheck.error 
+            });
+            throw adminCheck.error || superAdminCheck.error;
+          }
+          
+          hasAdminRole = adminCheck.data || superAdminCheck.data;
         }
 
-        const hasAdminRole = userRoles?.some(role => {
-          if (requiredRole === 'super_admin') {
-            return role.role === 'super_admin';
-          }
-          return role.role === 'admin' || role.role === 'super_admin';
-        });
-
-        setHasPermission(hasAdminRole || false);
+        setHasPermission(hasAdminRole);
 
         if (!hasAdminRole) {
           toast({

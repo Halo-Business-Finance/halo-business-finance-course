@@ -124,11 +124,27 @@ const AdminDashboard = () => {
 
       if (profilesError) throw profilesError;
 
-      // Load user roles
-      const { data: roles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Check if current user is super admin to determine access to user_roles
+      const { data: isSuperAdmin } = await supabase
+        .rpc('check_user_has_role', { check_role: 'super_admin' });
+      
+      let roles = [];
+      let rolesError = null;
+      
+      if (isSuperAdmin) {
+        // Super admins can view all user roles
+        const { data: rolesData, error } = await supabase
+          .from('user_roles')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        roles = rolesData;
+        rolesError = error;
+      } else {
+        // Regular admins can only see limited role information
+        // We'll show all users but with limited role visibility
+        roles = [];
+      }
 
       if (rolesError) throw rolesError;
 
@@ -138,7 +154,7 @@ const AdminDashboard = () => {
         return {
           id: userRole?.id || `profile-${profile.id}`,
           user_id: profile.user_id,
-          role: userRole?.role || 'user',
+          role: userRole?.role || (isSuperAdmin ? 'user' : 'unknown'),
           is_active: userRole?.is_active ?? true,
           created_at: userRole?.created_at || profile.created_at,
           updated_at: userRole?.updated_at || profile.updated_at,
