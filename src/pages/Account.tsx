@@ -28,6 +28,17 @@ const AccountPage = () => {
     avatar: "/placeholder.svg"
   });
 
+  const [preferences, setPreferences] = useState({
+    theme: 'light',
+    language: 'en',
+    timezone: 'est',
+    dateFormat: 'mdy',
+    emailNotifications: true,
+    pushNotifications: false,
+    marketingEmails: false,
+    reducedMotion: false
+  });
+
   const [editForm, setEditForm] = useState(userInfo);
 
   const achievements = [
@@ -205,6 +216,20 @@ const AccountPage = () => {
 
   const resetForm = () => {
     setEditForm(userInfo);
+  };
+
+  const handlePreferencesSubmit = () => {
+    toast({
+      title: "Preferences Saved",
+      description: "Your preferences have been updated successfully.",
+    });
+  };
+
+  const handlePreferenceChange = (field: string, value: string | boolean) => {
+    setPreferences(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   if (isLoading) {
@@ -669,7 +694,10 @@ const AccountPage = () => {
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <Label>Theme</Label>
-                      <Select defaultValue="system">
+                      <Select 
+                        value={preferences.theme} 
+                        onValueChange={(value) => handlePreferenceChange('theme', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select theme" />
                         </SelectTrigger>
@@ -700,7 +728,10 @@ const AccountPage = () => {
                           Minimize animations and transitions
                         </p>
                       </div>
-                      <Switch />
+                      <Switch 
+                        checked={preferences.reducedMotion}
+                        onCheckedChange={(checked) => handlePreferenceChange('reducedMotion', checked)}
+                      />
                     </div>
                   </CardContent>
                 </Card>
@@ -718,7 +749,10 @@ const AccountPage = () => {
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <Label>Language</Label>
-                      <Select defaultValue="en">
+                      <Select 
+                        value={preferences.language} 
+                        onValueChange={(value) => handlePreferenceChange('language', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select language" />
                         </SelectTrigger>
@@ -731,7 +765,10 @@ const AccountPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label>Time Zone</Label>
-                      <Select defaultValue="est">
+                      <Select 
+                        value={preferences.timezone} 
+                        onValueChange={(value) => handlePreferenceChange('timezone', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select time zone" />
                         </SelectTrigger>
@@ -745,7 +782,10 @@ const AccountPage = () => {
                     </div>
                     <div className="space-y-2">
                       <Label>Date Format</Label>
-                      <Select defaultValue="mdy">
+                      <Select 
+                        value={preferences.dateFormat} 
+                        onValueChange={(value) => handlePreferenceChange('dateFormat', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select date format" />
                         </SelectTrigger>
@@ -756,7 +796,7 @@ const AccountPage = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    <Button>Save Preferences</Button>
+                    <Button onClick={handlePreferencesSubmit}>Save Preferences</Button>
                   </CardContent>
                 </Card>
               </div>
