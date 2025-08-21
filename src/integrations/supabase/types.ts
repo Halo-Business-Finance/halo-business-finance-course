@@ -1245,6 +1245,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      verify_profile_access_security: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
     }
     Enums: {
       data_classification: "public" | "internal" | "confidential" | "restricted"
