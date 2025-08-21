@@ -878,6 +878,10 @@ export type Database = {
         Args: { check_user_id?: string }
         Returns: boolean
       }
+      is_current_user_super_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       log_admin_action: {
         Args: {
           p_action: string

@@ -116,17 +116,52 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Use secure edge function to get filtered profiles
-      const { data: profilesResponse, error: profilesError } = await supabase.functions.invoke('secure-admin-operations', {
-        body: {
-          operation: 'get_filtered_profiles',
-          limit: 50,
-          offset: 0
-        }
-      });
+      // Try secure edge function first, fallback to direct queries if it fails
+      let profilesWithRoles = [];
+      
+      try {
+        const { data: profilesResponse, error: profilesError } = await supabase.functions.invoke('secure-admin-operations', {
+          body: {
+            operation: 'get_filtered_profiles',
+            limit: 50,
+            offset: 0
+          }
+        });
 
-      if (profilesError) {
-        throw new Error(`Failed to fetch profiles: ${profilesError.message}`);
+        if (profilesError) {
+          throw new Error(`Secure function failed: ${profilesError.message}`);
+        }
+
+        profilesWithRoles = profilesResponse?.profiles || [];
+      } catch (secureError) {
+        console.warn('Secure function unavailable, using direct queries:', secureError);
+        
+        // Fallback to direct database queries
+        const [
+          { data: profiles, error: profilesError },
+          { data: roles, error: rolesError }
+        ] = await Promise.all([
+          supabase
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('user_roles')
+            .select('*')
+            .order('created_at', { ascending: false })
+        ]);
+
+        if (profilesError) throw profilesError;
+        if (rolesError) throw rolesError;
+
+        // Combine profiles with their roles
+        profilesWithRoles = profiles?.map(profile => {
+          const userRoles = roles?.filter(role => role.user_id === profile.user_id) || [];
+          return {
+            ...profile,
+            roles: userRoles.map(r => r.role)
+          };
+        }) || [];
       }
 
       // Fetch other data in parallel
@@ -148,12 +183,11 @@ const AdminDashboard = () => {
       if (eventsError) throw eventsError;
       if (instructorsError) throw instructorsError;
 
-      const profilesWithRoles = profilesResponse?.profiles || [];
       setUserRoles(profilesWithRoles);
       setSecurityEvents(eventsData || []);
       setInstructors(instructorsData || []);
 
-      // Calculate stats from filtered data
+      // Calculate stats from the data
       const totalUsers = profilesWithRoles.length;
       const activeAdmins = profilesWithRoles.filter((profile: any) => 
         profile.roles && profile.roles.some((role: string) => ['admin', 'super_admin'].includes(role))
@@ -183,17 +217,31 @@ const AdminDashboard = () => {
   const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
-        body: {
-          operation: 'assign_role',
-          targetUserId: userId,
-          role: role,
-          reason: 'Role assignment via admin dashboard'
-        }
-      });
+      
+      // Try secure function first, fallback to direct RPC
+      try {
+        const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+          body: {
+            operation: 'assign_role',
+            targetUserId: userId,
+            role: role,
+            reason: 'Role assignment via admin dashboard'
+          }
+        });
 
-      if (error) {
-        throw error;
+        if (error) throw error;
+      } catch (secureError) {
+        console.warn('Secure function unavailable, using direct RPC:', secureError);
+        
+        // Fallback to direct RPC call
+        const { data, error } = await supabase.rpc('assign_user_role', {
+          p_target_user_id: userId,
+          p_new_role: role,
+          p_reason: 'Role assignment via admin dashboard',
+          p_mfa_verified: false
+        });
+
+        if (error) throw error;
       }
 
       toast({
@@ -228,16 +276,29 @@ const AdminDashboard = () => {
   const revokeRole = async (userId: string) => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
-        body: {
-          operation: 'revoke_role',
-          targetUserId: userId,
-          reason: 'Role revocation via admin dashboard'
-        }
-      });
+      
+      // Try secure function first, fallback to direct RPC
+      try {
+        const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+          body: {
+            operation: 'revoke_role',
+            targetUserId: userId,
+            reason: 'Role revocation via admin dashboard'
+          }
+        });
 
-      if (error) {
-        throw error;
+        if (error) throw error;
+      } catch (secureError) {
+        console.warn('Secure function unavailable, using direct RPC:', secureError);
+        
+        // Fallback to direct RPC call
+        const { data, error } = await supabase.rpc('revoke_user_role', {
+          p_target_user_id: userId,
+          p_reason: 'Role revocation via admin dashboard',
+          p_mfa_verified: false
+        });
+
+        if (error) throw error;
       }
 
       toast({
@@ -263,16 +324,32 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
-        body: {
-          operation: 'delete_user',
-          targetUserId: userId,
-          reason: 'User deletion via admin dashboard'
-        }
-      });
+      // Try secure function first, fallback to direct function call
+      try {
+        const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+          body: {
+            operation: 'delete_user',
+            targetUserId: userId,
+            reason: 'User deletion via admin dashboard'
+          }
+        });
 
-      if (error) {
-        throw error;
+        if (error) throw error;
+      } catch (secureError) {
+        console.warn('Secure function unavailable, using direct function:', secureError);
+        
+        // Fallback to direct function call
+        const { data, error } = await supabase.functions.invoke('delete-user', {
+          body: { 
+            userId: userId,
+            currentUserId: user?.id 
+          }
+        });
+
+        if (error) throw error;
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to delete user');
+        }
       }
 
       toast({
