@@ -9,27 +9,22 @@ const CertificatesPage = () => {
   const certificates = [
     {
       name: "Business Finance Foundations",
-      status: "earned",
-      earnedDate: "2024-07-15",
-      credentialId: "HBF-2024-001",
+      status: "available",
       description: "Fundamental concepts in business finance and financial analysis"
     },
     {
       name: "Capital Markets Specialist",
-      status: "earned",
-      earnedDate: "2024-07-22",
-      credentialId: "HBF-2024-002",
+      status: "locked",
       description: "Advanced understanding of capital markets and investment strategies"
     },
     {
       name: "SBA Loan Expert",
-      status: "in-progress",
-      progress: 65,
+      status: "locked",
       description: "Comprehensive knowledge of SBA loan programs and application processes"
     },
     {
       name: "Conventional Lending Specialist",
-      status: "available",
+      status: "locked",
       description: "Traditional lending practices and risk assessment methodologies"
     },
     {
@@ -96,11 +91,11 @@ const CertificatesPage = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-accent">2</div>
+              <div className="text-2xl font-bold text-accent">0</div>
               <div className="text-sm text-muted-foreground">Earned</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary">1</div>
+              <div className="text-2xl font-bold text-primary">0</div>
               <div className="text-sm text-muted-foreground">In Progress</div>
             </div>
             <div className="text-center">
@@ -108,7 +103,7 @@ const CertificatesPage = () => {
               <div className="text-sm text-muted-foreground">Available</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-muted-foreground">4</div>
+              <div className="text-2xl font-bold text-muted-foreground">7</div>
               <div className="text-sm text-muted-foreground">Locked</div>
             </div>
           </div>
@@ -131,53 +126,8 @@ const CertificatesPage = () => {
               </div>
             </CardHeader>
             <CardContent>
-              {certificate.status === "earned" && (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      Earned: {formatDate(certificate.earnedDate)}
-                    </div>
-                    <div>
-                      Credential ID: {certificate.credentialId}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button size="sm" className="gap-1" onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = '#';
-                      link.download = `${certificate.name}-Certificate.pdf`;
-                      link.click();
-                    }}>
-                      <Download className="h-4 w-4" />
-                      Download Certificate
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => {
-                      window.open(`/credential/${certificate.credentialId}`, '_blank');
-                    }}>
-                      View Credential
-                    </Button>
-                  </div>
-                </div>
-              )}
-              
-              {certificate.status === "in-progress" && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Progress to certification</span>
-                    <span className="font-medium">{certificate.progress}%</span>
-                  </div>
-                  <div className="w-full bg-muted rounded-full h-2">
-                    <div 
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${certificate.progress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
               {certificate.status === "available" && (
-                <Button size="sm" variant="outline" onClick={() => navigate("/")}>
+                <Button size="sm" variant="outline" onClick={() => navigate("/dashboard")}>
                   Start Learning Path
                 </Button>
               )}
