@@ -142,6 +142,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      get_user_role: {
+        Args: { check_user_id: string }
+        Returns: string
+      }
+      is_admin: {
+        Args: { check_user_id?: string }
+        Returns: boolean
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
