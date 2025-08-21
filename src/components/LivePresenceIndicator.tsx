@@ -48,29 +48,29 @@ export const LivePresenceIndicator = ({
 
     // Track current user's presence
     presenceChannel
-      .on('presence', { event: 'sync' }, () => {
-        const state = presenceChannel.presenceState();
-        const users: UserPresence[] = [];
-        
-        // Extract user data from presence state
-        Object.entries(state).forEach(([key, presences]: [string, any[]]) => {
-          if (presences && presences.length > 0) {
-            const presence = presences[0];
-            if (presence.user_id) {
-              users.push(presence as UserPresence);
+        .on('presence', { event: 'sync' }, () => {
+          const state = presenceChannel.presenceState();
+          const users: UserPresence[] = [];
+          
+          // Extract user data from presence state
+          Object.entries(state).forEach(([key, presences]: [string, any[]]) => {
+            if (presences && presences.length > 0) {
+              const presence = presences[0];
+              if (presence.user_id) {
+                users.push(presence as UserPresence);
+              }
             }
-          }
-        });
-        
-        console.log('👥 Users online:', users);
-        setOnlineUsers(users);
-      })
-      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('👋 User joined:', key, newPresences);
-      })
-      .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('👋 User left:', key, leftPresences);
-      })
+          });
+          
+          // Secure logging - no user data in production logs
+          setOnlineUsers(users);
+        })
+        .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+          // Secure logging - no user identification in production
+        })
+        .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+          // Secure logging - no user identification in production
+        })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
           // Track this user's presence

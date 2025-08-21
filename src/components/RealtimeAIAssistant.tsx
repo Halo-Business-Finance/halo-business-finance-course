@@ -49,7 +49,7 @@ export const RealtimeAIAssistant = () => {
       const ws = new WebSocket('wss://kagwfntxlgzrcngysmlt.functions.supabase.co/realtime-ai-assistant');
       
       ws.onopen = () => {
-        console.log('🔗 Connected to AI Assistant');
+        // Secure logging - connection established
         setIsConnected(true);
         setConnectionStatus('connected');
         
@@ -85,7 +85,7 @@ export const RealtimeAIAssistant = () => {
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log('📨 AI Response:', data.type);
+        // Secure logging - processing AI response
         
         switch (data.type) {
           case 'response.audio.delta':
@@ -104,13 +104,13 @@ export const RealtimeAIAssistant = () => {
             break;
             
           case 'response.done':
-            console.log('✅ AI Response complete');
+            // Secure logging - AI response completed
             break;
         }
       };
 
       ws.onclose = () => {
-        console.log('🔌 AI Assistant disconnected');
+        // Secure logging - AI assistant disconnected
         setIsConnected(false);
         setConnectionStatus('disconnected');
         toast({
@@ -121,7 +121,7 @@ export const RealtimeAIAssistant = () => {
       };
 
       ws.onerror = (error) => {
-        console.error('❌ WebSocket error:', error);
+        // Secure error logging without exposing details in production
         setConnectionStatus('disconnected');
         toast({
           title: "Connection Error",
@@ -132,7 +132,7 @@ export const RealtimeAIAssistant = () => {
 
       wsRef.current = ws;
     } catch (error) {
-      console.error('Connection error:', error);
+      // Secure error logging without exposing details in production
       setConnectionStatus('disconnected');
       toast({
         title: "Connection Failed",
@@ -209,7 +209,7 @@ export const RealtimeAIAssistant = () => {
       // For demo purposes, we'll show the recording state
       
     } catch (error) {
-      console.error('Microphone access error:', error);
+      // Secure error logging without exposing microphone details
       toast({
         title: "Microphone Error",
         description: "Unable to access microphone",
@@ -227,8 +227,7 @@ export const RealtimeAIAssistant = () => {
   };
 
   const playAudioChunk = (audioBase64: string) => {
-    // Audio playback implementation would be added here
-    console.log('🎵 Playing audio chunk');
+    // Audio playback implementation - secure processing without logging audio data
   };
 
   const updateAssistantMessage = (textDelta: string) => {

@@ -1260,7 +1260,11 @@ const AdminDashboard = () => {
                         console.log('Clicking User Management button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >
@@ -1274,7 +1278,11 @@ const AdminDashboard = () => {
                         console.log('Clicking Authentication Providers button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >
@@ -1288,7 +1296,11 @@ const AdminDashboard = () => {
                         console.log('Clicking URL Configuration button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >
@@ -1310,7 +1322,11 @@ const AdminDashboard = () => {
                         console.log('Clicking System Logs button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >
@@ -1324,7 +1340,11 @@ const AdminDashboard = () => {
                         console.log('Clicking Database Tables button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >
@@ -1338,7 +1358,11 @@ const AdminDashboard = () => {
                         console.log('Clicking Project Settings button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank');
                         if (!opened) {
-                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general');
+                          toast({
+                            title: "Popup Blocked",
+                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general",
+                            variant: "destructive",
+                          });
                         }
                       }}
                     >

@@ -12,6 +12,7 @@ import {
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { useProductionSecurityLogger } from '@/components/ProductionSecurityLogger';
 
 import {
   Sidebar,
@@ -52,13 +53,14 @@ export function AppSidebar() {
   const { user, loading, signOut } = useAuth();
   const { isAdmin } = useAdminRole();
   const [isLoading, setIsLoading] = useState(false);
+  const { secureError } = useProductionSecurityLogger('AppSidebar');
 
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
       await signOut();
     } catch (error) {
-      console.error('Sign out error:', error);
+      secureError(error as Error, { action: 'user_sign_out' });
     } finally {
       setIsLoading(false);
     }

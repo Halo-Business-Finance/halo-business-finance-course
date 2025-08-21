@@ -1859,7 +1859,7 @@ export type Database = {
       }
       run_automated_security_maintenance: {
         Args: Record<PropertyKey, never>
-        Returns: Json
+        Returns: undefined
       }
       run_comprehensive_security_analysis: {
         Args: Record<PropertyKey, never>

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { useProductionSecurityLogger } from '@/components/ProductionSecurityLogger';
 
 interface AdminProtectedRouteProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ export const AdminProtectedRoute = ({
   const { user, loading: authLoading } = useAuth();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
+  const { secureError } = useProductionSecurityLogger('AdminProtectedRoute');
 
   useEffect(() => {
     const checkAdminPermissions = async () => {
@@ -34,7 +36,10 @@ export const AdminProtectedRoute = ({
             .rpc('check_user_has_role', { check_role: 'super_admin' });
             
           if (error) {
-            console.error('Error checking super admin permissions:', error);
+            secureError(error, { 
+              action: 'super_admin_role_check',
+              userId: user.id 
+            });
             throw error;
           }
           hasAdminRole = isSuperAdmin || false;
@@ -46,9 +51,11 @@ export const AdminProtectedRoute = ({
           ]);
           
           if (adminCheck.error || superAdminCheck.error) {
-            console.error('Error checking admin permissions:', { 
-              adminError: adminCheck.error, 
-              superAdminError: superAdminCheck.error 
+            secureError(adminCheck.error || superAdminCheck.error, { 
+              action: 'admin_role_check',
+              userId: user.id,
+              adminError: adminCheck.error ? 'admin_check_failed' : null,
+              superAdminError: superAdminCheck.error ? 'super_admin_check_failed' : null
             });
             throw adminCheck.error || superAdminCheck.error;
           }
@@ -66,7 +73,10 @@ export const AdminProtectedRoute = ({
           });
         }
       } catch (error) {
-        console.error('Unexpected error checking permissions:', error);
+        secureError(error as Error, { 
+          action: 'admin_permission_validation',
+          userId: user?.id 
+        });
         setHasPermission(false);
       } finally {
         setLoading(false);
@@ -76,7 +86,7 @@ export const AdminProtectedRoute = ({
     if (!authLoading) {
       checkAdminPermissions();
     }
-  }, [user, authLoading, requiredRole]);
+  }, [user, authLoading, requiredRole, secureError]);
 
   // Show loading while checking auth or permissions
   if (authLoading || loading) {

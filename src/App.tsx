@@ -12,6 +12,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import ContentSecurityPolicy from "@/components/ContentSecurityPolicy";
+import { SecureProductionWrapper } from "@/components/SecureProductionWrapper";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -184,20 +185,22 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <ContentSecurityPolicy />
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <SidebarProvider defaultOpen={true}>
-            <AppContent />
-          </SidebarProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <SecureProductionWrapper>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ContentSecurityPolicy />
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <SidebarProvider defaultOpen={true}>
+              <AppContent />
+            </SidebarProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </SecureProductionWrapper>
 );
 
 export default App;
