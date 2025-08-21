@@ -151,8 +151,16 @@ const AdminAuthPage = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    setRateLimitWarning('');
-    
+    if (!signUpData.email || !signUpData.password || !signUpData.confirmPassword || !signUpData.fullName) {
+      toast({
+        title: "Missing Fields",
+        description: "All fields are required.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Check rate limiting
     const clientId = `admin_signup_${signUpData.email}`;
     const rateLimitCheck = authRateLimiter.isAllowed(clientId);
     
@@ -162,7 +170,6 @@ const AdminAuthPage = () => {
       return;
     }
 
-    // Validate all inputs
     const nameValidation = validateName(signUpData.fullName);
     if (!nameValidation.isValid) {
       toast({
@@ -205,55 +212,61 @@ const AdminAuthPage = () => {
     setIsLoading(true);
 
     try {
-      const sanitizedName = sanitizeInput(signUpData.fullName);
-      const sanitizedEmail = sanitizeInput(signUpData.email);
-      const redirectUrl = `${window.location.origin}/admin/dashboard`;
-      
-      // First create the user
-      const { data, error } = await supabase.auth.signUp({
-        email: sanitizedEmail,
-        password: signUpData.password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            full_name: sanitizedName,
-            role: signUpData.role,
-          }
+      // Use secure edge function for admin account creation
+      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'create_admin_account',
+          email: signUpData.email,
+          password: signUpData.password,
+          fullName: signUpData.fullName,
+          role: signUpData.role
         }
       });
 
       if (error) {
-        toast({
-          title: "Sign Up Failed",
-          description: error.message,
-          variant: "destructive"
-        });
-        return;
+        throw error;
       }
 
-      if (data.user) {
-        authRateLimiter.reset(clientId);
-        
-        toast({
-          title: "Admin Account Created!",
-          description: "Please check your email to verify your account. You will be assigned admin privileges upon verification.",
-        });
-        
-        // Clear the form
-        setSignUpData({
-          email: "",
-          password: "",
-          confirmPassword: "",
-          fullName: "",
-          role: "admin"
-        });
-        setPasswordStrength('weak');
+      authRateLimiter.reset(clientId);
+
+      toast({
+        title: "Account Created Successfully",
+        description: `Admin account created with ${signUpData.role} role. You can now sign in.`,
+      });
+
+      // Clear form
+      setSignUpData({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        fullName: "",
+        role: "admin"
+      });
+      setPasswordStrength('weak');
+      
+      // Switch to sign in tab
+      setTimeout(() => {
+        const signInTab = document.querySelector('[data-value="signin"]') as HTMLElement;
+        signInTab?.click();
+      }, 500);
+
+    } catch (error: any) {
+      console.error('Sign up error:', error);
+      let errorMessage = 'Failed to create account';
+      
+      if (error?.message?.includes('already registered') || error?.message?.includes('already exists')) {
+        errorMessage = 'An account with this email already exists';
+      } else if (error?.message?.includes('Password')) {
+        errorMessage = 'Password does not meet security requirements';
+      } else if (error?.message?.includes('privileges') || error?.message?.includes('permissions')) {
+        errorMessage = 'Insufficient privileges to create admin accounts';
+      } else if (error?.message) {
+        errorMessage = error.message;
       }
-    } catch (error) {
-      console.error('Admin sign up error:', error);
+      
       toast({
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

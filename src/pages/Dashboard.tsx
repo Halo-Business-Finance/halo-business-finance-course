@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSecureAuth } from '@/hooks/useSecureAuth';
 import ModuleCard from "@/components/ModuleCard"; // Default export
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
@@ -18,8 +18,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
 const Dashboard = () => {
+  const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
   const { toast } = useToast();
-  const { user } = useAuth();
   const [modules, setModules] = useState(courseData.modules);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [selectedSkillLevel, setSelectedSkillLevel] = useState("all");
@@ -111,8 +111,26 @@ const Dashboard = () => {
     }
   };
 
-  if (!user) {
-    return null;
+  // Show loading state or redirect to auth if no user
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!user || !hasEnrollment) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">Access Restricted</h2>
+          <p className="text-muted-foreground mb-6">
+            You need to be enrolled in the course to access this content. Please contact an administrator.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const iconMap = {

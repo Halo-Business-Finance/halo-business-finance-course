@@ -116,80 +116,50 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load ALL profiles first (all registered users)
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Use secure edge function to get filtered profiles
+      const { data: profilesResponse, error: profilesError } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'get_filtered_profiles',
+          limit: 50,
+          offset: 0
+        }
+      });
 
-      if (profilesError) throw profilesError;
-
-      // Check if current user is super admin to determine access to user_roles
-      const { data: isSuperAdmin } = await supabase
-        .rpc('check_user_has_role', { check_role: 'super_admin' });
-      
-      let roles = [];
-      let rolesError = null;
-      
-      if (isSuperAdmin) {
-        // Super admins can view all user roles
-        const { data: rolesData, error } = await supabase
-          .from('user_roles')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        roles = rolesData;
-        rolesError = error;
-      } else {
-        // Regular admins can only see limited role information
-        // We'll show all users but with limited role visibility
-        roles = [];
+      if (profilesError) {
+        throw new Error(`Failed to fetch profiles: ${profilesError.message}`);
       }
 
-      if (rolesError) throw rolesError;
-
-      // Combine profiles with roles (show all users, even without roles)
-      const rolesWithProfiles = profiles?.map(profile => {
-        const userRole = roles?.find(r => r.user_id === profile.user_id);
-        return {
-          id: userRole?.id || `profile-${profile.id}`,
-          user_id: profile.user_id,
-          role: userRole?.role || (isSuperAdmin ? 'user' : 'unknown'),
-          is_active: userRole?.is_active ?? true,
-          created_at: userRole?.created_at || profile.created_at,
-          updated_at: userRole?.updated_at || profile.updated_at,
-          profiles: profile
-        };
-      }) || [];
-
-      setUserRoles(rolesWithProfiles);
-
-      // Load recent security events
-      const { data: events, error: eventsError } = await supabase
-        .from('security_events')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10);
+      // Fetch other data in parallel
+      const [
+        { data: eventsData, error: eventsError },
+        { data: instructorsData, error: instructorsError }
+      ] = await Promise.all([
+        supabase
+          .from('security_events')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10),
+        supabase
+          .from('instructors')
+          .select('*')
+          .order('display_order', { ascending: true })
+      ]);
 
       if (eventsError) throw eventsError;
-      setSecurityEvents(events || []);
-
-      // Load instructors
-      const { data: instructorsData, error: instructorsError } = await supabase
-        .from('instructors')
-        .select('*')
-        .order('display_order', { ascending: true });
-
       if (instructorsError) throw instructorsError;
+
+      const profilesWithRoles = profilesResponse?.profiles || [];
+      setUserRoles(profilesWithRoles);
+      setSecurityEvents(eventsData || []);
       setInstructors(instructorsData || []);
 
-      // Calculate stats
-      const totalUsers = rolesWithProfiles?.length || 0;
-      const activeAdmins = rolesWithProfiles?.filter(r => 
-        (r.role === 'admin' || r.role === 'super_admin') && r.is_active
-      ).length || 0;
-      const recentEvents = events?.filter(e => 
-        new Date(e.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+      // Calculate stats from filtered data
+      const totalUsers = profilesWithRoles.length;
+      const activeAdmins = profilesWithRoles.filter((profile: any) => 
+        profile.roles && profile.roles.some((role: string) => ['admin', 'super_admin'].includes(role))
+      ).length;
+      const recentEvents = eventsData?.filter(event => 
+        event.created_at && new Date(event.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
       ).length || 0;
 
       setStats({
@@ -198,12 +168,11 @@ const AdminDashboard = () => {
         securityEvents: recentEvents,
         systemHealth: recentEvents > 10 ? 'critical' : recentEvents > 5 ? 'warning' : 'good'
       });
-
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading dashboard data:', error);
       toast({
         title: "Error",
-        description: "Failed to load dashboard data",
+        description: error?.message || "Failed to load dashboard data. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -213,89 +182,115 @@ const AdminDashboard = () => {
 
   const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
-      // Call the database function to assign role
-      const { data, error } = await supabase.rpc('assign_user_role', {
-        p_target_user_id: userId,
-        p_new_role: role,
-        p_reason: 'Admin dashboard role assignment',
-        p_mfa_verified: false
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'assign_role',
+          targetUserId: userId,
+          role: role,
+          reason: 'Role assignment via admin dashboard'
+        }
       });
 
-      if (error) throw error;
-      
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Success",
-        description: `Role ${role} assigned successfully`,
+        description: `${role} role assigned successfully.`
       });
-      
-      loadDashboardData(); // Reload data
+
+      // Reload data to reflect changes
+      await loadDashboardData();
     } catch (error: any) {
+      console.error('Error assigning role:', error);
+      let errorMessage = 'Failed to assign role';
+      
+      if (error?.message?.includes('super_admin')) {
+        errorMessage = 'Only super admins can assign super admin roles';
+      } else if (error?.message?.includes('privileges') || error?.message?.includes('permissions')) {
+        errorMessage = 'Insufficient privileges to assign roles';
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Error",
-        description: error.message || "Failed to assign role",
+        description: errorMessage,
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const revokeRole = async (userId: string) => {
     try {
-      const { data, error } = await supabase.rpc('revoke_user_role', {
-        p_target_user_id: userId,
-        p_reason: 'Admin dashboard role revocation',
-        p_mfa_verified: false
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'revoke_role',
+          targetUserId: userId,
+          reason: 'Role revocation via admin dashboard'
+        }
       });
 
-      if (error) throw error;
-      
+      if (error) {
+        throw error;
+      }
+
       toast({
         title: "Success",
-        description: "Role revoked successfully",
+        description: "Role revoked successfully."
       });
-      
-      loadDashboardData(); // Reload data
+
+      // Reload data to reflect changes
+      await loadDashboardData();
     } catch (error: any) {
+      console.error('Error revoking role:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to revoke role",
+        description: error?.message || "Failed to revoke role",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteUser = async (userId: string) => {
     try {
-      setDeletingUser(userId);
+      setLoading(true);
       
-      const { data, error } = await supabase.functions.invoke('delete-user', {
-        body: { 
-          userId: userId,
-          currentUserId: user?.id 
+      const { data, error } = await supabase.functions.invoke('secure-admin-operations', {
+        body: {
+          operation: 'delete_user',
+          targetUserId: userId,
+          reason: 'User deletion via admin dashboard'
         }
       });
 
-      if (error) throw error;
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to delete user');
+      if (error) {
+        throw error;
       }
-      
+
       toast({
-        title: "User Deleted",
-        description: `User ${data.deletedUser?.email || userId} has been permanently deleted.`,
-        variant: "destructive"
+        title: "Success",
+        description: "User deleted successfully."
       });
-      
-      loadDashboardData(); // Reload data
+
+      // Reload data to reflect changes
+      await loadDashboardData();
     } catch (error: any) {
-      console.error('Delete user error:', error);
+      console.error('Error deleting user:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to delete user",
+        description: error?.message || "Failed to delete user",
         variant: "destructive"
       });
     } finally {
-      setDeletingUser(null);
+      setLoading(false);
     }
   };
 
