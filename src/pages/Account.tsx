@@ -969,7 +969,6 @@ const AccountPage = () => {
                         <SelectContent>
                           <SelectItem value="small">Small</SelectItem>
                           <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="large">Large</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
