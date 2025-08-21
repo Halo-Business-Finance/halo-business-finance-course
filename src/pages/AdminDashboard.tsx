@@ -20,7 +20,8 @@ import {
   Plus,
   Video,
   FileText,
-  BookOpen
+  BookOpen,
+  Wrench
 } from "lucide-react";
 import { 
   AlertDialog,
@@ -310,7 +311,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'trainee' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
+  const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'viewer' | 'trainee' | 'tech_support_admin' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
     try {
       setLoading(true);
       
@@ -527,9 +528,10 @@ const AdminDashboard = () => {
   };
 
   const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
+    switch (role.toLowerCase()) {
       case 'super_admin': return 'destructive';
       case 'admin': return 'default';
+      case 'tech_support_admin': return 'default';
       case 'manager': return 'secondary';
       case 'trainee': return 'secondary';
       case 'user': return 'outline';
@@ -726,6 +728,15 @@ const AdminDashboard = () => {
                             title="Assign Trainee Role"
                           >
                             <GraduationCap className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => assignRole(userRole.user_id, 'tech_support_admin')}
+                            disabled={userRole.role === 'tech_support_admin'}
+                            title="Assign Tech Support Admin Role"
+                          >
+                            <Wrench className="h-3 w-3" />
                           </Button>
                           <Button
                             size="sm"
