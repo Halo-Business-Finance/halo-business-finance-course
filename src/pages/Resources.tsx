@@ -4,126 +4,51 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play } from "lucide-react";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const ResourcesPage = () => {
-  const documents = [
-    {
-      title: "Business Finance Handbook",
-      description: "Comprehensive guide covering all aspects of business finance",
-      type: "PDF",
-      size: "2.4 MB",
-      category: "guide"
-    },
-    {
-      title: "SBA Loan Application Checklist",
-      description: "Step-by-step checklist for SBA loan applications",
-      type: "PDF",
-      size: "850 KB",
-      category: "checklist"
-    },
-    {
-      title: "Financial Analysis Templates",
-      description: "Excel templates for financial modeling and analysis",
-      type: "XLSX",
-      size: "1.2 MB",
-      category: "template"
-    },
-    {
-      title: "Regulatory Compliance Guide",
-      description: "Latest regulations and compliance requirements",
-      type: "PDF",
-      size: "3.1 MB",
-      category: "guide"
-    }
-  ];
+  const [documents, setDocuments] = useState<any[]>([]);
+  const [videos, setVideos] = useState<any[]>([]);
+  const [tools, setTools] = useState<any[]>([]);
+  const [webinars, setWebinars] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  const videos = [
-    {
-      title: "Introduction to Capital Markets",
-      description: "Overview of capital market structures and participants",
-      duration: "45:30",
-      category: "lecture",
-      videoType: "youtube" as const,
-      youtubeId: "dQw4w9WgXcQ", // Example YouTube ID
-      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-      title: "SBA Loan Process Walkthrough",
-      description: "Complete walkthrough of the SBA loan application process",
-      duration: "32:15",
-      category: "tutorial",
-      videoType: "file" as const,
-      videoUrl: "/sample-video.mp4" // Example file path
-    },
-    {
-      title: "Risk Assessment Techniques",
-      description: "Advanced techniques for evaluating credit risk",
-      duration: "28:45",
-      category: "lecture",
-      videoType: "youtube" as const,
-      youtubeId: "dQw4w9WgXcQ",
-      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-      title: "Case Study: Bridge Financing",
-      description: "Real-world example of bridge financing structure",
-      duration: "15:20",
-      category: "case-study",
-      videoType: "file" as const,
-      videoUrl: "/case-study-video.mp4"
-    }
-  ];
+  useEffect(() => {
+    loadResources();
+  }, []);
 
-  const tools = [
-    {
-      title: "Financial Calculator",
-      description: "Advanced calculator for loan payments, NPV, and IRR calculations",
-      type: "Web Tool",
-      category: "calculator"
-    },
-    {
-      title: "Credit Score Simulator",
-      description: "Tool to simulate credit score impacts of various scenarios",
-      type: "Web Tool",
-      category: "simulator"
-    },
-    {
-      title: "Loan Comparison Tool",
-      description: "Compare different loan options side by side",
-      type: "Web Tool",
-      category: "comparison"
-    },
-    {
-      title: "ROI Calculator",
-      description: "Calculate return on investment for business projects",
-      type: "Web Tool",
-      category: "calculator"
-    }
-  ];
+  const loadResources = async () => {
+    try {
+      const [docsRes, videosRes, toolsRes, webinarsRes] = await Promise.all([
+        supabase.from('course_documents').select('*').eq('is_downloadable', true).order('created_at', { ascending: false }),
+        supabase.from('course_videos').select('*').eq('is_active', true).order('created_at', { ascending: false }),
+        supabase.from('learning_tools').select('*').eq('is_active', true).order('order_index', { ascending: true }),
+        supabase.from('learning_webinars').select('*').eq('is_active', true).order('scheduled_date', { ascending: false })
+      ]);
 
-  const webinars = [
-    {
-      title: "Current Trends in Business Lending",
-      date: "March 15, 2024",
-      time: "2:00 PM EST",
-      status: "upcoming",
-      presenter: "Sarah Johnson, Senior Finance Expert"
-    },
-    {
-      title: "Navigating SBA Loan Changes",
-      date: "February 28, 2024",
-      time: "1:00 PM EST",
-      status: "completed",
-      presenter: "Michael Chen, SBA Specialist"
-    },
-    {
-      title: "Alternative Financing Solutions",
-      date: "February 14, 2024",
-      time: "3:00 PM EST",
-      status: "completed",
-      presenter: "Lisa Rodriguez, Finance Consultant"
+      if (docsRes.error) throw docsRes.error;
+      if (videosRes.error) throw videosRes.error;
+      if (toolsRes.error) throw toolsRes.error;
+      if (webinarsRes.error) throw webinarsRes.error;
+
+      setDocuments(docsRes.data || []);
+      setVideos(videosRes.data || []);
+      setTools(toolsRes.data || []);
+      setWebinars(webinarsRes.data || []);
+    } catch (error) {
+      console.error('Error loading resources:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load resources.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -135,6 +60,49 @@ const ResourcesPage = () => {
         return <FileText className="h-4 w-4" />;
     }
   };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  const handleDownload = async (document: any) => {
+    try {
+      // Update download count
+      await supabase
+        .from('course_documents')
+        .update({ download_count: (document.download_count || 0) + 1 })
+        .eq('id', document.id);
+
+      // Open file in new tab
+      window.open(document.file_url, "_blank");
+
+      toast({
+        title: "Download Started",
+        description: `Downloading ${document.title}`,
+      });
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      toast({
+        title: "Download Failed",
+        description: "Could not download the document. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -164,30 +132,31 @@ const ResourcesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
-                {documents.map((doc) => (
-                  <div key={doc.title} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {getFileIcon(doc.type)}
-                      <div>
-                        <h3 className="font-medium text-foreground">{doc.title}</h3>
-                        <p className="text-sm text-muted-foreground">{doc.description}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">{doc.type}</Badge>
-                          <span className="text-xs text-muted-foreground">{doc.size}</span>
+                {documents.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No documents available yet.
+                  </div>
+                ) : (
+                  documents.map((doc) => (
+                    <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {getFileIcon(doc.file_type)}
+                        <div>
+                          <h3 className="font-medium text-foreground">{doc.title}</h3>
+                          <p className="text-sm text-muted-foreground">{doc.description}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline">{doc.file_type}</Badge>
+                            <span className="text-xs text-muted-foreground">{formatFileSize(doc.file_size || 0)}</span>
+                          </div>
                         </div>
                       </div>
+                      <Button size="sm" className="gap-1" onClick={() => handleDownload(doc)}>
+                        <Download className="h-4 w-4" />
+                        Download
+                      </Button>
                     </div>
-                    <Button size="sm" className="gap-1" onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = '#';
-                      link.download = doc.title;
-                      link.click();
-                    }}>
-                      <Download className="h-4 w-4" />
-                      Download
-                    </Button>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -206,24 +175,30 @@ const ResourcesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="grid gap-6">
-                {videos.map((video) => (
-                  <VideoPlayer
-                    key={video.title}
-                    title={video.title}
-                    description={video.description}
-                    duration={video.duration}
-                    videoType={video.videoType}
-                    videoUrl={video.videoUrl}
-                    youtubeId={video.youtubeId}
-                    onProgress={(progress) => {
-                      console.log(`${video.title} progress: ${progress}%`);
-                    }}
-                    onComplete={() => {
-                      console.log(`${video.title} completed`);
-                    }}
-                    className="w-full"
-                  />
-                ))}
+                {videos.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No videos available yet.
+                  </div>
+                ) : (
+                  videos.map((video) => (
+                    <VideoPlayer
+                      key={video.id}
+                      title={video.title}
+                      description={video.description}
+                      duration={video.duration_seconds ? `${Math.floor(video.duration_seconds / 60)}:${(video.duration_seconds % 60).toString().padStart(2, '0')}` : undefined}
+                      videoType={video.video_type as 'youtube' | 'file'}
+                      videoUrl={video.video_url}
+                      youtubeId={video.youtube_id}
+                      onProgress={(progress) => {
+                        console.log(`${video.title} progress: ${progress}%`);
+                      }}
+                      onComplete={() => {
+                        console.log(`${video.title} completed`);
+                      }}
+                      className="w-full"
+                    />
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -242,23 +217,33 @@ const ResourcesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
-                {tools.map((tool) => (
-                  <div key={tool.title} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <ExternalLink className="h-4 w-4 text-purple-500" />
-                      <div>
-                        <h3 className="font-medium text-foreground">{tool.title}</h3>
-                        <p className="text-sm text-muted-foreground">{tool.description}</p>
-                        <Badge variant="outline" className="mt-1">{tool.type}</Badge>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline" onClick={() => {
-                      alert(`${tool.title} would open in a new window. Tool functionality coming soon!`);
-                    }}>
-                      Launch Tool
-                    </Button>
+                {tools.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No tools available yet.
                   </div>
-                ))}
+                ) : (
+                  tools.map((tool) => (
+                    <div key={tool.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <ExternalLink className="h-4 w-4 text-purple-500" />
+                        <div>
+                          <h3 className="font-medium text-foreground">{tool.title}</h3>
+                          <p className="text-sm text-muted-foreground">{tool.description}</p>
+                          <Badge variant="outline" className="mt-1">{tool.tool_type}</Badge>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="outline" onClick={() => {
+                        if (tool.tool_url) {
+                          window.open(tool.tool_url, '_blank');
+                        } else {
+                          alert(`${tool.title} would open in a new window. Tool functionality coming soon!`);
+                        }
+                      }}>
+                        Launch Tool
+                      </Button>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -277,33 +262,51 @@ const ResourcesPage = () => {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
-                {webinars.map((webinar) => (
-                  <div key={webinar.title} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h3 className="font-medium text-foreground">{webinar.title}</h3>
-                      <p className="text-sm text-muted-foreground">{webinar.presenter}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-muted-foreground">{webinar.date} at {webinar.time}</span>
-                        <Badge variant={webinar.status === "upcoming" ? "progress" : "outline"}>
-                          {webinar.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    <Button 
-                      size="sm" 
-                      variant={webinar.status === "upcoming" ? "default" : "outline"}
-                      onClick={() => {
-                        if (webinar.status === "upcoming") {
-                          alert(`Registration for "${webinar.title}" coming soon!`);
-                        } else {
-                          alert(`Recording for "${webinar.title}" will open soon!`);
-                        }
-                      }}
-                    >
-                      {webinar.status === "upcoming" ? "Register" : "Watch Recording"}
-                    </Button>
+                {webinars.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No webinars available yet.
                   </div>
-                ))}
+                ) : (
+                  webinars.map((webinar) => (
+                    <div key={webinar.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <h3 className="font-medium text-foreground">{webinar.title}</h3>
+                        <p className="text-sm text-muted-foreground">{webinar.presenter}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs text-muted-foreground">
+                            {webinar.scheduled_date && webinar.scheduled_time 
+                              ? `${webinar.scheduled_date} at ${webinar.scheduled_time} ${webinar.timezone || 'EST'}`
+                              : 'TBD'}
+                          </span>
+                          <Badge variant={webinar.status === "upcoming" || webinar.status === "scheduled" ? "progress" : "outline"}>
+                            {webinar.status}
+                          </Badge>
+                        </div>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant={webinar.status === "upcoming" || webinar.status === "scheduled" ? "default" : "outline"}
+                        onClick={() => {
+                          if (webinar.status === "upcoming" || webinar.status === "scheduled") {
+                            if (webinar.registration_url) {
+                              window.open(webinar.registration_url, '_blank');
+                            } else {
+                              alert(`Registration for "${webinar.title}" coming soon!`);
+                            }
+                          } else {
+                            if (webinar.recording_url) {
+                              window.open(webinar.recording_url, '_blank');
+                            } else {
+                              alert(`Recording for "${webinar.title}" will be available soon!`);
+                            }
+                          }
+                        }}
+                      >
+                        {webinar.status === "upcoming" || webinar.status === "scheduled" ? "Register" : "Watch Recording"}
+                      </Button>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>

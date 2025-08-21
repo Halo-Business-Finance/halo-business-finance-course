@@ -42,6 +42,7 @@ import { InstructorForm } from "@/components/InstructorForm";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
+import { ResourceManager } from "@/components/admin/ResourceManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserRole {
@@ -461,6 +462,10 @@ const AdminDashboard = () => {
                 <FileText className="h-4 w-4 mr-2" />
                 Articles
               </TabsTrigger>
+              <TabsTrigger value="resources">
+                <FileText className="h-4 w-4 mr-2" />
+                Resources
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="modules">
@@ -473,6 +478,10 @@ const AdminDashboard = () => {
 
             <TabsContent value="articles">
               <ArticleManager />
+            </TabsContent>
+
+            <TabsContent value="resources">
+              <ResourceManager />
             </TabsContent>
           </Tabs>
         </TabsContent>

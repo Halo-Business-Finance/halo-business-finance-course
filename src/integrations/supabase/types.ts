@@ -483,6 +483,105 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_tools: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number
+          tags: string[] | null
+          title: string
+          tool_type: string
+          tool_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          tags?: string[] | null
+          title: string
+          tool_type?: string
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number
+          tags?: string[] | null
+          title?: string
+          tool_type?: string
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      learning_webinars: {
+        Row: {
+          created_at: string
+          current_attendees: number | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          max_attendees: number | null
+          presenter: string
+          recording_url: string | null
+          registration_url: string | null
+          scheduled_date: string | null
+          scheduled_time: string | null
+          status: string
+          tags: string[] | null
+          timezone: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_attendees?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_attendees?: number | null
+          presenter: string
+          recording_url?: string | null
+          registration_url?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          status?: string
+          tags?: string[] | null
+          timezone?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_attendees?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_attendees?: number | null
+          presenter?: string
+          recording_url?: string | null
+          registration_url?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          status?: string
+          tags?: string[] | null
+          timezone?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
