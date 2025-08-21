@@ -250,8 +250,9 @@ const ModulePage = () => {
                         setActiveTab("overview");
                         break;
                       case "assignment":
-                        // Could navigate to a separate assignment page in the future
-                        alert(`Opening assignment: ${lesson.title}`);
+                        // Create a dedicated case study section - for now, navigate to a resources-like tab
+                        // In the future, this could be a separate case study tab
+                        setActiveTab("resources");
                         break;
                       case "quiz":
                         // Switch to quiz tab
@@ -743,11 +744,94 @@ const ModulePage = () => {
         <TabsContent value="resources">
           <Card>
             <CardHeader>
-              <CardTitle>Module Resources</CardTitle>
-              <CardDescription>Download materials and tools for this module</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Module Resources & Case Studies
+              </CardTitle>
+              <CardDescription>Download materials, tools, and complete interactive case study exercises for this module</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
+                {/* Case Study Analysis Section */}
+                <div className="bg-gradient-to-r from-accent/10 to-primary/10 p-6 rounded-lg border border-accent/20">
+                  <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                    <Award className="h-5 w-5 text-accent" />
+                    Interactive Case Study Analysis
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Apply your knowledge to real-world Halo Business Finance scenarios. These case studies are based on actual lending decisions and will help you practice the skills learned in this module.
+                  </p>
+                  
+                  <div className="grid gap-4">
+                    <div className="bg-background p-4 rounded-lg border">
+                      <h4 className="font-medium text-primary mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        Case Study 1: Manufacturing Company Analysis
+                      </h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Analyze financial statements of a mid-sized manufacturing company seeking a $500K equipment loan. 
+                        Review their 3-year financial history, assess risks, and recommend loan structure.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-muted-foreground">
+                          <span className="font-medium">Duration:</span> 20 minutes | 
+                          <span className="font-medium">Difficulty:</span> Intermediate
+                        </div>
+                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                          Start Analysis
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-background p-4 rounded-lg border">
+                      <h4 className="font-medium text-primary mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        Case Study 2: Retail Business Cash Flow Challenge
+                      </h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Evaluate a seasonal retail business requesting a working capital line of credit. 
+                        Analyze cash flow patterns and determine appropriate loan terms.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-muted-foreground">
+                          <span className="font-medium">Duration:</span> 15 minutes | 
+                          <span className="font-medium">Difficulty:</span> Beginner
+                        </div>
+                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                          Start Analysis
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-background p-4 rounded-lg border">
+                      <h4 className="font-medium text-primary mb-2 flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        Case Study 3: SBA Loan Scenario
+                      </h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Review a complex SBA 7(a) loan application for a healthcare practice expansion. 
+                        Navigate SBA requirements and structure the optimal loan package.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-muted-foreground">
+                          <span className="font-medium">Duration:</span> 25 minutes | 
+                          <span className="font-medium">Difficulty:</span> Advanced
+                        </div>
+                        <Button variant="outline" size="sm" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                          Start Analysis
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-3 bg-primary/5 rounded border border-primary/20">
+                    <p className="text-xs text-primary">
+                      <strong>Pro Tip:</strong> Complete case studies in order and review the solutions carefully. 
+                      These scenarios are based on Halo's actual lending experiences and best practices.
+                    </p>
+                  </div>
+                </div>
+
                 {/* Study Materials */}
                 <div>
                   <h3 className="font-semibold mb-3 flex items-center gap-2">
