@@ -360,6 +360,9 @@ const AccountPage = () => {
       const { error } = await supabase
         .from('profiles')
         .update({
+          email_notifications: preferences.emailNotifications,
+          push_notifications: preferences.pushNotifications,
+          marketing_emails: preferences.marketingEmails,
           course_progress: preferences.courseProgress,
           new_courses: preferences.newCourses,
           webinar_reminders: preferences.webinarReminders,
