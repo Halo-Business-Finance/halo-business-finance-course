@@ -1044,103 +1044,49 @@ export type Database = {
             foreignKeyName: "fk_user_roles_profiles"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profiles_secure"
+            referencedRelation: "profiles_public"
             referencedColumns: ["user_id"]
           },
         ]
       }
     }
     Views: {
-      profiles_secure: {
+      profiles_public: {
         Row: {
           avatar_url: string | null
           city: string | null
           company: string | null
-          course_progress: boolean | null
           created_at: string | null
-          date_format: string | null
-          email: string | null
-          email_notifications: boolean | null
-          font_size: string | null
           id: string | null
           join_date: string | null
-          language: string | null
-          location: string | null
-          marketing_communications: boolean | null
-          marketing_emails: boolean | null
           name: string | null
-          new_courses: boolean | null
-          phone: string | null
-          push_notifications: boolean | null
-          reduced_motion: boolean | null
           state: string | null
-          theme: string | null
-          timezone: string | null
           title: string | null
-          updated_at: string | null
           user_id: string | null
-          webinar_reminders: boolean | null
-          weekly_progress: boolean | null
         }
         Insert: {
           avatar_url?: string | null
           city?: string | null
           company?: string | null
-          course_progress?: boolean | null
           created_at?: string | null
-          date_format?: string | null
-          email?: never
-          email_notifications?: boolean | null
-          font_size?: string | null
           id?: string | null
           join_date?: string | null
-          language?: string | null
-          location?: never
-          marketing_communications?: boolean | null
-          marketing_emails?: boolean | null
           name?: string | null
-          new_courses?: boolean | null
-          phone?: never
-          push_notifications?: boolean | null
-          reduced_motion?: boolean | null
           state?: string | null
-          theme?: string | null
-          timezone?: string | null
           title?: string | null
-          updated_at?: string | null
           user_id?: string | null
-          webinar_reminders?: boolean | null
-          weekly_progress?: boolean | null
         }
         Update: {
           avatar_url?: string | null
           city?: string | null
           company?: string | null
-          course_progress?: boolean | null
           created_at?: string | null
-          date_format?: string | null
-          email?: never
-          email_notifications?: boolean | null
-          font_size?: string | null
           id?: string | null
           join_date?: string | null
-          language?: string | null
-          location?: never
-          marketing_communications?: boolean | null
-          marketing_emails?: boolean | null
           name?: string | null
-          new_courses?: boolean | null
-          phone?: never
-          push_notifications?: boolean | null
-          reduced_motion?: boolean | null
           state?: string | null
-          theme?: string | null
-          timezone?: string | null
           title?: string | null
-          updated_at?: string | null
           user_id?: string | null
-          webinar_reminders?: boolean | null
-          weekly_progress?: boolean | null
         }
         Relationships: []
       }
@@ -1192,6 +1138,28 @@ export type Database = {
           p_title: string
         }
         Returns: string
+      }
+      get_masked_profile_data: {
+        Args: { target_user_id: string }
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          id: string
+          join_date: string
+          language: string
+          masked_email: string
+          masked_location: string
+          masked_phone: string
+          name: string
+          state: string
+          theme: string
+          timezone: string
+          title: string
+          updated_at: string
+          user_id: string
+        }[]
       }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
