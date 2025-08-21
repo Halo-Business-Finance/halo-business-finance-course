@@ -80,19 +80,19 @@ const Index = () => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statsData.map((stat, index) => {
-            const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
-            return (
-              <StatsCard
-                key={stat.title}
-                title={stat.title}
-                value={stat.value}
-                description={stat.description}
-                icon={Icon}
-                trend={stat.trend}
-              />
-            );
-          })}
+        {statsData.map((stat, index) => {
+          const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
+          return (
+            <StatsCard
+              key={stat.title}
+              title={stat.title}
+              value={stat.value}
+              description={stat.subtitle}
+              icon={Icon}
+              trend={{ value: 0, isPositive: true }}
+            />
+          );
+        })}
         </div>
 
         {/* Course Modules */}
