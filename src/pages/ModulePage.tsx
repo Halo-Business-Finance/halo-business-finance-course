@@ -322,20 +322,129 @@ const ModulePage = () => {
         <TabsContent value="overview">
           <Card>
             <CardHeader>
-              <CardTitle>Module Overview</CardTitle>
-              <CardDescription>What you'll learn in this module</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Module Overview
+              </CardTitle>
+              <CardDescription>What you'll learn in this module and how it applies to your role at Halo Business Finance</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">{module.description}</p>
-              <div className="grid gap-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Learning Objectives</h3>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li>Understand core concepts and principles</li>
-                    <li>Apply knowledge to real-world scenarios</li>
-                    <li>Develop practical skills and competencies</li>
-                    <li>Complete assessments and evaluations</li>
-                  </ul>
+            <CardContent className="space-y-6">
+              <div>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{module.description}</p>
+              </div>
+              
+              {/* Learning Objectives */}
+              <div>
+                <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                  <Award className="h-5 w-5 text-accent" />
+                  Learning Objectives
+                </h3>
+                <div className="grid gap-4">
+                  <div className="p-4 rounded-lg bg-muted/30 border-l-4 border-primary">
+                    <h4 className="font-medium text-primary mb-2">Financial Analysis Mastery</h4>
+                    <p className="text-sm text-muted-foreground">Master Halo's proprietary financial statement analysis framework to accurately assess business creditworthiness, identify red flags, and make informed lending decisions using industry-standard ratios and metrics.</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/30 border-l-4 border-accent">
+                    <h4 className="font-medium text-accent mb-2">Risk Assessment & Management</h4>
+                    <p className="text-sm text-muted-foreground">Apply Halo's risk evaluation methodologies to analyze borrower profiles, assess collateral values, and structure loan terms that balance growth opportunities with prudent risk management.</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/30 border-l-4 border-primary">
+                    <h4 className="font-medium text-primary mb-2">Commercial Lending Fundamentals</h4>
+                    <p className="text-sm text-muted-foreground">Understand the commercial lending landscape, loan products, underwriting criteria, and regulatory requirements that govern business finance decisions at Halo.</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/30 border-l-4 border-accent">
+                    <h4 className="font-medium text-accent mb-2">Client Relationship Excellence</h4>
+                    <p className="text-sm text-muted-foreground">Develop skills in client communication, needs assessment, and solution presentation using Halo's customer-first approach to build lasting business relationships.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Key Topics Covered */}
+              <div>
+                <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-primary" />
+                  Key Topics Covered
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {module.topics.map((topic, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-background border">
+                      <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" />
+                      <span className="text-sm font-medium">{topic}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Learning Outcomes */}
+              <div>
+                <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-accent" />
+                  Expected Outcomes
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-xs font-bold text-primary">1</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Proficiency in Financial Analysis</p>
+                      <p className="text-xs text-muted-foreground">Analyze financial statements with confidence and accuracy using Halo's proven methodologies</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-xs font-bold text-accent">2</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Enhanced Decision Making</p>
+                      <p className="text-xs text-muted-foreground">Make informed lending decisions by effectively weighing risk factors and growth opportunities</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-xs font-bold text-primary">3</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Professional Communication Skills</p>
+                      <p className="text-xs text-muted-foreground">Communicate complex financial concepts clearly to clients and internal stakeholders</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-xs font-bold text-accent">4</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">Regulatory Compliance Understanding</p>
+                      <p className="text-xs text-muted-foreground">Navigate regulatory requirements and ensure all lending activities meet compliance standards</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Module Prerequisites & Recommendations */}
+              <div>
+                <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                  <Play className="h-5 w-5 text-primary" />
+                  Getting Started
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
+                    <h4 className="font-medium text-accent mb-2">Prerequisites</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Basic understanding of financial statements</li>
+                      <li>• High school mathematics proficiency</li>
+                      <li>• Commitment to complete all module components</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                    <h4 className="font-medium text-primary mb-2">Recommended Approach</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Complete lessons in sequential order</li>
+                      <li>• Take notes during video content</li>
+                      <li>• Practice with provided case studies</li>
+                      <li>• Review materials before taking quiz</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </CardContent>
