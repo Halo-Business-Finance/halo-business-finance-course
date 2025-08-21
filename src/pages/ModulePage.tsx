@@ -197,7 +197,7 @@ const ModulePage = () => {
                       type: "reading",
                       duration: "20 min", 
                       completed: module.status === "completed" || module.progress > 25,
-                      locked: module.progress === 0 && module.status !== "completed",
+                      locked: false, // Always accessible after introduction
                       description: "Learn the fundamental concepts and terminology"
                     },
                     {
@@ -205,7 +205,7 @@ const ModulePage = () => {
                       type: "assignment",
                       duration: "30 min",
                       completed: module.status === "completed" || module.progress > 50,
-                      locked: module.progress < 25 && module.status !== "completed",
+                      locked: false, // Make accessible to encourage engagement
                       description: "Apply your knowledge to real-world scenarios"
                     },
                     {
@@ -213,7 +213,7 @@ const ModulePage = () => {
                       type: "quiz",
                       duration: "10 min",
                       completed: module.status === "completed" || module.progress > 75,
-                      locked: module.progress < 50 && module.status !== "completed",
+                      locked: module.progress < 25 && module.status !== "completed", // Only lock if no progress made
                       description: "Test your understanding of the module material"
                     }
                   ];
