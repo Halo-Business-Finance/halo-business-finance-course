@@ -131,7 +131,7 @@ const AdminDashboard = () => {
         return {
           id: userRole?.id || `profile-${profile.id}`,
           user_id: profile.user_id,
-          role: userRole?.role || 'none',
+          role: userRole?.role || 'user',
           is_active: userRole?.is_active || false,
           created_at: userRole?.created_at || profile.created_at,
           updated_at: userRole?.updated_at || profile.updated_at,
@@ -340,6 +340,7 @@ const AdminDashboard = () => {
       case 'super_admin': return 'destructive';
       case 'admin': return 'default';
       case 'manager': return 'secondary';
+      case 'user': return 'outline';
       default: return 'outline';
     }
   };
