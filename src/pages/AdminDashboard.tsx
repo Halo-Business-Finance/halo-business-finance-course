@@ -132,7 +132,7 @@ const AdminDashboard = () => {
           id: userRole?.id || `profile-${profile.id}`,
           user_id: profile.user_id,
           role: userRole?.role || 'user',
-          is_active: userRole?.is_active || false,
+          is_active: userRole?.is_active ?? true,
           created_at: userRole?.created_at || profile.created_at,
           updated_at: userRole?.updated_at || profile.updated_at,
           profiles: profile
