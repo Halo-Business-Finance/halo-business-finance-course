@@ -1148,6 +1148,10 @@ export type Database = {
         }
         Returns: string
       }
+      detect_unusual_profile_access: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       get_admin_profile_data: {
         Args: { target_user_id: string }
         Returns: {
@@ -1205,8 +1209,20 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_admin_profile_view: {
+        Args: { viewed_user_id: string }
+        Returns: undefined
+      }
       log_auth_failure: {
         Args: { failure_reason: string; user_email?: string }
+        Returns: undefined
+      }
+      log_critical_security_event: {
+        Args: {
+          event_details?: Json
+          event_name: string
+          severity_level?: string
+        }
         Returns: undefined
       }
       log_sensitive_data_access: {
@@ -1217,6 +1233,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      mask_sensitive_profile_data: {
+        Args: { profile_data: Json }
+        Returns: Json
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -1224,6 +1244,10 @@ export type Database = {
           p_target_user_id: string
         }
         Returns: boolean
+      }
+      run_comprehensive_security_analysis: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       security_health_check: {
         Args: Record<PropertyKey, never>
