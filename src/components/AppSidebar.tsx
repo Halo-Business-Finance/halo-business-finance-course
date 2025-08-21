@@ -35,7 +35,7 @@ const mainNavItems = [
 ];
 
 const courseModules = [
-  { title: "Business Finance Foundations", url: "/module/foundations", status: "completed" },
+  { title: "Finance Foundations", url: "/module/foundations", status: "completed" },
   { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
   { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
   { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
