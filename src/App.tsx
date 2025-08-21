@@ -100,7 +100,7 @@ const HeaderContent = () => {
         </h1>
       </div>
       
-      <div className="flex items-center">
+      <div className="flex items-center mr-4">
         <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
