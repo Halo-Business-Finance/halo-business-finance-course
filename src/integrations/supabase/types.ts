@@ -1235,6 +1235,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      secure_profile_access: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
       security_health_check: {
         Args: Record<PropertyKey, never>
         Returns: Json
