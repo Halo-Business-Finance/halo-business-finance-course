@@ -371,6 +371,45 @@ const AuthPage = () => {
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? "Signing In..." : "Sign In"}
                   </Button>
+                  
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={async () => {
+                      if (!signInData.email) {
+                        toast({
+                          title: "Email Required",
+                          description: "Please enter your email address first.",
+                          variant: "destructive"
+                        });
+                        return;
+                      }
+                      
+                      const { error } = await supabase.auth.resend({
+                        type: 'signup',
+                        email: signInData.email,
+                        options: {
+                          emailRedirectTo: `${window.location.origin}/`
+                        }
+                      });
+                      
+                      if (error) {
+                        toast({
+                          title: "Error",
+                          description: error.message,
+                          variant: "destructive"
+                        });
+                      } else {
+                        toast({
+                          title: "Confirmation Email Sent",
+                          description: "Please check your email for a new confirmation link.",
+                        });
+                      }
+                    }}
+                  >
+                    Resend Confirmation Email
+                  </Button>
                 </form>
               </CardContent>
             </Card>
