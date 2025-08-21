@@ -1586,6 +1586,10 @@ export type Database = {
         Args: { profile_user_id: string }
         Returns: boolean
       }
+      check_profile_access_rate_limit: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
       check_rate_limit: {
         Args: {
           p_endpoint: string
@@ -1843,6 +1847,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      sanitize_error_response: {
+        Args: { p_error_message: string; p_user_context?: Json }
+        Returns: Json
+      }
       secure_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
@@ -1851,9 +1859,22 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      trigger_emergency_security_lockdown: {
+        Args: { p_reason: string; p_target_user_id?: string }
+        Returns: Json
+      }
       validate_biometric_access: {
         Args: { target_user_id: string }
         Returns: boolean
+      }
+      validate_biometric_enrollment: {
+        Args: {
+          p_biometric_type: string
+          p_device_fingerprint: string
+          p_quality_score: number
+          p_user_id: string
+        }
+        Returns: Json
       }
       validate_geolocation_access: {
         Args: {

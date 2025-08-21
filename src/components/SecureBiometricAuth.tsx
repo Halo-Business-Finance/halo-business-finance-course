@@ -112,8 +112,7 @@ export const SecureBiometricAuth: React.FC = () => {
         .eq('is_active', true);
 
       if (error) {
-        console.error('Error loading biometrics:', error);
-        // Log security event for biometric access attempt
+        // Secure error handling - no console.log in production
         await supabase.rpc('log_critical_security_event', {
           event_name: 'biometric_data_access_failed',
           severity_level: 'medium',
@@ -128,7 +127,15 @@ export const SecureBiometricAuth: React.FC = () => {
       
       setEnrolledMethods(data || []);
     } catch (error) {
-      console.error('Error loading biometrics:', error);
+      // Secure error handling - no console.error in production
+      await supabase.rpc('log_critical_security_event', {
+        event_name: 'biometric_load_error',
+        severity_level: 'medium',
+        event_details: {
+          error_type: 'biometric_enumeration_failure',
+          user_id: user?.id
+        }
+      });
     }
   };
 

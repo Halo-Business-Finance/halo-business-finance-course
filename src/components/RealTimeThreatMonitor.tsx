@@ -121,7 +121,15 @@ export const RealTimeThreatMonitor: React.FC = () => {
       });
 
     } catch (error) {
-      console.error('Error loading threat data:', error);
+      // Secure error logging - removed console.error for production
+      await supabase.rpc('log_critical_security_event', {
+        event_name: 'threat_monitor_load_error',
+        severity_level: 'medium',
+        event_details: {
+          error_type: 'data_loading_failure',
+          component: 'RealTimeThreatMonitor'
+        }
+      });
     } finally {
       setLoading(false);
     }

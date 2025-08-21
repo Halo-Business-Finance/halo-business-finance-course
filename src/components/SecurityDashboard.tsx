@@ -142,7 +142,17 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      console.error('Error resolving alert:', error);
+      // Secure error handling
+      await supabase.rpc('log_critical_security_event', {
+        event_name: 'alert_resolution_error',
+        severity_level: 'medium',
+        event_details: {
+          alert_id: alertId,
+          error_type: 'alert_update_failure',
+          component: 'SecurityDashboard'
+        }
+      });
+      
       toast({
         title: "Error",
         description: "Failed to resolve security alert",
@@ -166,7 +176,16 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      console.error('Error running security analysis:', error);
+      // Secure error handling
+      await supabase.rpc('log_critical_security_event', {
+        event_name: 'security_analysis_execution_error',
+        severity_level: 'high',
+        event_details: {
+          error_type: 'analysis_trigger_failure',
+          component: 'SecurityDashboard'
+        }
+      });
+      
       toast({
         title: "Error",
         description: "Failed to run security analysis",
@@ -196,7 +215,16 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      console.error('Error creating test alert:', error);
+      // Secure error handling  
+      await supabase.rpc('log_critical_security_event', {
+        event_name: 'test_alert_creation_error',
+        severity_level: 'low',
+        event_details: {
+          error_type: 'test_alert_failure',
+          component: 'SecurityDashboard'
+        }
+      });
+      
       toast({
         title: "Error",
         description: "Failed to create test alert",
