@@ -109,49 +109,88 @@ export type Database = {
           avatar_url: string | null
           city: string | null
           company: string | null
+          course_progress: boolean | null
           created_at: string
+          date_format: string | null
           email: string | null
+          email_notifications: boolean | null
           id: string
           join_date: string
+          language: string | null
           location: string | null
+          marketing_communications: boolean | null
+          marketing_emails: boolean | null
           name: string
+          new_courses: boolean | null
           phone: string | null
+          push_notifications: boolean | null
+          reduced_motion: boolean | null
           state: string | null
+          theme: string | null
+          timezone: string | null
           title: string | null
           updated_at: string
           user_id: string
+          webinar_reminders: boolean | null
+          weekly_progress: boolean | null
         }
         Insert: {
           avatar_url?: string | null
           city?: string | null
           company?: string | null
+          course_progress?: boolean | null
           created_at?: string
+          date_format?: string | null
           email?: string | null
+          email_notifications?: boolean | null
           id?: string
           join_date?: string
+          language?: string | null
           location?: string | null
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
           name: string
+          new_courses?: boolean | null
           phone?: string | null
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
           state?: string | null
+          theme?: string | null
+          timezone?: string | null
           title?: string | null
           updated_at?: string
           user_id: string
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
         }
         Update: {
           avatar_url?: string | null
           city?: string | null
           company?: string | null
+          course_progress?: boolean | null
           created_at?: string
+          date_format?: string | null
           email?: string | null
+          email_notifications?: boolean | null
           id?: string
           join_date?: string
+          language?: string | null
           location?: string | null
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
           name?: string
+          new_courses?: boolean | null
           phone?: string | null
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
           state?: string | null
+          theme?: string | null
+          timezone?: string | null
           title?: string | null
           updated_at?: string
           user_id?: string
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
         }
         Relationships: []
       }

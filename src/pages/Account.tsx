@@ -149,8 +149,26 @@ const AccountPage = () => {
           company: profile.company || "",
           avatar: profile.avatar_url || "/placeholder.svg"
         };
+        
+        const preferencesData = {
+          theme: profile.theme || 'light',
+          language: profile.language || 'en',
+          timezone: profile.timezone || 'est',
+          dateFormat: profile.date_format || 'mdy',
+          emailNotifications: profile.email_notifications ?? true,
+          pushNotifications: profile.push_notifications ?? false,
+          marketingEmails: profile.marketing_emails ?? false,
+          reducedMotion: profile.reduced_motion ?? false,
+          courseProgress: profile.course_progress ?? true,
+          newCourses: profile.new_courses ?? true,
+          webinarReminders: profile.webinar_reminders ?? true,
+          weeklyProgress: profile.weekly_progress ?? false,
+          marketingCommunications: profile.marketing_communications ?? false
+        };
+        
         setUserInfo(profileData);
         setEditForm(profileData);
+        setPreferences(preferencesData);
       } else {
         // Create a new profile with default values
         const defaultProfile = {
@@ -269,11 +287,52 @@ const AccountPage = () => {
     setEditForm(userInfo);
   };
 
-  const handlePreferencesSubmit = () => {
-    toast({
-      title: "Preferences Saved",
-      description: "Your preferences have been updated successfully.",
-    });
+  const handlePreferencesSubmit = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to save your preferences.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          theme: preferences.theme,
+          language: preferences.language,
+          timezone: preferences.timezone,
+          date_format: preferences.dateFormat,
+          reduced_motion: preferences.reducedMotion
+        })
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error saving preferences:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save preferences.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Preferences Saved",
+        description: "Your preferences have been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error in handlePreferencesSubmit:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save preferences.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handlePreferenceChange = (field: string, value: string | boolean) => {
@@ -283,11 +342,52 @@ const AccountPage = () => {
     }));
   };
 
-  const handleNotificationSettingsSubmit = () => {
-    toast({
-      title: "Notification Settings Saved",
-      description: "Your notification preferences have been updated successfully.",
-    });
+  const handleNotificationSettingsSubmit = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to save your notification settings.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          course_progress: preferences.courseProgress,
+          new_courses: preferences.newCourses,
+          webinar_reminders: preferences.webinarReminders,
+          weekly_progress: preferences.weeklyProgress,
+          marketing_communications: preferences.marketingCommunications
+        })
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error saving notification settings:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save notification settings.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Notification Settings Saved",
+        description: "Your notification preferences have been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error in handleNotificationSettingsSubmit:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save notification settings.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleDownloadData = () => {
