@@ -1615,6 +1615,17 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      create_comprehensive_audit_entry: {
+        Args: {
+          p_action: string
+          p_after_state?: Json
+          p_before_state?: Json
+          p_classification?: Database["public"]["Enums"]["data_classification"]
+          p_resource_id?: string
+          p_resource_type: string
+        }
+        Returns: string
+      }
       create_security_alert: {
         Args: {
           p_alert_type: string
@@ -1644,6 +1655,13 @@ export type Database = {
           p_reason: string
         }
         Returns: Json
+      }
+      enforce_data_classification_access: {
+        Args: {
+          p_requested_classification: Database["public"]["Enums"]["data_classification"]
+          p_resource_context?: Json
+        }
+        Returns: boolean
       }
       enhanced_audit_log: {
         Args: {
@@ -1765,6 +1783,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      is_production_environment: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       log_admin_action: {
         Args: {
           p_action: string
@@ -1835,6 +1857,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      run_automated_security_maintenance: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       run_comprehensive_security_analysis: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1842,6 +1868,10 @@ export type Database = {
       run_customer_data_security_monitoring: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      run_security_compliance_check: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       run_security_configuration_check: {
         Args: Record<PropertyKey, never>
@@ -1852,6 +1882,10 @@ export type Database = {
         Returns: Json
       }
       secure_profile_access: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
+      secure_profile_access_with_rate_limit: {
         Args: { target_user_id: string }
         Returns: boolean
       }
@@ -1896,6 +1930,10 @@ export type Database = {
           p_token: string
         }
         Returns: boolean
+      }
+      validate_secure_session: {
+        Args: { p_require_mfa?: boolean }
+        Returns: Json
       }
       validate_security_configuration: {
         Args: Record<PropertyKey, never>
