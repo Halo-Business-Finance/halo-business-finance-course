@@ -85,12 +85,6 @@ const AccountPage = () => {
 
   const [editForm, setEditForm] = useState(userInfo);
 
-  const achievements = [
-    { name: "Business Finance Foundations", date: "July 15, 2024", type: "Certificate" },
-    { name: "Capital Markets Specialist", date: "July 22, 2024", type: "Certificate" },
-    { name: "First Course Completed", date: "July 15, 2024", type: "Badge" },
-    { name: "Quick Learner", date: "July 20, 2024", type: "Badge" }
-  ];
 
   const learningStats = {
     totalHours: "7.5",
@@ -526,13 +520,12 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
-              <TabsTrigger value="achievements">Achievements</TabsTrigger>
             </TabsList>
 
             <TabsContent value="profile">
@@ -621,37 +614,6 @@ const AccountPage = () => {
               </Tabs>
             </TabsContent>
 
-            <TabsContent value="achievements">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Award className="h-5 w-5" />
-                    Achievements & Certificates
-                  </CardTitle>
-                  <CardDescription>
-                    Your earned certificates and learning milestones
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {achievements.map((achievement, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <Award className="h-5 w-5 text-accent" />
-                          <div>
-                            <h3 className="font-medium">{achievement.name}</h3>
-                            <p className="text-sm text-muted-foreground">Earned on {achievement.date}</p>
-                          </div>
-                        </div>
-                        <Badge variant={achievement.type === "Certificate" ? "completed" : "secondary"}>
-                          {achievement.type}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             <TabsContent value="account">
               <div className="space-y-6">
