@@ -753,29 +753,61 @@ const AdminDashboard = () => {
                     <CardTitle className="text-lg">Authentication</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank')}
+                    >
                       <Lock className="h-4 w-4 mr-2" />
-                      Session Timeout Settings
+                      User Management
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank')}
+                    >
                       <Shield className="h-4 w-4 mr-2" />
-                      Password Policies
+                      Authentication Providers
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank')}
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      URL Configuration
                     </Button>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Security</CardTitle>
+                    <CardTitle className="text-lg">Security & Database</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank')}
+                    >
                       <AlertTriangle className="h-4 w-4 mr-2" />
-                      Rate Limiting
+                      System Logs
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank')}
+                    >
                       <Database className="h-4 w-4 mr-2" />
-                      Audit Logs
+                      Database Tables
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank')}
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Project Settings
                     </Button>
                   </CardContent>
                 </Card>
