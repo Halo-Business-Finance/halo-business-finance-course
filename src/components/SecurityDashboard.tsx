@@ -3,9 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, AlertTriangle, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { AlertTriangle, Shield, Eye, Clock, RefreshCw, Plus, AlertCircle, BarChart3, XCircle, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
+import { SecurityMetricsDashboard } from './SecurityMetricsDashboard';
 
 interface SecurityAlert {
   id: string;
@@ -50,7 +51,7 @@ export const SecurityDashboard: React.FC = () => {
     blocked_ips: []
   });
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const [showMetrics, setShowMetrics] = useState(false);
 
   useEffect(() => {
     loadSecurityData();
@@ -258,17 +259,31 @@ export const SecurityDashboard: React.FC = () => {
           <p className="text-muted-foreground">Monitor security events and threats</p>
         </div>
         <div className="flex gap-2">
+          <Button onClick={() => setShowMetrics(!showMetrics)} variant={showMetrics ? "default" : "outline"}>
+            <BarChart3 className="w-4 h-4 mr-2" />
+            {showMetrics ? 'Hide' : 'Show'} Metrics
+          </Button>
           <Button onClick={runSecurityAnalysis} variant="outline">
+            <Shield className="w-4 h-4 mr-2" />
             Run Analysis
           </Button>
           <Button onClick={createTestAlert} variant="outline">
+            <Plus className="w-4 h-4 mr-2" />
             Create Test Alert
           </Button>
           <Button onClick={loadSecurityData}>
+            <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
         </div>
       </div>
+
+      {/* Security Metrics Dashboard */}
+      {showMetrics && (
+        <div className="mb-6">
+          <SecurityMetricsDashboard />
+        </div>
+      )}
 
       {/* Security Alerts */}
       <Card>
@@ -295,16 +310,16 @@ export const SecurityDashboard: React.FC = () => {
                   className="flex items-start justify-between p-4 border rounded-lg"
                 >
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      {getSeverityIcon(alert.severity)}
-                      <Badge variant={getSeverityBadgeVariant(alert.severity)}>
-                        {alert.severity.toUpperCase()}
-                      </Badge>
-                      <Badge variant="outline">{alert.alert_type}</Badge>
-                      {alert.is_resolved && (
-                        <Badge variant="default">Resolved</Badge>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="w-4 h-4" />
+                    <Badge variant={getSeverityBadgeVariant(alert.severity)}>
+                      {alert.severity.toUpperCase()}
+                    </Badge>
+                    <Badge variant="outline">{alert.alert_type}</Badge>
+                    {alert.is_resolved && (
+                      <Badge variant="default">Resolved</Badge>
+                    )}
+                  </div>
                     <h4 className="font-semibold">{alert.title}</h4>
                     <p className="text-sm text-muted-foreground mb-2">
                       {alert.description}

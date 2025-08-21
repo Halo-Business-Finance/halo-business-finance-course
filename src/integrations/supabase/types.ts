@@ -1607,6 +1607,10 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
+      cleanup_old_security_events: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_security_alert: {
         Args: {
           p_alert_type: string
@@ -1632,6 +1636,16 @@ export type Database = {
           p_reason: string
         }
         Returns: Json
+      }
+      enhanced_audit_log: {
+        Args: {
+          p_action: string
+          p_compliance_type?: string
+          p_details?: Json
+          p_target_resource?: string
+          p_target_user_id?: string
+        }
+        Returns: undefined
       }
       get_admin_profile_data: {
         Args: { target_user_id: string }
@@ -1679,6 +1693,10 @@ export type Database = {
           role_updated_at: string
           user_id: string
         }[]
+      }
+      get_security_metrics: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_user_role: {
         Args: { check_user_id?: string }
