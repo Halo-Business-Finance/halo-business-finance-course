@@ -342,8 +342,6 @@ const AccountPage = () => {
                 </Avatar>
               </div>
               <CardTitle>{userInfo.name}</CardTitle>
-              <Badge variant="secondary" className="mt-2">{userInfo.company}</Badge>
-              <CardDescription className="mt-2">{userInfo.title}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 text-sm">
@@ -354,6 +352,18 @@ const AccountPage = () => {
                 <Phone className="h-4 w-4 text-muted-foreground" />
                 <span>{formatPhoneNumber(userInfo.phone)}</span>
               </div>
+              {userInfo.company && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Settings className="h-4 w-4 text-muted-foreground" />
+                  <span>{userInfo.company}</span>
+                </div>
+              )}
+              {userInfo.title && (
+                <div className="flex items-center gap-2 text-sm">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <span>{userInfo.title}</span>
+                </div>
+              )}
               <div className="flex items-center gap-2 text-sm">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
                 <span>
