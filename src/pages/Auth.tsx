@@ -43,7 +43,7 @@ const AuthPage = () => {
         sessionStorage.removeItem('redirectUrl');
         navigate(redirectUrl, { replace: true });
       } else {
-        navigate('/', { replace: true });
+        navigate('/dashboard', { replace: true });
       }
     }
   }, [user, loading, navigate]);
@@ -118,7 +118,7 @@ const AuthPage = () => {
           sessionStorage.removeItem('redirectUrl');
           navigate(redirectUrl, { replace: true });
         } else {
-          navigate("/", { replace: true });
+          navigate("/dashboard", { replace: true });
         }
       }
     } catch (error) {
@@ -194,7 +194,7 @@ const AuthPage = () => {
     try {
       const sanitizedName = sanitizeInput(signUpData.fullName);
       const sanitizedEmail = sanitizeInput(signUpData.email);
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/dashboard`;
       
       console.log('Attempting signup with email:', sanitizedEmail);
       console.log('Redirect URL:', redirectUrl);
@@ -390,7 +390,7 @@ const AuthPage = () => {
                         type: 'signup',
                         email: signInData.email,
                         options: {
-                          emailRedirectTo: `${window.location.origin}/`
+                          emailRedirectTo: `${window.location.origin}/dashboard`
                         }
                       });
                       
@@ -536,7 +536,7 @@ const AuthPage = () => {
             onClick={() => navigate("/")}
             className="text-muted-foreground hover:text-foreground"
           >
-            ← Back to Dashboard
+            ← Back to Home
           </Button>
         </div>
       </div>

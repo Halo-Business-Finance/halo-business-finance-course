@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
 import Certificates from "./pages/Certificates";
 import VideoLibrary from "./pages/VideoLibrary";
@@ -83,6 +84,11 @@ const AppContent = () => {
         <main className="flex-1 relative z-10">
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
             <Route path="/progress" element={
               <ProtectedRoute>
                 <Progress />
