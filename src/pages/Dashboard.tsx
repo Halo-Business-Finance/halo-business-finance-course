@@ -1,22 +1,85 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminRole } from "@/hooks/useAdminRole";
-import CourseHeader from "@/components/CourseHeader";
+import { useAuth } from "@/contexts/AuthContext";
 import ModuleCard from "@/components/ModuleCard";
-import ModuleDetail from "@/components/ModuleDetail";
+import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
+import { SkillLevelFilter } from "@/components/SkillLevelFilter";
+import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CourseHeader from "@/components/CourseHeader";
+import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 import { ChatBot } from "@/components/ChatBot";
 import { courseData, statsData } from "@/data/courseData";
+import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
 const Dashboard = () => {
   const { toast } = useToast();
-  const { isAdmin } = useAdminRole();
+  const { user } = useAuth();
   const [modules, setModules] = useState(courseData.modules);
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [selectedSkillLevel, setSelectedSkillLevel] = useState("all");
+  const [enhancedModules, setEnhancedModules] = useState([]);
+  const [userProgress, setUserProgress] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      fetchEnhancedModules();
+      fetchUserProgress();
+    }
+  }, [user]);
+
+  const fetchEnhancedModules = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("course_modules")
+        .select("*")
+        .eq("is_active", true)
+        .order("order_index");
+
+      if (error) throw error;
+      setEnhancedModules(data || []);
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+    }
+  };
+
+  const fetchUserProgress = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("user_progress")
+        .select("*")
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+      
+      const progressMap = {};
+      data?.forEach(progress => {
+        progressMap[progress.module_id] = progress;
+      });
+      setUserProgress(progressMap);
+    } catch (error) {
+      console.error("Error fetching progress:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredModules = enhancedModules.filter(module => 
+    selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel
+  );
+
+  const skillLevelCounts = {
+    all: enhancedModules.length,
+    beginner: enhancedModules.filter(m => m.skill_level === "beginner").length,
+    intermediate: enhancedModules.filter(m => m.skill_level === "intermediate").length,
+    expert: enhancedModules.filter(m => m.skill_level === "expert").length,
+  };
 
   const learningObjectives = [
     "Analyze financial statements and assess business creditworthiness using industry-standard methodologies",
@@ -28,18 +91,9 @@ const Dashboard = () => {
   ];
 
   const handleModuleStart = (moduleId: string) => {
-    const module = modules.find(m => m.id === moduleId);
+    const module = modules.find(m => m.id === moduleId) || 
+                   enhancedModules.find(m => m.module_id === moduleId);
     if (!module) return;
-
-    // Allow admins to access all modules
-    if (module.status === "locked" && !isAdmin) {
-      toast({
-        title: "Module Locked",
-        description: "Complete previous modules to unlock this one.",
-        variant: "destructive"
-      });
-      return;
-    }
 
     // Show module details
     setSelectedModule(moduleId);
@@ -56,6 +110,10 @@ const Dashboard = () => {
       handleModuleStart(nextModule.id);
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   const iconMap = {
     0: BookOpen,
@@ -100,30 +158,84 @@ const Dashboard = () => {
           })}
           </div>
 
-          {/* Course Modules */}
+          {/* Course Modules and Resources */}
           <div className="space-y-8 pb-16">
             <div className="text-center space-y-4">
-              <h3 className="text-3xl font-bold">Learning Modules</h3>
+              <h3 className="text-3xl font-bold">Learning Platform</h3>
               <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Progress through Halo's specialized curriculum designed to develop expertise in business finance, 
-                commercial lending practices, and risk management strategies used in today's financial markets.
+                Access enhanced learning modules organized by skill level, downloadable resources, 
+                and interactive assessments to master business finance and commercial lending.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {modules.map((module) => (
-                <ModuleCard
-                  key={module.id}
-                  title={module.title}
-                  description={module.description}
-                  duration={module.duration}
-                  lessons={module.lessons}
-                  progress={module.progress}
-                  status={module.status}
-                  onStart={() => handleModuleStart(module.id)}
+            <Tabs defaultValue="modules" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-2 lg:w-fit">
+                <TabsTrigger value="modules">Learning Modules</TabsTrigger>
+                <TabsTrigger value="resources">Resources</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="modules" className="space-y-6">
+                <SkillLevelFilter
+                  selectedLevel={selectedSkillLevel}
+                  onLevelChange={setSelectedSkillLevel}
+                  counts={skillLevelCounts}
                 />
-              ))}
-            </div>
+
+                {loading ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3, 4, 5, 6].map(i => (
+                      <div key={i} className="animate-pulse">
+                        <div className="bg-muted rounded-lg h-48" />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    {enhancedModules.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredModules.map((module) => (
+                          <EnhancedModuleCard 
+                            key={module.id} 
+                            module={module} 
+                            userProgress={userProgress[module.module_id]}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {modules.map((module) => (
+                          <ModuleCard
+                            key={module.id}
+                            title={module.title}
+                            description={module.description}
+                            duration={module.duration}
+                            lessons={module.lessons}
+                            progress={module.progress}
+                            status={module.status}
+                            onStart={() => handleModuleStart(module.id)}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {filteredModules.length === 0 && enhancedModules.length > 0 && (
+                      <div className="text-center py-12">
+                        <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                          No modules found for {selectedSkillLevel} level
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Try selecting a different skill level to see available modules.
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </TabsContent>
+
+              <TabsContent value="resources">
+                <DocumentLibrary />
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* AI Assistant */}

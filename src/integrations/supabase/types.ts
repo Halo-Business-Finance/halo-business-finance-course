@@ -14,6 +14,171 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_attempts: {
+        Row: {
+          answers: Json
+          assessment_id: string | null
+          attempt_number: number
+          completed_at: string
+          created_at: string
+          id: string
+          is_passed: boolean
+          score: number
+          started_at: string
+          time_taken_minutes: number | null
+          user_id: string | null
+        }
+        Insert: {
+          answers: Json
+          assessment_id?: string | null
+          attempt_number: number
+          completed_at?: string
+          created_at?: string
+          id?: string
+          is_passed: boolean
+          score: number
+          started_at?: string
+          time_taken_minutes?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          answers?: Json
+          assessment_id?: string | null
+          attempt_number?: number
+          completed_at?: string
+          created_at?: string
+          id?: string
+          is_passed?: boolean
+          score?: number
+          started_at?: string
+          time_taken_minutes?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_attempts_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "course_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_assessments: {
+        Row: {
+          assessment_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_required: boolean | null
+          max_attempts: number | null
+          module_id: string | null
+          order_index: number
+          passing_score: number | null
+          questions: Json
+          time_limit_minutes: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assessment_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_required?: boolean | null
+          max_attempts?: number | null
+          module_id?: string | null
+          order_index: number
+          passing_score?: number | null
+          questions: Json
+          time_limit_minutes?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assessment_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_required?: boolean | null
+          max_attempts?: number | null
+          module_id?: string | null
+          order_index?: number
+          passing_score?: number | null
+          questions?: Json
+          time_limit_minutes?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_assessments_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
+      course_documents: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          download_count: number | null
+          file_size: number | null
+          file_type: string
+          file_url: string
+          id: string
+          is_downloadable: boolean | null
+          module_id: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          upload_user_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          download_count?: number | null
+          file_size?: number | null
+          file_type: string
+          file_url: string
+          id?: string
+          is_downloadable?: boolean | null
+          module_id?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          upload_user_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          download_count?: number | null
+          file_size?: number | null
+          file_type?: string
+          file_url?: string
+          id?: string
+          is_downloadable?: boolean | null
+          module_id?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          upload_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_documents_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
       course_enrollments: {
         Row: {
           course_id: string
@@ -41,6 +206,51 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      course_modules: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          is_active: boolean | null
+          lessons_count: number | null
+          module_id: string
+          order_index: number
+          prerequisites: string[] | null
+          skill_level: Database["public"]["Enums"]["skill_level"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_active?: boolean | null
+          lessons_count?: number | null
+          module_id: string
+          order_index: number
+          prerequisites?: string[] | null
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_active?: boolean | null
+          lessons_count?: number | null
+          module_id?: string
+          order_index?: number
+          prerequisites?: string[] | null
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -224,6 +434,89 @@ export type Database = {
         }
         Relationships: []
       }
+      user_enrollments: {
+        Row: {
+          completion_target_date: string | null
+          created_at: string
+          enrolled_at: string
+          enrollment_type: string | null
+          id: string
+          is_active: boolean | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          completion_target_date?: string | null
+          created_at?: string
+          enrolled_at?: string
+          enrollment_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          completion_target_date?: string | null
+          created_at?: string
+          enrolled_at?: string
+          enrollment_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          completed_at: string | null
+          completion_percentage: number | null
+          created_at: string
+          id: string
+          is_completed: boolean | null
+          last_accessed_at: string | null
+          module_id: string | null
+          started_at: string | null
+          time_spent_minutes: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          completion_percentage?: number | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          last_accessed_at?: string | null
+          module_id?: string | null
+          started_at?: string | null
+          time_spent_minutes?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          completion_percentage?: number | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          last_accessed_at?: string | null
+          module_id?: string | null
+          started_at?: string | null
+          time_spent_minutes?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -283,7 +576,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      skill_level: "beginner" | "intermediate" | "expert"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -410,6 +703,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      skill_level: ["beginner", "intermediate", "expert"],
+    },
   },
 } as const
