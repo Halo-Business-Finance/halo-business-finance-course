@@ -31,7 +31,7 @@ const mainNavItems = [
   { title: "My Progress", url: "/progress", icon: BarChart3 },
   { title: "Certificates", url: "/certificates", icon: Award },
   { title: "Video Library", url: "/videos", icon: BookOpen },
-  { title: "Resources", url: "/resources", icon: FileText },
+  { title: "Learning Resources", url: "/resources", icon: FileText },
 ];
 
 const courseModules = [
