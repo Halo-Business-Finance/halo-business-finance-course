@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { MilitarySecurityProvider } from "@/contexts/MilitarySecurityContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import ContentSecurityPolicy from "@/components/ContentSecurityPolicy";
@@ -193,9 +194,11 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <SidebarProvider defaultOpen={true}>
-              <AppContent />
-            </SidebarProvider>
+            <MilitarySecurityProvider>
+              <SidebarProvider defaultOpen={true}>
+                <AppContent />
+              </SidebarProvider>
+            </MilitarySecurityProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
