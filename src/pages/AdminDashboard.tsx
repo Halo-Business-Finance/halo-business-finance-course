@@ -93,6 +93,9 @@ interface Instructor {
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { userRole } = useAdminRole();
+  
+  console.log('AdminDashboard: Current user:', user?.id, user?.email);
+  console.log('AdminDashboard: User role:', userRole);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -203,6 +206,7 @@ const AdminDashboard = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      console.log('Starting dashboard data load...');
       
       // Load ALL users from profiles table and their roles (if any)
       let userRolesData = [];
@@ -240,6 +244,7 @@ const AdminDashboard = () => {
           }
         }));
 
+        console.log('Transformed user roles data:', userRolesData);
         // Secure logging - user roles data loaded
       } catch (directError) {
         console.error('RPC error, falling back to direct queries:', directError);
@@ -314,6 +319,7 @@ const AdminDashboard = () => {
       }
 
       // Fetch other data in parallel
+      console.log('Fetching security events and instructors...');
       const [
         { data: eventsData, error: eventsError },
         { data: instructorsData, error: instructorsError }
@@ -328,6 +334,9 @@ const AdminDashboard = () => {
           .select('*')
           .order('display_order', { ascending: true })
       ]);
+
+      console.log('Events data:', eventsData, 'Events error:', eventsError);
+      console.log('Instructors data:', instructorsData, 'Instructors error:', instructorsError);
 
       if (eventsError) throw eventsError;
       if (instructorsError) throw instructorsError;

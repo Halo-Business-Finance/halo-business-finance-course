@@ -21,7 +21,9 @@ export const AdminProtectedRoute = ({
 
   useEffect(() => {
     const checkAdminPermissions = async () => {
+      console.log('AdminProtectedRoute: Checking permissions for user:', user?.id, user?.email);
       if (!user) {
+        console.log('AdminProtectedRoute: No user found');
         setHasPermission(false);
         setLoading(false);
         return;
