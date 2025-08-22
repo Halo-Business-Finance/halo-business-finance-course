@@ -177,9 +177,9 @@ const Dashboard = () => {
 
           {/* Course Modules and Resources */}
           <div className="space-y-8 pb-16">
-            <div className="text-center space-y-4">
+            <div className="text-left space-y-4">
               <h3 className="text-3xl font-bold">Learning Platform</h3>
-              <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-muted-foreground max-w-3xl leading-relaxed">
                 Access enhanced learning modules organized by skill level, downloadable resources, 
                 and interactive assessments to master business finance and commercial lending.
               </p>
