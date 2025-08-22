@@ -88,6 +88,7 @@ export function AppSidebar() {
     setIsLoading(true);
     try {
       await signOut();
+      navigate('/'); // Redirect to homepage after successful sign out
     } catch (error) {
       console.error('Sign out error:', error);
     } finally {
