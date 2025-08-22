@@ -73,7 +73,7 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
+    <header className="sticky top-0 h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
       <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />
       
       <div className="flex items-center gap-2">
