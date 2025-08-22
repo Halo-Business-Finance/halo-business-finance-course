@@ -12,8 +12,6 @@ import {
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
-import { useProductionSecurityLogger } from '@/components/ProductionSecurityLogger';
-import { supabase } from "@/integrations/supabase/client";
 
 import {
   Sidebar,
@@ -36,6 +34,17 @@ const mainNavItems = [
   { title: "Learning Resources", url: "/resources", icon: FileText },
 ];
 
+const courseModules = [
+  { title: "Finance Foundations", url: "/module/foundations", status: "completed" },
+  { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
+  { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
+  { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
+  { title: "Bridge Financing", url: "/module/bridge-loans", status: "locked" },
+  { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
+  { title: "Credit Analysis", url: "/module/credit-risk", status: "locked" },
+  { title: "Compliance", url: "/module/regulatory-compliance", status: "locked" },
+];
+
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
@@ -43,47 +52,13 @@ export function AppSidebar() {
   const { user, loading, signOut } = useAuth();
   const { isAdmin } = useAdminRole();
   const [isLoading, setIsLoading] = useState(false);
-  const [courseModules, setCourseModules] = useState<any[]>([]);
-  const [modulesLoading, setModulesLoading] = useState(true);
-  const { secureError } = useProductionSecurityLogger('AppSidebar');
-
-  useEffect(() => {
-    const fetchCourseModules = async () => {
-      try {
-        const { data: modules, error } = await supabase
-          .from('course_modules')
-          .select('*')
-          .eq('is_active', true)
-          .order('order_index');
-
-        if (error) throw error;
-
-        // Transform modules to include status
-        const modulesWithStatus = modules?.map((module, index) => ({
-          title: module.title,
-          url: `/module/${module.module_id}`,
-          status: index < 2 ? 'completed' : index === 2 ? 'in-progress' : 'available'
-        })) || [];
-
-        setCourseModules(modulesWithStatus);
-      } catch (error) {
-        secureError(error as Error, { action: 'fetch_course_modules' });
-      } finally {
-        setModulesLoading(false);
-      }
-    };
-
-    if (user) {
-      fetchCourseModules();
-    }
-  }, [user, secureError]);
 
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
       await signOut();
     } catch (error) {
-      secureError(error as Error, { action: 'user_sign_out' });
+      console.error('Sign out error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -94,14 +69,14 @@ export function AppSidebar() {
   };
   
   const getNavCls = (isActiveState: boolean) =>
-    isActiveState ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium border-r-2 border-sidebar-primary" : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
+    isActiveState ? "bg-black/10 text-black font-medium border-r-2 border-black" : "text-black hover:bg-black/10 hover:text-black";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
         return (
           <div className="relative">
-            <Badge variant="completed" className="text-xs px-2 py-0.5 bg-gradient-success text-primary-foreground shadow-lg">
+            <Badge variant="completed" className="text-xs px-2 py-0.5 bg-gradient-success text-white shadow-lg">
               ✓
             </Badge>
             <div className="absolute -inset-0.5 bg-gradient-success rounded opacity-20 animate-pulse"></div>
@@ -110,7 +85,7 @@ export function AppSidebar() {
       case "in-progress":
         return (
           <div className="relative">
-            <Badge variant="progress" className="text-xs px-2 py-0.5 bg-gradient-primary text-primary-foreground shadow-lg animate-pulse">
+            <Badge variant="progress" className="text-xs px-2 py-0.5 bg-gradient-primary text-white shadow-lg animate-pulse">
               ●
             </Badge>
             <div className="absolute -inset-0.5 bg-gradient-primary rounded opacity-30 animate-pulse"></div>
@@ -120,7 +95,7 @@ export function AppSidebar() {
         return <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60">🔒</Badge>;
       default:
         return (
-          <Badge variant="success" className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-accent-foreground shadow-md hover:shadow-lg transition-shadow duration-300">
+          <Badge variant="success" className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-white shadow-md hover:shadow-lg transition-shadow duration-300">
             ○
           </Badge>
         );
@@ -140,8 +115,8 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-sidebar-foreground" />
-                      {!collapsed && <span className="text-sidebar-foreground">{item.title}</span>}
+                      <item.icon className="h-4 w-4 text-black" />
+                      {!collapsed && <span className="text-black">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -155,7 +130,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>
             <div className="flex items-center gap-2">
               <div className="relative">
-                <Target className="h-4 w-4 text-sidebar-foreground" />
+                <Target className="h-4 w-4 text-black" />
                 <div className="absolute -inset-1 bg-gradient-primary rounded-full opacity-20 animate-pulse"></div>
               </div>
               {!collapsed && (
@@ -167,12 +142,7 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent className="pt-3">
             <SidebarMenu className="space-y-1">
-              {modulesLoading ? (
-                <div className="text-xs text-muted-foreground p-2">Loading modules...</div>
-              ) : courseModules.length === 0 ? (
-                <div className="text-xs text-muted-foreground p-2">No modules available</div>
-              ) : (
-                courseModules.map((module, index) => {
+              {courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked" && !isAdmin;
                 return (
                   <SidebarMenuItem key={module.title}>
@@ -181,14 +151,14 @@ export function AppSidebar() {
                         to={module.url} 
                         className={({ isActive }) => `${getNavCls(isActive)} ${
                           isModuleLocked ? "opacity-60 pointer-events-none" : ""
-                        } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-muted/50 hover:to-muted/50`}
+                        } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
                       >
                         <div className="relative z-10 flex items-start w-full py-1">
                           <div className={`
                             w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0 mt-0.5
-                            ${module.status === "completed" ? "bg-gradient-success text-primary-foreground shadow-lg" : 
-                              module.status === "in-progress" ? "bg-gradient-primary text-primary-foreground shadow-lg animate-pulse" :
-                              module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-foreground" :
+                            ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
+                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse" :
+                              module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-black" :
                               "bg-muted/50 text-muted-foreground"}
                           `}>
                             {module.status === "completed" ? "✓" : 
@@ -199,7 +169,7 @@ export function AppSidebar() {
                         {!collapsed && (
                           <>
                             <div className="flex-1 ml-3 min-w-0">
-                              <span className="text-xs font-medium leading-relaxed block text-sidebar-foreground break-words">
+                              <span className="text-xs font-medium leading-relaxed block text-black break-words">
                                 {module.title}
                               </span>
                               {module.status === "in-progress" && (
@@ -216,13 +186,12 @@ export function AppSidebar() {
                          )}
                         </div>
                         {/* Hover effect overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-muted/20 to-muted/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
-                })
-              )}
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -238,20 +207,20 @@ export function AppSidebar() {
                       <button 
                         onClick={handleSignOut}
                         disabled={isLoading}
-                        className="w-full flex items-center gap-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground p-2 rounded disabled:opacity-50"
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded disabled:opacity-50"
                       >
                         <LogOut className="h-4 w-4 text-red-600" />
-                        {!collapsed && <span className="text-sidebar-foreground">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                        {!collapsed && <span className="text-black">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                       </button>
                     </SidebarMenuButton>
                   ) : (
                     <SidebarMenuButton asChild>
                       <button 
                         onClick={handleSignIn}
-                        className="w-full flex items-center gap-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground p-2 rounded"
+                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded"
                       >
                         <LogIn className="h-4 w-4 text-green-600" />
-                        {!collapsed && <span className="text-sidebar-foreground">Sign In</span>}
+                        {!collapsed && <span className="text-black">Sign In</span>}
                       </button>
                     </SidebarMenuButton>
                   )}

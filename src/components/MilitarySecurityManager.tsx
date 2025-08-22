@@ -1,132 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Shield, 
+  Fingerprint, 
+  MapPin, 
+  Smartphone, 
+  AlertTriangle, 
   Lock, 
   Eye, 
-  AlertTriangle, 
-  CheckCircle2, 
-  XCircle, 
-  Radar,
-  Fingerprint,
-  Network,
-  File,
-  Users,
+  Brain,
+  Zap,
+  CheckCircle,
+  XCircle,
   Activity,
-  Database,
-  Zap
+  Radar
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface SecurityMetrics {
-  threatLevel: 'low' | 'medium' | 'high' | 'critical';
-  activeThreats: number;
-  devicesTrusted: number;
-  mfaCompliance: number;
-  zeroTrustScore: number;
-  incidentsOpen: number;
-  complianceScore: number;
-}
-
-interface ThreatAlert {
-  id: string;
-  type: string;
-  severity: string;
-  description: string;
-  created_at: string;
+interface SecurityStatus {
+  securityScore: number;
+  devices: any[];
+  mfaMethods: any[];
+  biometrics: any[];
+  recentEvents: any[];
+  behaviorPatterns: any[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
 }
 
 export const MilitarySecurityManager: React.FC = () => {
-  const { user } = useAuth();
-  const [metrics, setMetrics] = useState<SecurityMetrics>({
-    threatLevel: 'low',
-    activeThreats: 0,
-    devicesTrusted: 0,
-    mfaCompliance: 0,
-    zeroTrustScore: 85,
-    incidentsOpen: 0,
-    complianceScore: 95
-  });
-  const [threats, setThreats] = useState<ThreatAlert[]>([]);
+  const [securityStatus, setSecurityStatus] = useState<SecurityStatus | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deviceFingerprint, setDeviceFingerprint] = useState<string>('');
+  const [biometricSupport, setBiometricSupport] = useState(false);
+  const [geolocation, setGeolocation] = useState<GeolocationPosition | null>(null);
+  const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
-    loadSecurityData();
-  }, []);
+    if (user) {
+      initializeSecuritySuite();
+    }
+  }, [user]);
 
-  const loadSecurityData = async () => {
+  const initializeSecuritySuite = async () => {
     try {
       setLoading(true);
-
-      // Load threat intelligence
-      const { data: threatData, error: threatError } = await supabase
-        .from('advanced_threat_intelligence')
-        .select('*')
-        .eq('is_active', true)
-        .order('severity_level', { ascending: false })
-        .limit(10);
-
-      // Load security incidents
-      const { data: incidentData, error: incidentError } = await supabase
-        .from('security_incident_response')
-        .select('*')
-        .neq('status', 'resolved')
-        .order('created_at', { ascending: false });
-
-      // Load enhanced device security
-      const { data: deviceData, error: deviceError } = await supabase
-        .from('enhanced_device_security')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
-
-      // Load enhanced MFA status
-      const { data: mfaData, error: mfaError } = await supabase
-        .from('enhanced_mfa')
-        .select('*')
-        .eq('user_id', user?.id)
-        .eq('is_enabled', true);
-
-      // Calculate metrics
-      const trustedDevices = deviceData?.filter(d => d.trust_score > 70).length || 0;
-      const totalDevices = deviceData?.length || 1;
-      const activeMFA = mfaData?.length || 0;
-      const threatLevel = threatData && threatData.length > 0 ? 
-        (threatData[0].severity_level > 7 ? 'critical' : 
-         threatData[0].severity_level > 5 ? 'high' : 
-         threatData[0].severity_level > 3 ? 'medium' : 'low') : 'low';
-
-      setMetrics({
-        threatLevel,
-        activeThreats: threatData?.length || 0,
-        devicesTrusted: Math.round((trustedDevices / totalDevices) * 100),
-        mfaCompliance: activeMFA > 0 ? 100 : 0,
-        zeroTrustScore: 85,
-        incidentsOpen: incidentData?.length || 0,
-        complianceScore: 95
-      });
-
-      setThreats(threatData?.map(t => ({
-        id: t.id,
-        type: t.threat_category,
-        severity: t.severity_level > 7 ? 'critical' : 
-                 t.severity_level > 5 ? 'high' : 
-                 t.severity_level > 3 ? 'medium' : 'low',
-        description: `${t.threat_category}: ${t.threat_signature}`,
-        created_at: t.created_at
-      })) || []);
-
-    } catch (error: any) {
-      console.error('Error loading security data:', error);
+      
+      // Generate device fingerprint
+      const fingerprint = await generateDeviceFingerprint();
+      setDeviceFingerprint(fingerprint);
+      
+      // Check biometric support
+      const hasBiometric = await checkBiometricSupport();
+      setBiometricSupport(hasBiometric);
+      
+      // Get geolocation
+      await getCurrentLocation();
+      
+      // Register device and get security status
+      await registerCurrentDevice(fingerprint);
+      await loadSecurityStatus();
+      
+    } catch (error) {
+      console.error('Security initialization error:', error);
       toast({
-        title: "Security Data Load Failed",
-        description: "Unable to retrieve military security metrics",
+        title: "Security Error",
+        description: "Failed to initialize security suite",
         variant: "destructive"
       });
     } finally {
@@ -134,69 +79,265 @@ export const MilitarySecurityManager: React.FC = () => {
     }
   };
 
-  const runThreatDetection = async () => {
-    try {
-      const { error } = await supabase.rpc('detect_advanced_threats');
-      if (error) throw error;
+  const generateDeviceFingerprint = async (): Promise<string> => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx?.fillText('Device fingerprint test', 10, 10);
+    
+    const fingerprint = {
+      screenResolution: `${screen.width}x${screen.height}`,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      language: navigator.language,
+      platform: navigator.platform,
+      cookieEnabled: navigator.cookieEnabled,
+      doNotTrack: navigator.doNotTrack,
+      canvasFingerprint: canvas.toDataURL(),
+      hardwareInfo: {
+        cores: navigator.hardwareConcurrency,
+        memory: (navigator as any).deviceMemory,
+        connection: (navigator as any).connection?.effectiveType
+      },
+      browserInfo: {
+        userAgent: navigator.userAgent,
+        vendor: navigator.vendor,
+        webdriver: (navigator as any).webdriver
+      }
+    };
 
-      toast({
-        title: "Threat Detection Complete",
-        description: "Advanced threat analysis has been executed",
-      });
-      loadSecurityData();
-    } catch (error: any) {
-      toast({
-        title: "Threat Detection Failed",
-        description: "Unable to execute threat detection protocols",
-        variant: "destructive"
-      });
+    return btoa(JSON.stringify(fingerprint));
+  };
+
+  const checkBiometricSupport = async (): Promise<boolean> => {
+    if ('credentials' in navigator && 'create' in navigator.credentials) {
+      try {
+        // Check if WebAuthn is supported
+        const available = await (window as any).PublicKeyCredential?.isUserVerifyingPlatformAuthenticatorAvailable?.();
+        return available || false;
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  };
+
+  const getCurrentLocation = async () => {
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000
+          });
+        });
+        setGeolocation(position);
+      } catch (error) {
+        console.warn('Geolocation not available:', error);
+      }
     }
   };
 
-  const assessDeviceSecurity = async () => {
+  const registerCurrentDevice = async (fingerprint: string) => {
     try {
-      // Simulate device fingerprinting
-      const deviceFingerprint = `${navigator.userAgent}_${screen.width}x${screen.height}`;
+      const deviceInfo = {
+        deviceName: `${navigator.platform} Device`,
+        deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        browserInfo: {
+          userAgent: navigator.userAgent,
+          vendor: navigator.vendor,
+          language: navigator.language
+        },
+        osInfo: {
+          platform: navigator.platform,
+          cookieEnabled: navigator.cookieEnabled
+        },
+        hardwareInfo: {
+          cores: navigator.hardwareConcurrency,
+          memory: (navigator as any).deviceMemory,
+          connection: (navigator as any).connection?.effectiveType
+        },
+        screenResolution: `${screen.width}x${screen.height}`,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language,
+        geolocation: geolocation ? {
+          latitude: geolocation.coords.latitude,
+          longitude: geolocation.coords.longitude,
+          accuracy: geolocation.coords.accuracy
+        } : null
+      };
+
+      const { data, error } = await supabase.functions.invoke('military-security-engine', {
+        body: {
+          action: 'register_device',
+          data: deviceInfo
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.data?.isNewDevice) {
+        toast({
+          title: "New Device Detected",
+          description: "This device has been registered and requires verification.",
+          variant: "default"
+        });
+      }
+    } catch (error) {
+      console.error('Device registration error:', error);
+    }
+  };
+
+  const loadSecurityStatus = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('military-security-engine', {
+        body: {
+          action: 'get_security_status',
+          data: {}
+        }
+      });
+
+      if (error) throw error;
+      setSecurityStatus(data.data);
+    } catch (error) {
+      console.error('Security status error:', error);
+    }
+  };
+
+  const performBehaviorAnalysis = async () => {
+    try {
+      const behaviorData = {
+        countryCode: 'US', // In production, get from IP geolocation
+        sessionDuration: Date.now() - (performance.timing?.navigationStart || 0),
+        clickPatterns: [], // Collect click patterns
+        keyboardDynamics: [], // Collect typing patterns
+        mouseMovements: [] // Collect mouse movement patterns
+      };
+
+      const { data, error } = await supabase.functions.invoke('military-security-engine', {
+        body: {
+          action: 'analyze_behavior',
+          data: behaviorData
+        }
+      });
+
+      if (error) throw error;
+
+      const result = data.data;
       
-      const { data, error } = await supabase.rpc('assess_device_security_risk', {
-        p_device_fingerprint: deviceFingerprint,
-        p_user_agent: navigator.userAgent,
-        p_ip_address: '0.0.0.0', // Would be actual IP in production
-        p_geolocation: { country: 'US', region: 'Unknown' }
+      if (result.anomaly_score > 50) {
+        toast({
+          title: "Behavior Anomaly Detected",
+          description: `Anomaly score: ${result.anomaly_score}. Additional verification may be required.`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Behavior Analysis Complete",
+          description: `Risk level: ${result.risk_level}. Behavior patterns are normal.`,
+        });
+      }
+    } catch (error) {
+      console.error('Behavior analysis error:', error);
+    }
+  };
+
+  const performThreatScan = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('military-security-engine', {
+        body: {
+          action: 'threat_scan',
+          data: {
+            additionalIndicators: {
+              browser_fingerprint: deviceFingerprint
+            }
+          }
+        }
       });
 
       if (error) throw error;
 
+      const result = data.data;
+      
+      if (result.threat_detected) {
+        toast({
+          title: "Security Threat Detected!",
+          description: `Threat level: ${result.threat_level}. Access restrictions may apply.`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Threat Scan Complete",
+          description: "No security threats detected in current session.",
+        });
+      }
+    } catch (error) {
+      console.error('Threat scan error:', error);
+    }
+  };
+
+  const checkGeolocationSecurity = async () => {
+    if (!geolocation) {
       toast({
-        title: "Device Security Assessment Complete",
-        description: `Risk Score: ${(data as any).risk_score}, Trust Level: ${(data as any).trust_level}%`,
-        variant: (data as any).risk_score > 70 ? "destructive" : "default"
-      });
-      loadSecurityData();
-    } catch (error: any) {
-      toast({
-        title: "Device Assessment Failed",
-        description: "Unable to complete security assessment",
+        title: "Geolocation Required",
+        description: "Please enable location services for security verification.",
         variant: "destructive"
       });
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.functions.invoke('military-security-engine', {
+        body: {
+          action: 'check_geolocation',
+          data: {
+            latitude: geolocation.coords.latitude,
+            longitude: geolocation.coords.longitude,
+            countryCode: 'US' // In production, get from reverse geocoding
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      const result = data.data;
+      
+      if (!result.allowed) {
+        toast({
+          title: "Location Access Denied",
+          description: "Your current location is not authorized for access.",
+          variant: "destructive"
+        });
+      } else if (result.require_mfa) {
+        toast({
+          title: "Additional Verification Required",
+          description: "Multi-factor authentication required for this location.",
+          variant: "default"
+        });
+      } else {
+        toast({
+          title: "Location Verified",
+          description: "Your location has been verified and access is granted.",
+        });
+      }
+    } catch (error) {
+      console.error('Geolocation check error:', error);
     }
   };
 
-  const getThreatLevelColor = (level: string) => {
+  const getSecurityScoreColor = (score: number) => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    if (score >= 40) return 'text-orange-600';
+    return 'text-red-600';
+  };
+
+  const getRiskLevelBadgeVariant = (level: string) => {
     switch (level) {
-      case 'critical': return 'text-red-600';
-      case 'high': return 'text-orange-600';
-      case 'medium': return 'text-yellow-600';
-      default: return 'text-green-600';
-    }
-  };
-
-  const getSeverityBadgeVariant = (severity: string) => {
-    switch (severity) {
-      case 'critical': return 'destructive';
+      case 'low': return 'default';
+      case 'medium': return 'secondary';
       case 'high': return 'destructive';
-      case 'medium': return 'default';
-      default: return 'secondary';
+      case 'critical': return 'destructive';
+      default: return 'outline';
     }
   };
 
@@ -205,10 +346,9 @@ export const MilitarySecurityManager: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5" />
-            Military Security Operations Center
+            <Shield className="h-5 w-5 animate-pulse" />
+            Initializing Military-Grade Security
           </CardTitle>
-          <CardDescription>Loading military-grade security systems...</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
@@ -223,214 +363,170 @@ export const MilitarySecurityManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Shield className="h-8 w-8 text-red-600" />
-            Military Security Operations Center
-          </h2>
-          <p className="text-muted-foreground">Enterprise-grade security monitoring and threat response</p>
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={runThreatDetection} variant="outline" className="border-red-200">
-            <Radar className="w-4 h-4 mr-2" />
-            Threat Scan
-          </Button>
-          <Button onClick={assessDeviceSecurity} variant="outline">
-            <Fingerprint className="w-4 h-4 mr-2" />
-            Device Assessment
-          </Button>
-          <Button onClick={loadSecurityData}>
-            <Activity className="w-4 h-4 mr-2" />
-            Refresh
-          </Button>
-        </div>
-      </div>
-
-      {/* Security Status Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-red-200">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Threat Level</p>
-                <p className={`text-2xl font-bold ${getThreatLevelColor(metrics.threatLevel)}`}>
-                  {metrics.threatLevel.toUpperCase()}
-                </p>
-              </div>
-              <Shield className="h-8 w-8 text-red-500" />
+      {/* Security Overview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Military-Grade Security Center
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Active Threats</p>
-                <p className="text-2xl font-bold">{metrics.activeThreats}</p>
+            {securityStatus && (
+              <Badge variant={getRiskLevelBadgeVariant(securityStatus.riskLevel)}>
+                Risk: {securityStatus.riskLevel.toUpperCase()}
+              </Badge>
+            )}
+          </CardTitle>
+          <CardDescription>
+            Advanced security monitoring and threat detection
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {securityStatus && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center">
+                <div className={`text-3xl font-bold ${getSecurityScoreColor(securityStatus.securityScore)}`}>
+                  {securityStatus.securityScore}%
+                </div>
+                <div className="text-sm text-muted-foreground">Security Score</div>
               </div>
-              <AlertTriangle className="h-8 w-8 text-orange-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Zero Trust Score</p>
-                <p className="text-2xl font-bold">{metrics.zeroTrustScore}%</p>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {securityStatus.devices.length}
+                </div>
+                <div className="text-sm text-muted-foreground">Registered Devices</div>
               </div>
-              <Lock className="h-8 w-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Compliance Score</p>
-                <p className="text-2xl font-bold">{metrics.complianceScore}%</p>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {securityStatus.mfaMethods.length}
+                </div>
+                <div className="text-sm text-muted-foreground">MFA Methods</div>
               </div>
-              <File className="h-8 w-8 text-green-500" />
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          )}
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <Button onClick={performBehaviorAnalysis} variant="outline" size="sm">
+              <Brain className="h-4 w-4 mr-2" />
+              Behavior Analysis
+            </Button>
+            <Button onClick={performThreatScan} variant="outline" size="sm">
+              <Radar className="h-4 w-4 mr-2" />
+              Threat Scan
+            </Button>
+            <Button onClick={checkGeolocationSecurity} variant="outline" size="sm">
+              <MapPin className="h-4 w-4 mr-2" />
+              Location Check
+            </Button>
+            <Button onClick={loadSecurityStatus} variant="outline" size="sm">
+              <Activity className="h-4 w-4 mr-2" />
+              Refresh Status
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Security Status Alerts */}
-      {metrics.threatLevel === 'critical' && (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>CRITICAL SECURITY ALERT:</strong> High-severity threats detected. 
-            Immediate security response required. Consider activating emergency protocols.
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {metrics.incidentsOpen > 0 && (
-        <Alert>
-          <Eye className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Active Security Incidents:</strong> {metrics.incidentsOpen} security incidents 
-            require attention. Review incident response procedures.
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Military Security Modules */}
-      <Tabs defaultValue="threats" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="threats" className="flex items-center gap-1">
-            <Radar className="h-4 w-4" />
-            Threats
-          </TabsTrigger>
-          <TabsTrigger value="devices" className="flex items-center gap-1">
-            <Fingerprint className="h-4 w-4" />
+      <Tabs defaultValue="devices" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="devices" className="flex items-center gap-2">
+            <Smartphone className="h-4 w-4" />
             Devices
           </TabsTrigger>
-          <TabsTrigger value="mfa" className="flex items-center gap-1">
+          <TabsTrigger value="biometrics" className="flex items-center gap-2">
+            <Fingerprint className="h-4 w-4" />
+            Biometrics
+          </TabsTrigger>
+          <TabsTrigger value="mfa" className="flex items-center gap-2">
             <Lock className="h-4 w-4" />
             MFA
           </TabsTrigger>
-          <TabsTrigger value="network" className="flex items-center gap-1">
-            <Network className="h-4 w-4" />
-            Network
-          </TabsTrigger>
-          <TabsTrigger value="compliance" className="flex items-center gap-1">
-            <File className="h-4 w-4" />
-            Compliance
-          </TabsTrigger>
-          <TabsTrigger value="incidents" className="flex items-center gap-1">
-            <Zap className="h-4 w-4" />
-            Incidents
+          <TabsTrigger value="monitoring" className="flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            Monitoring
           </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="threats" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Radar className="h-5 w-5" />
-                Active Threat Intelligence
-              </CardTitle>
-              <CardDescription>
-                Real-time threat monitoring and advanced persistent threat detection
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {threats.length === 0 ? (
-                <div className="text-center py-8">
-                  <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                  <p className="text-muted-foreground">No active threats detected</p>
-                  <p className="text-sm text-muted-foreground">All systems operating within normal parameters</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {threats.map((threat) => (
-                    <div
-                      key={threat.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        <AlertTriangle className="h-5 w-5 text-orange-500" />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant={getSeverityBadgeVariant(threat.severity)}>
-                              {threat.severity.toUpperCase()}
-                            </Badge>
-                            <span className="font-medium">{threat.type}</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground">{threat.description}</p>
-                        </div>
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(threat.created_at).toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         <TabsContent value="devices" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Fingerprint className="h-5 w-5" />
-                Enhanced Device Security
-              </CardTitle>
+              <CardTitle>Device Management</CardTitle>
+              <CardDescription>Registered and trusted devices</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {securityStatus?.devices.map((device) => (
+                <div key={device.id} className="flex items-center justify-between p-4 border rounded-lg mb-2">
+                  <div>
+                    <div className="font-medium">{device.device_name || 'Unknown Device'}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {device.device_type} • Trust Level: {device.trust_level}%
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Last seen: {new Date(device.last_seen_at).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {device.is_trusted ? (
+                      <Badge variant="default">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Trusted
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary">
+                        <XCircle className="h-3 w-3 mr-1" />
+                        Untrusted
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="biometrics" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Biometric Authentication</CardTitle>
               <CardDescription>
-                Advanced device fingerprinting and trust scoring
+                {biometricSupport 
+                  ? "Biometric authentication is supported on this device" 
+                  : "Biometric authentication is not supported on this device"
+                }
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span>Device Trust Level</span>
-                  <Badge variant={metrics.devicesTrusted > 80 ? "default" : "destructive"}>
-                    {metrics.devicesTrusted}% Trusted
-                  </Badge>
+              {biometricSupport ? (
+                <div className="space-y-4">
+                  {securityStatus?.biometrics.map((bio) => (
+                    <div key={bio.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <div className="font-medium capitalize">{bio.biometric_type}</div>
+                        <div className="text-sm text-muted-foreground">
+                          Quality: {bio.quality_score}% • 
+                          Last used: {bio.last_used_at ? new Date(bio.last_used_at).toLocaleDateString() : 'Never'}
+                        </div>
+                      </div>
+                      <Badge variant={bio.is_active ? "default" : "secondary"}>
+                        {bio.is_active ? "Active" : "Inactive"}
+                      </Badge>
+                    </div>
+                  ))}
+                  
+                  <Alert>
+                    <Fingerprint className="h-4 w-4" />
+                    <AlertDescription>
+                      Biometric authentication provides an additional layer of security using your unique biological characteristics.
+                    </AlertDescription>
+                  </Alert>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Hardware Signatures</span>
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Behavioral Patterns</span>
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Threat Indicators</span>
-                  <XCircle className="h-5 w-5 text-red-500" />
-                </div>
-              </div>
+              ) : (
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    Biometric authentication is not available on this device. Consider using a device with fingerprint, face, or other biometric sensors for enhanced security.
+                  </AlertDescription>
+                </Alert>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -438,121 +534,55 @@ export const MilitarySecurityManager: React.FC = () => {
         <TabsContent value="mfa" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                Military-Grade MFA
-              </CardTitle>
-              <CardDescription>
-                Advanced multi-factor authentication with hardware tokens
-              </CardDescription>
+              <CardTitle>Multi-Factor Authentication</CardTitle>
+              <CardDescription>Additional security layers for account protection</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span>MFA Compliance</span>
-                  <Badge variant={metrics.mfaCompliance === 100 ? "default" : "destructive"}>
-                    {metrics.mfaCompliance}%
-                  </Badge>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="text-center p-4 border rounded">
-                    <Lock className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-                    <p className="font-medium">Hardware Tokens</p>
-                    <p className="text-sm text-muted-foreground">Military-grade</p>
-                  </div>
-                  <div className="text-center p-4 border rounded">
-                    <Fingerprint className="h-8 w-8 mx-auto mb-2 text-green-500" />
-                    <p className="font-medium">Biometric Auth</p>
-                    <p className="text-sm text-muted-foreground">Multi-modal</p>
-                  </div>
-                  <div className="text-center p-4 border rounded">
-                    <Database className="h-8 w-8 mx-auto mb-2 text-purple-500" />
-                    <p className="font-medium">Certificate Auth</p>
-                    <p className="text-sm text-muted-foreground">PKI-based</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="network" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Network className="h-5 w-5" />
-                Network Security Monitoring
-              </CardTitle>
-              <CardDescription>
-                Real-time network intrusion detection and prevention
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <Network className="h-12 w-12 mx-auto mb-4 text-blue-500" />
-                <p className="font-medium">Network Monitoring Active</p>
-                <p className="text-sm text-muted-foreground">All network traffic is being monitored for threats</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="compliance" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <File className="h-5 w-5" />
-                Compliance & Audit Trail
-              </CardTitle>
-              <CardDescription>
-                SOX, GDPR, HIPAA, and DoD compliance monitoring
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span>Overall Compliance</span>
-                  <Badge variant="default">{metrics.complianceScore}%</Badge>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {['SOX', 'GDPR', 'HIPAA', 'DoD'].map((framework) => (
-                    <div key={framework} className="text-center p-3 border rounded">
-                      <File className="h-6 w-6 mx-auto mb-1 text-green-500" />
-                      <p className="text-sm font-medium">{framework}</p>
-                      <Badge variant="secondary" className="text-xs">Compliant</Badge>
+              {securityStatus?.mfaMethods.map((mfa) => (
+                <div key={mfa.id} className="flex items-center justify-between p-4 border rounded-lg mb-2">
+                  <div>
+                    <div className="font-medium capitalize">{mfa.method_type.replace('_', ' ')}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {mfa.method_name || 'Default'} • 
+                      Last used: {mfa.last_used_at ? new Date(mfa.last_used_at).toLocaleDateString() : 'Never'}
                     </div>
-                  ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={mfa.is_enabled ? "default" : "secondary"}>
+                      {mfa.is_enabled ? "Enabled" : "Disabled"}
+                    </Badge>
+                    {mfa.is_primary && (
+                      <Badge variant="outline">Primary</Badge>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ))}
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="incidents" className="space-y-4">
+        <TabsContent value="monitoring" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
-                Incident Response Center
-              </CardTitle>
-              <CardDescription>
-                Security incident management and response coordination
-              </CardDescription>
+              <CardTitle>Security Monitoring</CardTitle>
+              <CardDescription>Real-time security events and behavior analysis</CardDescription>
             </CardHeader>
             <CardContent>
-              {metrics.incidentsOpen === 0 ? (
-                <div className="text-center py-8">
-                  <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-green-500" />
-                  <p className="font-medium">No Active Incidents</p>
-                  <p className="text-sm text-muted-foreground">All security incidents have been resolved</p>
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-orange-500" />
-                  <p className="font-medium">{metrics.incidentsOpen} Active Incidents</p>
-                  <p className="text-sm text-muted-foreground">Review and respond to security incidents</p>
-                </div>
-              )}
+              <div className="space-y-4">
+                {securityStatus?.recentEvents.slice(0, 10).map((event) => (
+                  <div key={event.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <div className="font-medium">{event.event_type.replace(/_/g, ' ').toUpperCase()}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {new Date(event.created_at).toLocaleString()}
+                      </div>
+                    </div>
+                    <Badge variant={event.severity === 'critical' ? 'destructive' : event.severity === 'high' ? 'destructive' : 'default'}>
+                      {event.severity}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

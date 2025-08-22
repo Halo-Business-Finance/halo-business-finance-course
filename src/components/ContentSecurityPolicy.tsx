@@ -99,10 +99,8 @@ export const ContentSecurityPolicy: React.FC<{ config?: Partial<CSPConfig> }> = 
       document.head.appendChild(meta);
     });
 
-    // Log CSP implementation for security monitoring in development only
-    if (process.env.NODE_ENV === 'development') {
-      // Only log in development for debugging
-    }
+    // Log CSP implementation for security monitoring
+    console.log('Content Security Policy applied:', cspString);
 
     return () => {
       // Cleanup on unmount

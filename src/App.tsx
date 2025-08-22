@@ -9,11 +9,9 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { MilitarySecurityProvider } from "@/contexts/MilitarySecurityContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import ContentSecurityPolicy from "@/components/ContentSecurityPolicy";
-import { SecureProductionWrapper } from "@/components/SecureProductionWrapper";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -76,14 +74,14 @@ const HeaderContent = () => {
 
   return (
     <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
-      <SidebarTrigger className="text-foreground hover:bg-muted hover:text-foreground" />
+      <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />
       
       <div className="flex items-center gap-2">
         <Button 
           variant="ghost" 
           size="sm" 
           onClick={goBack}
-          className="h-8 w-8 p-0 text-foreground hover:bg-muted hover:text-foreground border border-border"
+          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -91,20 +89,20 @@ const HeaderContent = () => {
           variant="ghost" 
           size="sm" 
           onClick={goForward}
-          className="h-8 w-8 p-0 text-foreground hover:bg-muted hover:text-foreground border border-border"
+          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
       
       <div className="flex-1 flex items-center justify-center">
-        <h1 className="text-lg font-medium text-foreground">
+        <h1 className="text-lg font-medium text-black">
           Welcome back, {getFirstName()}!
         </h1>
       </div>
       
       <div className="flex items-center mr-4 gap-4">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
         <NavLink 
@@ -112,8 +110,8 @@ const HeaderContent = () => {
           className={({ isActive }) => 
             `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
               isActive 
-                ? "bg-muted text-foreground font-medium" 
-                : "text-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-black/10 text-black font-medium" 
+                : "text-black hover:bg-black/10 hover:text-black"
             }`
           }
         >
@@ -186,24 +184,20 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <SecureProductionWrapper>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ContentSecurityPolicy />
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <MilitarySecurityProvider>
-              <SidebarProvider defaultOpen={true}>
-                <AppContent />
-              </SidebarProvider>
-            </MilitarySecurityProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </SecureProductionWrapper>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <ContentSecurityPolicy />
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
+          <SidebarProvider defaultOpen={true}>
+            <AppContent />
+          </SidebarProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;

@@ -34,13 +34,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { InstructorForm } from "@/components/InstructorForm";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
-import { EmergencySecurityLockdown } from "@/components/EmergencySecurityLockdown";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
-import { EncryptionManager } from "@/components/EncryptionManager";
-import { EncryptedMessaging } from "@/components/EncryptedMessaging";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserRole {
@@ -93,9 +90,6 @@ interface Instructor {
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { userRole } = useAdminRole();
-  
-  console.log('AdminDashboard: Current user:', user?.id, user?.email);
-  console.log('AdminDashboard: User role:', userRole);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -123,7 +117,7 @@ const AdminDashboard = () => {
     
     // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
-      // Secure logging - setting up real-time subscriptions
+      console.log('🔄 Setting up real-time subscriptions...');
       
       const channel = supabase
         .channel('admin-dashboard-updates')
@@ -135,7 +129,7 @@ const AdminDashboard = () => {
             table: 'security_events'
           },
           (payload) => {
-            // Secure logging - new security event detected
+            console.log('🚨 New security event:', payload);
             toast({
               title: "Security Alert",
               description: `New ${payload.new.severity} security event detected`,
@@ -152,7 +146,7 @@ const AdminDashboard = () => {
             table: 'profiles'
           },
           (payload) => {
-            // Secure logging - new user registered
+            console.log('👤 New user registered:', payload);
             toast({
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
@@ -168,7 +162,7 @@ const AdminDashboard = () => {
             table: 'user_roles'
           },
           (payload) => {
-            // Secure logging - user role changed
+            console.log('🔐 User role changed:', payload);
             if (payload.eventType === 'INSERT') {
               toast({
                 title: "Role Assigned",
@@ -179,9 +173,9 @@ const AdminDashboard = () => {
           }
         )
         .subscribe((status) => {
-          // Secure logging - subscription status change
+          console.log('📡 Real-time subscription status:', status);
           if (status === 'SUBSCRIBED') {
-            // Secure logging - real-time dashboard active
+            console.log('✅ Real-time dashboard active!');
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
@@ -197,7 +191,7 @@ const AdminDashboard = () => {
     // Cleanup function
     return () => {
       if (realtimeChannel) {
-        // Secure logging - cleaning up real-time subscriptions
+        console.log('🔌 Cleaning up real-time subscriptions...');
         supabase.removeChannel(realtimeChannel);
       }
     };
@@ -206,99 +200,151 @@ const AdminDashboard = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      console.log('Starting dashboard data load...');
       
       // Load ALL users from profiles table and their roles (if any)
       let userRolesData = [];
       
-      console.log('Loading profiles and roles using direct table queries...');
-      
-      // Load profiles and roles separately using direct queries
-      const [profilesResponse, rolesResponse] = await Promise.all([
-        supabase
+      try {
+        // Fallback to manual join since RPC may not be available yet
+        const { data: profiles, error: profilesError } = await supabase
           .from('profiles')
           .select('*')
-          .order('created_at', { ascending: false }),
-        supabase
-          .from('user_roles')
-          .select('*')
-      ]);
+          .order('created_at', { ascending: false });
 
-      console.log('Profiles response:', profilesResponse);
-      console.log('Roles response:', rolesResponse);
+        if (profilesError) throw profilesError;
 
-      if (profilesResponse.error) {
-        console.error('Profiles query error:', profilesResponse.error);
-        throw profilesResponse.error;
-      }
-      if (rolesResponse.error) {
-        console.error('Roles query error:', rolesResponse.error);
-        throw rolesResponse.error;
-      }
+        // Manually fetch roles for each user
+        const profilesWithManualRoles = await Promise.all(
+          (profiles || []).map(async (profile) => {
+            const { data: roles } = await supabase
+              .from('user_roles')
+              .select('*')
+              .eq('user_id', profile.user_id)
+              .eq('is_active', true);
+            
+            return {
+              ...profile,
+              user_roles: roles || []
+            };
+          })
+        );
 
-      const profiles = profilesResponse.data || [];
-      const roles = rolesResponse.data || [];
-      console.log('Retrieved profiles:', profiles.length, profiles);
-      console.log('Retrieved roles:', roles.length, roles);
-      
-      const rolesMap = new Map();
-      
-      // Group roles by user_id
-      roles.forEach(role => {
-        if (!rolesMap.has(role.user_id)) {
-          rolesMap.set(role.user_id, []);
-        }
-        rolesMap.get(role.user_id).push(role);
-      });
+        userRolesData = profilesWithManualRoles.flatMap(profile => {
+          if (profile.user_roles && profile.user_roles.length > 0) {
+            return profile.user_roles.map(role => ({
+              id: role.id,
+              user_id: profile.user_id,
+              role: role.role,
+              is_active: role.is_active,
+              created_at: role.created_at,
+              updated_at: role.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }));
+          } else {
+            return [{
+              id: `no-role-${profile.user_id}`,
+              user_id: profile.user_id,
+              role: 'No Role Assigned',
+              is_active: false,
+              created_at: profile.created_at,
+              updated_at: profile.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }];
+          }
+        });
 
-      // Create user role data for all profiles
-      userRolesData = profiles.flatMap(profile => {
-        const userRoles = rolesMap.get(profile.user_id) || [];
+        console.log('User roles data loaded:', userRolesData);
+      } catch (directError) {
+        console.warn('Failed to load all users with roles:', directError);
         
-        if (userRoles.length > 0) {
-          return userRoles.map(role => ({
-            ...role,
-            profiles: {
-              name: profile.name,
-              email: profile.email,
-              phone: profile.phone,
-              title: profile.title,
-              company: profile.company,
-              city: profile.city,
-              state: profile.state,
-              join_date: profile.join_date,
-              user_id: profile.user_id
-            }
-          }));
-        } else {
-          return [{
-            id: `no-role-${profile.user_id}`,
-            user_id: profile.user_id,
-            role: 'No Role Assigned',
-            is_active: false,
-            created_at: profile.created_at,
-            updated_at: profile.updated_at,
-            profiles: {
-              name: profile.name,
-              email: profile.email,
-              phone: profile.phone,
-              title: profile.title,
-              company: profile.company,
-              city: profile.city,
-              state: profile.state,
-              join_date: profile.join_date,
-              user_id: profile.user_id
-            }
-          }];
-        }
-      });
+        // Fallback: Load profiles and roles separately
+        const [profilesResponse, rolesResponse] = await Promise.all([
+          supabase
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('user_roles')
+            .select('*')
+        ]);
 
-      console.log('Final user roles data:', userRolesData);
+        if (profilesResponse.error) throw profilesResponse.error;
+        if (rolesResponse.error) throw rolesResponse.error;
 
-      // Secure logging - loaded users with fallback logic
+        const profiles = profilesResponse.data || [];
+        const roles = rolesResponse.data || [];
+        const rolesMap = new Map();
+        
+        // Group roles by user_id
+        roles.forEach(role => {
+          if (!rolesMap.has(role.user_id)) {
+            rolesMap.set(role.user_id, []);
+          }
+          rolesMap.get(role.user_id).push(role);
+        });
+
+        // Create user role data for all profiles
+        userRolesData = profiles.flatMap(profile => {
+          const userRoles = rolesMap.get(profile.user_id) || [];
+          
+          if (userRoles.length > 0) {
+            return userRoles.map(role => ({
+              ...role,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }));
+          } else {
+            return [{
+              id: `no-role-${profile.user_id}`,
+              user_id: profile.user_id,
+              role: 'No Role Assigned',
+              is_active: false,
+              created_at: profile.created_at,
+              updated_at: profile.updated_at,
+              profiles: {
+                name: profile.name,
+                email: profile.email,
+                phone: profile.phone,
+                title: profile.title,
+                company: profile.company,
+                city: profile.city,
+                state: profile.state,
+                join_date: profile.join_date
+              }
+            }];
+          }
+        });
+
+        console.log('Loaded users with manual fallback logic:', userRolesData);
+      }
 
       // Fetch other data in parallel
-      console.log('Fetching security events and instructors...');
       const [
         { data: eventsData, error: eventsError },
         { data: instructorsData, error: instructorsError }
@@ -313,9 +359,6 @@ const AdminDashboard = () => {
           .select('*')
           .order('display_order', { ascending: true })
       ]);
-
-      console.log('Events data:', eventsData, 'Events error:', eventsError);
-      console.log('Instructors data:', instructorsData, 'Instructors error:', instructorsError);
 
       if (eventsError) throw eventsError;
       if (instructorsError) throw instructorsError;
@@ -342,7 +385,7 @@ const AdminDashboard = () => {
                       recentEvents > 0 ? 'good' : 'excellent'
       });
     } catch (error: any) {
-      // Secure error logging - dashboard data loading failed
+      console.error('Error loading dashboard data:', error);
       toast({
         title: "Error",
         description: error?.message || "Failed to load dashboard data. Please try again.",
@@ -370,7 +413,7 @@ const AdminDashboard = () => {
 
         if (error) throw error;
       } catch (secureError) {
-        // Secure logging - fallback to direct RPC
+        console.warn('Secure function unavailable, using direct RPC:', secureError);
         
         // Fallback to direct RPC call
         const { data, error } = await supabase.rpc('assign_user_role', {
@@ -391,7 +434,7 @@ const AdminDashboard = () => {
       // Reload data to reflect changes
       await loadDashboardData();
     } catch (error: any) {
-      // Secure error logging - role assignment failed
+      console.error('Error assigning role:', error);
       let errorMessage = 'Failed to assign role';
       
       if (error?.message?.includes('super_admin')) {
@@ -428,7 +471,7 @@ const AdminDashboard = () => {
 
         if (error) throw error;
       } catch (secureError) {
-        // Secure logging - fallback to direct RPC for revocation
+        console.warn('Secure function unavailable, using direct RPC:', secureError);
         
         // Fallback to direct RPC call
         const { data, error } = await supabase.rpc('revoke_user_role', {
@@ -448,7 +491,7 @@ const AdminDashboard = () => {
       // Reload data to reflect changes
       await loadDashboardData();
     } catch (error: any) {
-      // Secure error logging - role revocation failed
+      console.error('Error revoking role:', error);
       toast({
         title: "Error",
         description: error?.message || "Failed to revoke role",
@@ -737,8 +780,6 @@ const AdminDashboard = () => {
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="security">Security Events</TabsTrigger>
           <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
-          <TabsTrigger value="encryption">🔒 Encryption</TabsTrigger>
-          <TabsTrigger value="messaging">💬 Secure Messages</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
 
@@ -761,10 +802,6 @@ const AdminDashboard = () => {
                 <FileText className="h-4 w-4 mr-2" />
                 Resources
               </TabsTrigger>
-              <TabsTrigger value="encryption">
-                <Lock className="h-4 w-4 mr-2" />
-                Encryption
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="modules">
@@ -781,10 +818,6 @@ const AdminDashboard = () => {
 
             <TabsContent value="resources">
               <ResourceManager />
-            </TabsContent>
-
-            <TabsContent value="encryption">
-              <EncryptionManager />
             </TabsContent>
           </Tabs>
         </TabsContent>
@@ -1058,7 +1091,7 @@ const AdminDashboard = () => {
                       <TableRow key={instructor.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm`}>
+                            <div className={`w-10 h-10 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-white font-bold text-sm`}>
                               {instructor.avatar_initials}
                             </div>
                             <div>
@@ -1194,22 +1227,7 @@ const AdminDashboard = () => {
         </TabsContent>
 
         <TabsContent value="monitoring" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <SecurityDashboard />
-            </div>
-            <div className="space-y-4">
-              <EmergencySecurityLockdown />
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="encryption" className="space-y-4">
-          <EncryptionManager />
-        </TabsContent>
-
-        <TabsContent value="messaging" className="space-y-4">
-          <EncryptedMessaging />
+          <SecurityDashboard />
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">
@@ -1231,14 +1249,10 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        // Secure logging - User Management button clicked
+                        console.log('Clicking User Management button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users');
                         }
                       }}
                     >
@@ -1252,11 +1266,7 @@ const AdminDashboard = () => {
                         console.log('Clicking Authentication Providers button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers');
                         }
                       }}
                     >
@@ -1270,11 +1280,7 @@ const AdminDashboard = () => {
                         console.log('Clicking URL Configuration button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration');
                         }
                       }}
                     >
@@ -1296,11 +1302,7 @@ const AdminDashboard = () => {
                         console.log('Clicking System Logs button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer');
                         }
                       }}
                     >
@@ -1311,14 +1313,10 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        // Secure logging - Database Tables button clicked
+                        console.log('Clicking Database Tables button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables');
                         }
                       }}
                     >
@@ -1329,14 +1327,10 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        // Secure logging - Project Settings button clicked
+                        console.log('Clicking Project Settings button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank');
                         if (!opened) {
-                          toast({
-                            title: "Popup Blocked",
-                            description: "Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general",
-                            variant: "destructive",
-                          });
+                          alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general');
                         }
                       }}
                     >

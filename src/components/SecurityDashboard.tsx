@@ -70,7 +70,7 @@ export const SecurityDashboard: React.FC = () => {
         .limit(10);
 
       if (alertsError) {
-        // Secure error logging - alerts fetch failed
+        console.error('Error fetching alerts:', alertsError);
       }
 
       // Fetch recent security events directly from database  
@@ -81,7 +81,7 @@ export const SecurityDashboard: React.FC = () => {
         .limit(10);
 
       if (eventsError) {
-        // Secure error logging - events fetch failed
+        console.error('Error fetching events:', eventsError);
       }
 
       // Fetch rate limit attempts (blocked IPs) directly from database
@@ -93,7 +93,7 @@ export const SecurityDashboard: React.FC = () => {
         .limit(10);
 
       if (rateLimitError) {
-        // Secure error logging - rate limits fetch failed
+        console.error('Error fetching rate limits:', rateLimitError);
       }
 
       // Set the data even if some queries failed
@@ -110,7 +110,7 @@ export const SecurityDashboard: React.FC = () => {
       });
 
     } catch (error: any) {
-      // Secure error logging - security dashboard data loading failed
+      console.error('Error loading security data:', error);
       toast({
         title: "Error",
         description: "Failed to load security dashboard data",

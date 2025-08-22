@@ -236,10 +236,7 @@ const ResourcesPage = () => {
                         if (tool.tool_url) {
                           window.open(tool.tool_url, '_blank');
                         } else {
-                          toast({
-                            title: "Coming Soon",
-                            description: `${tool.title} functionality coming soon!`,
-                          });
+                          alert(`${tool.title} would open in a new window. Tool functionality coming soon!`);
                         }
                       }}>
                         Launch Tool
@@ -294,19 +291,13 @@ const ResourcesPage = () => {
                             if (webinar.registration_url) {
                               window.open(webinar.registration_url, '_blank');
                             } else {
-                              toast({
-                                title: "Coming Soon",
-                                description: `Registration for "${webinar.title}" coming soon!`,
-                              });
+                              alert(`Registration for "${webinar.title}" coming soon!`);
                             }
                           } else {
                             if (webinar.recording_url) {
                               window.open(webinar.recording_url, '_blank');
                             } else {
-                              toast({
-                                title: "Coming Soon", 
-                                description: `Recording for "${webinar.title}" will be available soon!`,
-                              });
+                              alert(`Recording for "${webinar.title}" will be available soon!`);
                             }
                           }
                         }}

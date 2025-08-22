@@ -13,12 +13,12 @@ export const HaloHeader = ({
   showCompanyInfo = true 
 }: HaloHeaderProps) => {
   return (
-    <Card className="mb-6 bg-gradient-hero border-none text-primary-foreground">
+    <Card className="mb-6 bg-gradient-hero border-none text-white">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
-              <Building2 className="h-6 w-6 text-primary-foreground" />
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+              <Building2 className="h-6 w-6 text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-bold mb-1">{title}</h1>
@@ -28,7 +28,7 @@ export const HaloHeader = ({
           
           {showCompanyInfo && (
             <div className="text-right hidden md:block">
-              <div className="flex items-center gap-2 text-primary-foreground/90 text-sm mb-1">
+              <div className="flex items-center gap-2 text-white/90 text-sm mb-1">
                 <Globe className="h-4 w-4" />
                 <span>www.halobusinessfinance.com</span>
               </div>
