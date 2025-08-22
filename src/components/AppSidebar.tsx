@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useProductionSecurityLogger } from '@/components/ProductionSecurityLogger';
+import { supabase } from "@/integrations/supabase/client";
 
 import {
   Sidebar,
@@ -35,17 +36,6 @@ const mainNavItems = [
   { title: "Learning Resources", url: "/resources", icon: FileText },
 ];
 
-const courseModules = [
-  { title: "Finance Foundations", url: "/module/foundations", status: "completed" },
-  { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
-  { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
-  { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
-  { title: "Bridge Financing", url: "/module/bridge-loans", status: "locked" },
-  { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
-  { title: "Credit Analysis", url: "/module/credit-risk", status: "locked" },
-  { title: "Compliance", url: "/module/regulatory-compliance", status: "locked" },
-];
-
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
@@ -53,7 +43,40 @@ export function AppSidebar() {
   const { user, loading, signOut } = useAuth();
   const { isAdmin } = useAdminRole();
   const [isLoading, setIsLoading] = useState(false);
+  const [courseModules, setCourseModules] = useState<any[]>([]);
+  const [modulesLoading, setModulesLoading] = useState(true);
   const { secureError } = useProductionSecurityLogger('AppSidebar');
+
+  useEffect(() => {
+    const fetchCourseModules = async () => {
+      try {
+        const { data: modules, error } = await supabase
+          .from('course_modules')
+          .select('*')
+          .eq('is_active', true)
+          .order('order_index');
+
+        if (error) throw error;
+
+        // Transform modules to include status
+        const modulesWithStatus = modules?.map((module, index) => ({
+          title: module.title,
+          url: `/module/${module.module_id}`,
+          status: index < 2 ? 'completed' : index === 2 ? 'in-progress' : 'available'
+        })) || [];
+
+        setCourseModules(modulesWithStatus);
+      } catch (error) {
+        secureError(error as Error, { action: 'fetch_course_modules' });
+      } finally {
+        setModulesLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchCourseModules();
+    }
+  }, [user, secureError]);
 
   const handleSignOut = async () => {
     setIsLoading(true);
@@ -144,7 +167,12 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent className="pt-3">
             <SidebarMenu className="space-y-1">
-              {courseModules.map((module, index) => {
+              {modulesLoading ? (
+                <div className="text-xs text-muted-foreground p-2">Loading modules...</div>
+              ) : courseModules.length === 0 ? (
+                <div className="text-xs text-muted-foreground p-2">No modules available</div>
+              ) : (
+                courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked" && !isAdmin;
                 return (
                   <SidebarMenuItem key={module.title}>
@@ -193,7 +221,8 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
-              })}
+                })
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
