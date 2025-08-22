@@ -939,6 +939,45 @@ export type Database = {
         }
         Relationships: []
       }
+      immutable_audit_chain: {
+        Row: {
+          chain_position: number
+          created_at: string
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          data_hash: string
+          entry_id: string
+          id: string
+          previous_hash: string
+          timestamp: string
+        }
+        Insert: {
+          chain_position: number
+          created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          data_hash: string
+          entry_id: string
+          id?: string
+          previous_hash: string
+          timestamp?: string
+        }
+        Update: {
+          chain_position?: number
+          created_at?: string
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          data_hash?: string
+          entry_id?: string
+          id?: string
+          previous_hash?: string
+          timestamp?: string
+        }
+        Relationships: []
+      }
       instructors: {
         Row: {
           avatar_color: string
@@ -1099,7 +1138,9 @@ export type Database = {
           flow_data: Json | null
           geolocation: Json | null
           id: string
+          immutable: boolean | null
           is_blocked: boolean | null
+          logged_via_secure_function: boolean | null
           mitigation_applied: string[] | null
           packet_data: Json | null
           protocol: string | null
@@ -1125,7 +1166,9 @@ export type Database = {
           flow_data?: Json | null
           geolocation?: Json | null
           id?: string
+          immutable?: boolean | null
           is_blocked?: boolean | null
+          logged_via_secure_function?: boolean | null
           mitigation_applied?: string[] | null
           packet_data?: Json | null
           protocol?: string | null
@@ -1151,7 +1194,9 @@ export type Database = {
           flow_data?: Json | null
           geolocation?: Json | null
           id?: string
+          immutable?: boolean | null
           is_blocked?: boolean | null
+          logged_via_secure_function?: boolean | null
           mitigation_applied?: string[] | null
           packet_data?: Json | null
           protocol?: string | null
@@ -1397,6 +1442,7 @@ export type Database = {
       }
       security_events: {
         Row: {
+          chain_verified: boolean | null
           created_at: string
           data_classification:
             | Database["public"]["Enums"]["data_classification"]
@@ -1404,10 +1450,14 @@ export type Database = {
           details: Json | null
           event_type: string
           id: string
+          immutable: boolean | null
+          logged_via_secure_function: boolean | null
           severity: string
           user_id: string | null
+          validation_signature: string | null
         }
         Insert: {
+          chain_verified?: boolean | null
           created_at?: string
           data_classification?:
             | Database["public"]["Enums"]["data_classification"]
@@ -1415,10 +1465,14 @@ export type Database = {
           details?: Json | null
           event_type: string
           id?: string
+          immutable?: boolean | null
+          logged_via_secure_function?: boolean | null
           severity: string
           user_id?: string | null
+          validation_signature?: string | null
         }
         Update: {
+          chain_verified?: boolean | null
           created_at?: string
           data_classification?:
             | Database["public"]["Enums"]["data_classification"]
@@ -1426,8 +1480,11 @@ export type Database = {
           details?: Json | null
           event_type?: string
           id?: string
+          immutable?: boolean | null
+          logged_via_secure_function?: boolean | null
           severity?: string
           user_id?: string | null
+          validation_signature?: string | null
         }
         Relationships: []
       }
@@ -1692,33 +1749,42 @@ export type Database = {
           confidence_score: number | null
           created_at: string | null
           id: string
+          immutable: boolean | null
           last_updated: string | null
+          logged_via_secure_function: boolean | null
           pattern_data: Json
           pattern_type: string
           sample_count: number | null
           user_id: string
+          validation_hash: string | null
         }
         Insert: {
           anomaly_score?: number | null
           confidence_score?: number | null
           created_at?: string | null
           id?: string
+          immutable?: boolean | null
           last_updated?: string | null
+          logged_via_secure_function?: boolean | null
           pattern_data: Json
           pattern_type: string
           sample_count?: number | null
           user_id: string
+          validation_hash?: string | null
         }
         Update: {
           anomaly_score?: number | null
           confidence_score?: number | null
           created_at?: string | null
           id?: string
+          immutable?: boolean | null
           last_updated?: string | null
+          logged_via_secure_function?: boolean | null
           pattern_data?: Json
           pattern_type?: string
           sample_count?: number | null
           user_id?: string
+          validation_hash?: string | null
         }
         Relationships: []
       }
@@ -1734,7 +1800,9 @@ export type Database = {
           deviation_threshold: number | null
           feature_vector: Json | null
           id: string
+          immutable: boolean | null
           keystroke_dynamics: Json | null
+          logged_via_secure_function: boolean | null
           ml_model_version: string | null
           mouse_dynamics: Json | null
           navigation_patterns: Json | null
@@ -1742,6 +1810,7 @@ export type Database = {
           session_id: string | null
           timing_patterns: Json | null
           user_id: string
+          validation_hash: string | null
         }
         Insert: {
           access_patterns?: Json | null
@@ -1754,7 +1823,9 @@ export type Database = {
           deviation_threshold?: number | null
           feature_vector?: Json | null
           id?: string
+          immutable?: boolean | null
           keystroke_dynamics?: Json | null
+          logged_via_secure_function?: boolean | null
           ml_model_version?: string | null
           mouse_dynamics?: Json | null
           navigation_patterns?: Json | null
@@ -1762,6 +1833,7 @@ export type Database = {
           session_id?: string | null
           timing_patterns?: Json | null
           user_id: string
+          validation_hash?: string | null
         }
         Update: {
           access_patterns?: Json | null
@@ -1774,7 +1846,9 @@ export type Database = {
           deviation_threshold?: number | null
           feature_vector?: Json | null
           id?: string
+          immutable?: boolean | null
           keystroke_dynamics?: Json | null
+          logged_via_secure_function?: boolean | null
           ml_model_version?: string | null
           mouse_dynamics?: Json | null
           navigation_patterns?: Json | null
@@ -1782,6 +1856,7 @@ export type Database = {
           session_id?: string | null
           timing_patterns?: Json | null
           user_id?: string
+          validation_hash?: string | null
         }
         Relationships: []
       }
@@ -2347,6 +2422,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_security_data_tampering: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_security_log_tampering: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2773,6 +2852,10 @@ export type Database = {
       validate_ultra_secure_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
+      }
+      verify_complete_audit_chain: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       verify_profile_access_security: {
         Args: Record<PropertyKey, never>
