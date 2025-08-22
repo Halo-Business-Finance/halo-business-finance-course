@@ -121,7 +121,7 @@ export function EnhancedModuleCard({ module, userProgress }: EnhancedModuleCardP
           </div>
         )}
 
-        {module.prerequisites.length > 0 && !isCompleted && (
+        {module.prerequisites && module.prerequisites.length > 0 && !isCompleted && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-muted-foreground">Prerequisites:</p>
             <div className="flex flex-wrap gap-1">
