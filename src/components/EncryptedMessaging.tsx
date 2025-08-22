@@ -60,15 +60,7 @@ export const EncryptedMessaging: React.FC = () => {
     try {
       setLoading(true);
 
-      const { data: rawMessages, error } = await supabase
-        .from('encrypted_messages')
-        .select(`
-          *,
-          sender:sender_id (email),
-          recipient:recipient_id (email)
-        `)
-        .or(`sender_id.eq.${user?.id},recipient_id.eq.${user?.id}`)
-        .order('created_at', { ascending: false });
+      const { data: rawMessages, error } = await supabase.rpc('get_user_encrypted_messages');
 
       if (error) throw error;
 
@@ -82,14 +74,14 @@ export const EncryptedMessaging: React.FC = () => {
               ...msg,
               subject: `🔒 Encrypted Message (${msg.encrypted_subject.substring(0, 20)}...)`,
               body: `🔒 Encrypted Content (${msg.encrypted_body.substring(0, 50)}...)`,
-              sender_email: msg.sender?.email || 'Unknown'
+              sender_email: 'Encrypted User'
             };
           } catch (error) {
             return {
               ...msg,
               subject: '🔒 [Encrypted]',
               body: '🔒 [Unable to decrypt]',
-              sender_email: msg.sender?.email || 'Unknown'
+              sender_email: 'Unknown'
             };
           }
         })
