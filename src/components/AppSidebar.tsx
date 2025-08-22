@@ -212,7 +212,7 @@ export function AppSidebar() {
                           {/* Status Indicator */}
                           <div className="relative flex-shrink-0">
                             <div className={`
-                              w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold 
+                              w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold 
                               transition-all duration-500 ease-out
                               ${module.status === "completed" 
                                 ? "bg-gradient-to-br from-green-400 to-green-600 text-white shadow-lg shadow-green-400/25 ring-2 ring-green-400/20" 
