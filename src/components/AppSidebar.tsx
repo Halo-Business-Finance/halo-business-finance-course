@@ -13,6 +13,7 @@ import {
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { useToast } from "@/hooks/use-toast";
 
 import {
   Sidebar,
@@ -48,19 +49,25 @@ const baseCourseModules = [
   { title: "Compliance", url: "/module/regulatory-compliance" },
 ];
 
-// Progressive learning logic - only one module available at a time
+// Progressive learning logic - strict sequential unlocking
 const getProgressiveModules = () => {
-  // Updated to match courseData progress states
-  const completedModules = ["Finance Foundations"]; // First module completed  
-  const inProgressModules = ["Capital Markets", "SBA Loan Programs", "Conventional Lending"]; // Multiple modules in progress
+  // In a real app, this would come from user progress data
+  // For now, simulating strict sequential progression
+  const userProgress = {
+    completedModules: [], // No modules completed initially - users start fresh
+    currentModule: "Finance Foundations" // Only the first module is available
+  };
   
   return baseCourseModules.map((module, index) => {
-    if (completedModules.includes(module.title)) {
+    const isCompleted = userProgress.completedModules.includes(module.title);
+    const isCurrent = module.title === userProgress.currentModule;
+    
+    if (isCompleted) {
       return { ...module, status: "completed" };
-    } else if (inProgressModules.includes(module.title)) {
-      return { ...module, status: "in-progress" };
+    } else if (isCurrent) {
+      return { ...module, status: "available" }; // Available to start
     } else {
-      // All other modules are locked
+      // All other modules are locked until previous ones are completed
       return { ...module, status: "locked" };
     }
   });
@@ -74,6 +81,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
   const { isAdmin } = useAdminRole();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
@@ -170,12 +178,23 @@ export function AppSidebar() {
                 return (
                   <SidebarMenuItem key={module.title}>
                     <SidebarMenuButton asChild>
-                      <NavLink 
-                        to={module.url} 
-                        className={({ isActive }) => `${getNavCls(isActive)} ${
-                          isModuleLocked ? "opacity-60 pointer-events-none" : ""
-                        } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
-                      >
+                       <NavLink 
+                         to={isModuleLocked ? "#" : module.url}
+                         onClick={(e) => {
+                           if (isModuleLocked) {
+                             e.preventDefault();
+                             toast({
+                               title: "🔒 Module Locked",
+                               description: "Complete the previous module to unlock this one!",
+                               variant: "destructive",
+                               duration: 3000,
+                             });
+                           }
+                         }}
+                         className={({ isActive }) => `${getNavCls(isActive)} ${
+                           isModuleLocked ? "opacity-60 cursor-not-allowed" : ""
+                         } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
+                       >
                         <div className="relative z-10 flex items-start w-full py-1">
                           <div className={`
                             w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0 mt-0.5
