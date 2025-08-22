@@ -66,12 +66,12 @@ export const EncryptionDashboard: React.FC = () => {
 
       // Get encryption statistics
       const [
-        profilesResponse,
+        profileStatsResponse,
         contentResponse,
         messagesResponse,
         eventsResponse
       ] = await Promise.all([
-        supabase.from('profiles').select('encryption_status'),
+        supabase.rpc('get_profile_encryption_stats'),
         supabase.from('encrypted_course_content').select('id'),
         supabase.from('encrypted_messages').select('id'),
         supabase
@@ -81,8 +81,8 @@ export const EncryptionDashboard: React.FC = () => {
           .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
       ]);
 
-      const profiles = profilesResponse.data || [];
-      const encryptedProfiles = profiles.filter(p => p.encryption_status === 'encrypted').length;
+      const profileStats = profileStatsResponse.data || { encrypted_count: 0, total_count: 0 };
+      const encryptedProfiles = profileStats.encrypted_count;
       const encryptionEvents = eventsResponse.data || [];
       
       const encryptionEvents24h = encryptionEvents.filter(e => e.event_type === 'data_encrypted').length;
@@ -101,7 +101,7 @@ export const EncryptionDashboard: React.FC = () => {
 
       setMetrics({
         profilesEncrypted: encryptedProfiles,
-        totalProfiles: profiles.length,
+        totalProfiles: profileStats.total_count,
         contentItemsEncrypted: contentResponse.data?.length || 0,
         messagesEncrypted: messagesResponse.data?.length || 0,
         encryptionEvents24h,
