@@ -2433,6 +2433,16 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_admin_profile_summary: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          email_masked: string
+          is_active: boolean
+          join_date: string
+          name_masked: string
+          user_id: string
+        }[]
+      }
       get_admin_session_info: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -2590,6 +2600,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_profile_access_comprehensive: {
+        Args: { access_type?: string; accessed_user_id: string }
+        Returns: undefined
+      }
       log_sensitive_data_access: {
         Args: {
           access_reason?: string
@@ -2681,10 +2695,6 @@ export type Database = {
         Args: { target_user_id: string }
         Returns: boolean
       }
-      secure_profile_access_with_rate_limit: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
       security_health_check: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -2714,6 +2724,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: Json
+      }
+      validate_emergency_profile_access: {
+        Args: { access_reason?: string; target_user_id: string }
+        Returns: boolean
       }
       validate_geolocation_access: {
         Args: {
