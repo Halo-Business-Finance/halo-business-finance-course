@@ -1087,6 +1087,10 @@ export type Database = {
         Row: {
           analyst_notes: string | null
           created_at: string
+          created_by_function: string | null
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           destination_ip: unknown | null
           destination_port: number | null
           event_category: string
@@ -1102,11 +1106,17 @@ export type Database = {
           severity_level: number
           source_ip: unknown
           source_port: number | null
+          system_validated: boolean | null
           threat_indicators: string[] | null
+          validation_signature: string | null
         }
         Insert: {
           analyst_notes?: string | null
           created_at?: string
+          created_by_function?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           destination_ip?: unknown | null
           destination_port?: number | null
           event_category: string
@@ -1122,11 +1132,17 @@ export type Database = {
           severity_level: number
           source_ip: unknown
           source_port?: number | null
+          system_validated?: boolean | null
           threat_indicators?: string[] | null
+          validation_signature?: string | null
         }
         Update: {
           analyst_notes?: string | null
           created_at?: string
+          created_by_function?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
           destination_ip?: unknown | null
           destination_port?: number | null
           event_category?: string
@@ -1142,7 +1158,9 @@ export type Database = {
           severity_level?: number
           source_ip?: unknown
           source_port?: number | null
+          system_validated?: boolean | null
           threat_indicators?: string[] | null
+          validation_signature?: string | null
         }
         Relationships: []
       }
@@ -2329,6 +2347,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_security_log_tampering: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_unusual_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2585,6 +2607,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_validated_security_event: {
+        Args: {
+          p_details: Json
+          p_event_type: string
+          p_severity: string
+          p_source_function?: string
+          p_user_id?: string
+        }
+        Returns: string
+      }
       mask_profile_data_advanced: {
         Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
         Returns: Json
@@ -2718,6 +2750,10 @@ export type Database = {
       }
       validate_sensitive_profile_access: {
         Args: { target_user_id: string }
+        Returns: boolean
+      }
+      validate_system_process: {
+        Args: { p_function_name: string; p_process_signature?: string }
         Returns: boolean
       }
       validate_ultra_secure_profile_access: {
