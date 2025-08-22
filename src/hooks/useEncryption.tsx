@@ -162,11 +162,7 @@ export const useEncryption = () => {
 
   const getEncryptedMessages = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('encrypted_messages')
-        .select('*')
-        .or(`sender_id.eq.${(await supabase.auth.getUser()).data.user?.id},recipient_id.eq.${(await supabase.auth.getUser()).data.user?.id}`)
-        .order('created_at', { ascending: false });
+      const { data, error } = await supabase.rpc('get_user_encrypted_messages');
 
       if (error) {
         throw error;

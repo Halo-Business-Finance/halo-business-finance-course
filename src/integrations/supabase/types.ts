@@ -2610,6 +2610,20 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      get_user_encrypted_messages: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          encrypted_body: string
+          encrypted_subject: string
+          expires_at: string
+          id: string
+          is_read: boolean
+          message_hash: string
+          recipient_id: string
+          sender_id: string
+        }[]
+      }
       get_user_role: {
         Args: { check_user_id?: string }
         Returns: string
