@@ -66,12 +66,13 @@ export const EncryptionManager: React.FC<EncryptionManagerProps> = ({ className 
     try {
       setLoading(true);
 
-      // Get profile encryption stats with error handling
-      const { data: profiles, error: profileError } = await supabase
-        .from('profiles')
-        .select('encryption_status');
-
+      // Get profile encryption stats using secure RPC function
+      const { data: profileStatsData, error: profileError } = await supabase.rpc('get_profile_encryption_stats');
+      
       if (profileError) throw profileError;
+      
+      // Parse the JSON response and cast to correct type
+      const profileStats = profileStatsData as { encrypted_count: number; total_count: number };
 
       // Get encrypted content stats
       const { data: content, error: contentError } = await supabase
@@ -87,11 +88,9 @@ export const EncryptionManager: React.FC<EncryptionManagerProps> = ({ className 
 
       if (messageError) throw messageError;
 
-      const encryptedProfiles = profiles?.filter(p => p.encryption_status === 'encrypted').length || 0;
-
       setStats({
-        encryptedProfiles,
-        totalProfiles: profiles?.length || 0,
+        encryptedProfiles: profileStats?.encrypted_count || 0,
+        totalProfiles: profileStats?.total_count || 0,
         encryptedContent: content?.length || 0,
         encryptedMessages: messages?.length || 0
       });
