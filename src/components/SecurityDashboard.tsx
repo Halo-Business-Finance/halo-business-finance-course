@@ -60,54 +60,20 @@ export const SecurityDashboard: React.FC = () => {
     try {
       setLoading(true);
       
-      // Fetch security alerts directly from database
-      const { data: alerts, error: alertsError } = await supabase
-        .from('security_alerts')
-        .select('*')
-        .eq('is_resolved', false)
-        .order('created_at', { ascending: false })
-        .limit(10);
+      const { data: dashboardData, error } = await supabase.functions.invoke(
+        'security-monitor',
+        {
+          body: { action: 'get_security_dashboard' }
+        }
+      );
 
-      if (alertsError) {
-        console.error('Error fetching alerts:', alertsError);
+      if (error) {
+        throw new Error(error.message);
       }
 
-      // Fetch recent security events directly from database  
-      const { data: events, error: eventsError } = await supabase
-        .from('security_events')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10);
-
-      if (eventsError) {
-        console.error('Error fetching events:', eventsError);
+      if (dashboardData?.success) {
+        setData(dashboardData.data);
       }
-
-      // Fetch rate limit attempts (blocked IPs) directly from database
-      const { data: rateLimits, error: rateLimitError } = await supabase
-        .from('rate_limit_attempts')
-        .select('*')
-        .eq('is_blocked', true)
-        .order('updated_at', { ascending: false })
-        .limit(10);
-
-      if (rateLimitError) {
-        console.error('Error fetching rate limits:', rateLimitError);
-      }
-
-      // Set the data even if some queries failed
-      setData({
-        alerts: (alerts || []).map(alert => ({
-          ...alert,
-          severity: alert.severity as 'low' | 'medium' | 'high' | 'critical'
-        })),
-        recent_events: events || [],
-        blocked_ips: (rateLimits || []).map(limit => ({
-          ...limit,
-          ip_address: String(limit.ip_address || 'Unknown')
-        }))
-      });
-
     } catch (error: any) {
       console.error('Error loading security data:', error);
       toast({
@@ -122,24 +88,28 @@ export const SecurityDashboard: React.FC = () => {
 
   const resolveAlert = async (alertId: string) => {
     try {
-      const { error } = await supabase
-        .from('security_alerts')
-        .update({ 
-          is_resolved: true, 
-          resolved_at: new Date().toISOString(),
-          resolved_by: (await supabase.auth.getUser()).data.user?.id
-        })
-        .eq('id', alertId);
+      const { data: result, error } = await supabase.functions.invoke(
+        'security-monitor',
+        {
+          body: { 
+            action: 'resolve_alert',
+            alertId,
+            resolvedBy: (await supabase.auth.getUser()).data.user?.id
+          }
+        }
+      );
 
       if (error) {
-        throw error;
+        throw new Error(error.message);
       }
 
-      toast({
-        title: "Success",
-        description: "Security alert resolved successfully"
-      });
-      loadSecurityData();
+      if (result?.success) {
+        toast({
+          title: "Success",
+          description: "Security alert resolved successfully"
+        });
+        loadSecurityData();
+      }
     } catch (error: any) {
       console.error('Error resolving alert:', error);
       toast({
@@ -152,18 +122,24 @@ export const SecurityDashboard: React.FC = () => {
 
   const runSecurityAnalysis = async () => {
     try {
-      // Call the analyze_security_events function directly
-      const { error } = await supabase.rpc('analyze_security_events');
+      const { data: result, error } = await supabase.functions.invoke(
+        'security-monitor',
+        {
+          body: { action: 'analyze_security_events' }
+        }
+      );
 
       if (error) {
-        throw error;
+        throw new Error(error.message);
       }
 
-      toast({
-        title: "Success",
-        description: "Security analysis completed"
-      });
-      loadSecurityData();
+      if (result?.success) {
+        toast({
+          title: "Success",
+          description: "Security analysis completed"
+        });
+        loadSecurityData();
+      }
     } catch (error: any) {
       console.error('Error running security analysis:', error);
       toast({
@@ -176,24 +152,24 @@ export const SecurityDashboard: React.FC = () => {
 
   const createTestAlert = async () => {
     try {
-      // Create a test alert directly in the database using the RPC function
-      const { error } = await supabase.rpc('create_security_alert', {
-        p_alert_type: 'test_alert',
-        p_severity: 'medium',
-        p_title: 'Test Security Alert',
-        p_description: 'This is a test alert created from the admin dashboard',
-        p_metadata: { test: true, created_by: 'admin_dashboard' }
-      });
+      const { data: result, error } = await supabase.functions.invoke(
+        'security-monitor',
+        {
+          body: { action: 'create_test_alert' }
+        }
+      );
 
       if (error) {
-        throw error;
+        throw new Error(error.message);
       }
 
-      toast({
-        title: "Success",
-        description: "Test security alert created"
-      });
-      loadSecurityData();
+      if (result?.success) {
+        toast({
+          title: "Success",
+          description: "Test security alert created"
+        });
+        loadSecurityData();
+      }
     } catch (error: any) {
       console.error('Error creating test alert:', error);
       toast({

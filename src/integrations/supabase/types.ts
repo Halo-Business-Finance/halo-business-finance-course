@@ -19,9 +19,6 @@ export type Database = {
           action: string
           admin_user_id: string
           created_at: string | null
-          data_classification:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details: Json | null
           geolocation: Json | null
           id: string
@@ -38,9 +35,6 @@ export type Database = {
           action: string
           admin_user_id: string
           created_at?: string | null
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details?: Json | null
           geolocation?: Json | null
           id?: string
@@ -57,9 +51,6 @@ export type Database = {
           action?: string
           admin_user_id?: string
           created_at?: string | null
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details?: Json | null
           geolocation?: Json | null
           id?: string
@@ -418,42 +409,6 @@ export type Database = {
         }
         Relationships: []
       }
-      course_progress: {
-        Row: {
-          completed_at: string | null
-          course_id: string
-          created_at: string
-          id: string
-          lesson_id: string | null
-          module_id: string | null
-          progress_percentage: number | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          course_id: string
-          created_at?: string
-          id?: string
-          lesson_id?: string | null
-          module_id?: string | null
-          progress_percentage?: number | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          completed_at?: string | null
-          course_id?: string
-          created_at?: string
-          id?: string
-          lesson_id?: string | null
-          module_id?: string | null
-          progress_percentage?: number | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       course_videos: {
         Row: {
           created_at: string
@@ -518,57 +473,6 @@ export type Database = {
             referencedColumns: ["module_id"]
           },
         ]
-      }
-      geolocation_rules: {
-        Row: {
-          country_codes: string[] | null
-          created_at: string | null
-          id: string
-          ip_ranges: unknown[] | null
-          is_active: boolean | null
-          latitude_range: number[] | null
-          longitude_range: number[] | null
-          priority: number | null
-          radius_km: number | null
-          region_codes: string[] | null
-          rule_type: string
-          time_restrictions: Json | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          country_codes?: string[] | null
-          created_at?: string | null
-          id?: string
-          ip_ranges?: unknown[] | null
-          is_active?: boolean | null
-          latitude_range?: number[] | null
-          longitude_range?: number[] | null
-          priority?: number | null
-          radius_km?: number | null
-          region_codes?: string[] | null
-          rule_type: string
-          time_restrictions?: Json | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          country_codes?: string[] | null
-          created_at?: string | null
-          id?: string
-          ip_ranges?: unknown[] | null
-          is_active?: boolean | null
-          latitude_range?: number[] | null
-          longitude_range?: number[] | null
-          priority?: number | null
-          radius_km?: number | null
-          region_codes?: string[] | null
-          rule_type?: string
-          time_restrictions?: Json | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
       }
       "Halo Launch Pad Learn": {
         Row: {
@@ -729,39 +633,6 @@ export type Database = {
         }
         Relationships: []
       }
-      notifications: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: string
-          message: string
-          read: boolean | null
-          title: string
-          type: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          message: string
-          read?: boolean | null
-          title: string
-          type?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          message?: string
-          read?: boolean | null
-          title?: string
-          type?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -769,9 +640,6 @@ export type Database = {
           company: string | null
           course_progress: boolean | null
           created_at: string
-          data_classification:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           date_format: string | null
           email: string | null
           email_notifications: boolean | null
@@ -802,9 +670,6 @@ export type Database = {
           company?: string | null
           course_progress?: boolean | null
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
@@ -835,9 +700,6 @@ export type Database = {
           company?: string | null
           course_progress?: boolean | null
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
@@ -868,9 +730,6 @@ export type Database = {
         Row: {
           attempt_count: number
           created_at: string
-          data_classification:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           endpoint: string
           id: string
           ip_address: unknown
@@ -881,9 +740,6 @@ export type Database = {
         Insert: {
           attempt_count?: number
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           endpoint: string
           id?: string
           ip_address: unknown
@@ -894,9 +750,6 @@ export type Database = {
         Update: {
           attempt_count?: number
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           endpoint?: string
           id?: string
           ip_address?: unknown
@@ -951,9 +804,6 @@ export type Database = {
       security_events: {
         Row: {
           created_at: string
-          data_classification:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details: Json | null
           event_type: string
           id: string
@@ -962,9 +812,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details?: Json | null
           event_type: string
           id?: string
@@ -973,346 +820,11 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          data_classification?:
-            | Database["public"]["Enums"]["data_classification"]
-            | null
           details?: Json | null
           event_type?: string
           id?: string
           severity?: string
           user_id?: string | null
-        }
-        Relationships: []
-      }
-      security_incidents: {
-        Row: {
-          affected_systems: string[] | null
-          affected_users: string[] | null
-          assigned_to: string | null
-          created_at: string | null
-          description: string | null
-          id: string
-          incident_type: string
-          indicators: Json | null
-          lessons_learned: string | null
-          reported_by: string | null
-          resolved_at: string | null
-          response_actions: Json | null
-          severity: string
-          status: string | null
-          timeline: Json | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          affected_systems?: string[] | null
-          affected_users?: string[] | null
-          assigned_to?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          incident_type: string
-          indicators?: Json | null
-          lessons_learned?: string | null
-          reported_by?: string | null
-          resolved_at?: string | null
-          response_actions?: Json | null
-          severity: string
-          status?: string | null
-          timeline?: Json | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          affected_systems?: string[] | null
-          affected_users?: string[] | null
-          assigned_to?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          incident_type?: string
-          indicators?: Json | null
-          lessons_learned?: string | null
-          reported_by?: string | null
-          resolved_at?: string | null
-          response_actions?: Json | null
-          severity?: string
-          status?: string | null
-          timeline?: Json | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      security_policies: {
-        Row: {
-          applies_to: string[] | null
-          approved_by: string | null
-          created_at: string | null
-          created_by: string | null
-          effective_date: string | null
-          enforcement_level: string | null
-          expiry_date: string | null
-          id: string
-          is_active: boolean | null
-          policy_name: string
-          policy_rules: Json
-          policy_type: string
-          updated_at: string | null
-          version: number | null
-        }
-        Insert: {
-          applies_to?: string[] | null
-          approved_by?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          effective_date?: string | null
-          enforcement_level?: string | null
-          expiry_date?: string | null
-          id?: string
-          is_active?: boolean | null
-          policy_name: string
-          policy_rules: Json
-          policy_type: string
-          updated_at?: string | null
-          version?: number | null
-        }
-        Update: {
-          applies_to?: string[] | null
-          approved_by?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          effective_date?: string | null
-          enforcement_level?: string | null
-          expiry_date?: string | null
-          id?: string
-          is_active?: boolean | null
-          policy_name?: string
-          policy_rules?: Json
-          policy_type?: string
-          updated_at?: string | null
-          version?: number | null
-        }
-        Relationships: []
-      }
-      threat_intelligence: {
-        Row: {
-          confidence_score: number | null
-          created_at: string | null
-          description: string | null
-          expires_at: string | null
-          first_seen: string | null
-          id: string
-          indicator_type: string
-          indicator_value: string
-          is_active: boolean | null
-          last_seen: string | null
-          metadata: Json | null
-          source: string | null
-          threat_level: number
-          threat_type: string
-        }
-        Insert: {
-          confidence_score?: number | null
-          created_at?: string | null
-          description?: string | null
-          expires_at?: string | null
-          first_seen?: string | null
-          id?: string
-          indicator_type: string
-          indicator_value: string
-          is_active?: boolean | null
-          last_seen?: string | null
-          metadata?: Json | null
-          source?: string | null
-          threat_level: number
-          threat_type: string
-        }
-        Update: {
-          confidence_score?: number | null
-          created_at?: string | null
-          description?: string | null
-          expires_at?: string | null
-          first_seen?: string | null
-          id?: string
-          indicator_type?: string
-          indicator_value?: string
-          is_active?: boolean | null
-          last_seen?: string | null
-          metadata?: Json | null
-          source?: string | null
-          threat_level?: number
-          threat_type?: string
-        }
-        Relationships: []
-      }
-      user_behavior_patterns: {
-        Row: {
-          anomaly_score: number | null
-          confidence_score: number | null
-          created_at: string | null
-          id: string
-          last_updated: string | null
-          pattern_data: Json
-          pattern_type: string
-          sample_count: number | null
-          user_id: string
-        }
-        Insert: {
-          anomaly_score?: number | null
-          confidence_score?: number | null
-          created_at?: string | null
-          id?: string
-          last_updated?: string | null
-          pattern_data: Json
-          pattern_type: string
-          sample_count?: number | null
-          user_id: string
-        }
-        Update: {
-          anomaly_score?: number | null
-          confidence_score?: number | null
-          created_at?: string | null
-          id?: string
-          last_updated?: string | null
-          pattern_data?: Json
-          pattern_type?: string
-          sample_count?: number | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_biometrics: {
-        Row: {
-          biometric_hash: string
-          biometric_type: string
-          created_at: string | null
-          device_id: string | null
-          enrollment_date: string | null
-          failure_count: number | null
-          id: string
-          is_active: boolean | null
-          last_used_at: string | null
-          quality_score: number | null
-          template_data: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          biometric_hash: string
-          biometric_type: string
-          created_at?: string | null
-          device_id?: string | null
-          enrollment_date?: string | null
-          failure_count?: number | null
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          quality_score?: number | null
-          template_data?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          biometric_hash?: string
-          biometric_type?: string
-          created_at?: string | null
-          device_id?: string | null
-          enrollment_date?: string | null
-          failure_count?: number | null
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          quality_score?: number | null
-          template_data?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_biometrics_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "user_devices"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_devices: {
-        Row: {
-          blocked_at: string | null
-          blocked_reason: string | null
-          browser_info: Json | null
-          created_at: string | null
-          device_fingerprint: string
-          device_name: string | null
-          device_type: string | null
-          first_seen_at: string | null
-          geolocation: Json | null
-          hardware_info: Json | null
-          id: string
-          is_active: boolean | null
-          is_trusted: boolean | null
-          language: string | null
-          last_ip: unknown | null
-          last_seen_at: string | null
-          os_info: Json | null
-          screen_resolution: string | null
-          security_flags: Json | null
-          timezone: string | null
-          trust_level: number | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          blocked_at?: string | null
-          blocked_reason?: string | null
-          browser_info?: Json | null
-          created_at?: string | null
-          device_fingerprint: string
-          device_name?: string | null
-          device_type?: string | null
-          first_seen_at?: string | null
-          geolocation?: Json | null
-          hardware_info?: Json | null
-          id?: string
-          is_active?: boolean | null
-          is_trusted?: boolean | null
-          language?: string | null
-          last_ip?: unknown | null
-          last_seen_at?: string | null
-          os_info?: Json | null
-          screen_resolution?: string | null
-          security_flags?: Json | null
-          timezone?: string | null
-          trust_level?: number | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          blocked_at?: string | null
-          blocked_reason?: string | null
-          browser_info?: Json | null
-          created_at?: string | null
-          device_fingerprint?: string
-          device_name?: string | null
-          device_type?: string | null
-          first_seen_at?: string | null
-          geolocation?: Json | null
-          hardware_info?: Json | null
-          id?: string
-          is_active?: boolean | null
-          is_trusted?: boolean | null
-          language?: string | null
-          last_ip?: unknown | null
-          last_seen_at?: string | null
-          os_info?: Json | null
-          screen_resolution?: string | null
-          security_flags?: Json | null
-          timezone?: string | null
-          trust_level?: number | null
-          updated_at?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -1346,57 +858,6 @@ export type Database = {
           is_active?: boolean | null
           updated_at?: string
           user_id?: string | null
-        }
-        Relationships: []
-      }
-      user_mfa: {
-        Row: {
-          backup_codes: string[] | null
-          created_at: string | null
-          failure_count: number | null
-          id: string
-          is_enabled: boolean | null
-          is_primary: boolean | null
-          last_used_at: string | null
-          locked_until: string | null
-          method_name: string | null
-          method_type: string
-          secret_key: string | null
-          updated_at: string | null
-          user_id: string
-          verified_at: string | null
-        }
-        Insert: {
-          backup_codes?: string[] | null
-          created_at?: string | null
-          failure_count?: number | null
-          id?: string
-          is_enabled?: boolean | null
-          is_primary?: boolean | null
-          last_used_at?: string | null
-          locked_until?: string | null
-          method_name?: string | null
-          method_type: string
-          secret_key?: string | null
-          updated_at?: string | null
-          user_id: string
-          verified_at?: string | null
-        }
-        Update: {
-          backup_codes?: string[] | null
-          created_at?: string | null
-          failure_count?: number | null
-          id?: string
-          is_enabled?: boolean | null
-          is_primary?: boolean | null
-          last_used_at?: string | null
-          locked_until?: string | null
-          method_name?: string | null
-          method_type?: string
-          secret_key?: string | null
-          updated_at?: string | null
-          user_id?: string
-          verified_at?: string | null
         }
         Relationships: []
       }
@@ -1485,74 +946,6 @@ export type Database = {
           },
         ]
       }
-      user_sessions: {
-        Row: {
-          created_at: string | null
-          device_id: string | null
-          expires_at: string | null
-          geolocation: Json | null
-          id: string
-          ip_address: unknown | null
-          is_active: boolean | null
-          last_activity_at: string | null
-          risk_score: number | null
-          security_context: Json | null
-          security_level: number | null
-          session_token: string
-          session_type: string | null
-          terminated_at: string | null
-          termination_reason: string | null
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          device_id?: string | null
-          expires_at?: string | null
-          geolocation?: Json | null
-          id?: string
-          ip_address?: unknown | null
-          is_active?: boolean | null
-          last_activity_at?: string | null
-          risk_score?: number | null
-          security_context?: Json | null
-          security_level?: number | null
-          session_token: string
-          session_type?: string | null
-          terminated_at?: string | null
-          termination_reason?: string | null
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          device_id?: string | null
-          expires_at?: string | null
-          geolocation?: Json | null
-          id?: string
-          ip_address?: unknown | null
-          is_active?: boolean | null
-          last_activity_at?: string | null
-          risk_score?: number | null
-          security_context?: Json | null
-          security_level?: number | null
-          session_token?: string
-          session_type?: string | null
-          terminated_at?: string | null
-          termination_reason?: string | null
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_sessions_device_id_fkey"
-            columns: ["device_id"]
-            isOneToOne: false
-            referencedRelation: "user_devices"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
@@ -1561,10 +954,6 @@ export type Database = {
       analyze_security_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
-      }
-      analyze_user_behavior_anomaly: {
-        Args: { p_behavior_data: Json }
-        Returns: Json
       }
       assign_user_role: {
         Args: {
@@ -1575,31 +964,12 @@ export type Database = {
         }
         Returns: boolean
       }
-      can_access_classified_data: {
-        Args: {
-          classification: Database["public"]["Enums"]["data_classification"]
-          resource_owner_id?: string
-        }
-        Returns: boolean
-      }
-      can_view_sensitive_profile_data: {
-        Args: { profile_user_id: string }
-        Returns: boolean
-      }
       check_rate_limit: {
         Args: {
           p_endpoint: string
           p_ip_address: unknown
           p_max_attempts?: number
           p_window_minutes?: number
-        }
-        Returns: Json
-      }
-      check_threat_indicators: {
-        Args: {
-          p_additional_indicators?: Json
-          p_ip_address: unknown
-          p_user_agent?: string
         }
         Returns: Json
       }
@@ -1616,48 +986,6 @@ export type Database = {
           p_title: string
         }
         Returns: string
-      }
-      detect_potential_data_breach: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_unusual_profile_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      emergency_security_lockdown: {
-        Args: {
-          p_affected_users?: string[]
-          p_lockdown_type?: string
-          p_reason: string
-        }
-        Returns: Json
-      }
-      get_admin_profile_data: {
-        Args: { target_user_id: string }
-        Returns: {
-          email: string
-          full_profile: Json
-          location: string
-          name: string
-          phone: string
-          user_id: string
-        }[]
-      }
-      get_authenticated_user_profiles: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          avatar_url: string
-          city: string
-          company: string
-          created_at: string
-          id: string
-          join_date: string
-          name: string
-          state: string
-          title: string
-          user_id: string
-        }[]
       }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
@@ -1705,41 +1033,9 @@ export type Database = {
         }
         Returns: undefined
       }
-      log_admin_profile_view: {
-        Args: { viewed_user_id: string }
-        Returns: undefined
-      }
       log_auth_failure: {
         Args: { failure_reason: string; user_email?: string }
         Returns: undefined
-      }
-      log_critical_security_event: {
-        Args: {
-          event_details?: Json
-          event_name: string
-          severity_level?: string
-        }
-        Returns: undefined
-      }
-      log_sensitive_data_access: {
-        Args: {
-          access_reason?: string
-          accessed_table: string
-          accessed_user_id: string
-        }
-        Returns: undefined
-      }
-      mask_sensitive_profile_data: {
-        Args: { profile_data: Json }
-        Returns: Json
-      }
-      monitor_profile_access_patterns: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      register_device_fingerprint: {
-        Args: { p_device_fingerprint: string; p_device_info?: Json }
-        Returns: string
       }
       revoke_user_role: {
         Args: {
@@ -1749,62 +1045,8 @@ export type Database = {
         }
         Returns: boolean
       }
-      run_comprehensive_security_analysis: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_customer_data_security_monitoring: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_security_configuration_check: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      secure_profile_access: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
-      security_health_check: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      validate_geolocation_access: {
-        Args: {
-          p_country_code?: string
-          p_ip_address?: unknown
-          p_latitude: number
-          p_longitude: number
-        }
-        Returns: Json
-      }
-      validate_mfa_token: {
-        Args: {
-          p_backup_code?: boolean
-          p_method_type: string
-          p_token: string
-        }
-        Returns: boolean
-      }
-      validate_security_configuration: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      validate_sensitive_profile_access: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
-      validate_ultra_secure_profile_access: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
-      verify_profile_access_security: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
     }
     Enums: {
-      data_classification: "public" | "internal" | "confidential" | "restricted"
       skill_level: "beginner" | "intermediate" | "expert"
     }
     CompositeTypes: {
@@ -1933,7 +1175,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      data_classification: ["public", "internal", "confidential", "restricted"],
       skill_level: ["beginner", "intermediate", "expert"],
     },
   },
