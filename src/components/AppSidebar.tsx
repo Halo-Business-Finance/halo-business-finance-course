@@ -50,17 +50,17 @@ const baseCourseModules = [
 
 // Progressive learning logic - only one module available at a time
 const getProgressiveModules = () => {
-  // For now, simulating user progress - replace with actual user progress data  
-  const completedModules = ["Finance Foundations"]; // Only first module completed
-  const currentModule = "Capital Markets"; // Currently working on this module
+  // Updated to match courseData progress states
+  const completedModules = ["Finance Foundations"]; // First module completed  
+  const inProgressModules = ["Capital Markets", "SBA Loan Programs", "Conventional Lending"]; // Multiple modules in progress
   
   return baseCourseModules.map((module, index) => {
     if (completedModules.includes(module.title)) {
       return { ...module, status: "completed" };
-    } else if (module.title === currentModule) {
+    } else if (inProgressModules.includes(module.title)) {
       return { ...module, status: "in-progress" };
     } else {
-      // All other modules are locked - no exceptions
+      // All other modules are locked
       return { ...module, status: "locked" };
     }
   });

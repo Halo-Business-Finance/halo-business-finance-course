@@ -69,8 +69,8 @@ export const courseData: CourseData = {
       description: "Master the core business finance principles used at Halo Business Finance. This comprehensive module covers financial statement analysis, risk assessment, and decision-making frameworks essential for success in commercial lending and business finance.",
       duration: "2.5 hours",
       lessons: 12,
-      progress: 0,
-      status: "available",
+      progress: 85,
+      status: "completed",
       topics: ["Halo's Financial Analysis Framework", "Commercial Lending Principles", "Risk Assessment Methodologies", "Working Capital Solutions", "Financial Ratios & Metrics", "Cash Flow Analysis for Business Loans"],
       videos: [
         {
@@ -235,8 +235,8 @@ export const courseData: CourseData = {
       description: "Explore capital markets through Halo Business Finance's perspective. Learn how institutional funding, secondary markets, and capital allocation impact commercial lending decisions and portfolio management strategies.",
       duration: "3 hours",
       lessons: 15,
-      progress: 0,
-      status: "locked",
+      progress: 45,
+      status: "in-progress",
       topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
       videos: [
         {
@@ -370,8 +370,8 @@ export const courseData: CourseData = {
       description: "Master Halo Business Finance's approach to SBA lending. Learn our proprietary underwriting processes, client onboarding strategies, and risk management techniques for 7(a), 504, and microloan programs.",
       duration: "2 hours",
       lessons: 10,
-      progress: 0,
-      status: "locked",
+      progress: 65,
+      status: "in-progress",
       topics: ["Halo's SBA 7(a) Process", "504 Program Specialization", "Microloan Strategies", "Halo Eligibility Assessment", "Streamlined Application Process", "Guarantee Optimization", "Portfolio Risk Management", "Client Success Metrics"],
       videos: [
         {
@@ -527,8 +527,8 @@ export const courseData: CourseData = {
       description: "Master traditional bank lending products including term loans, lines of credit, equipment financing, and commercial real estate loans. Understand underwriting standards and pricing.",
       duration: "2.5 hours",
       lessons: 13,
-      progress: 0,
-      status: "available",
+      progress: 25,
+      status: "in-progress",
       topics: ["Term Loans", "Lines of Credit", "Equipment Financing", "Commercial Real Estate", "Underwriting Standards", "Credit Analysis", "Loan Pricing", "Collateral Requirements"],
       videos: [
         {

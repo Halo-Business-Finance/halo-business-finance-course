@@ -195,7 +195,7 @@ const ModulePage = () => {
       </div>
 
       {/* Progress Bar */}
-      {courseModule.status !== "available" && (
+      {(courseModule.status === "in-progress" || courseModule.status === "completed") && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Your Progress</CardTitle>
