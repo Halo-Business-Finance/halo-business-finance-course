@@ -58,19 +58,26 @@ const getProgressiveModules = () => {
     currentModule: "Finance Foundations" // Only the first module is available
   };
   
-  return baseCourseModules.map((module, index) => {
+  const modules = baseCourseModules.map((module, index) => {
     const isCompleted = userProgress.completedModules.includes(module.title);
     const isCurrent = module.title === userProgress.currentModule;
     
+    let status;
     if (isCompleted) {
-      return { ...module, status: "completed" };
+      status = "completed";
     } else if (isCurrent) {
-      return { ...module, status: "available" }; // Available to start
+      status = "available"; // Available to start
     } else {
       // All other modules are locked until previous ones are completed
-      return { ...module, status: "locked" };
+      status = "locked";
     }
+    
+    console.log(`Module: ${module.title}, Status: ${status}, Index: ${index}`);
+    return { ...module, status };
   });
+  
+  console.log("Generated modules:", modules);
+  return modules;
 };
 
 const courseModules = getProgressiveModules();
@@ -174,14 +181,16 @@ export function AppSidebar() {
           <SidebarGroupContent className="pt-3">
             <SidebarMenu className="space-y-1">
               {courseModules.map((module, index) => {
-                const isModuleLocked = module.status === "locked" && !isAdmin;
+                const isModuleLocked = module.status === "locked";
+                const canAccess = !isModuleLocked || isAdmin;
+                console.log(`Rendering module: ${module.title}, status: ${module.status}, isLocked: ${isModuleLocked}, canAccess: ${canAccess}, isAdmin: ${isAdmin}`);
                 return (
                   <SidebarMenuItem key={module.title}>
                     <SidebarMenuButton asChild>
                        <NavLink 
-                         to={isModuleLocked ? "#" : module.url}
+                         to={canAccess ? module.url : "#"}
                          onClick={(e) => {
-                           if (isModuleLocked) {
+                           if (!canAccess) {
                              e.preventDefault();
                              toast({
                                title: "🔒 Module Locked",
@@ -192,8 +201,8 @@ export function AppSidebar() {
                            }
                          }}
                          className={({ isActive }) => `${getNavCls(isActive)} ${
-                           isModuleLocked ? "opacity-60 cursor-not-allowed" : ""
-                         } group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
+                           isModuleLocked ? "opacity-60" : ""
+                         } ${!canAccess ? "cursor-not-allowed" : ""} group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
                        >
                         <div className="relative z-10 flex items-start w-full py-1">
                           <div className={`
@@ -203,9 +212,9 @@ export function AppSidebar() {
                               module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-white" :
                               "bg-muted/50 text-muted-foreground"}
                           `}>
-                            {module.status === "completed" ? "✓" : 
-                             module.status === "in-progress" ? "●" : 
-                             isModuleLocked ? "🔒" : index + 1}
+                             {module.status === "completed" ? "✓" : 
+                              module.status === "in-progress" ? "●" : 
+                              isModuleLocked ? "🔒" : index + 1}
                           </div>
                         
                         {!collapsed && (
