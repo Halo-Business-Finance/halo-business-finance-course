@@ -2215,9 +2215,81 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_mfa_overview: {
+        Row: {
+          backup_codes: string[] | null
+          certificate_fingerprint: string | null
+          compliance_level: string | null
+          created_at: string | null
+          device_bound: boolean | null
+          enrolled_at: string | null
+          expires_at: string | null
+          failure_count: number | null
+          hardware_key_id: string | null
+          id: string | null
+          is_enabled: boolean | null
+          is_primary: boolean | null
+          last_used_at: string | null
+          metadata: Json | null
+          method_name: string | null
+          method_type: string | null
+          secret_key: string | null
+          trust_level: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          backup_codes?: never
+          certificate_fingerprint?: string | null
+          compliance_level?: string | null
+          created_at?: string | null
+          device_bound?: boolean | null
+          enrolled_at?: string | null
+          expires_at?: string | null
+          failure_count?: number | null
+          hardware_key_id?: string | null
+          id?: string | null
+          is_enabled?: boolean | null
+          is_primary?: boolean | null
+          last_used_at?: string | null
+          metadata?: Json | null
+          method_name?: string | null
+          method_type?: string | null
+          secret_key?: never
+          trust_level?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          backup_codes?: never
+          certificate_fingerprint?: string | null
+          compliance_level?: string | null
+          created_at?: string | null
+          device_bound?: boolean | null
+          enrolled_at?: string | null
+          expires_at?: string | null
+          failure_count?: number | null
+          hardware_key_id?: string | null
+          id?: string | null
+          is_enabled?: boolean | null
+          is_primary?: boolean | null
+          last_used_at?: string | null
+          metadata?: Json | null
+          method_name?: string | null
+          method_type?: string | null
+          secret_key?: never
+          trust_level?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      admin_emergency_mfa_reset: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
       analyze_security_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2666,6 +2738,10 @@ export type Database = {
       validate_mfa_access: {
         Args: { target_user_id: string }
         Returns: boolean
+      }
+      validate_mfa_access_attempt: {
+        Args: { p_method_type: string; p_user_id: string }
+        Returns: Json
       }
       validate_mfa_token: {
         Args: {
