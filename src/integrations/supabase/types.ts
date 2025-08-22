@@ -2328,12 +2328,19 @@ export type Database = {
         Returns: Json
       }
       assess_device_security_risk: {
-        Args: {
-          p_device_fingerprint: string
-          p_geolocation?: Json
-          p_ip_address: unknown
-          p_user_agent: string
-        }
+        Args:
+          | {
+              p_device_fingerprint: string
+              p_geolocation: Json
+              p_ip_address: string
+              p_user_agent: string
+            }
+          | {
+              p_device_fingerprint: string
+              p_geolocation?: Json
+              p_ip_address: unknown
+              p_user_agent: string
+            }
         Returns: Json
       }
       assign_user_role: {
@@ -2473,7 +2480,7 @@ export type Database = {
         Returns: undefined
       }
       evaluate_zero_trust_access: {
-        Args: { p_context?: Json; p_resource_path: string; p_user_id: string }
+        Args: { p_context: Json; p_resource_path: string; p_user_id: string }
         Returns: Json
       }
       get_admin_mfa_overview: {
