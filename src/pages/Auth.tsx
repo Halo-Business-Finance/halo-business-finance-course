@@ -352,7 +352,7 @@ const AuthPage = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold">Business Finance Mastery</h1>
-          <p className="text-muted-foreground">Finance Training Platform</p>
+          <p className="text-muted-foreground">Please sign in or create an account to continue</p>
         </div>
         
         {rateLimitWarning && (
