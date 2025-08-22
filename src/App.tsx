@@ -104,19 +104,6 @@ const HeaderContent = () => {
           {formatDateTime(currentTime)}
         </p>
         
-        <NavLink 
-          to="/account" 
-          className={({ isActive }) => 
-            `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
-              isActive 
-                ? "bg-black/10 text-black font-medium" 
-                : "text-black hover:bg-black/10 hover:text-black"
-            }`
-          }
-        >
-          <User className="h-4 w-4" />
-          <span className="text-sm">Account</span>
-        </NavLink>
       </div>
     </header>
   );

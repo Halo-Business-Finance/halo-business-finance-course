@@ -7,6 +7,7 @@ import {
   Award,
   Target,
   FileText,
+  User,
   LogIn,
   LogOut
  } from "lucide-react";
@@ -31,6 +32,7 @@ const mainNavItems = [
   { title: "My Progress", url: "/progress", icon: BarChart3 },
   { title: "Video Library", url: "/videos", icon: BookOpen },
   { title: "Learning Resources", url: "/resources", icon: FileText },
+  { title: "Account", url: "/account", icon: User },
 ];
 
 
