@@ -208,76 +208,36 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        // Fallback to manual join since RPC may not be available yet
-        const { data: profiles, error: profilesError } = await supabase
-          .from('profiles')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        console.log('Profiles loaded:', profiles, 'Error:', profilesError);
-        if (profilesError) throw profilesError;
-
-        // Manually fetch roles for each user
-        const profilesWithManualRoles = await Promise.all(
-          (profiles || []).map(async (profile) => {
-            const { data: roles } = await supabase
-              .from('user_roles')
-              .select('*')
-              .eq('user_id', profile.user_id)
-              .eq('is_active', true);
-            
-            return {
-              ...profile,
-              user_roles: roles || []
-            };
-          })
-        );
-
-        userRolesData = profilesWithManualRoles.flatMap(profile => {
-          if (profile.user_roles && profile.user_roles.length > 0) {
-            return profile.user_roles.map(role => ({
-              id: role.id,
-              user_id: profile.user_id,
-              role: role.role,
-              is_active: role.is_active,
-              created_at: role.created_at,
-              updated_at: role.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }));
-          } else {
-            return [{
-              id: `no-role-${profile.user_id}`,
-              user_id: profile.user_id,
-              role: 'No Role Assigned',
-              is_active: false,
-              created_at: profile.created_at,
-              updated_at: profile.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }];
+        console.log('Loading user roles data using secure RPC...');
+        
+        // Use secure RPC function to get all user data
+        const { data: userRolesRpcData, error: userRolesRpcError } = await supabase.rpc('get_admin_all_users');
+        
+        console.log('RPC response:', userRolesRpcData, 'Error:', userRolesRpcError);
+        
+        if (userRolesRpcError) {
+          console.error('RPC Error:', userRolesRpcError);
+          throw userRolesRpcError;
+        }
+        
+        // Transform the RPC data to match expected structure
+        userRolesData = (userRolesRpcData || []).map((userData: any) => ({
+          id: userData.role_created_at ? `role-${userData.user_id}` : `no-role-${userData.user_id}`,
+          user_id: userData.user_id,
+          role: userData.role,
+          is_active: userData.role_is_active,
+          created_at: userData.role_created_at || userData.profile_created_at,
+          updated_at: userData.role_created_at || userData.profile_created_at,
+          profiles: {
+            name: userData.profile_name,
+            email: userData.profile_email,
+            user_id: userData.user_id
           }
-        });
+        }));
 
         // Secure logging - user roles data loaded
       } catch (directError) {
-        // Secure logging - failed to load users with roles
+        console.error('RPC error, falling back to direct queries:', directError);
         
         // Fallback: Load profiles and roles separately
         const [profilesResponse, rolesResponse] = await Promise.all([

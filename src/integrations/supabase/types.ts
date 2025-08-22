@@ -2483,6 +2483,18 @@ export type Database = {
         Args: { p_context: Json; p_resource_path: string; p_user_id: string }
         Returns: Json
       }
+      get_admin_all_users: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          profile_created_at: string
+          profile_email: string
+          profile_name: string
+          role: string
+          role_created_at: string
+          role_is_active: boolean
+          user_id: string
+        }[]
+      }
       get_admin_mfa_overview: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -2546,6 +2558,19 @@ export type Database = {
           terminated_at: string
           termination_reason: string
           user_agent: string
+          user_id: string
+        }[]
+      }
+      get_admin_user_roles_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          id: string
+          is_active: boolean
+          profile_email: string
+          profile_name: string
+          role: string
+          updated_at: string
           user_id: string
         }[]
       }
