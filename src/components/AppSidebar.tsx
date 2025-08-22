@@ -170,7 +170,6 @@ export function AppSidebar() {
                 <span className="text-sm font-semibold text-foreground/90 tracking-wide">
                   Course Modules
                 </span>
-                <div className="h-0.5 bg-gradient-to-r from-primary/60 to-primary/20 mt-2 rounded-full"></div>
               </div>
             )}
           </SidebarGroupLabel>
