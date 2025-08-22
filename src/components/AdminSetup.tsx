@@ -13,7 +13,7 @@ export function AdminSetup() {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase.rpc('make_current_user_admin');
+      const { data, error } = await supabase.rpc('setup_initial_admin');
       
       if (error) throw error;
       

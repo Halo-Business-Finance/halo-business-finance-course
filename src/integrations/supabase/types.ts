@@ -2845,6 +2845,10 @@ export type Database = {
         }
         Returns: string
       }
+      setup_initial_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
         Returns: Json
