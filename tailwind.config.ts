@@ -90,7 +90,8 @@ export default {
 				},
 				'halo-navy': 'hsl(var(--halo-navy))',
 				'halo-orange': 'hsl(var(--halo-orange))',
-				'halo-light-blue': 'hsl(var(--halo-light-blue))'
+				'halo-light-blue': 'hsl(var(--halo-light-blue))',
+				'duke-blue': 'hsl(var(--duke-blue))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -100,7 +101,8 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-success': 'var(--gradient-success)',
-				'gradient-hero': 'var(--gradient-hero)'
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-duke': 'var(--gradient-duke)'
 			},
 			boxShadow: {
 				'card': 'var(--shadow-card)',

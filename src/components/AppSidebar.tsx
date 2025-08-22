@@ -132,11 +132,11 @@ export function AppSidebar() {
           <SidebarGroupLabel>
             <div className="flex items-center gap-2">
               <div className="relative">
-                <Target className="h-5 w-5 text-black" />
-                <div className="absolute -inset-1 bg-gradient-primary rounded-full opacity-20 animate-pulse"></div>
+                <Target className="h-5 w-5 text-duke-blue" />
+                <div className="absolute -inset-1 bg-gradient-duke rounded-full opacity-20 animate-pulse"></div>
               </div>
               {!collapsed && (
-                <span className="bg-gradient-primary bg-clip-text text-transparent font-semibold text-base">
+                <span className="bg-gradient-duke bg-clip-text text-transparent font-semibold text-base">
                   Course Modules
                 </span>
               )}
