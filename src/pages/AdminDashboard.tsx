@@ -245,24 +245,31 @@ const AdminDashboard = () => {
         setUserRoles([]);
       }
 
-      // Fetch other data in parallel
-      const [
-        { data: eventsData, error: eventsError },
-        { data: instructorsData, error: instructorsError }
-      ] = await Promise.all([
-        supabase
+      // Fetch instructors data
+      const { data: instructorsData, error: instructorsError } = await supabase
+        .from('instructors')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (instructorsError) throw instructorsError;
+
+      // Try to fetch security events, but don't fail if access denied
+      let eventsData = [];
+      try {
+        const { data: securityEventsData, error: eventsError } = await supabase
           .from('security_events')
           .select('*')
           .order('created_at', { ascending: false })
-          .limit(10),
-        supabase
-          .from('instructors')
-          .select('*')
-          .order('display_order', { ascending: true })
-      ]);
-
-      if (eventsError) throw eventsError;
-      if (instructorsError) throw instructorsError;
+          .limit(10);
+        
+        if (eventsError && eventsError.code !== '42501') {
+          console.warn('Security events query failed:', eventsError);
+        } else if (!eventsError) {
+          eventsData = securityEventsData || [];
+        }
+      } catch (securityError) {
+        console.warn('Could not load security events (insufficient permissions):', securityError);
+      }
 
       setUserRoles(userRolesData);
       setSecurityEvents(eventsData || []);
