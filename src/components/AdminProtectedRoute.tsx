@@ -89,12 +89,12 @@ export const AdminProtectedRoute = ({
 
   // Redirect if not authenticated
   if (!user) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   // Redirect if no admin permissions
   if (hasPermission === false) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   // Render protected content

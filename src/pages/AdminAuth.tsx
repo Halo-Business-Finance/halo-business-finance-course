@@ -335,10 +335,18 @@ const AdminAuthPage = () => {
           </CardContent>
         </Card>
 
-        <div className="text-center">
-          <Button variant="link" onClick={() => navigate('/')}>
-            ← Back to Main Site
+        <div className="text-center space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Need to set up initial admin access?
+          </p>
+          <Button variant="link" onClick={() => navigate('/auth')} className="text-sm">
+            Create Account & Set Up Admin Access
           </Button>
+          <div className="pt-2">
+            <Button variant="link" onClick={() => navigate('/')}>
+              ← Back to Main Site
+            </Button>
+          </div>
         </div>
       </div>
     </div>
