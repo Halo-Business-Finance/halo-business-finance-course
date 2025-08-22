@@ -50,9 +50,9 @@ const baseCourseModules = [
 
 // Progressive learning logic - only one module available at a time
 const getProgressiveModules = () => {
-  // For now, simulating user progress - replace with actual user progress data
-  const completedModules = ["Finance Foundations", "Capital Markets"]; // Example: user completed these
-  const currentModule = "SBA Loan Programs"; // Example: current module in progress
+  // For now, simulating user progress - replace with actual user progress data  
+  const completedModules = ["Finance Foundations"]; // Only first module completed
+  const currentModule = "Capital Markets"; // Currently working on this module
   
   return baseCourseModules.map((module, index) => {
     if (completedModules.includes(module.title)) {
@@ -60,23 +60,8 @@ const getProgressiveModules = () => {
     } else if (module.title === currentModule) {
       return { ...module, status: "in-progress" };
     } else {
-      // Find the highest completed module index
-      const completedIndices = completedModules.map(completed => 
-        baseCourseModules.findIndex(m => m.title === completed)
-      );
-      const highestCompletedIndex = completedIndices.length > 0 ? Math.max(...completedIndices) : -1;
-      
-      // The next available module should be right after the highest completed one
-      // or right after the current in-progress one
-      const currentModuleIndex = baseCourseModules.findIndex(m => m.title === currentModule);
-      const nextAvailableIndex = currentModuleIndex !== -1 ? currentModuleIndex + 1 : highestCompletedIndex + 1;
-      
-      // Only the next module in sequence should be available
-      if (index === nextAvailableIndex && !completedModules.includes(currentModule)) {
-        return { ...module, status: "locked" }; // Still locked until current is completed
-      } else {
-        return { ...module, status: "locked" };
-      }
+      // All other modules are locked - no exceptions
+      return { ...module, status: "locked" };
     }
   });
 };
