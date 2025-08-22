@@ -38,6 +38,7 @@ import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
+import { AdminSetup } from "@/components/AdminSetup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserRole {
@@ -89,7 +90,7 @@ interface Instructor {
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const { userRole } = useAdminRole();
+  const { userRole, isAdmin, isLoading: roleLoading } = useAdminRole();
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -111,6 +112,7 @@ const AdminDashboard = () => {
   });
   const [editingInstructor, setEditingInstructor] = useState<Instructor | null>(null);
   const [showInstructorForm, setShowInstructorForm] = useState(false);
+  const [hasAccessError, setHasAccessError] = useState(false);
 
   useEffect(() => {
     loadDashboardData();
@@ -386,11 +388,17 @@ const AdminDashboard = () => {
       });
     } catch (error: any) {
       console.error('Error loading dashboard data:', error);
-      toast({
-        title: "Error",
-        description: error?.message || "Failed to load dashboard data. Please try again.",
-        variant: "destructive"
-      });
+      
+      // Check if it's a permission error
+      if (error?.code === '42501' || error?.message?.includes('permission denied')) {
+        setHasAccessError(true);
+      } else {
+        toast({
+          title: "Error",
+          description: error?.message || "Failed to load dashboard data. Please try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -703,6 +711,34 @@ const AdminDashboard = () => {
         </div>
       </div>
     );
+  }
+
+  // Show admin setup if there's an access error or no admin role
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Shield className="h-16 w-16 mx-auto text-gray-400 mb-4" />
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Authentication Required</h1>
+          <p className="text-gray-600">Please log in to access the admin dashboard.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (roleLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Checking permissions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasAccessError || (!isAdmin && userRole !== 'admin' && userRole !== 'super_admin')) {
+    return <AdminSetup />;
   }
 
   return (

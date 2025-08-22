@@ -2760,6 +2760,10 @@ export type Database = {
         }
         Returns: string
       }
+      make_current_user_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       mask_profile_data_advanced: {
         Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
         Returns: Json
