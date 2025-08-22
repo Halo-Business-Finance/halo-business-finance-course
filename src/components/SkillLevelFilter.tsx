@@ -24,11 +24,11 @@ export function SkillLevelFilter({ selectedLevel, onLevelChange, counts }: Skill
   const getSkillLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200';
+        return 'bg-accent/20 text-accent-foreground border-accent/30 hover:bg-accent/30';
       case 'intermediate':
-        return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
+        return 'bg-secondary/50 text-secondary-foreground border-secondary hover:bg-secondary/70';
       case 'expert':
-        return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200';
+        return 'bg-destructive/20 text-destructive-foreground border-destructive/30 hover:bg-destructive/30';
       default:
         return 'bg-primary text-primary-foreground hover:bg-primary/90';
     }
@@ -59,7 +59,7 @@ export function SkillLevelFilter({ selectedLevel, onLevelChange, counts }: Skill
             {counts && counts[level.id as keyof typeof counts] !== undefined && (
               <Badge 
                 variant="secondary" 
-                className="ml-2 text-xs bg-white/20 text-inherit border-0"
+                className="ml-2 text-xs bg-background/20 text-inherit border-0"
               >
                 {counts[level.id as keyof typeof counts]}
               </Badge>

@@ -1104,7 +1104,7 @@ const AdminDashboard = () => {
                       <TableRow key={instructor.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-white font-bold text-sm`}>
+                            <div className={`w-10 h-10 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm`}>
                               {instructor.avatar_initials}
                             </div>
                             <div>

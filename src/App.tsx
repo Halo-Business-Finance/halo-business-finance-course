@@ -76,14 +76,14 @@ const HeaderContent = () => {
 
   return (
     <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
-      <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />
+      <SidebarTrigger className="text-foreground hover:bg-muted hover:text-foreground" />
       
       <div className="flex items-center gap-2">
         <Button 
           variant="ghost" 
           size="sm" 
           onClick={goBack}
-          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+          className="h-8 w-8 p-0 text-foreground hover:bg-muted hover:text-foreground border border-border"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -91,20 +91,20 @@ const HeaderContent = () => {
           variant="ghost" 
           size="sm" 
           onClick={goForward}
-          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+          className="h-8 w-8 p-0 text-foreground hover:bg-muted hover:text-foreground border border-border"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
       
       <div className="flex-1 flex items-center justify-center">
-        <h1 className="text-lg font-medium text-black">
+        <h1 className="text-lg font-medium text-foreground">
           Welcome back, {getFirstName()}!
         </h1>
       </div>
       
       <div className="flex items-center mr-4 gap-4">
-        <p className="text-sm text-black">
+        <p className="text-sm text-muted-foreground">
           {formatDateTime(currentTime)}
         </p>
         <NavLink 
@@ -112,8 +112,8 @@ const HeaderContent = () => {
           className={({ isActive }) => 
             `flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
               isActive 
-                ? "bg-black/10 text-black font-medium" 
-                : "text-black hover:bg-black/10 hover:text-black"
+                ? "bg-muted text-foreground font-medium" 
+                : "text-foreground hover:bg-muted hover:text-foreground"
             }`
           }
         >

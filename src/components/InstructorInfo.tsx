@@ -87,7 +87,7 @@ const InstructorInfo = () => {
       <CardContent className="space-y-6">
         {instructors.map((instructor) => (
           <div key={instructor.id} className="flex items-start gap-4">
-            <div className={`w-16 h-16 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+            <div className={`w-16 h-16 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-primary-foreground font-bold text-lg`}>
               {instructor.avatar_initials}
             </div>
             <div className="flex-1">

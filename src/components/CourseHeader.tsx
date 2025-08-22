@@ -22,41 +22,41 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
               <Badge variant="success" className="text-sm font-medium">
                 Halo Business Finance Certification Program
               </Badge>
-              <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
+              <h1 className="text-2xl lg:text-3xl font-bold text-primary-foreground leading-tight">
                 Business Finance Mastery
               </h1>
-              <p className="text-lg text-white/90 leading-relaxed">
+              <p className="text-lg text-primary-foreground/90 leading-relaxed">
                 Master the fundamentals of business finance with our comprehensive 
                 training program designed specifically for Halo Business Finance interns.
               </p>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-primary-foreground">
               <div className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-white/80" />
+                <BookOpen className="h-5 w-5 text-primary-foreground/80" />
                 <span className="text-sm">{totalModules} Modules</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-white/80" />
+                <Clock className="h-5 w-5 text-primary-foreground/80" />
                 <span className="text-sm">4-6 Hours</span>
               </div>
               <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-white/80" />
+                <Users className="h-5 w-5 text-primary-foreground/80" />
                 <span className="text-sm">Beginner</span>
               </div>
               <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-white/80" />
+                <Award className="h-5 w-5 text-primary-foreground/80" />
                 <span className="text-sm">Certificate</span>
               </div>
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between text-white">
+              <div className="flex justify-between text-primary-foreground">
                 <span className="text-sm font-medium">Course Progress</span>
                 <span className="text-sm">{completedModules}/{totalModules} modules</span>
               </div>
-              <Progress value={progress} className="h-3 bg-white/30" />
-              <p className="text-sm text-white/80">
+              <Progress value={progress} className="h-3 bg-primary-foreground/30" />
+              <p className="text-sm text-primary-foreground/80">
                 {progress}% complete - Keep up the great work!
               </p>
             </div>

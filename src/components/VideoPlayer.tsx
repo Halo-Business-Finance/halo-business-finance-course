@@ -155,7 +155,7 @@ export const VideoPlayer = ({
         )}
       </CardHeader>
       <CardContent className="p-0">
-        <div className="relative aspect-video bg-black">
+        <div className="relative aspect-video bg-background">
           <video
             ref={videoRef}
             src={videoUrl}
@@ -167,7 +167,7 @@ export const VideoPlayer = ({
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
             {/* Progress Bar */}
             <div className="mb-3">
-              <div className="w-full bg-white/20 rounded-full h-1">
+              <div className="w-full bg-background/20 rounded-full h-1">
                 <div 
                   className="bg-primary h-1 rounded-full transition-all duration-300"
                   style={{ width: `${progressPercentage}%` }}
@@ -176,13 +176,13 @@ export const VideoPlayer = ({
             </div>
             
             {/* Controls */}
-            <div className="flex items-center justify-between text-white">
+            <div className="flex items-center justify-between text-foreground">
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => skipTime(-10)}
-                  className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                  className="text-primary-foreground hover:bg-background/20 h-8 w-8 p-0"
                 >
                   <SkipBack className="h-4 w-4" />
                 </Button>
@@ -191,7 +191,7 @@ export const VideoPlayer = ({
                   variant="ghost"
                   size="sm"
                   onClick={togglePlay}
-                  className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                  className="text-primary-foreground hover:bg-background/20 h-8 w-8 p-0"
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 </Button>
@@ -200,7 +200,7 @@ export const VideoPlayer = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => skipTime(10)}
-                  className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                  className="text-primary-foreground hover:bg-background/20 h-8 w-8 p-0"
                 >
                   <SkipForward className="h-4 w-4" />
                 </Button>
@@ -209,7 +209,7 @@ export const VideoPlayer = ({
                   variant="ghost"
                   size="sm"
                   onClick={toggleMute}
-                  className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                  className="text-primary-foreground hover:bg-background/20 h-8 w-8 p-0"
                 >
                   {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                 </Button>
@@ -223,7 +223,7 @@ export const VideoPlayer = ({
                 variant="ghost"
                 size="sm"
                 onClick={toggleFullscreen}
-                className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                className="text-primary-foreground hover:bg-background/20 h-8 w-8 p-0"
               >
                 <Maximize className="h-4 w-4" />
               </Button>
