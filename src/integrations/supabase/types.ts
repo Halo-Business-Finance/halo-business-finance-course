@@ -2557,6 +2557,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_profile_encryption_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
         Returns: {
