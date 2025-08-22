@@ -153,11 +153,11 @@ const Dashboard = () => {
       </div>
 
         <div className="container mx-auto px-4 space-y-12">
-          {/* Learning Objectives */}
-          <LearningObjectives objectives={learningObjectives} />
-
           {/* Instructor Information */}
           <InstructorInfo />
+
+          {/* Learning Objectives */}
+          <LearningObjectives objectives={learningObjectives} />
 
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
