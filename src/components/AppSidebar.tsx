@@ -58,26 +58,19 @@ const getProgressiveModules = () => {
     currentModule: "Finance Foundations" // Only the first module is available
   };
   
-  const modules = baseCourseModules.map((module, index) => {
+  return baseCourseModules.map((module, index) => {
     const isCompleted = userProgress.completedModules.includes(module.title);
     const isCurrent = module.title === userProgress.currentModule;
     
-    let status;
     if (isCompleted) {
-      status = "completed";
+      return { ...module, status: "completed" };
     } else if (isCurrent) {
-      status = "available"; // Available to start
+      return { ...module, status: "available" }; // Available to start
     } else {
       // All other modules are locked until previous ones are completed
-      status = "locked";
+      return { ...module, status: "locked" };
     }
-    
-    console.log(`Module: ${module.title}, Status: ${status}, Index: ${index}`);
-    return { ...module, status };
   });
-  
-  console.log("Generated modules:", modules);
-  return modules;
 };
 
 const courseModules = getProgressiveModules();
@@ -183,7 +176,6 @@ export function AppSidebar() {
               {courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked";
                 const canAccess = !isModuleLocked || isAdmin;
-                console.log(`Rendering module: ${module.title}, status: ${module.status}, isLocked: ${isModuleLocked}, canAccess: ${canAccess}, isAdmin: ${isAdmin}`);
                 return (
                   <SidebarMenuItem key={module.title}>
                     <SidebarMenuButton asChild>
