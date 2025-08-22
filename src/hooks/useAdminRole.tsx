@@ -18,14 +18,20 @@ export const useAdminRole = () => {
       }
 
       try {
-        // Use secure RPC function instead of direct table access
-        const { data: role, error: roleError } = await supabase.rpc('get_user_role');
+        // Get the user's role from the database in one call
+        const { data: roleData, error: roleError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('is_active', true)
+          .single();
 
-        if (roleError) {
+        if (roleError && roleError.code !== 'PGRST116') { // PGRST116 is "no rows returned"
           console.error('Error checking role status:', roleError);
           setIsAdmin(false);
           setUserRole(null);
         } else {
+          const role = roleData?.role;
           const hasAdminRole = role === 'admin' || role === 'super_admin';
           
           setIsAdmin(hasAdminRole);

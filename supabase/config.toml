@@ -15,6 +15,3 @@ verify_jwt = false
 
 [functions.security-monitor]
 verify_jwt = true
-
-[functions.security-metrics]
-verify_jwt = true

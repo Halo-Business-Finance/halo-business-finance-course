@@ -1586,10 +1586,6 @@ export type Database = {
         Args: { profile_user_id: string }
         Returns: boolean
       }
-      check_profile_access_rate_limit: {
-        Args: { p_user_id: string }
-        Returns: Json
-      }
       check_rate_limit: {
         Args: {
           p_endpoint: string
@@ -1611,10 +1607,6 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
-      cleanup_old_security_events: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       create_security_alert: {
         Args: {
           p_alert_type: string
@@ -1626,10 +1618,6 @@ export type Database = {
         Returns: string
       }
       detect_potential_data_breach: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_real_time_threats: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -1645,16 +1633,6 @@ export type Database = {
         }
         Returns: Json
       }
-      enhanced_audit_log: {
-        Args: {
-          p_action: string
-          p_compliance_type?: string
-          p_details?: Json
-          p_target_resource?: string
-          p_target_user_id?: string
-        }
-        Returns: undefined
-      }
       get_admin_profile_data: {
         Args: { target_user_id: string }
         Returns: {
@@ -1663,26 +1641,6 @@ export type Database = {
           location: string
           name: string
           phone: string
-          user_id: string
-        }[]
-      }
-      get_admin_session_info: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          created_at: string
-          device_id: string
-          expires_at: string
-          geolocation: Json
-          id: string
-          ip_address: unknown
-          is_active: boolean
-          last_activity_at: string
-          risk_score: number
-          security_level: number
-          session_type: string
-          terminated_at: string
-          termination_reason: string
-          user_agent: string
           user_id: string
         }[]
       }
@@ -1722,32 +1680,9 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_security_metrics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
       get_user_role: {
         Args: { check_user_id?: string }
         Returns: string
-      }
-      get_user_session_info: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          created_at: string
-          device_id: string
-          expires_at: string
-          geolocation: Json
-          id: string
-          ip_address: unknown
-          is_active: boolean
-          last_activity_at: string
-          risk_score: number
-          security_level: number
-          session_type: string
-          terminated_at: string
-          termination_reason: string
-          user_agent: string
-        }[]
       }
       has_any_role: {
         Args: { roles: string[] }
@@ -1755,10 +1690,6 @@ export type Database = {
       }
       is_admin: {
         Args: { check_user_id?: string }
-        Returns: boolean
-      }
-      is_current_user_session: {
-        Args: { session_user_id: string }
         Returns: boolean
       }
       is_current_user_super_admin: {
@@ -1798,28 +1729,11 @@ export type Database = {
         }
         Returns: undefined
       }
-      log_sensitive_data_access_enhanced: {
-        Args: {
-          p_access_type?: string
-          p_additional_context?: Json
-          p_table_name: string
-          p_user_id: string
-        }
-        Returns: undefined
-      }
-      mask_profile_data_advanced: {
-        Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
-        Returns: Json
-      }
       mask_sensitive_profile_data: {
         Args: { profile_data: Json }
         Returns: Json
       }
       monitor_profile_access_patterns: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_role_access_patterns: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -1847,33 +1761,12 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      sanitize_error_response: {
-        Args: { p_error_message: string; p_user_context?: Json }
-        Returns: Json
-      }
       secure_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
       }
       security_health_check: {
         Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      trigger_emergency_security_lockdown: {
-        Args: { p_reason: string; p_target_user_id?: string }
-        Returns: Json
-      }
-      validate_biometric_access: {
-        Args: { target_user_id: string }
-        Returns: boolean
-      }
-      validate_biometric_enrollment: {
-        Args: {
-          p_biometric_type: string
-          p_device_fingerprint: string
-          p_quality_score: number
-          p_user_id: string
-        }
         Returns: Json
       }
       validate_geolocation_access: {
@@ -1884,10 +1777,6 @@ export type Database = {
           p_longitude: number
         }
         Returns: Json
-      }
-      validate_mfa_access: {
-        Args: { target_user_id: string }
-        Returns: boolean
       }
       validate_mfa_token: {
         Args: {

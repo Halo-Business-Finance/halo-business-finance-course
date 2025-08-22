@@ -11,7 +11,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
-import ContentSecurityPolicy from "@/components/ContentSecurityPolicy";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -186,7 +185,6 @@ const AppContent = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <ContentSecurityPolicy />
       <Toaster />
       <Sonner />
       <BrowserRouter>

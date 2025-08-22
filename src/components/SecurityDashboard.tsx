@@ -3,10 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle, Shield, Eye, Clock, RefreshCw, Plus, AlertCircle, BarChart3, XCircle, CheckCircle } from 'lucide-react';
+import { Shield, AlertTriangle, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { SecurityMetricsDashboard } from './SecurityMetricsDashboard';
+import { useToast } from '@/hooks/use-toast';
 
 interface SecurityAlert {
   id: string;
@@ -51,7 +50,7 @@ export const SecurityDashboard: React.FC = () => {
     blocked_ips: []
   });
   const [loading, setLoading] = useState(true);
-  const [showMetrics, setShowMetrics] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     loadSecurityData();
@@ -142,17 +141,7 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      // Secure error handling
-      await supabase.rpc('log_critical_security_event', {
-        event_name: 'alert_resolution_error',
-        severity_level: 'medium',
-        event_details: {
-          alert_id: alertId,
-          error_type: 'alert_update_failure',
-          component: 'SecurityDashboard'
-        }
-      });
-      
+      console.error('Error resolving alert:', error);
       toast({
         title: "Error",
         description: "Failed to resolve security alert",
@@ -176,16 +165,7 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      // Secure error handling
-      await supabase.rpc('log_critical_security_event', {
-        event_name: 'security_analysis_execution_error',
-        severity_level: 'high',
-        event_details: {
-          error_type: 'analysis_trigger_failure',
-          component: 'SecurityDashboard'
-        }
-      });
-      
+      console.error('Error running security analysis:', error);
       toast({
         title: "Error",
         description: "Failed to run security analysis",
@@ -215,16 +195,7 @@ export const SecurityDashboard: React.FC = () => {
       });
       loadSecurityData();
     } catch (error: any) {
-      // Secure error handling  
-      await supabase.rpc('log_critical_security_event', {
-        event_name: 'test_alert_creation_error',
-        severity_level: 'low',
-        event_details: {
-          error_type: 'test_alert_failure',
-          component: 'SecurityDashboard'
-        }
-      });
-      
+      console.error('Error creating test alert:', error);
       toast({
         title: "Error",
         description: "Failed to create test alert",
@@ -287,31 +258,17 @@ export const SecurityDashboard: React.FC = () => {
           <p className="text-muted-foreground">Monitor security events and threats</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setShowMetrics(!showMetrics)} variant={showMetrics ? "default" : "outline"}>
-            <BarChart3 className="w-4 h-4 mr-2" />
-            {showMetrics ? 'Hide' : 'Show'} Metrics
-          </Button>
           <Button onClick={runSecurityAnalysis} variant="outline">
-            <Shield className="w-4 h-4 mr-2" />
             Run Analysis
           </Button>
           <Button onClick={createTestAlert} variant="outline">
-            <Plus className="w-4 h-4 mr-2" />
             Create Test Alert
           </Button>
           <Button onClick={loadSecurityData}>
-            <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
         </div>
       </div>
-
-      {/* Security Metrics Dashboard */}
-      {showMetrics && (
-        <div className="mb-6">
-          <SecurityMetricsDashboard />
-        </div>
-      )}
 
       {/* Security Alerts */}
       <Card>
@@ -338,16 +295,16 @@ export const SecurityDashboard: React.FC = () => {
                   className="flex items-start justify-between p-4 border rounded-lg"
                 >
                   <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Shield className="w-4 h-4" />
-                    <Badge variant={getSeverityBadgeVariant(alert.severity)}>
-                      {alert.severity.toUpperCase()}
-                    </Badge>
-                    <Badge variant="outline">{alert.alert_type}</Badge>
-                    {alert.is_resolved && (
-                      <Badge variant="default">Resolved</Badge>
-                    )}
-                  </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      {getSeverityIcon(alert.severity)}
+                      <Badge variant={getSeverityBadgeVariant(alert.severity)}>
+                        {alert.severity.toUpperCase()}
+                      </Badge>
+                      <Badge variant="outline">{alert.alert_type}</Badge>
+                      {alert.is_resolved && (
+                        <Badge variant="default">Resolved</Badge>
+                      )}
+                    </div>
                     <h4 className="font-semibold">{alert.title}</h4>
                     <p className="text-sm text-muted-foreground mb-2">
                       {alert.description}

@@ -161,7 +161,7 @@ export function ModuleEditor() {
       duration: module.duration || "",
       lessons_count: module.lessons_count,
       order_index: module.order_index,
-      prerequisites: module.prerequisites ? module.prerequisites.join(", ") : "",
+      prerequisites: module.prerequisites.join(", "),
       is_active: module.is_active,
     });
     setEditingModule(module);
@@ -499,7 +499,7 @@ export function ModuleEditor() {
                       <div className="text-sm">{module.lessons_count}</div>
                     </TableCell>
                     <TableCell>
-                      {module.prerequisites && module.prerequisites.length > 0 ? (
+                      {module.prerequisites.length > 0 ? (
                         <div className="flex flex-wrap gap-1">
                           {module.prerequisites.slice(0, 2).map(prereq => (
                             <Badge key={prereq} variant="outline" className="text-xs">
