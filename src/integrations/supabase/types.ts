@@ -2640,6 +2640,23 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      get_trainee_progress_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          completed_courses: number
+          course_progress_details: Json
+          in_progress_courses: number
+          join_date: string
+          last_activity: string
+          overall_progress_percentage: number
+          total_courses: number
+          trainee_company: string
+          trainee_email: string
+          trainee_name: string
+          trainee_phone: string
+          user_id: string
+        }[]
+      }
       get_user_encrypted_messages: {
         Args: Record<PropertyKey, never>
         Returns: {

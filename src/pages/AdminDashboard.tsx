@@ -22,7 +22,8 @@ import {
   Video,
   FileText,
   BookOpen,
-  Wrench
+  Wrench,
+  TrendingUp
 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
@@ -38,6 +39,7 @@ import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
+import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -750,6 +752,10 @@ const AdminDashboard = () => {
       <Tabs defaultValue="users" className="space-y-4">
         <TabsList>
           <TabsTrigger value="users">User Management</TabsTrigger>
+          <TabsTrigger value="trainee-progress">
+            <TrendingUp className="h-4 w-4 mr-2" />
+            Trainee Progress
+          </TabsTrigger>
           <TabsTrigger value="content">Content Management</TabsTrigger>
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
@@ -1018,6 +1024,10 @@ const AdminDashboard = () => {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="trainee-progress" className="space-y-4">
+          <TraineeProgressView />
         </TabsContent>
 
         <TabsContent value="instructors" className="space-y-4">
