@@ -208,10 +208,10 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        console.log('Loading user roles data using secure RPC...');
+        console.log('Loading user roles data using get_profiles_with_roles...');
         
         // Use secure RPC function to get all user data
-        const { data: userRolesRpcData, error: userRolesRpcError } = await supabase.rpc('get_admin_all_users');
+        const { data: userRolesRpcData, error: userRolesRpcError } = await supabase.rpc('get_profiles_with_roles');
         
         console.log('RPC response:', userRolesRpcData, 'Error:', userRolesRpcError);
         
@@ -222,15 +222,20 @@ const AdminDashboard = () => {
         
         // Transform the RPC data to match expected structure
         userRolesData = (userRolesRpcData || []).map((userData: any) => ({
-          id: userData.role_created_at ? `role-${userData.user_id}` : `no-role-${userData.user_id}`,
+          id: userData.role_id ? userData.role_id : `no-role-${userData.user_id}`,
           user_id: userData.user_id,
-          role: userData.role,
-          is_active: userData.role_is_active,
+          role: userData.role || 'No Role Assigned',
+          is_active: userData.role_is_active ?? false,
           created_at: userData.role_created_at || userData.profile_created_at,
-          updated_at: userData.role_created_at || userData.profile_created_at,
+          updated_at: userData.role_updated_at || userData.profile_updated_at,
           profiles: {
             name: userData.profile_name,
             email: userData.profile_email,
+            phone: userData.profile_phone,
+            title: userData.profile_title,
+            company: userData.profile_company,
+            city: userData.profile_city,
+            state: userData.profile_state,
             user_id: userData.user_id
           }
         }));
