@@ -97,7 +97,7 @@ export function ChatBot() {
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0">
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
-          <div className="space-y-4 pb-4">
+          <div className="space-y-2 pb-2">
             {messages.map((message, index) => (
               <div
                 key={index}
