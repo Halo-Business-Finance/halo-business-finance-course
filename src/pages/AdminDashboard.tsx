@@ -39,6 +39,8 @@ import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
+import { EncryptionManager } from "@/components/EncryptionManager";
+import { EncryptedMessaging } from "@/components/EncryptedMessaging";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserRole {
@@ -781,6 +783,8 @@ const AdminDashboard = () => {
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="security">Security Events</TabsTrigger>
           <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
+          <TabsTrigger value="encryption">🔒 Encryption</TabsTrigger>
+          <TabsTrigger value="messaging">💬 Secure Messages</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
 
@@ -803,6 +807,10 @@ const AdminDashboard = () => {
                 <FileText className="h-4 w-4 mr-2" />
                 Resources
               </TabsTrigger>
+              <TabsTrigger value="encryption">
+                <Lock className="h-4 w-4 mr-2" />
+                Encryption
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="modules">
@@ -819,6 +827,10 @@ const AdminDashboard = () => {
 
             <TabsContent value="resources">
               <ResourceManager />
+            </TabsContent>
+
+            <TabsContent value="encryption">
+              <EncryptionManager />
             </TabsContent>
           </Tabs>
         </TabsContent>
@@ -1238,6 +1250,14 @@ const AdminDashboard = () => {
           </div>
         </TabsContent>
 
+        <TabsContent value="encryption" className="space-y-4">
+          <EncryptionManager />
+        </TabsContent>
+
+        <TabsContent value="messaging" className="space-y-4">
+          <EncryptedMessaging />
+        </TabsContent>
+
         <TabsContent value="settings" className="space-y-4">
           <Card>
             <CardHeader>
@@ -1257,7 +1277,7 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking User Management button');
+                        // Secure logging - User Management button clicked
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank');
                         if (!opened) {
                           toast({
@@ -1337,7 +1357,7 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking Database Tables button');
+                        // Secure logging - Database Tables button clicked
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank');
                         if (!opened) {
                           toast({
@@ -1355,7 +1375,7 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking Project Settings button');
+                        // Secure logging - Project Settings button clicked
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank');
                         if (!opened) {
                           toast({

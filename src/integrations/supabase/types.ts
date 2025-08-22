@@ -519,6 +519,84 @@ export type Database = {
           },
         ]
       }
+      encrypted_course_content: {
+        Row: {
+          access_level: string
+          content_hash: string
+          content_type: string
+          course_id: string
+          created_at: string
+          created_by: string | null
+          encrypted_content: string
+          encryption_algorithm: string
+          id: string
+          module_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_level?: string
+          content_hash: string
+          content_type: string
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          encrypted_content: string
+          encryption_algorithm?: string
+          id?: string
+          module_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_level?: string
+          content_hash?: string
+          content_type?: string
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          encrypted_content?: string
+          encryption_algorithm?: string
+          id?: string
+          module_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      encrypted_messages: {
+        Row: {
+          created_at: string
+          encrypted_body: string
+          encrypted_subject: string
+          expires_at: string | null
+          id: string
+          is_read: boolean | null
+          message_hash: string
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string
+          encrypted_body: string
+          encrypted_subject: string
+          expires_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_hash: string
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          created_at?: string
+          encrypted_body?: string
+          encrypted_subject?: string
+          expires_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_hash?: string
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
       geolocation_rules: {
         Row: {
           country_codes: string[] | null
@@ -775,6 +853,10 @@ export type Database = {
           date_format: string | null
           email: string | null
           email_notifications: boolean | null
+          encrypted_email: string | null
+          encrypted_name: string | null
+          encrypted_phone: string | null
+          encryption_status: string | null
           font_size: string | null
           id: string
           join_date: string
@@ -808,6 +890,10 @@ export type Database = {
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
+          encrypted_email?: string | null
+          encrypted_name?: string | null
+          encrypted_phone?: string | null
+          encryption_status?: string | null
           font_size?: string | null
           id?: string
           join_date?: string
@@ -841,6 +927,10 @@ export type Database = {
           date_format?: string | null
           email?: string | null
           email_notifications?: boolean | null
+          encrypted_email?: string | null
+          encrypted_name?: string | null
+          encrypted_phone?: string | null
+          encryption_status?: string | null
           font_size?: string | null
           id?: string
           join_date?: string
@@ -1636,6 +1726,10 @@ export type Database = {
         }
         Returns: string
       }
+      decrypt_sensitive_data: {
+        Args: { context?: string; encrypted_data: string }
+        Returns: string
+      }
       detect_potential_data_breach: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1655,6 +1749,19 @@ export type Database = {
           p_reason: string
         }
         Returns: Json
+      }
+      encrypt_course_content: {
+        Args: {
+          content_text: string
+          content_type: string
+          course_id: string
+          module_id?: string
+        }
+        Returns: string
+      }
+      encrypt_sensitive_data: {
+        Args: { context?: string; plaintext: string }
+        Returns: string
       }
       enforce_data_classification_access: {
         Args: {
@@ -1737,6 +1844,23 @@ export type Database = {
           role_id: string
           role_is_active: boolean
           role_updated_at: string
+          user_id: string
+        }[]
+      }
+      get_secure_profile_data: {
+        Args: { target_user_id: string }
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          email: string
+          location: string
+          name: string
+          phone: string
+          state: string
+          title: string
+          updated_at: string
           user_id: string
         }[]
       }
@@ -1837,6 +1961,14 @@ export type Database = {
         Args: { profile_data: Json }
         Returns: Json
       }
+      migrate_profile_to_encrypted: {
+        Args: { profile_user_id: string }
+        Returns: undefined
+      }
+      monitor_encryption_security: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       monitor_profile_access_patterns: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1892,6 +2024,15 @@ export type Database = {
       security_health_check: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      send_encrypted_message: {
+        Args: {
+          expires_hours?: number
+          message_body: string
+          message_subject: string
+          recipient_user_id: string
+        }
+        Returns: string
       }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
