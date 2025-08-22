@@ -512,13 +512,13 @@ const AdminDashboard = () => {
         }
       }
 
+      // Update the userRoles list locally instead of reloading all data
+      setUserRoles(prev => prev.filter(role => role.user_id !== userId));
+
       toast({
         title: "Success",
         description: "User deleted successfully."
       });
-
-      // Reload data to reflect changes
-      await loadDashboardData();
     } catch (error: any) {
       console.error('Error deleting user:', error);
       toast({
@@ -540,12 +540,13 @@ const AdminDashboard = () => {
 
       if (error) throw error;
 
+      // Update the instructors list locally instead of reloading all data
+      setInstructors(prev => prev.filter(instructor => instructor.id !== instructorId));
+
       toast({
         title: "Success",
         description: "Instructor deleted successfully",
       });
-      
-      loadDashboardData();
     } catch (error: any) {
       toast({
         title: "Error",
@@ -564,12 +565,17 @@ const AdminDashboard = () => {
 
       if (error) throw error;
 
+      // Update the instructors list locally instead of reloading all data
+      setInstructors(prev => prev.map(instructor => 
+        instructor.id === instructorId 
+          ? { ...instructor, is_active: !isActive }
+          : instructor
+      ));
+
       toast({
         title: "Success",
         description: `Instructor ${!isActive ? 'activated' : 'deactivated'} successfully`,
       });
-      
-      loadDashboardData();
     } catch (error: any) {
       toast({
         title: "Error",
@@ -582,7 +588,21 @@ const AdminDashboard = () => {
   const handleInstructorFormSave = () => {
     setShowInstructorForm(false);
     setEditingInstructor(null);
-    loadDashboardData();
+    // Refresh just the instructors data instead of all dashboard data
+    const refreshInstructors = async () => {
+      try {
+        const { data: instructorsData, error } = await supabase
+          .from('instructors')
+          .select('*')
+          .order('display_order', { ascending: true });
+        
+        if (error) throw error;
+        setInstructors(instructorsData || []);
+      } catch (error) {
+        console.error('Error refreshing instructors:', error);
+      }
+    };
+    refreshInstructors();
   };
 
   const handleInstructorFormCancel = () => {
