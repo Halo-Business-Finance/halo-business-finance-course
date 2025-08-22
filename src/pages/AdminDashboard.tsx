@@ -285,6 +285,9 @@ const AdminDashboard = () => {
                       recentEvents > 5 ? 'warning' : 
                       recentEvents > 0 ? 'good' : 'excellent'
       });
+      
+      // Reset access error since we successfully loaded data
+      setHasAccessError(false);
     } catch (error: any) {
       console.error('Error loading dashboard data:', error);
       
