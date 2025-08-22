@@ -203,147 +203,40 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load ALL users from profiles table and their roles (if any)
+      // Load ALL users from profiles table and their roles (if any) using secure function
       let userRolesData = [];
       
       try {
-        // Fallback to manual join since RPC may not be available yet
-        const { data: profiles, error: profilesError } = await supabase
-          .from('profiles')
-          .select('*')
-          .order('created_at', { ascending: false });
+        // Use the secure function to get profiles with roles
+        const { data: profilesWithRoles, error: profilesError } = await supabase
+          .rpc('get_profiles_with_roles');
 
         if (profilesError) throw profilesError;
 
-        // Manually fetch roles for each user
-        const profilesWithManualRoles = await Promise.all(
-          (profiles || []).map(async (profile) => {
-            const { data: roles } = await supabase
-              .from('user_roles')
-              .select('*')
-              .eq('user_id', profile.user_id)
-              .eq('is_active', true);
-            
-            return {
-              ...profile,
-              user_roles: roles || []
-            };
-          })
-        );
-
-        userRolesData = profilesWithManualRoles.flatMap(profile => {
-          if (profile.user_roles && profile.user_roles.length > 0) {
-            return profile.user_roles.map(role => ({
-              id: role.id,
-              user_id: profile.user_id,
-              role: role.role,
-              is_active: role.is_active,
-              created_at: role.created_at,
-              updated_at: role.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }));
-          } else {
-            return [{
-              id: `no-role-${profile.user_id}`,
-              user_id: profile.user_id,
-              role: 'No Role Assigned',
-              is_active: false,
-              created_at: profile.created_at,
-              updated_at: profile.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }];
+        userRolesData = (profilesWithRoles || []).map(profile => ({
+          id: profile.role_id || `no-role-${profile.user_id}`,
+          user_id: profile.user_id,
+          role: profile.role || 'No Role Assigned',
+          is_active: profile.role_is_active || false,
+          created_at: profile.role_created_at || profile.profile_created_at,
+          updated_at: profile.role_updated_at || profile.profile_updated_at,
+          profiles: {
+            name: profile.profile_name,
+            email: profile.profile_email,
+            phone: profile.profile_phone,
+            title: profile.profile_title,
+            company: profile.profile_company,
+            city: profile.profile_city,
+            state: profile.profile_state,
+            join_date: profile.profile_join_date
           }
-        });
+        }));
 
         console.log('User roles data loaded:', userRolesData);
       } catch (directError) {
-        console.warn('Failed to load all users with roles:', directError);
-        
-        // Fallback: Load profiles and roles separately
-        const [profilesResponse, rolesResponse] = await Promise.all([
-          supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('user_roles')
-            .select('*')
-        ]);
-
-        if (profilesResponse.error) throw profilesResponse.error;
-        if (rolesResponse.error) throw rolesResponse.error;
-
-        const profiles = profilesResponse.data || [];
-        const roles = rolesResponse.data || [];
-        const rolesMap = new Map();
-        
-        // Group roles by user_id
-        roles.forEach(role => {
-          if (!rolesMap.has(role.user_id)) {
-            rolesMap.set(role.user_id, []);
-          }
-          rolesMap.get(role.user_id).push(role);
-        });
-
-        // Create user role data for all profiles
-        userRolesData = profiles.flatMap(profile => {
-          const userRoles = rolesMap.get(profile.user_id) || [];
-          
-          if (userRoles.length > 0) {
-            return userRoles.map(role => ({
-              ...role,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }));
-          } else {
-            return [{
-              id: `no-role-${profile.user_id}`,
-              user_id: profile.user_id,
-              role: 'No Role Assigned',
-              is_active: false,
-              created_at: profile.created_at,
-              updated_at: profile.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }];
-          }
-        });
-
-        console.log('Loaded users with manual fallback logic:', userRolesData);
+        console.warn('Failed to load profiles with secure function:', directError);
+        setHasAccessError(true);
+        return;
       }
 
       // Fetch other data in parallel
