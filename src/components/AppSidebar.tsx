@@ -158,20 +158,25 @@ export function AppSidebar() {
 
         {/* Course Modules */}
         <SidebarGroup className="pt-6">
-          <SidebarGroupLabel>
-            <div className="flex items-center gap-2">
+          <SidebarGroupLabel className="pb-3">
+            <div className="flex items-center gap-3">
               <div className="relative">
-                <Target className="h-5 w-5 text-duke-blue" />
-                <div className="absolute -inset-1 bg-gradient-duke rounded-full opacity-20 animate-pulse-slow"></div>
+                <div className="w-8 h-8 rounded-lg bg-gradient-primary/10 flex items-center justify-center backdrop-blur-sm border border-primary/20">
+                  <Target className="h-4 w-4 text-primary" />
+                </div>
+                <div className="absolute -inset-1 bg-gradient-primary/20 rounded-lg opacity-0 animate-pulse"></div>
               </div>
               {!collapsed && (
-                <span className="bg-gradient-duke bg-clip-text text-transparent font-semibold text-base">
-                  Course Modules
-                </span>
+                <div className="flex-1">
+                  <span className="text-sm font-semibold text-foreground/90 tracking-wide">
+                    Course Modules
+                  </span>
+                  <div className="h-px bg-gradient-primary/30 mt-1 rounded-full"></div>
+                </div>
               )}
             </div>
           </SidebarGroupLabel>
-          <SidebarGroupContent className="pt-3">
+          <SidebarGroupContent className="space-y-1">
             <SidebarMenu className="space-y-1">
               {courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked";
@@ -192,38 +197,93 @@ export function AppSidebar() {
                              });
                            }
                          }}
-                         className={({ isActive }) => `${getNavCls(isActive)} ${
-                           isModuleLocked ? "opacity-60" : ""
-                         } ${!canAccess ? "cursor-not-allowed" : ""} group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-gradient-to-r hover:from-black/5 hover:to-black/5`}
+                         className={({ isActive }) => `
+                           ${getNavCls(isActive)} 
+                           ${isModuleLocked ? "opacity-50" : ""} 
+                           ${!canAccess ? "cursor-not-allowed" : ""}
+                           group relative overflow-hidden rounded-xl p-3 transition-all duration-500 ease-out
+                           hover:bg-gradient-to-r hover:from-background/80 hover:to-muted/20
+                           hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02]
+                           border border-transparent hover:border-primary/20
+                           backdrop-blur-sm
+                         `}
                        >
-                        <div className="relative z-10 flex items-start w-full py-1">
-                          <div className={`
-                            w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0 mt-0.5
-                            ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
-                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse-extra-slow" :
-                              module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-white" :
-                              "bg-muted/50 text-muted-foreground"}
-                          `}>
-                             {module.status === "completed" ? "✓" : 
-                              module.status === "in-progress" ? "●" : 
-                              isModuleLocked ? "🔒" : index + 1}
+                        <div className="relative z-10 flex items-center w-full gap-3">
+                          {/* Status Indicator */}
+                          <div className="relative flex-shrink-0">
+                            <div className={`
+                              w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold 
+                              transition-all duration-500 ease-out
+                              ${module.status === "completed" 
+                                ? "bg-gradient-to-br from-green-400 to-green-600 text-white shadow-lg shadow-green-400/25 ring-2 ring-green-400/20" 
+                                : module.status === "in-progress" 
+                                  ? "bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg shadow-blue-400/25 ring-2 ring-blue-400/20 animate-pulse" 
+                                  : module.status === "available" 
+                                    ? "bg-gradient-to-br from-primary/80 to-primary text-primary-foreground shadow-md shadow-primary/20 ring-2 ring-primary/20" 
+                                    : "bg-gradient-to-br from-muted to-muted-foreground/30 text-muted-foreground/60 ring-1 ring-border"}
+                              group-hover:scale-110 group-hover:rotate-3
+                            `}>
+                              {module.status === "completed" ? (
+                                <div className="animate-bounce">✓</div>
+                              ) : module.status === "in-progress" ? (
+                                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                              ) : isModuleLocked ? (
+                                "🔒"
+                              ) : (
+                                <span className="font-bold">{index + 1}</span>
+                              )}
+                            </div>
+                            
+                            {/* Animated ring for active states */}
+                            {(module.status === "completed" || module.status === "in-progress") && (
+                              <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping"></div>
+                            )}
                           </div>
                         
-                        {!collapsed && (
-                          <div className="flex-1 ml-3 min-w-0">
-                            <span className="text-xs font-medium leading-relaxed block text-black break-words">
-                              {module.title}
-                            </span>
+                          {!collapsed && (
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-medium text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
+                                  {module.title}
+                                </h3>
+                                
+                                {/* Status Badge */}
+                                <div className="ml-2 flex-shrink-0">
+                                  {module.status === "completed" && (
+                                    <div className="w-2 h-2 bg-green-400 rounded-full shadow-sm shadow-green-400/50"></div>
+                                  )}
+                                  {module.status === "in-progress" && (
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-sm shadow-blue-400/50"></div>
+                                  )}
+                                  {module.status === "available" && (
+                                    <div className="w-2 h-2 bg-primary/60 rounded-full"></div>
+                                  )}
+                                </div>
+                              </div>
+                              
+                              {/* Progress Bar for in-progress modules */}
                               {module.status === "in-progress" && (
-                                <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
-                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse-extra-slow"></div>
+                                <div className="mt-2 w-full bg-muted/30 rounded-full h-1.5 overflow-hidden backdrop-blur-sm">
+                                  <div className="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full transition-all duration-1000 ease-out shadow-sm"
+                                       style={{ width: "65%" }}></div>
                                 </div>
                               )}
-                          </div>
-                         )}
+                              
+                              {/* Subtle description for available modules */}
+                              {module.status === "available" && !isModuleLocked && (
+                                <p className="text-xs text-muted-foreground/70 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                  Ready to start
+                                </p>
+                              )}
+                            </div>
+                          )}
                         </div>
-                        {/* Hover effect overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        {/* Elegant hover effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-xl"></div>
+                        
+                        {/* Active state indicator */}
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
