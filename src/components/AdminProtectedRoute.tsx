@@ -36,11 +36,10 @@ export const AdminProtectedRoute = ({
             .rpc('check_user_has_role', { check_role: 'super_admin' });
             
           if (error) {
-            secureError(error, { 
-              action: 'super_admin_role_check',
-              userId: user.id 
-            });
-            throw error;
+            console.error('Super admin role check error:', error);
+            setHasPermission(false);
+            setLoading(false);
+            return;
           }
           hasAdminRole = isSuperAdmin || false;
         } else {
@@ -50,19 +49,18 @@ export const AdminProtectedRoute = ({
             supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
           ]);
           
-          if (adminCheck.error || superAdminCheck.error) {
-            secureError(adminCheck.error || superAdminCheck.error, { 
-              action: 'admin_role_check',
-              userId: user.id,
-              adminError: adminCheck.error ? 'admin_check_failed' : null,
-              superAdminError: superAdminCheck.error ? 'super_admin_check_failed' : null
-            });
-            throw adminCheck.error || superAdminCheck.error;
+          if (adminCheck.error && superAdminCheck.error) {
+            console.error('Admin role check errors:', { adminCheck: adminCheck.error, superAdminCheck: superAdminCheck.error });
+            setHasPermission(false);
+            setLoading(false);
+            return;
           }
           
-          hasAdminRole = adminCheck.data || superAdminCheck.data;
+          // Allow access if user has either admin or super_admin role
+          hasAdminRole = (adminCheck.data === true) || (superAdminCheck.data === true);
         }
 
+        console.log('Admin role check result:', { hasAdminRole, requiredRole, userId: user.id });
         setHasPermission(hasAdminRole);
 
         if (!hasAdminRole) {
@@ -73,10 +71,7 @@ export const AdminProtectedRoute = ({
           });
         }
       } catch (error) {
-        secureError(error as Error, { 
-          action: 'admin_permission_validation',
-          userId: user?.id 
-        });
+        console.error('Error checking admin permissions:', error);
         setHasPermission(false);
       } finally {
         setLoading(false);
@@ -86,7 +81,7 @@ export const AdminProtectedRoute = ({
     if (!authLoading) {
       checkAdminPermissions();
     }
-  }, [user, authLoading, requiredRole, secureError]);
+  }, [user, authLoading, requiredRole]);
 
   // Show loading while checking auth or permissions
   if (authLoading || loading) {
