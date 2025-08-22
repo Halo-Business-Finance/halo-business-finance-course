@@ -49,7 +49,7 @@ export const RealtimeAIAssistant = () => {
       const ws = new WebSocket('wss://kagwfntxlgzrcngysmlt.functions.supabase.co/realtime-ai-assistant');
       
       ws.onopen = () => {
-        // Secure logging - connection established
+        // Secure logging - AI assistant connection established
         setIsConnected(true);
         setConnectionStatus('connected');
         
@@ -85,7 +85,7 @@ export const RealtimeAIAssistant = () => {
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        // Secure logging - processing AI response
+        // Secure logging - AI response received and being processed
         
         switch (data.type) {
           case 'response.audio.delta':
@@ -104,13 +104,13 @@ export const RealtimeAIAssistant = () => {
             break;
             
           case 'response.done':
-            // Secure logging - AI response completed
+            // Secure logging - AI response processing completed
             break;
         }
       };
 
       ws.onclose = () => {
-        // Secure logging - AI assistant disconnected
+        // Secure logging - AI assistant connection closed
         setIsConnected(false);
         setConnectionStatus('disconnected');
         toast({
@@ -121,7 +121,7 @@ export const RealtimeAIAssistant = () => {
       };
 
       ws.onerror = (error) => {
-        // Secure error logging without exposing details in production
+        // Secure error logging - AI connection error occurred
         setConnectionStatus('disconnected');
         toast({
           title: "Connection Error",
@@ -132,7 +132,7 @@ export const RealtimeAIAssistant = () => {
 
       wsRef.current = ws;
     } catch (error) {
-      // Secure error logging without exposing details in production
+      // Secure error logging - AI connection setup failed
       setConnectionStatus('disconnected');
       toast({
         title: "Connection Failed",
@@ -209,7 +209,7 @@ export const RealtimeAIAssistant = () => {
       // For demo purposes, we'll show the recording state
       
     } catch (error) {
-      // Secure error logging without exposing microphone details
+      // Secure error logging - microphone access denied
       toast({
         title: "Microphone Error",
         description: "Unable to access microphone",

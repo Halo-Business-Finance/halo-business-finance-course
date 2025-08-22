@@ -118,7 +118,7 @@ const AdminDashboard = () => {
     
     // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
-      console.log('🔄 Setting up real-time subscriptions...');
+      // Secure logging - setting up real-time subscriptions
       
       const channel = supabase
         .channel('admin-dashboard-updates')
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
             table: 'security_events'
           },
           (payload) => {
-            console.log('🚨 New security event:', payload);
+            // Secure logging - new security event detected
             toast({
               title: "Security Alert",
               description: `New ${payload.new.severity} security event detected`,
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
             table: 'profiles'
           },
           (payload) => {
-            console.log('👤 New user registered:', payload);
+            // Secure logging - new user registered
             toast({
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
             table: 'user_roles'
           },
           (payload) => {
-            console.log('🔐 User role changed:', payload);
+            // Secure logging - user role changed
             if (payload.eventType === 'INSERT') {
               toast({
                 title: "Role Assigned",
@@ -174,9 +174,9 @@ const AdminDashboard = () => {
           }
         )
         .subscribe((status) => {
-          console.log('📡 Real-time subscription status:', status);
+          // Secure logging - subscription status change
           if (status === 'SUBSCRIBED') {
-            console.log('✅ Real-time dashboard active!');
+            // Secure logging - real-time dashboard active
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
@@ -192,7 +192,7 @@ const AdminDashboard = () => {
     // Cleanup function
     return () => {
       if (realtimeChannel) {
-        console.log('🔌 Cleaning up real-time subscriptions...');
+        // Secure logging - cleaning up real-time subscriptions
         supabase.removeChannel(realtimeChannel);
       }
     };
@@ -272,9 +272,9 @@ const AdminDashboard = () => {
           }
         });
 
-        console.log('User roles data loaded:', userRolesData);
+        // Secure logging - user roles data loaded
       } catch (directError) {
-        console.warn('Failed to load all users with roles:', directError);
+        // Secure logging - failed to load users with roles
         
         // Fallback: Load profiles and roles separately
         const [profilesResponse, rolesResponse] = await Promise.all([
@@ -342,7 +342,7 @@ const AdminDashboard = () => {
           }
         });
 
-        console.log('Loaded users with manual fallback logic:', userRolesData);
+        // Secure logging - loaded users with fallback logic
       }
 
       // Fetch other data in parallel
@@ -386,7 +386,7 @@ const AdminDashboard = () => {
                       recentEvents > 0 ? 'good' : 'excellent'
       });
     } catch (error: any) {
-      console.error('Error loading dashboard data:', error);
+      // Secure error logging - dashboard data loading failed
       toast({
         title: "Error",
         description: error?.message || "Failed to load dashboard data. Please try again.",
@@ -414,7 +414,7 @@ const AdminDashboard = () => {
 
         if (error) throw error;
       } catch (secureError) {
-        console.warn('Secure function unavailable, using direct RPC:', secureError);
+        // Secure logging - fallback to direct RPC
         
         // Fallback to direct RPC call
         const { data, error } = await supabase.rpc('assign_user_role', {
@@ -435,7 +435,7 @@ const AdminDashboard = () => {
       // Reload data to reflect changes
       await loadDashboardData();
     } catch (error: any) {
-      console.error('Error assigning role:', error);
+      // Secure error logging - role assignment failed
       let errorMessage = 'Failed to assign role';
       
       if (error?.message?.includes('super_admin')) {
@@ -472,7 +472,7 @@ const AdminDashboard = () => {
 
         if (error) throw error;
       } catch (secureError) {
-        console.warn('Secure function unavailable, using direct RPC:', secureError);
+        // Secure logging - fallback to direct RPC for revocation
         
         // Fallback to direct RPC call
         const { data, error } = await supabase.rpc('revoke_user_role', {
@@ -492,7 +492,7 @@ const AdminDashboard = () => {
       // Reload data to reflect changes
       await loadDashboardData();
     } catch (error: any) {
-      console.error('Error revoking role:', error);
+      // Secure error logging - role revocation failed
       toast({
         title: "Error",
         description: error?.message || "Failed to revoke role",
