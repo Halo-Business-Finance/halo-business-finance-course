@@ -159,7 +159,7 @@ export function AppSidebar() {
                           <div className={`
                             w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 flex-shrink-0 mt-0.5
                             ${module.status === "completed" ? "bg-gradient-success text-white shadow-lg" : 
-                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse-slow" :
+                              module.status === "in-progress" ? "bg-gradient-primary text-white shadow-lg animate-pulse-extra-slow" :
                               module.status === "available" ? "bg-gradient-to-br from-muted to-muted-foreground/20 text-white" :
                               "bg-muted/50 text-muted-foreground"}
                           `}>
@@ -175,7 +175,7 @@ export function AppSidebar() {
                             </span>
                               {module.status === "in-progress" && (
                                 <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
-                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse-slow"></div>
+                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse-extra-slow"></div>
                                 </div>
                               )}
                           </div>
