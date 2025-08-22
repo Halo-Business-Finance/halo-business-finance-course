@@ -32,7 +32,7 @@ const mainNavItems = [
   { title: "My Progress", url: "/progress", icon: BarChart3 },
   { title: "Video Library", url: "/videos", icon: BookOpen },
   { title: "Learning Resources", url: "/resources", icon: FileText },
-  { title: "Account", url: "/account", icon: User },
+  { title: "My Account", url: "/account", icon: User },
 ];
 
 
