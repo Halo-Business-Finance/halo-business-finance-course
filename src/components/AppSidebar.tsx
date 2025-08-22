@@ -28,13 +28,11 @@ import { Badge } from "@/components/ui/badge";
 
 const mainNavItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
+  { title: "My Progress", url: "/progress", icon: BarChart3 },
   { title: "Video Library", url: "/videos", icon: BookOpen },
   { title: "Learning Resources", url: "/resources", icon: FileText },
 ];
 
-const progressNavItems = [
-  { title: "My Progress", url: "/progress", icon: BarChart3 },
-];
 
 const courseModules = [
   { title: "Finance Foundations", url: "/module/foundations", status: "completed" },
@@ -114,34 +112,6 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-black" />
-                      {!collapsed && <span className="text-black">{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* My Progress Section */}
-        <SidebarGroup className="pt-6">
-          <SidebarGroupLabel>
-            <div className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-black" />
-              {!collapsed && (
-                <span className="text-black font-semibold">
-                  My Progress
-                </span>
-              )}
-            </div>
-          </SidebarGroupLabel>
-          <SidebarGroupContent className="pt-2">
-            <SidebarMenu>
-              {progressNavItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
