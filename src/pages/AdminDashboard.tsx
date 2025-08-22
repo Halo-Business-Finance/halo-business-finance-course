@@ -211,112 +211,91 @@ const AdminDashboard = () => {
       // Load ALL users from profiles table and their roles (if any)
       let userRolesData = [];
       
-      try {
-        console.log('Loading user roles data using get_profiles_with_roles...');
-        
-        // Use secure RPC function to get all user data
-        const { data: userRolesRpcData, error: userRolesRpcError } = await supabase.rpc('get_profiles_with_roles');
-        
-        console.log('RPC response:', userRolesRpcData, 'Error:', userRolesRpcError);
-        
-        if (userRolesRpcError) {
-          console.error('RPC Error:', userRolesRpcError);
-          throw userRolesRpcError;
-        }
-        
-        // Transform the RPC data to match expected structure
-        userRolesData = (userRolesRpcData || []).map((userData: any) => ({
-          id: userData.role_id ? userData.role_id : `no-role-${userData.user_id}`,
-          user_id: userData.user_id,
-          role: userData.role || 'No Role Assigned',
-          is_active: userData.role_is_active ?? false,
-          created_at: userData.role_created_at || userData.profile_created_at,
-          updated_at: userData.role_updated_at || userData.profile_updated_at,
-          profiles: {
-            name: userData.profile_name,
-            email: userData.profile_email,
-            phone: userData.profile_phone,
-            title: userData.profile_title,
-            company: userData.profile_company,
-            city: userData.profile_city,
-            state: userData.profile_state,
-            user_id: userData.user_id
-          }
-        }));
+      console.log('Loading profiles and roles using direct table queries...');
+      
+      // Load profiles and roles separately using direct queries
+      const [profilesResponse, rolesResponse] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('*')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('user_roles')
+          .select('*')
+      ]);
 
-        console.log('Transformed user roles data:', userRolesData);
-        // Secure logging - user roles data loaded
-      } catch (directError) {
-        console.error('RPC error, falling back to direct queries:', directError);
-        
-        // Fallback: Load profiles and roles separately
-        const [profilesResponse, rolesResponse] = await Promise.all([
-          supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('user_roles')
-            .select('*')
-        ]);
+      console.log('Profiles response:', profilesResponse);
+      console.log('Roles response:', rolesResponse);
 
-        if (profilesResponse.error) throw profilesResponse.error;
-        if (rolesResponse.error) throw rolesResponse.error;
-
-        const profiles = profilesResponse.data || [];
-        const roles = rolesResponse.data || [];
-        const rolesMap = new Map();
-        
-        // Group roles by user_id
-        roles.forEach(role => {
-          if (!rolesMap.has(role.user_id)) {
-            rolesMap.set(role.user_id, []);
-          }
-          rolesMap.get(role.user_id).push(role);
-        });
-
-        // Create user role data for all profiles
-        userRolesData = profiles.flatMap(profile => {
-          const userRoles = rolesMap.get(profile.user_id) || [];
-          
-          if (userRoles.length > 0) {
-            return userRoles.map(role => ({
-              ...role,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }));
-          } else {
-            return [{
-              id: `no-role-${profile.user_id}`,
-              user_id: profile.user_id,
-              role: 'No Role Assigned',
-              is_active: false,
-              created_at: profile.created_at,
-              updated_at: profile.updated_at,
-              profiles: {
-                name: profile.name,
-                email: profile.email,
-                phone: profile.phone,
-                title: profile.title,
-                company: profile.company,
-                city: profile.city,
-                state: profile.state,
-                join_date: profile.join_date
-              }
-            }];
-          }
-        });
-
-        // Secure logging - loaded users with fallback logic
+      if (profilesResponse.error) {
+        console.error('Profiles query error:', profilesResponse.error);
+        throw profilesResponse.error;
       }
+      if (rolesResponse.error) {
+        console.error('Roles query error:', rolesResponse.error);
+        throw rolesResponse.error;
+      }
+
+      const profiles = profilesResponse.data || [];
+      const roles = rolesResponse.data || [];
+      console.log('Retrieved profiles:', profiles.length, profiles);
+      console.log('Retrieved roles:', roles.length, roles);
+      
+      const rolesMap = new Map();
+      
+      // Group roles by user_id
+      roles.forEach(role => {
+        if (!rolesMap.has(role.user_id)) {
+          rolesMap.set(role.user_id, []);
+        }
+        rolesMap.get(role.user_id).push(role);
+      });
+
+      // Create user role data for all profiles
+      userRolesData = profiles.flatMap(profile => {
+        const userRoles = rolesMap.get(profile.user_id) || [];
+        
+        if (userRoles.length > 0) {
+          return userRoles.map(role => ({
+            ...role,
+            profiles: {
+              name: profile.name,
+              email: profile.email,
+              phone: profile.phone,
+              title: profile.title,
+              company: profile.company,
+              city: profile.city,
+              state: profile.state,
+              join_date: profile.join_date,
+              user_id: profile.user_id
+            }
+          }));
+        } else {
+          return [{
+            id: `no-role-${profile.user_id}`,
+            user_id: profile.user_id,
+            role: 'No Role Assigned',
+            is_active: false,
+            created_at: profile.created_at,
+            updated_at: profile.updated_at,
+            profiles: {
+              name: profile.name,
+              email: profile.email,
+              phone: profile.phone,
+              title: profile.title,
+              company: profile.company,
+              city: profile.city,
+              state: profile.state,
+              join_date: profile.join_date,
+              user_id: profile.user_id
+            }
+          }];
+        }
+      });
+
+      console.log('Final user roles data:', userRolesData);
+
+      // Secure logging - loaded users with fallback logic
 
       // Fetch other data in parallel
       console.log('Fetching security events and instructors...');
