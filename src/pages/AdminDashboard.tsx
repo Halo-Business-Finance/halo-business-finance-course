@@ -639,24 +639,14 @@ const AdminDashboard = () => {
     );
   }
 
-  // Debug logging
-  console.log('Admin Dashboard Access Check:', {
-    hasAccessError,
-    isAdmin,
-    userRole,
-    user: user?.email
-  });
-
-  if (hasAccessError || (!isAdmin && userRole !== 'admin' && userRole !== 'super_admin')) {
+  // Only show access denied if user genuinely doesn't have admin privileges
+  if (!isAdmin && userRole !== 'admin' && userRole !== 'super_admin') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Shield className="h-16 w-16 mx-auto text-red-500 mb-4" />
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">Access Denied</h1>
           <p className="text-gray-600">You do not have admin privileges to access this dashboard.</p>
-          <div className="mt-4 text-sm text-gray-500">
-            Debug: hasAccessError={hasAccessError ? 'true' : 'false'}, isAdmin={isAdmin ? 'true' : 'false'}, userRole={userRole || 'null'}
-          </div>
         </div>
       </div>
     );
