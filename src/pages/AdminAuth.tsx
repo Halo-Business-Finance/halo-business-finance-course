@@ -94,15 +94,29 @@ const AdminAuthPage = () => {
       }
 
       if (data.user) {
-        // Check if user has admin role
-        const { data: roleData, error: roleError } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', data.user.id)
-          .eq('is_active', true)
-          .single();
+        // Check if user has admin role using secure RPC functions
+        const [adminCheck, superAdminCheck] = await Promise.all([
+          supabase.rpc('check_user_has_role', { check_role: 'admin' }),
+          supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+        ]);
 
-        if (roleError || !roleData || !['admin', 'super_admin'].includes(roleData.role)) {
+        if (adminCheck.error || superAdminCheck.error) {
+          console.error('Error checking admin permissions:', { 
+            adminError: adminCheck.error, 
+            superAdminError: superAdminCheck.error 
+          });
+          await supabase.auth.signOut();
+          toast({
+            title: "Error",
+            description: "Failed to verify admin permissions. Please try again.",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        const hasAdminRole = adminCheck.data || superAdminCheck.data;
+
+        if (!hasAdminRole) {
           await supabase.auth.signOut();
           toast({
             title: "Access Denied",
