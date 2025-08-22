@@ -2749,6 +2749,10 @@ export type Database = {
         Args: { p_device_fingerprint: string; p_device_info?: Json }
         Returns: string
       }
+      report_encryption_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
