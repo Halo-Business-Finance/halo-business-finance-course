@@ -163,7 +163,7 @@ export function AppSidebar() {
         </div>
 
         {/* Course Modules */}
-        <SidebarGroup className="pt-6">
+        <SidebarGroup className="pt-2">
           <SidebarGroupLabel className="pb-3">
             {!collapsed && (
               <div className="flex-1">
