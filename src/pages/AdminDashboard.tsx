@@ -235,8 +235,14 @@ const AdminDashboard = () => {
         console.log('User roles data loaded:', userRolesData);
       } catch (directError) {
         console.warn('Failed to load profiles with secure function:', directError);
-        setHasAccessError(true);
-        return;
+        // Don't set access error for this specific issue - let the role check handle access
+        toast({
+          title: "Warning", 
+          description: "Could not load user profiles. Some admin features may be limited.",
+          variant: "default"
+        });
+        // Set empty data but don't block access
+        setUserRoles([]);
       }
 
       // Fetch other data in parallel
