@@ -36,16 +36,52 @@ const mainNavItems = [
 ];
 
 
-const courseModules = [
-  { title: "Finance Foundations", url: "/module/foundations", status: "completed" },
-  { title: "Capital Markets", url: "/module/capital-markets", status: "completed" },
-  { title: "SBA Loan Programs", url: "/module/sba-loans", status: "in-progress" },
-  { title: "Conventional Lending", url: "/module/conventional-loans", status: "available" },
-  { title: "Bridge Financing", url: "/module/bridge-loans", status: "locked" },
-  { title: "Alternative Finance", url: "/module/alternative-finance", status: "locked" },
-  { title: "Credit Analysis", url: "/module/credit-risk", status: "locked" },
-  { title: "Compliance", url: "/module/regulatory-compliance", status: "locked" },
+// Base course modules in order
+const baseCourseModules = [
+  { title: "Finance Foundations", url: "/module/foundations" },
+  { title: "Capital Markets", url: "/module/capital-markets" },
+  { title: "SBA Loan Programs", url: "/module/sba-loans" },
+  { title: "Conventional Lending", url: "/module/conventional-loans" },
+  { title: "Bridge Financing", url: "/module/bridge-loans" },
+  { title: "Alternative Finance", url: "/module/alternative-finance" },
+  { title: "Credit Analysis", url: "/module/credit-risk" },
+  { title: "Compliance", url: "/module/regulatory-compliance" },
 ];
+
+// Progressive learning logic - only one module available at a time
+const getProgressiveModules = () => {
+  // For now, simulating user progress - replace with actual user progress data
+  const completedModules = ["Finance Foundations", "Capital Markets"]; // Example: user completed these
+  const currentModule = "SBA Loan Programs"; // Example: current module in progress
+  
+  return baseCourseModules.map((module, index) => {
+    if (completedModules.includes(module.title)) {
+      return { ...module, status: "completed" };
+    } else if (module.title === currentModule) {
+      return { ...module, status: "in-progress" };
+    } else {
+      // Find the highest completed module index
+      const completedIndices = completedModules.map(completed => 
+        baseCourseModules.findIndex(m => m.title === completed)
+      );
+      const highestCompletedIndex = completedIndices.length > 0 ? Math.max(...completedIndices) : -1;
+      
+      // The next available module should be right after the highest completed one
+      // or right after the current in-progress one
+      const currentModuleIndex = baseCourseModules.findIndex(m => m.title === currentModule);
+      const nextAvailableIndex = currentModuleIndex !== -1 ? currentModuleIndex + 1 : highestCompletedIndex + 1;
+      
+      // Only the next module in sequence should be available
+      if (index === nextAvailableIndex && !completedModules.includes(currentModule)) {
+        return { ...module, status: "locked" }; // Still locked until current is completed
+      } else {
+        return { ...module, status: "locked" };
+      }
+    }
+  });
+};
+
+const courseModules = getProgressiveModules();
 
 export function AppSidebar() {
   const { state } = useSidebar();
