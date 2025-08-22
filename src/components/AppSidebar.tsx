@@ -291,7 +291,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Authentication */}
-        <SidebarGroup>
+        <SidebarGroup className="pt-2">
           <SidebarGroupContent>
             <SidebarMenu>
               {!loading && (
