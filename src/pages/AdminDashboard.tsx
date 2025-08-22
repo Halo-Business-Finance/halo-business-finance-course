@@ -214,6 +214,7 @@ const AdminDashboard = () => {
           .select('*')
           .order('created_at', { ascending: false });
 
+        console.log('Profiles loaded:', profiles, 'Error:', profilesError);
         if (profilesError) throw profilesError;
 
         // Manually fetch roles for each user
