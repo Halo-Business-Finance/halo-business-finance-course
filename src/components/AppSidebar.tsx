@@ -140,7 +140,7 @@ export function AppSidebar() {
     >
       <SidebarContent>
         {/* Main Navigation */}
-        <SidebarGroup className="pt-4">
+        <SidebarGroup className="pt-6">
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNavItems.map((item) => (
