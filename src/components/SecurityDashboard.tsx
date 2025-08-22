@@ -71,8 +71,14 @@ export const SecurityDashboard: React.FC = () => {
         throw new Error(error.message);
       }
 
+      console.log('Security dashboard raw response:', dashboardData);
+
       if (dashboardData?.success) {
+        console.log('Security data loaded:', dashboardData.data);
+        console.log('Recent events count:', dashboardData.data.recent_events?.length || 0);
         setData(dashboardData.data);
+      } else {
+        console.warn('Security dashboard response not successful:', dashboardData);
       }
     } catch (error: any) {
       console.error('Error loading security data:', error);
@@ -313,39 +319,83 @@ export const SecurityDashboard: React.FC = () => {
         </CardContent>
       </Card>
 
+      {/* Debug Info - Temporary */}
+      <Card className="border-yellow-200 bg-yellow-50">
+        <CardHeader>
+          <CardTitle className="text-yellow-800">Debug Information</CardTitle>
+          <CardDescription className="text-yellow-700">
+            This section shows the raw data being loaded (will be removed once issue is resolved)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-sm">
+            <p><strong>Data loaded:</strong> {data ? 'Yes' : 'No'}</p>
+            <p><strong>Recent events count:</strong> {data.recent_events?.length || 0}</p>
+            <p><strong>Alerts count:</strong> {data.alerts?.length || 0}</p>
+            <p><strong>Blocked IPs count:</strong> {data.blocked_ips?.length || 0}</p>
+            {data.recent_events?.length > 0 && (
+              <div>
+                <p><strong>First event sample:</strong></p>
+                <pre className="bg-gray-100 p-2 rounded text-xs overflow-auto">
+                  {JSON.stringify(data.recent_events[0], null, 2)}
+                </pre>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Recent Security Events */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Security Events</CardTitle>
+          <CardTitle>Recent Security Events ({data.recent_events?.length || 0})</CardTitle>
           <CardDescription>Latest security-related activities</CardDescription>
         </CardHeader>
         <CardContent>
-          {data.recent_events.length === 0 ? (
-            <p className="text-muted-foreground">No recent security events</p>
+          {(!data.recent_events || data.recent_events.length === 0) ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">No recent security events found</p>
+              <Button 
+                onClick={loadSecurityData} 
+                variant="outline" 
+                className="mt-4"
+              >
+                Reload Data
+              </Button>
+            </div>
           ) : (
             <div className="space-y-2">
               {data.recent_events.slice(0, 10).map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-center justify-between py-2 border-b last:border-b-0"
+                  className="flex items-center justify-between py-3 px-3 border rounded-lg hover:bg-gray-50"
                 >
-                  <div>
-                    <span className="font-medium">{event.event_type}</span>
-                    <Badge 
-                      variant={getSeverityBadgeVariant(event.severity)} 
-                      className="ml-2"
-                    >
-                      {event.severity}
-                    </Badge>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-sm">{event.event_type}</span>
+                      <Badge 
+                        variant={getSeverityBadgeVariant(event.severity)} 
+                        className="text-xs"
+                      >
+                        {event.severity}
+                      </Badge>
+                    </div>
                     {event.details?.user_email && (
-                      <span className="ml-2 text-sm text-muted-foreground">
-                        {event.details.user_email}
-                      </span>
+                      <p className="text-xs text-muted-foreground">
+                        User: {event.details.user_email}
+                      </p>
+                    )}
+                    {event.details?.description && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {event.details.description}
+                      </p>
                     )}
                   </div>
-                  <span className="text-xs text-muted-foreground">
-                    {new Date(event.created_at).toLocaleString()}
-                  </span>
+                  <div className="text-right">
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(event.created_at).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
