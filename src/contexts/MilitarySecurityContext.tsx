@@ -175,15 +175,17 @@ export const MilitarySecurityProvider = ({ children }: MilitarySecurityProviderP
 
       if (deviceError) throw deviceError;
 
+      const assessment = riskAssessment as any;
+      
       setDeviceInfo({
-        id: deviceData?.[0]?.id || '',
+        id: crypto.randomUUID(),
         fingerprint: fingerprintHash,
-        trustScore: riskAssessment.trust_level,
-        riskFactors: riskAssessment.risk_factors || [],
+        trustScore: assessment?.trust_level || 50,
+        riskFactors: assessment?.risk_factors || [],
         lastScan: new Date().toISOString()
       });
 
-      setIsDeviceTrusted(riskAssessment.trust_level >= 70);
+      setIsDeviceTrusted((assessment?.trust_level || 50) >= 70);
 
     } catch (error) {
       console.error('Device registration failed:', error);
@@ -232,11 +234,14 @@ export const MilitarySecurityProvider = ({ children }: MilitarySecurityProviderP
 
         if (!behaviorError && behaviorData) {
           // Update security level based on behavioral analysis
-          if (behaviorData.anomaly_score > 80) {
+          const behavior = behaviorData as any;
+          const anomalyScore = behavior?.anomaly_score || 0;
+          
+          if (anomalyScore > 80) {
             setSecurityLevel('critical');
-          } else if (behaviorData.anomaly_score > 60) {
+          } else if (anomalyScore > 60) {
             setSecurityLevel('high');
-          } else if (behaviorData.anomaly_score > 40) {
+          } else if (anomalyScore > 40) {
             setSecurityLevel('medium');
           } else {
             setSecurityLevel('low');
@@ -314,7 +319,8 @@ export const MilitarySecurityProvider = ({ children }: MilitarySecurityProviderP
 
       if (error) throw error;
 
-      return evaluationData?.access_granted || false;
+      const evaluation = evaluationData as any;
+      return evaluation?.access_granted || false;
 
     } catch (error) {
       console.error('Security clearance validation failed:', error);

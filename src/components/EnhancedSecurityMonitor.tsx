@@ -75,7 +75,15 @@ export const EnhancedSecurityMonitor: React.FC = () => {
         .limit(20);
 
       if (!networkError) {
-        setNetworkEvents(networkData || []);
+        const mappedNetworkData = (networkData || []).map(event => ({
+          id: event.id,
+          category: event.event_category,
+          severity: event.severity_level,
+          source_ip: String(event.source_ip || 'Unknown'),
+          event_signature: event.event_signature,
+          created_at: event.created_at
+        }));
+        setNetworkEvents(mappedNetworkData);
       }
 
       // Load behavioral analytics
