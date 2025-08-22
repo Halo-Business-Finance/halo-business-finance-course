@@ -68,7 +68,14 @@ export function ModuleEditor() {
         .order("order_index");
 
       if (error) throw error;
-      setModules(modulesData || []);
+      
+      // Ensure prerequisites is always an array, never null
+      const processedModules = (modulesData || []).map(module => ({
+        ...module,
+        prerequisites: module.prerequisites || []
+      }));
+      
+      setModules(processedModules);
 
     } catch (error) {
       console.error("Error loading modules:", error);
@@ -161,7 +168,7 @@ export function ModuleEditor() {
       duration: module.duration || "",
       lessons_count: module.lessons_count,
       order_index: module.order_index,
-      prerequisites: module.prerequisites.join(", "),
+      prerequisites: (module.prerequisites || []).join(", "),
       is_active: module.is_active,
     });
     setEditingModule(module);
@@ -499,16 +506,16 @@ export function ModuleEditor() {
                       <div className="text-sm">{module.lessons_count}</div>
                     </TableCell>
                     <TableCell>
-                      {module.prerequisites.length > 0 ? (
+                      {(module.prerequisites || []).length > 0 ? (
                         <div className="flex flex-wrap gap-1">
-                          {module.prerequisites.slice(0, 2).map(prereq => (
+                          {(module.prerequisites || []).slice(0, 2).map(prereq => (
                             <Badge key={prereq} variant="outline" className="text-xs">
                               {prereq}
                             </Badge>
                           ))}
-                          {module.prerequisites.length > 2 && (
+                          {(module.prerequisites || []).length > 2 && (
                             <Badge variant="outline" className="text-xs">
-                              +{module.prerequisites.length - 2}
+                              +{(module.prerequisites || []).length - 2}
                             </Badge>
                           )}
                         </div>
