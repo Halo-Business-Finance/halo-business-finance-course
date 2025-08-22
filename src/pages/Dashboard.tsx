@@ -12,7 +12,6 @@ import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { HaloBrandFooter } from "@/components/HaloBrandFooter";
-import { ChatBot } from "@/components/ChatBot";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -254,21 +253,6 @@ const Dashboard = () => {
                 <DocumentLibrary />
               </TabsContent>
             </Tabs>
-          </div>
-
-          {/* AI Assistant */}
-          <div className="space-y-8 pb-16">
-            <div className="text-center space-y-4">
-              <h3 className="text-3xl font-bold">AI Learning Assistant</h3>
-              <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Get personalized help with financial concepts, ask questions about the modules, 
-                and receive expert guidance powered by ChatGPT.
-              </p>
-            </div>
-            
-            <div className="max-w-2xl mx-auto">
-              <ChatBot />
-            </div>
           </div>
           
           {/* Halo Brand Footer */}

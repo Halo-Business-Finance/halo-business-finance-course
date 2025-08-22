@@ -4,13 +4,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
+import { ChatBot } from "@/components/ChatBot";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -103,6 +105,28 @@ const HeaderContent = () => {
         <p className="text-sm text-black">
           {formatDateTime(currentTime)}
         </p>
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors text-black hover:bg-black/10 hover:text-black"
+            >
+              <Bot className="h-4 w-4" />
+              <span className="text-sm">AI Assistant</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-3xl h-[600px] p-0">
+            <DialogHeader className="p-6 pb-0">
+              <DialogTitle>Financial Learning Assistant</DialogTitle>
+            </DialogHeader>
+            <div className="flex-1 px-6 pb-6">
+              <ChatBot />
+            </div>
+          </DialogContent>
+        </Dialog>
+        
         <NavLink 
           to="/account" 
           className={({ isActive }) => 
