@@ -159,22 +159,14 @@ export function AppSidebar() {
         {/* Course Modules */}
         <SidebarGroup className="pt-6">
           <SidebarGroupLabel className="pb-3">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-8 h-8 rounded-lg bg-gradient-primary/10 flex items-center justify-center backdrop-blur-sm border border-primary/20">
-                  <Target className="h-4 w-4 text-primary" />
-                </div>
-                <div className="absolute -inset-1 bg-gradient-primary/20 rounded-lg opacity-0 animate-pulse"></div>
+            {!collapsed && (
+              <div className="flex-1">
+                <span className="text-sm font-semibold text-foreground/90 tracking-wide">
+                  Course Modules
+                </span>
+                <div className="h-px bg-gradient-primary/30 mt-1 rounded-full"></div>
               </div>
-              {!collapsed && (
-                <div className="flex-1">
-                  <span className="text-sm font-semibold text-foreground/90 tracking-wide">
-                    Course Modules
-                  </span>
-                  <div className="h-px bg-gradient-primary/30 mt-1 rounded-full"></div>
-                </div>
-              )}
-            </div>
+            )}
           </SidebarGroupLabel>
           <SidebarGroupContent className="space-y-1">
             <SidebarMenu className="space-y-1">
