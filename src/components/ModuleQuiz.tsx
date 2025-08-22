@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { CheckCircle, XCircle, Clock, Award } from "lucide-react";
+import { CheckCircle, XCircle, Clock, Award, Trophy, Star } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Question {
   id: number;
@@ -19,6 +20,7 @@ interface ModuleQuizProps {
   moduleId: string;
   moduleTitle: string;
   totalQuestions: number;
+  onComplete?: (passed: boolean, score: number) => void;
 }
 
 const getQuizData = (moduleId: string): Question[] => {
@@ -151,13 +153,14 @@ const getQuizData = (moduleId: string): Question[] => {
   return quizQuestions[moduleId] || [];
 };
 
-export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions }: ModuleQuizProps) => {
+export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }: ModuleQuizProps) => {
   const [questions] = useState<Question[]>(getQuizData(moduleId));
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30 minutes in seconds
+  const { toast } = useToast();
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -198,6 +201,30 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions }: ModuleQuiz
 
   const handleFinishQuiz = () => {
     setShowResults(true);
+    
+    // Calculate score and trigger completion logic
+    const score = calculateScore();
+    const passed = score >= 80;
+    
+    // Show celebration toast for passing
+    if (passed) {
+      toast({
+        title: "🎉 Congratulations!",
+        description: `Amazing work! You scored ${score}% and passed the ${moduleTitle} quiz. You've unlocked the next module!`,
+        variant: "default",
+        duration: 6000,
+      });
+    } else {
+      toast({
+        title: "Keep Learning!",
+        description: `You scored ${score}%. Review the material and try again to unlock the next module.`,
+        variant: "destructive",
+        duration: 4000,
+      });
+    }
+    
+    // Trigger the completion callback
+    onComplete?.(passed, score);
   };
 
   const calculateScore = () => {
@@ -311,7 +338,15 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions }: ModuleQuiz
                 {score}%
               </Badge>
               <p className="mt-2 text-muted-foreground">
-                {passed ? "Congratulations! You passed the quiz." : "You need 80% or higher to pass. Review the material and try again."}
+                {passed ? (
+                  <span className="flex items-center gap-2 justify-center">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    Outstanding! You've mastered this module and unlocked the next one!
+                    <Star className="h-4 w-4 text-yellow-500" />
+                  </span>
+                ) : (
+                  "You need 80% or higher to pass. Review the material and try again."
+                )}
               </p>
             </div>
 

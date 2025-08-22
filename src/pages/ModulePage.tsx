@@ -10,12 +10,14 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { CaseStudyModal } from "@/components/CaseStudyModal";
 import { useAdminRole } from "@/hooks/useAdminRole";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 const ModulePage = () => {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const { isAdmin } = useAdminRole();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("lessons");
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<{
     id: number;
@@ -26,9 +28,47 @@ const ModulePage = () => {
   } | null>(null);
 
   const module = courseData.modules.find(m => m.id === moduleId);
+
+  // Get next module for progression
+  const getNextModule = () => {
+    const currentIndex = courseData.modules.findIndex(m => m.id === moduleId);
+    return currentIndex !== -1 && currentIndex < courseData.modules.length - 1 
+      ? courseData.modules[currentIndex + 1]
+      : null;
+  };
+
+  // Handle quiz completion
+  const handleQuizComplete = (passed: boolean, score: number) => {
+    if (passed) {
+      const nextModule = getNextModule();
+      if (nextModule) {
+        // Show additional success toast with next module info
+        setTimeout(() => {
+          toast({
+            title: "🚀 Ready for the Next Challenge!",
+            description: `Your next module "${nextModule.title}" is now available. Click to continue your learning journey!`,
+            variant: "default",
+            duration: 8000,
+          });
+        }, 2000);
+      } else {
+        // Completed all modules
+        setTimeout(() => {
+          toast({
+            title: "🏆 Course Complete!",
+            description: "Congratulations! You've completed all modules in this course. You're now a certified expert!",
+            variant: "default",
+            duration: 8000,
+          });
+        }, 2000);
+      }
+    }
+  };
+
+  const courseModule = courseData.modules.find(m => m.id === moduleId);
   
   // Add debugging and better error handling
-  if (!module) {
+  if (!courseModule) {
     const availableModules = courseData.modules.map(m => ({ id: m.id, title: m.title }));
     console.log('Available modules:', availableModules);
     console.log('Requested moduleId:', moduleId);
@@ -87,7 +127,7 @@ const ModulePage = () => {
   };
 
   // Show locked content only to non-admin users
-  if (module.status === "locked" && !isAdmin) {
+  if (courseModule.status === "locked" && !isAdmin) {
     return (
       <div className="container mx-auto p-6">
         <Card>
@@ -95,7 +135,7 @@ const ModulePage = () => {
             <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
               <Lock className="h-8 w-8 text-muted-foreground" />
             </div>
-            <CardTitle className="text-2xl">{module.title}</CardTitle>
+            <CardTitle className="text-2xl">{courseModule.title}</CardTitle>
             <CardDescription className="text-base mt-2">
               This module is currently locked. Please complete the prerequisite modules to access this content.
             </CardDescription>
@@ -116,10 +156,10 @@ const ModulePage = () => {
       {/* Module Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">{module.title}</h1>
-          <p className="text-muted-foreground mt-2">{module.description}</p>
+          <h1 className="text-3xl font-bold text-foreground">{courseModule.title}</h1>
+          <p className="text-muted-foreground mt-2">{courseModule.description}</p>
         </div>
-        {getStatusBadge(module.status)}
+        {getStatusBadge(courseModule.status)}
       </div>
 
       {/* Progress and Stats */}
@@ -127,35 +167,35 @@ const ModulePage = () => {
         <Card>
           <CardContent className="p-4 text-center">
             <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.duration}</div>
+            <div className="text-2xl font-bold">{courseModule.duration}</div>
             <div className="text-sm text-muted-foreground">Duration</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <BookOpen className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.lessons}</div>
+            <div className="text-2xl font-bold">{courseModule.lessons}</div>
             <div className="text-sm text-muted-foreground">Lessons</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Play className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.videos?.length || 0}</div>
+            <div className="text-2xl font-bold">{courseModule.videos?.length || 0}</div>
             <div className="text-sm text-muted-foreground">Videos</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <Award className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{module.lessons}</div>
+            <div className="text-2xl font-bold">{courseModule.lessons}</div>
             <div className="text-sm text-muted-foreground">Quiz Questions</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Progress Bar */}
-      {module.status !== "available" && (
+      {courseModule.status !== "available" && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Your Progress</CardTitle>
@@ -164,9 +204,9 @@ const ModulePage = () => {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Module Completion</span>
-                <span className="font-medium">{module.progress}%</span>
+                <span className="font-medium">{courseModule.progress}%</span>
               </div>
-              <Progress value={module.progress} className="h-3" />
+              <Progress value={courseModule.progress} className="h-3" />
             </div>
           </CardContent>
         </Card>
@@ -196,7 +236,7 @@ const ModulePage = () => {
                       title: "Introduction & Overview",
                       type: "overview",
                       duration: "15 min",
-                      completed: module.status === "completed" || module.progress > 0,
+                      completed: courseModule.status === "completed" || courseModule.progress > 0,
                       locked: false,
                       description: "Get an overview of the module content and learning objectives"
                     },
@@ -204,7 +244,7 @@ const ModulePage = () => {
                       title: "Core Concepts",
                       type: "reading",
                       duration: "20 min", 
-                      completed: module.status === "completed" || module.progress > 25,
+                      completed: courseModule.status === "completed" || courseModule.progress > 25,
                       locked: false, // Always accessible after introduction
                       description: "Learn the fundamental concepts and terminology"
                     },
@@ -212,7 +252,7 @@ const ModulePage = () => {
                       title: "Case Study Analysis",
                       type: "assignment",
                       duration: "30 min",
-                      completed: module.status === "completed" || module.progress > 50,
+                      completed: courseModule.status === "completed" || courseModule.progress > 50,
                       locked: false, // Make accessible to encourage engagement
                       description: "Apply your knowledge to real-world scenarios"
                     },
@@ -220,8 +260,8 @@ const ModulePage = () => {
                       title: "Interactive Quiz",
                       type: "quiz",
                       duration: "10 min",
-                      completed: module.status === "completed" || module.progress > 75,
-                      locked: module.progress < 25 && module.status !== "completed", // Only lock if no progress made
+                      completed: courseModule.status === "completed" || courseModule.progress > 75,
+                      locked: courseModule.progress < 25 && courseModule.status !== "completed", // Only lock if no progress made
                       description: "Test your understanding of the module material"
                     }
                   ];
@@ -339,7 +379,7 @@ const ModulePage = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <p className="text-muted-foreground mb-6 leading-relaxed">{module.description}</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{courseModule.description}</p>
               </div>
               
               {/* Learning Objectives */}
@@ -686,7 +726,7 @@ const ModulePage = () => {
                     </div>
                     <div className="text-center p-2 rounded bg-background">
                       <div className="font-medium text-accent">Time Investment</div>
-                      <div className="text-muted-foreground">{module.duration} Total</div>
+                      <div className="text-muted-foreground">{courseModule.duration} Total</div>
                     </div>
                   </div>
                 </div>
@@ -724,8 +764,8 @@ const ModulePage = () => {
 
         <TabsContent value="videos">
           <div className="space-y-6">
-            {module.videos && module.videos.length > 0 ? (
-              module.videos.map((video: any, index: number) => (
+            {courseModule.videos && courseModule.videos.length > 0 ? (
+              courseModule.videos.map((video: any, index: number) => (
                 <VideoPlayer
                   key={video.title}
                   title={`${index + 1}. ${video.title}`}
@@ -884,7 +924,7 @@ const ModulePage = () => {
                       <div className="flex items-center gap-3">
                         <FileText className="h-5 w-5 text-primary" />
                         <div>
-                          <p className="font-medium">{module.title} - Study Guide</p>
+                          <p className="font-medium">{courseModule.title} - Study Guide</p>
                           <p className="text-sm text-muted-foreground">Comprehensive overview and key concepts (PDF, 2.3 MB)</p>
                         </div>
                       </div>
@@ -1020,9 +1060,10 @@ const ModulePage = () => {
 
         <TabsContent value="quiz">
           <ModuleQuiz 
-            moduleId={module.id}
-            moduleTitle={module.title}
-            totalQuestions={module.lessons}
+            moduleId={courseModule.id}
+            moduleTitle={courseModule.title}
+            totalQuestions={courseModule.lessons}
+            onComplete={handleQuizComplete}
           />
         </TabsContent>
       </Tabs>
