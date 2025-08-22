@@ -34,7 +34,6 @@ const mainNavItems = [
 
 const progressNavItems = [
   { title: "My Progress", url: "/progress", icon: BarChart3 },
-  { title: "Certificates", url: "/certificates", icon: Award },
 ];
 
 const courseModules = [

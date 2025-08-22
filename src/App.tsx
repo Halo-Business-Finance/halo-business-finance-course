@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useNavigate, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -14,7 +14,6 @@ import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
-import Certificates from "./pages/Certificates";
 import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
 import Account from "./pages/Account";
@@ -145,11 +144,8 @@ const AppContent = () => {
                 <Progress />
               </ProtectedRoute>
             } />
-            <Route path="/certificates" element={
-              <ProtectedRoute>
-                <Certificates />
-              </ProtectedRoute>
-            } />
+            {/* Redirect old certificates route to progress page */}
+            <Route path="/certificates" element={<Navigate to="/progress" replace />} />
             <Route path="/videos" element={<VideoLibrary />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/account" element={
