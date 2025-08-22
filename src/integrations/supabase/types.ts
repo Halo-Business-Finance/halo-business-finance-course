@@ -2363,6 +2363,10 @@ export type Database = {
         Args: { profile_user_id: string }
         Returns: boolean
       }
+      check_current_user_admin_status: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       check_profile_access_rate_limit: {
         Args: { p_user_id: string }
         Returns: Json

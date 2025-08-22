@@ -18,24 +18,39 @@ export const useAdminRole = () => {
       }
 
       try {
-        // Get the user's role from the database in one call
-        const { data: roleData, error: roleError } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('is_active', true)
-          .single();
+        // Use the secure function to check admin status
+        const { data: statusData, error } = await supabase.rpc('check_current_user_admin_status');
 
-        if (roleError && roleError.code !== 'PGRST116') { // PGRST116 is "no rows returned"
-          console.error('Error checking role status:', roleError);
+        if (error) {
+          console.error('Error checking role status:', error);
           setIsAdmin(false);
           setUserRole(null);
         } else {
-          const role = roleData?.role;
-          const hasAdminRole = role === 'admin' || role === 'super_admin';
+          // Type the response properly
+          const status = statusData as {
+            is_admin: boolean;
+            roles: Array<{ role: string; is_active: boolean }>;
+          };
           
-          setIsAdmin(hasAdminRole);
-          setUserRole(role || null);
+          const isAdminUser = status?.is_admin || false;
+          const roles = status?.roles || [];
+          
+          // Get the highest priority role
+          let primaryRole = null;
+          if (roles.length > 0) {
+            // Find active roles and prioritize them
+            const activeRoles = roles.filter((r: any) => r.is_active);
+            if (activeRoles.length > 0) {
+              const priority = { 'super_admin': 1, 'admin': 2, 'manager': 3 };
+              const sortedRoles = activeRoles.sort((a: any, b: any) => 
+                (priority[a.role as keyof typeof priority] || 999) - (priority[b.role as keyof typeof priority] || 999)
+              );
+              primaryRole = sortedRoles[0].role;
+            }
+          }
+          
+          setIsAdmin(isAdminUser);
+          setUserRole(primaryRole);
         }
       } catch (error) {
         console.error('Error in checkAdminRole:', error);
