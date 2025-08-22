@@ -32,6 +32,8 @@ export const useAdminRole = () => {
             roles: Array<{ role: string; is_active: boolean }>;
           };
           
+          console.log('Admin role check response:', status);
+          
           const isAdminUser = status?.is_admin || false;
           const roles = status?.roles || [];
           
@@ -48,6 +50,12 @@ export const useAdminRole = () => {
               primaryRole = sortedRoles[0].role;
             }
           }
+          
+          console.log('Admin role check results:', {
+            isAdminUser,
+            primaryRole,
+            activeRoles: roles.filter((r: any) => r.is_active)
+          });
           
           setIsAdmin(isAdminUser);
           setUserRole(primaryRole);
