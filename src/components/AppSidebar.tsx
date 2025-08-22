@@ -169,22 +169,16 @@ export function AppSidebar() {
                           </div>
                         
                         {!collapsed && (
-                          <>
-                            <div className="flex-1 ml-3 min-w-0">
-                              <span className="text-xs font-medium leading-relaxed block text-black break-words">
-                                {module.title}
-                              </span>
-                              {module.status === "in-progress" && (
-                                <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
-                                  <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse"></div>
-                                </div>
-                              )}
-                            </div>
-                            
-                            <div className="ml-2 flex-shrink-0 self-start mt-0.5">
-                              {getStatusBadge(module.status)}
-                            </div>
-                          </>
+                          <div className="flex-1 ml-3 min-w-0">
+                            <span className="text-xs font-medium leading-relaxed block text-black break-words">
+                              {module.title}
+                            </span>
+                            {module.status === "in-progress" && (
+                              <div className="w-full bg-muted/50 rounded-full h-1 mt-1 overflow-hidden">
+                                <div className="bg-gradient-primary h-1 rounded-full w-[65%] animate-pulse"></div>
+                              </div>
+                            )}
+                          </div>
                          )}
                         </div>
                         {/* Hover effect overlay */}
