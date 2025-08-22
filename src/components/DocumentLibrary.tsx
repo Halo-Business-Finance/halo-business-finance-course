@@ -98,7 +98,7 @@ export function DocumentLibrary({ moduleId }: DocumentLibraryProps) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  const categories = ["all", "reference", "worksheet", "template", "guide"];
+  const categories = ["all", ...new Set(documents.map(doc => doc.category).filter(Boolean))].filter(cat => cat);
 
   const filteredDocuments = documents.filter(doc => 
     selectedCategory === "all" || doc.category === selectedCategory
@@ -133,7 +133,7 @@ export function DocumentLibrary({ moduleId }: DocumentLibraryProps) {
       <div className="flex items-center gap-4">
         <Filter className="h-4 w-4 text-muted-foreground" />
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="flex-1">
-          <TabsList className="grid w-fit grid-cols-5">
+          <TabsList className="grid w-fit auto-cols-fr" style={{ gridTemplateColumns: `repeat(${categories.length}, minmax(0, 1fr))` }}>
             {categories.map(category => (
               <TabsTrigger key={category} value={category} className="capitalize">
                 {category}
