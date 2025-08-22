@@ -752,7 +752,6 @@ const AdminDashboard = () => {
           <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="content">Content Management</TabsTrigger>
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
-          <TabsTrigger value="security">Security Events</TabsTrigger>
           <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
         </TabsList>
@@ -1151,54 +1150,6 @@ const AdminDashboard = () => {
           )}
         </TabsContent>
 
-        <TabsContent value="security" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Security Events</CardTitle>
-              <CardDescription>
-                Monitor system security events and potential threats
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Event Type</TableHead>
-                    <TableHead>Severity</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Details</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {securityEvents.map((event) => (
-                    <TableRow key={event.id}>
-                      <TableCell className="font-medium">
-                        {event.event_type.replace(/_/g, ' ')}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={getSeverityBadgeVariant(event.severity)}>
-                          {event.severity}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-mono text-sm">
-                        {event.user_id ? `${event.user_id.slice(0, 8)}...` : 'System'}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(event.created_at).toLocaleString()}
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="ghost">
-                          <Eye className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         <TabsContent value="monitoring" className="space-y-4">
           <SecurityDashboard />
