@@ -447,7 +447,7 @@ const AccountPage = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <User className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">Account</h1>
+          <h1 className="text-2xl font-bold text-foreground">My Account</h1>
         </div>
         
         <TabsList className="grid w-auto grid-cols-5 bg-transparent border-none p-0 h-auto gap-2">
