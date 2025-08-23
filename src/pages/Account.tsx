@@ -641,17 +641,6 @@ const AccountPage = () => {
               </div>
             </CardContent>
           </Card>
-
-          {/* Tab Navigation */}
-          <div className="flex justify-center">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-1 gap-2">
-              <TabsTrigger value="account" className="text-xs">Account</TabsTrigger>
-              <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-              <TabsTrigger value="privacy" className="text-xs">Privacy</TabsTrigger>
-              <TabsTrigger value="preferences" className="text-xs">Preferences</TabsTrigger>
-              <TabsTrigger value="billing" className="text-xs">Billing</TabsTrigger>
-            </TabsList>
-          </div>
         </div>
 
         {/* Main Content */}
