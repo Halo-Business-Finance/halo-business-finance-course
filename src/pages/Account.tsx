@@ -647,27 +647,19 @@ const AccountPage = () => {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => {
-                      console.log('Password form toggle clicked, current state:', showPasswordForm);
-                      setShowPasswordForm(!showPasswordForm);
-                    }}
+                    onClick={() => setShowPasswordForm(!showPasswordForm)}
                   >
                     <Shield className="h-4 w-4 mr-2" />
                     {showPasswordForm ? 'Close Window' : 'Change Password'}
                   </Button>
-                  {showPasswordForm && (
-                    <div className="mt-4 p-2 bg-green-100 text-green-800 rounded text-sm">
-                      Debug: Password form is visible (showPasswordForm = {showPasswordForm.toString()})
-                    </div>
-                  )}
                 </CardContent>
               </Card>
               
               {/* Password & Security Form - Only show when button is clicked */}
               {showPasswordForm && (
-                <Card className="border-2 border-blue-500">
-                  <CardHeader className="bg-blue-50">
-                    <CardTitle className="text-blue-900">Password & Security</CardTitle>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Password & Security</CardTitle>
                     <CardDescription>
                       Manage your password and security settings
                     </CardDescription>
