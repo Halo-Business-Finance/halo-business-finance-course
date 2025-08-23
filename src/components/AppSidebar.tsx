@@ -162,7 +162,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                      <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                       <item.icon className="h-4 w-4 text-white" />
+                       <item.icon className="h-4 w-4 text-halo-orange" />
                        {!collapsed && <span className="text-white text-xs">{item.title}</span>}
                      </NavLink>
                   </SidebarMenuButton>
