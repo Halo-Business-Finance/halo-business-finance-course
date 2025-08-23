@@ -29,6 +29,7 @@ import Business from "./pages/Business";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Support from "./pages/Support";
+import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
 
 const queryClient = new QueryClient();
@@ -125,7 +126,7 @@ const HeaderContent = () => {
                 Sign In
               </Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/signup">
               <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
                 <Play className="h-4 w-4" />
                 Get Started
@@ -173,6 +174,11 @@ const AppContent = () => {
             <Route path="/auth" element={
               <ProtectedRoute requireAuth={false}>
                 <Auth />
+              </ProtectedRoute>
+            } />
+            <Route path="/signup" element={
+              <ProtectedRoute requireAuth={false}>
+                <SignUp />
               </ProtectedRoute>
             } />
             <Route path="/admin/login" element={
