@@ -5,7 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, MessageCircle, Mail, Phone, Search } from "lucide-react";
 import supportHero from "@/assets/support-hero.jpg";
-import supportPattern from "@/assets/support-pattern.jpg";
 
 const Support = () => {
   const faqs = [
@@ -75,24 +74,14 @@ const Support = () => {
       </div>
       
       {/* Content Section */}
-      <div className="relative">
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${supportPattern})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'repeat'
-          }}
-        />
-        <div className="relative container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12">
 
         <div className="max-w-2xl mx-auto mb-12">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Search for help topics..." 
-              className="pl-10 bg-white/90 backdrop-blur-sm"
+              className="pl-10"
             />
           </div>
         </div>
@@ -101,7 +90,7 @@ const Support = () => {
           {supportOptions.map((option, index) => {
             const Icon = option.icon;
             return (
-              <Card key={index} className="text-center bg-white/95 backdrop-blur-sm hover:shadow-lg transition-shadow">
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <Icon className="h-6 w-6 text-primary" />
@@ -126,7 +115,7 @@ const Support = () => {
             </h2>
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="bg-white/90 backdrop-blur-sm rounded-lg px-4">
+                <AccordionItem key={index} value={`item-${index}`} className="rounded-lg px-4">
                   <AccordionTrigger>{faq.question}</AccordionTrigger>
                   <AccordionContent>{faq.answer}</AccordionContent>
                 </AccordionItem>
@@ -134,7 +123,7 @@ const Support = () => {
             </Accordion>
           </div>
 
-          <Card className="bg-white/95 backdrop-blur-sm">
+          <Card>
             <CardHeader>
               <CardTitle>Contact Form</CardTitle>
               <CardDescription>Can't find what you're looking for? Send us a message.</CardDescription>
@@ -149,7 +138,6 @@ const Support = () => {
           </Card>
         </div>
         </div>
-      </div>
     </div>
   );
 };

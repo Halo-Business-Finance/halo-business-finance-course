@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import blogHero from "@/assets/blog-hero.jpg";
-import blogPattern from "@/assets/blog-pattern.jpg";
 import fintechPost from "@/assets/fintech-post.jpg";
 import creditSkillsPost from "@/assets/credit-skills-post.jpg";
 
@@ -73,24 +72,14 @@ const Blog = () => {
       </div>
       
       {/* Content Section */}
-      <div className="relative">
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${blogPattern})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'repeat'
-          }}
-        />
-        <div className="relative container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12">
 
         <div className="flex flex-wrap gap-2 justify-center mb-8">
           {categories.map((category) => (
             <Badge 
               key={category} 
               variant={category === "All" ? "default" : "outline"}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground bg-white/90 backdrop-blur-sm"
+              className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
             >
               {category}
             </Badge>
@@ -99,7 +88,7 @@ const Blog = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {posts.map((post) => (
-            <Card key={post.id} className="hover:shadow-lg transition-shadow bg-white/95 backdrop-blur-sm overflow-hidden">
+            <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
               <div className="h-48 overflow-hidden">
                 <img 
                   src={post.image} 
@@ -140,12 +129,11 @@ const Blog = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="bg-white/90 backdrop-blur-sm">
+          <Button variant="outline" size="lg">
             Load More Articles
           </Button>
         </div>
         </div>
-      </div>
     </div>
   );
 };

@@ -178,20 +178,10 @@ const Courses = () => {
       </div>
       
       {/* Content Section */}
-      <div className="relative">
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${learningBackground})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-        <div className="relative container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12">
 
         {modules.length === 0 ? (
-          <Card className="text-center py-12 bg-white/90 backdrop-blur-sm">
+          <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Courses Available</h3>
@@ -203,26 +193,16 @@ const Courses = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {modules.map((module) => (
-              <Card key={module.id} className="hover:shadow-lg transition-shadow bg-white/95 backdrop-blur-sm border-white/20">
-                <CardHeader className="relative">
-                  <div 
-                    className="absolute inset-0 opacity-10 rounded-t-lg"
-                    style={{
-                      backgroundImage: `url(${financeCourseBg})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  />
-                  <div className="relative">
-                    <div className="flex justify-between items-start mb-2">
-                      <Badge variant="secondary">Finance</Badge>
-                      <Badge className={getLevelColor(module.skill_level)}>
-                        {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-xl text-blue-900">{module.title}</CardTitle>
-                    <CardDescription className="text-black">{module.description}</CardDescription>
+              <Card key={module.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge variant="secondary">Finance</Badge>
+                    <Badge className={getLevelColor(module.skill_level)}>
+                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                    </Badge>
                   </div>
+                  <CardTitle className="text-xl text-blue-900">{module.title}</CardTitle>
+                  <CardDescription className="text-black">{module.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
@@ -266,7 +246,6 @@ const Courses = () => {
             ))}
           </div>
         )}
-        </div>
       </div>
     </div>
   );
