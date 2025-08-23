@@ -113,11 +113,13 @@ const HeaderContent = () => {
             </Button>
           </div>
         )}
-        
-        {user && (
-          <span className="text-sm text-black">Welcome back, {getFirstName()}!</span>
-        )}
       </div>
+
+      {user && (
+        <div className="flex-1 flex justify-center">
+          <span className="text-sm text-black">Welcome back, {getFirstName()}!</span>
+        </div>
+      )}
 
       {!user && (
         <div className="flex-1 flex items-center justify-center">
