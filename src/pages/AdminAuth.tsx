@@ -94,16 +94,20 @@ const AdminAuthPage = () => {
       }
 
       if (data.user) {
-        // Check if user has admin role using secure RPC functions
-        const [adminCheck, superAdminCheck] = await Promise.all([
+        // Check if user has any admin-level role using secure RPC functions
+        const [adminCheck, superAdminCheck, techSupportCheck, instructorCheck] = await Promise.all([
           supabase.rpc('check_user_has_role', { check_role: 'admin' }),
-          supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+          supabase.rpc('check_user_has_role', { check_role: 'super_admin' }),
+          supabase.rpc('check_user_has_role', { check_role: 'tech_support_admin' }),
+          supabase.rpc('check_user_has_role', { check_role: 'instructor' })
         ]);
 
-        if (adminCheck.error || superAdminCheck.error) {
+        if (adminCheck.error || superAdminCheck.error || techSupportCheck.error || instructorCheck.error) {
           console.error('Error checking admin permissions:', { 
             adminError: adminCheck.error, 
-            superAdminError: superAdminCheck.error 
+            superAdminError: superAdminCheck.error,
+            techSupportError: techSupportCheck.error,
+            instructorError: instructorCheck.error
           });
           await supabase.auth.signOut();
           toast({
@@ -114,13 +118,13 @@ const AdminAuthPage = () => {
           return;
         }
 
-        const hasAdminRole = adminCheck.data || superAdminCheck.data;
+        const hasAdminRole = adminCheck.data || superAdminCheck.data || techSupportCheck.data || instructorCheck.data;
 
         if (!hasAdminRole) {
           await supabase.auth.signOut();
           toast({
             title: "Access Denied",
-            description: "You don't have admin privileges to access this area.",
+            description: "You need administrative, instructor, or tech support privileges to access this area.",
             variant: "destructive"
           });
           return;
