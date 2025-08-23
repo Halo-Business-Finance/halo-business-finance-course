@@ -195,16 +195,15 @@ export function AppSidebar() {
                              });
                            }
                          }}
-                         className={({ isActive }) => `
-                           ${getNavCls(isActive)} 
-                           ${isModuleLocked ? "opacity-50" : ""} 
-                           ${!canAccess ? "cursor-not-allowed" : ""}
-                           group relative overflow-hidden rounded-xl p-3 transition-all duration-500 ease-out
-                           hover:bg-gradient-to-r hover:from-background/80 hover:to-muted/20
-                           hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02]
-                           border border-transparent hover:border-primary/20
-                           backdrop-blur-sm
-                         `}
+                          className={({ isActive }) => `
+                            ${getNavCls(isActive)} 
+                            ${isModuleLocked ? "opacity-50" : ""} 
+                            ${!canAccess ? "cursor-not-allowed" : ""}
+                            group relative overflow-hidden rounded-xl p-3 transition-all duration-500 ease-out
+                            hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02]
+                            border border-transparent hover:border-primary/20
+                            backdrop-blur-sm
+                          `}
                        >
                         <div className="relative z-10 flex items-center w-full gap-3">
                           {/* Status Indicator */}
@@ -277,8 +276,7 @@ export function AppSidebar() {
                           )}
                         </div>
                         
-                        {/* Elegant hover effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-xl"></div>
+                         {/* Elegant hover effect - removed background color */}
                         
                         {/* Active state indicator */}
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
