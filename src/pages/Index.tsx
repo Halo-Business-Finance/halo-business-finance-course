@@ -1,8 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, BookOpen, Users, Award, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 
 const Index = () => {
   const { user } = useAuth();
@@ -13,124 +15,399 @@ const Index = () => {
     return null;
   }
 
+  const stats = [
+    { label: "Industry Professionals Trained", value: "10,000+", icon: Users },
+    { label: "Certification Success Rate", value: "96%", icon: Award },
+    { label: "Course Completion Rate", value: "94%", icon: Target },
+    { label: "Career Advancement Rate", value: "87%", icon: TrendingUp }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Senior Loan Officer",
+      company: "First National Bank",
+      content: "The Halo program transformed my understanding of commercial lending. I received a promotion within 6 months of completion.",
+      rating: 5
+    },
+    {
+      name: "Michael Chen",
+      role: "Business Development Manager",
+      company: "Capital Solutions Group",
+      content: "Exceptional curriculum and real-world case studies. This program gave me the confidence to handle complex deals.",
+      rating: 5
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Credit Analyst",
+      company: "Metro Commercial Finance",
+      content: "The interactive tools and expert instructors made complex concepts easy to understand and apply immediately.",
+      rating: 5
+    }
+  ];
+
+  const learningPaths = [
+    {
+      title: "Business Finance Foundations",
+      duration: "4 weeks",
+      modules: 8,
+      description: "Master the fundamentals of business finance, financial analysis, and lending principles.",
+      features: ["Financial Statement Analysis", "Cash Flow Management", "Risk Assessment", "Industry Best Practices"]
+    },
+    {
+      title: "Commercial Lending Mastery",
+      duration: "6 weeks", 
+      modules: 12,
+      description: "Advanced commercial lending strategies, underwriting, and portfolio management.",
+      features: ["Advanced Underwriting", "Deal Structuring", "Portfolio Management", "Regulatory Compliance"]
+    },
+    {
+      title: "SBA Loan Specialist",
+      duration: "3 weeks",
+      modules: 6,
+      description: "Comprehensive training on SBA loan programs, application processes, and compliance.",
+      features: ["SBA Program Guide", "Application Process", "Documentation", "Compliance Requirements"]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <Building className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-playfair font-semibold text-xl text-halo-navy">Halo Business Finance</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link to="/auth">
+              <Button variant="ghost" className="text-halo-navy hover:text-primary">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/auth">
+              <Button className="bg-gradient-primary text-white shadow-elevated">
+                Get Started
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-8 max-w-4xl mx-auto">
-            
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-              Master Business Finance
-              <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent"> & Lending</span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Transform your career with our comprehensive business finance and lending program. 
-              Developed by industry experts and delivered through Stanford-level curriculum.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/auth">
-                <Button size="lg" className="text-lg px-8 py-6 group">
-                  Start Learning Today
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link to="/auth">
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                  Sign In
-                </Button>
-              </Link>
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-24 pb-16 lg:pb-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8 animate-fade-in">
+                <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 hover:bg-primary/15">
+                  <Star className="h-4 w-4" />
+                  Industry Leading Training Program
+                </Badge>
+                
+                <div className="space-y-6">
+                  <h1 className="text-5xl lg:text-6xl font-playfair font-bold leading-tight text-halo-navy">
+                    Master Business
+                    <span className="block bg-gradient-hero bg-clip-text text-transparent">
+                      Finance & Lending
+                    </span>
+                  </h1>
+                  
+                  <p className="text-xl leading-relaxed text-muted-foreground max-w-2xl">
+                    Transform your career with our comprehensive business finance and commercial lending program. 
+                    Developed by industry experts and delivered through Stanford-level curriculum.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link to="/auth">
+                    <Button size="lg" className="text-lg px-8 py-6 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
+                      Start Learning Today
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-primary/20 hover:bg-primary/5 group">
+                    <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Watch Demo
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-8 pt-4">
+                  <div className="flex -space-x-2">
+                    {[1,2,3,4].map((i) => (
+                      <div key={i} className="w-8 h-8 rounded-full bg-gradient-primary border-2 border-background" />
+                    ))}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium text-foreground">10,000+ professionals</span> have advanced their careers
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative lg:block hidden">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-3xl opacity-20" />
+                  <Card className="relative bg-white/50 backdrop-blur-sm border-0 shadow-hero">
+                    <CardContent className="p-8">
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 bg-gradient-success rounded-lg flex items-center justify-center">
+                            <BarChart3 className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-halo-navy">Live Progress Tracking</h3>
+                            <p className="text-sm text-muted-foreground">Real-time learning analytics</p>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div className="flex justify-between text-sm">
+                            <span>Course Completion</span>
+                            <span className="font-medium">85%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-gradient-primary h-2 rounded-full w-[85%]" />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center p-3 bg-primary/5 rounded-lg">
+                            <div className="text-2xl font-bold text-primary">94%</div>
+                            <div className="text-xs text-muted-foreground">Success Rate</div>
+                          </div>
+                          <div className="text-center p-3 bg-accent/5 rounded-lg">
+                            <div className="text-2xl font-bold text-accent">8.5k</div>
+                            <div className="text-xs text-muted-foreground">Graduates</div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-muted/30">
+      {/* Stats Section */}
+      <section className="py-16 bg-halo-navy">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div key={index} className="text-center text-white animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="w-16 h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Icon className="h-8 w-8 text-halo-orange" />
+                  </div>
+                  <div className="text-3xl font-bold font-playfair mb-2">{stat.value}</div>
+                  <div className="text-white/80 text-sm">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Paths Section */}
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl font-bold">Why Choose Halo Learning?</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20">
+              <Target className="h-4 w-4" />
+              Structured Learning Paths
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              Choose Your Path to Success
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Comprehensive training programs designed to meet you where you are and take you where you want to go
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {learningPaths.map((path, index) => (
+              <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
+                <CardHeader className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className="text-xs">
+                      {path.duration} • {path.modules} modules
+                    </Badge>
+                    <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
+                    {path.title}
+                  </CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    {path.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-3">
+                    {path.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Button className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all">
+                    View Curriculum
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              Why Choose Halo Learning?
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Industry-leading curriculum designed to accelerate your success in business finance
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center border-2 hover:border-primary/20 transition-colors">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Expert Curriculum</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  8 comprehensive modules covering everything from credit analysis to portfolio management
-                </CardDescription>
-              </CardContent>
-            </Card>
+            {[
+              {
+                icon: BookOpen,
+                title: "Expert Curriculum",
+                description: "8 comprehensive modules covering everything from credit analysis to portfolio management",
+                color: "primary"
+              },
+              {
+                icon: Users,
+                title: "Industry Experts", 
+                description: "Learn from seasoned professionals with decades of experience in business lending",
+                color: "accent"
+              },
+              {
+                icon: Award,
+                title: "Certification",
+                description: "Earn recognized certificates that validate your expertise in business finance",
+                color: "primary"
+              },
+              {
+                icon: TrendingUp,
+                title: "Career Growth",
+                description: "Advance your career with in-demand skills that employers are actively seeking",
+                color: "accent"
+              }
+            ].map((feature, index) => (
+              <Card key={index} className="text-center border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <CardHeader>
+                  <div className={`w-16 h-16 bg-${feature.color}/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
+                    <feature.icon className={`h-8 w-8 text-${feature.color}`} />
+                  </div>
+                  <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <Card className="text-center border-2 hover:border-primary/20 transition-colors">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Industry Experts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Learn from seasoned professionals with decades of experience in business lending
-                </CardDescription>
-              </CardContent>
-            </Card>
+      {/* Testimonials Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-16">
+            <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20">
+              <Star className="h-4 w-4" />
+              Success Stories
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              What Our Graduates Say
+            </h2>
+          </div>
 
-            <Card className="text-center border-2 hover:border-primary/20 transition-colors">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Certification</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Earn recognized certificates that validate your expertise in business finance
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center border-2 hover:border-primary/20 transition-colors">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Career Growth</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Advance your career with in-demand skills that employers are actively seeking
-                </CardDescription>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex gap-1">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-accent text-accent" />
+                    ))}
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed italic">
+                    "{testimonial.content}"
+                  </p>
+                  <div className="pt-4 border-t">
+                    <div className="font-semibold text-halo-navy">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {testimonial.role} at {testimonial.company}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-glow text-white">
-        <div className="container mx-auto px-4 text-center space-y-8">
-          <h2 className="text-4xl font-bold">Ready to Transform Your Career?</h2>
-          <p className="text-xl opacity-90 max-w-2xl mx-auto">
-            Join thousands of professionals who have advanced their careers through our comprehensive training program.
-          </p>
-          <Link to="/auth">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
-              Get Started Now
-            </Button>
-          </Link>
+      <section className="py-20 bg-gradient-hero text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/90 to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-4xl lg:text-5xl font-playfair font-bold">
+                Ready to Transform Your Career?
+              </h2>
+              <p className="text-xl opacity-90 leading-relaxed">
+                Join thousands of professionals who have advanced their careers through our comprehensive training program. 
+                Start your journey to becoming a business finance expert today.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/auth">
+                <Button size="lg" className="text-lg px-8 py-6 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
+                  <Zap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  Get Started Now
+                </Button>
+              </Link>
+              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white/20 text-white hover:bg-white/10">
+                <Shield className="mr-2 h-5 w-5" />
+                Learn More
+              </Button>
+            </div>
+
+            <div className="flex justify-center items-center gap-8 pt-8 text-white/80">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-halo-orange" />
+                <span>No Risk, 30-Day Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-halo-orange" />
+                <span>Industry Recognized Certification</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <HaloBrandFooter />
     </div>
   );
 };

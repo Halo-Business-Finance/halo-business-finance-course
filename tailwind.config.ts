@@ -43,6 +43,11 @@ export default {
 					'Roboto',
 					'sans-serif'
 				],
+				playfair: [
+					'"Playfair Display"',
+					'Georgia',
+					'serif'
+				],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
