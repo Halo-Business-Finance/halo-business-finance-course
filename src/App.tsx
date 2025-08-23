@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User, Building2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -120,12 +120,14 @@ const HeaderContent = () => {
         ) : (
           <>
             <Link to="/auth">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none">
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
+                <LogIn className="h-4 w-4" />
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none">
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
+                <Play className="h-4 w-4" />
                 Get Started
               </Button>
             </Link>

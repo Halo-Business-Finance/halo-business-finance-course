@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, Play, Mail } from "lucide-react";
 
 const Pricing = () => {
   const plans = [
@@ -85,10 +85,20 @@ const Pricing = () => {
                 ))}
               </ul>
               <Button 
-                className="w-full" 
+                className="w-full flex items-center gap-2" 
                 variant={plan.popular ? "default" : "outline"}
               >
-                {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                {plan.name === "Enterprise" ? (
+                  <>
+                    <Mail className="h-4 w-4" />
+                    Contact Sales
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4" />
+                    Get Started
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>

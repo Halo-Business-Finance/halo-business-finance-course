@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -74,8 +75,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/support" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-2")}
             >
+              <MessageCircle className="h-4 w-4" />
               Support
             </NavLink>
           </NavigationMenuLink>
