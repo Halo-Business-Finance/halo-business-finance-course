@@ -534,12 +534,12 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="account">Account</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="privacy">Privacy</TabsTrigger>
-              <TabsTrigger value="preferences">Preferences</TabsTrigger>
-              <TabsTrigger value="billing">Billing</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-5 bg-halo-navy border-halo-navy">
+              <TabsTrigger value="account" className="text-white data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/80 hover:text-white">Account</TabsTrigger>
+              <TabsTrigger value="notifications" className="text-white data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/80 hover:text-white">Notifications</TabsTrigger>
+              <TabsTrigger value="privacy" className="text-white data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/80 hover:text-white">Privacy</TabsTrigger>
+              <TabsTrigger value="preferences" className="text-white data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/80 hover:text-white">Preferences</TabsTrigger>
+              <TabsTrigger value="billing" className="text-white data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/80 hover:text-white">Billing</TabsTrigger>
             </TabsList>
 
 
