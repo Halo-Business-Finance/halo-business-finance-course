@@ -15,10 +15,10 @@ interface SkillLevelFilterProps {
 
 export function SkillLevelFilter({ selectedLevel, onLevelChange, counts }: SkillLevelFilterProps) {
   const levels = [
-    { id: 'all', label: 'All Levels', icon: '📚' },
-    { id: 'beginner', label: 'Beginner', icon: '🌱' },
-    { id: 'intermediate', label: 'Intermediate', icon: '🌿' },
-    { id: 'expert', label: 'Expert', icon: '🌳' }
+    { id: 'all', label: 'All Levels' },
+    { id: 'beginner', label: 'Beginner' },
+    { id: 'intermediate', label: 'Intermediate' },
+    { id: 'expert', label: 'Expert' }
   ];
 
   const getSkillLevelColor = (level: string) => {
@@ -54,7 +54,6 @@ export function SkillLevelFilter({ selectedLevel, onLevelChange, counts }: Skill
                 : ''
             } transition-all duration-200`}
           >
-            <span className="mr-2">{level.icon}</span>
             {level.label}
             {counts && counts[level.id as keyof typeof counts] !== undefined && (
               <Badge 
