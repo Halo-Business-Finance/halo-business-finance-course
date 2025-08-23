@@ -6,11 +6,14 @@ import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star
 import { Link } from "react-router-dom";
 import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
+import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
 
 const Index = () => {
   const { user } = useAuth();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
+  const [selectedLearningPath, setSelectedLearningPath] = useState<any>(null);
 
   // If user is logged in, redirect to dashboard
   if (user) {
@@ -265,11 +268,15 @@ const Index = () => {
                       </div>
                     ))}
                   </div>
-                  <Link to="/auth">
-                    <Button className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all">
-                      View Curriculum
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all"
+                    onClick={() => {
+                      setSelectedLearningPath(path);
+                      setIsCurriculumModalOpen(true);
+                    }}
+                  >
+                    View Curriculum
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -424,6 +431,15 @@ const Index = () => {
         isOpen={isDemoModalOpen} 
         onClose={() => setIsDemoModalOpen(false)} 
       />
+      
+      {/* Curriculum Modal */}
+      {selectedLearningPath && (
+        <CurriculumModal
+          open={isCurriculumModalOpen}
+          onOpenChange={setIsCurriculumModalOpen}
+          learningPath={selectedLearningPath}
+        />
+      )}
     </div>
   );
 };
