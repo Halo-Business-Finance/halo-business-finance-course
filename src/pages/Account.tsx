@@ -118,11 +118,8 @@ const AccountPage = () => {
         return;
       }
 
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      // Use the new secure function instead of direct table access
+      const { data: profiles, error } = await supabase.rpc('get_user_profile');
 
       if (error) {
         console.error('Error loading profile:', error);
@@ -133,6 +130,9 @@ const AccountPage = () => {
         });
         return;
       }
+
+      // The function returns an array, get the first profile
+      const profile = profiles && profiles.length > 0 ? profiles[0] : null;
 
       if (profile) {
         const profileData = {
@@ -231,10 +231,11 @@ const AccountPage = () => {
         company: editForm.company
       });
 
+      // Update profile through secure RLS-protected direct update
+      // Since we're updating our own profile, this will go through the "Users can update own profile only" policy
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: user.id,
+        .update({
           name: editForm.name,
           email: editForm.email,
           phone: editForm.phone,
@@ -243,9 +244,8 @@ const AccountPage = () => {
           city: editForm.city,
           state: editForm.state,
           company: editForm.company
-        }, {
-          onConflict: 'user_id'
-        });
+        })
+        .eq('user_id', user.id);
 
       if (error) {
         console.error('Error saving profile:', error);
@@ -303,6 +303,7 @@ const AccountPage = () => {
         return;
       }
 
+      // Update preferences through secure RLS-protected direct update
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -359,6 +360,7 @@ const AccountPage = () => {
         return;
       }
 
+      // Update notification settings through secure RLS-protected direct update
       const { error } = await supabase
         .from('profiles')
         .update({
