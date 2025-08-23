@@ -54,10 +54,11 @@ const HeaderContent = () => {
     navigate(1);
   };
 
-  if (!user) return null;
+  // Show header for both logged in and logged out users
 
   // Extract first name from email or user metadata
   const getFirstName = () => {
+    if (!user) return 'User';
     if (user.user_metadata?.full_name) {
       return user.user_metadata.full_name.split(' ')[0];
     }
@@ -80,26 +81,28 @@ const HeaderContent = () => {
 
   return (
     <header className="sticky top-0 h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
-      <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />
+      {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
       
-      <div className="flex items-center gap-2">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={goBack}
-          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={goForward}
-          className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
+      {user && (
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={goBack}
+            className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={goForward}
+            className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
       
       <div className="flex-1 flex items-center justify-center">
         {user ? (
@@ -111,12 +114,13 @@ const HeaderContent = () => {
         )}
       </div>
       
-      <div className="flex items-center mr-4 gap-4">
-        <p className="text-sm text-black">
-          {formatDateTime(currentTime)}
-        </p>
-        
-      </div>
+      {user && (
+        <div className="flex items-center mr-4 gap-4">
+          <p className="text-sm text-black">
+            {formatDateTime(currentTime)}
+          </p>
+        </div>
+      )}
     </header>
   );
 };
