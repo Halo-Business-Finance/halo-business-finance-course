@@ -48,6 +48,14 @@ export default {
 					'Georgia',
 					'serif'
 				],
+				aptos: [
+					'"Aptos"',
+					'"Segoe UI"',
+					'system-ui',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'sans-serif'
+				],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
