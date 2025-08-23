@@ -81,6 +81,9 @@ const HeaderContent = () => {
 
   return (
     <header className="sticky top-0 h-24 flex items-center border-b bg-white z-50 px-4 gap-4">
+      <div className="flex items-center gap-3">
+        <span className="font-semibold text-lg text-blue-900">Halo Business Finance</span>
+      </div>
       
       {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
       
