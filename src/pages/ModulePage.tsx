@@ -305,15 +305,47 @@ const ModulePage = () => {
           {renderVideosTab()}
         </TabsContent>
 
-        {/* Other tabs would go here - simplified for debugging */}
         <TabsContent value="lessons">
           <Card>
             <CardHeader>
               <CardTitle>Module Lessons</CardTitle>
               <CardDescription>Complete the lessons in order to progress through the module</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>Lessons content would be displayed here...</p>
+            <CardContent className="space-y-4">
+              {courseModule.topics && courseModule.topics.length > 0 ? (
+                courseModule.topics.map((topic, index) => (
+                  <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <span className="text-sm font-medium text-primary">{index + 1}</span>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium text-foreground">{topic}</h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Clock className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">
+                            {Math.ceil((courseModule.lessons || 12) / courseModule.topics.length * 15)} minutes
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <Badge variant="success">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          Available
+                        </Badge>
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center p-8">
+                  <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold mb-2">No Lessons Available</h3>
+                  <p className="text-muted-foreground">Lesson content for this module will be available soon.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
