@@ -92,11 +92,11 @@ const Pricing = () => {
             </Badge>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-              <span className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-900 via-blue-900 to-blue-900 bg-clip-text text-transparent">
                 Choose Your
               </span>
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-900 via-blue-900 to-blue-900 bg-clip-text text-transparent">
                 Success Plan
               </span>
             </h1>

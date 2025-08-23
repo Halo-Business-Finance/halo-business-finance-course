@@ -40,7 +40,7 @@ const Courses = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-blue-600 mb-4">Course Catalog</h1>
+        <h1 className="text-4xl font-bold text-blue-900 mb-4">Course Catalog</h1>
         <p className="text-lg text-muted-foreground">
           Explore our comprehensive collection of professional training courses designed to advance your career.
         </p>
@@ -54,7 +54,7 @@ const Courses = () => {
                 <Badge variant="secondary">{course.category}</Badge>
                 <Badge variant="outline">{course.level}</Badge>
               </div>
-              <CardTitle className="text-xl text-blue-600">{course.title}</CardTitle>
+              <CardTitle className="text-xl text-blue-900">{course.title}</CardTitle>
               <CardDescription>{course.description}</CardDescription>
             </CardHeader>
             <CardContent>

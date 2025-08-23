@@ -115,9 +115,9 @@ const Index = () => {
               <div className="space-y-8 animate-fade-in">
                 
                 <div className="space-y-6">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight text-blue-600">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight text-blue-900">
                     Master Business
-                    <span className="block bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
+                    <span className="block bg-gradient-to-r from-blue-900 to-blue-900 bg-clip-text text-transparent">
                       Finance & Lending
                     </span>
                   </h1>
@@ -204,7 +204,7 @@ const Index = () => {
                 <Target className="h-4 w-4" />
                 Structured Learning Paths
               </Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-600">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-900">
                 Choose Your Path to Success
               </h2>
               <p className="text-lg text-foreground max-w-3xl">
@@ -262,7 +262,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
             <div className="text-center lg:text-left space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-600">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-900">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <p className="text-lg text-foreground max-w-3xl">
@@ -337,7 +337,7 @@ const Index = () => {
               <Star className="h-4 w-4" />
               Success Stories
             </Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-600">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-blue-900">
               What Our Graduates Say
             </h2>
           </div>
