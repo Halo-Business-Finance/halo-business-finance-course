@@ -189,11 +189,13 @@ const AppContent = () => {
             <Route path="/certificates" element={<Navigate to="/progress" replace />} />
             <Route path="/videos" element={<VideoLibrary />} />
             <Route path="/resources" element={<Resources />} />
-            <Route path="/account" element={
+            <Route path="/my-account" element={
               <ProtectedRoute>
                 <Account />
               </ProtectedRoute>
             } />
+            {/* Redirect old account route to my-account page */}
+            <Route path="/account" element={<Navigate to="/my-account" replace />} />
             <Route path="/auth" element={
               <ProtectedRoute requireAuth={false}>
                 <Auth />
