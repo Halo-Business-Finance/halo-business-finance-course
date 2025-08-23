@@ -43,19 +43,6 @@ export function EnhancedModuleCard({ module, userProgress }: EnhancedModuleCardP
     }
   };
 
-  const getSkillLevelIcon = (level: string) => {
-    switch (level) {
-      case 'beginner':
-        return '🌱';
-      case 'intermediate':
-        return '🌿';
-      case 'expert':
-        return '🌳';
-      default:
-        return '📚';
-    }
-  };
-
   const progress = userProgress?.completion_percentage || 0;
   const isCompleted = userProgress?.is_completed || false;
   const isLocked = module.is_locked || false;
@@ -67,7 +54,6 @@ export function EnhancedModuleCard({ module, userProgress }: EnhancedModuleCardP
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">{getSkillLevelIcon(module.skill_level)}</span>
             <Badge 
               variant="outline" 
               className={`text-xs font-medium ${getSkillLevelColor(module.skill_level)}`}
