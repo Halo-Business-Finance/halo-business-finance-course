@@ -444,7 +444,7 @@ const AccountPage = () => {
   }
 
   return (
-    <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
+    <Tabs value={currentTab} className="container mx-auto p-6 space-y-2 bg-white min-h-screen">
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-4 max-w-4xl mx-auto">
         <CardHeader className="pb-3">
