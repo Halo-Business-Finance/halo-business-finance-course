@@ -759,7 +759,7 @@ const AdminDashboard = () => {
         <TabsList>
           <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="trainee-progress">
-            <TrendingUp className="h-4 w-4 mr-2" />
+            <TrendingUp className="h-4 w-4 mr-2 text-orange-500" />
             Trainee Progress
           </TabsTrigger>
           <TabsTrigger value="content">Content Management</TabsTrigger>
@@ -772,19 +772,19 @@ const AdminDashboard = () => {
           <Tabs defaultValue="modules" className="space-y-4">
             <TabsList>
               <TabsTrigger value="modules">
-                <BookOpen className="h-4 w-4 mr-2" />
+                <BookOpen className="h-4 w-4 mr-2 text-orange-500" />
                 Modules
               </TabsTrigger>
               <TabsTrigger value="videos">
-                <Video className="h-4 w-4 mr-2" />
+                <Video className="h-4 w-4 mr-2 text-orange-500" />
                 Videos
               </TabsTrigger>
               <TabsTrigger value="articles">
-                <FileText className="h-4 w-4 mr-2" />
+                <FileText className="h-4 w-4 mr-2 text-orange-500" />
                 Articles
               </TabsTrigger>
               <TabsTrigger value="resources">
-                <FileText className="h-4 w-4 mr-2" />
+                <FileText className="h-4 w-4 mr-2 text-orange-500" />
                 Resources
               </TabsTrigger>
             </TabsList>
@@ -820,7 +820,7 @@ const AdminDashboard = () => {
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>
-                      <Plus className="h-4 w-4 mr-2" />
+                      <Plus className="h-4 w-4 mr-2 text-orange-500" />
                       New User
                     </Button>
                   </DialogTrigger>
@@ -1065,7 +1065,7 @@ const AdminDashboard = () => {
                     </CardDescription>
                   </div>
                   <Button onClick={() => setShowInstructorForm(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 mr-2 text-orange-500" />
                     Add Instructor
                   </Button>
                 </div>
@@ -1204,7 +1204,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <Lock className="h-4 w-4 mr-2" />
+                      <Lock className="h-4 w-4 mr-2 text-orange-500" />
                       User Management
                     </Button>
                     <Button 
@@ -1217,7 +1217,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <Shield className="h-4 w-4 mr-2" />
+                      <Shield className="h-4 w-4 mr-2 text-orange-500" />
                       Authentication Providers
                     </Button>
                     <Button 
@@ -1230,7 +1230,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <Settings className="h-4 w-4 mr-2" />
+                      <Settings className="h-4 w-4 mr-2 text-orange-500" />
                       URL Configuration
                     </Button>
                   </CardContent>
@@ -1251,7 +1251,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      <AlertTriangle className="h-4 w-4 mr-2 text-orange-500" />
                       System Logs
                     </Button>
                     <Button 
@@ -1264,7 +1264,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <Database className="h-4 w-4 mr-2" />
+                      <Database className="h-4 w-4 mr-2 text-orange-500" />
                       Database Tables
                     </Button>
                     <Button 
@@ -1277,7 +1277,7 @@ const AdminDashboard = () => {
                         }
                       }}
                     >
-                      <Settings className="h-4 w-4 mr-2" />
+                      <Settings className="h-4 w-4 mr-2 text-orange-500" />
                       Project Settings
                     </Button>
                   </CardContent>
