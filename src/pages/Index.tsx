@@ -8,8 +8,8 @@ import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
-import heroBusinessTraining from "@/assets/hero-business-training.jpg";
-import learningPathsImage from "@/assets/learning-paths.jpg";
+import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
+import learningPathsImage from "@/assets/lending-curriculum-paths.jpg";
 import softwareTrainingImage from "@/assets/software-training.jpg";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
@@ -172,7 +172,7 @@ const Index = () => {
               <div className="relative lg:block hidden">
                 <img 
                   src={heroBusinessTraining} 
-                  alt="Professional business finance training environment" 
+                  alt="Commercial lending training classroom with professionals learning loan underwriting" 
                   className="w-full h-auto rounded-2xl shadow-hero"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
@@ -209,7 +209,7 @@ const Index = () => {
             <div>
               <img 
                 src={learningPathsImage} 
-                alt="Learning paths and career development" 
+                alt="Commercial lending course curriculum and certification learning paths" 
                 className="w-full h-auto rounded-2xl shadow-elevated"
               />
             </div>
