@@ -11,7 +11,7 @@ import CourseHeader from "@/components/CourseHeader";
 import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
-import { FinPilotBrandFooter } from "@/components/HaloBrandFooter";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
