@@ -1,7 +1,7 @@
 import { Building2, Mail, Phone, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const HaloBrandFooter = () => {
+export const FinPilotBrandFooter = () => {
   return (
     <Card className="mt-12 bg-halo-navy text-white border-none">
       <CardContent className="p-6">
@@ -9,11 +9,11 @@ export const HaloBrandFooter = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Building2 className="h-6 w-6 text-halo-orange" />
-              <h3 className="text-lg font-semibold">Halo Business Finance</h3>
+              <h3 className="text-lg font-semibold">FinPilot</h3>
             </div>
             <p className="text-white/80 text-sm leading-relaxed">
-              Empowering businesses through strategic finance solutions and comprehensive 
-              professional development programs.
+              Navigate your financial future with expert guidance through comprehensive 
+              professional development and certification programs.
             </p>
           </div>
           
@@ -22,15 +22,15 @@ export const HaloBrandFooter = () => {
             <div className="space-y-2 text-sm text-white/80">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4" />
-                <span>www.halobusinessfinance.com</span>
+                <span>www.finpilot.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <span>training@halobusinessfinance.com</span>
+                <span>training@finpilot.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <span>1-800-HALO-BIZ</span>
+                <span>1-800-FINPILOT</span>
               </div>
             </div>
           </div>
@@ -48,7 +48,7 @@ export const HaloBrandFooter = () => {
         
         <div className="mt-6 pt-6 border-t border-white/20 text-center">
           <p className="text-xs text-white/60">
-            © 2025 Halo Business Finance. All rights reserved. | Training Platform powered by advanced learning technologies.
+            © 2025 FinPilot. All rights reserved. | Training Platform powered by advanced learning technologies.
           </p>
         </div>
       </CardContent>

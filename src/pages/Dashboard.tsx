@@ -11,7 +11,7 @@ import CourseHeader from "@/components/CourseHeader";
 import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
-import { HaloBrandFooter } from "@/components/HaloBrandFooter";
+import { FinPilotBrandFooter } from "@/components/HaloBrandFooter";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -255,8 +255,8 @@ const Dashboard = () => {
             </Tabs>
           </div>
           
-          {/* Halo Brand Footer */}
-          <HaloBrandFooter />
+          {/* FinPilot Brand Footer */}
+          <FinPilotBrandFooter />
         </div>
 
       {/* Module Detail Modal */}

@@ -1,17 +1,17 @@
 import { Building2, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface HaloHeaderProps {
+interface FinPilotHeaderProps {
   title?: string;
   subtitle?: string;
   showCompanyInfo?: boolean;
 }
 
-export const HaloHeader = ({ 
-  title = "Halo Business Finance Training Platform", 
+export const FinPilotHeader = ({ 
+  title = "FinPilot Training Platform", 
   subtitle = "Professional Development & Certification Program",
   showCompanyInfo = true 
-}: HaloHeaderProps) => {
+}: FinPilotHeaderProps) => {
   return (
     <Card className="mb-6 bg-gradient-hero border-none text-white">
       <CardContent className="p-6">
@@ -27,10 +27,10 @@ export const HaloHeader = ({
             <div className="text-right hidden md:block">
               <div className="flex items-center gap-2 text-white/90 text-sm mb-1">
                 <Globe className="h-4 w-4" />
-                <span>www.halobusinessfinance.com</span>
+                <span>www.finpilot.com</span>
               </div>
               <div className="text-white/80 text-xs">
-                Empowering Business Growth Through Strategic Finance Solutions
+                Navigate Your Financial Future with Expert Guidance
               </div>
             </div>
           )}

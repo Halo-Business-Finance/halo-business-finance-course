@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
-import { HaloBrandFooter } from "@/components/HaloBrandFooter";
+import { FinPilotBrandFooter } from "@/components/HaloBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
@@ -37,7 +37,7 @@ const Index = () => {
       name: "Sarah Johnson",
       role: "Senior Loan Officer",
       company: "First National Bank",
-      content: "The Halo program transformed my understanding of commercial lending. I received a promotion within 6 months of completion.",
+      content: "The FinPilot program transformed my understanding of commercial lending. I received a promotion within 6 months of completion.",
       rating: 5
     },
     {
@@ -89,7 +89,7 @@ const Index = () => {
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Building className="h-5 w-5 text-white" />
             </div>
-            <span className="font-playfair font-semibold text-xl text-halo-navy">Halo Business Finance</span>
+            <span className="font-playfair font-semibold text-xl text-halo-navy">FinPilot</span>
           </div>
           <div className="flex items-center gap-4">
             <Link to="/auth">
@@ -195,7 +195,7 @@ const Index = () => {
             <div>
               <img 
                 src={learningPathsImage} 
-                alt="Halo Business Finance dashboard showing course progress and modules" 
+                alt="FinPilot dashboard showing course progress and modules"
                 className="w-full h-auto rounded-2xl shadow-elevated"
               />
             </div>
@@ -421,7 +421,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <HaloBrandFooter />
+      <FinPilotBrandFooter />
       
       {/* Demo Video Modal */}
       <DemoVideoModal 
