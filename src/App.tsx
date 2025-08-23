@@ -123,12 +123,12 @@ const HeaderContent = () => {
         ) : (
           <>
             <Link to="/auth">
-              <Button variant="ghost" className="text-black hover:bg-black/10">
+              <Button className="bg-blue-600 text-white hover:bg-blue-700">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button className="bg-black text-white hover:bg-black/90">
+              <Button className="bg-blue-600 text-white hover:bg-blue-700">
                 Get Started
               </Button>
             </Link>
