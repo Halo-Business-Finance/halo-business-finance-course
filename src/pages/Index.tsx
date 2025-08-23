@@ -276,7 +276,7 @@ const Index = () => {
               <p className="text-lg text-foreground max-w-3xl">
                 <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
-              <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 hover:bg-primary/15 mt-4">
+              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 mt-4">
                 <Star className="h-4 w-4" />
                 The Gold Standard in Commercial Lending Software Training
               </Badge>
