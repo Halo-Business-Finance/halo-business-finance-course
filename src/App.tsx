@@ -122,13 +122,6 @@ const HeaderContent = () => {
           )}
         </div>
 
-        {user && (
-          <div className="flex-1 flex justify-center">
-            <span className="text-sm md:text-xl text-black font-medium hidden sm:block">Welcome back, {getFirstName()}!</span>
-            <span className="text-sm text-black font-medium sm:hidden">Hi, {getFirstName()}!</span>
-          </div>
-        )}
-
         {!user && (
           <div className="flex-1 flex items-center justify-center">
             <div className="hidden lg:block">

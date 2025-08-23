@@ -140,6 +140,16 @@ export function AppSidebar() {
       variant="inset"
     >
       <SidebarContent>
+        {/* Welcome Message */}
+        {user && (
+          <div className="px-4 py-3 border-b border-navy-700/50">
+            <div className="text-white">
+              <div className="text-sm font-medium">Welcome back,</div>
+              <div className="text-lg font-semibold text-halo-orange">{user.user_metadata?.full_name?.split(' ')[0] || 'User'}!</div>
+            </div>
+          </div>
+        )}
+
         {/* Main Navigation */}
         <SidebarGroup className="pt-6">
           <SidebarGroupContent>
