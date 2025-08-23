@@ -660,6 +660,39 @@ export type Database = {
           },
         ]
       }
+      daily_learning_activity: {
+        Row: {
+          activity_date: string
+          assessments_taken: number | null
+          created_at: string
+          id: string
+          modules_completed: number | null
+          time_spent_minutes: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_date: string
+          assessments_taken?: number | null
+          created_at?: string
+          id?: string
+          modules_completed?: number | null
+          time_spent_minutes?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_date?: string
+          assessments_taken?: number | null
+          created_at?: string
+          id?: string
+          modules_completed?: number | null
+          time_spent_minutes?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       encrypted_course_content: {
         Row: {
           access_level: string
@@ -1023,6 +1056,75 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_achievements: {
+        Row: {
+          achievement_description: string | null
+          achievement_title: string
+          achievement_type: string
+          earned_at: string
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          achievement_description?: string | null
+          achievement_title: string
+          achievement_type: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          achievement_description?: string | null
+          achievement_title?: string
+          achievement_type?: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      learning_stats: {
+        Row: {
+          created_at: string
+          current_streak_days: number | null
+          id: string
+          last_activity_at: string | null
+          longest_streak_days: number | null
+          total_assessments_passed: number | null
+          total_modules_completed: number | null
+          total_time_spent_minutes: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak_days?: number | null
+          id?: string
+          last_activity_at?: string | null
+          longest_streak_days?: number | null
+          total_assessments_passed?: number | null
+          total_modules_completed?: number | null
+          total_time_spent_minutes?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak_days?: number | null
+          id?: string
+          last_activity_at?: string | null
+          longest_streak_days?: number | null
+          total_assessments_passed?: number | null
+          total_modules_completed?: number | null
+          total_time_spent_minutes?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       learning_tools: {
         Row: {
           category: string | null
@@ -1119,6 +1221,33 @@ export type Database = {
           timezone?: string | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      module_completions: {
+        Row: {
+          completed_at: string
+          id: string
+          module_id: string
+          score: number | null
+          time_spent_minutes: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          module_id: string
+          score?: number | null
+          time_spent_minutes?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          module_id?: string
+          score?: number | null
+          time_spent_minutes?: number | null
+          user_id?: string
         }
         Relationships: []
       }
