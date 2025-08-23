@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +54,8 @@ const handlePhoneInput = (value: string): string => {
 import { supabase } from "@/integrations/supabase/client";
 
 const AccountPage = () => {
+  const location = useLocation();
+  const currentTab = new URLSearchParams(location.search).get('tab') || 'account';
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({
@@ -439,7 +442,7 @@ const AccountPage = () => {
   }
 
   return (
-    <Tabs defaultValue="account" className="container mx-auto p-6 space-y-2">
+    <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-6">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
