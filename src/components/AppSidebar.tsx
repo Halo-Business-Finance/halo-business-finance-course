@@ -32,7 +32,6 @@ import { Separator } from "@/components/ui/separator";
 const mainNavItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "My Progress", url: "/progress", icon: BarChart3 },
-  { title: "Learning Stats", url: "/learning-stats", icon: Target },
   { title: "Learning Resources", url: "/resources", icon: FileText },
   { title: "My Account", url: "/account", icon: User },
 ];
