@@ -121,9 +121,23 @@ const HeaderContent = () => {
       
       <div className="flex items-center mr-4 gap-4">
         {user ? (
-          <p className="text-sm text-black">
-            Welcome back, {getFirstName()}! • {formatDateTime(currentTime)}
-          </p>
+          <div className="text-sm text-black">
+            <div className="flex justify-between items-start">
+              <span>Welcome back, {getFirstName()}!</span>
+              <div className="text-right ml-4">
+                <div>{currentTime.toLocaleDateString('en-US', { 
+                  weekday: 'short', 
+                  year: 'numeric', 
+                  month: 'short', 
+                  day: 'numeric' 
+                })}</div>
+                <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })}</div>
+              </div>
+            </div>
+          </div>
         ) : (
           <>
             <Link to="/auth">
