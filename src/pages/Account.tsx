@@ -443,21 +443,30 @@ const AccountPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <Tabs defaultValue="account" className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <User className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Account</h1>
         </div>
         
-        <Tabs defaultValue="account" className="w-auto">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="preferences">Preferences</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="privacy">Privacy</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <TabsList className="grid w-auto grid-cols-5 bg-transparent border-none p-0 h-auto gap-2">
+          <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Account
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Notifications
+          </TabsTrigger>
+          <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Privacy
+          </TabsTrigger>
+          <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Preferences
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Billing
+          </TabsTrigger>
+        </TabsList>
       </div>
 
       {/* Profile Info - Account Information Widget moved higher */}
@@ -654,586 +663,564 @@ const AccountPage = () => {
 
         {/* Main Content */}
         <div className="lg:col-span-2">
-          <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-2 mb-2">
-              <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Account
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Privacy
-              </TabsTrigger>
-              <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Preferences
-              </TabsTrigger>
-              <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Billing
-              </TabsTrigger>
-            </TabsList>
-
-
-
-            <TabsContent value="account">
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <User className="h-5 w-5" />
-                      Account Information
-                    </CardTitle>
-                    <CardDescription>
-                      Update your personal information and contact details
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName">First Name</Label>
-                        <Input 
-                          id="firstName" 
-                          value={editForm.name.split(' ')[0] || ''} 
-                          onChange={(e) => {
-                            const lastName = editForm.name.split(' ').slice(1).join(' ');
-                            handleInputChange('name', `${e.target.value} ${lastName}`.trim());
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastName">Last Name</Label>
-                        <Input 
-                          id="lastName" 
-                          value={editForm.name.split(' ').slice(1).join(' ') || ''} 
-                          onChange={(e) => {
-                            const firstName = editForm.name.split(' ')[0] || '';
-                            handleInputChange('name', `${firstName} ${e.target.value}`.trim());
-                          }}
-                        />
-                      </div>
-                    </div>
+          <TabsContent value="account">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    Account Information
+                  </CardTitle>
+                  <CardDescription>
+                    Update your personal information and contact details
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="firstName">First Name</Label>
                       <Input 
-                        id="email" 
-                        type="email" 
-                        value={editForm.email} 
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input 
-                        id="phone" 
-                        value={editForm.phone} 
+                        id="firstName" 
+                        value={editForm.name.split(' ')[0] || ''} 
                         onChange={(e) => {
-                          const formattedPhone = handlePhoneInput(e.target.value);
-                          handleInputChange('phone', formattedPhone);
+                          const lastName = editForm.name.split(' ').slice(1).join(' ');
+                          handleInputChange('name', `${e.target.value} ${lastName}`.trim());
                         }}
-                        placeholder="(xxx) XXX-XXXX"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="company">Company</Label>
-                        <Input 
-                          id="company" 
-                          value={editForm.company} 
-                          onChange={(e) => handleInputChange('company', e.target.value)}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="title">Job Title</Label>
-                        <Input 
-                          id="title" 
-                          value={editForm.title} 
-                          onChange={(e) => handleInputChange('title', e.target.value)}
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input 
+                        id="lastName" 
+                        value={editForm.name.split(' ').slice(1).join(' ') || ''} 
+                        onChange={(e) => {
+                          const firstName = editForm.name.split(' ')[0] || '';
+                          handleInputChange('name', `${firstName} ${e.target.value}`.trim());
+                        }}
+                      />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="city">City</Label>
-                        <Input 
-                          id="city" 
-                          value={editForm.city} 
-                          onChange={(e) => handleInputChange('city', e.target.value)}
-                          placeholder="Enter city"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="state">State</Label>
-                        <Input 
-                          id="state" 
-                          value={editForm.state} 
-                          onChange={(e) => handleInputChange('state', e.target.value)}
-                          placeholder="Enter state"
-                        />
-                      </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      value={editForm.email} 
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input 
+                      id="phone" 
+                      value={editForm.phone} 
+                      onChange={(e) => {
+                        const formattedPhone = handlePhoneInput(e.target.value);
+                        handleInputChange('phone', formattedPhone);
+                      }}
+                      placeholder="(xxx) XXX-XXXX"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input 
+                        id="company" 
+                        value={editForm.company} 
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                      />
                     </div>
-                    <Button onClick={handleEditSubmit}>Save Changes</Button>
-                  </CardContent>
-                </Card>
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Job Title</Label>
+                      <Input 
+                        id="title" 
+                        value={editForm.title} 
+                        onChange={(e) => handleInputChange('title', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City</Label>
+                      <Input 
+                        id="city" 
+                        value={editForm.city} 
+                        onChange={(e) => handleInputChange('city', e.target.value)}
+                        placeholder="Enter city"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="state">State</Label>
+                      <Input 
+                        id="state" 
+                        value={editForm.state} 
+                        onChange={(e) => handleInputChange('state', e.target.value)}
+                        placeholder="Enter state"
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={handleEditSubmit}>Save Changes</Button>
+                </CardContent>
+              </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Password & Security</CardTitle>
-                    <CardDescription>
-                      Manage your password and security settings
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="currentPassword">Current Password</Label>
-                      <Input id="currentPassword" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="newPassword">New Password</Label>
-                      <Input id="newPassword" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                      <Input id="confirmPassword" type="password" />
-                    </div>
-                    <Button variant="outline">Change Password</Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Password & Security</CardTitle>
+                  <CardDescription>
+                    Manage your password and security settings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword">Current Password</Label>
+                    <Input id="currentPassword" type="password" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="newPassword">New Password</Label>
+                    <Input id="newPassword" type="password" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                    <Input id="confirmPassword" type="password" />
+                  </div>
+                  <Button variant="outline">Change Password</Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="notifications">
+          <TabsContent value="notifications">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bell className="h-5 w-5" />
+                  Notification Preferences
+                </CardTitle>
+                <CardDescription>
+                  Choose what notifications you want to receive
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Course Progress Updates</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Get notified when you complete modules or earn certificates
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.courseProgress}
+                      onCheckedChange={(checked) => handlePreferenceChange('courseProgress', checked)}
+                    />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>New Course Announcements</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive updates about new courses and modules
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.newCourses}
+                      onCheckedChange={(checked) => handlePreferenceChange('newCourses', checked)}
+                    />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Webinar Reminders</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Get reminders before live webinars and events
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.webinarReminders}
+                      onCheckedChange={(checked) => handlePreferenceChange('webinarReminders', checked)}
+                    />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Weekly Progress Summary</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive a weekly summary of your learning progress
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.weeklyProgress}
+                      onCheckedChange={(checked) => handlePreferenceChange('weeklyProgress', checked)}
+                    />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Marketing Communications</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive information about Halo services and updates
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.marketingCommunications}
+                      onCheckedChange={(checked) => handlePreferenceChange('marketingCommunications', checked)}
+                    />
+                  </div>
+                </div>
+                <Button onClick={handleNotificationSettingsSubmit}>Save Notification Settings</Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="privacy">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  Privacy & Data
+                </CardTitle>
+                <CardDescription>
+                  Control your privacy settings and data preferences
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Profile Visibility</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Allow other learners to see your profile and achievements
+                      </p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Learning Analytics</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Share anonymous learning data to improve the platform
+                      </p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Activity Tracking</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Track your learning activities for progress reports
+                      </p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                </div>
+                <div className="pt-4 border-t">
+                  <h3 className="font-medium mb-2">Data Management</h3>
+                  <div className="space-y-2">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={handleDownloadData}
+                    >
+                      Download My Data
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={handleRequestDataDeletion}
+                    >
+                      Request Data Deletion
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="preferences">
+            <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Bell className="h-5 w-5" />
-                    Notification Preferences
+                    <Palette className="h-5 w-5" />
+                    Display Preferences
                   </CardTitle>
                   <CardDescription>
-                    Choose what notifications you want to receive
+                    Customize your learning experience
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Course Progress Updates</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Get notified when you complete modules or earn certificates
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.courseProgress}
-                        onCheckedChange={(checked) => handlePreferenceChange('courseProgress', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>New Course Announcements</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive updates about new courses and modules
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.newCourses}
-                        onCheckedChange={(checked) => handlePreferenceChange('newCourses', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Webinar Reminders</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Get reminders before live webinars and events
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.webinarReminders}
-                        onCheckedChange={(checked) => handlePreferenceChange('webinarReminders', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Weekly Progress Summary</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive a weekly summary of your learning progress
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.weeklyProgress}
-                        onCheckedChange={(checked) => handlePreferenceChange('weeklyProgress', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Marketing Communications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive information about Halo services and updates
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.marketingCommunications}
-                        onCheckedChange={(checked) => handlePreferenceChange('marketingCommunications', checked)}
-                      />
-                    </div>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Theme</Label>
+                    <Select 
+                      value={preferences.theme} 
+                      onValueChange={(value) => handlePreferenceChange('theme', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select theme" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <Button onClick={handleNotificationSettingsSubmit}>Save Notification Settings</Button>
+                  <div className="space-y-2">
+                    <Label>Font Size</Label>
+                    <Select 
+                      value={preferences.fontSize} 
+                      onValueChange={(value) => handlePreferenceChange('fontSize', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select font size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="small">Small</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Reduce Motion</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Minimize animations and transitions
+                      </p>
+                    </div>
+                    <Switch 
+                      checked={preferences.reducedMotion}
+                      onCheckedChange={(checked) => handlePreferenceChange('reducedMotion', checked)}
+                    />
+                  </div>
                 </CardContent>
               </Card>
-            </TabsContent>
 
-            <TabsContent value="privacy">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Shield className="h-5 w-5" />
-                    Privacy & Data
+                    <Globe className="h-5 w-5" />
+                    Language & Region
                   </CardTitle>
                   <CardDescription>
-                    Control your privacy settings and data preferences
+                    Set your language and regional preferences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Language</Label>
+                    <Select 
+                      value={preferences.language} 
+                      onValueChange={(value) => handlePreferenceChange('language', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="es">Español</SelectItem>
+                        <SelectItem value="fr">Français</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Time Zone</Label>
+                    <Select 
+                      value={preferences.timezone} 
+                      onValueChange={(value) => handlePreferenceChange('timezone', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select time zone" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="est">Eastern Time (EST)</SelectItem>
+                        <SelectItem value="cst">Central Time (CST)</SelectItem>
+                        <SelectItem value="mst">Mountain Time (MST)</SelectItem>
+                        <SelectItem value="pst">Pacific Time (PST)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Date Format</Label>
+                    <Select 
+                      value={preferences.dateFormat} 
+                      onValueChange={(value) => handlePreferenceChange('dateFormat', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select date format" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mdy">MM/DD/YYYY</SelectItem>
+                        <SelectItem value="dmy">DD/MM/YYYY</SelectItem>
+                        <SelectItem value="ymd">YYYY-MM-DD</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button onClick={handlePreferencesSubmit}>Save Preferences</Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="billing">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    Payment Methods
+                  </CardTitle>
+                  <CardDescription>
+                    Manage your payment methods and billing information
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Profile Visibility</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Allow other learners to see your profile and achievements
-                        </p>
+                  <div className="border rounded-lg p-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">VISA</span>
                       </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Learning Analytics</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Share anonymous learning data to improve the platform
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Activity Tracking</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Track your learning activities for progress reports
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                  </div>
-                  <div className="pt-4 border-t">
-                    <h3 className="font-medium mb-2">Data Management</h3>
-                    <div className="space-y-2">
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={handleDownloadData}
-                      >
-                        Download My Data
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={handleRequestDataDeletion}
-                      >
-                        Request Data Deletion
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="preferences">
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Palette className="h-5 w-5" />
-                      Display Preferences
-                    </CardTitle>
-                    <CardDescription>
-                      Customize your learning experience
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Theme</Label>
-                      <Select 
-                        value={preferences.theme} 
-                        onValueChange={(value) => handlePreferenceChange('theme', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select theme" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="system">System</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Font Size</Label>
-                      <Select 
-                        value={preferences.fontSize} 
-                        onValueChange={(value) => handlePreferenceChange('fontSize', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select font size" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="small">Small</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Reduce Motion</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Minimize animations and transitions
-                        </p>
-                      </div>
-                      <Switch 
-                        checked={preferences.reducedMotion}
-                        onCheckedChange={(checked) => handlePreferenceChange('reducedMotion', checked)}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Globe className="h-5 w-5" />
-                      Language & Region
-                    </CardTitle>
-                    <CardDescription>
-                      Set your language and regional preferences
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Language</Label>
-                      <Select 
-                        value={preferences.language} 
-                        onValueChange={(value) => handlePreferenceChange('language', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English</SelectItem>
-                          <SelectItem value="es">Español</SelectItem>
-                          <SelectItem value="fr">Français</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Time Zone</Label>
-                      <Select 
-                        value={preferences.timezone} 
-                        onValueChange={(value) => handlePreferenceChange('timezone', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select time zone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="est">Eastern Time (EST)</SelectItem>
-                          <SelectItem value="cst">Central Time (CST)</SelectItem>
-                          <SelectItem value="mst">Mountain Time (MST)</SelectItem>
-                          <SelectItem value="pst">Pacific Time (PST)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Date Format</Label>
-                      <Select 
-                        value={preferences.dateFormat} 
-                        onValueChange={(value) => handlePreferenceChange('dateFormat', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select date format" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="mdy">MM/DD/YYYY</SelectItem>
-                          <SelectItem value="dmy">DD/MM/YYYY</SelectItem>
-                          <SelectItem value="ymd">YYYY-MM-DD</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button onClick={handlePreferencesSubmit}>Save Preferences</Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="billing">
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5" />
-                      Payment Methods
-                    </CardTitle>
-                    <CardDescription>
-                      Manage your payment methods and billing information
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="border rounded-lg p-4 flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">VISA</span>
-                        </div>
-                        <div>
-                          <p className="font-medium">•••• •••• •••• 4242</p>
-                          <p className="text-sm text-muted-foreground">Expires 12/26</p>
-                        </div>
-                      </div>
-                      <Badge variant="secondary">Primary</Badge>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button variant="outline" className="flex-1">
-                        <CreditCard className="h-4 w-4 mr-2" />
-                        Add Payment Method
-                      </Button>
-                      <Button variant="outline">
-                        Update Billing Address
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Subscription Details</CardTitle>
-                    <CardDescription>
-                      Your current subscription plan and billing cycle
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="flex items-center justify-between p-4 border rounded-lg">
                       <div>
-                        <h3 className="font-semibold">Professional Plan</h3>
-                        <p className="text-sm text-muted-foreground">Full access to all courses and features</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold">$49.99/month</p>
-                        <p className="text-sm text-muted-foreground">Next billing: Jan 15, 2025</p>
+                        <p className="font-medium">•••• •••• •••• 4242</p>
+                        <p className="text-sm text-muted-foreground">Expires 12/26</p>
                       </div>
                     </div>
-                    
-                    <div className="flex gap-2">
-                      <Button variant="outline" className="flex-1">
-                        Change Plan
-                      </Button>
-                      <Button variant="outline">
-                        Cancel Subscription
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                    <Badge variant="secondary">Primary</Badge>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="flex-1">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Add Payment Method
+                    </Button>
+                    <Button variant="outline">
+                      Update Billing Address
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Billing History</CardTitle>
-                    <CardDescription>
-                      View and download your past invoices
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {[
-                        { date: "Dec 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-12-001" },
-                        { date: "Nov 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-11-001" },
-                        { date: "Oct 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-10-001" },
-                      ].map((bill, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center space-x-4">
-                            <div>
-                              <p className="font-medium">{bill.invoice}</p>
-                              <p className="text-sm text-muted-foreground">{bill.date}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-4">
-                            <span className="font-medium">{bill.amount}</span>
-                            <Badge variant={bill.status === "Paid" ? "default" : "secondary"}>
-                              {bill.status}
-                            </Badge>
-                            <Button variant="ghost" size="sm">
-                              Download
-                            </Button>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Subscription Details</CardTitle>
+                  <CardDescription>
+                    Your current subscription plan and billing cycle
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div>
+                      <h3 className="font-semibold">Professional Plan</h3>
+                      <p className="text-sm text-muted-foreground">Full access to all courses and features</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">$49.99/month</p>
+                      <p className="text-sm text-muted-foreground">Next billing: Jan 15, 2025</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="flex-1">
+                      Change Plan
+                    </Button>
+                    <Button variant="outline">
+                      Cancel Subscription
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Billing History</CardTitle>
+                  <CardDescription>
+                    View and download your past invoices
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { date: "Dec 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-12-001" },
+                      { date: "Nov 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-11-001" },
+                      { date: "Oct 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-10-001" },
+                    ].map((bill, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center space-x-4">
+                          <div>
+                            <p className="font-medium">{bill.invoice}</p>
+                            <p className="text-sm text-muted-foreground">{bill.date}</p>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-4 pt-4 border-t">
-                      <Button variant="outline" className="w-full">
-                        View All Billing History
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                        <div className="flex items-center space-x-4">
+                          <span className="font-medium">{bill.amount}</span>
+                          <Badge variant={bill.status === "Paid" ? "default" : "secondary"}>
+                            {bill.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm">
+                            Download
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-4 pt-4 border-t">
+                    <Button variant="outline" className="w-full">
+                      View All Billing History
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Billing Settings</CardTitle>
-                    <CardDescription>
-                      Configure your billing preferences and notifications
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Email Receipts</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive email receipts for all payments
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Billing Settings</CardTitle>
+                  <CardDescription>
+                    Configure your billing preferences and notifications
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Email Receipts</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive email receipts for all payments
+                      </p>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Payment Reminders</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Get notified before your subscription renews
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
+                    <Switch defaultChecked />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Payment Reminders</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Get notified before your subscription renews
+                      </p>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Failed Payment Alerts</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive alerts if a payment fails
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
+                    <Switch defaultChecked />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label>Failed Payment Alerts</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Receive alerts if a payment fails
+                      </p>
                     </div>
-                    
-                    <div className="pt-4">
-                      <Button>Save Billing Settings</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+                    <Switch defaultChecked />
+                  </div>
+                  
+                  <div className="pt-4">
+                    <Button>Save Billing Settings</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </div>
       </div>
-    </div>
+    </Tabs>
   );
 };
 
