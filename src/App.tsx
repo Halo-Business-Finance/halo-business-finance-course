@@ -82,10 +82,10 @@ const HeaderContent = () => {
   return (
     <header className="sticky top-0 h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
           <Building2 className="h-5 w-5 text-white" />
         </div>
-        <span className="font-semibold text-lg text-black">Halo Business Finance</span>
+        <span className="font-semibold text-lg text-blue-600">Halo Business Finance</span>
       </div>
       
       {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
