@@ -14,6 +14,7 @@ import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
+import LearningStats from "./pages/LearningStats";
 import VideoLibrary from "./pages/VideoLibrary";
 import Resources from "./pages/Resources";
 import Account from "./pages/Account";
@@ -130,6 +131,11 @@ const AppContent = () => {
             <Route path="/progress" element={
               <ProtectedRoute>
                 <Progress />
+              </ProtectedRoute>
+            } />
+            <Route path="/learning-stats" element={
+              <ProtectedRoute>
+                <LearningStats />
               </ProtectedRoute>
             } />
             {/* Redirect old certificates route to progress page */}
