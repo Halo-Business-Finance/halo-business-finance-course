@@ -84,14 +84,14 @@ const Pricing = () => {
           </div>
         </div>
         
-        <div className="relative container mx-auto px-6 py-24 text-center">
+        <div className="relative container mx-auto px-6 py-16 text-center">
           <div className="max-w-4xl mx-auto animate-fade-in">
-            <Badge className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-orange-500 text-white border-0 hover:from-blue-700 hover:to-orange-600 mb-8 px-6 py-3 text-sm font-medium shadow-lg">
-              <Star className="h-4 w-4" />
+            <Badge className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-orange-500 text-white border-0 hover:from-blue-700 hover:to-orange-600 mb-6 px-4 py-2 text-xs font-medium shadow-lg">
+              <Star className="h-3 w-3" />
               Limited Time: 40% Off All Plans
             </Badge>
             
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 bg-clip-text text-transparent">
                 Choose Your
               </span>
@@ -101,7 +101,7 @@ const Pricing = () => {
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-blue-700 max-w-3xl mx-auto leading-relaxed mb-12">
+            <p className="text-lg md:text-xl text-blue-700 max-w-2xl mx-auto leading-relaxed mb-8">
               Accelerate your career with our world-class business finance training.
               <span className="block mt-2 font-semibold text-blue-800">Join 50,000+ successful professionals.</span>
             </p>
@@ -110,22 +110,22 @@ const Pricing = () => {
       </div>
 
       {/* Premium Pricing Cards */}
-      <div className="container mx-auto px-6 pb-24 -mt-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
+      <div className="container mx-auto px-6 pb-16 -mt-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             return (
               <div
                 key={plan.name}
-                className={`relative group animate-fade-in ${plan.popular ? 'lg:scale-110 lg:-mt-8' : ''}`}
+                className={`relative group animate-fade-in ${plan.popular ? 'lg:scale-105 lg:-mt-4' : ''}`}
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 {plan.popular && (
                   <>
-                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-blue-500 to-orange-500 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-                    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
-                      <Badge className="bg-gradient-to-r from-blue-600 to-orange-500 text-white border-0 px-8 py-3 text-sm font-bold shadow-xl">
-                        <Crown className="h-4 w-4 mr-2" />
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-blue-500 to-orange-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                      <Badge className="bg-gradient-to-r from-blue-600 to-orange-500 text-white border-0 px-4 py-2 text-xs font-bold shadow-xl">
+                        <Crown className="h-3 w-3 mr-1" />
                         MOST POPULAR
                       </Badge>
                     </div>
@@ -134,64 +134,64 @@ const Pricing = () => {
                 
                 <Card className={`relative bg-white/90 backdrop-blur-xl ${plan.borderColor} border-2 ${
                   plan.popular ? 'shadow-2xl shadow-blue-500/20' : 'shadow-xl hover:shadow-2xl'
-                } rounded-3xl overflow-hidden transition-all duration-500 hover:scale-105 group-hover:border-opacity-60 ${
+                } rounded-2xl overflow-hidden transition-all duration-500 hover:scale-102 group-hover:border-opacity-60 ${
                   plan.popular ? 'border-blue-400' : ''
                 }`}>
                   <div className={`absolute inset-0 bg-gradient-to-br ${plan.bgGradient} opacity-40`}></div>
                   
-                  <CardHeader className="relative text-center pt-12 pb-8">
-                    <div className={`w-24 h-24 bg-gradient-to-br ${plan.gradient} rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500 group-hover:rotate-3`}>
-                      <Icon className="h-12 w-12 text-white" />
+                  <CardHeader className="relative text-center pt-8 pb-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${plan.gradient} rounded-xl flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-all duration-500 group-hover:rotate-3`}>
+                      <Icon className="h-8 w-8 text-white" />
                     </div>
                     
-                    <CardTitle className="text-3xl font-bold text-blue-900 mb-4">{plan.name}</CardTitle>
-                    <CardDescription className="text-blue-700 text-lg leading-relaxed px-4">{plan.description}</CardDescription>
+                    <CardTitle className="text-2xl font-bold text-blue-900 mb-3">{plan.name}</CardTitle>
+                    <CardDescription className="text-blue-700 text-base leading-relaxed px-2">{plan.description}</CardDescription>
                     
-                    <div className="mt-8">
+                    <div className="mt-6">
                       <div className="flex items-center justify-center gap-3 mb-2">
                         {plan.originalPrice && (
-                          <span className="text-2xl text-blue-400 line-through font-medium">${plan.originalPrice}</span>
+                          <span className="text-lg text-blue-400 line-through font-medium">${plan.originalPrice}</span>
                         )}
-                        <span className={`text-6xl font-bold bg-gradient-to-r ${plan.gradient} bg-clip-text text-transparent`}>
+                        <span className={`text-4xl font-bold bg-gradient-to-r ${plan.gradient} bg-clip-text text-transparent`}>
                           {plan.price}
                         </span>
                       </div>
-                      <div className="text-blue-600 text-lg">
+                      <div className="text-blue-600 text-base">
                         {plan.price !== "Custom" ? `per ${plan.period}` : plan.period}
                       </div>
                       {plan.originalPrice && (
-                        <Badge className="mt-4 bg-orange-100 text-orange-800 border-orange-200 px-4 py-1">
+                        <Badge className="mt-3 bg-orange-100 text-orange-800 border-orange-200 px-3 py-1 text-xs">
                           Save {Math.round(((parseInt(plan.originalPrice) - parseInt(plan.price)) / parseInt(plan.originalPrice)) * 100)}%
                         </Badge>
                       )}
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="relative px-8 pb-8">
-                    <ul className="space-y-5 mb-10">
+                  <CardContent className="relative px-6 pb-6">
+                    <ul className="space-y-3 mb-6">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-4 group/item">
-                          <div className={`w-6 h-6 bg-gradient-to-br ${plan.gradient} rounded-full flex items-center justify-center mt-0.5 group-hover/item:scale-125 transition-all duration-300 shadow-lg`}>
-                            <Check className="h-3.5 w-3.5 text-white font-bold" />
+                        <li key={idx} className="flex items-start gap-3 group/item">
+                          <div className={`w-5 h-5 bg-gradient-to-br ${plan.gradient} rounded-full flex items-center justify-center mt-0.5 group-hover/item:scale-125 transition-all duration-300 shadow-lg`}>
+                            <Check className="h-3 w-3 text-white font-bold" />
                           </div>
-                          <span className="text-blue-800 text-lg group-hover/item:text-blue-900 transition-colors leading-relaxed">{feature}</span>
+                          <span className="text-blue-800 text-base group-hover/item:text-blue-900 transition-colors leading-relaxed">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     
                     <Button 
-                      className={`w-full text-lg py-6 font-bold transition-all duration-300 rounded-2xl ${
+                      className={`w-full text-base py-4 font-bold transition-all duration-300 rounded-xl ${
                         plan.popular 
-                          ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-2xl hover:shadow-blue-500/30 border-0 hover:scale-105` 
-                          : `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl border-0 hover:scale-105`
+                          ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl hover:shadow-blue-500/20 border-0 hover:scale-102` 
+                          : `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-lg border-0 hover:scale-102`
                       } shadow-lg`}
                     >
                       {plan.name === "Enterprise" ? "Contact Sales" : "Start Learning"}
-                      <Zap className="ml-3 h-5 w-5" />
+                      <Zap className="ml-2 h-4 w-4" />
                     </Button>
                     
                     {plan.popular && (
-                      <p className="text-center text-sm text-blue-600 mt-4">
+                      <p className="text-center text-xs text-blue-600 mt-3">
                         Join 35,000+ professionals who chose this plan
                       </p>
                     )}
@@ -203,18 +203,18 @@ const Pricing = () => {
         </div>
         
         {/* Trust & Guarantee Section */}
-        <div className="text-center mt-20 animate-fade-in" style={{ animationDelay: '0.9s' }}>
+        <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '0.9s' }}>
           <div className="max-w-4xl mx-auto">
-            <Badge className="inline-flex items-center gap-2 bg-orange-100 text-orange-800 border-orange-200 mb-8 px-6 py-3 text-lg font-medium">
-              <Check className="h-5 w-5" />
+            <Badge className="inline-flex items-center gap-2 bg-orange-100 text-orange-800 border-orange-200 mb-6 px-4 py-2 text-sm font-medium">
+              <Check className="h-4 w-4" />
               30-Day Money-Back Guarantee
             </Badge>
             
-            <p className="text-blue-700 mb-12 text-xl">Trusted by professionals at top companies worldwide</p>
+            <p className="text-blue-700 mb-8 text-lg">Trusted by professionals at top companies worldwide</p>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center opacity-60">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center opacity-60">
               {['Microsoft', 'Google', 'Amazon', 'Apple'].map((company, idx) => (
-                <div key={idx} className="text-2xl font-bold text-blue-600 hover:text-blue-800 transition-colors">
+                <div key={idx} className="text-lg font-bold text-blue-600 hover:text-blue-800 transition-colors">
                   {company}
                 </div>
               ))}
