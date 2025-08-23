@@ -219,7 +219,7 @@ const Courses = () => {
                   )
                 ) : (
                   <Link to="/signup">
-                    <Button className="w-full">
+                    <Button className="w-full bg-black text-white hover:bg-gray-800">
                       <BookOpen className="h-4 w-4 mr-2" />
                       Sign Up to Enroll
                     </Button>
