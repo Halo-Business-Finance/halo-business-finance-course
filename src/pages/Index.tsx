@@ -10,7 +10,7 @@ import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
-import softwareTrainingImage from "@/assets/software-training.jpg";
+const softwareTrainingImage = "/lovable-uploads/78cb3c25-cbc5-4554-bba1-11cf532ee81d.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
 const Index = () => {
@@ -276,7 +276,7 @@ const Index = () => {
             <div>
               <img 
                 src={softwareTrainingImage} 
-                alt="Commercial lending software training interface" 
+                alt="Learning platform showing SBA loan courses and skill-based modules" 
                 className="w-full h-auto rounded-2xl shadow-elevated"
               />
             </div>
