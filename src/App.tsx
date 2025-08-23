@@ -31,6 +31,7 @@ import Blog from "./pages/Blog";
 import Support from "./pages/Support";
 import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
+import { MobileNav } from "./components/MobileNav";
 import { AccountTabs } from "./components/AccountTabs";
 
 const queryClient = new QueryClient();
@@ -83,13 +84,16 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="sticky top-0 h-24 flex flex-col border-b bg-white z-50 px-4">
-      <div className="flex-1 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 h-16 md:h-24 flex flex-col border-b bg-white z-50 px-2 md:px-4">
+      <div className="flex-1 flex items-center justify-between gap-2 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           {!user && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <Link to="/" className="hover:opacity-80 transition-opacity">
-                <span className="font-aptos font-semibold text-2xl text-blue-900 whitespace-nowrap">Halo Business Finance</span>
+                <span className="font-aptos font-semibold text-lg md:text-2xl text-blue-900 whitespace-nowrap">
+                  <span className="hidden sm:inline">Halo Business Finance</span>
+                  <span className="sm:hidden">Halo Finance</span>
+                </span>
               </Link>
             </div>
           )}
@@ -97,7 +101,7 @@ const HeaderContent = () => {
           {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
           
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -120,20 +124,26 @@ const HeaderContent = () => {
 
         {user && (
           <div className="flex-1 flex justify-center">
-            <span className="text-xl text-black font-medium">Welcome back, {getFirstName()}!</span>
+            <span className="text-sm md:text-xl text-black font-medium hidden sm:block">Welcome back, {getFirstName()}!</span>
+            <span className="text-sm text-black font-medium sm:hidden">Hi, {getFirstName()}!</span>
           </div>
         )}
 
         {!user && (
           <div className="flex-1 flex items-center justify-center">
-            <HorizontalNav />
+            <div className="hidden lg:block">
+              <HorizontalNav />
+            </div>
+            <div className="lg:hidden">
+              <MobileNav />
+            </div>
           </div>
         )}
         
         {user && (
-          <div className="flex items-center gap-3 text-sm text-black text-right">
+          <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-black text-right">
             <Bell className="h-4 w-4 text-yellow-500" />
-            <div>
+            <div className="hidden sm:block">
               <div>{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
@@ -145,21 +155,33 @@ const HeaderContent = () => {
                 minute: '2-digit' 
               })}</div>
             </div>
+            <div className="sm:hidden text-xs">
+              {currentTime.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}
+            </div>
           </div>
         )}
 
         {!user && (
-          <div className="flex items-center gap-4">
-            <Link to="/auth">
+          <div className="flex items-center gap-2 md:gap-4">
+            <Link to="/auth" className="hidden sm:block">
               <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
                 <LogIn className="h-4 w-4" />
-                Sign In
+                <span className="hidden md:inline">Sign In</span>
+              </Button>
+            </Link>
+            <Link to="/auth" className="sm:hidden">
+              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 shadow-none">
+                <LogIn className="h-4 w-4" />
               </Button>
             </Link>
             <Link to="/signup">
               <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
                 <Play className="h-4 w-4" />
-                Get Started
+                <span className="hidden md:inline">Get Started</span>
+                <span className="md:hidden">Start</span>
               </Button>
             </Link>
           </div>
@@ -186,10 +208,10 @@ const AppContent = () => {
     <div className="min-h-screen flex w-full">
       {user && <AppSidebar />}
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         <HeaderContent />
 
-        <main className="flex-1 relative z-10">
+        <main className="flex-1 relative z-10 overflow-x-hidden">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={
@@ -256,7 +278,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <SidebarProvider defaultOpen={true}>
+          <SidebarProvider defaultOpen={true} open={undefined}>
             <SecurityMonitor />
             <AppContent />
           </SidebarProvider>

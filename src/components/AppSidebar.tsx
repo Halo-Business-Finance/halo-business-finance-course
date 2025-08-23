@@ -138,6 +138,7 @@ export function AppSidebar() {
     <Sidebar
       className="bg-navy-900 border-navy-800"
       collapsible="icon"
+      variant="inset"
     >
       <SidebarContent>
         {/* Main Navigation */}

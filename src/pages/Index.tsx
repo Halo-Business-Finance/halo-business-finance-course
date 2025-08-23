@@ -84,22 +84,23 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Building className="h-5 w-5 text-white" />
+        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <Building className="h-4 w-4 md:h-5 md:w-5 text-white" />
             </div>
-            <span className="font-playfair font-semibold text-xl text-halo-navy">FinPilot</span>
+            <span className="font-playfair font-semibold text-lg md:text-xl text-halo-navy">FinPilot</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link to="/auth">
-              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20">
+          <div className="flex items-center gap-2 md:gap-4">
+            <Link to="/auth" className="hidden sm:block">
+              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20 text-sm md:text-base px-3 md:px-4">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button className="bg-black text-white hover:bg-black/90 shadow-elevated">
-                Get Started
+              <Button className="bg-black text-white hover:bg-black/90 shadow-elevated text-sm md:text-base px-3 md:px-6">
+                <span className="sm:hidden">Start</span>
+                <span className="hidden sm:inline">Get Started</span>
               </Button>
             </Link>
           </div>
@@ -107,61 +108,63 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-24 pb-16 lg:pb-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-20 md:pt-24 pb-12 md:pb-16 lg:pb-24">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8 animate-fade-in">
+            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div className="space-y-6 md:space-y-8 animate-fade-in text-center lg:text-left">
                 
-                <div className="space-y-6">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight text-halo-navy">
+                <div className="space-y-4 md:space-y-6">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-playfair font-bold leading-tight text-halo-navy">
                     Master Business
                     <span className="block bg-gradient-hero bg-clip-text text-transparent">
                       Finance & Lending
                     </span>
                   </h1>
                   
-                  <p className="text-lg leading-relaxed text-foreground max-w-2xl">
+                  <p className="text-base md:text-lg leading-relaxed text-foreground max-w-2xl mx-auto lg:mx-0">
                     Transform your career with our comprehensive business finance and commercial lending program. 
                     <span className="block mt-2 font-medium text-primary">Your Pathway to Lending Excellence.</span>
                     Developed by industry experts and delivered through Stanford-level curriculum.
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                   <Link to="/auth">
-                    <Button size="lg" className="text-lg px-8 py-6 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
-                      Start Learning Today
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    <Button size="lg" className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
+                      <span className="sm:hidden">Start Learning</span>
+                      <span className="hidden sm:inline">Start Learning Today</span>
+                      <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="text-lg px-8 py-6 border-primary/20 hover:bg-primary/5 group"
+                    className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-4 md:py-6 border-primary/20 hover:bg-primary/5 group"
                     onClick={() => setIsDemoModalOpen(true)}
                   >
-                    <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    <Play className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
                     Watch Demo
                   </Button>
                 </div>
 
-                <div className="flex items-center pt-4">
-                  <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
-                    <Zap className="h-4 w-4" />
-                    Accelerate Your Career with the Industry's Top Course
+                <div className="flex items-center justify-center lg:justify-start pt-4">
+                  <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
+                    <Zap className="h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
+                    <span className="sm:hidden">Industry's Top Course</span>
                   </Badge>
                 </div>
               </div>
 
-              <div className="relative lg:block hidden">
+              <div className="relative order-first lg:order-last">
                 <img 
                   src={heroBusinessTraining} 
                   alt="Commercial lending training classroom with professionals learning loan underwriting" 
-                  className="w-full h-auto rounded-2xl shadow-hero"
+                  className="w-full h-auto rounded-xl md:rounded-2xl shadow-hero mx-auto lg:mx-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl md:rounded-2xl" />
               </div>
             </div>
           </div>
@@ -169,18 +172,18 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-halo-navy">
+      <section className="py-12 md:py-16 bg-halo-navy">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="text-center text-white animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="w-16 h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Icon className="h-8 w-8 text-halo-orange" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <Icon className="h-6 w-6 md:h-8 md:w-8 text-halo-orange" />
                   </div>
-                  <div className="text-3xl font-bold font-playfair mb-2">{stat.value}</div>
-                  <div className="text-white/80 text-sm">{stat.label}</div>
+                  <div className="text-xl md:text-3xl font-bold font-playfair mb-1 md:mb-2">{stat.value}</div>
+                  <div className="text-white/80 text-xs md:text-sm leading-tight">{stat.label}</div>
                 </div>
               );
             })}
@@ -189,50 +192,50 @@ const Index = () => {
       </section>
 
       {/* Learning Paths Section */}
-      <section className="py-20 bg-background">
+      <section className="py-16 md:py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-            <div>
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
+            <div className="order-2 lg:order-1">
               <img 
                 src={learningPathsImage} 
                 alt="FinPilot dashboard showing course progress and modules"
-                className="w-full h-auto rounded-2xl shadow-elevated"
+                className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
               />
             </div>
-            <div className="text-center lg:text-left space-y-4">
-              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
-                <Target className="h-4 w-4" />
+            <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
+              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
+                <Target className="h-3 w-3 md:h-4 md:w-4" />
                 Structured Learning Paths
               </Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
-              <p className="text-lg text-foreground max-w-3xl">
+              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {learningPaths.map((path, index) => (
               <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
-                <CardHeader className="space-y-4">
+                <CardHeader className="space-y-4 p-4 md:p-6">
                   <div className="flex items-center justify-between">
                     <Badge variant="outline" className="text-xs bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
                       {path.duration} • {path.modules} modules
                     </Badge>
-                    <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                      <BookOpen className="h-4 w-4 text-white" />
+                    <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-3 w-3 md:h-4 md:w-4 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
+                  <CardTitle className="text-lg md:text-xl font-playfair group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
                   <CardDescription className="text-sm leading-relaxed text-foreground">
                     {path.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-4 md:p-6 pt-0">
                   <div className="space-y-3">
                     {path.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-3">
@@ -242,7 +245,7 @@ const Index = () => {
                     ))}
                   </div>
                   <Button 
-                    className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all"
+                    className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all text-sm md:text-base"
                     onClick={() => {
                       setSelectedLearningPath(path);
                       setIsCurriculumModalOpen(true);
@@ -258,31 +261,32 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-muted/30 to-background">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="text-center lg:text-left space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
-              <p className="text-lg text-foreground max-w-3xl">
+              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
-              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 mt-4">
-                <Star className="h-4 w-4" />
-                The Gold Standard in Commercial Lending Software Training
+              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 mt-4 text-xs md:text-sm px-3 py-1">
+                <Star className="h-3 w-3 md:h-4 md:w-4" />
+                <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
+                <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
             </div>
             <div>
               <img 
                 src={softwareTrainingImage} 
                 alt="Learning platform showing SBA loan courses and skill-based modules" 
-                className="w-full h-auto rounded-2xl shadow-elevated"
+                className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: BookOpen,
