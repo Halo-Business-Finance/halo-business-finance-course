@@ -677,6 +677,34 @@ const AccountPage = () => {
                       <Label htmlFor="confirmPassword">Confirm New Password</Label>
                       <Input id="confirmPassword" type="password" />
                     </div>
+                    
+                    {/* Password Requirements */}
+                    <div className="bg-muted/30 rounded-lg p-4 space-y-2">
+                      <h4 className="text-sm font-medium text-foreground">Password Requirements:</h4>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-primary rounded-full"></span>
+                          At least 8 characters long
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-primary rounded-full"></span>
+                          Contains at least one uppercase letter (A-Z)
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-primary rounded-full"></span>
+                          Contains at least one lowercase letter (a-z)
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-primary rounded-full"></span>
+                          Contains at least one number (0-9)
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-primary rounded-full"></span>
+                          Contains at least one special character (!@#$%^&*)
+                        </li>
+                      </ul>
+                    </div>
+                    
                     <Button variant="outline">Change Password</Button>
                   </CardContent>
                 </Card>
