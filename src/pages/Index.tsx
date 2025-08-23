@@ -113,16 +113,10 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8 animate-fade-in">
-                <div className="flex flex-col sm:flex-row gap-3 mb-4">
-                  <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 hover:bg-primary/15">
-                    <Star className="h-4 w-4" />
-                    The Gold Standard in Commercial Lending Software Training
-                  </Badge>
-                  <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20 hover:bg-accent/15">
-                    <Zap className="h-4 w-4" />
-                    Accelerate Your Career with the Industry's Top Course
-                  </Badge>
-                </div>
+                <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20 hover:bg-accent/15">
+                  <Zap className="h-4 w-4" />
+                  Accelerate Your Career with the Industry's Top Course
+                </Badge>
                 
                 <div className="space-y-6">
                   <h1 className="text-5xl lg:text-6xl font-playfair font-bold leading-tight text-halo-navy">
@@ -282,6 +276,10 @@ const Index = () => {
               <p className="text-lg text-foreground max-w-3xl">
                 <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
+              <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20 hover:bg-primary/15 mt-4">
+                <Star className="h-4 w-4" />
+                The Gold Standard in Commercial Lending Software Training
+              </Badge>
             </div>
             <div>
               <img 
