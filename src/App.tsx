@@ -121,10 +121,10 @@ const HeaderContent = () => {
       
       <div className="flex items-center mr-4 gap-4">
         {user ? (
-          <div className="text-sm text-black">
-            <div className="flex justify-between items-start">
+          <div className="text-sm text-black w-full">
+            <div className="flex justify-between items-start w-full">
               <span>Welcome back, {getFirstName()}!</span>
-              <div className="text-right ml-4">
+              <div className="text-right">
                 <div>{currentTime.toLocaleDateString('en-US', { 
                   weekday: 'short', 
                   year: 'numeric', 
