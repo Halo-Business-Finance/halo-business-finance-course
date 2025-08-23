@@ -471,6 +471,7 @@ const AccountPage = () => {
                       value={editForm.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       placeholder="Enter your full name"
+                      className="border-gray-800/20"
                     />
                   </div>
                   <div>
@@ -481,6 +482,7 @@ const AccountPage = () => {
                       value={editForm.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       placeholder="Enter your email"
+                      className="border-gray-800/20"
                     />
                   </div>
                 </div>
@@ -492,6 +494,7 @@ const AccountPage = () => {
                       value={editForm.phone}
                       onChange={(e) => handleInputChange('phone', handlePhoneInput(e.target.value))}
                       placeholder="(555) 123-4567"
+                      className="border-gray-800/20"
                     />
                   </div>
                   <div>
@@ -501,6 +504,7 @@ const AccountPage = () => {
                       value={editForm.title}
                       onChange={(e) => handleInputChange('title', e.target.value)}
                       placeholder="Your job title"
+                      className="border-gray-800/20"
                     />
                   </div>
                 </div>
@@ -511,6 +515,7 @@ const AccountPage = () => {
                     value={editForm.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
                     placeholder="Your company name"
+                    className="border-gray-800/20"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -521,6 +526,7 @@ const AccountPage = () => {
                       value={editForm.city}
                       onChange={(e) => handleInputChange('city', e.target.value)}
                       placeholder="Your city"
+                      className="border-gray-800/20"
                     />
                   </div>
                   <div>
@@ -530,6 +536,7 @@ const AccountPage = () => {
                       value={editForm.state}
                       onChange={(e) => handleInputChange('state', e.target.value)}
                       placeholder="Your state"
+                      className="border-gray-800/20"
                     />
                   </div>
                 </div>
@@ -667,15 +674,15 @@ const AccountPage = () => {
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="currentPassword">Current Password</Label>
-                      <Input id="currentPassword" type="password" />
+                      <Input id="currentPassword" type="password" className="border-gray-800/20" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="newPassword">New Password</Label>
-                      <Input id="newPassword" type="password" />
+                      <Input id="newPassword" type="password" className="border-gray-800/20" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                      <Input id="confirmPassword" type="password" />
+                      <Input id="confirmPassword" type="password" className="border-gray-800/20" />
                     </div>
                     
                     {/* Password Requirements */}
