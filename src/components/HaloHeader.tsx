@@ -18,7 +18,7 @@ export const HaloHeader = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold mb-1 text-blue-600">{title}</h1>
+              <h1 className="text-2xl font-bold mb-1 text-blue-900">{title}</h1>
               <p className="text-white/90 text-sm">{subtitle}</p>
             </div>
           </div>
