@@ -21,7 +21,7 @@ export const HaloHeader = ({
               <Building2 className="h-6 w-6 text-blue-900" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold mb-1">{title}</h1>
+              <h1 className="text-2xl font-bold mb-1 text-blue-900">{title}</h1>
               <p className="text-white/90 text-sm">{subtitle}</p>
             </div>
           </div>
