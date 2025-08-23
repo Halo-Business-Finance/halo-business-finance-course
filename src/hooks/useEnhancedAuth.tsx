@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/secureLogging';
+import { validateEmail, validatePassword } from '@/utils/validation';
 
 interface RateLimitResponse {
   allowed: boolean;
@@ -32,13 +34,13 @@ export const useEnhancedAuth = () => {
       });
 
       if (error) {
-        console.error('Rate limit check failed:', error);
+        logger.error('Rate limit check failed', error, { component: 'useEnhancedAuth', action: 'checkRateLimit' });
         return null;
       }
 
       return data?.data || null;
     } catch (error) {
-      console.error('Rate limit check error:', error);
+      logger.error('Rate limit check error', error, { component: 'useEnhancedAuth', action: 'checkRateLimit' });
       return null;
     }
   }, []);
@@ -59,7 +61,7 @@ export const useEnhancedAuth = () => {
         }
       });
     } catch (error) {
-      console.error('Failed to log auth attempt:', error);
+      logger.error('Failed to log auth attempt', error, { component: 'useEnhancedAuth', action: 'logAuthAttempt' });
     }
   }, []);
 
@@ -70,6 +72,27 @@ export const useEnhancedAuth = () => {
     setLoading(true);
     
     try {
+      // Validate input first
+      const emailValidation = validateEmail(email);
+      const passwordValidation = validatePassword(password);
+      
+      if (!emailValidation.isValid) {
+        toast({
+          title: "Invalid Email",
+          description: emailValidation.message || "Please enter a valid email address",
+          variant: "destructive"
+        });
+        return { success: false, error: "Invalid email format" };
+      }
+      
+      if (!passwordValidation.isValid) {
+        toast({
+          title: "Invalid Password",
+          description: passwordValidation.message || "Password does not meet requirements",
+          variant: "destructive"
+        });
+        return { success: false, error: "Invalid password format" };
+      }
       // Check rate limit first
       const rateLimitInfo = await checkRateLimit('/auth/signin');
       
@@ -128,7 +151,7 @@ export const useEnhancedAuth = () => {
       };
 
     } catch (error: any) {
-      console.error('Enhanced sign in error:', error);
+      logger.error('Enhanced sign in error', error, { component: 'useEnhancedAuth', action: 'signIn', userId: email });
       
       toast({
         title: "Sign In Error",
@@ -152,6 +175,27 @@ export const useEnhancedAuth = () => {
     setLoading(true);
     
     try {
+      // Validate input first
+      const emailValidation = validateEmail(email);
+      const passwordValidation = validatePassword(password);
+      
+      if (!emailValidation.isValid) {
+        toast({
+          title: "Invalid Email",
+          description: emailValidation.message || "Please enter a valid email address",
+          variant: "destructive"
+        });
+        return { success: false, error: "Invalid email format" };
+      }
+      
+      if (!passwordValidation.isValid) {
+        toast({
+          title: "Invalid Password", 
+          description: passwordValidation.message || "Password does not meet requirements",
+          variant: "destructive"
+        });
+        return { success: false, error: "Invalid password format" };
+      }
       // Check rate limit first
       const rateLimitInfo = await checkRateLimit('/auth/signup');
       
@@ -216,7 +260,7 @@ export const useEnhancedAuth = () => {
       };
 
     } catch (error: any) {
-      console.error('Enhanced sign up error:', error);
+      logger.error('Enhanced sign up error', error, { component: 'useEnhancedAuth', action: 'signUp', userId: email });
       
       toast({
         title: "Sign Up Error",
@@ -287,7 +331,7 @@ export const useEnhancedAuth = () => {
       };
 
     } catch (error: any) {
-      console.error('Password reset error:', error);
+      logger.error('Password reset error', error, { component: 'useEnhancedAuth', action: 'resetPassword', userId: email });
       
       toast({
         title: "Reset Error",

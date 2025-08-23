@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { logger } from '@/utils/secureLogging';
 
 interface AuthContextType {
   user: User | null;
@@ -89,7 +90,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         description: "You have been successfully signed out.",
       });
     } catch (error) {
-      console.error('Sign out error:', error);
+      logger.error('Sign out failed', error, { component: 'AuthContext' });
       toast({
         title: "Error",
         description: "Failed to sign out. Please try again.",
@@ -102,7 +103,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log('Auth state change:', { event, hasSession: !!session, hasUser: !!session?.user });
+        logger.debug('Auth state change', { event, hasSession: !!session, hasUser: !!session?.user }, { component: 'AuthContext' });
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -118,7 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session check:', { hasSession: !!session, hasUser: !!session?.user });
+      logger.debug('Initial session check', { hasSession: !!session, hasUser: !!session?.user }, { component: 'AuthContext' });
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
