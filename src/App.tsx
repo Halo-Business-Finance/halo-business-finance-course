@@ -81,80 +81,81 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="sticky top-0 h-24 flex items-center border-b bg-white z-50 px-4 gap-4">
-      {!user && (
-        <div className="flex items-center gap-3">
-          <Link to="/" className="hover:opacity-80 transition-opacity">
-            <span className="font-aptos font-semibold text-2xl text-blue-900 whitespace-nowrap">Halo Business Finance</span>
-          </Link>
-        </div>
-      )}
-      
-      {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
-      
-      {user && (
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={goBack}
-            className="h-8 w-8 p-0 text-black hover:bg-black/10"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={goForward}
-            className="h-8 w-8 p-0 text-black hover:bg-black/10"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      
+    <header className="sticky top-0 h-24 flex items-center justify-between border-b bg-white z-50 px-4 gap-4">
+      <div className="flex items-center gap-4">
+        {!user && (
+          <div className="flex items-center gap-3">
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <span className="font-aptos font-semibold text-2xl text-blue-900 whitespace-nowrap">Halo Business Finance</span>
+            </Link>
+          </div>
+        )}
+        
+        {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
+        
+        {user && (
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={goBack}
+              className="h-8 w-8 p-0 text-black hover:bg-black/10"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={goForward}
+              className="h-8 w-8 p-0 text-black hover:bg-black/10"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+        
+        {user && (
+          <span className="text-sm text-black">Welcome back, {getFirstName()}!</span>
+        )}
+      </div>
+
       {!user && (
         <div className="flex-1 flex items-center justify-center">
           <HorizontalNav />
         </div>
       )}
       
-      <div className="flex items-center mr-4 gap-4">
-        {user ? (
-          <div className="text-sm text-black w-full">
-            <div className="flex justify-between items-start w-full">
-              <span>Welcome back, {getFirstName()}!</span>
-              <div className="text-right">
-                <div>{currentTime.toLocaleDateString('en-US', { 
-                  weekday: 'short', 
-                  year: 'numeric', 
-                  month: 'short', 
-                  day: 'numeric' 
-                })}</div>
-                <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
-                })}</div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <Link to="/auth">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
-                <LogIn className="h-4 w-4" />
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
-                <Play className="h-4 w-4" />
-                Get Started
-              </Button>
-            </Link>
-          </>
-        )}
-      </div>
+      {user && (
+        <div className="text-sm text-black text-right">
+          <div>{currentTime.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+          })}</div>
+          <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          })}</div>
+        </div>
+      )}
+
+      {!user && (
+        <div className="flex items-center gap-4">
+          <Link to="/auth">
+            <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
+              <LogIn className="h-4 w-4" />
+              Sign In
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
+              <Play className="h-4 w-4" />
+              Get Started
+            </Button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 };
