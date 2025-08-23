@@ -444,9 +444,28 @@ const AccountPage = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center gap-2 mb-6">
-        <User className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">Account</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <User className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">Account</h1>
+        </div>
+        <Tabs defaultValue="account" className="flex gap-2">
+          <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Account
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Notifications
+          </TabsTrigger>
+          <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Privacy
+          </TabsTrigger>
+          <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Preferences
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
+            Billing
+          </TabsTrigger>
+        </Tabs>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -534,26 +553,6 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-2 mb-2">
-              <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Account
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Privacy
-              </TabsTrigger>
-              <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Preferences
-              </TabsTrigger>
-              <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Billing
-              </TabsTrigger>
-            </TabsList>
-
-
-
             <TabsContent value="account">
               <div className="space-y-6">
                 <Card>
