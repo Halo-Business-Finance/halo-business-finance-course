@@ -268,7 +268,7 @@ export function AppSidebar() {
                               
                               {/* Subtle description for available modules */}
                                {module.status === "available" && !isModuleLocked && (
-                                 <p className="text-xs text-white/70 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                 <p className="text-xs text-white mt-1 transition-opacity duration-300">
                                    Ready to start
                                  </p>
                                )}
