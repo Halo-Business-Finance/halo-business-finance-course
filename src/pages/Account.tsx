@@ -688,7 +688,7 @@ const AccountPage = () => {
                     {/* Password Requirements */}
                     <div className="bg-muted/30 rounded-lg p-4 space-y-2">
                       <h4 className="text-sm font-medium text-foreground">Password Requirements:</h4>
-                      <ul className="text-xs text-muted-foreground space-y-1">
+                      <ul className="text-xs text-black space-y-1">
                         <li className="flex items-center gap-2">
                           <span className="w-1 h-1 bg-primary rounded-full"></span>
                           At least 8 characters long
