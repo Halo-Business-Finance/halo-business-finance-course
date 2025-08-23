@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
+import { LiveLearningStats } from "@/components/LiveLearningStats";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -519,14 +520,19 @@ const AccountPage = () => {
 
         {/* Main Content */}
         <div className="lg:col-span-2">
-          <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
+          <Tabs defaultValue="learning-stats" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-6">
+              <TabsTrigger value="learning-stats">Learning Stats</TabsTrigger>
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="learning-stats" className="space-y-6">
+              <LiveLearningStats />
+            </TabsContent>
 
             <TabsContent value="profile">
               <Tabs defaultValue="activity" className="space-y-6">
