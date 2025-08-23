@@ -7,7 +7,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { courseData } from "@/data/courseData";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { EnhancedVideoPlayer } from "@/components/EnhancedVideoPlayer";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
+import { EnhancedQuiz, QuizQuestion } from "@/components/EnhancedQuiz";
 import { CaseStudyModal } from "@/components/CaseStudyModal";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
@@ -214,7 +216,7 @@ const ModulePage = () => {
           }
           
           return (
-            <VideoPlayer
+            <EnhancedVideoPlayer
               key={video.title || `video-${index}`}
               title={`${index + 1}. ${video.title || 'Untitled Video'}`}
               description={video.description || 'No description available'}
@@ -222,7 +224,10 @@ const ModulePage = () => {
               videoType={video.videoType || 'youtube'}
               videoUrl={video.videoUrl || ''}
               youtubeId={video.youtubeId}
-              className="w-full"
+              moduleId={moduleId}
+              className="w-full mb-6"
+              onProgress={(progress) => console.log(`Video progress: ${progress}%`)}
+              onComplete={() => console.log('Video completed')}
             />
           );
         })}
@@ -459,11 +464,32 @@ const ModulePage = () => {
         </TabsContent>
 
         <TabsContent value="quiz">
-          <ModuleQuiz
+          <EnhancedQuiz
             moduleId={moduleId || 'foundations'}
             moduleTitle={courseModule.title}
-            totalQuestions={courseModule.lessons || 10}
+            questions={[
+              {
+                id: '1',
+                type: 'multiple-choice',
+                question: 'What is the primary purpose of financial analysis?',
+                options: [
+                  'To increase company profits',
+                  'To evaluate financial performance and make informed decisions',
+                  'To satisfy regulatory requirements',
+                  'To impress investors'
+                ],
+                correctAnswers: ['To evaluate financial performance and make informed decisions'],
+                explanation: 'Financial analysis helps stakeholders understand a company\'s financial health and make informed business decisions.',
+                points: 10,
+                difficulty: 'medium'
+              }
+            ] as QuizQuestion[]}
+            timeLimit={20}
+            passingScore={70}
+            maxAttempts={3}
             onComplete={handleQuizComplete}
+            showHints={true}
+            allowReview={true}
           />
         </TabsContent>
       </Tabs>
