@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -31,11 +31,13 @@ import Blog from "./pages/Blog";
 import Support from "./pages/Support";
 import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
+import { AccountTabs } from "./components/AccountTabs";
 
 const queryClient = new QueryClient();
 
 const HeaderContent = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -116,8 +118,9 @@ const HeaderContent = () => {
       </div>
 
       {user && (
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center items-center gap-8">
           <span className="text-xl text-black font-medium">Welcome back, {getFirstName()}!</span>
+          {location.pathname === '/my-account' && <AccountTabs />}
         </div>
       )}
 
