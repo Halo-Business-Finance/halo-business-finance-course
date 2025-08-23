@@ -431,7 +431,7 @@ const AccountPage = () => {
       <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center gap-2 mb-6">
           <User className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">Account</h1>
+          <h1 className="text-2xl font-bold text-foreground">My Account</h1>
         </div>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
@@ -452,7 +452,7 @@ const AccountPage = () => {
         
         <TabsList className="grid w-auto grid-cols-5 bg-transparent border-none p-0 h-auto gap-2">
           <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-            Account
+            My Account
           </TabsTrigger>
           <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
             Notifications
@@ -472,7 +472,7 @@ const AccountPage = () => {
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-6">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Account Information</CardTitle>
+          <CardTitle className="text-xl font-semibold">My Account Information</CardTitle>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
