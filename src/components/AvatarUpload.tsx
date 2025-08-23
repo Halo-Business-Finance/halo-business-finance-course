@@ -112,7 +112,7 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         console.error('Profile update error:', updateError);
         toast({
           title: "Profile update failed",
-          description: updateError.message,
+          description: `Failed to save avatar: ${updateError.message}`,
           variant: "destructive"
         });
         return;
@@ -141,7 +141,14 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
   const handlePresetSelect = async (avatarUrl: string) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to update your avatar.",
+          variant: "destructive"
+        });
+        return;
+      }
 
       const { error } = await supabase
         .from('profiles')
@@ -149,9 +156,10 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         .eq('user_id', user.id);
 
       if (error) {
+        console.error('Avatar preset update error:', error);
         toast({
           title: "Update failed",
-          description: error.message,
+          description: `Failed to update avatar: ${error.message}`,
           variant: "destructive"
         });
         return;
