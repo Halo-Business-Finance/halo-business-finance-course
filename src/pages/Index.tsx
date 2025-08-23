@@ -115,7 +115,7 @@ const Index = () => {
               <div className="space-y-8 animate-fade-in">
                 
                 <div className="space-y-6">
-                  <h1 className="text-5xl lg:text-6xl font-playfair font-bold leading-tight text-halo-navy">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold leading-tight text-halo-navy">
                     Master Business
                     <span className="block bg-gradient-hero bg-clip-text text-transparent">
                       Finance & Lending
@@ -204,7 +204,7 @@ const Index = () => {
                 <Target className="h-4 w-4" />
                 Structured Learning Paths
               </Badge>
-              <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
               <p className="text-lg text-foreground max-w-3xl">
@@ -262,7 +262,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
             <div className="text-center lg:text-left space-y-4">
-              <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <p className="text-lg text-foreground max-w-3xl">
@@ -337,7 +337,7 @@ const Index = () => {
               <Star className="h-4 w-4" />
               Success Stories
             </Badge>
-            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               What Our Graduates Say
             </h2>
           </div>
