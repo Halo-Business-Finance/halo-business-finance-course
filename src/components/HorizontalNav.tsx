@@ -18,7 +18,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/courses" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               Courses
             </NavLink>
@@ -29,7 +29,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/pricing" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               Pricing
             </NavLink>
@@ -40,7 +40,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/business" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               For Business
             </NavLink>
@@ -51,7 +51,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/about" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               About Us
             </NavLink>
@@ -62,7 +62,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/blog" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               Blog
             </NavLink>
@@ -73,7 +73,7 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/support" 
-              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700")}
+              className={cn(navigationMenuTriggerStyle(), "bg-blue-600 text-white hover:bg-blue-700 shadow-none")}
             >
               Support
             </NavLink>
