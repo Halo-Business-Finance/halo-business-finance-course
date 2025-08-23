@@ -54,7 +54,7 @@ const Pricing = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-foreground mb-4">Choose Your Plan</h1>
-        <p className="text-lg text-muted-foreground max-w-4xl mx-auto whitespace-nowrap">
+        <p className="text-lg text-black max-w-4xl mx-auto whitespace-nowrap">
           Select the perfect plan for your learning journey. Upgrade or downgrade at any time.
         </p>
       </div>
