@@ -32,7 +32,7 @@ const About = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
         <Badge className="mb-4">About Us</Badge>
-        <h1 className="text-4xl font-bold text-blue-900 mb-4">Our Mission</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-4">Our Mission</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           We're dedicated to democratizing professional education by providing world-class training 
           programs that help individuals and organizations unlock their full potential.
@@ -55,7 +55,7 @@ const About = () => {
       </div>
 
       <div className="mb-16">
-        <h2 className="text-3xl font-bold text-blue-900 text-center mb-8">Our Story</h2>
+        <h2 className="text-3xl font-bold text-foreground text-center mb-8">Our Story</h2>
         <div className="max-w-4xl mx-auto">
           <Card>
             <CardContent className="p-8">
@@ -76,13 +76,13 @@ const About = () => {
       </div>
 
       <div>
-        <h2 className="text-3xl font-bold text-blue-900 text-center mb-8">Leadership Team</h2>
+        <h2 className="text-3xl font-bold text-foreground text-center mb-8">Leadership Team</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {team.map((member, index) => (
             <Card key={index}>
               <CardHeader className="text-center">
                 <div className="mx-auto w-20 h-20 bg-muted rounded-full mb-4"></div>
-                <CardTitle className="text-blue-900">{member.name}</CardTitle>
+                <CardTitle>{member.name}</CardTitle>
                 <CardDescription className="font-medium text-primary">{member.role}</CardDescription>
               </CardHeader>
               <CardContent className="text-center">

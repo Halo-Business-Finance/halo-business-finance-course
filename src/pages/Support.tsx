@@ -56,7 +56,7 @@ const Support = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-blue-900 mb-4">Help & Support</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-4">Help & Support</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           We're here to help you succeed. Find answers to common questions or contact our support team.
         </p>
@@ -81,7 +81,7 @@ const Support = () => {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Icon className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-blue-900">{option.title}</CardTitle>
+                <CardTitle>{option.title}</CardTitle>
                 <CardDescription>{option.description}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -95,7 +95,7 @@ const Support = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <h2 className="text-2xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
             <HelpCircle className="h-6 w-6" />
             Frequently Asked Questions
           </h2>
@@ -111,7 +111,7 @@ const Support = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-blue-900">Contact Form</CardTitle>
+            <CardTitle>Contact Form</CardTitle>
             <CardDescription>Can't find what you're looking for? Send us a message.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

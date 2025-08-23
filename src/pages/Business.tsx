@@ -41,7 +41,7 @@ const Business = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
         <Badge className="mb-4">For Business</Badge>
-        <h1 className="text-4xl font-bold text-blue-900 mb-4">Transform Your Team's Skills</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-4">Transform Your Team's Skills</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           Empower your organization with our comprehensive learning platform. Scale your team's expertise 
           with industry-leading courses and enterprise features.
@@ -57,7 +57,7 @@ const Business = () => {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Icon className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-blue-900">{feature.title}</CardTitle>
+                <CardTitle className="text-xl">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription>{feature.description}</CardDescription>
@@ -68,7 +68,7 @@ const Business = () => {
       </div>
 
       <div className="bg-muted/50 rounded-lg p-8 text-center">
-        <h2 className="text-2xl font-bold text-blue-900 mb-4">Ready to Get Started?</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-4">Ready to Get Started?</h2>
         <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
           Join thousands of organizations that trust our platform to develop their teams. 
           Contact our sales team for a custom demo and pricing.
