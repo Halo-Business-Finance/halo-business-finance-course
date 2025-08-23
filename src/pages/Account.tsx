@@ -429,10 +429,6 @@ const AccountPage = () => {
   if (isLoading) {
     return (
       <div className="container mx-auto p-6 space-y-6">
-        <div className="flex items-center gap-2 mb-6">
-          <User className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">My Account</h1>
-        </div>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="text-lg">Loading profile...</div>
@@ -445,10 +441,7 @@ const AccountPage = () => {
   return (
     <Tabs defaultValue="account" className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <User className="h-6 w-6 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">My Account</h1>
-        </div>
+        <div></div>
         
         <TabsList className="grid w-auto grid-cols-5 bg-transparent border-none p-0 h-auto gap-2">
           <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
