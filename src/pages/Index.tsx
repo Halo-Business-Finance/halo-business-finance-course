@@ -265,9 +265,11 @@ const Index = () => {
                       </div>
                     ))}
                   </div>
-                  <Button className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all">
-                    View Curriculum
-                  </Button>
+                  <Link to="/auth">
+                    <Button className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all">
+                      View Curriculum
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
