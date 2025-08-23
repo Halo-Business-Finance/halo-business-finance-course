@@ -141,10 +141,10 @@ const ProgressPage = () => {
             <Target className="h-5 w-5 text-primary" />
             <span className="text-sm font-medium text-primary">Learning Progress</span>
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-black">
             Your Learning Journey
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-black max-w-2xl mx-auto">
             Track your progress through the comprehensive Halo Business Finance certification program
           </p>
         </div>
@@ -173,14 +173,14 @@ const ProgressPage = () => {
                   </div>
                   Overall Progress
                 </CardTitle>
-                <CardDescription className="text-base">
+                <CardDescription className="text-base text-black">
                   You're making great progress on your learning journey
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative z-10 space-y-6">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground font-medium">Course Completion</span>
+                    <span className="text-black font-medium">Course Completion</span>
                     <span className="text-2xl font-bold text-primary">{overallProgress}%</span>
                   </div>
                   <div className="relative">
@@ -192,19 +192,19 @@ const ProgressPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-emerald-500">0</div>
-                    <div className="text-sm text-muted-foreground font-medium">Completed</div>
+                    <div className="text-sm text-black font-medium">Completed</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-blue-500">1</div>
-                    <div className="text-sm text-muted-foreground font-medium">In Progress</div>
+                    <div className="text-sm text-black font-medium">In Progress</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-amber-500">1</div>
-                    <div className="text-sm text-muted-foreground font-medium">Available</div>
+                    <div className="text-sm text-black font-medium">Available</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
-                    <div className="text-3xl font-bold text-muted-foreground">6</div>
-                    <div className="text-sm text-muted-foreground font-medium">Locked</div>
+                    <div className="text-3xl font-bold text-gray-500">6</div>
+                    <div className="text-sm text-black font-medium">Locked</div>
                   </div>
                 </div>
               </CardContent>
@@ -219,7 +219,7 @@ const ProgressPage = () => {
                   </div>
                   Learning Modules
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-black">
                   Master each module to unlock the next one in your learning path
                 </CardDescription>
               </CardHeader>
@@ -246,10 +246,10 @@ const ProgressPage = () => {
                             )}
                           </div>
                           <div className="space-y-2">
-                            <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                            <h3 className="font-semibold text-lg text-black group-hover:text-primary transition-colors">
                               {module.name}
                             </h3>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-4 text-sm text-black">
                               {getProgressStatusBadge(module.status)}
                               <div className="flex items-center gap-1">
                                 <Clock className="h-4 w-4" />
@@ -268,7 +268,7 @@ const ProgressPage = () => {
                       {module.status !== "locked" && (
                         <div className="space-y-3">
                           <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground font-medium">Progress</span>
+                            <span className="text-black font-medium">Progress</span>
                             <span className="font-semibold text-primary">{module.progress}%</span>
                           </div>
                           <div className="relative">
@@ -295,7 +295,7 @@ const ProgressPage = () => {
                   </div>
                   Professional Certifications
                 </CardTitle>
-                <CardDescription className="text-base">
+                <CardDescription className="text-base text-black">
                   Earn industry-recognized certifications to advance your career
                 </CardDescription>
               </CardHeader>
@@ -303,19 +303,19 @@ const ProgressPage = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-emerald-500">0</div>
-                    <div className="text-sm text-muted-foreground font-medium">Earned</div>
+                    <div className="text-sm text-black font-medium">Earned</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-blue-500">1</div>
-                    <div className="text-sm text-muted-foreground font-medium">In Progress</div>
+                    <div className="text-sm text-black font-medium">In Progress</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
                     <div className="text-3xl font-bold text-amber-500">1</div>
-                    <div className="text-sm text-muted-foreground font-medium">Available</div>
+                    <div className="text-sm text-black font-medium">Available</div>
                   </div>
                   <div className="text-center space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 hover-scale">
-                    <div className="text-3xl font-bold text-muted-foreground">6</div>
-                    <div className="text-sm text-muted-foreground font-medium">Locked</div>
+                    <div className="text-3xl font-bold text-gray-500">6</div>
+                    <div className="text-sm text-black font-medium">Locked</div>
                   </div>
                 </div>
               </CardContent>
@@ -350,15 +350,15 @@ const ProgressPage = () => {
                               "text-muted-foreground"
                             }`} />
                           </div>
-                          <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                          <CardTitle className="text-xl text-black group-hover:text-primary transition-colors">
                             {certificate.name}
                           </CardTitle>
                         </div>
-                        <CardDescription className="text-base leading-relaxed">
+                        <CardDescription className="text-base leading-relaxed text-black">
                           {certificate.description}
                         </CardDescription>
                         {certificate.status !== "locked" && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2 text-sm text-black">
                             <Calendar className="h-4 w-4" />
                             <span>{certificate.estimatedTime}</span>
                           </div>
@@ -371,7 +371,7 @@ const ProgressPage = () => {
                     {certificate.status === "in-progress" && certificate.progress > 0 && (
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground font-medium">Progress</span>
+                          <span className="text-black font-medium">Progress</span>
                           <span className="font-semibold text-primary">{certificate.progress}%</span>
                         </div>
                         <Progress value={certificate.progress} className="h-2" />
@@ -403,7 +403,7 @@ const ProgressPage = () => {
 
                     {certificate.status === "locked" && (
                       <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-sm text-black leading-relaxed">
                           Complete prerequisite modules to unlock this certification and advance your expertise
                         </p>
                       </div>
@@ -424,7 +424,7 @@ const ProgressPage = () => {
                   </div>
                   Achievements & Milestones
                 </CardTitle>
-                <CardDescription className="text-base">
+                <CardDescription className="text-base text-black">
                   Unlock achievements as you progress through your learning journey
                 </CardDescription>
               </CardHeader>
@@ -448,11 +448,11 @@ const ProgressPage = () => {
                       </div>
                       <div className="flex-1">
                         <h3 className={`font-semibold ${
-                          achievement.earned ? "text-emerald-900" : "text-muted-foreground"
+                          achievement.earned ? "text-emerald-900" : "text-black"
                         }`}>
                           {achievement.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-black">
                           {achievement.description}
                         </p>
                       </div>
