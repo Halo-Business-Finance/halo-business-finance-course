@@ -80,7 +80,7 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="sticky top-0 h-16 flex items-center border-b bg-white z-50 px-4 gap-4">
+    <header className="sticky top-0 h-20 flex items-center border-b bg-white z-50 px-4 gap-4">
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
           <Building2 className="h-5 w-5 text-white" />
