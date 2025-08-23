@@ -16,6 +16,7 @@ import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
+import { AccountTabs } from "@/components/AccountTabs";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -443,10 +444,26 @@ const AccountPage = () => {
     );
   }
 
+  const handleTabChange = (tab: string) => {
+    window.history.pushState(null, '', `/my-account?tab=${tab}`);
+  };
+
   return (
-    <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
-      {/* Profile Info - Account Information Widget moved higher */}
-      <Card className="mb-6">
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Welcome Message */}
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold">Welcome back, {userInfo.name || 'User'}!</h1>
+        <p className="text-muted-foreground">Manage your account settings and preferences</p>
+      </div>
+
+      {/* Account Tabs */}
+      <div className="flex justify-center">
+        <AccountTabs activeTab={currentTab} onTabChange={handleTabChange} />
+      </div>
+
+      <Tabs value={currentTab} className="space-y-6">
+        {/* Profile Info - Account Information Widget moved higher */}
+        <Card className="mb-6">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">My Account Information</CardTitle>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -1257,7 +1274,8 @@ const AccountPage = () => {
           </TabsContent>
         </div>
       </div>
-    </Tabs>
+      </Tabs>
+    </div>
   );
 };
 
