@@ -11,6 +11,7 @@ export const AccountTabs = ({ activeTab, onTabChange }: AccountTabsProps) => {
     { value: "notifications", label: "Notifications" },
     { value: "privacy", label: "Privacy" },
     { value: "preferences", label: "Preferences" },
+    { value: "support", label: "Support" },
     { value: "billing", label: "Billing" }
   ];
 
