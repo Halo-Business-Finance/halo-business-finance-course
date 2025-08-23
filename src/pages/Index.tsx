@@ -116,7 +116,7 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <p className="text-xl leading-relaxed text-muted-foreground max-w-2xl">
+                  <p className="text-lg leading-relaxed text-foreground max-w-2xl">
                     Transform your career with our comprehensive business finance and commercial lending program. 
                     Developed by industry experts and delivered through Stanford-level curriculum.
                   </p>
