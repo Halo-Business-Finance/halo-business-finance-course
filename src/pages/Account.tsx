@@ -15,7 +15,6 @@ import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
-import { HorizontalNav } from "@/components/HorizontalNav";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -640,19 +639,6 @@ const AccountPage = () => {
                   <div className="text-xs text-muted-foreground">Avg Score</div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Navigation Menu */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
-                Quick Navigation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <HorizontalNav />
             </CardContent>
           </Card>
         </div>
