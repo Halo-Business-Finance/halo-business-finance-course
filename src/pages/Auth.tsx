@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogIn, UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, AlertTriangle, ArrowLeft } from "lucide-react";
 import { validateEmail, validatePassword, validateName, sanitizeInput, authRateLimiter } from "@/utils/validation";
+import { logger } from "@/utils/secureLogging";
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -198,8 +199,7 @@ const AuthPage = () => {
       const sanitizedEmail = sanitizeInput(signUpData.email);
       const redirectUrl = `${window.location.origin}/dashboard`;
       
-      console.log('Attempting signup with email:', sanitizedEmail);
-      console.log('Redirect URL:', redirectUrl);
+      logger.debug('Attempting signup', { sanitizedEmail }, { component: 'Auth', action: 'signup' });
       
       const { data, error } = await supabase.auth.signUp({
         email: sanitizedEmail,
@@ -212,12 +212,13 @@ const AuthPage = () => {
         }
       });
 
-      console.log('Signup response:', { data, error });
-      console.log('User created:', !!data.user);
-      console.log('User confirmation sent:', data.user?.email_confirmed_at === null);
+      logger.debug('Signup response received', { 
+        userCreated: !!data.user, 
+        confirmationSent: data.user?.email_confirmed_at === null 
+      }, { component: 'Auth', action: 'signup' });
 
       if (error) {
-        console.error('Signup error:', error);
+        logger.error('Signup failed', error, { component: 'Auth', action: 'signup', userId: sanitizedEmail });
         toast({
           title: "Sign Up Failed",
           description: error.message,

@@ -18,8 +18,6 @@ const securityHeaders = {
 };
 
 serve(async (req) => {
-  console.log('Enhanced auth security function called:', req.method);
-
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: securityHeaders });
@@ -59,7 +57,6 @@ serve(async (req) => {
           });
 
         if (rateLimitError) {
-          console.error('Rate limit check error:', rateLimitError);
           throw new Error('Rate limit check failed');
         }
 
@@ -84,7 +81,10 @@ serve(async (req) => {
           });
 
         if (logError) {
-          console.error('Failed to log security event:', logError);
+          // Log to console in development only
+          if (Deno.env.get('ENV') === 'development') {
+            console.error('Failed to log security event:', logError);
+          }
         }
 
         // Trigger security analysis
@@ -92,7 +92,10 @@ serve(async (req) => {
           .rpc('analyze_security_events');
 
         if (analysisError) {
-          console.error('Security analysis error:', analysisError);
+          // Log to console in development only
+          if (Deno.env.get('ENV') === 'development') {
+            console.error('Security analysis error:', analysisError);
+          }
         }
 
         rateLimitResponse = { logged: true };
@@ -115,7 +118,10 @@ serve(async (req) => {
           });
 
         if (successLogError) {
-          console.error('Failed to log successful auth:', successLogError);
+          // Log to console in development only  
+          if (Deno.env.get('ENV') === 'development') {
+            console.error('Failed to log successful auth:', successLogError);
+          }
         }
 
         rateLimitResponse = { logged: true };
@@ -138,7 +144,10 @@ serve(async (req) => {
     );
 
   } catch (error: any) {
-    console.error('Enhanced auth security error:', error);
+    // Only log errors in development
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('Enhanced auth security error:', error);
+    }
     
     return new Response(
       JSON.stringify({ 
