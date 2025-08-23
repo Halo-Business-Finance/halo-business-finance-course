@@ -150,7 +150,7 @@ const HeaderContent = () => {
                 month: 'short', 
                 day: 'numeric' 
               })}</div>
-              <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
+              <div className="text-xs">{currentTime.toLocaleTimeString('en-US', { 
                 hour: '2-digit', 
                 minute: '2-digit' 
               })}</div>
