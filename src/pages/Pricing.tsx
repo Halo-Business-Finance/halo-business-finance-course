@@ -92,11 +92,11 @@ const Pricing = () => {
             </Badge>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-              <span className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 bg-clip-text text-transparent">
                 Choose Your
               </span>
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-orange-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 bg-clip-text text-transparent">
                 Success Plan
               </span>
             </h1>
@@ -144,7 +144,7 @@ const Pricing = () => {
                       <Icon className="h-8 w-8 text-white" />
                     </div>
                     
-                    <CardTitle className="text-2xl font-bold text-blue-900 mb-3">{plan.name}</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-blue-600 mb-3">{plan.name}</CardTitle>
                     <CardDescription className="text-blue-700 text-base leading-relaxed px-2">{plan.description}</CardDescription>
                     
                     <div className="mt-6">

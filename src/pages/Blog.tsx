@@ -48,7 +48,7 @@ const Blog = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Blog & Resources</h1>
+        <h1 className="text-4xl font-bold text-blue-600 mb-4">Blog & Resources</h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           Stay informed with the latest insights, trends, and best practices in finance and professional development.
         </p>
@@ -74,7 +74,7 @@ const Blog = () => {
                 <Badge variant="secondary">{post.category}</Badge>
                 <span className="text-sm text-muted-foreground">{post.readTime}</span>
               </div>
-              <CardTitle className="text-xl hover:text-primary cursor-pointer">
+              <CardTitle className="text-xl text-blue-600 hover:text-primary cursor-pointer">
                 {post.title}
               </CardTitle>
               <CardDescription>{post.excerpt}</CardDescription>
