@@ -224,7 +224,7 @@ const Index = () => {
             <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               Choose Your Path to Success
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-foreground max-w-3xl mx-auto">
               Comprehensive training programs designed to meet you where you are and take you where you want to go
             </p>
           </div>
