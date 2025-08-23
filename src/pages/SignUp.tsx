@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, ArrowLeft } from "lucide-react";
+import { UserPlus, Mail, Lock, User, Eye, EyeOff, Shield, ArrowLeft, Building, Phone, MapPin } from "lucide-react";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 
 const SignUpPage = () => {
@@ -24,7 +24,11 @@ const SignUpPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    fullName: ""
+    fullName: "",
+    company: "",
+    phone: "",
+    city: "",
+    state: ""
   });
 
   // Redirect authenticated users
@@ -33,6 +37,25 @@ const SignUpPage = () => {
       navigate('/dashboard', { replace: true });
     }
   }, [user, loading, navigate]);
+
+  // Phone number formatting
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const numbers = value.replace(/\D/g, '');
+    
+    // Limit to 10 digits
+    const truncated = numbers.substring(0, 10);
+    
+    // Apply formatting
+    if (truncated.length >= 6) {
+      return `(${truncated.slice(0, 3)}) ${truncated.slice(3, 6)}-${truncated.slice(6)}`;
+    } else if (truncated.length >= 3) {
+      return `(${truncated.slice(0, 3)}) ${truncated.slice(3)}`;
+    } else if (truncated.length > 0) {
+      return `(${truncated}`;
+    }
+    return '';
+  };
 
   // Password strength calculation
   const calculatePasswordStrength = (password: string) => {
@@ -57,6 +80,10 @@ const SignUpPage = () => {
       const sanitizedData = {
         email: sanitizeInput(signUpData.email),
         fullName: sanitizeInput(signUpData.fullName),
+        company: sanitizeInput(signUpData.company),
+        phone: signUpData.phone.replace(/\D/g, ''), // Store only numbers
+        city: sanitizeInput(signUpData.city),
+        state: sanitizeInput(signUpData.state),
         password: signUpData.password,
         confirmPassword: signUpData.confirmPassword
       };
@@ -93,6 +120,16 @@ const SignUpPage = () => {
         return;
       }
 
+      // Validate phone number if provided
+      if (sanitizedData.phone && sanitizedData.phone.length !== 10) {
+        toast({
+          title: "Invalid Phone Number",
+          description: "Phone number must be 10 digits",
+          variant: "destructive",
+        });
+        return;
+      }
+
       if (sanitizedData.password !== sanitizedData.confirmPassword) {
         toast({
           title: "Password Mismatch",
@@ -110,6 +147,10 @@ const SignUpPage = () => {
           emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             full_name: sanitizedData.fullName,
+            company: sanitizedData.company,
+            phone: sanitizedData.phone,
+            city: sanitizedData.city,
+            state: sanitizedData.state,
           }
         }
       });
@@ -218,6 +259,69 @@ const SignUpPage = () => {
                   required
                   disabled={isLoading}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="company" className="flex items-center gap-2">
+                  <Building className="h-4 w-4" />
+                  Company Name (Optional)
+                </Label>
+                <Input
+                  id="company"
+                  type="text"
+                  placeholder="Enter your company name"
+                  value={signUpData.company}
+                  onChange={(e) => setSignUpData({...signUpData, company: e.target.value})}
+                  disabled={isLoading}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  Phone Number
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="(XXX) XXX-XXXX"
+                  value={signUpData.phone}
+                  onChange={(e) => setSignUpData({...signUpData, phone: formatPhoneNumber(e.target.value)})}
+                  disabled={isLoading}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    City
+                  </Label>
+                  <Input
+                    id="city"
+                    type="text"
+                    placeholder="Enter your city"
+                    value={signUpData.city}
+                    onChange={(e) => setSignUpData({...signUpData, city: e.target.value})}
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="state" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    State
+                  </Label>
+                  <Input
+                    id="state"
+                    type="text"
+                    placeholder="Enter your state"
+                    value={signUpData.state}
+                    onChange={(e) => setSignUpData({...signUpData, state: e.target.value})}
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
