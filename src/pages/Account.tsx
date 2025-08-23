@@ -449,56 +449,166 @@ const AccountPage = () => {
         <h1 className="text-2xl font-bold text-foreground">Account</h1>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Profile Info */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card>
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <AvatarUpload
-                  currentAvatar={userInfo.avatar}
-                  userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
-                  onAvatarUpdate={handleAvatarUpdate}
-                />
+      {/* Profile Info - Account Information Widget moved higher */}
+      <Card className="mb-6">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-xl font-semibold">Account Information</CardTitle>
+          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you're done.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      value={editForm.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={editForm.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input
+                      id="phone"
+                      value={editForm.phone}
+                      onChange={(e) => handleInputChange('phone', handlePhoneInput(e.target.value))}
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="title">Title</Label>
+                    <Input
+                      id="title"
+                      value={editForm.title}
+                      onChange={(e) => handleInputChange('title', e.target.value)}
+                      placeholder="Your job title"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="company">Company</Label>
+                  <Input
+                    id="company"
+                    value={editForm.company}
+                    onChange={(e) => handleInputChange('company', e.target.value)}
+                    placeholder="Your company name"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="city">City</Label>
+                    <Input
+                      id="city"
+                      value={editForm.city}
+                      onChange={(e) => handleInputChange('city', e.target.value)}
+                      placeholder="Your city"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="state">State</Label>
+                    <Input
+                      id="state"
+                      value={editForm.state}
+                      onChange={(e) => handleInputChange('state', e.target.value)}
+                      placeholder="Your state"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => {
+                      resetForm();
+                      setIsEditDialogOpen(false);
+                    }}
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex flex-col items-center space-y-4">
+              <AvatarUpload
+                currentAvatar={userInfo.avatar}
+                userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
+                onAvatarUpdate={handleAvatarUpdate}
+              />
+              <div className="text-center">
+                <h3 className="text-lg font-semibold">{userInfo.name}</h3>
+                <p className="text-sm text-muted-foreground">{userInfo.title}</p>
               </div>
-              <CardTitle>{userInfo.name}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2 text-sm">
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-muted-foreground" />
-                <span>{userInfo.email}</span>
+                <span className="text-sm">{userInfo.email}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <span>{formatPhoneNumber(userInfo.phone)}</span>
+                <span className="text-sm">{formatPhoneNumber(userInfo.phone) || 'No phone number'}</span>
               </div>
               {userInfo.company && (
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-3">
                   <Settings className="h-4 w-4 text-muted-foreground" />
-                  <span>{userInfo.company}</span>
+                  <span className="text-sm">{userInfo.company}</span>
                 </div>
               )}
-              {userInfo.title && (
-                <div className="flex items-center gap-2 text-sm">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <span>{userInfo.title}</span>
-                </div>
-              )}
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span>
+                <span className="text-sm">
                   {userInfo.city || userInfo.state ? 
                     `${userInfo.city}${userInfo.city && userInfo.state ? ', ' : ''}${userInfo.state}` : 
                     'No location set'
                   }
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-3">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>Joined {userInfo.joinDate}</span>
+                <span className="text-sm">Joined {userInfo.joinDate}</span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Learning Stats */}
+        <div className="lg:col-span-1 space-y-6">
 
           {/* Learning Stats */}
           <Card>
