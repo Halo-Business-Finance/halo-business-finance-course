@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, GraduationCap, DollarSign, Building, Users, FileText } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,8 +20,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/courses" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none text-xs md:text-sm px-2 md:px-4")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
+              <GraduationCap className="h-3 w-3 md:h-4 md:w-4" />
               Courses
             </NavLink>
           </NavigationMenuLink>
@@ -31,8 +32,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/pricing" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none text-xs md:text-sm px-2 md:px-4")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
+              <DollarSign className="h-3 w-3 md:h-4 md:w-4" />
               Pricing
             </NavLink>
           </NavigationMenuLink>
@@ -42,8 +44,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/business" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none text-xs md:text-sm px-2 md:px-4")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
+              <Building className="h-3 w-3 md:h-4 md:w-4" />
               For Business
             </NavLink>
           </NavigationMenuLink>
@@ -53,8 +56,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/about" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none text-xs md:text-sm px-2 md:px-4")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
+              <Users className="h-3 w-3 md:h-4 md:w-4" />
               About Us
             </NavLink>
           </NavigationMenuLink>
@@ -64,8 +68,9 @@ export const HorizontalNav = () => {
           <NavigationMenuLink asChild>
             <NavLink 
               to="/blog" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none text-xs md:text-sm px-2 md:px-4")}
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
+              <FileText className="h-3 w-3 md:h-4 md:w-4" />
               Blog
             </NavLink>
           </NavigationMenuLink>
