@@ -12,10 +12,10 @@ All colors MUST be HSL.
     --foreground: 0 0% 9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 208 100% 15%;
+    --card-foreground: 0 0% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 208 100% 15%;
+    --popover-foreground: 0 0% 9%;
 
     --primary: 208 100% 30%;
     --primary-foreground: 0 0% 100%;
@@ -24,7 +24,7 @@ All colors MUST be HSL.
     --secondary-foreground: 208 100% 20%;
 
     --muted: 0 0% 96%;
-    --muted-foreground: 208 100% 25%;
+    --muted-foreground: 0 0% 40%;
 
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
@@ -34,7 +34,7 @@ All colors MUST be HSL.
 
     --border: 0 0% 90%;
     --input: 0 0% 96%;
-    --ring: 208 100% 30%;
+    --ring: 0 0% 9%;
 
     /* Halo Business Finance brand colors */
     --halo-navy: 210 100% 15%;
