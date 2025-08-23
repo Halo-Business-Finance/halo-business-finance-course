@@ -358,13 +358,13 @@ export const SecurityDashboard: React.FC = () => {
     switch (severity) {
       case 'critical':
       case 'high':
-        return <XCircle className="h-4 w-4" />;
+        return <XCircle className="h-4 w-4 text-orange-500" />;
       case 'medium':
-        return <AlertTriangle className="h-4 w-4" />;
+        return <AlertTriangle className="h-4 w-4 text-orange-500" />;
       case 'low':
-        return <CheckCircle className="h-4 w-4" />;
+        return <CheckCircle className="h-4 w-4 text-orange-500" />;
       default:
-        return <Shield className="h-4 w-4" />;
+        return <Shield className="h-4 w-4 text-orange-500" />;
     }
   };
 
@@ -373,7 +373,7 @@ export const SecurityDashboard: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5" />
+            <Shield className="h-5 w-5 text-orange-500" />
             Security Dashboard
           </CardTitle>
           <CardDescription>Loading security monitoring data...</CardDescription>
@@ -399,19 +399,19 @@ export const SecurityDashboard: React.FC = () => {
         </div>
         <div className="flex gap-2">
           <Button onClick={runThreatHunt} variant="outline">
-            <Target className="h-4 w-4 mr-2" />
+            <Target className="h-4 w-4 mr-2 text-orange-500" />
             Threat Hunt
           </Button>
           <Button onClick={runComplianceAudit} variant="outline">
-            <FileText className="h-4 w-4 mr-2" />
+            <FileText className="h-4 w-4 mr-2 text-orange-500" />
             Compliance Audit
           </Button>
           <Button onClick={generateSecurityReport} variant="outline">
-            <BarChart3 className="h-4 w-4 mr-2" />
+            <BarChart3 className="h-4 w-4 mr-2 text-orange-500" />
             Generate Report
           </Button>
           <Button onClick={loadSecurityData}>
-            <Activity className="h-4 w-4 mr-2" />
+            <Activity className="h-4 w-4 mr-2 text-orange-500" />
             Refresh
           </Button>
         </div>
@@ -422,7 +422,7 @@ export const SecurityDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Security Posture</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
+            <Shield className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold capitalize">{securityMetrics.security_posture}</div>
@@ -435,7 +435,7 @@ export const SecurityDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Threat Level</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold capitalize">{threatIntel.threat_level}</div>
@@ -448,7 +448,7 @@ export const SecurityDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Compliance Score</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <FileText className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{compliance.overall_score}%</div>
@@ -461,7 +461,7 @@ export const SecurityDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Data Encryption</CardTitle>
-            <Lock className="h-4 w-4 text-muted-foreground" />
+            <Lock className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{securityMetrics.encrypted_data_percentage}%</div>
@@ -489,7 +489,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
+                  <Activity className="h-5 w-5 text-orange-500" />
                   Real-time Security Metrics
                 </CardTitle>
               </CardHeader>
@@ -514,7 +514,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Globe className="h-5 w-5" />
+                  <Globe className="h-5 w-5 text-orange-500" />
                   Network Security Status
                 </CardTitle>
               </CardHeader>
@@ -547,7 +547,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
+                <AlertTriangle className="h-5 w-5 text-orange-500" />
                 Security Alerts ({data.alerts.length})
               </CardTitle>
               <CardDescription>Active security threats and anomalies</CardDescription>
@@ -555,7 +555,7 @@ export const SecurityDashboard: React.FC = () => {
             <CardContent>
               {data.alerts.length === 0 ? (
                 <Alert>
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="h-4 w-4 text-orange-500" />
                   <AlertDescription>
                     No active security alerts. System appears to be secure.
                   </AlertDescription>
@@ -615,7 +615,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+                <FileText className="h-5 w-5 text-orange-500" />
                 Regulatory Compliance Status
               </CardTitle>
               <CardDescription>Current compliance levels across regulatory frameworks</CardDescription>
@@ -677,7 +677,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Brain className="h-5 w-5" />
+                  <Brain className="h-5 w-5 text-orange-500" />
                   Threat Intelligence
                 </CardTitle>
               </CardHeader>
@@ -709,7 +709,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
+                  <Eye className="h-5 w-5 text-orange-500" />
                   Indicators of Compromise
                 </CardTitle>
               </CardHeader>
@@ -717,7 +717,7 @@ export const SecurityDashboard: React.FC = () => {
                 <div className="space-y-2">
                   {threatIntel.indicators_of_compromise.map((indicator, index) => (
                     <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                      <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                      <AlertTriangle className="h-4 w-4 text-orange-500" />
                       <span className="text-sm font-mono">{indicator.replace(/_/g, ' ')}</span>
                     </div>
                   ))}
@@ -731,14 +731,14 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
+                <Zap className="h-5 w-5 text-orange-500" />
                 Security Incident Response
               </CardTitle>
               <CardDescription>Active incidents and response timeline</CardDescription>
             </CardHeader>
             <CardContent>
               <Alert>
-                <CheckCircle className="h-4 w-4" />
+                <CheckCircle className="h-4 w-4 text-orange-500" />
                 <AlertDescription>
                   No active security incidents. All systems operating normally.
                 </AlertDescription>
@@ -778,7 +778,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
+                  <BarChart3 className="h-5 w-5 text-orange-500" />
                   Security Analytics
                 </CardTitle>
               </CardHeader>
@@ -803,7 +803,7 @@ export const SecurityDashboard: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Database className="h-5 w-5" />
+                  <Database className="h-5 w-5 text-orange-500" />
                   Data Protection Metrics
                 </CardTitle>
               </CardHeader>
