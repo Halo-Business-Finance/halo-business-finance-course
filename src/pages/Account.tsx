@@ -650,7 +650,7 @@ const AccountPage = () => {
                     onClick={() => setShowPasswordForm(!showPasswordForm)}
                   >
                     <Shield className="h-4 w-4 mr-2" />
-                    {showPasswordForm ? 'Hide Password Form' : 'Change Password'}
+                    {showPasswordForm ? 'Close Window' : 'Change Password'}
                   </Button>
                 </CardContent>
               </Card>
