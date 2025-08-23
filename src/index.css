@@ -58,19 +58,19 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 208 40% 93%;
+    --sidebar-background: 210 100% 15%;
 
-    --sidebar-foreground: 208 100% 20%;
+    --sidebar-foreground: 0 0% 98%;
 
-    --sidebar-primary: 208 100% 30%;
+    --sidebar-primary: 25 95% 53%;
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-primary-foreground: 210 100% 15%;
 
-    --sidebar-accent: 208 50% 88%;
+    --sidebar-accent: 210 80% 25%;
 
-    --sidebar-accent-foreground: 208 100% 25%;
+    --sidebar-accent-foreground: 0 0% 98%;
 
-    --sidebar-border: 208 30% 80%;
+    --sidebar-border: 210 80% 25%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
