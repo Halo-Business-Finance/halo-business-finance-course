@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 
@@ -534,11 +534,12 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
+              <TabsTrigger value="billing">Billing</TabsTrigger>
             </TabsList>
 
 
@@ -938,6 +939,162 @@ const AccountPage = () => {
                       </Select>
                     </div>
                     <Button onClick={handlePreferencesSubmit}>Save Preferences</Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="billing">
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CreditCard className="h-5 w-5" />
+                      Payment Methods
+                    </CardTitle>
+                    <CardDescription>
+                      Manage your payment methods and billing information
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="border rounded-lg p-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">VISA</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">•••• •••• •••• 4242</p>
+                          <p className="text-sm text-muted-foreground">Expires 12/26</p>
+                        </div>
+                      </div>
+                      <Badge variant="secondary">Primary</Badge>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button variant="outline" className="flex-1">
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        Add Payment Method
+                      </Button>
+                      <Button variant="outline">
+                        Update Billing Address
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Subscription Details</CardTitle>
+                    <CardDescription>
+                      Your current subscription plan and billing cycle
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <h3 className="font-semibold">Professional Plan</h3>
+                        <p className="text-sm text-muted-foreground">Full access to all courses and features</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold">$49.99/month</p>
+                        <p className="text-sm text-muted-foreground">Next billing: Jan 15, 2025</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button variant="outline" className="flex-1">
+                        Change Plan
+                      </Button>
+                      <Button variant="outline">
+                        Cancel Subscription
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Billing History</CardTitle>
+                    <CardDescription>
+                      View and download your past invoices
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {[
+                        { date: "Dec 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-12-001" },
+                        { date: "Nov 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-11-001" },
+                        { date: "Oct 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-10-001" },
+                      ].map((bill, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center space-x-4">
+                            <div>
+                              <p className="font-medium">{bill.invoice}</p>
+                              <p className="text-sm text-muted-foreground">{bill.date}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-4">
+                            <span className="font-medium">{bill.amount}</span>
+                            <Badge variant={bill.status === "Paid" ? "default" : "secondary"}>
+                              {bill.status}
+                            </Badge>
+                            <Button variant="ghost" size="sm">
+                              Download
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t">
+                      <Button variant="outline" className="w-full">
+                        View All Billing History
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Billing Settings</CardTitle>
+                    <CardDescription>
+                      Configure your billing preferences and notifications
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Email Receipts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive email receipts for all payments
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Payment Reminders</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get notified before your subscription renews
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Failed Payment Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive alerts if a payment fails
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                    
+                    <div className="pt-4">
+                      <Button>Save Billing Settings</Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
