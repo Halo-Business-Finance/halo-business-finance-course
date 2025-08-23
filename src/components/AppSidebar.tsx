@@ -163,7 +163,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                      <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
                        <item.icon className="h-4 w-4 text-white" />
-                       {!collapsed && <span className="text-white text-sm">{item.title}</span>}
+                       {!collapsed && <span className="text-white text-xs">{item.title}</span>}
                      </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -317,7 +317,7 @@ export function AppSidebar() {
                          className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded disabled:opacity-50"
                        >
                          <LogOut className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white text-sm">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                         {!collapsed && <span className="text-white text-xs">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                        </button>
                     </SidebarMenuButton>
                   ) : (
@@ -327,7 +327,7 @@ export function AppSidebar() {
                          className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded"
                        >
                          <LogIn className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white text-sm">Sign In</span>}
+                         {!collapsed && <span className="text-white text-xs">Sign In</span>}
                        </button>
                     </SidebarMenuButton>
                   )}
