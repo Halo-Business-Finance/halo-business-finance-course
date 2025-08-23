@@ -75,24 +75,17 @@ serve(async (req) => {
       }
     )
 
-    // Verify current user is admin/super_admin
-    const { data: currentUserRoles, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', currentUserId)
-      .eq('is_active', true)
+    // Verify current user can delete the target user using secure function
+    const { data: canDelete, error: roleError } = await supabase
+      .rpc('can_delete_user', { target_user_id: userId })
 
     if (roleError) {
-      console.error('Error checking user roles:', roleError)
+      console.error('Error checking delete permissions:', roleError)
       throw new Error('Failed to verify permissions')
     }
 
-    const hasAdminRole = currentUserRoles?.some(r => 
-      r.role === 'admin' || r.role === 'super_admin'
-    )
-
-    if (!hasAdminRole) {
-      throw new Error('Insufficient permissions. Admin role required.')
+    if (!canDelete) {
+      throw new Error('Insufficient permissions. Only super admins can delete users.')
     }
 
     // Check if target user exists
