@@ -520,105 +520,14 @@ const AccountPage = () => {
 
         {/* Main Content */}
         <div className="lg:col-span-2">
-          <Tabs defaultValue="learning-stats" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
-              <TabsTrigger value="learning-stats">Learning Stats</TabsTrigger>
-              <TabsTrigger value="profile">Profile</TabsTrigger>
+          <Tabs defaultValue="account" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="learning-stats" className="space-y-6">
-              <LiveLearningStats />
-            </TabsContent>
-
-            <TabsContent value="profile">
-              <Tabs defaultValue="activity" className="space-y-6">
-                <TabsList>
-                  <TabsTrigger value="activity">Recent Activity</TabsTrigger>
-                  <TabsTrigger value="goals">Learning Goals</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="activity">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Clock className="h-5 w-5" />
-                        Recent Activity
-                      </CardTitle>
-                      <CardDescription>
-                        Your latest learning activities and progress
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-3 p-4 border rounded-lg">
-                          <div className="w-2 h-2 bg-primary rounded-full"></div>
-                          <div>
-                            <p className="font-medium">Completed SBA Loan Programs Module 3</p>
-                            <p className="text-sm text-muted-foreground">2 hours ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 p-4 border rounded-lg">
-                          <div className="w-2 h-2 bg-accent rounded-full"></div>
-                          <div>
-                            <p className="font-medium">Earned Capital Markets Specialist Certificate</p>
-                            <p className="text-sm text-muted-foreground">5 days ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 p-4 border rounded-lg">
-                          <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
-                          <div>
-                            <p className="font-medium">Started SBA Loan Programs Module</p>
-                            <p className="text-sm text-muted-foreground">1 week ago</p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="goals">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Target className="h-5 w-5" />
-                        Learning Goals
-                      </CardTitle>
-                      <CardDescription>
-                        Track your progress toward learning objectives
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="p-4 border rounded-lg">
-                          <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-medium">Complete SBA Loan Programs</h3>
-                            <span className="text-sm text-muted-foreground">65% Complete</span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div className="bg-primary h-2 rounded-full w-[65%]"></div>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-2">Target: End of this month</p>
-                        </div>
-                        <div className="p-4 border rounded-lg">
-                          <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-medium">Earn 3 Professional Certificates</h3>
-                            <span className="text-sm text-muted-foreground">2 of 3 Complete</span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div className="bg-accent h-2 rounded-full w-[67%]"></div>
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-2">Target: End of next month</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </TabsContent>
 
 
             <TabsContent value="account">
