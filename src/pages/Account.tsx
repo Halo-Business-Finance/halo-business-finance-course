@@ -705,7 +705,7 @@ const AccountPage = () => {
                       </ul>
                     </div>
                     
-                    <Button variant="outline">Change Password</Button>
+                    <Button className="bg-blue-800 hover:bg-blue-900 text-white">Change Password</Button>
                   </CardContent>
                 </Card>
               )}
