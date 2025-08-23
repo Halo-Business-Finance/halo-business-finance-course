@@ -446,7 +446,7 @@ const AccountPage = () => {
   return (
     <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
       {/* Profile Info - Account Information Widget moved higher */}
-      <Card className="mb-6">
+      <Card className="mb-6 max-w-4xl mx-auto">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">My Account Information</CardTitle>
           <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
