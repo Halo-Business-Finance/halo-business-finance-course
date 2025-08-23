@@ -203,26 +203,28 @@ const Index = () => {
       </section>
 
       {/* Learning Paths Section */}
-      <section className="py-20 bg-background relative">
-        <div className="absolute inset-0 opacity-10">
-          <img 
-            src={learningPathsImage} 
-            alt="Learning paths and career development" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20">
-              <Target className="h-4 w-4" />
-              Structured Learning Paths
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
-              Choose Your Path to Success
-            </h2>
-            <p className="text-lg text-foreground max-w-3xl mx-auto">
-              <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
-            </p>
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <img 
+                src={learningPathsImage} 
+                alt="Learning paths and career development" 
+                className="w-full h-auto rounded-2xl shadow-elevated"
+              />
+            </div>
+            <div className="text-center lg:text-left space-y-4">
+              <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20">
+                <Target className="h-4 w-4" />
+                Structured Learning Paths
+              </Badge>
+              <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+                Choose Your Path to Success
+              </h2>
+              <p className="text-lg text-foreground max-w-3xl">
+                <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -270,22 +272,24 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-br from-muted/30 to-background relative">
-        <div className="absolute inset-0 opacity-5">
-          <img 
-            src={softwareTrainingImage} 
-            alt="Commercial lending software training" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
-              The #1 Course for Tomorrow's Lending Leaders
-            </h2>
-            <p className="text-lg text-foreground max-w-3xl mx-auto">
-              <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
-            </p>
+      <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div className="text-center lg:text-left space-y-4">
+              <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+                The #1 Course for Tomorrow's Lending Leaders
+              </h2>
+              <p className="text-lg text-foreground max-w-3xl">
+                <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
+              </p>
+            </div>
+            <div>
+              <img 
+                src={softwareTrainingImage} 
+                alt="Commercial lending software training interface" 
+                className="w-full h-auto rounded-2xl shadow-elevated"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -375,49 +379,52 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-hero text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <img 
-            src={careerSuccessImage} 
-            alt="Professional career success and advancement" 
-            className="w-full h-full object-cover"
-          />
-        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/90 to-halo-navy/70" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl lg:text-5xl font-playfair font-bold">
-                Transform Your Skills. Transform Your Career.
-              </h2>
-              <p className="text-xl opacity-90 leading-relaxed">
-                <span className="block mb-2 font-medium">Unlock Your Potential in Commercial Lending.</span>
-                Join thousands of professionals who have advanced their careers through our comprehensive training program. 
-                Financial Success, Simplified.
-              </p>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-4xl lg:text-5xl font-playfair font-bold">
+                  Transform Your Skills. Transform Your Career.
+                </h2>
+                <p className="text-xl opacity-90 leading-relaxed">
+                  <span className="block mb-2 font-medium">Unlock Your Potential in Commercial Lending.</span>
+                  Join thousands of professionals who have advanced their careers through our comprehensive training program. 
+                  Financial Success, Simplified.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/auth">
+                  <Button size="lg" className="text-lg px-8 py-6 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
+                    <Zap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Get Started Now
+                  </Button>
+                </Link>
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
+                  <Shield className="mr-2 h-5 w-5" />
+                  Learn More
+                </Button>
+              </div>
+
+              <div className="flex justify-center items-center gap-8 pt-8 text-white/80">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-halo-orange" />
+                  <span>No Risk, 30-Day Guarantee</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-halo-orange" />
+                  <span>Industry Recognized Certification</span>
+                </div>
+              </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/auth">
-                <Button size="lg" className="text-lg px-8 py-6 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
-                  <Zap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Get Started Now
-                </Button>
-              </Link>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
-                <Shield className="mr-2 h-5 w-5" />
-                Learn More
-              </Button>
-            </div>
-
-            <div className="flex justify-center items-center gap-8 pt-8 text-white/80">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-halo-orange" />
-                <span>No Risk, 30-Day Guarantee</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-halo-orange" />
-                <span>Industry Recognized Certification</span>
-              </div>
+            <div>
+              <img 
+                src={careerSuccessImage} 
+                alt="Professional career success and advancement" 
+                className="w-full h-auto rounded-2xl shadow-hero"
+              />
             </div>
           </div>
         </div>
