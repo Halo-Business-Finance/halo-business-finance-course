@@ -2290,6 +2290,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "fk_user_roles_profiles"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "secure_user_profiles"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       user_sessions: {
@@ -2437,12 +2444,75 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      secure_user_profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          company: string | null
+          created_at: string | null
+          email: string | null
+          id: string | null
+          join_date: string | null
+          language: string | null
+          location: string | null
+          name: string | null
+          phone: string | null
+          state: string | null
+          theme: string | null
+          timezone: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: never
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: string | null
+          name?: never
+          phone?: never
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: never
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: string | null
+          name?: never
+          phone?: never
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_emergency_mfa_reset: {
         Args: { target_user_id: string }
         Returns: boolean
+      }
+      admin_get_profile_summary: {
+        Args: { target_user_id: string }
+        Returns: Json
       }
       analyze_security_events: {
         Args: Record<PropertyKey, never>
@@ -2546,6 +2616,10 @@ export type Database = {
         }
         Returns: string
       }
+      decrypt_pii_field: {
+        Args: { encrypted_data: string; field_type?: string }
+        Returns: string
+      }
       decrypt_sensitive_data: {
         Args: { context?: string; encrypted_data: string }
         Returns: string
@@ -2591,9 +2665,17 @@ export type Database = {
         }
         Returns: string
       }
+      encrypt_existing_customer_pii: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       encrypt_existing_pii_data: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      encrypt_pii_field: {
+        Args: { field_type?: string; plaintext: string }
+        Returns: string
       }
       encrypt_sensitive_data: {
         Args: { context?: string; plaintext: string }
