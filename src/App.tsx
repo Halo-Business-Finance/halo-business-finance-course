@@ -117,7 +117,7 @@ const HeaderContent = () => {
 
       {user && (
         <div className="flex-1 flex justify-center">
-          <span className="text-sm text-black">Welcome back, {getFirstName()}!</span>
+          <span className="text-xl text-black font-medium">Welcome back, {getFirstName()}!</span>
         </div>
       )}
 
