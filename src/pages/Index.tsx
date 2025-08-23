@@ -348,7 +348,7 @@ const Index = () => {
                       <Star key={i} className="h-4 w-4 fill-accent text-accent" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground leading-relaxed italic">
+                  <p className="text-foreground leading-relaxed italic">
                     "{testimonial.content}"
                   </p>
                   <div className="pt-4 border-t">
