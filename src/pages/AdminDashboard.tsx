@@ -205,27 +205,64 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load user roles data using only working functions
+      // Load user roles data using direct queries to bypass security function issues
       let userRolesData = [];
       
-      // Since get_user_role works, let's use that and build from current user
-      if (user && userRole) {
-        userRolesData = [{
-          id: user.id,
-          user_id: user.id,
-          role: userRole,
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          profiles: {
-            name: user.user_metadata?.full_name || 'Admin User',
-            email: user.email || '',
-            phone: user.user_metadata?.phone || '',
-            title: 'System Administrator',
-            company: 'Halo Business Finance'
-          }
-        }];
-        console.log('User roles loaded from current user:', userRolesData);
+      try {
+        // Try to load profiles and roles directly from tables
+        const [profilesResponse, rolesResponse] = await Promise.all([
+          supabase.from('profiles').select('*'),
+          supabase.from('user_roles').select('*')
+        ]);
+
+        console.log('Profiles response:', profilesResponse);
+        console.log('Roles response:', rolesResponse);
+
+        const profiles = profilesResponse.data || [];
+        const roles = rolesResponse.data || [];
+
+        // Combine profiles with their roles
+        userRolesData = profiles.map(profile => {
+          const userRole = roles.find(r => r.user_id === profile.user_id);
+          return {
+            id: userRole?.id || `no-role-${profile.user_id}`,
+            user_id: profile.user_id,
+            role: userRole?.role || 'trainee', // Default to trainee if no role assigned
+            is_active: userRole?.is_active !== false, // Default to active
+            created_at: userRole?.created_at || profile.created_at,
+            updated_at: userRole?.updated_at || profile.updated_at,
+            profiles: {
+              name: profile.name,
+              email: profile.email,
+              phone: profile.phone,
+              title: profile.title,
+              company: profile.company
+            }
+          };
+        });
+
+        console.log('User roles loaded via direct queries:', userRolesData);
+      } catch (directError) {
+        console.warn('Direct queries failed, using current user only:', directError);
+        
+        // Fallback to current user if tables aren't accessible
+        if (user && userRole) {
+          userRolesData = [{
+            id: user.id,
+            user_id: user.id,
+            role: userRole,
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            profiles: {
+              name: user.user_metadata?.full_name || 'Admin User',
+              email: user.email || '',
+              phone: user.user_metadata?.phone || '',
+              title: 'System Administrator',
+              company: 'Halo Business Finance'
+            }
+          }];
+        }
       }
 
       // Fetch instructors data
