@@ -642,7 +642,7 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6 space-y-6">
+      <div className="container mx-auto p-6 space-y-6 bg-white min-h-screen">
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
@@ -688,7 +688,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6 bg-white min-h-screen">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
