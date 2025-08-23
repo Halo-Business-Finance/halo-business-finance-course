@@ -608,6 +608,17 @@ const AccountPage = () => {
         </CardContent>
       </Card>
 
+      {/* Tab Navigation */}
+      <div className="flex justify-end mb-6">
+        <TabsList className="grid w-full max-w-md grid-cols-5">
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="privacy">Privacy</TabsTrigger>
+          <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          <TabsTrigger value="billing">Billing</TabsTrigger>
+        </TabsList>
+      </div>
+
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Learning Stats */}
         <div className="lg:col-span-1 space-y-6">
