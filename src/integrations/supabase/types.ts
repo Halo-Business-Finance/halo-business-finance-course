@@ -2499,6 +2499,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      can_assign_role: {
+        Args: { requesting_user_id: string; target_role: string }
+        Returns: Json
+      }
+      can_delete_user: {
+        Args:
+          | { requesting_user_id: string; target_user_id: string }
+          | { target_user_id: string }
+        Returns: Json
+      }
       can_view_sensitive_profile_data: {
         Args: { profile_user_id: string }
         Returns: boolean
@@ -3229,6 +3239,10 @@ export type Database = {
       verify_profile_access_security: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      verify_super_admin_privileges: {
+        Args: { requesting_user_id: string }
+        Returns: boolean
       }
     }
     Enums: {
