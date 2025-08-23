@@ -151,13 +151,13 @@ const ProgressPage = () => {
 
         <Tabs defaultValue="progress" className="w-full space-y-8">
           <TabsList className="grid w-full grid-cols-3 h-12 bg-background/50 backdrop-blur-sm border border-border/50">
-            <TabsTrigger value="progress" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+            <TabsTrigger value="progress" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Learning Progress
             </TabsTrigger>
-            <TabsTrigger value="certificates" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+            <TabsTrigger value="certificates" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Certificates
             </TabsTrigger>
-            <TabsTrigger value="achievements" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
+            <TabsTrigger value="achievements" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Achievements
             </TabsTrigger>
           </TabsList>
