@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -81,6 +81,13 @@ const HeaderContent = () => {
 
   return (
     <header className="sticky top-0 h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 px-4 gap-4">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+          <Building2 className="h-5 w-5 text-white" />
+        </div>
+        <span className="font-semibold text-lg text-black">Halo Business Finance</span>
+      </div>
+      
       {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
       
       {user && (
