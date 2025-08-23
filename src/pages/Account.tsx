@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
+import { AvatarUpload } from "@/components/AvatarUpload";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -286,6 +287,17 @@ const AccountPage = () => {
     }));
   };
 
+  const handleAvatarUpdate = (newAvatarUrl: string) => {
+    setUserInfo(prev => ({
+      ...prev,
+      avatar: newAvatarUrl
+    }));
+    setEditForm(prev => ({
+      ...prev,
+      avatar: newAvatarUrl
+    }));
+  };
+
   const resetForm = () => {
     setEditForm(userInfo);
   };
@@ -443,12 +455,11 @@ const AccountPage = () => {
           <Card>
             <CardHeader className="text-center">
               <div className="flex justify-center mb-4">
-                <Avatar className="w-24 h-24">
-                  <AvatarImage src={userInfo.avatar} alt={userInfo.name} />
-                  <AvatarFallback className="text-xl bg-primary text-primary-foreground">
-                    {userInfo.name.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
+                <AvatarUpload
+                  currentAvatar={userInfo.avatar}
+                  userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
+                  onAvatarUpdate={handleAvatarUpdate}
+                />
               </div>
               <CardTitle>{userInfo.name}</CardTitle>
             </CardHeader>
