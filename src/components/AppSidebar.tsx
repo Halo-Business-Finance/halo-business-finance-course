@@ -163,7 +163,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                      <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
                        <item.icon className="h-4 w-4 text-white" />
-                       {!collapsed && <span className="text-white">{item.title}</span>}
+                       {!collapsed && <span className="text-white text-sm">{item.title}</span>}
                      </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -254,7 +254,7 @@ export function AppSidebar() {
                           {!collapsed && (
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
-                                 <h3 className="text-sm font-medium text-white leading-tight truncate group-hover:text-white transition-colors">
+                                 <h3 className="text-xs font-medium text-white leading-tight truncate group-hover:text-white transition-colors">
                                    {module.title}
                                  </h3>
                                 
@@ -281,8 +281,8 @@ export function AppSidebar() {
                               )}
                               
                               {/* Subtle description for available modules */}
-                               {module.status === "available" && !isModuleLocked && (
-                                 <p className="text-xs text-white mt-1 transition-opacity duration-300">
+                                 {module.status === "available" && !isModuleLocked && (
+                                 <p className="text-xs text-white/70 mt-1 transition-opacity duration-300">
                                    Ready to start
                                  </p>
                                )}
@@ -317,7 +317,7 @@ export function AppSidebar() {
                          className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded disabled:opacity-50"
                        >
                          <LogOut className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                         {!collapsed && <span className="text-white text-sm">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                        </button>
                     </SidebarMenuButton>
                   ) : (
@@ -327,7 +327,7 @@ export function AppSidebar() {
                          className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded"
                        >
                          <LogIn className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white">Sign In</span>}
+                         {!collapsed && <span className="text-white text-sm">Sign In</span>}
                        </button>
                     </SidebarMenuButton>
                   )}
