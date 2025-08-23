@@ -8,6 +8,10 @@ import { HaloBrandFooter } from "@/components/HaloBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
+import heroBusinessTraining from "@/assets/hero-business-training.jpg";
+import learningPathsImage from "@/assets/learning-paths.jpg";
+import softwareTrainingImage from "@/assets/software-training.jpg";
+import careerSuccessImage from "@/assets/career-success.jpg";
 
 const Index = () => {
   const { user } = useAuth();
@@ -166,45 +170,12 @@ const Index = () => {
               </div>
 
               <div className="relative lg:block hidden">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-3xl opacity-20" />
-                  <Card className="relative bg-white/50 backdrop-blur-sm border-0 shadow-hero">
-                    <CardContent className="p-8">
-                      <div className="space-y-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gradient-success rounded-lg flex items-center justify-center">
-                            <BarChart3 className="h-6 w-6 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-halo-navy">Live Progress Tracking</h3>
-                            <p className="text-sm text-muted-foreground">Real-time learning analytics</p>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex justify-between text-sm">
-                            <span>Course Completion</span>
-                            <span className="font-medium">85%</span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div className="bg-gradient-primary h-2 rounded-full w-[85%]" />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="text-center p-3 bg-primary/5 rounded-lg">
-                            <div className="text-2xl font-bold text-primary">94%</div>
-                            <div className="text-xs text-muted-foreground">Success Rate</div>
-                          </div>
-                          <div className="text-center p-3 bg-accent/5 rounded-lg">
-                            <div className="text-2xl font-bold text-accent">8.5k</div>
-                            <div className="text-xs text-muted-foreground">Graduates</div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                <img 
+                  src={heroBusinessTraining} 
+                  alt="Professional business finance training environment" 
+                  className="w-full h-auto rounded-2xl shadow-hero"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
               </div>
             </div>
           </div>
@@ -232,8 +203,15 @@ const Index = () => {
       </section>
 
       {/* Learning Paths Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-background relative">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src={learningPathsImage} 
+            alt="Learning paths and career development" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-4 mb-16">
             <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20">
               <Target className="h-4 w-4" />
@@ -292,8 +270,15 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-gradient-to-br from-muted/30 to-background relative">
+        <div className="absolute inset-0 opacity-5">
+          <img 
+            src={softwareTrainingImage} 
+            alt="Commercial lending software training" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               The #1 Course for Tomorrow's Lending Leaders
@@ -390,7 +375,14 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-hero text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/90 to-transparent" />
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src={careerSuccessImage} 
+            alt="Professional career success and advancement" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/90 to-halo-navy/70" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
