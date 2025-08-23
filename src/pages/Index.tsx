@@ -93,12 +93,12 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-4">
             <Link to="/auth">
-              <Button variant="ghost" className="text-halo-navy hover:text-primary">
+              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20">
                 Sign In
               </Button>
             </Link>
             <Link to="/auth">
-              <Button className="bg-gradient-primary text-white shadow-elevated">
+              <Button className="bg-black text-white hover:bg-black/90 shadow-elevated">
                 Get Started
               </Button>
             </Link>
