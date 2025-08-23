@@ -1,25 +1,116 @@
 // Input sanitization and validation utilities
 
+// Enhanced input sanitization with comprehensive security checks
 export const sanitizeInput = (input: string): string => {
   if (!input || typeof input !== 'string') return '';
   
+  // First, check for dangerous patterns and reject completely if found
+  const dangerousPatterns = [
+    /javascript:/gi,
+    /vbscript:/gi,
+    /data:text\/html/gi,
+    /data:application/gi,
+    /<script/gi,
+    /<iframe/gi,
+    /<object/gi,
+    /<embed/gi,
+    /<link/gi,
+    /<meta/gi,
+    /<form/gi,
+    /<input/gi,
+    /<button/gi,
+    /expression\s*\(/gi,
+    /url\s*\(/gi,
+    /import\s+/gi,
+    /eval\s*\(/gi,
+    /Function\s*\(/gi,
+    /constructor/gi,
+    /prototype/gi,
+    /\.\s*constructor/gi,
+    /\[\s*["']constructor["']\s*\]/gi
+  ];
+
+  // If any dangerous pattern is found, return empty string
+  for (const pattern of dangerousPatterns) {
+    if (pattern.test(input)) {
+      console.warn('Dangerous pattern detected in input, rejecting');
+      return '';
+    }
+  }
+  
   return input
     .trim()
-    // Remove HTML/XML tags
+    // Remove HTML/XML tags completely
     .replace(/<[^>]*>/g, '')
     // Remove script tags content
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    // Remove javascript: protocols
+    // Remove style content
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    // Remove javascript: and other dangerous protocols
     .replace(/javascript:/gi, '')
+    .replace(/vbscript:/gi, '')
+    .replace(/data:/gi, '')
+    .replace(/file:/gi, '')
     // Remove on* event handlers
     .replace(/\bon\w+\s*=/gi, '')
-    // Remove data URLs
-    .replace(/data:\s*[^;]*;/gi, '')
-    // Encode HTML entities for remaining angle brackets
+    // Remove data URLs and base64 content
+    .replace(/data:\s*[^;]*;[^,]*,/gi, '')
+    // Remove expression() CSS
+    .replace(/expression\s*\([^)]*\)/gi, '')
+    // Remove import statements
+    .replace(/import\s+.*?from/gi, '')
+    // Encode HTML entities for security
+    .replace(/&(?!amp;|lt;|gt;|quot;|#x27;|#x2F;)/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    // Remove null bytes
-    .replace(/\0/g, '');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    // Remove null bytes and control characters
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
+    // Remove Unicode zero-width characters
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    // Limit length to prevent DoS
+    .substring(0, 1000);
+};
+
+// Additional security validation for specific contexts
+export const validateSecureInput = (input: string, context: 'email' | 'name' | 'text' | 'url' = 'text'): { isValid: boolean; sanitized: string; message?: string } => {
+  const sanitized = sanitizeInput(input);
+  
+  if (!sanitized) {
+    return { isValid: false, sanitized: '', message: 'Input cannot be empty after sanitization' };
+  }
+  
+  // Context-specific validation
+  switch (context) {
+    case 'email':
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(sanitized)) {
+        return { isValid: false, sanitized, message: 'Invalid email format' };
+      }
+      break;
+      
+    case 'name':
+      const nameRegex = /^[a-zA-Z\s\-'\.]{2,50}$/;
+      if (!nameRegex.test(sanitized)) {
+        return { isValid: false, sanitized, message: 'Name contains invalid characters or invalid length' };
+      }
+      break;
+      
+    case 'url':
+      try {
+        const url = new URL(sanitized);
+        if (!['http:', 'https:'].includes(url.protocol)) {
+          return { isValid: false, sanitized, message: 'Only HTTP and HTTPS URLs are allowed' };
+        }
+      } catch {
+        return { isValid: false, sanitized, message: 'Invalid URL format' };
+      }
+      break;
+  }
+  
+  return { isValid: true, sanitized };
 };
 
 export const validateEmail = (email: string): { isValid: boolean; message?: string } => {

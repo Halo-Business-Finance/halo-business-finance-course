@@ -23,8 +23,38 @@ export const useAdminRole = () => {
 
         if (error) {
           console.error('Error checking role status:', error);
-          setIsAdmin(false);
-          setUserRole(null);
+          
+          // Log security event for failed admin status check
+          try {
+            await supabase.rpc('log_client_security_event', {
+              event_type: 'admin_status_check_failed',
+              event_severity: 'medium',
+              event_details: {
+                error_message: error.message,
+                error_code: error.code,
+                user_id: user.id
+              }
+            });
+          } catch (logError) {
+            console.error('Failed to log security event:', logError);
+          }
+
+          // Fallback to basic role check
+          try {
+            const { data: fallbackData, error: fallbackError } = await supabase.rpc('get_user_role');
+            if (!fallbackError && fallbackData) {
+              const isAdminRole = ['admin', 'super_admin', 'tech_support_admin'].includes(fallbackData);
+              setIsAdmin(isAdminRole);
+              setUserRole(isAdminRole ? fallbackData : null);
+            } else {
+              setIsAdmin(false);
+              setUserRole(null);
+            }
+          } catch (fallbackError) {
+            console.error('Fallback role check failed:', fallbackError);
+            setIsAdmin(false);
+            setUserRole(null);
+          }
         } else {
           // Type the response properly
           const status = statusData as {
@@ -41,7 +71,7 @@ export const useAdminRole = () => {
             // Find active roles and prioritize them
             const activeRoles = roles.filter((r: any) => r.is_active);
             if (activeRoles.length > 0) {
-              const priority = { 'super_admin': 1, 'admin': 2, 'manager': 3 };
+              const priority = { 'super_admin': 1, 'admin': 2, 'tech_support_admin': 3, 'manager': 4 };
               const sortedRoles = activeRoles.sort((a: any, b: any) => 
                 (priority[a.role as keyof typeof priority] || 999) - (priority[b.role as keyof typeof priority] || 999)
               );
@@ -54,6 +84,22 @@ export const useAdminRole = () => {
         }
       } catch (error) {
         console.error('Error in checkAdminRole:', error);
+        
+        // Log critical security event for unexpected errors
+        try {
+          await supabase.rpc('log_client_security_event', {
+            event_type: 'admin_role_check_critical_error',
+            event_severity: 'high',
+            event_details: {
+              error_message: error instanceof Error ? error.message : 'Unknown error',
+              user_id: user.id,
+              stack_trace: error instanceof Error ? error.stack : undefined
+            }
+          });
+        } catch (logError) {
+          console.error('Failed to log critical security event:', logError);
+        }
+
         setIsAdmin(false);
         setUserRole(null);
       } finally {
