@@ -191,12 +191,8 @@ const ResourcesPage = () => {
                       videoType={video.video_type as 'youtube' | 'file'}
                       videoUrl={video.video_url}
                       youtubeId={video.youtube_id}
-                      onProgress={(progress) => {
-                        console.log(`${video.title} progress: ${progress}%`);
-                      }}
-                      onComplete={() => {
-                        console.log(`${video.title} completed`);
-                      }}
+                      onProgress={(progress) => {}}
+                      onComplete={() => {}}
                       className="w-full"
                     />
                   ))

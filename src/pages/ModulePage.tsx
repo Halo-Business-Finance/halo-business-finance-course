@@ -29,32 +29,13 @@ const ModulePage = () => {
     duration: string;
   } | null>(null);
 
-  console.log('=== MODULE PAGE DEBUG ===');
-  console.log('Requested moduleId:', moduleId);
-  console.log('Available modules:', courseData.modules?.map(m => ({ id: m.id, title: m.title })));
-  console.log('courseData structure:', {
-    totalModules: courseData.modules?.length,
-    hasModules: !!courseData.modules,
-    isArray: Array.isArray(courseData.modules)
-  });
 
   // Find module with proper error handling
   let courseModule;
   try {
     courseModule = courseData.modules?.find(m => m?.id === moduleId);
-    console.log('Found module:', courseModule ? courseModule.title : 'NOT FOUND');
     
     if (courseModule) {
-      console.log('Module details:', {
-        title: courseModule.title,
-        hasVideos: !!courseModule.videos,
-        videosLength: courseModule.videos?.length,
-        videosIsArray: Array.isArray(courseModule.videos),
-        hasCaseStudies: !!courseModule.caseStudies,
-        caseStudiesLength: courseModule.caseStudies?.length,
-        hasScripts: !!courseModule.scripts,
-        scriptsLength: courseModule.scripts?.length
-      });
     }
   } catch (error) {
     console.error('Error finding module:', error);
@@ -102,7 +83,7 @@ const ModulePage = () => {
 
   // Module not found error handling
   if (!courseModule) {
-    console.log('Module not found - showing error page');
+    
     return (
       <div className="container mx-auto p-6 text-center space-y-6">
         <div>
@@ -183,11 +164,9 @@ const ModulePage = () => {
   }
 
   const renderVideosTab = () => {
-    console.log('Rendering videos tab for module:', courseModule.title);
-    console.log('Videos data:', courseModule.videos);
     
     if (!courseModule.videos || !Array.isArray(courseModule.videos) || courseModule.videos.length === 0) {
-      console.log('No videos available');
+      
       return (
         <Card>
           <CardContent className="p-8 text-center">
@@ -202,7 +181,7 @@ const ModulePage = () => {
     return (
       <div className="space-y-6">
         {courseModule.videos.map((video, index) => {
-          console.log(`Rendering video ${index}:`, video);
+          
           
           if (!video) {
             console.error(`Video ${index} is null/undefined`);
@@ -226,8 +205,8 @@ const ModulePage = () => {
               youtubeId={video.youtubeId}
               moduleId={moduleId}
               className="w-full mb-6"
-              onProgress={(progress) => console.log(`Video progress: ${progress}%`)}
-              onComplete={() => console.log('Video completed')}
+              onProgress={(progress) => {}}
+              onComplete={() => {}}
             />
           );
         })}

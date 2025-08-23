@@ -138,7 +138,7 @@ const VideoLibraryPage = () => {
   const handleVideoComplete = (videoTitle: string) => {
     // Mark video as completed
     localStorage.setItem(`video_completed_${videoTitle}`, "true");
-    console.log(`Video completed: ${videoTitle}`);
+    // Video completed
   };
 
   return (

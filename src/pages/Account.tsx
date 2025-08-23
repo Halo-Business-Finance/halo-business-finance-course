@@ -226,16 +226,6 @@ const AccountPage = () => {
         return;
       }
 
-      console.log('Saving profile with data:', {
-        name: editForm.name,
-        email: editForm.email,
-        phone: editForm.phone,
-        title: editForm.title,
-        location: editForm.location,
-        city: editForm.city,
-        state: editForm.state,
-        company: editForm.company
-      });
 
       // Update profile through secure RLS-protected direct update
       // Since we're updating our own profile, this will go through the "Users can update own profile only" policy
@@ -263,7 +253,7 @@ const AccountPage = () => {
         return;
       }
 
-      console.log('Profile saved successfully, updating UI');
+      
       setUserInfo({ ...editForm });
       setIsEditDialogOpen(false);
       

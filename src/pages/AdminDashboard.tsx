@@ -121,7 +121,6 @@ const AdminDashboard = () => {
     
     // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
-      console.log('🔄 Setting up real-time subscriptions...');
       
       const channel = supabase
         .channel('admin-dashboard-updates')
@@ -133,7 +132,7 @@ const AdminDashboard = () => {
             table: 'security_events'
           },
           (payload) => {
-            console.log('🚨 New security event:', payload);
+            
             toast({
               title: "Security Alert",
               description: `New ${payload.new.severity} security event detected`,
@@ -150,7 +149,7 @@ const AdminDashboard = () => {
             table: 'profiles'
           },
           (payload) => {
-            console.log('👤 New user registered:', payload);
+            
             toast({
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
@@ -166,7 +165,7 @@ const AdminDashboard = () => {
             table: 'user_roles'
           },
           (payload) => {
-            console.log('🔐 User role changed:', payload);
+            
             if (payload.eventType === 'INSERT') {
               toast({
                 title: "Role Assigned",
@@ -177,9 +176,7 @@ const AdminDashboard = () => {
           }
         )
         .subscribe((status) => {
-          console.log('📡 Real-time subscription status:', status);
           if (status === 'SUBSCRIBED') {
-            console.log('✅ Real-time dashboard active!');
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
@@ -195,7 +192,6 @@ const AdminDashboard = () => {
     // Cleanup function
     return () => {
       if (realtimeChannel) {
-        console.log('🔌 Cleaning up real-time subscriptions...');
         supabase.removeChannel(realtimeChannel);
       }
     };
@@ -209,7 +205,6 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        console.log('Loading user profiles with roles using secure function...');
         const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_all_user_profiles_with_roles');
 
         if (profilesError) {
@@ -234,9 +229,7 @@ const AdminDashboard = () => {
               company: item.company
             }
           }));
-          console.log('Successfully loaded user profiles with roles:', userRolesData);
         } else {
-          console.log('No user profiles found');
         }
       } catch (error) {
         console.error('Failed to load user profiles with roles:', error);
@@ -1205,7 +1198,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking User Management button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/users');
@@ -1219,7 +1211,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking Authentication Providers button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/providers');
@@ -1233,7 +1224,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking URL Configuration button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/auth/url-configuration');
@@ -1255,7 +1245,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking System Logs button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/logs/explorer');
@@ -1269,7 +1258,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking Database Tables button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/database/tables');
@@ -1283,7 +1271,6 @@ const AdminDashboard = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        console.log('Clicking Project Settings button');
                         const opened = window.open('https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general', '_blank');
                         if (!opened) {
                           alert('Popup blocked! Please allow popups or copy this URL: https://supabase.com/dashboard/project/kagwfntxlgzrcngysmlt/settings/general');

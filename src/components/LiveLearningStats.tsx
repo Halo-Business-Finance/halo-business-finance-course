@@ -73,7 +73,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('Learning stats updated:', payload);
+          
           if (payload.new) {
             setStats(payload.new as LearningStats);
             
@@ -102,7 +102,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('Daily activity updated:', payload);
+          
           loadRecentActivity();
         }
       )
@@ -120,7 +120,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('New achievement:', payload);
+          
           if (payload.new) {
             const newAchievement = payload.new as Achievement;
             setAchievements(prev => [newAchievement, ...prev]);

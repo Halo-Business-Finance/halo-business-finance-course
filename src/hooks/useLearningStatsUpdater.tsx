@@ -36,7 +36,7 @@ export const useLearningStatsUpdater = () => {
       // Check for achievements
       await checkForAchievements();
 
-      console.log('Module completion updated successfully');
+      
     } catch (error) {
       console.error('Error updating module completion:', error);
     }
@@ -54,7 +54,7 @@ export const useLearningStatsUpdater = () => {
         await checkForAchievements();
       }
 
-      console.log('Assessment completion noted');
+      
     } catch (error) {
       console.error('Error handling assessment completion:', error);
     }

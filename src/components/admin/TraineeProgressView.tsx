@@ -71,9 +71,6 @@ export const TraineeProgressView = () => {
       setTrainees(data || []);
       
       // Add debugging for trainees data
-      console.log('TraineeProgressView Debug - Raw data:', data);
-      console.log('TraineeProgressView Debug - Data length:', data?.length);
-      console.log('TraineeProgressView Debug - First trainee:', data?.[0]);
       
       // Calculate stats
       const totalTrainees = data?.length || 0;
