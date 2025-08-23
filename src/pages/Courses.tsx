@@ -218,10 +218,10 @@ const Courses = () => {
                     </Button>
                   )
                 ) : (
-                  <Link to="/auth">
+                  <Link to="/signup">
                     <Button className="w-full">
                       <BookOpen className="h-4 w-4 mr-2" />
-                      Sign In to Enroll
+                      Sign Up to Enroll
                     </Button>
                   </Link>
                 )}
