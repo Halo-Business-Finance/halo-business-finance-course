@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -131,17 +131,20 @@ const HeaderContent = () => {
         )}
         
         {user && (
-          <div className="text-sm text-black text-right">
-            <div>{currentTime.toLocaleDateString('en-US', { 
-              weekday: 'short', 
-              year: 'numeric', 
-              month: 'short', 
-              day: 'numeric' 
-            })}</div>
-            <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })}</div>
+          <div className="flex items-center gap-3 text-sm text-black text-right">
+            <Bell className="h-4 w-4 text-yellow-500" />
+            <div>
+              <div>{currentTime.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+              })}</div>
+              <div className="text-xs opacity-75">{currentTime.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}</div>
+            </div>
           </div>
         )}
 
