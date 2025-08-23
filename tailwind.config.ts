@@ -105,7 +105,12 @@ export default {
 				'halo-orange': 'hsl(var(--halo-orange))',
 				'halo-light-blue': 'hsl(var(--halo-light-blue))',
 				'duke-blue': 'hsl(var(--duke-blue))',
-				'enterprise-blue': 'hsl(var(--enterprise-blue))'
+				'enterprise-blue': 'hsl(var(--enterprise-blue))',
+				'navy': {
+					'900': 'hsl(var(--navy-900))',
+					'800': 'hsl(var(--navy-800))',
+					'700': 'hsl(var(--navy-700))'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

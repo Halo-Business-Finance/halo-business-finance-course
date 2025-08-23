@@ -43,6 +43,11 @@ All colors MUST be HSL.
     --duke-blue: 208 100% 30%;
     --enterprise-blue: 208 100% 30%;
     
+    /* Navy blue shades for sidebar */
+    --navy-900: 213 100% 8%;
+    --navy-800: 213 100% 12%;
+    --navy-700: 213 100% 16%;
+    
     --gradient-primary: linear-gradient(135deg, hsl(208 100% 30%), hsl(208 90% 40%));
     --gradient-success: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 90% 60%));
     --gradient-hero: linear-gradient(135deg, hsl(208 100% 30%) 0%, hsl(208 90% 45%) 50%, hsl(25 95% 53%) 100%);
@@ -58,7 +63,7 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 210 100% 15%;
+    --sidebar-background: 213 100% 8%;
 
     --sidebar-foreground: 0 0% 100%;
 
@@ -104,7 +109,7 @@ All colors MUST be HSL.
     --input: 210 30% 15%;
     --ring: 210 90% 65%;
     
-    --sidebar-background: 210 100% 15%;
+    --sidebar-background: 213 100% 8%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 25 95% 53%;
     --sidebar-primary-foreground: 210 100% 15%;

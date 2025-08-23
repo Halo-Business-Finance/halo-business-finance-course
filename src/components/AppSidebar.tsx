@@ -136,6 +136,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar
+      className="bg-navy-900 border-navy-800"
       collapsible="icon"
     >
       <SidebarContent>
