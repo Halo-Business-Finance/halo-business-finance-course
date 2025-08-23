@@ -386,7 +386,7 @@ const Index = () => {
                   Get Started Now
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white/20 text-white hover:bg-white/10">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
                 <Shield className="mr-2 h-5 w-5" />
                 Learn More
               </Button>
