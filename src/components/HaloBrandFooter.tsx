@@ -48,7 +48,7 @@ export const HaloBrandFooter = () => {
         
         <div className="mt-6 pt-6 border-t border-white/20 text-center">
           <p className="text-xs text-white/60">
-            © 2024 Halo Business Finance. All rights reserved. | Training Platform powered by advanced learning technologies.
+            © 2025 Halo Business Finance. All rights reserved. | Training Platform powered by advanced learning technologies.
           </p>
         </div>
       </CardContent>
