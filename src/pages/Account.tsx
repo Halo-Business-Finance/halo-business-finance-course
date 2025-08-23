@@ -57,6 +57,7 @@ const AccountPage = () => {
   const location = useLocation();
   const currentTab = new URLSearchParams(location.search).get('tab') || 'account';
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -643,35 +644,43 @@ const AccountPage = () => {
               {/* Change Password Button */}
               <Card>
                 <CardContent className="pt-6">
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => setShowPasswordForm(!showPasswordForm)}
+                  >
                     <Shield className="h-4 w-4 mr-2" />
-                    Change Password
+                    {showPasswordForm ? 'Hide Password Form' : 'Change Password'}
                   </Button>
                 </CardContent>
               </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Password & Security</CardTitle>
-                  <CardDescription>
-                    Manage your password and security settings
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="currentPassword">Current Password</Label>
-                    <Input id="currentPassword" type="password" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="newPassword">New Password</Label>
-                    <Input id="newPassword" type="password" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                    <Input id="confirmPassword" type="password" />
-                  </div>
-                  <Button variant="outline">Change Password</Button>
-                </CardContent>
-              </Card>
+              
+              {/* Password & Security Form - Only show when button is clicked */}
+              {showPasswordForm && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Password & Security</CardTitle>
+                    <CardDescription>
+                      Manage your password and security settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentPassword">Current Password</Label>
+                      <Input id="currentPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">New Password</Label>
+                      <Input id="newPassword" type="password" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                      <Input id="confirmPassword" type="password" />
+                    </div>
+                    <Button variant="outline">Change Password</Button>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </TabsContent>
 
