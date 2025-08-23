@@ -113,7 +113,7 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8 animate-fade-in">
-                <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20 hover:bg-accent/15">
+                <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
                   <Zap className="h-4 w-4" />
                   Accelerate Your Career with the Industry's Top Course
                 </Badge>
