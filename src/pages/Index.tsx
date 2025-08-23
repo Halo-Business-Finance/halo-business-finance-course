@@ -153,7 +153,7 @@ const Index = () => {
                     ))}
                   </div>
                   <div className="text-sm">
-                    <span className="font-medium text-black">hundreds professionals</span> <span className="text-black">have advanced their careers</span>
+                    <span className="font-medium text-black">hundreds of professionals</span> <span className="text-black">have advanced their careers</span>
                   </div>
                 </div>
               </div>
