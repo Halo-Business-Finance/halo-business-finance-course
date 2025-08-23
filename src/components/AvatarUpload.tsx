@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import nflLogos from "@/assets/nfl-logos.jpg";
 import nbaLogos from "@/assets/nba-logos.jpg";
 import defaultAvatars from "@/assets/default-avatars.jpg";
+import avatarCollection from "@/assets/avatar-collection.jpg";
 
 interface AvatarUploadProps {
   currentAvatar: string;
@@ -24,12 +25,12 @@ const defaultAvatarOptions = [
 ];
 
 const individualAvatars = [
-  { id: 'avatar-1', url: '/placeholder.svg', name: 'Professional' },
-  { id: 'avatar-2', url: '/placeholder.svg', name: 'Abstract' },
-  { id: 'avatar-3', url: '/placeholder.svg', name: 'Geometric' },
-  { id: 'avatar-4', url: '/placeholder.svg', name: 'Nature' },
-  { id: 'avatar-5', url: '/placeholder.svg', name: 'Tech' },
-  { id: 'avatar-6', url: '/placeholder.svg', name: 'Minimal' },
+  { id: 'avatar-1', url: 'https://ui-avatars.com/api/?name=Professional&background=3b82f6&color=ffffff&size=128', name: 'Professional' },
+  { id: 'avatar-2', url: 'https://ui-avatars.com/api/?name=Abstract&background=8b5cf6&color=ffffff&size=128', name: 'Abstract' },
+  { id: 'avatar-3', url: 'https://ui-avatars.com/api/?name=Geometric&background=10b981&color=ffffff&size=128', name: 'Geometric' },
+  { id: 'avatar-4', url: 'https://ui-avatars.com/api/?name=Nature&background=f59e0b&color=ffffff&size=128', name: 'Nature' },
+  { id: 'avatar-5', url: 'https://ui-avatars.com/api/?name=Tech&background=14b8a6&color=ffffff&size=128', name: 'Tech' },
+  { id: 'avatar-6', url: 'https://ui-avatars.com/api/?name=Minimal&background=ef4444&color=ffffff&size=128', name: 'Minimal' },
 ];
 
 export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: AvatarUploadProps) => {
