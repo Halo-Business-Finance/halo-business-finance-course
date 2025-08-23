@@ -96,7 +96,7 @@ const HeaderContent = () => {
             variant="ghost" 
             size="sm" 
             onClick={goBack}
-            className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+            className="h-8 w-8 p-0 text-black hover:bg-black/10"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -104,7 +104,7 @@ const HeaderContent = () => {
             variant="ghost" 
             size="sm" 
             onClick={goForward}
-            className="h-8 w-8 p-0 text-black hover:bg-black/10 hover:text-black border border-black/20"
+            className="h-8 w-8 p-0 text-black hover:bg-black/10"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -123,7 +123,7 @@ const HeaderContent = () => {
         ) : (
           <>
             <Link to="/auth">
-              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20">
+              <Button variant="ghost" className="text-black hover:bg-black/10">
                 Sign In
               </Button>
             </Link>
