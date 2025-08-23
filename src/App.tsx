@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -105,22 +105,29 @@ const HeaderContent = () => {
       )}
       
       <div className="flex-1 flex items-center justify-center">
-        {user ? (
-          <h1 className="text-lg font-medium text-black">
-            Welcome back, {getFirstName()}!
-          </h1>
-        ) : (
-          <HorizontalNav />
-        )}
+        <HorizontalNav />
       </div>
       
-      {user && (
-        <div className="flex items-center mr-4 gap-4">
+      <div className="flex items-center mr-4 gap-4">
+        {user ? (
           <p className="text-sm text-black">
-            {formatDateTime(currentTime)}
+            Welcome back, {getFirstName()}! • {formatDateTime(currentTime)}
           </p>
-        </div>
-      )}
+        ) : (
+          <>
+            <Link to="/auth">
+              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/auth">
+              <Button className="bg-black text-white hover:bg-black/90">
+                Get Started
+              </Button>
+            </Link>
+          </>
+        )}
+      </div>
     </header>
   );
 };
