@@ -91,7 +91,8 @@ export default {
 				'halo-navy': 'hsl(var(--halo-navy))',
 				'halo-orange': 'hsl(var(--halo-orange))',
 				'halo-light-blue': 'hsl(var(--halo-light-blue))',
-				'duke-blue': 'hsl(var(--duke-blue))'
+				'duke-blue': 'hsl(var(--duke-blue))',
+				'enterprise-blue': 'hsl(var(--enterprise-blue))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -102,7 +103,8 @@ export default {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-success': 'var(--gradient-success)',
 				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-duke': 'var(--gradient-duke)'
+				'gradient-duke': 'var(--gradient-duke)',
+				'gradient-enterprise': 'var(--gradient-enterprise)'
 			},
 			boxShadow: {
 				'card': 'var(--shadow-card)',
