@@ -101,7 +101,7 @@ export function AppSidebar() {
   };
   
   const getNavCls = (isActiveState: boolean) =>
-    isActiveState ? "bg-black/10 text-black font-medium border-r-2 border-black" : "text-black hover:bg-black/10 hover:text-black";
+    isActiveState ? "bg-halo-orange text-white font-medium border-r-2 border-halo-orange" : "text-white hover:bg-white/10 hover:text-white";
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -146,10 +146,10 @@ export function AppSidebar() {
               {mainNavItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
-                      <item.icon className="h-4 w-4 text-black" />
-                      {!collapsed && <span className="text-black">{item.title}</span>}
-                    </NavLink>
+                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
+                       <item.icon className="h-4 w-4 text-white" />
+                       {!collapsed && <span className="text-white">{item.title}</span>}
+                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -164,10 +164,10 @@ export function AppSidebar() {
 
         {/* Course Modules */}
         <SidebarGroup className="pt-2">
-          <SidebarGroupLabel className="pb-3">
+           <SidebarGroupLabel className="pb-3">
             {!collapsed && (
               <div className="flex-1">
-                <span className="text-sm font-semibold text-foreground/90 tracking-wide">
+                <span className="text-sm font-semibold text-white tracking-wide">
                   Course Modules
                 </span>
               </div>
@@ -240,9 +240,9 @@ export function AppSidebar() {
                           {!collapsed && (
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-medium text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
-                                  {module.title}
-                                </h3>
+                                 <h3 className="text-sm font-medium text-white leading-tight truncate group-hover:text-white transition-colors">
+                                   {module.title}
+                                 </h3>
                                 
                                 {/* Status Badge */}
                                 <div className="ml-2 flex-shrink-0">
@@ -267,11 +267,11 @@ export function AppSidebar() {
                               )}
                               
                               {/* Subtle description for available modules */}
-                              {module.status === "available" && !isModuleLocked && (
-                                <p className="text-xs text-muted-foreground/70 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                  Ready to start
-                                </p>
-                              )}
+                               {module.status === "available" && !isModuleLocked && (
+                                 <p className="text-xs text-white/70 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                   Ready to start
+                                 </p>
+                               )}
                             </div>
                           )}
                         </div>
@@ -298,32 +298,32 @@ export function AppSidebar() {
                 <SidebarMenuItem>
                   {user ? (
                     <SidebarMenuButton asChild>
-                      <button 
-                        onClick={handleSignOut}
-                        disabled={isLoading}
-                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded disabled:opacity-50"
-                      >
-                        <LogOut className="h-4 w-4 text-red-600" />
-                        {!collapsed && <span className="text-black">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
-                      </button>
+                       <button 
+                         onClick={handleSignOut}
+                         disabled={isLoading}
+                         className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded disabled:opacity-50"
+                       >
+                         <LogOut className="h-4 w-4 text-halo-orange" />
+                         {!collapsed && <span className="text-white">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                       </button>
                     </SidebarMenuButton>
                   ) : (
                     <SidebarMenuButton asChild>
-                      <button 
-                        onClick={handleSignIn}
-                        className="w-full flex items-center gap-2 text-black hover:bg-black/10 hover:text-black p-2 rounded"
-                      >
-                        <LogIn className="h-4 w-4 text-green-600" />
-                        {!collapsed && <span className="text-black">Sign In</span>}
-                      </button>
+                       <button 
+                         onClick={handleSignIn}
+                         className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded"
+                       >
+                         <LogIn className="h-4 w-4 text-halo-orange" />
+                         {!collapsed && <span className="text-white">Sign In</span>}
+                       </button>
                     </SidebarMenuButton>
                   )}
                 </SidebarMenuItem>
               )}
               {loading && (
                 <SidebarMenuItem>
-                  <div className="text-xs text-muted-foreground p-2">Loading...</div>
-                </SidebarMenuItem>
+                   <div className="text-xs text-white/70 p-2">Loading...</div>
+                 </SidebarMenuItem>
               )}
             </SidebarMenu>
           </SidebarGroupContent>
