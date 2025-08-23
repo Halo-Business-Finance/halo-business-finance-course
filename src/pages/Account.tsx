@@ -674,15 +674,15 @@ const AccountPage = () => {
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="currentPassword">Current Password</Label>
-                      <Input id="currentPassword" type="password" className="border-gray-800/20" />
+                      <Input id="currentPassword" type="password" className="border-gray-800/20 text-black" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="newPassword">New Password</Label>
-                      <Input id="newPassword" type="password" className="border-gray-800/20" />
+                      <Input id="newPassword" type="password" className="border-gray-800/20 text-black" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                      <Input id="confirmPassword" type="password" className="border-gray-800/20" />
+                      <Input id="confirmPassword" type="password" className="border-gray-800/20 text-black" />
                     </div>
                     
                     {/* Password Requirements */}
