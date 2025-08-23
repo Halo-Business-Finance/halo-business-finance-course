@@ -447,124 +447,124 @@ const AccountPage = () => {
     <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-6 max-w-4xl mx-auto">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="pb-2">
           <CardTitle className="text-xl font-semibold">My Account Information</CardTitle>
-          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={handleEditSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      value={editForm.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      placeholder="Enter your full name"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={editForm.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      placeholder="Enter your email"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      value={editForm.phone}
-                      onChange={(e) => handleInputChange('phone', handlePhoneInput(e.target.value))}
-                      placeholder="(555) 123-4567"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="title">Title</Label>
-                    <Input
-                      id="title"
-                      value={editForm.title}
-                      onChange={(e) => handleInputChange('title', e.target.value)}
-                      placeholder="Your job title"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    value={editForm.company}
-                    onChange={(e) => handleInputChange('company', e.target.value)}
-                    placeholder="Your company name"
-                    className="border-gray-800/20"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="city">City</Label>
-                    <Input
-                      id="city"
-                      value={editForm.city}
-                      onChange={(e) => handleInputChange('city', e.target.value)}
-                      placeholder="Your city"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="state">State</Label>
-                    <Input
-                      id="state"
-                      value={editForm.state}
-                      onChange={(e) => handleInputChange('state', e.target.value)}
-                      placeholder="Your state"
-                      className="border-gray-800/20"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end gap-2">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => {
-                      resetForm();
-                      setIsEditDialogOpen(false);
-                    }}
-                  >
-                    <X className="h-4 w-4 mr-2" />
-                    Cancel
-                  </Button>
-                  <Button type="submit">
-                    <Save className="h-4 w-4 mr-2" />
-                    Save Changes
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex flex-col items-center space-y-4">
+              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="self-end">
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogDescription>
+                      Make changes to your profile here. Click save when you're done.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={handleEditSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name">Name</Label>
+                        <Input
+                          id="name"
+                          value={editForm.name}
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          placeholder="Enter your full name"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={editForm.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          placeholder="Enter your email"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="phone">Phone</Label>
+                        <Input
+                          id="phone"
+                          value={editForm.phone}
+                          onChange={(e) => handleInputChange('phone', handlePhoneInput(e.target.value))}
+                          placeholder="(555) 123-4567"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="title">Title</Label>
+                        <Input
+                          id="title"
+                          value={editForm.title}
+                          onChange={(e) => handleInputChange('title', e.target.value)}
+                          placeholder="Your job title"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        id="company"
+                        value={editForm.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        placeholder="Your company name"
+                        className="border-gray-800/20"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="city">City</Label>
+                        <Input
+                          id="city"
+                          value={editForm.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          placeholder="Your city"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="state">State</Label>
+                        <Input
+                          id="state"
+                          value={editForm.state}
+                          onChange={(e) => handleInputChange('state', e.target.value)}
+                          placeholder="Your state"
+                          className="border-gray-800/20"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => {
+                          resetForm();
+                          setIsEditDialogOpen(false);
+                        }}
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        Cancel
+                      </Button>
+                      <Button type="submit">
+                        <Save className="h-4 w-4 mr-2" />
+                        Save Changes
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
               <AvatarUpload
                 currentAvatar={userInfo.avatar}
                 userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
