@@ -2446,7 +2446,14 @@ export type Database = {
       }
       admin_get_profile_summary: {
         Args: { target_user_id: string }
-        Returns: Json
+        Returns: {
+          email: string
+          full_profile: Json
+          location: string
+          name: string
+          phone: string
+          user_id: string
+        }[]
       }
       analyze_security_events: {
         Args: Record<PropertyKey, never>
@@ -2551,7 +2558,7 @@ export type Database = {
         Returns: string
       }
       decrypt_pii_field: {
-        Args: { encrypted_data: string; field_type?: string }
+        Args: { encrypted_data: string; field_name: string }
         Returns: string
       }
       decrypt_sensitive_data: {
@@ -2608,7 +2615,7 @@ export type Database = {
         Returns: undefined
       }
       encrypt_pii_field: {
-        Args: { field_type?: string; plaintext: string }
+        Args: { field_name: string; plain_data: string }
         Returns: string
       }
       encrypt_sensitive_data: {
