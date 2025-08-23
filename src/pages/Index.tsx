@@ -147,12 +147,7 @@ const Index = () => {
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-8 pt-4">
-                  <div className="flex -space-x-2">
-                    {[1,2,3,4].map((i) => (
-                      <div key={i} className="w-8 h-8 rounded-full bg-gradient-primary border-2 border-background" />
-                    ))}
-                  </div>
+                <div className="flex items-center pt-4">
                   <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
                     <Zap className="h-4 w-4" />
                     Accelerate Your Career with the Industry's Top Course
