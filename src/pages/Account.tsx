@@ -533,28 +533,30 @@ const AccountPage = () => {
 
         {/* Main Content */}
         <div className="lg:col-span-2">
-          <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-2 mb-2">
-              <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Account
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Notifications
-              </TabsTrigger>
-              <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Privacy
-              </TabsTrigger>
-              <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Preferences
-              </TabsTrigger>
-              <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-                Billing
-              </TabsTrigger>
-            </TabsList>
-
-
-
-            <TabsContent value="account">
+          <Tabs defaultValue="account" className="space-y-0">
+            {/* Folder-style tabs attached to widget */}
+            <div className="relative">
+              <TabsList className="flex w-fit bg-transparent border-none p-0 h-auto gap-0 mb-0 relative z-10">
+                <TabsTrigger value="account" className="bg-card text-foreground text-xs rounded-t-lg rounded-b-none border border-border border-b-0 px-3 py-2 data-[state=active]:bg-card data-[state=active]:border-primary data-[state=active]:shadow-none relative">
+                  Account
+                </TabsTrigger>
+                <TabsTrigger value="notifications" className="bg-card text-foreground text-xs rounded-t-lg rounded-b-none border border-border border-b-0 px-3 py-2 data-[state=active]:bg-card data-[state=active]:border-primary data-[state=active]:shadow-none relative">
+                  Notifications
+                </TabsTrigger>
+                <TabsTrigger value="privacy" className="bg-card text-foreground text-xs rounded-t-lg rounded-b-none border border-border border-b-0 px-3 py-2 data-[state=active]:bg-card data-[state=active]:border-primary data-[state=active]:shadow-none relative">
+                  Privacy
+                </TabsTrigger>
+                <TabsTrigger value="preferences" className="bg-card text-foreground text-xs rounded-t-lg rounded-b-none border border-border border-b-0 px-3 py-2 data-[state=active]:bg-card data-[state=active]:border-primary data-[state=active]:shadow-none relative">
+                  Preferences
+                </TabsTrigger>
+                <TabsTrigger value="billing" className="bg-card text-foreground text-xs rounded-t-lg rounded-b-none border border-border border-b-0 px-3 py-2 data-[state=active]:bg-card data-[state=active]:border-primary data-[state=active]:shadow-none relative">
+                  Billing
+                </TabsTrigger>
+              </TabsList>
+              
+              {/* Content area attached to tabs */}
+              <div className="border border-border rounded-lg rounded-tl-none bg-card">
+                <TabsContent value="account" className="mt-0 p-6 border-0">
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
@@ -1109,6 +1111,8 @@ const AccountPage = () => {
                 </Card>
               </div>
             </TabsContent>
+              </div>
+            </div>
           </Tabs>
         </div>
       </div>
