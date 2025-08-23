@@ -7,6 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import coursesHero from "@/assets/courses-hero.jpg";
+import financeCourseBg from "@/assets/finance-course-bg.jpg";
+import learningBackground from "@/assets/learning-background.jpg";
 
 interface CourseModule {
   id: string;
@@ -156,80 +159,115 @@ const Courses = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-black mb-4">Course Catalog</h1>
-        <p className="text-lg text-black">
-          Explore our comprehensive collection of professional training courses designed to advance your career.
-        </p>
-      </div>
-
-      {modules.length === 0 ? (
-        <Card className="text-center py-12">
-          <CardContent>
-            <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Courses Available</h3>
-            <p className="text-muted-foreground">
-              Course modules will appear here once they are added by administrators.
+    <div className="bg-white min-h-screen">
+      {/* Hero Section */}
+      <div className="relative h-96 overflow-hidden">
+        <img 
+          src={coursesHero} 
+          alt="Professional online learning environment" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl mx-auto px-4">
+            <h1 className="text-4xl font-bold mb-4">Course Catalog</h1>
+            <p className="text-lg">
+              Explore our comprehensive collection of professional training courses designed to advance your career.
             </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {modules.map((module) => (
-            <Card key={module.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex justify-between items-start mb-2">
-                  <Badge variant="secondary">Finance</Badge>
-                  <Badge className={getLevelColor(module.skill_level)}>
-                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl text-blue-900">{module.title}</CardTitle>
-                <CardDescription className="text-black">{module.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    {module.duration || 'Self-paced'}
+          </div>
+        </div>
+      </div>
+      
+      {/* Content Section */}
+      <div className="relative">
+        <div 
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `url(${learningBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        />
+        <div className="relative container mx-auto px-4 py-12">
+
+        {modules.length === 0 ? (
+          <Card className="text-center py-12 bg-white/90 backdrop-blur-sm">
+            <CardContent>
+              <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No Courses Available</h3>
+              <p className="text-muted-foreground">
+                Course modules will appear here once they are added by administrators.
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {modules.map((module) => (
+              <Card key={module.id} className="hover:shadow-lg transition-shadow bg-white/95 backdrop-blur-sm border-white/20">
+                <CardHeader className="relative">
+                  <div 
+                    className="absolute inset-0 opacity-10 rounded-t-lg"
+                    style={{
+                      backgroundImage: `url(${financeCourseBg})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
+                  <div className="relative">
+                    <div className="flex justify-between items-start mb-2">
+                      <Badge variant="secondary">Finance</Badge>
+                      <Badge className={getLevelColor(module.skill_level)}>
+                        {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-xl text-blue-900">{module.title}</CardTitle>
+                    <CardDescription className="text-black">{module.description}</CardDescription>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="h-4 w-4" />
-                    {module.lessons_count || 0} lessons
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      {module.duration || 'Self-paced'}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <BookOpen className="h-4 w-4" />
+                      {module.lessons_count || 0} lessons
+                    </div>
                   </div>
-                </div>
-                
-                {user ? (
-                  enrollmentStatus[module.module_id] ? (
-                    <Link to={`/module/${module.module_id}`}>
-                      <Button className="w-full" variant="outline">
+                  
+                  {user ? (
+                    enrollmentStatus[module.module_id] ? (
+                      <Link to={`/module/${module.module_id}`}>
+                        <Button className="w-full" variant="outline">
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Continue Learning
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button 
+                        className="w-full" 
+                        onClick={() => handleEnroll(module.module_id)}
+                      >
                         <BookOpen className="h-4 w-4 mr-2" />
-                        Continue Learning
+                        Enroll Now
+                      </Button>
+                    )
+                  ) : (
+                    <Link to="/signup">
+                      <Button className="w-full bg-black text-white hover:bg-gray-800">
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        Sign Up to Enroll
                       </Button>
                     </Link>
-                  ) : (
-                    <Button 
-                      className="w-full" 
-                      onClick={() => handleEnroll(module.module_id)}
-                    >
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      Enroll Now
-                    </Button>
-                  )
-                ) : (
-                  <Link to="/signup">
-                    <Button className="w-full bg-black text-white hover:bg-gray-800">
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      Sign Up to Enroll
-                    </Button>
-                  </Link>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
