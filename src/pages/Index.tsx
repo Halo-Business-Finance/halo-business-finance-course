@@ -5,9 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HaloBrandFooter } from "@/components/HaloBrandFooter";
+import { DemoVideoModal } from "@/components/DemoVideoModal";
+import { useState } from "react";
 
 const Index = () => {
   const { user } = useAuth();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   // If user is logged in, redirect to dashboard
   if (user) {
@@ -129,7 +132,12 @@ const Index = () => {
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-primary/20 hover:bg-primary/5 group">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="text-lg px-8 py-6 border-primary/20 hover:bg-primary/5 group"
+                    onClick={() => setIsDemoModalOpen(true)}
+                  >
                     <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     Watch Demo
                   </Button>
@@ -408,6 +416,12 @@ const Index = () => {
 
       {/* Footer */}
       <HaloBrandFooter />
+      
+      {/* Demo Video Modal */}
+      <DemoVideoModal 
+        isOpen={isDemoModalOpen} 
+        onClose={() => setIsDemoModalOpen(false)} 
+      />
     </div>
   );
 };
