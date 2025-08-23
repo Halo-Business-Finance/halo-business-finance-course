@@ -446,17 +446,17 @@ const AccountPage = () => {
   return (
     <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
       {/* Profile Info - Account Information Widget moved higher */}
-      <Card className="mb-6 max-w-4xl mx-auto">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold">My Account Information</CardTitle>
+      <Card className="mb-4 max-w-4xl mx-auto">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold">My Account Information</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="flex flex-col items-center space-y-4">
+        <CardContent className="pt-0">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="flex flex-col items-center space-y-2">
               <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="self-end">
-                    <Edit className="h-4 w-4 mr-2" />
+                  <Button variant="outline" size="sm" className="self-end mb-1">
+                    <Edit className="h-3 w-3 mr-1" />
                     Edit
                   </Button>
                 </DialogTrigger>
@@ -571,38 +571,38 @@ const AccountPage = () => {
                 onAvatarUpdate={handleAvatarUpdate}
               />
               <div className="text-center">
-                <h3 className="text-lg font-semibold">{userInfo.name}</h3>
-                <p className="text-sm text-muted-foreground">{userInfo.title}</p>
+                <h3 className="text-base font-semibold">{userInfo.name}</h3>
+                <p className="text-xs text-muted-foreground">{userInfo.title}</p>
               </div>
             </div>
             
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{userInfo.email}</span>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Mail className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                <span className="text-xs truncate">{userInfo.email}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{formatPhoneNumber(userInfo.phone) || 'No phone number'}</span>
+              <div className="flex items-center gap-2">
+                <Phone className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                <span className="text-xs">{formatPhoneNumber(userInfo.phone) || 'No phone number'}</span>
               </div>
               {userInfo.company && (
-                <div className="flex items-center gap-3">
-                  <Settings className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{userInfo.company}</span>
+                <div className="flex items-center gap-2">
+                  <Settings className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xs truncate">{userInfo.company}</span>
                 </div>
               )}
-              <div className="flex items-center gap-3">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                <span className="text-xs">
                   {userInfo.city || userInfo.state ? 
                     `${userInfo.city}${userInfo.city && userInfo.state ? ', ' : ''}${userInfo.state}` : 
                     'No location set'
                   }
                 </span>
               </div>
-              <div className="flex items-center gap-3">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Joined {userInfo.joinDate}</span>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                <span className="text-xs">Joined {userInfo.joinDate}</span>
               </div>
             </div>
           </div>
