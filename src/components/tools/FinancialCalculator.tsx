@@ -1,38 +1,116 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, DollarSign } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Calculator, DollarSign, TrendingUp, PieChart, Calendar, Zap, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CalculationResult {
   monthlyPayment: number;
   totalPayment: number;
   totalInterest: number;
+  principalPercentage: number;
+  interestPercentage: number;
+}
+
+interface AmortizationEntry {
+  payment: number;
+  principalPayment: number;
+  interestPayment: number;
+  remainingBalance: number;
 }
 
 export const FinancialCalculator = () => {
   const [principal, setPrincipal] = useState<string>("100000");
   const [rate, setRate] = useState<string>("5.5");
   const [years, setYears] = useState<string>("10");
+  const [extraPayment, setExtraPayment] = useState<string>("0");
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [amortization, setAmortization] = useState<AmortizationEntry[]>([]);
+  const [animatedValues, setAnimatedValues] = useState({ payment: 0, total: 0, interest: 0 });
+
+  useEffect(() => {
+    if (result) {
+      // Animate values
+      const duration = 1000;
+      const steps = 60;
+      const stepDuration = duration / steps;
+      
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        const progress = currentStep / steps;
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        
+        setAnimatedValues({
+          payment: result.monthlyPayment * easeOut,
+          total: result.totalPayment * easeOut,
+          interest: result.totalInterest * easeOut
+        });
+        
+        currentStep++;
+        if (currentStep > steps) clearInterval(interval);
+      }, stepDuration);
+      
+      return () => clearInterval(interval);
+    }
+  }, [result]);
 
   const calculateLoan = () => {
     const p = parseFloat(principal);
-    const r = parseFloat(rate) / 100 / 12; // Monthly interest rate
-    const n = parseInt(years) * 12; // Total number of payments
+    const r = parseFloat(rate) / 100 / 12;
+    const n = parseInt(years) * 12;
+    const extra = parseFloat(extraPayment) || 0;
 
     if (p > 0 && r > 0 && n > 0) {
       const monthlyPayment = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
       const totalPayment = monthlyPayment * n;
       const totalInterest = totalPayment - p;
+      
+      // Calculate with extra payments
+      let balance = p;
+      const schedule: AmortizationEntry[] = [];
+      let totalPaid = 0;
+      let totalInterestPaid = 0;
+      let paymentNumber = 0;
+      
+      while (balance > 0.01 && paymentNumber < n) {
+        const interestPayment = balance * r;
+        let principalPayment = monthlyPayment - interestPayment;
+        
+        if (principalPayment + extra > balance) {
+          principalPayment = balance;
+        } else {
+          principalPayment += extra;
+        }
+        
+        balance -= principalPayment;
+        totalPaid += principalPayment + interestPayment;
+        totalInterestPaid += interestPayment;
+        paymentNumber++;
+        
+        if (schedule.length < 12) { // Only store first year for display
+          schedule.push({
+            payment: paymentNumber,
+            principalPayment,
+            interestPayment,
+            remainingBalance: balance
+          });
+        }
+      }
 
       setResult({
-        monthlyPayment,
-        totalPayment,
-        totalInterest
+        monthlyPayment: monthlyPayment + extra,
+        totalPayment: totalPaid,
+        totalInterest: totalInterestPaid,
+        principalPercentage: (p / totalPaid) * 100,
+        interestPercentage: (totalInterestPaid / totalPaid) * 100
       });
+      
+      setAmortization(schedule);
     }
   };
 
@@ -40,88 +118,271 @@ export const FinancialCalculator = () => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     }).format(amount);
   };
 
+  const getPaymentBreakdown = () => {
+    if (!result) return null;
+    const principalAmount = parseFloat(principal);
+    return [
+      { label: "Principal", value: principalAmount, color: "bg-blue-500" },
+      { label: "Interest", value: result.totalInterest, color: "bg-red-500" }
+    ];
+  };
+
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calculator className="h-5 w-5 text-primary" />
-          Loan Payment Calculator
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="principal">Loan Amount</Label>
-            <Input
-              id="principal"
-              type="number"
-              value={principal}
-              onChange={(e) => setPrincipal(e.target.value)}
-              placeholder="100000"
-            />
+    <div className="w-full max-w-6xl space-y-6">
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-background to-primary/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Calculator className="h-6 w-6 text-primary" />
+            </div>
+            Advanced Loan Calculator
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="principal" className="flex items-center gap-2">
+                Loan Amount
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>The total amount you want to borrow</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Input
+                id="principal"
+                type="number"
+                value={principal}
+                onChange={(e) => setPrincipal(e.target.value)}
+                placeholder="100000"
+                className="text-lg"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="rate" className="flex items-center gap-2">
+                Annual Interest Rate (%)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>The yearly interest rate for your loan</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Input
+                id="rate"
+                type="number"
+                step="0.1"
+                value={rate}
+                onChange={(e) => setRate(e.target.value)}
+                placeholder="5.5"
+                className="text-lg"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="years" className="flex items-center gap-2">
+                Loan Term (Years)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>How long you'll take to repay the loan</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Input
+                id="years"
+                type="number"
+                value={years}
+                onChange={(e) => setYears(e.target.value)}
+                placeholder="10"
+                className="text-lg"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="extra" className="flex items-center gap-2">
+                Extra Monthly Payment
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Additional amount to pay each month to reduce interest</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
+              <Input
+                id="extra"
+                type="number"
+                value={extraPayment}
+                onChange={(e) => setExtraPayment(e.target.value)}
+                placeholder="0"
+                className="text-lg"
+              />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="rate">Annual Interest Rate (%)</Label>
-            <Input
-              id="rate"
-              type="number"
-              step="0.1"
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
-              placeholder="5.5"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="years">Loan Term (Years)</Label>
-            <Input
-              id="years"
-              type="number"
-              value={years}
-              onChange={(e) => setYears(e.target.value)}
-              placeholder="10"
-            />
-          </div>
-        </div>
 
-        <Button onClick={calculateLoan} className="w-full">
-          <DollarSign className="h-4 w-4 mr-2" />
-          Calculate Payment
-        </Button>
+          <Button onClick={calculateLoan} className="w-full h-12 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+            <Zap className="h-5 w-5 mr-2" />
+            Calculate Payment
+          </Button>
 
-        {result && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Label className="text-sm text-muted-foreground">Monthly Payment</Label>
-                <div className="text-2xl font-bold text-primary mt-1">
-                  {formatCurrency(result.monthlyPayment)}
+          {result && (
+            <Tabs defaultValue="overview" className="mt-8">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview" className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="breakdown" className="flex items-center gap-2">
+                  <PieChart className="h-4 w-4" />
+                  Breakdown
+                </TabsTrigger>
+                <TabsTrigger value="schedule" className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  Schedule
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100/50">
+                    <CardContent className="p-6 text-center">
+                      <Label className="text-sm text-muted-foreground font-medium">Monthly Payment</Label>
+                      <div className="text-3xl font-bold text-blue-600 mt-2 animate-fade-in">
+                        {formatCurrency(animatedValues.payment)}
+                      </div>
+                      <Badge variant="outline" className="mt-2">
+                        {parseFloat(extraPayment) > 0 ? `+${formatCurrency(parseFloat(extraPayment))} extra` : 'Base payment'}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-0 shadow-md bg-gradient-to-br from-green-50 to-green-100/50">
+                    <CardContent className="p-6 text-center">
+                      <Label className="text-sm text-muted-foreground font-medium">Total Payment</Label>
+                      <div className="text-3xl font-bold text-green-600 mt-2 animate-fade-in">
+                        {formatCurrency(animatedValues.total)}
+                      </div>
+                      <Badge variant="outline" className="mt-2">
+                        Over {years} years
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="border-0 shadow-md bg-gradient-to-br from-red-50 to-red-100/50">
+                    <CardContent className="p-6 text-center">
+                      <Label className="text-sm text-muted-foreground font-medium">Total Interest</Label>
+                      <div className="text-3xl font-bold text-red-600 mt-2 animate-fade-in">
+                        {formatCurrency(animatedValues.interest)}
+                      </div>
+                      <Badge variant="outline" className="mt-2">
+                        {result.interestPercentage.toFixed(1)}% of total
+                      </Badge>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Label className="text-sm text-muted-foreground">Total Payment</Label>
-                <div className="text-2xl font-bold text-secondary-foreground mt-1">
-                  {formatCurrency(result.totalPayment)}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Label className="text-sm text-muted-foreground">Total Interest</Label>
-                <div className="text-2xl font-bold text-accent mt-1">
-                  {formatCurrency(result.totalInterest)}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              </TabsContent>
+
+              <TabsContent value="breakdown" className="space-y-6">
+                <Card className="border-0 shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <PieChart className="h-5 w-5" />
+                      Payment Composition
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Principal ({result.principalPercentage.toFixed(1)}%)</span>
+                          <span>{formatCurrency(parseFloat(principal))}</span>
+                        </div>
+                        <Progress value={result.principalPercentage} className="h-3" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Interest ({result.interestPercentage.toFixed(1)}%)</span>
+                          <span>{formatCurrency(result.totalInterest)}</span>
+                        </div>
+                        <Progress value={result.interestPercentage} className="h-3 bg-red-100" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {parseFloat(extraPayment) > 0 && (
+                  <Card className="border-0 shadow-md bg-green-50">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 text-green-700">
+                        <TrendingUp className="h-5 w-5" />
+                        <span className="font-medium">Extra Payment Impact</span>
+                      </div>
+                      <p className="text-sm text-green-600 mt-1">
+                        Your extra payment of {formatCurrency(parseFloat(extraPayment))} per month will help you pay off your loan faster and save on interest.
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              <TabsContent value="schedule" className="space-y-6">
+                <Card className="border-0 shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      First Year Amortization Schedule
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-2">Payment #</th>
+                            <th className="text-left p-2">Principal</th>
+                            <th className="text-left p-2">Interest</th>
+                            <th className="text-left p-2">Balance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {amortization.map((entry, index) => (
+                            <tr key={index} className="border-b hover:bg-muted/50">
+                              <td className="p-2 font-medium">{entry.payment}</td>
+                              <td className="p-2 text-green-600">{formatCurrency(entry.principalPayment)}</td>
+                              <td className="p-2 text-red-600">{formatCurrency(entry.interestPayment)}</td>
+                              <td className="p-2">{formatCurrency(entry.remainingBalance)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };

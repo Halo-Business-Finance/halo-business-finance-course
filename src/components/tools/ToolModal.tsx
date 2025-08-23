@@ -3,6 +3,8 @@ import { FinancialCalculator } from "./FinancialCalculator";
 import { ROICalculator } from "./ROICalculator";
 import { CreditScoreSimulator } from "./CreditScoreSimulator";
 import { LoanComparisonTool } from "./LoanComparisonTool";
+import { BusinessValuationTool } from "./BusinessValuationTool";
+import { CashFlowProjector } from "./CashFlowProjector";
 
 interface ToolModalProps {
   open: boolean;
@@ -13,35 +15,49 @@ interface ToolModalProps {
 
 export const ToolModal = ({ open, onOpenChange, toolType, toolTitle }: ToolModalProps) => {
   const renderTool = () => {
+    const title = toolTitle.toLowerCase();
+    
+    // Enhanced tool routing based on title and type
+    if (title.includes("business") && title.includes("valuation")) {
+      return <BusinessValuationTool />;
+    }
+    if (title.includes("cash") && title.includes("flow")) {
+      return <CashFlowProjector />;
+    }
+    if (title.includes("credit") || title.includes("score")) {
+      return <CreditScoreSimulator />;
+    }
+    if (title.includes("roi") || title.includes("return")) {
+      return <ROICalculator />;
+    }
+    if (title.includes("comparison") || title.includes("compare")) {
+      return <LoanComparisonTool />;
+    }
+    if (title.includes("financial") || title.includes("loan") || title.includes("payment")) {
+      return <FinancialCalculator />;
+    }
+    
+    // Fallback based on tool type
     switch (toolType) {
       case "calculator":
-        if (toolTitle.toLowerCase().includes("financial") || toolTitle.toLowerCase().includes("finance")) {
-          return <FinancialCalculator />;
-        }
-        if (toolTitle.toLowerCase().includes("roi")) {
-          return <ROICalculator />;
-        }
         return <FinancialCalculator />;
       case "simulator":
-        if (toolTitle.toLowerCase().includes("credit")) {
-          return <CreditScoreSimulator />;
-        }
         return <CreditScoreSimulator />;
+      case "projector":
+        return <CashFlowProjector />;
+      case "valuator":
+        return <BusinessValuationTool />;
       case "web_tool":
-        if (toolTitle.toLowerCase().includes("comparison")) {
-          return <LoanComparisonTool />;
-        }
-        return <LoanComparisonTool />;
       default:
-        return <FinancialCalculator />;
+        return <LoanComparisonTool />;
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{toolTitle}</DialogTitle>
+          <DialogTitle className="text-xl">{toolTitle}</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           {renderTool()}
