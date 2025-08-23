@@ -244,7 +244,7 @@ const Index = () => {
                   <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
-                  <CardDescription className="text-base leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-foreground">
                     {path.description}
                   </CardDescription>
                 </CardHeader>
@@ -274,7 +274,7 @@ const Index = () => {
             <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               Why Choose Halo Learning?
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-foreground max-w-3xl mx-auto">
               Industry-leading curriculum designed to accelerate your success in business finance
             </p>
           </div>
@@ -316,7 +316,7 @@ const Index = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-foreground">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
