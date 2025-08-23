@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
 
 interface AccountTabsProps {
   activeTab: string;
@@ -27,7 +28,14 @@ export const AccountTabs = ({ activeTab, onTabChange }: AccountTabsProps) => {
             activeTab === tab.value ? 'bg-blue-800' : ''
           }`}
         >
-          {tab.label}
+          {tab.value === 'support' ? (
+            <>
+              <MessageCircle className="h-3 w-3 mr-1" />
+              {tab.label}
+            </>
+          ) : (
+            tab.label
+          )}
         </Button>
       ))}
     </div>
