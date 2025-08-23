@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, MessageCircle, Mail, Phone, Search } from "lucide-react";
+import supportHero from "@/assets/support-hero.jpg";
+import supportPattern from "@/assets/support-pattern.jpg";
 
 const Support = () => {
   const faqs = [
@@ -54,74 +56,99 @@ const Support = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Help & Support</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          We're here to help you succeed. Find answers to common questions or contact our support team.
-        </p>
-      </div>
-
-      <div className="max-w-2xl mx-auto mb-12">
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search for help topics..." 
-            className="pl-10"
-          />
+    <div className="bg-white min-h-screen">
+      {/* Hero Section */}
+      <div className="relative h-96 overflow-hidden">
+        <img 
+          src={supportHero} 
+          alt="Professional customer support environment" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl mx-auto px-4">
+            <h1 className="text-4xl font-bold mb-4">Help & Support</h1>
+            <p className="text-lg">
+              We're here to help you succeed. Find answers to common questions or contact our support team.
+            </p>
+          </div>
         </div>
       </div>
+      
+      {/* Content Section */}
+      <div className="relative">
+        <div 
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `url(${supportPattern})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'repeat'
+          }}
+        />
+        <div className="relative container mx-auto px-4 py-12">
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        {supportOptions.map((option, index) => {
-          const Icon = option.icon;
-          return (
-            <Card key={index} className="text-center">
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Icon className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>{option.title}</CardTitle>
-                <CardDescription>{option.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">{option.available}</p>
-                <Button className="w-full">{option.action}</Button>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-            <HelpCircle className="h-6 w-6" />
-            Frequently Asked Questions
-          </h2>
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div className="max-w-2xl mx-auto mb-12">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input 
+              placeholder="Search for help topics..." 
+              className="pl-10 bg-white/90 backdrop-blur-sm"
+            />
+          </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Form</CardTitle>
-            <CardDescription>Can't find what you're looking for? Send us a message.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Input placeholder="Your Name" />
-            <Input type="email" placeholder="Your Email" />
-            <Input placeholder="Subject" />
-            <Textarea placeholder="Describe your issue or question..." rows={4} />
-            <Button className="w-full">Send Message</Button>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {supportOptions.map((option, index) => {
+            const Icon = option.icon;
+            return (
+              <Card key={index} className="text-center bg-white/95 backdrop-blur-sm hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle>{option.title}</CardTitle>
+                  <CardDescription>{option.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{option.available}</p>
+                  <Button className="w-full">{option.action}</Button>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
+              <HelpCircle className="h-6 w-6" />
+              Frequently Asked Questions
+            </h2>
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="bg-white/90 backdrop-blur-sm rounded-lg px-4">
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent>{faq.answer}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+
+          <Card className="bg-white/95 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Contact Form</CardTitle>
+              <CardDescription>Can't find what you're looking for? Send us a message.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Input placeholder="Your Name" />
+              <Input type="email" placeholder="Your Email" />
+              <Input placeholder="Subject" />
+              <Textarea placeholder="Describe your issue or question..." rows={4} />
+              <Button className="w-full">Send Message</Button>
+            </CardContent>
+          </Card>
+        </div>
+        </div>
       </div>
     </div>
   );
