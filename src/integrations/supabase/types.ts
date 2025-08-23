@@ -2853,6 +2853,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_security_headers: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_security_metrics: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -3090,6 +3094,10 @@ export type Database = {
         Returns: undefined
       }
       monitor_role_access_patterns: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      monitor_suspicious_user_behavior: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
