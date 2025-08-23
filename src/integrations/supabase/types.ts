@@ -2733,7 +2733,6 @@ export type Database = {
           profile_company: string
           profile_created_at: string
           profile_email: string
-          profile_id: string
           profile_join_date: string
           profile_name: string
           profile_phone: string
