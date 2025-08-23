@@ -205,68 +205,128 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load all user roles data by joining user_roles with profiles
+      // Try to load user roles using the secure admin function first
       let userRolesData = [];
       
       try {
-        const { data: rolesData, error: rolesError } = await supabase
-          .from('user_roles')
-          .select(`
-            *,
-            profiles (
-              name,
-              email,
-              phone,
-              title,
-              company
-            )
-          `)
-          .eq('is_active', true)
-          .order('created_at', { ascending: false });
+        console.log('Attempting to load user profiles via secure admin function...');
+        const { data: secureData, error: secureError } = await supabase.functions.invoke('secure-admin-operations', {
+          body: {
+            operation: 'getFilteredProfiles'
+          }
+        });
 
-        if (rolesError) {
-          console.warn('Direct user_roles query failed:', rolesError);
-          // Fallback to separate queries
+        if (secureError) {
+          console.warn('Secure admin function failed:', secureError);
+          throw secureError;
+        }
+
+        if (secureData?.success && secureData?.data) {
+          // Transform the secure function data to match our expected format
+          userRolesData = secureData.data.map((profile: any) => ({
+            id: profile.user_id,
+            user_id: profile.user_id,
+            role: profile.roles?.[0]?.role || 'trainee',
+            is_active: profile.roles?.[0]?.is_active || true,
+            created_at: profile.created_at,
+            updated_at: profile.updated_at,
+            profiles: {
+              name: profile.name,
+              email: profile.email,
+              phone: profile.phone,
+              title: profile.title,
+              company: profile.company
+            }
+          }));
+          console.log('User roles loaded via secure function:', userRolesData);
+        } else {
+          throw new Error('No data returned from secure function');
+        }
+      } catch (secureError) {
+        console.warn('Secure function unavailable, trying direct queries:', secureError);
+        
+        try {
+          // Fallback: Try direct profile query (should work for admins)
           const { data: profilesData, error: profilesError } = await supabase
             .from('profiles')
-            .select('*');
-            
-          const { data: basicRoles, error: basicRolesError } = await supabase
-            .from('user_roles')
             .select('*')
-            .eq('is_active', true);
+            .order('created_at', { ascending: false });
 
-          if (!profilesError && !basicRolesError) {
-            // Manually join the data
-            userRolesData = basicRoles?.map(role => ({
-              ...role,
-              profiles: profilesData?.find(profile => profile.user_id === role.user_id) || null
-            })) || [];
+          if (profilesError) {
+            console.warn('Direct profiles query failed:', profilesError);
+            throw profilesError;
           }
-        } else {
-          userRolesData = rolesData || [];
-        }
-        
-        console.log('User roles loaded:', userRolesData);
-      } catch (error) {
-        console.error('Failed to load user roles:', error);
-        // If all else fails, show current user only
-        if (user && userRole) {
-          userRolesData = [{
-            id: user.id,
-            user_id: user.id,
-            role: userRole,
-            is_active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            profiles: {
-              name: user.user_metadata?.full_name || 'Admin User',
-              email: user.email || '',
-              phone: user.user_metadata?.phone || '',
-              title: 'System Administrator',
-              company: 'Halo Business Finance'
+
+          // For each profile, try to get their role
+          if (profilesData && profilesData.length > 0) {
+            const enrichedProfiles = [];
+            
+            for (const profile of profilesData) {
+              try {
+                // Try to get user role using the working function
+                const { data: roleData, error: roleError } = await supabase.rpc('get_user_role', {
+                  check_user_id: profile.user_id
+                });
+                
+                enrichedProfiles.push({
+                  id: profile.user_id,
+                  user_id: profile.user_id,
+                  role: roleData || 'trainee',
+                  is_active: true,
+                  created_at: profile.created_at,
+                  updated_at: profile.updated_at,
+                  profiles: {
+                    name: profile.name,
+                    email: profile.email,
+                    phone: profile.phone,
+                    title: profile.title,
+                    company: profile.company
+                  }
+                });
+              } catch (roleErr) {
+                console.warn('Could not get role for user:', profile.user_id, roleErr);
+                // Add user anyway with default role
+                enrichedProfiles.push({
+                  id: profile.user_id,
+                  user_id: profile.user_id,
+                  role: 'trainee',
+                  is_active: true,
+                  created_at: profile.created_at,
+                  updated_at: profile.updated_at,
+                  profiles: {
+                    name: profile.name,
+                    email: profile.email,
+                    phone: profile.phone,
+                    title: profile.title,
+                    company: profile.company
+                  }
+                });
+              }
             }
-          }];
+            
+            userRolesData = enrichedProfiles;
+            console.log('User roles loaded via fallback queries:', userRolesData);
+          }
+        } catch (fallbackError) {
+          console.error('All queries failed, using current user only:', fallbackError);
+          // Last resort: show current user only
+          if (user && userRole) {
+            userRolesData = [{
+              id: user.id,
+              user_id: user.id,
+              role: userRole,
+              is_active: true,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              profiles: {
+                name: user.user_metadata?.full_name || 'Admin User',
+                email: user.email || '',
+                phone: user.user_metadata?.phone || '',
+                title: 'System Administrator',
+                company: 'Halo Business Finance'
+              }
+            }];
+          }
         }
       }
 
