@@ -205,27 +205,69 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load user roles data using only working functions
+      // Load all user roles data by joining user_roles with profiles
       let userRolesData = [];
       
-      // Since get_user_role works, let's use that and build from current user
-      if (user && userRole) {
-        userRolesData = [{
-          id: user.id,
-          user_id: user.id,
-          role: userRole,
-          is_active: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          profiles: {
-            name: user.user_metadata?.full_name || 'Admin User',
-            email: user.email || '',
-            phone: user.user_metadata?.phone || '',
-            title: 'System Administrator',
-            company: 'Halo Business Finance'
+      try {
+        const { data: rolesData, error: rolesError } = await supabase
+          .from('user_roles')
+          .select(`
+            *,
+            profiles (
+              name,
+              email,
+              phone,
+              title,
+              company
+            )
+          `)
+          .eq('is_active', true)
+          .order('created_at', { ascending: false });
+
+        if (rolesError) {
+          console.warn('Direct user_roles query failed:', rolesError);
+          // Fallback to separate queries
+          const { data: profilesData, error: profilesError } = await supabase
+            .from('profiles')
+            .select('*');
+            
+          const { data: basicRoles, error: basicRolesError } = await supabase
+            .from('user_roles')
+            .select('*')
+            .eq('is_active', true);
+
+          if (!profilesError && !basicRolesError) {
+            // Manually join the data
+            userRolesData = basicRoles?.map(role => ({
+              ...role,
+              profiles: profilesData?.find(profile => profile.user_id === role.user_id) || null
+            })) || [];
           }
-        }];
-        console.log('User roles loaded from current user:', userRolesData);
+        } else {
+          userRolesData = rolesData || [];
+        }
+        
+        console.log('User roles loaded:', userRolesData);
+      } catch (error) {
+        console.error('Failed to load user roles:', error);
+        // If all else fails, show current user only
+        if (user && userRole) {
+          userRolesData = [{
+            id: user.id,
+            user_id: user.id,
+            role: userRole,
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            profiles: {
+              name: user.user_metadata?.full_name || 'Admin User',
+              email: user.email || '',
+              phone: user.user_metadata?.phone || '',
+              title: 'System Administrator',
+              company: 'Halo Business Finance'
+            }
+          }];
+        }
       }
 
       // Fetch instructors data
