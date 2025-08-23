@@ -446,17 +446,17 @@ const AccountPage = () => {
   return (
     <Tabs value={currentTab} className="container mx-auto p-6 space-y-2">
       {/* Profile Info - Account Information Widget moved higher */}
-      <Card className="mb-4 max-w-4xl mx-auto">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold">My Account Information</CardTitle>
+      <Card className="mb-4 max-w-2xl mx-auto">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-semibold">My Account Information</CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="flex flex-col items-center space-y-2">
+        <CardContent className="pt-0 px-4 pb-4">
+          <div className="flex gap-3">
+            <div className="flex flex-col items-center space-y-1 min-w-0">
               <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="self-end mb-1">
-                    <Edit className="h-3 w-3 mr-1" />
+                  <Button variant="outline" size="sm" className="h-6 px-2 text-xs">
+                    <Edit className="h-2 w-2 mr-1" />
                     Edit
                   </Button>
                 </DialogTrigger>
@@ -565,44 +565,46 @@ const AccountPage = () => {
                   </form>
                 </DialogContent>
               </Dialog>
-              <AvatarUpload
-                currentAvatar={userInfo.avatar}
-                userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
-                onAvatarUpdate={handleAvatarUpdate}
-              />
-              <div className="text-center">
-                <h3 className="text-base font-semibold">{userInfo.name}</h3>
-                <p className="text-xs text-muted-foreground">{userInfo.title}</p>
+              <div className="w-12 h-12">
+                <AvatarUpload
+                  currentAvatar={userInfo.avatar}
+                  userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
+                  onAvatarUpdate={handleAvatarUpdate}
+                />
+              </div>
+              <div className="text-center min-w-0">
+                <h3 className="text-xs font-semibold truncate">{userInfo.name}</h3>
+                <p className="text-[10px] text-muted-foreground truncate">{userInfo.title}</p>
               </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Mail className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs truncate">{userInfo.email}</span>
+            <div className="flex-1 space-y-1 min-w-0">
+              <div className="flex items-center gap-1">
+                <Mail className="h-2 w-2 text-muted-foreground flex-shrink-0" />
+                <span className="text-[10px] truncate">{userInfo.email}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs">{formatPhoneNumber(userInfo.phone) || 'No phone number'}</span>
+              <div className="flex items-center gap-1">
+                <Phone className="h-2 w-2 text-muted-foreground flex-shrink-0" />
+                <span className="text-[10px]">{formatPhoneNumber(userInfo.phone) || 'No phone'}</span>
               </div>
               {userInfo.company && (
-                <div className="flex items-center gap-2">
-                  <Settings className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                  <span className="text-xs truncate">{userInfo.company}</span>
+                <div className="flex items-center gap-1">
+                  <Settings className="h-2 w-2 text-muted-foreground flex-shrink-0" />
+                  <span className="text-[10px] truncate">{userInfo.company}</span>
                 </div>
               )}
-              <div className="flex items-center gap-2">
-                <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs">
+              <div className="flex items-center gap-1">
+                <MapPin className="h-2 w-2 text-muted-foreground flex-shrink-0" />
+                <span className="text-[10px] truncate">
                   {userInfo.city || userInfo.state ? 
                     `${userInfo.city}${userInfo.city && userInfo.state ? ', ' : ''}${userInfo.state}` : 
-                    'No location set'
+                    'No location'
                   }
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs">Joined {userInfo.joinDate}</span>
+              <div className="flex items-center gap-1">
+                <Calendar className="h-2 w-2 text-muted-foreground flex-shrink-0" />
+                <span className="text-[10px]">Joined {userInfo.joinDate}</span>
               </div>
             </div>
           </div>
