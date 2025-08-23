@@ -171,9 +171,9 @@ export const CurriculumModal = ({ open, onOpenChange, learningPath }: Curriculum
 
           {/* Call to Action */}
           <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-6 text-center space-y-4">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <Users className="h-4 w-4" />
-              Join 10,000+ professionals who have advanced their careers
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <Users className="h-4 w-4 text-black" />
+              <span className="text-black">Join hundreds professionals who have advanced their careers</span>
             </div>
             <div className="space-y-3">
               <Link to="/auth">

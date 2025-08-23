@@ -152,8 +152,8 @@ const Index = () => {
                       <div key={i} className="w-8 h-8 rounded-full bg-gradient-primary border-2 border-background" />
                     ))}
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium text-foreground">10,000+ professionals</span> have advanced their careers
+                  <div className="text-sm">
+                    <span className="font-medium text-black">hundreds professionals</span> <span className="text-black">have advanced their careers</span>
                   </div>
                 </div>
               </div>
