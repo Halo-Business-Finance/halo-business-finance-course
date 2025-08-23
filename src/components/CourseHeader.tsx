@@ -25,7 +25,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
                 Business Finance Mastery
               </h1>
-              <p className="text-base text-white/90 leading-relaxed">
+              <p className="text-base text-white leading-relaxed">
                 Master the fundamentals of business finance with our comprehensive 
                 training program designed specifically for Halo Business Finance interns.
               </p>
@@ -33,19 +33,19 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
               <div className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-white/80" />
+                <BookOpen className="h-5 w-5 text-white" />
                 <span className="text-sm">{totalModules} Modules</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-white/80" />
+                <Clock className="h-5 w-5 text-white" />
                 <span className="text-sm">4-6 Hours</span>
               </div>
               <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-white/80" />
+                <Users className="h-5 w-5 text-white" />
                 <span className="text-sm">Beginner</span>
               </div>
               <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-white/80" />
+                <Award className="h-5 w-5 text-white" />
                 <span className="text-sm">Certificate</span>
               </div>
             </div>
@@ -56,7 +56,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
                 <span className="text-sm">{completedModules}/{totalModules} modules</span>
               </div>
               <Progress value={progress} className="h-3 bg-white/30" />
-              <p className="text-sm text-white/80">
+              <p className="text-sm text-white">
                 {progress}% complete - Keep up the great work!
               </p>
             </div>
