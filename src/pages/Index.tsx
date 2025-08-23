@@ -9,7 +9,7 @@ import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
-import learningPathsImage from "@/assets/lending-curriculum-paths.jpg";
+const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 import softwareTrainingImage from "@/assets/software-training.jpg";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
@@ -195,7 +195,7 @@ const Index = () => {
             <div>
               <img 
                 src={learningPathsImage} 
-                alt="Commercial lending course curriculum and certification learning paths" 
+                alt="Halo Business Finance dashboard showing course progress and modules" 
                 className="w-full h-auto rounded-2xl shadow-elevated"
               />
             </div>
