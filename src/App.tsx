@@ -111,9 +111,11 @@ const HeaderContent = () => {
         </div>
       )}
       
-      <div className="flex-1 flex items-center justify-center">
-        <HorizontalNav />
-      </div>
+      {!user && (
+        <div className="flex-1 flex items-center justify-center">
+          <HorizontalNav />
+        </div>
+      )}
       
       <div className="flex items-center mr-4 gap-4">
         {user ? (
