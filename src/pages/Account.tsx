@@ -444,9 +444,20 @@ const AccountPage = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center gap-2 mb-6">
-        <User className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">Account</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <User className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">Account</h1>
+        </div>
+        
+        <Tabs defaultValue="account" className="w-auto">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="privacy">Privacy</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
       {/* Profile Info - Account Information Widget moved higher */}
