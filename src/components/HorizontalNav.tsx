@@ -12,7 +12,8 @@ import { cn } from "@/lib/utils";
 
 export const HorizontalNav = () => {
   return (
-    <NavigationMenu>
+    <div className="bg-white rounded-lg px-4 py-2">
+      <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
@@ -80,6 +81,7 @@ export const HorizontalNav = () => {
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
-    </NavigationMenu>
+      </NavigationMenu>
+    </div>
   );
 };
