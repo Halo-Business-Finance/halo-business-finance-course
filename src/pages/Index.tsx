@@ -208,7 +208,7 @@ const Index = () => {
               />
             </div>
             <div className="text-center lg:text-left space-y-4">
-              <Badge className="inline-flex items-center gap-2 bg-accent/10 text-accent border-accent/20">
+              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
                 <Target className="h-4 w-4" />
                 Structured Learning Paths
               </Badge>
@@ -226,7 +226,7 @@ const Index = () => {
               <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
                 <CardHeader className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
                       {path.duration} • {path.modules} modules
                     </Badge>
                     <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
@@ -341,7 +341,7 @@ const Index = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary border-primary/20">
+            <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
               <Star className="h-4 w-4" />
               Success Stories
             </Badge>
