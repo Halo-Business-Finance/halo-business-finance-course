@@ -354,9 +354,45 @@ const ModulePage = () => {
           <Card>
             <CardHeader>
               <CardTitle>Module Overview</CardTitle>
+              <CardDescription>
+                Learn the fundamentals that will prepare you for success in this module
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>{courseModule.description}</p>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold mb-3">What You'll Learn</h4>
+                <div className="grid gap-3">
+                  {courseModule.topics?.map((topic, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-accent/10">
+                      <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">{topic}</span>
+                    </div>
+                  )) || (
+                    <p className="text-muted-foreground">Learning objectives will be available soon.</p>
+                  )}
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3">Module Description</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {courseModule.description}
+                </p>
+              </div>
+              
+              {courseModule.prerequisites && courseModule.prerequisites.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-3">Prerequisites</h4>
+                  <div className="space-y-2">
+                    {courseModule.prerequisites.map((prereq, index) => (
+                      <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <BookOpen className="h-4 w-4" />
+                        {prereq}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -364,23 +400,71 @@ const ModulePage = () => {
         <TabsContent value="resources">
           <Card>
             <CardHeader>
-              <CardTitle>Resources</CardTitle>
+              <CardTitle>Learning Resources</CardTitle>
+              <CardDescription>
+                Additional materials to support your learning journey
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p>Resources would be displayed here...</p>
+            <CardContent className="space-y-6">
+              <div>
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Downloadable Resources
+                </h4>
+                <div className="grid gap-3">
+                  <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h5 className="font-medium">{courseModule.title} - Study Guide</h5>
+                        <p className="text-sm text-muted-foreground">Comprehensive study materials and key concepts</p>
+                      </div>
+                      <Badge variant="outline">PDF</Badge>
+                    </div>
+                  </Card>
+                  
+                  <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h5 className="font-medium">Practice Worksheets</h5>
+                        <p className="text-sm text-muted-foreground">Hands-on exercises to reinforce learning</p>
+                      </div>
+                      <Badge variant="outline">PDF</Badge>
+                    </div>
+                  </Card>
+                  
+                  <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h5 className="font-medium">Quick Reference Guide</h5>
+                        <p className="text-sm text-muted-foreground">Key formulas and concepts for quick lookup</p>
+                      </div>
+                      <Badge variant="outline">PDF</Badge>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-3">Additional Reading</h4>
+                <div className="space-y-3">
+                  <div className="p-3 border border-dashed border-muted rounded-lg">
+                    <p className="text-sm text-muted-foreground text-center">
+                      External resources and recommended reading materials will be added soon.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="quiz">
-          <Card>
-            <CardHeader>
-              <CardTitle>Module Quiz</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Quiz would be displayed here...</p>
-            </CardContent>
-          </Card>
+          <ModuleQuiz
+            moduleId={moduleId || 'foundations'}
+            moduleTitle={courseModule.title}
+            totalQuestions={courseModule.lessons || 10}
+            onComplete={handleQuizComplete}
+          />
         </TabsContent>
       </Tabs>
     </div>

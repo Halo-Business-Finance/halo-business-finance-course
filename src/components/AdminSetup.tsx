@@ -19,7 +19,7 @@ export function AdminSetup() {
       
       toast({
         title: "Success",
-        description: data || "Admin role assigned successfully. Please refresh the page.",
+        description: String(data || "Admin role assigned successfully. Please refresh the page."),
       });
       
       // Refresh the page after a delay
