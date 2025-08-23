@@ -534,12 +534,12 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-halo-navy border-halo-navy">
-              <TabsTrigger value="account" className="text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/90 hover:text-white font-medium">Account</TabsTrigger>
-              <TabsTrigger value="notifications" className="text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/90 hover:text-white font-medium">Notifications</TabsTrigger>
-              <TabsTrigger value="privacy" className="text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/90 hover:text-white font-medium">Privacy</TabsTrigger>
-              <TabsTrigger value="preferences" className="text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/90 hover:text-white font-medium">Preferences</TabsTrigger>
-              <TabsTrigger value="billing" className="text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:text-white/90 hover:text-white font-medium">Billing</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-1">
+              <TabsTrigger value="account" className="relative text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:bg-halo-navy hover:text-white font-medium rounded-t-lg rounded-b-none border-t-2 border-x-2 border-b-0 border-white/20 data-[state=active]:border-white data-[state=active]:border-b-0 data-[state=active]:z-10 data-[state=active]:mb-[-1px] px-4 py-3">Account</TabsTrigger>
+              <TabsTrigger value="notifications" className="relative text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:bg-halo-navy hover:text-white font-medium rounded-t-lg rounded-b-none border-t-2 border-x-2 border-b-0 border-white/20 data-[state=active]:border-white data-[state=active]:border-b-0 data-[state=active]:z-10 data-[state=active]:mb-[-1px] px-4 py-3">Notifications</TabsTrigger>
+              <TabsTrigger value="privacy" className="relative text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:bg-halo-navy hover:text-white font-medium rounded-t-lg rounded-b-none border-t-2 border-x-2 border-b-0 border-white/20 data-[state=active]:border-white data-[state=active]:border-b-0 data-[state=active]:z-10 data-[state=active]:mb-[-1px] px-4 py-3">Privacy</TabsTrigger>
+              <TabsTrigger value="preferences" className="relative text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:bg-halo-navy hover:text-white font-medium rounded-t-lg rounded-b-none border-t-2 border-x-2 border-b-0 border-white/20 data-[state=active]:border-white data-[state=active]:border-b-0 data-[state=active]:z-10 data-[state=active]:mb-[-1px] px-4 py-3">Preferences</TabsTrigger>
+              <TabsTrigger value="billing" className="relative text-white/90 data-[state=active]:bg-white data-[state=active]:text-halo-navy data-[state=inactive]:bg-halo-navy hover:text-white font-medium rounded-t-lg rounded-b-none border-t-2 border-x-2 border-b-0 border-white/20 data-[state=active]:border-white data-[state=active]:border-b-0 data-[state=active]:z-10 data-[state=active]:mb-[-1px] px-4 py-3">Billing</TabsTrigger>
             </TabsList>
 
 
