@@ -534,20 +534,20 @@ const AccountPage = () => {
         {/* Main Content */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-3 mb-2">
-              <TabsTrigger value="account" className="bg-blue-700 text-white italic font-medium rounded-t-2xl rounded-b-none border border-blue-600 border-b-0 px-6 py-4">
+            <TabsList className="grid w-full grid-cols-5 bg-transparent border-none p-0 h-auto gap-2 mb-2">
+              <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
                 Account
               </TabsTrigger>
-              <TabsTrigger value="notifications" className="bg-blue-700 text-white italic font-medium rounded-t-2xl rounded-b-none border border-blue-600 border-b-0 px-6 py-4">
+              <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
                 Notifications
               </TabsTrigger>
-              <TabsTrigger value="privacy" className="bg-blue-700 text-white italic font-medium rounded-t-2xl rounded-b-none border border-blue-600 border-b-0 px-6 py-4">
+              <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
                 Privacy
               </TabsTrigger>
-              <TabsTrigger value="preferences" className="bg-blue-700 text-white italic font-medium rounded-t-2xl rounded-b-none border border-blue-600 border-b-0 px-6 py-4">
+              <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
                 Preferences
               </TabsTrigger>
-              <TabsTrigger value="billing" className="bg-blue-700 text-white italic font-medium rounded-t-2xl rounded-b-none border border-blue-600 border-b-0 px-6 py-4">
+              <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
                 Billing
               </TabsTrigger>
             </TabsList>
