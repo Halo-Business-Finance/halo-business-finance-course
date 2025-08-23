@@ -289,7 +289,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
-              Choose the number 1 commercial lending software Business Finance Mastery
+              The #1 Course for Tomorrow's Lending Leaders
             </h2>
             <p className="text-lg text-foreground max-w-3xl mx-auto">
               Industry-leading curriculum designed to accelerate your success in business finance
