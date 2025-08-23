@@ -121,7 +121,7 @@ const Dashboard = () => {
 
   if (!user || !hasEnrollment) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
         <div className="text-center">
           <h2 className="text-2xl font-semibold mb-4">Access Restricted</h2>
           <p className="text-muted-foreground mb-6">

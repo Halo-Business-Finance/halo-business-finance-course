@@ -51,7 +51,7 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-foreground mb-4">Choose Your Plan</h1>
         <p className="text-lg text-black max-w-4xl mx-auto whitespace-nowrap">

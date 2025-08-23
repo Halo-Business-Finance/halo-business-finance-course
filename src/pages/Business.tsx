@@ -38,7 +38,7 @@ const Business = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="text-center mb-12">
         <Badge className="mb-4">For Business</Badge>
         <h1 className="text-4xl font-bold text-foreground mb-4">Transform Your Team's Skills</h1>
