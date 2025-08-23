@@ -24,7 +24,7 @@ export const AccountTabs = ({ activeTab, onTabChange }: AccountTabsProps) => {
           variant="ghost"
           size="sm"
           onClick={() => onTabChange(tab.value)}
-          className={`bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2 hover:bg-blue-600 ${
+          className={`bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2 hover:bg-blue-600 w-24 ${
             activeTab === tab.value ? 'bg-blue-800' : ''
           }`}
         >
