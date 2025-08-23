@@ -205,128 +205,58 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Try to load user roles using the secure admin function first
+      // Load user roles using the secure database function
       let userRolesData = [];
       
       try {
-        console.log('Attempting to load user profiles via secure admin function...');
-        const { data: secureData, error: secureError } = await supabase.functions.invoke('secure-admin-operations', {
-          body: {
-            operation: 'getFilteredProfiles'
-          }
-        });
+        console.log('Loading user profiles with roles using secure function...');
+        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_all_user_profiles_with_roles');
 
-        if (secureError) {
-          console.warn('Secure admin function failed:', secureError);
-          throw secureError;
+        if (profilesError) {
+          console.warn('Secure function failed:', profilesError);
+          throw profilesError;
         }
 
-        if (secureData?.success && secureData?.data) {
-          // Transform the secure function data to match our expected format
-          userRolesData = secureData.data.map((profile: any) => ({
-            id: profile.user_id,
-            user_id: profile.user_id,
-            role: profile.roles?.[0]?.role || 'trainee',
-            is_active: profile.roles?.[0]?.is_active || true,
-            created_at: profile.created_at,
-            updated_at: profile.updated_at,
+        if (profilesWithRoles && profilesWithRoles.length > 0) {
+          // Transform the data to match our expected format
+          userRolesData = profilesWithRoles.map((item: any) => ({
+            id: item.user_id,
+            user_id: item.user_id,
+            role: item.role,
+            is_active: item.role_is_active,
+            created_at: item.role_created_at || item.created_at,
+            updated_at: item.updated_at,
             profiles: {
-              name: profile.name,
-              email: profile.email,
-              phone: profile.phone,
-              title: profile.title,
-              company: profile.company
+              name: item.name,
+              email: item.email,
+              phone: item.phone,
+              title: item.title,
+              company: item.company
             }
           }));
-          console.log('User roles loaded via secure function:', userRolesData);
+          console.log('Successfully loaded user profiles with roles:', userRolesData);
         } else {
-          throw new Error('No data returned from secure function');
+          console.log('No user profiles found');
         }
-      } catch (secureError) {
-        console.warn('Secure function unavailable, trying direct queries:', secureError);
-        
-        try {
-          // Fallback: Try direct profile query (should work for admins)
-          const { data: profilesData, error: profilesError } = await supabase
-            .from('profiles')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-          if (profilesError) {
-            console.warn('Direct profiles query failed:', profilesError);
-            throw profilesError;
-          }
-
-          // For each profile, try to get their role
-          if (profilesData && profilesData.length > 0) {
-            const enrichedProfiles = [];
-            
-            for (const profile of profilesData) {
-              try {
-                // Try to get user role using the working function
-                const { data: roleData, error: roleError } = await supabase.rpc('get_user_role', {
-                  check_user_id: profile.user_id
-                });
-                
-                enrichedProfiles.push({
-                  id: profile.user_id,
-                  user_id: profile.user_id,
-                  role: roleData || 'trainee',
-                  is_active: true,
-                  created_at: profile.created_at,
-                  updated_at: profile.updated_at,
-                  profiles: {
-                    name: profile.name,
-                    email: profile.email,
-                    phone: profile.phone,
-                    title: profile.title,
-                    company: profile.company
-                  }
-                });
-              } catch (roleErr) {
-                console.warn('Could not get role for user:', profile.user_id, roleErr);
-                // Add user anyway with default role
-                enrichedProfiles.push({
-                  id: profile.user_id,
-                  user_id: profile.user_id,
-                  role: 'trainee',
-                  is_active: true,
-                  created_at: profile.created_at,
-                  updated_at: profile.updated_at,
-                  profiles: {
-                    name: profile.name,
-                    email: profile.email,
-                    phone: profile.phone,
-                    title: profile.title,
-                    company: profile.company
-                  }
-                });
-              }
+      } catch (error) {
+        console.error('Failed to load user profiles with roles:', error);
+        // Fallback to current user only if the secure function fails
+        if (user && userRole) {
+          userRolesData = [{
+            id: user.id,
+            user_id: user.id,
+            role: userRole,
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            profiles: {
+              name: user.user_metadata?.full_name || 'Admin User',
+              email: user.email || '',
+              phone: user.user_metadata?.phone || '',
+              title: 'System Administrator',
+              company: 'Halo Business Finance'
             }
-            
-            userRolesData = enrichedProfiles;
-            console.log('User roles loaded via fallback queries:', userRolesData);
-          }
-        } catch (fallbackError) {
-          console.error('All queries failed, using current user only:', fallbackError);
-          // Last resort: show current user only
-          if (user && userRole) {
-            userRolesData = [{
-              id: user.id,
-              user_id: user.id,
-              role: userRole,
-              is_active: true,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-              profiles: {
-                name: user.user_metadata?.full_name || 'Admin User',
-                email: user.email || '',
-                phone: user.user_metadata?.phone || '',
-                title: 'System Administrator',
-                company: 'Halo Business Finance'
-              }
-            }];
-          }
+          }];
         }
       }
 
@@ -980,39 +910,47 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User ID</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
+                 <TableHeader>
+                   <TableRow>
+                     <TableHead>User</TableHead>
+                     <TableHead>Email</TableHead>
+                     <TableHead>Role</TableHead>
+                     <TableHead>Status</TableHead>
+                     <TableHead>Created</TableHead>
+                     <TableHead>Actions</TableHead>
+                   </TableRow>
+                 </TableHeader>
                 <TableBody>
-                  {userRoles.map((userRole) => (
-                    <TableRow key={userRole.id}>
-                      <TableCell className="font-mono text-sm">
-                        {userRole.user_id.slice(0, 8)}...
-                        {userRole.profiles && (
-                          <div className="text-xs text-muted-foreground">
-                            {userRole.profiles.name || 'No name'}
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={getRoleBadgeVariant(userRole.role)}>
-                          {userRole.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={userRole.is_active ? "default" : "secondary"}>
-                          {userRole.is_active ? "Active" : "Inactive"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        {new Date(userRole.created_at).toLocaleDateString()}
-                      </TableCell>
+                   {userRoles.map((userRole) => (
+                     <TableRow key={userRole.id}>
+                       <TableCell>
+                         <div className="flex flex-col">
+                           <span className="font-medium">
+                             {userRole.profiles?.name || 'No name'}
+                           </span>
+                           <span className="font-mono text-xs text-muted-foreground">
+                             {userRole.user_id.slice(0, 8)}...
+                           </span>
+                         </div>
+                       </TableCell>
+                       <TableCell>
+                         <span className="text-sm">
+                           {userRole.profiles?.email || 'No email'}
+                         </span>
+                       </TableCell>
+                       <TableCell>
+                         <Badge variant={getRoleBadgeVariant(userRole.role)}>
+                           {userRole.role}
+                         </Badge>
+                       </TableCell>
+                       <TableCell>
+                         <Badge variant={userRole.is_active ? "default" : "secondary"}>
+                           {userRole.is_active ? "Active" : "Inactive"}
+                         </Badge>
+                       </TableCell>
+                       <TableCell>
+                         {new Date(userRole.created_at).toLocaleDateString()}
+                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <Button

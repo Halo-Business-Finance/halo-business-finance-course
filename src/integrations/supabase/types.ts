@@ -2753,6 +2753,22 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_all_user_profiles_with_roles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          company: string
+          created_at: string
+          email: string
+          name: string
+          phone: string
+          role: string
+          role_created_at: string
+          role_is_active: boolean
+          title: string
+          updated_at: string
+          user_id: string
+        }[]
+      }
       get_authenticated_user_profiles: {
         Args: Record<PropertyKey, never>
         Returns: {
