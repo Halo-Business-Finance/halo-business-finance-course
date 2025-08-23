@@ -120,7 +120,6 @@ const HeaderContent = () => {
       {user && (
         <div className="flex-1 flex justify-center items-center gap-8">
           <span className="text-xl text-black font-medium">Welcome back, {getFirstName()}!</span>
-          {location.pathname === '/my-account' && <AccountTabs />}
         </div>
       )}
 

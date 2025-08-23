@@ -1,23 +1,34 @@
-import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
-export const AccountTabs = () => {
+interface AccountTabsProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
+
+export const AccountTabs = ({ activeTab, onTabChange }: AccountTabsProps) => {
+  const tabs = [
+    { value: "account", label: "My Account" },
+    { value: "notifications", label: "Notifications" },
+    { value: "privacy", label: "Privacy" },
+    { value: "preferences", label: "Preferences" },
+    { value: "billing", label: "Billing" }
+  ];
+
   return (
-    <TabsList className="grid w-auto grid-cols-5 bg-transparent border-none p-0 h-auto gap-2">
-      <TabsTrigger value="account" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-        My Account
-      </TabsTrigger>
-      <TabsTrigger value="notifications" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-        Notifications
-      </TabsTrigger>
-      <TabsTrigger value="privacy" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-        Privacy
-      </TabsTrigger>
-      <TabsTrigger value="preferences" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-        Preferences
-      </TabsTrigger>
-      <TabsTrigger value="billing" className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2">
-        Billing
-      </TabsTrigger>
-    </TabsList>
+    <div className="flex gap-2">
+      {tabs.map((tab) => (
+        <Button
+          key={tab.value}
+          variant="ghost"
+          size="sm"
+          onClick={() => onTabChange(tab.value)}
+          className={`bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2 hover:bg-blue-600 ${
+            activeTab === tab.value ? 'bg-blue-800' : ''
+          }`}
+        >
+          {tab.label}
+        </Button>
+      ))}
+    </div>
   );
 };
