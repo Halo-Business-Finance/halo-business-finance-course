@@ -16,6 +16,18 @@ export const HorizontalNav = () => {
     <div className="bg-white rounded-lg px-2 md:px-4 py-2">
       <NavigationMenu className="bg-transparent">
       <NavigationMenuList className="bg-transparent flex-wrap justify-center">
+        <NavigationMenuItem className="hidden lg:block">
+          <NavigationMenuLink asChild>
+            <NavLink 
+              to="/about" 
+              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
+            >
+              <Users className="h-3 w-3 md:h-4 md:w-4" />
+              About Us
+            </NavLink>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <NavLink 
@@ -48,18 +60,6 @@ export const HorizontalNav = () => {
             >
               <Building className="h-3 w-3 md:h-4 md:w-4" />
               For Business
-            </NavLink>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        
-        <NavigationMenuItem className="hidden lg:block">
-          <NavigationMenuLink asChild>
-            <NavLink 
-              to="/about" 
-              className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
-            >
-              <Users className="h-3 w-3 md:h-4 md:w-4" />
-              About Us
             </NavLink>
           </NavigationMenuLink>
         </NavigationMenuItem>

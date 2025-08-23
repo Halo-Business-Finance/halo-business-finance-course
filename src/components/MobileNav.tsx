@@ -8,10 +8,10 @@ export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    { title: "About Us", href: "/about" },
     { title: "Courses", href: "/courses" },
     { title: "Pricing", href: "/pricing" },
     { title: "For Business", href: "/business" },
-    { title: "About Us", href: "/about" },
     { title: "Blog", href: "/blog" },
     { title: "Support", href: "/support", icon: MessageCircle },
   ];
