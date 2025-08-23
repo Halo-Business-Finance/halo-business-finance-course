@@ -3036,6 +3036,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      monitor_bulk_pii_access_enhanced: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       monitor_encryption_security: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -3106,8 +3110,10 @@ export type Database = {
         Returns: string
       }
       setup_initial_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+        Args:
+          | Record<PropertyKey, never>
+          | { admin_email: string; admin_password: string }
+        Returns: Json
       }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
@@ -3168,7 +3174,9 @@ export type Database = {
         Returns: boolean
       }
       validate_system_process: {
-        Args: { p_function_name: string; p_process_signature?: string }
+        Args:
+          | { p_function_name: string; p_process_signature?: string }
+          | { process_type: string }
         Returns: boolean
       }
       validate_ultra_secure_profile_access: {
