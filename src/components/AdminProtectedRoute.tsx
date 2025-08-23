@@ -6,7 +6,7 @@ import { toast } from '@/hooks/use-toast';
 
 interface AdminProtectedRouteProps {
   children: ReactNode;
-  requiredRole?: 'admin' | 'super_admin';
+  requiredRole?: 'admin' | 'super_admin' | 'tech_support_admin' | 'instructor';
 }
 
 export const AdminProtectedRoute = ({ 
@@ -39,21 +39,39 @@ export const AdminProtectedRoute = ({
           }
           hasAdminRole = isSuperAdmin || false;
         } else {
-          // Check for both admin and super_admin roles
-          const [adminCheck, superAdminCheck] = await Promise.all([
-            supabase.rpc('check_user_has_role', { check_role: 'admin' }),
-            supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
-          ]);
+          // Check for required role and all higher roles in hierarchy
+          const roleChecks = [];
           
-          if (adminCheck.error || superAdminCheck.error) {
-            console.error('Error checking admin permissions:', { 
-              adminError: adminCheck.error, 
-              superAdminError: superAdminCheck.error 
-            });
-            throw adminCheck.error || superAdminCheck.error;
+          if (requiredRole === 'instructor') {
+            roleChecks.push(
+              supabase.rpc('check_user_has_role', { check_role: 'instructor' }),
+              supabase.rpc('check_user_has_role', { check_role: 'tech_support_admin' }),
+              supabase.rpc('check_user_has_role', { check_role: 'admin' }),
+              supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+            );
+          } else if (requiredRole === 'tech_support_admin') {
+            roleChecks.push(
+              supabase.rpc('check_user_has_role', { check_role: 'tech_support_admin' }),
+              supabase.rpc('check_user_has_role', { check_role: 'admin' }),
+              supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+            );
+          } else {
+            // Default 'admin' role check
+            roleChecks.push(
+              supabase.rpc('check_user_has_role', { check_role: 'admin' }),
+              supabase.rpc('check_user_has_role', { check_role: 'super_admin' })
+            );
           }
           
-          hasAdminRole = adminCheck.data || superAdminCheck.data;
+          const results = await Promise.all(roleChecks);
+          
+          if (results.some(result => result.error)) {
+            const errors = results.filter(result => result.error);
+            console.error('Error checking permissions:', errors);
+            throw errors[0].error;
+          }
+
+          hasAdminRole = results.some(result => result.data);
         }
 
         setHasPermission(hasAdminRole);
@@ -61,7 +79,7 @@ export const AdminProtectedRoute = ({
         if (!hasAdminRole) {
           toast({
             title: "Access Denied",
-            description: `${requiredRole === 'super_admin' ? 'Super admin' : 'Admin'} privileges required to access this page.`,
+            description: `${requiredRole === 'super_admin' ? 'Super admin' : requiredRole === 'tech_support_admin' ? 'Tech support' : requiredRole === 'instructor' ? 'Instructor' : 'Admin'} privileges or higher required to access this page.`,
             variant: "destructive"
           });
         }

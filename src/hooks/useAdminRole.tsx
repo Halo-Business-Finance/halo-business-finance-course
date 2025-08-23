@@ -43,7 +43,7 @@ export const useAdminRole = () => {
           try {
             const { data: fallbackData, error: fallbackError } = await supabase.rpc('get_user_role');
             if (!fallbackError && fallbackData) {
-              const isAdminRole = ['admin', 'super_admin', 'tech_support_admin'].includes(fallbackData);
+              const isAdminRole = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
               setIsAdmin(isAdminRole);
               setUserRole(isAdminRole ? fallbackData : null);
             } else {
@@ -71,7 +71,7 @@ export const useAdminRole = () => {
             // Find active roles and prioritize them
             const activeRoles = roles.filter((r: any) => r.is_active);
             if (activeRoles.length > 0) {
-              const priority = { 'super_admin': 1, 'admin': 2, 'tech_support_admin': 3, 'manager': 4 };
+              const priority = { 'super_admin': 1, 'admin': 2, 'tech_support_admin': 3, 'instructor': 4, 'trainee': 5 };
               const sortedRoles = activeRoles.sort((a: any, b: any) => 
                 (priority[a.role as keyof typeof priority] || 999) - (priority[b.role as keyof typeof priority] || 999)
               );
