@@ -639,7 +639,16 @@ const AccountPage = () => {
         <div className="lg:col-span-2">
           <TabsContent value="account">
             <div className="space-y-6">
-
+              
+              {/* Change Password Button */}
+              <Card>
+                <CardContent className="pt-6">
+                  <Button variant="outline" className="w-full">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Change Password
+                  </Button>
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader>
                   <CardTitle>Password & Security</CardTitle>
