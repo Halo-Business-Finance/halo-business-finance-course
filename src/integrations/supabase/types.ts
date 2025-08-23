@@ -2955,6 +2955,14 @@ export type Database = {
         Args: { failure_reason: string; user_email?: string }
         Returns: undefined
       }
+      log_client_security_event: {
+        Args: {
+          event_details?: Json
+          event_severity: string
+          event_type: string
+        }
+        Returns: string
+      }
       log_compliance_audit: {
         Args: {
           p_action_details: Json
@@ -3126,6 +3134,10 @@ export type Database = {
         Args: { p_reason: string; p_target_user_id?: string }
         Returns: Json
       }
+      validate_and_sanitize_input: {
+        Args: { input_text: string; max_length?: number }
+        Returns: string
+      }
       validate_biometric_access: {
         Args: { target_user_id: string }
         Returns: boolean
@@ -3167,6 +3179,10 @@ export type Database = {
           p_token: string
         }
         Returns: boolean
+      }
+      validate_secure_profile_access: {
+        Args: { target_user_id: string }
+        Returns: Json
       }
       validate_secure_session: {
         Args: { p_require_mfa?: boolean }
