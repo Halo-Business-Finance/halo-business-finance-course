@@ -141,11 +141,15 @@ export function AppSidebar() {
     >
       <SidebarContent>
         {/* Welcome Message */}
-        {user && (
-          <div className="px-4 py-3 border-b border-navy-700/50">
+        {user && !collapsed && (
+          <div className="px-4 py-4 border-b border-navy-700/50 bg-navy-800/50">
             <div className="text-white">
-              <div className="text-sm font-medium">Welcome back,</div>
-              <div className="text-lg font-semibold text-halo-orange">{user.user_metadata?.full_name?.split(' ')[0] || 'User'}!</div>
+              <div className="text-xs font-medium text-white/80">Welcome back,</div>
+              <div className="text-sm font-semibold text-halo-orange">
+                {user.user_metadata?.full_name?.split(' ')[0] || 
+                 user.user_metadata?.name?.split(' ')[0] || 
+                 user.email?.split('@')[0] || 'User'}!
+              </div>
             </div>
           </div>
         )}
