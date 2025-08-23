@@ -164,7 +164,7 @@ export function AppSidebar() {
 
         {/* Course Modules */}
         <SidebarGroup className="pt-2">
-          <SidebarGroupLabel className="pb-3 mb-4">
+          <SidebarGroupLabel className="pb-3 mb-2">
             {!collapsed && (
               <div className="flex-1">
                 <span className="text-sm font-semibold text-white tracking-wide">
@@ -173,7 +173,7 @@ export function AppSidebar() {
               </div>
             )}
           </SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-1 mt-4">
+          <SidebarGroupContent className="space-y-1">
             <SidebarMenu className="space-y-1">
               {courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked";
