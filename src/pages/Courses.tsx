@@ -158,7 +158,7 @@ const Courses = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-blue-900 mb-4">Course Catalog</h1>
+        <h1 className="text-4xl font-bold text-black mb-4">Course Catalog</h1>
         <p className="text-lg text-black">
           Explore our comprehensive collection of professional training courses designed to advance your career.
         </p>
