@@ -188,11 +188,11 @@ const HeaderContent = () => {
         )}
       </div>
       
-      {/* Tabs positioned on the divider line */}
-      {user && location.pathname === '/my-account' && (
+      {/* Account tabs positioned on the divider line - shown on all pages when logged in */}
+      {user && (
         <div className="flex justify-center -mb-px">
           <AccountTabs 
-            activeTab={new URLSearchParams(location.search).get('tab') || 'account'}
+            activeTab={location.pathname === '/my-account' ? (new URLSearchParams(location.search).get('tab') || 'account') : ''}
             onTabChange={(tab) => navigate(`/my-account?tab=${tab}`)}
           />
         </div>
