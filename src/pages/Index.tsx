@@ -130,6 +130,7 @@ const Index = () => {
                   
                   <p className="text-lg leading-relaxed text-foreground max-w-2xl">
                     Transform your career with our comprehensive business finance and commercial lending program. 
+                    <span className="block mt-2 font-medium text-primary">Your Pathway to Lending Excellence.</span>
                     Developed by industry experts and delivered through Stanford-level curriculum.
                   </p>
                 </div>
@@ -242,7 +243,7 @@ const Index = () => {
               Choose Your Path to Success
             </h2>
             <p className="text-lg text-foreground max-w-3xl mx-auto">
-              Comprehensive training programs designed to meet you where you are and take you where you want to go
+              <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
             </p>
           </div>
 
@@ -298,7 +299,7 @@ const Index = () => {
               The #1 Course for Tomorrow's Lending Leaders
             </h2>
             <p className="text-lg text-foreground max-w-3xl mx-auto">
-              Industry-leading curriculum designed to accelerate your success in business finance
+              <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
             </p>
           </div>
 
@@ -307,25 +308,25 @@ const Index = () => {
               {
                 icon: BookOpen,
                 title: "Expert Curriculum",
-                description: "8 comprehensive modules covering everything from credit analysis to portfolio management",
+                description: "Master Lending Software. Minimize Complications. 8 comprehensive modules covering everything from credit analysis to portfolio management.",
                 color: "primary"
               },
               {
                 icon: Users,
                 title: "Industry Experts", 
-                description: "Learn from seasoned professionals with decades of experience in business lending",
+                description: "Knowledge is Power. We Teach You How to Use It. Learn from seasoned professionals with decades of experience in business lending.",
                 color: "accent"
               },
               {
                 icon: Award,
                 title: "Certification",
-                description: "Earn recognized certificates that validate your expertise in business finance",
+                description: "Confidence in Every Commercial Lending Deal. Earn recognized certificates that validate your expertise in business finance.",
                 color: "primary"
               },
               {
                 icon: TrendingUp,
                 title: "Career Growth",
-                description: "Advance your career with in-demand skills that employers are actively seeking",
+                description: "Level Up Your Lending Career. Advance your career with in-demand skills that employers are actively seeking.",
                 color: "accent"
               }
             ].map((feature, index) => (
@@ -394,11 +395,12 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl lg:text-5xl font-playfair font-bold">
-                Ready to Transform Your Career?
+                Transform Your Skills. Transform Your Career.
               </h2>
               <p className="text-xl opacity-90 leading-relaxed">
+                <span className="block mb-2 font-medium">Unlock Your Potential in Commercial Lending.</span>
                 Join thousands of professionals who have advanced their careers through our comprehensive training program. 
-                Start your journey to becoming a business finance expert today.
+                Financial Success, Simplified.
               </p>
             </div>
             
