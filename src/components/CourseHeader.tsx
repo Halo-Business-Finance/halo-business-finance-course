@@ -25,7 +25,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
                 Business Finance Mastery
               </h1>
-              <p className="text-lg text-white/90 leading-relaxed">
+              <p className="text-base text-white/90 leading-relaxed">
                 Master the fundamentals of business finance with our comprehensive 
                 training program designed specifically for Halo Business Finance interns.
               </p>
