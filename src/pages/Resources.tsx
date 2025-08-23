@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play } from "lucide-react";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { ToolModal } from "@/components/tools/ToolModal";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +15,7 @@ const ResourcesPage = () => {
   const [tools, setTools] = useState<any[]>([]);
   const [webinars, setWebinars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTool, setSelectedTool] = useState<{type: string, title: string} | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -233,11 +235,10 @@ const ResourcesPage = () => {
                         </div>
                       </div>
                       <Button size="sm" variant="outline" onClick={() => {
-                        if (tool.tool_url) {
-                          window.open(tool.tool_url, '_blank');
-                        } else {
-                          alert(`${tool.title} would open in a new window. Tool functionality coming soon!`);
-                        }
+                        setSelectedTool({
+                          type: tool.tool_type,
+                          title: tool.title
+                        });
                       }}>
                         Launch Tool
                       </Button>
@@ -312,6 +313,13 @@ const ResourcesPage = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      <ToolModal
+        open={!!selectedTool}
+        onOpenChange={(open) => !open && setSelectedTool(null)}
+        toolType={selectedTool?.type || ""}
+        toolTitle={selectedTool?.title || ""}
+      />
     </div>
   );
 };
