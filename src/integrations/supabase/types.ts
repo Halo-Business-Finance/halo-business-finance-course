@@ -2290,6 +2290,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "fk_user_roles_profiles"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "secure_profiles"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       user_sessions: {
@@ -2437,7 +2444,111 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      secure_profiles: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          company: string | null
+          course_progress: boolean | null
+          created_at: string | null
+          data_classification:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          date_format: string | null
+          email: string | null
+          email_notifications: boolean | null
+          encryption_status: string | null
+          font_size: string | null
+          id: string | null
+          join_date: string | null
+          language: string | null
+          location: string | null
+          marketing_communications: boolean | null
+          marketing_emails: boolean | null
+          name: string | null
+          new_courses: boolean | null
+          phone: string | null
+          push_notifications: boolean | null
+          reduced_motion: boolean | null
+          state: string | null
+          theme: string | null
+          timezone: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+          webinar_reminders: boolean | null
+          weekly_progress: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          course_progress?: boolean | null
+          created_at?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          date_format?: string | null
+          email?: never
+          email_notifications?: boolean | null
+          encryption_status?: string | null
+          font_size?: string | null
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: string | null
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
+          name?: never
+          new_courses?: boolean | null
+          phone?: never
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          company?: string | null
+          course_progress?: boolean | null
+          created_at?: string | null
+          data_classification?:
+            | Database["public"]["Enums"]["data_classification"]
+            | null
+          date_format?: string | null
+          email?: never
+          email_notifications?: boolean | null
+          encryption_status?: string | null
+          font_size?: string | null
+          id?: string | null
+          join_date?: string | null
+          language?: string | null
+          location?: string | null
+          marketing_communications?: boolean | null
+          marketing_emails?: boolean | null
+          name?: never
+          new_courses?: boolean | null
+          phone?: never
+          push_notifications?: boolean | null
+          reduced_motion?: boolean | null
+          state?: string | null
+          theme?: string | null
+          timezone?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          webinar_reminders?: boolean | null
+          weekly_progress?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_emergency_mfa_reset: {
@@ -2747,6 +2858,23 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_safe_user_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          email: string
+          id: string
+          join_date: string
+          name: string
+          phone: string
+          state: string
+          title: string
+          user_id: string
+        }[]
+      }
       get_secure_profile_data: {
         Args: { target_user_id: string }
         Returns: {
@@ -2879,6 +3007,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_pii_access_attempt: {
+        Args: {
+          access_type: string
+          accessed_user_id: string
+          fields_accessed: string[]
+        }
+        Returns: undefined
+      }
       log_profile_access_comprehensive: {
         Args: { access_type?: string; accessed_user_id: string }
         Returns: undefined
@@ -2924,6 +3060,10 @@ export type Database = {
       }
       migrate_profile_to_encrypted: {
         Args: { profile_user_id: string }
+        Returns: undefined
+      }
+      monitor_bulk_pii_access: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       monitor_encryption_security: {
