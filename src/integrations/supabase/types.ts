@@ -2290,13 +2290,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
-          {
-            foreignKeyName: "fk_user_roles_profiles"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "secure_user_profiles"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       user_sessions: {
@@ -2444,66 +2437,7 @@ export type Database = {
       }
     }
     Views: {
-      secure_user_profiles: {
-        Row: {
-          avatar_url: string | null
-          city: string | null
-          company: string | null
-          created_at: string | null
-          email: string | null
-          id: string | null
-          join_date: string | null
-          language: string | null
-          location: string | null
-          name: string | null
-          phone: string | null
-          state: string | null
-          theme: string | null
-          timezone: string | null
-          title: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          email?: never
-          id?: string | null
-          join_date?: string | null
-          language?: string | null
-          location?: string | null
-          name?: never
-          phone?: never
-          state?: string | null
-          theme?: string | null
-          timezone?: string | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          city?: string | null
-          company?: string | null
-          created_at?: string | null
-          email?: never
-          id?: string | null
-          join_date?: string | null
-          language?: string | null
-          location?: string | null
-          name?: never
-          phone?: never
-          state?: string | null
-          theme?: string | null
-          timezone?: string | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       admin_emergency_mfa_reset: {
@@ -3039,6 +2973,15 @@ export type Database = {
           access_type: string
           accessed_user_id: string
           fields_accessed: string[]
+        }
+        Returns: undefined
+      }
+      log_pii_access_comprehensive: {
+        Args: {
+          access_reason?: string
+          access_type: string
+          accessed_user_id: string
+          fields_accessed?: string[]
         }
         Returns: undefined
       }
