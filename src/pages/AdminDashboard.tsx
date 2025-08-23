@@ -971,7 +971,7 @@ const AdminDashboard = () => {
                             disabled={userRole.role === 'admin'}
                             title="Assign Admin Role"
                           >
-                            <UserCheck className="h-3 w-3" />
+                            <UserCheck className="h-3 w-3 text-orange-500" />
                           </Button>
                           <Button
                             size="sm"
@@ -980,7 +980,7 @@ const AdminDashboard = () => {
                             disabled={userRole.role === 'super_admin'}
                             title="Assign Super Admin Role"
                           >
-                            <Crown className="h-3 w-3" />
+                            <Crown className="h-3 w-3 text-orange-500" />
                           </Button>
                           <Button
                             size="sm"
@@ -989,7 +989,7 @@ const AdminDashboard = () => {
                             disabled={!userRole.is_active}
                             title="Revoke Role"
                           >
-                            <UserX className="h-3 w-3" />
+                            <UserX className="h-3 w-3 text-orange-500" />
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -1003,7 +1003,7 @@ const AdminDashboard = () => {
                                 {deletingUser === userRole.user_id ? (
                                   <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" />
                                 ) : (
-                                  <Trash2 className="h-3 w-3" />
+                                  <Trash2 className="h-3 w-3 text-orange-500" />
                                 )}
                               </Button>
                             </AlertDialogTrigger>
@@ -1118,7 +1118,7 @@ const AdminDashboard = () => {
                               }}
                               title="Edit Instructor"
                             >
-                              <Edit className="h-3 w-3" />
+                              <Edit className="h-3 w-3 text-orange-500" />
                             </Button>
                             <Button
                               size="sm"
@@ -1127,9 +1127,9 @@ const AdminDashboard = () => {
                               title={instructor.is_active ? "Deactivate" : "Activate"}
                             >
                               {instructor.is_active ? (
-                                <Eye className="h-3 w-3" />
+                                <Eye className="h-3 w-3 text-orange-500" />
                               ) : (
-                                <Lock className="h-3 w-3" />
+                                <Lock className="h-3 w-3 text-orange-500" />
                               )}
                             </Button>
                             <AlertDialog>
@@ -1140,7 +1140,7 @@ const AdminDashboard = () => {
                                   className="hover:bg-destructive hover:text-destructive-foreground"
                                   title="Delete Instructor"
                                 >
-                                  <Trash2 className="h-3 w-3" />
+                                  <Trash2 className="h-3 w-3 text-orange-500" />
                                 </Button>
                               </AlertDialogTrigger>
                               <AlertDialogContent>
