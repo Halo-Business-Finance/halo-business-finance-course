@@ -23,6 +23,13 @@ import AdminAuth from "./pages/AdminAuth";
 import AdminDashboard from "./pages/AdminDashboard";
 import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
+import Courses from "./pages/Courses";
+import Pricing from "./pages/Pricing";
+import Business from "./pages/Business";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
+import Support from "./pages/Support";
+import { HorizontalNav } from "./components/HorizontalNav";
 
 const queryClient = new QueryClient();
 
@@ -95,9 +102,13 @@ const HeaderContent = () => {
       </div>
       
       <div className="flex-1 flex items-center justify-center">
-        <h1 className="text-lg font-medium text-black">
-          Welcome back, {getFirstName()}!
-        </h1>
+        {user ? (
+          <h1 className="text-lg font-medium text-black">
+            Welcome back, {getFirstName()}!
+          </h1>
+        ) : (
+          <HorizontalNav />
+        )}
       </div>
       
       <div className="flex items-center mr-4 gap-4">
@@ -158,6 +169,12 @@ const AppContent = () => {
               </AdminProtectedRoute>
             } />
             <Route path="/module/:moduleId" element={<ModulePage />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/support" element={<Support />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
