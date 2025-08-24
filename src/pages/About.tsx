@@ -81,10 +81,10 @@ const About = () => {
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <div className="text-center text-white">
             <Badge className="mb-4 bg-white/20 text-white border-white/30">About Us</Badge>
-            <h1 className="text-4xl font-bold mb-4">Our Mission</h1>
+            <h1 className="text-4xl font-bold mb-4">About Halo Business Finance</h1>
             <p className="text-lg max-w-3xl mx-auto px-4">
-              We're dedicated to democratizing professional education by providing world-class training 
-              programs that help individuals and organizations unlock their full potential.
+              We're dedicated to advancing careers in commercial lending through our comprehensive 
+              FinPilot training program, providing world-class education for finance professionals.
             </p>
           </div>
         </div>
@@ -120,21 +120,23 @@ const About = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <div className="p-8">
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    Founded in 2018, our platform was born from the recognition that traditional training methods 
-                    weren't keeping pace with the rapidly evolving business landscape. Our founders, drawing from 
-                    decades of experience in finance, technology, and education, set out to create a learning 
-                    platform that would bridge the gap between theoretical knowledge and practical application.
+                    Halo Business Finance (<a href="https://halobusinessfinance.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">halobusinessfinance.com</a>) 
+                    created the FinPilot course to address the growing need for specialized training in commercial lending. 
+                    Drawing from years of real-world experience in business finance and lending, we recognized that 
+                    traditional training methods weren't adequately preparing professionals for the complexities of 
+                    modern commercial lending.
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
-                    Today, we serve thousands of learners worldwide, from individual professionals seeking to 
-                    advance their careers to large enterprises looking to upskill their workforce. Our commitment 
-                    to excellence, innovation, and student success remains at the heart of everything we do.
+                    Our comprehensive curriculum combines theoretical knowledge with practical, hands-on training that 
+                    reflects current industry practices. We're committed to providing finance professionals with the 
+                    skills and confidence they need to excel in commercial lending, from basic principles to advanced 
+                    deal structuring and portfolio management.
                   </p>
                 </div>
                 <div className="h-64 lg:h-auto">
                   <img 
                     src={companStory} 
-                    alt="Team collaboration in modern office" 
+                    alt="Halo Business Finance team collaboration" 
                     className="w-full h-full object-cover rounded-r-lg"
                   />
                 </div>
