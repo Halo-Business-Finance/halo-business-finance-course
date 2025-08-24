@@ -404,7 +404,7 @@ const Index = () => {
               <div className="flex flex-col justify-start items-start gap-4 pt-8 text-white text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
-                  <span>3-Day Trial</span>
+                  <span>Free 3-Day Trial</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
