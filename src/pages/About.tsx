@@ -104,7 +104,7 @@ const About = () => {
                 <div className="flex-1">
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
                   <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">{info.description}</div>
+                  <div className="text-xs text-black leading-relaxed">{info.description}</div>
                 </div>
               </div>
             </Card>
@@ -119,13 +119,13 @@ const About = () => {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <div className="p-8">
-                  <p className="text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-black leading-relaxed mb-6">
                     Halo Business Finance created the FinPilot course to address the growing need for specialized training in commercial lending. 
                     With over 15 years of experience in capital markets, SBA, and commercial lending, we recognized that 
                     traditional training methods weren't adequately preparing professionals for the complexities of 
                     modern commercial lending.
                   </p>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-black leading-relaxed">
                     Our comprehensive curriculum combines theoretical knowledge with practical, hands-on training that 
                     reflects current industry practices. We're committed to providing finance professionals with the 
                     skills and confidence they need to excel in commercial lending, from basic principles to advanced 
@@ -162,7 +162,7 @@ const About = () => {
                 <CardDescription className="font-medium text-primary">{member.role}</CardDescription>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-sm text-muted-foreground">{member.background}</p>
+                <p className="text-sm text-black">{member.background}</p>
               </CardContent>
             </Card>
           ))}
