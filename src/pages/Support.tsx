@@ -131,9 +131,6 @@ const Support = () => {
               return (
                 <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon className="h-6 w-6 text-halo-orange" />
-                    </div>
                     <div className="flex-1">
                       <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
                       <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
@@ -156,7 +153,8 @@ const Support = () => {
                         </div>
                       )}
                       <div className="mt-4">
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                        <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
+                          <Icon className="h-4 w-4" />
                           {option.action}
                         </Button>
                       </div>
