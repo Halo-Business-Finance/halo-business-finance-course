@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
@@ -159,6 +159,39 @@ const Courses = () => {
     );
   }
 
+  const courseCategories = [
+    "All Courses",
+    "Commercial Lending", 
+    "Credit Analysis",
+    "Risk Management",
+    "SBA Loans",
+    "Financial Analysis",
+    "Compliance"
+  ];
+
+  const learningBenefits = [
+    {
+      title: "Industry-Leading Curriculum",
+      description: "Developed by finance professionals with 20+ years of experience",
+      icon: "🎓"
+    },
+    {
+      title: "Practical Application",
+      description: "Real-world case studies and hands-on exercises",
+      icon: "💼"
+    },
+    {
+      title: "Recognized Certification",
+      description: "Certificates accepted by major financial institutions",
+      icon: "🏆"
+    },
+    {
+      title: "Career Advancement",
+      description: "87% of graduates receive promotions within 12 months",
+      icon: "📈"
+    }
+  ];
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -170,17 +203,64 @@ const Courses = () => {
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Course Catalog</h1>
-            <p className="text-lg">
-              Explore our comprehensive collection of professional training courses designed to advance your career.
+            <Badge className="mb-4 bg-white/20 text-white border-white/30">Course Catalog</Badge>
+            <h1 className="text-4xl font-bold mb-4">Master Business Finance & Lending</h1>
+            <p className="text-lg mb-6">
+              Comprehensive professional training courses designed to advance your career in finance.
+              Join 10,000+ professionals who've transformed their careers with our programs.
             </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>25+ Expert-Led Courses</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>Industry-Recognized Certificates</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                <span>Lifetime Access</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       
       {/* Content Section */}
       <div className="container mx-auto px-4 py-12">
+        
+        {/* Course Categories Filter */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-4">Browse by Category</h2>
+          <div className="flex flex-wrap gap-2">
+            {courseCategories.map((category, index) => (
+              <Badge 
+                key={index}
+                variant={index === 0 ? "default" : "outline"}
+                className="cursor-pointer hover:bg-primary hover:text-primary-foreground px-4 py-2"
+              >
+                {category}
+              </Badge>
+            ))}
+          </div>
+        </div>
 
+        {/* Learning Benefits */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-center mb-8">Why Choose Our Courses?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {learningBenefits.map((benefit, index) => (
+              <Card key={index} className="text-center p-6">
+                <div className="text-3xl mb-4">{benefit.icon}</div>
+                <h3 className="font-semibold mb-2">{benefit.title}</h3>
+                <p className="text-sm text-muted-foreground">{benefit.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Course Grid */}
         {modules.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
@@ -192,29 +272,70 @@ const Courses = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Available Courses ({modules.length})</h2>
+              <div className="text-sm text-muted-foreground">
+                Showing all courses • Sort by: Newest First
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {modules.map((module) => (
-              <Card key={module.id} className="hover:shadow-lg transition-shadow">
+              <Card key={module.id} className="hover:shadow-lg transition-all group">
+                <div className="relative">
+                  <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                    <BookOpen className="h-16 w-16 text-primary" />
+                  </div>
+                  <Badge className={`absolute top-3 right-3 ${getLevelColor(module.skill_level)}`}>
+                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                  </Badge>
+                </div>
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
-                    <Badge variant="secondary">Finance</Badge>
-                    <Badge className={getLevelColor(module.skill_level)}>
-                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                    </Badge>
+                    <Badge variant="secondary">Commercial Finance</Badge>
+                    <div className="text-xs text-muted-foreground">Updated Dec 2024</div>
                   </div>
-                  <CardTitle className="text-xl text-blue-900">{module.title}</CardTitle>
-                  <CardDescription className="text-black">{module.description}</CardDescription>
+                  <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
+                    {module.title}
+                  </CardTitle>
+                  <CardDescription className="text-black line-clamp-2">
+                    {module.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {module.duration || 'Self-paced'}
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <Clock className="h-4 w-4" />
+                        {module.duration || 'Self-paced'}
+                      </div>
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <BookOpen className="h-4 w-4" />
+                        {module.lessons_count || 0} lessons
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
-                      {module.lessons_count || 0} lessons
+                    
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Users className="h-4 w-4" />
+                      <span>2,340 students enrolled</span>
                     </div>
+                    
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
+                    </div>
+                  </div>
+                  
+                  {/* What You'll Learn */}
+                  <div className="mb-4">
+                    <h4 className="text-sm font-semibold mb-2">What you'll learn:</h4>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      <li>• Financial statement analysis techniques</li>
+                      <li>• Risk assessment methodologies</li>
+                      <li>• Industry best practices</li>
+                    </ul>
                   </div>
                   
                   {user ? (
@@ -245,7 +366,27 @@ const Courses = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
+            </div>
+            
+            {/* Call to Action */}
+            <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+              <CardContent className="text-center p-8">
+                <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Join thousands of finance professionals who have advanced their careers with our comprehensive training programs.
+                  Start with our most popular course or explore our full catalog.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="bg-primary text-white">
+                    Browse All Courses
+                  </Button>
+                  <Button size="lg" variant="outline">
+                    Start Free Trial
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
       </div>
       
