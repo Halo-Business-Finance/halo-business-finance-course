@@ -234,7 +234,7 @@ const AuthPage = () => {
         if (data.user.email_confirmed_at === null) {
           toast({
             title: "Account Created!",
-            description: "Please check your email (including spam folder) for a confirmation link from noreply@mail.app.supabase.io",
+            description: "Please check your email (including spam folder) for a confirmation link from noreply@mail.app.supabase.io. You can now sign in to your account.",
             duration: 8000,
           });
         } else {
@@ -252,6 +252,12 @@ const AuthPage = () => {
           fullName: ""
         });
         setPasswordStrength('weak');
+        
+        // Switch to sign-in tab after successful registration
+        const signInTab = document.querySelector('[value="signin"]') as HTMLElement;
+        if (signInTab) {
+          signInTab.click();
+        }
       }
     } catch (error) {
       console.error('Sign up error:', error);

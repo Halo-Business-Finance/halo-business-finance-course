@@ -176,15 +176,19 @@ const SignUpPage = () => {
 
       if (data.user && !data.session) {
         toast({
-          title: "Check Your Email",
-          description: "We've sent you a confirmation link. Please check your email to activate your account.",
+          title: "Account Created Successfully!",
+          description: "Please check your email for a confirmation link. You can now sign in to your account.",
+          duration: 6000,
         });
+        // Redirect to sign-in page
+        navigate('/auth');
       } else {
         toast({
-          title: "Welcome!",
-          description: "Account created successfully. Welcome to Halo Business Finance!",
+          title: "Account Created Successfully!",
+          description: "Welcome to Halo Business Finance! You can now sign in to your account.",
         });
-        navigate('/dashboard');
+        // Redirect to sign-in page
+        navigate('/auth');
       }
 
     } catch (error: any) {
