@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
@@ -123,7 +123,11 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <div className="flex items-center justify-center lg:justify-start">
+                  <div className="flex flex-col items-center lg:items-start gap-2">
+                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-xs md:text-sm px-2 md:px-3 py-1 border-0">
+                      <Check className="h-3 w-3 md:h-4 md:w-4" />
+                      3-Day Trial
+                    </Badge>
                     <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-xs md:text-sm px-2 md:px-3 py-1 border-0">
                       <Zap className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
