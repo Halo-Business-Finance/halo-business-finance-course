@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Share2, Bookmark } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { sanitizeHtml } from "@/utils/htmlSanitizer";
 import fintechProfessional from "@/assets/fintech-professional.jpg";
 import creditAnalystProfessional from "@/assets/credit-analyst-professional.jpg";
 import riskManagementProfessional from "@/assets/risk-management-professional.jpg";
@@ -318,7 +319,7 @@ const Article = () => {
                   lineHeight: '1.7',
                   fontSize: '16px'
                 }}
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
               />
             </CardContent>
           </Card>
