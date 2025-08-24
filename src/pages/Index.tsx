@@ -123,11 +123,7 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <div className="flex flex-col items-center lg:items-start gap-2">
-                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-xs md:text-sm px-2 md:px-3 py-1 border-0">
-                      <Check className="h-3 w-3 md:h-4 md:w-4" />
-                      3-Day Trial
-                    </Badge>
+                  <div className="flex items-center justify-center lg:justify-start">
                     <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-xs md:text-sm px-2 md:px-3 py-1 border-0">
                       <Zap className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
@@ -406,6 +402,10 @@ const Index = () => {
               </div>
 
               <div className="flex flex-col justify-start items-start gap-4 pt-8 text-white text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-halo-orange" />
+                  <span>3-Day Trial</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
                   <span>Advance Your Career</span>
