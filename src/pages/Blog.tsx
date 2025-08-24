@@ -98,10 +98,40 @@ const Blog = () => {
       category: "Education",
       readTime: "6 min read",
       image: gamificationProfessional
+    },
+    {
+      id: 9,
+      title: "Commercial Lending Best Practices for 2024",
+      excerpt: "Essential strategies and regulatory updates every commercial lender needs to know for successful loan origination and portfolio management.",
+      author: "Michael Chen",
+      date: "2024-01-25",
+      category: "Commercial Lending",
+      readTime: "8 min read",
+      image: creditAnalystProfessional
+    },
+    {
+      id: 10,
+      title: "Optimizing Business Finance Operations",
+      excerpt: "Learn how to streamline financial processes, improve cash flow management, and enhance profitability in today's competitive market.",
+      author: "Sarah Johnson",
+      date: "2024-01-20",
+      category: "Business Finance",
+      readTime: "7 min read",
+      image: fintechProfessional
+    },
+    {
+      id: 11,
+      title: "SBA Lending: A Complete Guide for Lenders",
+      excerpt: "Navigate the complexities of SBA loan programs, eligibility requirements, and application processes to better serve your small business clients.",
+      author: "Dr. Emily Rodriguez",
+      date: "2024-01-17",
+      category: "SBA",
+      readTime: "9 min read",
+      image: riskManagementProfessional
     }
   ];
 
-  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education"];
+  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA"];
 
   const filteredPosts = selectedCategory === "All" 
     ? posts 
