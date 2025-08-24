@@ -179,35 +179,29 @@ const Business = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300 group overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={feature.image} 
-                    alt={`${feature.title} illustration`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <CardHeader>
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Icon className="h-6 w-6 text-primary" />
+              <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon className="h-6 w-6 text-halo-orange" />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                  <CardDescription className="text-base">{feature.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {feature.benefits.map((benefit, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
+                  <div className="flex-1">
+                    <div className="text-2xl font-bold text-foreground mb-1">{feature.title}</div>
+                    <div className="text-sm font-medium text-primary mb-2">Enterprise Feature</div>
+                    <div className="text-xs text-black leading-relaxed mb-3">{feature.description}</div>
+                    <div className="space-y-1">
+                      {feature.benefits.map((benefit, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-xs">
+                          <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
+                          <span className="text-black">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </Card>
             );
           })}
