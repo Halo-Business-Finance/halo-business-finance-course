@@ -82,7 +82,7 @@ const Pricing = () => {
     },
     {
       question: "Is there a free trial available?",
-      answer: "Yes, we offer a 14-day free trial for the Professional plan. No credit card required to start."
+      answer: "Yes, we offer a 3-day free trial for the Professional plan. No credit card required to start."
     },
     {
       question: "What's included in the certificate?",
@@ -134,7 +134,7 @@ const Pricing = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Choose Your Learning Plan</h1>
             <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
               Invest in your future with our comprehensive finance and lending education programs. 
-              Start with a 14-day free trial and see the difference quality training makes.
+              Start with a 3-day free trial and see the difference quality training makes.
             </p>
           </div>
         </div>
@@ -222,7 +222,7 @@ const Pricing = () => {
               </Button>
               {plan.name === "Professional" && (
                 <p className="text-xs text-center text-muted-foreground mt-2">
-                  14-day free trial, no credit card required
+                  3-day free trial, no credit card required
                 </p>
               )}
             </CardContent>
