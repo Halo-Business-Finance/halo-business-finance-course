@@ -312,8 +312,8 @@ const About = () => {
             return (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-gradient-to-br from-halo-navy to-halo-orange rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-halo-orange" />
                   </div>
                   <CardTitle className="text-xl">{advantage.title}</CardTitle>
                   <CardDescription className="text-black">{advantage.description}</CardDescription>
