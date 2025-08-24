@@ -139,7 +139,7 @@ const Support = () => {
                       <Icon className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
-                    <p className="text-sm text-slate-600 mb-2">{item.description}</p>
+                    <p className="text-sm text-black mb-2">{item.description}</p>
                     <p className="text-xs font-medium text-blue-600">{item.count}</p>
                   </CardContent>
                 </Card>
@@ -152,7 +152,7 @@ const Support = () => {
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-black max-w-2xl mx-auto">
               Choose the best way to reach us. Our expert support team is ready to help you succeed.
             </p>
           </div>
@@ -172,17 +172,17 @@ const Support = () => {
                       <Icon className="h-6 w-6 text-blue-600" />
                     </div>
                     <CardTitle className="text-lg font-bold text-slate-900">{option.title}</CardTitle>
-                    <CardDescription className="text-slate-600 text-sm leading-relaxed">{option.description}</CardDescription>
+                    <CardDescription className="text-black text-sm leading-relaxed">{option.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0 p-4">
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-xs">
                         <Clock className="h-3 w-3 text-green-600" />
-                        <span className="text-slate-700">{option.available}</span>
+                        <span className="text-black">{option.available}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
                         <CheckCircle className="h-3 w-3 text-green-600" />
-                        <span className="text-slate-700">{option.responseTime}</span>
+                        <span className="text-black">{option.responseTime}</span>
                       </div>
                     </div>
                     <Button className="w-full h-10 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
@@ -216,7 +216,7 @@ const Support = () => {
                   <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-blue-600 transition-colors">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-slate-600 leading-relaxed pt-2">
+                  <AccordionContent className="text-black leading-relaxed pt-2">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
