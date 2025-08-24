@@ -415,8 +415,8 @@ const Index = () => {
                   <span>No Risk, 30-Day Money Back Guarantee</span>
                 </div>
                 <Link to="/auth" className="mt-2">
-                  <Button className="text-base px-6 py-3 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
-                    <Zap className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                  <Button className="text-sm px-4 py-2 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
+                    <Zap className="mr-2 h-3 w-3 group-hover:scale-110 transition-transform" />
                     Get Started Now
                   </Button>
                 </Link>
