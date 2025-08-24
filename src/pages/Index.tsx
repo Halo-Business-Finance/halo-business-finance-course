@@ -382,7 +382,7 @@ const Index = () => {
                 <h2 className="text-4xl lg:text-5xl font-playfair font-bold">
                   Transform Your Skills. Transform Your Career.
                 </h2>
-                <p className="text-xl opacity-90 leading-relaxed">
+                <p className="text-base opacity-90 leading-relaxed">
                   <span className="block mb-2 font-medium">Unlock Your Potential in Commercial Lending.</span>
                   Join thousands of professionals who have advanced their careers through our comprehensive training program. 
                   Financial Success, Simplified.
