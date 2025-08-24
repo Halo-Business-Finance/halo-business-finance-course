@@ -5,14 +5,14 @@ import { Calendar, User, ArrowRight } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { useState } from "react";
 import blogHero from "@/assets/blog-hero.jpg";
-import fintechPost from "@/assets/fintech-post.jpg";
-import creditSkillsPost from "@/assets/credit-skills-post.jpg";
-import businessAnalytics from "@/assets/business-analytics.jpg";
-import softwareTraining from "@/assets/software-training.jpg";
-import analyticsReporting from "@/assets/analytics-reporting.jpg";
-import learningPaths from "@/assets/learning-paths.jpg";
-import learningBackground from "@/assets/learning-background.jpg";
-import enterpriseFeatures from "@/assets/enterprise-features.jpg";
+import fintechProfessional from "@/assets/fintech-professional.jpg";
+import creditAnalystProfessional from "@/assets/credit-analyst-professional.jpg";
+import riskManagementProfessional from "@/assets/risk-management-professional.jpg";
+import digitalTrainingProfessional from "@/assets/digital-training-professional.jpg";
+import aiAnalyticsProfessional from "@/assets/ai-analytics-professional.jpg";
+import microlearningProfessional from "@/assets/microlearning-professional.jpg";
+import adaptiveLearningProfessional from "@/assets/adaptive-learning-professional.jpg";
+import gamificationProfessional from "@/assets/gamification-professional.jpg";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -26,7 +26,7 @@ const Blog = () => {
       date: "2024-01-15",
       category: "Technology",
       readTime: "5 min read",
-      image: fintechPost
+      image: fintechProfessional
     },
     {
       id: 2,
@@ -36,7 +36,7 @@ const Blog = () => {
       date: "2024-01-10",
       category: "Career Development",
       readTime: "8 min read",
-      image: creditSkillsPost
+      image: creditAnalystProfessional
     },
     {
       id: 3,
@@ -46,7 +46,7 @@ const Blog = () => {
       date: "2024-01-05",
       category: "Risk Management",
       readTime: "6 min read",
-      image: businessAnalytics
+      image: riskManagementProfessional
     },
     {
       id: 4,
@@ -56,7 +56,7 @@ const Blog = () => {
       date: "2023-12-28",
       category: "Education",
       readTime: "7 min read",
-      image: softwareTraining
+      image: digitalTrainingProfessional
     },
     {
       id: 5,
@@ -66,7 +66,7 @@ const Blog = () => {
       date: "2024-01-22",
       category: "Technology",
       readTime: "6 min read",
-      image: analyticsReporting
+      image: aiAnalyticsProfessional
     },
     {
       id: 6,
@@ -76,7 +76,7 @@ const Blog = () => {
       date: "2024-01-18",
       category: "Education",
       readTime: "5 min read",
-      image: learningPaths
+      image: microlearningProfessional
     },
     {
       id: 7,
@@ -86,7 +86,7 @@ const Blog = () => {
       date: "2024-01-12",
       category: "Technology",
       readTime: "7 min read",
-      image: learningBackground
+      image: adaptiveLearningProfessional
     },
     {
       id: 8,
@@ -96,7 +96,7 @@ const Blog = () => {
       date: "2024-01-08",
       category: "Education",
       readTime: "6 min read",
-      image: enterpriseFeatures
+      image: gamificationProfessional
     }
   ];
 
