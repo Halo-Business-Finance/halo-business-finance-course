@@ -123,8 +123,8 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <div className="flex items-center justify-center lg:justify-start">
-                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-sm md:text-base px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                  <div className="flex items-center justify-start">
+                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
                       <span className="sm:hidden">Top Industry Course</span>
                     </Badge>
@@ -207,8 +207,8 @@ const Index = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
-              <div className="flex items-center justify-center lg:justify-start">
-                <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-sm md:text-base px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+              <div className="flex items-center justify-start">
+                <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
                   Structured Learning Paths
                 </Badge>
               </div>
@@ -270,7 +270,7 @@ const Index = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
-              <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange mt-4 text-sm md:text-base px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+              <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange mt-4 text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
