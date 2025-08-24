@@ -269,7 +269,7 @@ const About = () => {
             return (
               <Card key={index} className="hover:shadow-lg transition-shadow border-2 border-transparent hover:border-halo-orange/20">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-halo-orange/10 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                     <Icon className="h-6 w-6 text-halo-orange" />
                   </div>
                   <CardTitle className="text-xl">{security.title}</CardTitle>
