@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import blogHero from "@/assets/blog-hero.jpg";
 import fintechProfessional from "@/assets/fintech-professional.jpg";
 import creditAnalystProfessional from "@/assets/credit-analyst-professional.jpg";
@@ -16,6 +17,7 @@ import gamificationProfessional from "@/assets/gamification-professional.jpg";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const { toast } = useToast();
 
   const posts = [
     {
@@ -106,6 +108,14 @@ const Blog = () => {
     ? posts 
     : posts.filter(post => post.category === selectedCategory);
 
+  const handleReadMore = (postTitle: string) => {
+    toast({
+      title: "Article Preview",
+      description: `"${postTitle}" - Full article coming soon! This is a demo version.`,
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -170,7 +180,11 @@ const Blog = () => {
                     <Calendar className="h-3 w-3 md:h-4 md:w-4" />
                     {new Date(post.date).toLocaleDateString()}
                   </div>
-                  <Button className="text-xs md:text-sm bg-halo-navy text-halo-orange hover:bg-halo-navy/90" size="sm">
+                  <Button 
+                    className="text-xs md:text-sm bg-halo-navy text-halo-orange hover:bg-halo-navy/90" 
+                    size="sm"
+                    onClick={() => handleReadMore(post.title)}
+                  >
                     <span className="hidden sm:inline">Read More</span>
                     <span className="sm:hidden">Read</span>
                     <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2" />
