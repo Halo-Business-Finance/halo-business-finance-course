@@ -224,10 +224,7 @@ const Index = () => {
             {learningPaths.map((path, index) => (
               <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
                 <CardHeader className="space-y-4 p-4 md:p-6">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-xs bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
-                      {path.duration} • {path.modules} modules
-                    </Badge>
+                  <div className="flex items-center justify-end">
                     <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                       <BookOpen className="h-3 w-3 md:h-4 md:w-4 text-white" />
                     </div>
@@ -235,6 +232,9 @@ const Index = () => {
                   <CardTitle className="text-lg md:text-xl font-playfair group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
+                  <Badge variant="outline" className="text-xs bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 w-fit">
+                    {path.duration} • {path.modules} modules
+                  </Badge>
                   <CardDescription className="text-sm leading-relaxed text-foreground">
                     {path.description}
                   </CardDescription>
