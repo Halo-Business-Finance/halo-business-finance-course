@@ -116,7 +116,7 @@ const Index = () => {
               <div className="space-y-4 md:space-y-6 lg:space-y-8 animate-fade-in text-center lg:text-left">
                 
                 <div className="space-y-3 md:space-y-4 lg:space-y-6">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-playfair font-bold leading-tight text-navy-blue">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
                     Master Business Finance
                     <span className="block text-navy-blue">
                       & Commercial Lending
@@ -131,7 +131,7 @@ const Index = () => {
                     </Badge>
                   </div>
                   
-                  <p className="text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
+                  <p className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
                     Transform your career with our comprehensive business finance and commercial lending program. 
                     <span className="block mt-1 md:mt-2 font-medium text-black">Your Pathway to Lending Excellence.</span>
                     <span className="hidden md:inline">Developed by industry experts and delivered through Stanford-level curriculum.</span>
