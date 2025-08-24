@@ -174,7 +174,7 @@ const Pricing = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mb-12 md:mb-16">
         {plans.map((plan) => (
-          <Card key={plan.name} className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105 ring-2 ring-primary/20' : ''}`}>
+          <Card key={plan.name} className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105 ring-2 ring-primary/20' : 'border-2 border-gray-200'}`}>
             {plan.popular && (
               <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary">
                 Most Popular
