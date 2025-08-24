@@ -205,7 +205,6 @@ const AuthPage = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold">Business Finance Mastery</h1>
-          <p className="text-muted-foreground">Please sign in to continue your learning journey</p>
         </div>
         
         {rateLimitWarning && (
@@ -237,7 +236,7 @@ const AuthPage = () => {
             <CardDescription>
               {showForgotPassword 
                 ? "Enter your email to receive password reset instructions"
-                : "Sign in to continue your learning journey"
+                : ""
               }
             </CardDescription>
           </CardHeader>
