@@ -98,8 +98,8 @@ const About = () => {
           return (
             <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-halo-orange/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon className="h-6 w-6 text-halo-navy" />
+                <div className="w-12 h-12 bg-halo-navy/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-6 w-6 text-halo-orange" />
                 </div>
                 <div className="flex-1">
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
