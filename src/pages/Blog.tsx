@@ -3,11 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { useState } from "react";
 import blogHero from "@/assets/blog-hero.jpg";
 import fintechPost from "@/assets/fintech-post.jpg";
 import creditSkillsPost from "@/assets/credit-skills-post.jpg";
 
 const Blog = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   const posts = [
     {
       id: 1,
@@ -53,6 +56,10 @@ const Blog = () => {
 
   const categories = ["All", "Technology", "Career Development", "Risk Management", "Education"];
 
+  const filteredPosts = selectedCategory === "All" 
+    ? posts 
+    : posts.filter(post => post.category === selectedCategory);
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -79,10 +86,11 @@ const Blog = () => {
           {categories.map((category) => (
             <Badge 
               key={category} 
+              onClick={() => setSelectedCategory(category)}
               className={`cursor-pointer text-xs md:text-sm transition-all ${
-                category === "All" 
-                  ? "bg-halo-navy text-halo-orange hover:bg-halo-navy/90" 
-                  : "bg-halo-navy text-halo-orange hover:bg-halo-navy/90"
+                selectedCategory === category
+                  ? "bg-halo-orange text-white shadow-lg scale-105 border-2 border-halo-orange" 
+                  : "bg-halo-navy text-halo-orange hover:bg-halo-navy/90 hover:scale-105"
               }`}
             >
               {category}
@@ -91,7 +99,7 @@ const Blog = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
               <div className="h-40 md:h-48 overflow-hidden">
                 <img 
