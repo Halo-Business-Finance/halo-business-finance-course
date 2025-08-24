@@ -200,7 +200,7 @@ const AuthPage = () => {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center">
-            <div className="w-20 h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <div className="w-40 h-12 bg-halo-navy rounded-lg flex items-center justify-center">
               <span className="text-halo-orange font-bold text-sm">FinPilot</span>
             </div>
           </div>
