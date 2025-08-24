@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Play, Mail, Star } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { useState } from "react";
-import businessAnalytics from "@/assets/business-analytics.jpg";
+import pricingHero from "@/assets/pricing-hero.jpg";
 
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
@@ -124,8 +124,8 @@ const Pricing = () => {
       {/* Hero Section with Image */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
-          src={businessAnalytics} 
-          alt="Business analytics and financial planning" 
+          src={pricingHero} 
+          alt="Professional learning online with computer" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
