@@ -56,7 +56,7 @@ const Blog = () => {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden">
+      <div className="relative h-[32rem] overflow-hidden">
         <img 
           src={blogHero} 
           alt="Professional blog and knowledge sharing environment" 
