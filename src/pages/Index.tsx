@@ -117,9 +117,9 @@ const Index = () => {
                 
                 <div className="space-y-4 md:space-y-6">
                   <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
-                    Master Business
+                    Master Business Finance
                     <span className="block text-navy-blue">
-                      Finance & Commercial Lending
+                      & Commercial Lending
                     </span>
                   </h1>
                   
