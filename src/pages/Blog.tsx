@@ -7,6 +7,12 @@ import { useState } from "react";
 import blogHero from "@/assets/blog-hero.jpg";
 import fintechPost from "@/assets/fintech-post.jpg";
 import creditSkillsPost from "@/assets/credit-skills-post.jpg";
+import businessAnalytics from "@/assets/business-analytics.jpg";
+import softwareTraining from "@/assets/software-training.jpg";
+import analyticsReporting from "@/assets/analytics-reporting.jpg";
+import learningPaths from "@/assets/learning-paths.jpg";
+import learningBackground from "@/assets/learning-background.jpg";
+import enterpriseFeatures from "@/assets/enterprise-features.jpg";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -40,7 +46,7 @@ const Blog = () => {
       date: "2024-01-05",
       category: "Risk Management",
       readTime: "6 min read",
-      image: fintechPost
+      image: businessAnalytics
     },
     {
       id: 4,
@@ -50,7 +56,7 @@ const Blog = () => {
       date: "2023-12-28",
       category: "Education",
       readTime: "7 min read",
-      image: creditSkillsPost
+      image: softwareTraining
     },
     {
       id: 5,
@@ -60,7 +66,7 @@ const Blog = () => {
       date: "2024-01-22",
       category: "Technology",
       readTime: "6 min read",
-      image: fintechPost
+      image: analyticsReporting
     },
     {
       id: 6,
@@ -70,7 +76,7 @@ const Blog = () => {
       date: "2024-01-18",
       category: "Education",
       readTime: "5 min read",
-      image: creditSkillsPost
+      image: learningPaths
     },
     {
       id: 7,
@@ -80,7 +86,7 @@ const Blog = () => {
       date: "2024-01-12",
       category: "Technology",
       readTime: "7 min read",
-      image: fintechPost
+      image: learningBackground
     },
     {
       id: 8,
@@ -90,7 +96,7 @@ const Blog = () => {
       date: "2024-01-08",
       category: "Education",
       readTime: "6 min read",
-      image: creditSkillsPost
+      image: enterpriseFeatures
     }
   ];
 
