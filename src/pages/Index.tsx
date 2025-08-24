@@ -108,7 +108,7 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
