@@ -121,7 +121,7 @@ const About = () => {
                 <div className="p-8">
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     Halo Business Finance created the FinPilot course to address the growing need for specialized training in commercial lending. 
-                    Drawing from years of real-world experience in business finance and lending, we recognized that 
+                    With over 15 years of experience in capital markets, SBA, and commercial lending, we recognized that 
                     traditional training methods weren't adequately preparing professionals for the complexities of 
                     modern commercial lending.
                   </p>
