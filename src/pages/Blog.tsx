@@ -55,7 +55,7 @@ const Blog = () => {
       excerpt: "How organizations are leveraging digital platforms to enhance employee learning and development.",
       author: "Sarah Johnson",
       date: "2023-12-28",
-      category: "Education",
+      category: "Technology",
       readTime: "7 min read",
       image: digitalTrainingProfessional
     },
@@ -75,7 +75,7 @@ const Blog = () => {
       excerpt: "Learn why bite-sized learning modules are proving more effective than traditional training methods for busy finance professionals.",
       author: "Michael Chen",
       date: "2024-01-18",
-      category: "Education",
+      category: "Career Development",
       readTime: "5 min read",
       image: microlearningProfessional
     },
@@ -95,7 +95,7 @@ const Blog = () => {
       excerpt: "Explore how interactive elements, progress tracking, and achievement systems boost completion rates in online training programs.",
       author: "Dr. Emily Rodriguez",
       date: "2024-01-08",
-      category: "Education",
+      category: "Technology",
       readTime: "6 min read",
       image: gamificationProfessional
     },
@@ -151,7 +151,7 @@ const Blog = () => {
     }
   ];
 
-  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets"];
+  const categories = ["All", "Technology", "Career Development", "Risk Management", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets"];
 
   const filteredPosts = selectedCategory === "All" 
     ? posts 
