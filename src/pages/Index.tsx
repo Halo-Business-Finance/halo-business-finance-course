@@ -269,14 +269,14 @@ const Index = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
-              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
-                <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
-              </p>
               <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 mt-4 text-xs md:text-sm px-3 py-1">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
+              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
+                <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
+              </p>
             </div>
             <div>
               <img 
