@@ -129,35 +129,34 @@ const Support = () => {
             {supportOptions.map((option, index) => {
               const Icon = option.icon;
               return (
-                <Card key={index} className={`group hover:shadow-lg transition-all duration-300 border-0 shadow-md hover:-translate-y-1 bg-halo-navy overflow-hidden relative`}>
-                  {option.badge && (
-                    <Badge className="absolute top-3 right-3 bg-blue-600 text-white text-xs">
-                      {option.badge}
-                    </Badge>
-                  )}
-                  <CardHeader className="pb-3 p-4">
-                    <div className="w-12 h-12 bg-halo-navy border-2 border-white rounded-xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center flex-shrink-0">
                       <Icon className="h-6 w-6 text-halo-orange" />
                     </div>
-                    <CardTitle className="text-lg font-bold text-white">{option.title}</CardTitle>
-                    <CardDescription className="text-white text-sm leading-relaxed">{option.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0 p-4">
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-xs">
-                        <Clock className="h-3 w-3 text-blue-400" />
-                        <span className="text-white">{option.available}</span>
+                    <div className="flex-1">
+                      <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
+                      <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
+                      <div className="text-xs text-black leading-relaxed mb-3">{option.description}</div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-xs">
+                          <Clock className="h-3 w-3 text-blue-400" />
+                          <span className="text-black">{option.available}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs">
+                          <CheckCircle className="h-3 w-3 text-blue-400" />
+                          <span className="text-black">{option.responseTime}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 text-xs">
-                        <CheckCircle className="h-3 w-3 text-blue-400" />
-                        <span className="text-white">{option.responseTime}</span>
-                      </div>
+                      {option.badge && (
+                        <div className="mt-2">
+                          <Badge className="bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs">
+                            {option.badge}
+                          </Badge>
+                        </div>
+                      )}
                     </div>
-                    <Button className="w-full h-10 bg-slate-900 border-2 border-white hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
-                      {option.action}
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </CardContent>
+                  </div>
                 </Card>
               );
             })}
