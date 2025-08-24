@@ -129,7 +129,7 @@ const Support = () => {
             {supportOptions.map((option, index) => {
               const Icon = option.icon;
               return (
-                <Card key={index} className={`group hover:shadow-lg transition-all duration-300 border-0 shadow-md hover:-translate-y-1 ${option.color} overflow-hidden relative`}>
+                <Card key={index} className={`group hover:shadow-lg transition-all duration-300 border-0 shadow-md hover:-translate-y-1 bg-halo-navy overflow-hidden relative`}>
                   {option.badge && (
                     <Badge className="absolute top-3 right-3 bg-blue-600 text-white text-xs">
                       {option.badge}
@@ -139,18 +139,18 @@ const Support = () => {
                     <div className="w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                       <Icon className="h-6 w-6 text-blue-600" />
                     </div>
-                    <CardTitle className="text-lg font-bold text-slate-900">{option.title}</CardTitle>
-                    <CardDescription className="text-black text-sm leading-relaxed">{option.description}</CardDescription>
+                    <CardTitle className="text-lg font-bold text-white">{option.title}</CardTitle>
+                    <CardDescription className="text-white text-sm leading-relaxed">{option.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0 p-4">
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-xs">
-                        <Clock className="h-3 w-3 text-green-600" />
-                        <span className="text-black">{option.available}</span>
+                        <Clock className="h-3 w-3 text-green-400" />
+                        <span className="text-white">{option.available}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <CheckCircle className="h-3 w-3 text-green-600" />
-                        <span className="text-black">{option.responseTime}</span>
+                        <CheckCircle className="h-3 w-3 text-green-400" />
+                        <span className="text-white">{option.responseTime}</span>
                       </div>
                     </div>
                     <Button className="w-full h-10 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
