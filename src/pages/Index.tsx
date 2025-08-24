@@ -124,7 +124,7 @@ const Index = () => {
                   </h1>
                   
                   <div className="flex items-center justify-center lg:justify-start">
-                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-black text-halo-orange border-halo-orange/30 hover:bg-black/90 text-xs md:text-sm px-2 md:px-3 py-1">
+                    <Badge className="inline-flex items-center gap-1 md:gap-2 text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10 text-xs md:text-sm px-2 md:px-3 py-1">
                       <Zap className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
                       <span className="sm:hidden">Top Industry Course</span>
@@ -209,7 +209,7 @@ const Index = () => {
                 Choose Your Path to Success
               </h2>
               <div className="flex items-center justify-center lg:justify-start">
-                <Badge className="inline-flex items-center gap-2 bg-black text-halo-orange border-halo-orange/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
+                <Badge className="inline-flex items-center gap-2 text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10 text-xs md:text-sm px-3 py-1">
                   <Target className="h-3 w-3 md:h-4 md:w-4" />
                   Structured Learning Paths
                 </Badge>
@@ -232,7 +232,7 @@ const Index = () => {
                   <CardTitle className="text-lg md:text-xl font-playfair group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
-                  <Badge variant="outline" className="text-xs bg-black text-halo-orange border-halo-orange/30 hover:bg-black/90 w-fit">
+                  <Badge variant="outline" className="text-xs text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10 w-fit">
                     {path.duration} • {path.modules} modules
                   </Badge>
                   <CardDescription className="text-sm leading-relaxed text-foreground">
@@ -272,7 +272,7 @@ const Index = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
-              <Badge className="inline-flex items-center gap-2 bg-black text-halo-orange border-halo-orange/30 hover:bg-black/90 mt-4 text-xs md:text-sm px-3 py-1">
+              <Badge className="inline-flex items-center gap-2 text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10 mt-4 text-xs md:text-sm px-3 py-1">
                 <Star className="h-3 w-3 md:h-4 md:w-4" />
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
@@ -344,7 +344,7 @@ const Index = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               What Our Graduates Say
             </h2>
-            <Badge className="inline-flex items-center gap-2 bg-black text-halo-orange border-halo-orange/30 hover:bg-black/90">
+            <Badge className="inline-flex items-center gap-2 text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10">
               <Star className="h-4 w-4" />
               Success Stories
             </Badge>
