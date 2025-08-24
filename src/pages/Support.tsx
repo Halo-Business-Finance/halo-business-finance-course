@@ -137,7 +137,7 @@ const Support = () => {
                   )}
                   <CardHeader className="pb-3 p-4">
                     <div className="w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="h-6 w-6 text-blue-600" />
+                      <Icon className="h-6 w-6 text-halo-orange" />
                     </div>
                     <CardTitle className="text-lg font-bold text-white">{option.title}</CardTitle>
                     <CardDescription className="text-white text-sm leading-relaxed">{option.description}</CardDescription>
@@ -145,11 +145,11 @@ const Support = () => {
                   <CardContent className="pt-0 p-4">
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-xs">
-                        <Clock className="h-3 w-3 text-green-400" />
+                        <Clock className="h-3 w-3 text-blue-400" />
                         <span className="text-white">{option.available}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <CheckCircle className="h-3 w-3 text-green-400" />
+                        <CheckCircle className="h-3 w-3 text-blue-400" />
                         <span className="text-white">{option.responseTime}</span>
                       </div>
                     </div>
