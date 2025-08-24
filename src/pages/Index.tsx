@@ -410,7 +410,7 @@ const Index = () => {
               <div className="flex justify-center items-center gap-8 pt-8 text-white/80">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-halo-orange" />
-                  <span>No Risk, 30-Day Guarantee</span>
+                  <span>No Risk, 3-Day Money Back Guarantee</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-halo-orange" />
