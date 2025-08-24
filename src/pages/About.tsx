@@ -161,7 +161,7 @@ const About = () => {
           return (
             <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Icon className="h-6 w-6 text-halo-orange" />
                 </div>
                 <div className="flex-1">
