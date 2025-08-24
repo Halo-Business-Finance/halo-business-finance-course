@@ -51,6 +51,46 @@ const Blog = () => {
       category: "Education",
       readTime: "7 min read",
       image: creditSkillsPost
+    },
+    {
+      id: 5,
+      title: "Maximizing ROI with AI-Powered Learning Platforms",
+      excerpt: "Discover how artificial intelligence is revolutionizing corporate training efficiency and measuring learning outcomes in financial services.",
+      author: "Dr. Emily Rodriguez",
+      date: "2024-01-22",
+      category: "Technology",
+      readTime: "6 min read",
+      image: fintechPost
+    },
+    {
+      id: 6,
+      title: "Microlearning: The Future of Professional Development",
+      excerpt: "Learn why bite-sized learning modules are proving more effective than traditional training methods for busy finance professionals.",
+      author: "Michael Chen",
+      date: "2024-01-18",
+      category: "Education",
+      readTime: "5 min read",
+      image: creditSkillsPost
+    },
+    {
+      id: 7,
+      title: "Adaptive Learning Systems in Financial Training",
+      excerpt: "How personalized learning paths and intelligent content delivery are transforming professional education in commercial lending.",
+      author: "Sarah Johnson",
+      date: "2024-01-12",
+      category: "Technology",
+      readTime: "7 min read",
+      image: fintechPost
+    },
+    {
+      id: 8,
+      title: "Gamification Strategies for Enhanced Learning Engagement",
+      excerpt: "Explore how interactive elements, progress tracking, and achievement systems boost completion rates in online training programs.",
+      author: "Dr. Emily Rodriguez",
+      date: "2024-01-08",
+      category: "Education",
+      readTime: "6 min read",
+      image: creditSkillsPost
     }
   ];
 
