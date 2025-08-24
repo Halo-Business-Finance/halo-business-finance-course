@@ -122,7 +122,7 @@ const Blog = () => {
                       {new Date(post.date).toLocaleDateString()}
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-xs md:text-sm">
+                  <Button className="text-xs md:text-sm bg-halo-navy text-halo-orange hover:bg-halo-navy/90" size="sm">
                     <span className="hidden sm:inline">Read More</span>
                     <span className="sm:hidden">Read</span>
                     <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2" />
