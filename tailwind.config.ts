@@ -106,6 +106,7 @@ export default {
 				'halo-light-blue': 'hsl(var(--halo-light-blue))',
 				'duke-blue': 'hsl(var(--duke-blue))',
 				'enterprise-blue': 'hsl(var(--enterprise-blue))',
+				'navy-blue': 'hsl(var(--navy-blue))',
 				'navy': {
 					'900': 'hsl(var(--navy-900))',
 					'800': 'hsl(var(--navy-800))',
