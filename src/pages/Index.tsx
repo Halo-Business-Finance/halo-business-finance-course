@@ -396,10 +396,12 @@ const Index = () => {
                     Get Started Now
                   </Button>
                 </Link>
-                <Button variant="outline" className="text-base px-6 py-3 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
-                  <Shield className="mr-2 h-4 w-4" />
-                  Learn More
-                </Button>
+                <Link to="/courses">
+                  <Button variant="outline" className="text-base px-6 py-3 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
+                    <Shield className="mr-2 h-4 w-4" />
+                    Learn More
+                  </Button>
+                </Link>
               </div>
 
               <div className="flex justify-center items-center gap-8 pt-8 text-white/80">
