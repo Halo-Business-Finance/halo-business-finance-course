@@ -176,10 +176,7 @@ const About = () => {
       </div>
 
       <div className="mb-12 md:mb-16">
-        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-            <FileText className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-          </div>
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Our Story</h2>
         </div>
         <div className="max-w-6xl mx-auto">
@@ -214,10 +211,7 @@ const About = () => {
 
       {/* Learning Platform Features */}
       <div className="mb-12 md:mb-16">
-        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-            <Monitor className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-          </div>
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Advanced Learning Platform</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -263,10 +257,7 @@ const About = () => {
 
       {/* Security Features */}
       <div className="mb-12 md:mb-16">
-        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-            <Shield className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-          </div>
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Enterprise Security & Compliance</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -312,10 +303,7 @@ const About = () => {
 
       {/* Platform Advantages */}
       <div className="mb-12 md:mb-16">
-        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-            <Zap className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-          </div>
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Platform Advantages</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -375,10 +363,7 @@ const About = () => {
       </div>
 
       <div>
-        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-            <Crown className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-          </div>
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Leadership Team</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
