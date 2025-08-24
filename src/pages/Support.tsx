@@ -60,7 +60,7 @@ const Support = () => {
       action: "Send Email",
       available: "24/7 Submissions",
       responseTime: "Within 4 hours",
-      badge: "",
+      badge: "24/7",
       color: "bg-gray-50 border-gray-100"
     }
   ];
