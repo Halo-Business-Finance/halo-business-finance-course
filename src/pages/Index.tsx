@@ -393,12 +393,6 @@ const Index = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/auth">
-                  <Button className="text-base px-6 py-3 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
-                    <Zap className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                    Get Started Now
-                  </Button>
-                </Link>
                 <Link to="/courses">
                   <Button variant="outline" className="text-base px-6 py-3 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
                     <Shield className="mr-2 h-4 w-4" />
@@ -416,6 +410,12 @@ const Index = () => {
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
                   <span>No Risk, 30-Day Money Back Guarantee</span>
                 </div>
+                <Link to="/auth" className="mt-2">
+                  <Button className="text-base px-6 py-3 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
+                    <Zap className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                    Get Started Now
+                  </Button>
+                </Link>
               </div>
             </div>
             
