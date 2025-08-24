@@ -232,7 +232,7 @@ const Index = () => {
                   <CardTitle className="text-lg md:text-xl font-playfair group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
-                  <Badge className="text-xs text-halo-orange bg-halo-orange/10 hover:bg-halo-orange/20 border-0 w-fit">
+                  <Badge className="text-xs text-halo-orange bg-white border-0 w-fit">
                     {path.duration} • {path.modules} modules
                   </Badge>
                   <CardDescription className="text-sm leading-relaxed text-foreground">
