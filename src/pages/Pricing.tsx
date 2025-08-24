@@ -181,18 +181,18 @@ const Pricing = () => {
               </Badge>
             )}
             <CardHeader className="text-center pb-2">
-              <CardTitle className="text-2xl">{plan.name}</CardTitle>
-              <CardDescription className="text-sm">{plan.description}</CardDescription>
+              <CardTitle className="text-2xl text-black">{plan.name}</CardTitle>
+              <CardDescription className="text-sm text-black">{plan.description}</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-foreground">
+                <span className="text-4xl font-bold text-black">
                   {isAnnual ? plan.annualPrice : plan.price}
                 </span>
-                <span className="text-muted-foreground ml-2 text-sm">
+                <span className="text-black ml-2 text-sm">
                   {isAnnual ? plan.annualPeriod : plan.period}
                 </span>
               </div>
               {plan.savings && isAnnual && (
-                <div className="text-sm text-green-600 font-medium mt-1">{plan.savings}</div>
+                <div className="text-sm text-black font-medium mt-1">{plan.savings}</div>
               )}
             </CardHeader>
             <CardContent>
@@ -200,7 +200,7 @@ const Pricing = () => {
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-sm text-black">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -220,7 +220,7 @@ const Pricing = () => {
                 )}
               </Button>
               {plan.name === "Professional" && (
-                <p className="text-xs text-center text-muted-foreground mt-2">
+                <p className="text-xs text-center text-black mt-2">
                   3-day free trial, no credit card required
                 </p>
               )}
