@@ -120,7 +120,7 @@ const Support = () => {
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
-            <p className="text-lg text-black max-w-2xl mx-auto">
+            <p className="text-base text-black max-w-2xl mx-auto">
               Choose the best way to reach us. Our expert support team is ready to help you succeed.
             </p>
           </div>
