@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Play, Mail, Star } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { useState } from "react";
+import businessAnalytics from "@/assets/business-analytics.jpg";
 
 const Pricing = () => {
+  const [isAnnual, setIsAnnual] = useState(false);
   const plans = [
     {
       name: "Basic",
@@ -117,25 +120,52 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-6 md:py-8 bg-white min-h-screen">
-      <div className="text-center mb-8 md:mb-12">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4">Choose Your Learning Plan</h1>
-        <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-4 md:mb-6">
-          Invest in your future with our comprehensive finance and lending education programs. 
-          Start with a 14-day free trial and see the difference quality training makes.
-        </p>
-        <div className="inline-flex items-center gap-2 bg-green-50 text-green-800 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium">
-          <Check className="h-3 w-3 md:h-4 md:w-4" />
-          <span className="hidden sm:inline">30-day money-back guarantee • Cancel anytime</span>
-          <span className="sm:hidden">30-day guarantee</span>
+    <div className="bg-white min-h-screen">
+      {/* Hero Section with Image */}
+      <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
+        <img 
+          src={businessAnalytics} 
+          alt="Business analytics and financial planning" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <div className="text-center text-white px-4">
+            <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">Pricing Plans</Badge>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Choose Your Learning Plan</h1>
+            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Invest in your future with our comprehensive finance and lending education programs. 
+              Start with a 14-day free trial and see the difference quality training makes.
+            </p>
+          </div>
         </div>
       </div>
+      
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        <div className="text-center mb-6 md:mb-8">
+          <div className="inline-flex items-center gap-2 bg-green-50 text-green-800 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium">
+            <Check className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">30-day money-back guarantee • Cancel anytime</span>
+            <span className="sm:hidden">30-day guarantee</span>
+          </div>
+        </div>
 
       {/* Pricing Toggle */}
       <div className="flex justify-center mb-6 md:mb-8">
         <div className="bg-gray-100 p-1 rounded-lg inline-flex">
-          <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium bg-white rounded-md shadow-sm">Monthly</button>
-          <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-gray-500">
+          <button 
+            className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-md transition-all ${
+              !isAnnual ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'
+            }`}
+            onClick={() => setIsAnnual(false)}
+          >
+            Monthly
+          </button>
+          <button 
+            className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-md transition-all ${
+              isAnnual ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'
+            }`}
+            onClick={() => setIsAnnual(true)}
+          >
             <span className="hidden sm:inline">Annual (Save up to 20%)</span>
             <span className="sm:hidden">Annual</span>
           </button>
@@ -154,10 +184,14 @@ const Pricing = () => {
               <CardTitle className="text-2xl">{plan.name}</CardTitle>
               <CardDescription className="text-sm">{plan.description}</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                <span className="text-muted-foreground ml-2 text-sm">{plan.period}</span>
+                <span className="text-4xl font-bold text-foreground">
+                  {isAnnual ? plan.annualPrice : plan.price}
+                </span>
+                <span className="text-muted-foreground ml-2 text-sm">
+                  {isAnnual ? plan.annualPeriod : plan.period}
+                </span>
               </div>
-              {plan.savings && (
+              {plan.savings && isAnnual && (
                 <div className="text-sm text-green-600 font-medium mt-1">{plan.savings}</div>
               )}
             </CardHeader>
@@ -231,6 +265,7 @@ const Pricing = () => {
       </div>
       
       <FinPilotBrandFooter />
+      </div>
     </div>
   );
 };
