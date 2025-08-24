@@ -382,7 +382,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
-                <h2 className="text-2xl lg:text-3xl font-playfair font-bold">
+                <h2 className="text-xl lg:text-2xl font-playfair font-bold">
                   Transform Your Skills. Transform Your Career.
                 </h2>
                 <p className="text-base opacity-90 leading-relaxed">
