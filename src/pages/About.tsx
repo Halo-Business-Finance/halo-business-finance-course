@@ -322,7 +322,7 @@ const About = () => {
                   <div className="space-y-2">
                     {advantage.benefits.map((benefit, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <Zap className="h-4 w-4 text-halo-orange" />
+                        <CheckCircle className="h-4 w-4 text-halo-orange" />
                         <span className="text-sm text-black">{benefit}</span>
                       </div>
                     ))}
