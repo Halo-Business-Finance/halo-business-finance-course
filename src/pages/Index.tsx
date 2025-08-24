@@ -402,7 +402,10 @@ const Index = () => {
               </div>
 
               <div className="flex flex-col justify-start items-start gap-4 pt-8 text-white text-sm">
-                <p className="text-white font-medium text-base mb-2">Advance Your Career</p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-halo-orange" />
+                  <span>Advance Your Career</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
                   <span>Industry-Recognized Certification</span>
