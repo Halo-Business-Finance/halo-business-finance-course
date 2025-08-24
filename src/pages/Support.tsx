@@ -167,76 +167,80 @@ const Support = () => {
         {/* FAQ and Contact Form */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* FAQ Section */}
-          <Card className="bg-halo-navy border-2 border-white shadow-lg">
-            <CardHeader className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-halo-navy border-2 border-white rounded-xl flex items-center justify-center">
-                  <HelpCircle className="h-6 w-6 text-halo-orange" />
-                </div>
-                <h2 className="text-2xl font-bold text-white">Frequently Asked Questions</h2>
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center flex-shrink-0">
+                <HelpCircle className="h-6 w-6 text-halo-orange" />
               </div>
-            </CardHeader>
-            <CardContent className="px-6 pb-6">
-              <Accordion type="single" collapsible className="space-y-4">
-                {faqs.map((faq, index) => (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`} 
-                    className="border-2 border-white rounded-xl px-6 py-2 shadow-sm hover:shadow-md transition-shadow bg-slate-900"
-                  >
-                    <AccordionTrigger className="text-left font-semibold text-white hover:text-halo-orange transition-colors">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white leading-relaxed pt-2">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </CardContent>
+              <div className="flex-1">
+                <div className="text-2xl font-bold text-foreground mb-1">Get Answers</div>
+                <div className="text-sm font-medium text-primary mb-2">Frequently Asked Questions</div>
+                <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
+              </div>
+            </div>
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem 
+                  key={index} 
+                  value={`item-${index}`} 
+                  className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-black leading-relaxed pt-2">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </Card>
 
           {/* Contact Form */}
-          <Card className="bg-halo-navy border-2 border-white shadow-lg overflow-hidden">
-            <CardHeader className="bg-slate-900 text-white border-b-2 border-white">
-              <CardTitle className="text-xl font-bold text-white">Send us a Message</CardTitle>
-              <CardDescription className="text-white/80">
-                Can't find what you're looking for? Our team will get back to you within 4 hours.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-8 space-y-6">
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center flex-shrink-0">
+                <Mail className="h-6 w-6 text-halo-orange" />
+              </div>
+              <div className="flex-1">
+                <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
+                <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
+                <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
+              </div>
+            </div>
+            <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input 
                   placeholder="First Name" 
-                  className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
+                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
                 />
                 <Input 
                   placeholder="Last Name" 
-                  className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
+                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
                 />
               </div>
               <Input 
                 type="email" 
                 placeholder="Email Address" 
-                className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
+                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
               />
               <Input 
                 placeholder="Subject" 
-                className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
+                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
               />
               <Textarea 
                 placeholder="Tell us how we can help you..." 
                 rows={4} 
-                className="bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg resize-none text-black"
+                className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
               />
-              <Button className="w-full h-12 bg-slate-900 border-2 border-white hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+              <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
                 Send Message
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <p className="text-xs text-white/80 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 We typically respond within 4 hours during business hours
               </p>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>
