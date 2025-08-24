@@ -209,7 +209,6 @@ const Index = () => {
               </h2>
               <div className="flex items-center justify-center lg:justify-start">
                 <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-xs md:text-sm px-3 py-1 border-0">
-                  <Target className="h-3 w-3 md:h-4 md:w-4" />
                   Structured Learning Paths
                 </Badge>
               </div>
