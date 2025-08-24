@@ -155,6 +155,11 @@ const Support = () => {
                           </Badge>
                         </div>
                       )}
+                      <div className="mt-4">
+                        <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                          {option.action}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </Card>
