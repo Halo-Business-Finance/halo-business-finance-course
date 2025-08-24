@@ -125,7 +125,6 @@ const Index = () => {
                   
                   <div className="flex items-center justify-center lg:justify-start">
                     <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-xs md:text-sm px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
-                      <Zap className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
                       <span className="sm:hidden">Top Industry Course</span>
                     </Badge>
