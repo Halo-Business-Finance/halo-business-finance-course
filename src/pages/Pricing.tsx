@@ -142,7 +142,7 @@ const Pricing = () => {
       
       <div className="container mx-auto px-4 py-6 md:py-8">
         <div className="text-center mb-6 md:mb-8">
-          <div className="inline-flex items-center gap-2 bg-green-50 text-green-800 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium">
+          <div className="inline-flex items-center gap-2 bg-halo-navy text-halo-orange px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium">
             <Check className="h-3 w-3 md:h-4 md:w-4" />
             <span className="hidden sm:inline">30-day money-back guarantee • Cancel anytime</span>
             <span className="sm:hidden">30-day guarantee</span>
