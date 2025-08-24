@@ -278,7 +278,7 @@ const Index = () => {
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
               <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
-                <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
+                <span className="font-medium text-black">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
             </div>
             <div>
