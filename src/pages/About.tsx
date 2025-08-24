@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Target, Users, Award, Globe } from "lucide-react";
+import { Building, BookOpen, Award, TrendingUp, Clock, Users2 } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
@@ -9,11 +9,43 @@ import teamMichael from "@/assets/team-michael.jpg";
 import teamEmily from "@/assets/team-emily.jpg";
 
 const About = () => {
-  const stats = [
-    { label: "Students Trained", value: "50,000+", icon: Users },
-    { label: "Courses Available", value: "200+", icon: Award },
-    { label: "Countries Served", value: "45", icon: Globe },
-    { label: "Success Rate", value: "95%", icon: Target }
+  const companyInfo = [
+    { 
+      label: "Industry Focus", 
+      value: "Commercial Lending", 
+      icon: Building,
+      description: "Specialized training for commercial finance professionals"
+    },
+    { 
+      label: "Learning Modules", 
+      value: "12+", 
+      icon: BookOpen,
+      description: "Comprehensive curriculum covering all aspects of business finance"
+    },
+    { 
+      label: "Certification Rate", 
+      value: "96%", 
+      icon: Award,
+      description: "Students successfully completing our certification program"
+    },
+    { 
+      label: "Career Advancement", 
+      value: "87%", 
+      icon: TrendingUp,
+      description: "Graduates reporting career growth within 6 months"
+    },
+    { 
+      label: "Course Duration", 
+      value: "4-6 weeks", 
+      icon: Clock,
+      description: "Flexible learning paths designed for working professionals"
+    },
+    { 
+      label: "Expert Instructors", 
+      value: "15+", 
+      icon: Users2,
+      description: "Industry veterans with decades of lending experience"
+    }
   ];
 
   const team = [
@@ -60,17 +92,22 @@ const About = () => {
       
       <div className="container mx-auto px-4 py-12">
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        {companyInfo.map((info, index) => {
+          const Icon = info.icon;
           return (
-            <div key={index} className="text-center">
-              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Icon className="h-8 w-8 text-primary" />
+            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-6 w-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
+                  <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">{info.description}</div>
+                </div>
               </div>
-              <div className="text-3xl font-bold text-foreground mb-2">{stat.value}</div>
-              <div className="text-muted-foreground">{stat.label}</div>
-            </div>
+            </Card>
           );
         })}
       </div>
