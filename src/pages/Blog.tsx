@@ -128,10 +128,30 @@ const Blog = () => {
       category: "SBA Loans",
       readTime: "9 min read",
       image: riskManagementProfessional
+    },
+    {
+      id: 12,
+      title: "USDA Rural Development Loan Programs",
+      excerpt: "Understanding USDA loan programs for rural businesses and communities, including eligibility criteria and application best practices.",
+      author: "Michael Chen",
+      date: "2024-01-14",
+      category: "USDA Loans",
+      readTime: "7 min read",
+      image: digitalTrainingProfessional
+    },
+    {
+      id: 13,
+      title: "Capital Markets Trends and Opportunities",
+      excerpt: "Explore current capital market conditions, emerging investment opportunities, and strategies for optimizing funding structures.",
+      author: "Sarah Johnson",
+      date: "2024-01-11",
+      category: "Capital Markets",
+      readTime: "8 min read",
+      image: aiAnalyticsProfessional
     }
   ];
 
-  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA Loans"];
+  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets"];
 
   const filteredPosts = selectedCategory === "All" 
     ? posts 
