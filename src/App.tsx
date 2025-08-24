@@ -93,8 +93,8 @@ const HeaderContent = () => {
             <div className="flex items-center gap-2 md:gap-3">
               <Link to="/" className="hover:opacity-80 transition-opacity">
                 <span className="font-aptos font-semibold text-base sm:text-lg md:text-xl lg:text-2xl text-blue-900 whitespace-nowrap">
-                  <span className="hidden sm:inline">Halo Business Finance</span>
-                  <span className="sm:hidden">Halo Finance</span>
+                  <span className="hidden sm:inline">FinPilot</span>
+                  <span className="sm:hidden">FinPilot</span>
                 </span>
               </Link>
             </div>
