@@ -136,7 +136,7 @@ const Support = () => {
                     </Badge>
                   )}
                   <CardHeader className="pb-3 p-4">
-                    <div className="w-12 h-12 bg-halo-navy rounded-xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-halo-navy border-2 border-white rounded-xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                       <Icon className="h-6 w-6 text-halo-orange" />
                     </div>
                     <CardTitle className="text-lg font-bold text-white">{option.title}</CardTitle>
@@ -153,7 +153,7 @@ const Support = () => {
                         <span className="text-white">{option.responseTime}</span>
                       </div>
                     </div>
-                    <Button className="w-full h-10 bg-slate-900 hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
+                    <Button className="w-full h-10 bg-slate-900 border-2 border-white hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
                       {option.action}
                       <ArrowRight className="ml-2 h-3 w-3" />
                     </Button>
