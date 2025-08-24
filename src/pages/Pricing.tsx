@@ -117,28 +117,32 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-foreground mb-4">Choose Your Learning Plan</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
+    <div className="container mx-auto px-4 py-6 md:py-8 bg-white min-h-screen">
+      <div className="text-center mb-8 md:mb-12">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 md:mb-4">Choose Your Learning Plan</h1>
+        <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-4 md:mb-6">
           Invest in your future with our comprehensive finance and lending education programs. 
           Start with a 14-day free trial and see the difference quality training makes.
         </p>
-        <div className="inline-flex items-center gap-2 bg-green-50 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-          <Check className="h-4 w-4" />
-          30-day money-back guarantee • Cancel anytime
+        <div className="inline-flex items-center gap-2 bg-green-50 text-green-800 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium">
+          <Check className="h-3 w-3 md:h-4 md:w-4" />
+          <span className="hidden sm:inline">30-day money-back guarantee • Cancel anytime</span>
+          <span className="sm:hidden">30-day guarantee</span>
         </div>
       </div>
 
       {/* Pricing Toggle */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-6 md:mb-8">
         <div className="bg-gray-100 p-1 rounded-lg inline-flex">
-          <button className="px-4 py-2 text-sm font-medium bg-white rounded-md shadow-sm">Monthly</button>
-          <button className="px-4 py-2 text-sm font-medium text-gray-500">Annual (Save up to 20%)</button>
+          <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium bg-white rounded-md shadow-sm">Monthly</button>
+          <button className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-gray-500">
+            <span className="hidden sm:inline">Annual (Save up to 20%)</span>
+            <span className="sm:hidden">Annual</span>
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mb-12 md:mb-16">
         {plans.map((plan) => (
           <Card key={plan.name} className={`relative ${plan.popular ? 'border-primary shadow-lg scale-105 ring-2 ring-primary/20' : ''}`}>
             {plan.popular && (

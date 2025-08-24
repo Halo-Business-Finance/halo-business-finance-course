@@ -108,15 +108,15 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-20 md:pt-24 pb-12 md:pb-16 lg:pb-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-halo-light-blue/20 to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div className="space-y-6 md:space-y-8 animate-fade-in text-center lg:text-left">
+            <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
+              <div className="space-y-4 md:space-y-6 lg:space-y-8 animate-fade-in text-center lg:text-left">
                 
-                <div className="space-y-4 md:space-y-6">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
+                <div className="space-y-3 md:space-y-4 lg:space-y-6">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-playfair font-bold leading-tight text-navy-blue">
                     Master Business Finance
                     <span className="block text-navy-blue">
                       & Commercial Lending
@@ -124,23 +124,23 @@ const Index = () => {
                   </h1>
                   
                   <div className="flex items-center justify-center lg:justify-start">
-                    <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
+                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-2 md:px-3 py-1">
                       <Zap className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
-                      <span className="sm:hidden">Industry's Top Course</span>
+                      <span className="sm:hidden">Top Industry Course</span>
                     </Badge>
                   </div>
                   
-                  <p className="text-sm md:text-base leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
+                  <p className="text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
                     Transform your career with our comprehensive business finance and commercial lending program. 
-                    <span className="block mt-2 font-medium text-black">Your Pathway to Lending Excellence.</span>
-                    Developed by industry experts and delivered through Stanford-level curriculum.
+                    <span className="block mt-1 md:mt-2 font-medium text-black">Your Pathway to Lending Excellence.</span>
+                    <span className="hidden md:inline">Developed by industry experts and delivered through Stanford-level curriculum.</span>
                   </p>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
-                  <Link to="/auth">
-                    <Button size="lg" className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
+                  <Link to="/auth" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full text-sm md:text-base lg:text-lg px-4 md:px-6 lg:px-8 py-3 md:py-4 lg:py-6 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
                       <span className="sm:hidden">Start Learning</span>
                       <span className="hidden sm:inline">Start Learning Today</span>
                       <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
@@ -149,11 +149,12 @@ const Index = () => {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-4 md:py-6 border-primary/20 hover:bg-primary/5 group"
+                    className="w-full sm:w-auto text-sm md:text-base lg:text-lg px-4 md:px-6 lg:px-8 py-3 md:py-4 lg:py-6 border-primary/20 hover:bg-primary/5 group"
                     onClick={() => setIsDemoModalOpen(true)}
                   >
                     <Play className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
-                    Watch Demo
+                    <span className="hidden sm:inline">Watch Demo</span>
+                    <span className="sm:hidden">Demo</span>
                   </Button>
                 </div>
 
@@ -163,9 +164,9 @@ const Index = () => {
                 <img 
                   src={heroBusinessTraining} 
                   alt="Commercial lending training classroom with professionals learning loan underwriting" 
-                  className="w-full h-auto rounded-xl md:rounded-2xl shadow-hero mx-auto lg:mx-0"
+                  className="w-full h-48 sm:h-64 md:h-80 lg:h-auto object-cover rounded-lg md:rounded-xl lg:rounded-2xl shadow-hero mx-auto lg:mx-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl md:rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg md:rounded-xl lg:rounded-2xl" />
               </div>
             </div>
           </div>

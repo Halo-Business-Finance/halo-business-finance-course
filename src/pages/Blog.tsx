@@ -56,7 +56,7 @@ const Blog = () => {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[32rem] overflow-hidden">
+      <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
           src={blogHero} 
           alt="Professional blog and knowledge sharing environment" 
@@ -64,8 +64,8 @@ const Blog = () => {
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Blog & Resources</h1>
-            <p className="text-lg">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">Blog & Resources</h1>
+            <p className="text-sm sm:text-base md:text-lg leading-relaxed">
               Stay informed with the latest insights, trends, and best practices in finance and professional development.
             </p>
           </div>
@@ -73,55 +73,56 @@ const Blog = () => {
       </div>
       
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
 
-        <div className="flex flex-wrap gap-2 justify-center mb-8">
+        <div className="flex flex-wrap gap-2 justify-center mb-6 md:mb-8">
           {categories.map((category) => (
             <Badge 
               key={category} 
               variant={category === "All" ? "default" : "outline"}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+              className="cursor-pointer hover:bg-primary hover:text-primary-foreground text-xs md:text-sm"
             >
               {category}
             </Badge>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {posts.map((post) => (
             <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-              <div className="h-48 overflow-hidden">
+              <div className="h-40 md:h-48 overflow-hidden">
                 <img 
                   src={post.image} 
                   alt={post.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <CardHeader>
+              <CardHeader className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <Badge variant="secondary">{post.category}</Badge>
-                  <span className="text-sm text-muted-foreground">{post.readTime}</span>
+                  <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+                  <span className="text-xs md:text-sm text-muted-foreground">{post.readTime}</span>
                 </div>
-                <CardTitle className="text-xl hover:text-primary cursor-pointer">
+                <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer">
                   {post.title}
                 </CardTitle>
-                <CardDescription>{post.excerpt}</CardDescription>
+                <CardDescription className="text-sm">{post.excerpt}</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <CardContent className="p-4 md:p-6 pt-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs md:text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      {post.author}
+                      <User className="h-3 w-3 md:h-4 md:w-4" />
+                      <span className="truncate">{post.author}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
+                      <Calendar className="h-3 w-3 md:h-4 md:w-4" />
                       {new Date(post.date).toLocaleDateString()}
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                  <Button variant="ghost" size="sm" className="text-xs md:text-sm">
+                    <span className="hidden sm:inline">Read More</span>
+                    <span className="sm:hidden">Read</span>
+                    <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2" />
                   </Button>
                 </div>
               </CardContent>

@@ -24,7 +24,7 @@ export const MobileNav = () => {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-64">
+        <SheetContent side="right" className="w-72 sm:w-80">
           <SheetHeader>
             <SheetTitle className="text-left font-playfair text-lg text-halo-navy">
               Navigation

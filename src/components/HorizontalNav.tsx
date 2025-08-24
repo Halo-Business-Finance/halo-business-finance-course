@@ -13,17 +13,18 @@ import { cn } from "@/lib/utils";
 
 export const HorizontalNav = () => {
   return (
-    <div className="bg-white rounded-lg px-2 md:px-4 py-2">
+    <div className="bg-white rounded-lg px-1 sm:px-2 md:px-4 py-1 sm:py-2">
       <NavigationMenu className="bg-transparent">
-      <NavigationMenuList className="bg-transparent flex-wrap justify-center">
-        <NavigationMenuItem className="hidden lg:block">
+      <NavigationMenuList className="bg-transparent flex-wrap justify-center gap-1">
+        <NavigationMenuItem className="hidden xl:block">
           <NavigationMenuLink asChild>
             <NavLink 
               to="/about" 
               className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
               <Users className="h-3 w-3 md:h-4 md:w-4" />
-              About Us
+              <span className="hidden lg:inline">About Us</span>
+              <span className="lg:hidden">About</span>
             </NavLink>
           </NavigationMenuLink>
         </NavigationMenuItem>
@@ -59,7 +60,8 @@ export const HorizontalNav = () => {
               className={cn(navigationMenuTriggerStyle(), "!bg-blue-900 text-white hover:!bg-blue-800 shadow-none flex items-center gap-1 md:gap-2 text-xs md:text-sm px-2 md:px-4")}
             >
               <Building className="h-3 w-3 md:h-4 md:w-4" />
-              For Business
+              <span className="hidden lg:inline">For Business</span>
+              <span className="lg:hidden">Business</span>
             </NavLink>
           </NavigationMenuLink>
         </NavigationMenuItem>

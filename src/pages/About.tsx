@@ -72,17 +72,17 @@ const About = () => {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[32rem] overflow-hidden">
+      <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
           src={aboutHero} 
           alt="Professional team collaboration" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <div className="text-center text-white">
-            <Badge className="mb-4 bg-white/20 text-white border-white/30">About Us</Badge>
-            <h1 className="text-4xl font-bold mb-4">About Halo Business Finance</h1>
-            <p className="text-lg max-w-3xl mx-auto px-4">
+          <div className="text-center text-white px-4">
+            <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">About Us</Badge>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About Halo Business Finance</h1>
+            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
               We're dedicated to advancing careers in commercial lending through our comprehensive 
               FinPilot training program, providing world-class education for finance professionals.
             </p>
@@ -90,9 +90,9 @@ const About = () => {
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
         {companyInfo.map((info, index) => {
           const Icon = info.icon;
           return (

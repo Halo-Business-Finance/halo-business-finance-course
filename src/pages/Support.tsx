@@ -95,9 +95,9 @@ const Support = () => {
   return (
     <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[32rem] overflow-hidden">
+      <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
-          src={supportHero} 
+          src={supportHero}
           alt="Professional customer support environment" 
           className="w-full h-full object-cover"
         />

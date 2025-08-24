@@ -85,13 +85,13 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="sticky top-0 h-16 md:h-24 flex flex-col border-b bg-white z-50 px-2 md:px-4">
+    <header className="sticky top-0 h-14 md:h-16 lg:h-20 xl:h-24 flex flex-col border-b bg-white z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4">
         <div className="flex items-center gap-2 md:gap-4">
           {!user && (
             <div className="flex items-center gap-2 md:gap-3">
               <Link to="/" className="hover:opacity-80 transition-opacity">
-                <span className="font-aptos font-semibold text-lg md:text-2xl text-blue-900 whitespace-nowrap">
+                <span className="font-aptos font-semibold text-base sm:text-lg md:text-xl lg:text-2xl text-blue-900 whitespace-nowrap">
                   <span className="hidden sm:inline">Halo Business Finance</span>
                   <span className="sm:hidden">Halo Finance</span>
                 </span>
@@ -124,8 +124,8 @@ const HeaderContent = () => {
         </div>
 
         {!user && (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="hidden lg:block">
+          <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto">
+            <div className="hidden lg:block w-full">
               <HorizontalNav />
             </div>
             <div className="lg:hidden">
