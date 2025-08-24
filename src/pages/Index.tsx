@@ -391,13 +391,13 @@ const Index = () => {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/auth">
-                  <Button size="lg" className="text-lg px-8 py-6 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
-                    <Zap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <Button className="text-base px-6 py-3 bg-white text-halo-navy hover:bg-white/90 shadow-hero group">
+                    <Zap className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                     Get Started Now
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
-                  <Shield className="mr-2 h-5 w-5" />
+                <Button variant="outline" className="text-base px-6 py-3 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
+                  <Shield className="mr-2 h-4 w-4" />
                   Learn More
                 </Button>
               </div>
