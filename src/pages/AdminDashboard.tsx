@@ -40,6 +40,8 @@ import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
+import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
+import { authRateLimiter } from "@/utils/validation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -428,10 +430,63 @@ const AdminDashboard = () => {
   };
 
   const createNewUser = async () => {
-    if (!newUserData.email || !newUserData.password) {
+    // Enhanced input validation and sanitization
+    const sanitizedEmail = sanitizeInput(newUserData.email).trim().toLowerCase();
+    const sanitizedFullName = sanitizeInput(newUserData.fullName).trim();
+    const rawPassword = newUserData.password; // Don't sanitize passwords
+
+    // Validate email format
+    const emailValidation = validateEmail(sanitizedEmail);
+    if (!emailValidation.isValid) {
       toast({
-        title: "Error",
-        description: "Email and password are required.",
+        title: "Invalid Email",
+        description: emailValidation.message || "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate password strength
+    const passwordValidation = validatePassword(rawPassword);
+    if (!passwordValidation.isValid) {
+      toast({
+        title: "Weak Password",
+        description: passwordValidation.message || "Password must be at least 8 characters with uppercase, lowercase, number, and special character.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate full name
+    if (sanitizedFullName) {
+      const nameValidation = validateName(sanitizedFullName);
+      if (!nameValidation.isValid) {
+        toast({
+          title: "Invalid Name",
+          description: nameValidation.message || "Please enter a valid name.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    // Rate limiting for admin operations
+    const rateLimitCheck = authRateLimiter.isAllowed(`admin_create_user_${user?.id}`);
+    if (!rateLimitCheck.allowed) {
+      toast({
+        title: "Rate Limit Exceeded",
+        description: `Too many user creation attempts. Please wait ${Math.ceil((rateLimitCheck.timeUntilReset || 0) / 60)} minutes.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Additional security: validate role assignment permissions
+    if ((newUserData.role === 'super_admin' && userRole !== 'super_admin') ||
+        (['admin', 'tech_support_admin'].includes(newUserData.role) && !['super_admin', 'admin'].includes(userRole || ''))) {
+      toast({
+        title: "Insufficient Permissions",
+        description: "You don't have permission to assign this role.",
         variant: "destructive",
       });
       return;
@@ -444,9 +499,9 @@ const AdminDashboard = () => {
         body: {
           operation: 'createAdminAccount',
           data: {
-            email: newUserData.email,
-            password: newUserData.password,
-            fullName: newUserData.fullName,
+            email: sanitizedEmail,
+            password: rawPassword,
+            fullName: sanitizedFullName,
             role: newUserData.role
           }
         }
@@ -462,7 +517,7 @@ const AdminDashboard = () => {
 
       toast({
         title: "Success",
-        description: `User ${newUserData.email} created successfully with ${newUserData.role} role.`,
+        description: `User ${sanitizedEmail} created successfully with ${newUserData.role} role.`,
       });
 
       // Reset form
@@ -834,36 +889,43 @@ const AdminDashboard = () => {
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
                         <label htmlFor="email" className="text-sm font-medium">Email</label>
-                        <input
+                         <input
                           id="email"
                           type="email"
                           value={newUserData.email}
-                          onChange={(e) => setNewUserData({...newUserData, email: e.target.value})}
+                          onChange={(e) => setNewUserData({...newUserData, email: sanitizeInput(e.target.value)})}
                           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           placeholder="user@example.com"
-                        />
+                          maxLength={100}
+                          autoComplete="off"
+                         />
                       </div>
                       <div className="grid gap-2">
                         <label htmlFor="password" className="text-sm font-medium">Password</label>
-                        <input
+                         <input
                           id="password"
                           type="password"
                           value={newUserData.password}
                           onChange={(e) => setNewUserData({...newUserData, password: e.target.value})}
                           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                          placeholder="Enter password"
-                        />
+                          placeholder="Min 8 chars, uppercase, lowercase, number, special character"
+                          minLength={8}
+                          maxLength={128}
+                          autoComplete="new-password"
+                         />
                       </div>
                       <div className="grid gap-2">
                         <label htmlFor="fullName" className="text-sm font-medium">Full Name</label>
-                        <input
+                         <input
                           id="fullName"
                           type="text"
                           value={newUserData.fullName}
-                          onChange={(e) => setNewUserData({...newUserData, fullName: e.target.value})}
+                          onChange={(e) => setNewUserData({...newUserData, fullName: sanitizeInput(e.target.value)})}
                           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           placeholder="John Doe"
-                        />
+                          maxLength={50}
+                          autoComplete="off"
+                         />
                       </div>
                       <div className="grid gap-2">
                         <label htmlFor="role" className="text-sm font-medium">Initial Role</label>
