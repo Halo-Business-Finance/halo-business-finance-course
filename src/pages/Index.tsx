@@ -119,7 +119,7 @@ const Index = () => {
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-playfair font-bold leading-tight text-halo-navy">
                     Master Business
                     <span className="block bg-gradient-hero bg-clip-text text-transparent">
-                      Finance & Lending
+                      Finance & Commercial Lending
                     </span>
                   </h1>
                   
