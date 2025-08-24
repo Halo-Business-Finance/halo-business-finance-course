@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown } from "lucide-react";
+import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown, Shield, Lock, Zap, Monitor, Cloud, CheckCircle, Smartphone, Globe, Database, Cpu, Server } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
@@ -45,6 +45,69 @@ const About = () => {
       value: "15+", 
       icon: Users2,
       description: "Industry veterans with decades of lending experience"
+    }
+  ];
+
+  const platformFeatures = [
+    {
+      title: "Interactive Learning Management System",
+      description: "Modern LMS with progress tracking, real-time assessments, and personalized learning paths",
+      icon: Monitor,
+      features: ["Progress Analytics", "Adaptive Learning", "Real-time Feedback", "Mobile Access"]
+    },
+    {
+      title: "Cloud-Based Infrastructure",
+      description: "Scalable, reliable platform with 99.9% uptime and global accessibility",
+      icon: Cloud,
+      features: ["Global CDN", "Auto Scaling", "24/7 Monitoring", "Backup & Recovery"]
+    },
+    {
+      title: "AI-Powered Recommendations",
+      description: "Machine learning algorithms provide personalized course recommendations and study plans",
+      icon: Cpu,
+      features: ["Smart Recommendations", "Learning Analytics", "Performance Prediction", "Content Optimization"]
+    }
+  ];
+
+  const securityFeatures = [
+    {
+      title: "Enterprise-Grade Security",
+      description: "Bank-level security protocols protecting sensitive financial training data",
+      icon: Shield,
+      details: ["AES-256 Encryption", "Multi-Factor Authentication", "SOC 2 Compliance", "GDPR Compliant"]
+    },
+    {
+      title: "Data Protection & Privacy",
+      description: "Comprehensive data protection measures ensuring student privacy and regulatory compliance",
+      icon: Lock,
+      details: ["End-to-End Encryption", "Privacy Controls", "Data Anonymization", "Secure APIs"]
+    },
+    {
+      title: "Secure Infrastructure",
+      description: "Robust infrastructure with advanced threat detection and prevention systems",
+      icon: Server,
+      details: ["DDoS Protection", "Intrusion Detection", "Security Monitoring", "Vulnerability Scanning"]
+    }
+  ];
+
+  const platformAdvantages = [
+    {
+      title: "Flexible Learning Experience",
+      description: "Learn at your own pace with mobile-friendly design and offline capabilities",
+      icon: Smartphone,
+      benefits: ["Self-Paced Learning", "Mobile Optimization", "Offline Access", "Cross-Device Sync"]
+    },
+    {
+      title: "Industry Integration",
+      description: "Direct connections to leading financial institutions and lending software providers",
+      icon: Globe,
+      benefits: ["Partner Network", "Job Placement Assistance", "Industry Connections", "Real-World Projects"]
+    },
+    {
+      title: "Advanced Analytics",
+      description: "Comprehensive learning analytics and performance insights for continuous improvement",
+      icon: Database,
+      benefits: ["Learning Insights", "Performance Metrics", "Progress Tracking", "Skill Assessment"]
     }
   ];
 
@@ -144,6 +207,168 @@ const About = () => {
                   />
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Learning Platform Features */}
+      <div className="mb-12 md:mb-16">
+        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <Monitor className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Advanced Learning Platform</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {platformFeatures.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-halo-navy rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-halo-orange" />
+                  </div>
+                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardDescription className="text-black">{feature.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {feature.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-halo-orange" />
+                        <span className="text-sm text-black">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+        <Card className="bg-gradient-to-r from-halo-navy/5 to-halo-orange/5">
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-foreground mb-4">Why Our Platform Stands Out</h3>
+              <p className="text-black leading-relaxed max-w-4xl mx-auto">
+                Our cutting-edge learning management system combines the latest in educational technology with 
+                practical commercial lending expertise. Built specifically for finance professionals, our platform 
+                delivers personalized learning experiences that adapt to your pace and learning style, ensuring 
+                maximum retention and real-world application.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Security Features */}
+      <div className="mb-12 md:mb-16">
+        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <Shield className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Enterprise Security & Compliance</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {securityFeatures.map((security, index) => {
+            const Icon = security.icon;
+            return (
+              <Card key={index} className="hover:shadow-lg transition-shadow border-2 border-transparent hover:border-halo-orange/20">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-halo-orange/10 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-halo-orange" />
+                  </div>
+                  <CardTitle className="text-xl">{security.title}</CardTitle>
+                  <CardDescription className="text-black">{security.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {security.details.map((detail, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <Lock className="h-4 w-4 text-halo-orange" />
+                        <span className="text-sm text-black font-medium">{detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+        <Card className="bg-halo-navy text-white">
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-4">Financial-Grade Security</h3>
+              <p className="leading-relaxed max-w-4xl mx-auto">
+                We understand that financial training involves sensitive data. That's why we've implemented 
+                bank-level security measures including end-to-end encryption, multi-factor authentication, 
+                and compliance with SOC 2 and GDPR standards. Your learning data and personal information 
+                are protected with the same level of security used by major financial institutions.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Platform Advantages */}
+      <div className="mb-12 md:mb-16">
+        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <Zap className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Platform Advantages</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {platformAdvantages.map((advantage, index) => {
+            const Icon = advantage.icon;
+            return (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-gradient-to-br from-halo-navy to-halo-orange rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">{advantage.title}</CardTitle>
+                  <CardDescription className="text-black">{advantage.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {advantage.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-halo-orange" />
+                        <span className="text-sm text-black">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="bg-gradient-to-br from-halo-orange/10 to-halo-navy/10">
+            <CardContent className="p-8">
+              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <Globe className="h-5 w-5 text-halo-orange" />
+                Global Accessibility
+              </h3>
+              <p className="text-black leading-relaxed">
+                Access your training materials from anywhere in the world with our cloud-based platform. 
+                Our global content delivery network ensures fast loading times regardless of your location, 
+                making professional development accessible to finance professionals worldwide.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-halo-navy/10 to-halo-orange/10">
+            <CardContent className="p-8">
+              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <Database className="h-5 w-5 text-halo-orange" />
+                Continuous Innovation
+              </h3>
+              <p className="text-black leading-relaxed">
+                Our platform continuously evolves with regular updates, new features, and enhanced 
+                capabilities. We stay ahead of industry trends and incorporate the latest educational 
+                technologies to ensure you're always learning with the most advanced tools available.
+              </p>
             </CardContent>
           </Card>
         </div>
