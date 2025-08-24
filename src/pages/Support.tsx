@@ -147,7 +147,7 @@ const Support = () => {
                       </div>
                       {option.badge && (
                         <div className="mt-2">
-                          <Badge className="bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs">
+                          <Badge className="bg-black text-halo-orange border-yellow-400/30 hover:bg-black/90 text-xs">
                             {option.badge}
                           </Badge>
                         </div>
