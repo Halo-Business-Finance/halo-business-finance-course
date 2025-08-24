@@ -201,7 +201,7 @@ const AuthPage = () => {
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center">
             <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">BFM</span>
+              <span className="text-halo-orange font-bold text-sm">FinPilot</span>
             </div>
           </div>
           <h1 className="text-2xl font-bold">Business Finance Mastery</h1>
