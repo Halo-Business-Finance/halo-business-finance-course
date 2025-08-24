@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building, BookOpen, Award, TrendingUp, Clock, Users2 } from "lucide-react";
+import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
@@ -112,8 +112,13 @@ const About = () => {
         })}
       </div>
 
-      <div className="mb-16">
-        <h2 className="text-3xl font-bold text-foreground text-center mb-8">Our Story</h2>
+      <div className="mb-12 md:mb-16">
+        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <FileText className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Our Story</h2>
+        </div>
         <div className="max-w-6xl mx-auto">
           <Card>
             <CardContent className="p-0">
@@ -145,7 +150,12 @@ const About = () => {
       </div>
 
       <div>
-        <h2 className="text-3xl font-bold text-foreground text-center mb-8">Leadership Team</h2>
+        <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-navy rounded-lg flex items-center justify-center">
+            <Crown className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Leadership Team</h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {team.map((member, index) => (
             <Card key={index}>
