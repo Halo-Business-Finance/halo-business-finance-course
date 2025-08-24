@@ -153,7 +153,7 @@ const Support = () => {
                         <span className="text-white">{option.responseTime}</span>
                       </div>
                     </div>
-                    <Button className="w-full h-10 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
+                    <Button className="w-full h-10 bg-slate-900 hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-md hover:shadow-lg transition-all group-hover:bg-blue-600 text-sm">
                       {option.action}
                       <ArrowRight className="ml-2 h-3 w-3" />
                     </Button>
