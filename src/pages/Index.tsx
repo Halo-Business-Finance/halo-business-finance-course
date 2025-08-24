@@ -244,7 +244,7 @@ const Index = () => {
                     {path.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-3">
                         <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
+                        <span className="text-sm text-black">{feature}</span>
                       </div>
                     ))}
                   </div>
