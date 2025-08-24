@@ -338,13 +338,13 @@ const Index = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+              What Our Graduates Say
+            </h2>
             <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90">
               <Star className="h-4 w-4" />
               Success Stories
             </Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
-              What Our Graduates Say
-            </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
