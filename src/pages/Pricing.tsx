@@ -205,7 +205,8 @@ const Pricing = () => {
                 ))}
               </ul>
               <Button 
-                className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy" 
+                className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
+                variant="outline"
               >
                 {plan.name === "Enterprise" ? (
                   <>
