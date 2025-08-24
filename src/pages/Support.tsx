@@ -116,28 +116,6 @@ const Support = () => {
       
       <div className="container mx-auto px-4 py-16">
 
-        {/* Quick Help Options */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-center mb-8 text-slate-900">Quick Help</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickHelp.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl hover:-translate-y-1">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-blue-600 group-hover:to-blue-700 transition-colors">
-                      <Icon className="h-7 w-7 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
-                    <p className="text-sm text-black mb-2">{item.description}</p>
-                    <p className="text-xs font-medium text-blue-600">{item.count}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-
         {/* Contact Support Options */}
         <div className="mb-16">
           <div className="text-center mb-12">
@@ -179,6 +157,28 @@ const Support = () => {
                       {option.action}
                       <ArrowRight className="ml-2 h-3 w-3" />
                     </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Quick Help Options */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-center mb-8 text-slate-900">Quick Help</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {quickHelp.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <Card key={index} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm hover:shadow-xl hover:-translate-y-1">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-blue-600 group-hover:to-blue-700 transition-colors">
+                      <Icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
+                    <p className="text-sm text-black mb-2">{item.description}</p>
+                    <p className="text-xs font-medium text-blue-600">{item.count}</p>
                   </CardContent>
                 </Card>
               );
