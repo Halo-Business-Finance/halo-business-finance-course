@@ -173,14 +173,11 @@ const HeaderContent = () => {
               </Button>
             </Link>
             <Link to="/signup">
-              <div className="flex flex-col items-center">
-                <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
-                  <Play className="h-4 w-4" />
-                  <span className="hidden md:inline">Get Started</span>
-                  <span className="md:hidden">Start</span>
-                </Button>
-                <span className="text-xs text-gray-600 mt-1">Free 3-Day Trial</span>
-              </div>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
+                <Play className="h-4 w-4" />
+                <span className="hidden md:inline">Get Started</span>
+                <span className="md:hidden">Start</span>
+              </Button>
             </Link>
           </div>
         )}
