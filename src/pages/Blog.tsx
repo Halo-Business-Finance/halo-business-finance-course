@@ -112,15 +112,9 @@ const Blog = () => {
               </CardHeader>
               <CardContent className="p-4 md:p-6 pt-0">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs md:text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3 md:h-4 md:w-4" />
-                      <span className="truncate">{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 md:h-4 md:w-4" />
-                      {new Date(post.date).toLocaleDateString()}
-                    </div>
+                  <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
+                    <Calendar className="h-3 w-3 md:h-4 md:w-4" />
+                    {new Date(post.date).toLocaleDateString()}
                   </div>
                   <Button className="text-xs md:text-sm bg-halo-navy text-halo-orange hover:bg-halo-navy/90" size="sm">
                     <span className="hidden sm:inline">Read More</span>
