@@ -127,7 +127,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-white text-gray-900 font-inter;
+    @apply bg-white text-gray-900 font-sans;
   }
   
   
