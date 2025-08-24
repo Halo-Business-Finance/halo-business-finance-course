@@ -211,7 +211,7 @@ const Index = () => {
                 <Target className="h-3 w-3 md:h-4 md:w-4" />
                 Structured Learning Paths
               </Badge>
-              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
+              <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
               </p>
             </div>
@@ -274,7 +274,7 @@ const Index = () => {
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
-              <p className="text-base md:text-lg text-foreground max-w-3xl mx-auto lg:mx-0">
+              <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-accent">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
             </div>
