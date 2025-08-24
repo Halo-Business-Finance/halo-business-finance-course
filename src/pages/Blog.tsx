@@ -186,7 +186,7 @@ const Blog = () => {
               onClick={() => setSelectedCategory(category)}
               className={`cursor-pointer text-xs md:text-sm transition-all ${
                 selectedCategory === category
-                  ? "bg-halo-orange text-white shadow-lg scale-105 border-2 border-halo-orange" 
+                  ? "bg-transparent text-halo-orange underline underline-offset-4 decoration-2 decoration-halo-orange scale-105" 
                   : "bg-transparent text-halo-orange hover:scale-105 border border-transparent"
               }`}
             >
