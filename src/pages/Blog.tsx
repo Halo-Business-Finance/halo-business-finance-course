@@ -103,16 +103,16 @@ const Blog = () => {
               <CardHeader className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-2">
                   <Badge className="text-xs bg-halo-navy text-halo-orange">{post.category}</Badge>
-                  <span className="text-xs md:text-sm text-muted-foreground">{post.readTime}</span>
+                  <span className="text-xs md:text-sm text-black">{post.readTime}</span>
                 </div>
-                <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer">
+                <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer text-black">
                   {post.title}
                 </CardTitle>
-                <CardDescription className="text-sm">{post.excerpt}</CardDescription>
+                <CardDescription className="text-sm text-black">{post.excerpt}</CardDescription>
               </CardHeader>
               <CardContent className="p-4 md:p-6 pt-0">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-1 text-xs md:text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1 text-xs md:text-sm text-black">
                     <Calendar className="h-3 w-3 md:h-4 md:w-4" />
                     {new Date(post.date).toLocaleDateString()}
                   </div>
