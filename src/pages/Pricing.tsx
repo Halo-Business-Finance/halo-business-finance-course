@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Play, Mail, Star } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import pricingHero from "@/assets/pricing-hero.jpg";
 
 const Pricing = () => {
@@ -204,22 +205,26 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-              <Button 
-                className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
-                variant="outline"
-              >
-                {plan.name === "Enterprise" ? (
-                  <>
-                    <Mail className="h-4 w-4" />
-                    Contact Sales
-                  </>
-                ) : (
-                  <>
+              {plan.name === "Enterprise" ? (
+                <Button 
+                  className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
+                  variant="outline"
+                >
+                  <Mail className="h-4 w-4" />
+                  Contact Sales
+                </Button>
+              ) : (
+                <Button 
+                  className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
+                  variant="outline"
+                  asChild
+                >
+                  <Link to="/signup">
                     <Play className="h-4 w-4" />
                     {plan.name === "Professional" ? "Start Free Trial" : "Get Started"}
-                  </>
-                )}
-              </Button>
+                  </Link>
+                </Button>
+              )}
               {plan.name === "Professional" && (
                 <p className="text-xs text-center text-black mt-2">
                   3-day free trial, no credit card required
