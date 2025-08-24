@@ -151,18 +151,18 @@ const Pricing = () => {
 
       {/* Pricing Toggle */}
       <div className="flex justify-center mb-6 md:mb-8">
-        <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+        <div className="inline-flex gap-8">
           <button 
-            className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-md transition-all ${
-              !isAnnual ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'
+            className={`px-4 py-2 text-sm md:text-base font-medium transition-all ${
+              !isAnnual ? 'text-halo-orange underline underline-offset-4 decoration-2 decoration-halo-navy' : 'text-halo-orange hover:scale-105'
             }`}
             onClick={() => setIsAnnual(false)}
           >
             Monthly
           </button>
           <button 
-            className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-md transition-all ${
-              isAnnual ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'
+            className={`px-4 py-2 text-sm md:text-base font-medium transition-all ${
+              isAnnual ? 'text-halo-orange underline underline-offset-4 decoration-2 decoration-halo-navy' : 'text-halo-orange hover:scale-105'
             }`}
             onClick={() => setIsAnnual(true)}
           >
