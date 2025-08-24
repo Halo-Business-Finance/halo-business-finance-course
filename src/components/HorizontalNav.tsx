@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 export const HorizontalNav = () => {
   return (
-    <div className="bg-white rounded-lg px-1 sm:px-2 md:px-4 py-1 sm:py-2">
+    <div className="hidden xl:block bg-white rounded-lg px-1 sm:px-2 md:px-4 py-1 sm:py-2">
       <NavigationMenu className="bg-transparent">
       <NavigationMenuList className="bg-transparent flex-wrap justify-center gap-1">
         <NavigationMenuItem className="hidden xl:block">

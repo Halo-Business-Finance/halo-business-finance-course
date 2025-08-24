@@ -17,7 +17,7 @@ export const MobileNav = () => {
   ];
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="text-black hover:bg-black/10 p-2">
