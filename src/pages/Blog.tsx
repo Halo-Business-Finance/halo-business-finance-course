@@ -79,8 +79,11 @@ const Blog = () => {
           {categories.map((category) => (
             <Badge 
               key={category} 
-              variant={category === "All" ? "default" : "outline"}
-              className="cursor-pointer hover:bg-primary hover:text-primary-foreground text-xs md:text-sm"
+              className={`cursor-pointer text-xs md:text-sm transition-all ${
+                category === "All" 
+                  ? "bg-halo-navy text-halo-orange hover:bg-halo-navy/90" 
+                  : "bg-halo-navy text-halo-orange hover:bg-halo-navy/90"
+              }`}
             >
               {category}
             </Badge>
@@ -99,7 +102,7 @@ const Blog = () => {
               </div>
               <CardHeader className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+                  <Badge className="text-xs bg-halo-navy text-halo-orange">{post.category}</Badge>
                   <span className="text-xs md:text-sm text-muted-foreground">{post.readTime}</span>
                 </div>
                 <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer">
