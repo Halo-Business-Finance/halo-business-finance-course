@@ -123,14 +123,6 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <div className="flex items-center justify-center lg:justify-start">
-                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-2 md:px-3 py-1">
-                      <Zap className="h-3 w-3 md:h-4 md:w-4" />
-                      <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
-                      <span className="sm:hidden">Top Industry Course</span>
-                    </Badge>
-                  </div>
-                  
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
                     Transform your career with our comprehensive business finance and commercial lending program. 
                     <span className="block mt-1 md:mt-2 font-medium text-black">Your Pathway to Lending Excellence.</span>
@@ -208,10 +200,17 @@ const Index = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
-              <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
-                <Target className="h-3 w-3 md:h-4 md:w-4" />
-                Structured Learning Paths
-              </Badge>
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2">
+                <Badge className="inline-flex items-center gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-3 py-1">
+                  <Target className="h-3 w-3 md:h-4 md:w-4" />
+                  Structured Learning Paths
+                </Badge>
+                <Badge className="inline-flex items-center gap-1 md:gap-2 bg-black text-yellow-400 border-yellow-400/30 hover:bg-black/90 text-xs md:text-sm px-2 md:px-3 py-1">
+                  <Zap className="h-3 w-3 md:h-4 md:w-4" />
+                  <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
+                  <span className="sm:hidden">Top Industry Course</span>
+                </Badge>
+              </div>
               <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
               </p>
