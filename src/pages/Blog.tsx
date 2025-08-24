@@ -125,13 +125,13 @@ const Blog = () => {
       excerpt: "Navigate the complexities of SBA loan programs, eligibility requirements, and application processes to better serve your small business clients.",
       author: "Dr. Emily Rodriguez",
       date: "2024-01-17",
-      category: "SBA",
+      category: "SBA Loans",
       readTime: "9 min read",
       image: riskManagementProfessional
     }
   ];
 
-  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA"];
+  const categories = ["All", "Technology", "Career Development", "Risk Management", "Education", "Commercial Lending", "Business Finance", "SBA Loans"];
 
   const filteredPosts = selectedCategory === "All" 
     ? posts 
