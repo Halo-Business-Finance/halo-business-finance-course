@@ -179,7 +179,7 @@ const Blog = () => {
       {/* Content Section */}
       <div className="container mx-auto px-4 py-8 md:py-12">
 
-        <div className="flex flex-wrap gap-2 justify-center mb-6 md:mb-8">
+        <div className="flex flex-wrap gap-2 justify-center items-center mb-6 md:mb-8">
           {categories.map((category) => (
             <Badge 
               key={category} 
