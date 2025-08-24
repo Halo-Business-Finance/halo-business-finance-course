@@ -137,7 +137,7 @@ const Blog = () => {
               className={`cursor-pointer text-xs md:text-sm transition-all ${
                 selectedCategory === category
                   ? "bg-halo-orange text-white shadow-lg scale-105 border-2 border-halo-orange" 
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105"
+                  : "bg-transparent text-halo-orange hover:scale-105 border border-transparent"
               }`}
             >
               {category}
@@ -157,7 +157,7 @@ const Blog = () => {
               </div>
               <CardHeader className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <Badge className="text-xs bg-gray-200 text-gray-700">{post.category}</Badge>
+                  <Badge className="text-xs bg-transparent text-halo-orange border-none">{post.category}</Badge>
                   <span className="text-xs md:text-sm text-black">{post.readTime}</span>
                 </div>
                 <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer text-black">
