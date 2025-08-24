@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Target, Users, Award, Globe } from "lucide-react";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
 import teamSarah from "@/assets/team-sarah.jpg";
@@ -129,6 +130,8 @@ const About = () => {
           ))}
         </div>
       </div>
+      
+      <FinPilotBrandFooter />
       </div>
     </div>
   );

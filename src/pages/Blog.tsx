@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight } from "lucide-react";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import blogHero from "@/assets/blog-hero.jpg";
 import fintechPost from "@/assets/fintech-post.jpg";
 import creditSkillsPost from "@/assets/credit-skills-post.jpg";
@@ -134,6 +135,8 @@ const Blog = () => {
           </Button>
         </div>
         </div>
+        
+        <FinPilotBrandFooter />
     </div>
   );
 };

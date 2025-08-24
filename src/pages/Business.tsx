@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon } from "lucide-react";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import businessHero from "@/assets/business-hero.jpg";
 import businessCta from "@/assets/business-cta.jpg";
 
@@ -105,6 +106,8 @@ const Business = () => {
           </div>
         </div>
       </div>
+      
+      <FinPilotBrandFooter />
     </div>
   );
 };

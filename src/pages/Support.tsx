@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, MessageCircle, Mail, Phone, Search } from "lucide-react";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import supportHero from "@/assets/support-hero.jpg";
 
 const Support = () => {
@@ -138,6 +139,8 @@ const Support = () => {
           </Card>
         </div>
         </div>
+        
+        <FinPilotBrandFooter />
     </div>
   );
 };

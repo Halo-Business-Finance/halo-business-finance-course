@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Play, Mail } from "lucide-react";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 
 const Pricing = () => {
   const plans = [
@@ -104,6 +105,8 @@ const Pricing = () => {
           </Card>
         ))}
       </div>
+      
+      <FinPilotBrandFooter />
     </div>
   );
 };

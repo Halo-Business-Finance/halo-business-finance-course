@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -247,6 +248,8 @@ const Courses = () => {
           </div>
         )}
       </div>
+      
+      <FinPilotBrandFooter />
     </div>
   );
 };
