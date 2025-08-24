@@ -271,7 +271,6 @@ const Index = () => {
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange mt-4 text-xs md:text-sm px-3 py-1 border-0">
-                <Star className="h-3 w-3 md:h-4 md:w-4" />
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
