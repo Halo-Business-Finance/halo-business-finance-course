@@ -407,7 +407,7 @@ const Index = () => {
                 </Link>
               </div>
 
-              <div className="flex justify-center items-center gap-8 pt-8 text-white text-sm">
+              <div className="flex flex-col justify-center items-center gap-4 pt-8 text-white text-sm">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
                   <span>No Risk, 30-Day Money Back Guarantee</span>
