@@ -115,16 +115,6 @@ const Support = () => {
       </div>
       
       <div className="container mx-auto px-4 py-16">
-        {/* Search Section */}
-        <div className="max-w-2xl mx-auto mb-16">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
-            <Input 
-              placeholder="Search our help center..." 
-              className="pl-12 h-14 text-lg border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl shadow-sm"
-            />
-          </div>
-        </div>
 
         {/* Quick Help Options */}
         <div className="mb-16">
