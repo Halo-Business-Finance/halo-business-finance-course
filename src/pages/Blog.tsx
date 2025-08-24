@@ -151,7 +151,7 @@ const Blog = () => {
     }
   ];
 
-  const categories = ["All", "Technology", "Career Development", "Risk Management", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets"];
+  const categories = ["All", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets", "Technology", "Career Development", "Risk Management"];
 
   const filteredPosts = selectedCategory === "All" 
     ? posts 
