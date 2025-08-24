@@ -168,69 +168,73 @@ const Support = () => {
         {/* FAQ and Contact Form */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* FAQ Section */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                <HelpCircle className="h-6 w-6 text-blue-600" />
+          <Card className="bg-halo-navy border-2 border-white shadow-lg">
+            <CardHeader className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-halo-navy border-2 border-white rounded-xl flex items-center justify-center">
+                  <HelpCircle className="h-6 w-6 text-halo-orange" />
+                </div>
+                <h2 className="text-2xl font-bold text-white">Frequently Asked Questions</h2>
               </div>
-              <h2 className="text-2xl font-bold text-slate-900">Frequently Asked Questions</h2>
-            </div>
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`} 
-                  className="border border-slate-200 rounded-xl px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-blue-600 transition-colors">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-black leading-relaxed pt-2">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
+            </CardHeader>
+            <CardContent className="px-6 pb-6">
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <AccordionItem 
+                    key={index} 
+                    value={`item-${index}`} 
+                    className="border-2 border-white rounded-xl px-6 py-2 shadow-sm hover:shadow-md transition-shadow bg-slate-900"
+                  >
+                    <AccordionTrigger className="text-left font-semibold text-white hover:text-halo-orange transition-colors">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-white leading-relaxed pt-2">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
 
           {/* Contact Form */}
-          <Card className="shadow-xl border-0 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-              <CardTitle className="text-xl font-bold">Send us a Message</CardTitle>
-              <CardDescription className="text-blue-100">
+          <Card className="bg-halo-navy border-2 border-white shadow-lg overflow-hidden">
+            <CardHeader className="bg-slate-900 text-white border-b-2 border-white">
+              <CardTitle className="text-xl font-bold text-white">Send us a Message</CardTitle>
+              <CardDescription className="text-white/80">
                 Can't find what you're looking for? Our team will get back to you within 4 hours.
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-8 space-y-6 bg-white">
+            <CardContent className="p-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input 
                   placeholder="First Name" 
-                  className="h-12 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
+                  className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
                 />
                 <Input 
                   placeholder="Last Name" 
-                  className="h-12 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
+                  className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
                 />
               </div>
               <Input 
                 type="email" 
                 placeholder="Email Address" 
-                className="h-12 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
+                className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
               />
               <Input 
                 placeholder="Subject" 
-                className="h-12 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
+                className="h-12 bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg text-black"
               />
               <Textarea 
                 placeholder="Tell us how we can help you..." 
                 rows={4} 
-                className="border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg resize-none"
+                className="bg-white border-2 border-white focus:border-halo-orange focus:ring-2 focus:ring-halo-orange/20 rounded-lg resize-none text-black"
               />
-              <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+              <Button className="w-full h-12 bg-slate-900 border-2 border-white hover:bg-slate-800 text-halo-orange font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
                 Send Message
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <p className="text-xs text-slate-500 text-center">
+              <p className="text-xs text-white/80 text-center">
                 We typically respond within 4 hours during business hours
               </p>
             </CardContent>
