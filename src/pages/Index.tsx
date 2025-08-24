@@ -139,14 +139,14 @@ const Index = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                   <Link to="/auth" className="w-full sm:w-auto">
-                    <div className="flex flex-col items-center">
-                      <Button size="lg" className="w-full h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
+                    <Button size="lg" className="w-full h-14 text-xs md:text-sm lg:text-base px-8 py-2 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group flex flex-col items-center">
+                      <div className="flex items-center">
                         <span className="sm:hidden">Start Learning</span>
                         <span className="hidden sm:inline">Start Learning Today</span>
                         <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                      <span className="text-xs text-gray-600 mt-1">Free 3-Day Trial</span>
-                    </div>
+                      </div>
+                      <span className="text-xs mt-1">Free 3-Day Trial</span>
+                    </Button>
                   </Link>
                   <Button 
                     variant="outline" 
