@@ -8,6 +8,12 @@ import businessCta from "@/assets/business-cta.jpg";
 import businessMeeting from "@/assets/business-meeting.jpg";
 import businessAnalytics from "@/assets/business-analytics.jpg";
 import businessTeam from "@/assets/business-team.jpg";
+import enterpriseSolutions from "@/assets/enterprise-solutions.jpg";
+import teamManagement from "@/assets/team-management.jpg";
+import analyticsReporting from "@/assets/analytics-reporting.jpg";
+import securityCompliance from "@/assets/security-compliance.jpg";
+import customCertifications from "@/assets/custom-certifications.jpg";
+import dedicatedSupport from "@/assets/dedicated-support.jpg";
 
 const Business = () => {
   const features = [
@@ -15,37 +21,43 @@ const Business = () => {
       icon: Building2,
       title: "Enterprise Solutions",
       description: "Scalable learning management system designed for organizations of all sizes, from startups to Fortune 500 companies.",
-      benefits: ["Custom branding", "White-label options", "API integrations", "Unlimited users"]
+      benefits: ["Custom branding", "White-label options", "API integrations", "Unlimited users"],
+      image: enterpriseSolutions
     },
     {
       icon: Users,
       title: "Team Management",
       description: "Advanced user management with role-based access, automated reporting, and comprehensive progress tracking.",
-      benefits: ["Role-based permissions", "Bulk user management", "Team analytics", "Automated notifications"]
+      benefits: ["Role-based permissions", "Bulk user management", "Team analytics", "Automated notifications"],
+      image: teamManagement
     },
     {
       icon: TrendingUp,
       title: "Analytics & Reporting",
       description: "Comprehensive insights into team performance, learning outcomes, and ROI measurement with real-time dashboards.",
-      benefits: ["Real-time dashboards", "Custom reports", "ROI tracking", "Performance metrics"]
+      benefits: ["Real-time dashboards", "Custom reports", "ROI tracking", "Performance metrics"],
+      image: analyticsReporting
     },
     {
       icon: Shield,
       title: "Security & Compliance",
       description: "Enterprise-grade security with SOC 2 Type II compliance, GDPR compliance, and advanced data protection.",
-      benefits: ["SOC 2 certified", "GDPR compliant", "End-to-end encryption", "Audit trails"]
+      benefits: ["SOC 2 certified", "GDPR compliant", "End-to-end encryption", "Audit trails"],
+      image: securityCompliance
     },
     {
       icon: Award,
       title: "Custom Certifications",
       description: "Create branded certificates and learning paths tailored to your organization's specific needs and industry requirements.",
-      benefits: ["Custom certificates", "Branded learning paths", "Industry-specific content", "Accreditation tracking"]
+      benefits: ["Custom certificates", "Branded learning paths", "Industry-specific content", "Accreditation tracking"],
+      image: customCertifications
     },
     {
       icon: HeadphonesIcon,
       title: "Dedicated Support",
       description: "24/7 priority support with dedicated customer success manager, onboarding assistance, and technical support.",
-      benefits: ["24/7 support", "Dedicated CSM", "Onboarding help", "Technical assistance"]
+      benefits: ["24/7 support", "Dedicated CSM", "Onboarding help", "Technical assistance"],
+      image: dedicatedSupport
     }
   ];
 
@@ -171,7 +183,14 @@ const Business = () => {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300 group">
+              <Card key={index} className="hover:shadow-lg transition-all duration-300 group overflow-hidden">
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={feature.image} 
+                    alt={`${feature.title} illustration`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <Icon className="h-6 w-6 text-primary" />
