@@ -8,7 +8,6 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
 import { useState } from "react";
-import finpilotLogo from "@/assets/finpilot-logo.png";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 const softwareTrainingImage = "/lovable-uploads/78cb3c25-cbc5-4554-bba1-11cf532ee81d.png";
@@ -117,13 +116,12 @@ const Index = () => {
               <div className="space-y-4 md:space-y-6 lg:space-y-8 animate-fade-in text-center lg:text-left">
                 
                 <div className="space-y-3 md:space-y-4 lg:space-y-6">
-                  <div className="flex justify-center lg:justify-start">
-                    <img 
-                      src={finpilotLogo} 
-                      alt="FinPilot - Master Business Finance & Commercial Lending" 
-                      className="h-16 md:h-20 lg:h-24 xl:h-28 w-auto"
-                    />
-                  </div>
+                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
+                    Master Business Finance
+                    <span className="block text-navy-blue">
+                      & Commercial Lending
+                    </span>
+                  </h1>
                   
                   <div className="flex items-center justify-center lg:justify-start">
                     <Badge variant="outline" className="inline-flex items-center gap-1 md:gap-2 bg-transparent text-halo-orange border-halo-orange/30 hover:bg-halo-orange/10 text-xs md:text-sm px-2 md:px-3 py-1">
