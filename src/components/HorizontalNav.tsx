@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { MessageCircle, GraduationCap, DollarSign, Building, Users, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const HorizontalNav = () => {
@@ -11,10 +10,7 @@ export const HorizontalNav = () => {
           `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
         }
       >
-        <span className="flex items-center gap-2">
-          <Users className="h-4 w-4" />
-          Why FinPilot
-        </span>
+        Why FinPilot
       </NavLink>
       
       <NavLink 
@@ -23,10 +19,7 @@ export const HorizontalNav = () => {
           `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
         }
       >
-        <span className="flex items-center gap-2">
-          <GraduationCap className="h-4 w-4" />
-          Courses
-        </span>
+        Courses
       </NavLink>
       
       <NavLink 
@@ -35,10 +28,7 @@ export const HorizontalNav = () => {
           `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
         }
       >
-        <span className="flex items-center gap-2">
-          <DollarSign className="h-4 w-4" />
-          Pricing
-        </span>
+        Pricing
       </NavLink>
       
       <NavLink 
@@ -47,10 +37,7 @@ export const HorizontalNav = () => {
           `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
         }
       >
-        <span className="flex items-center gap-2">
-          <Building className="h-4 w-4" />
-          Solutions
-        </span>
+        Solutions
       </NavLink>
       
       <NavLink 
@@ -59,10 +46,7 @@ export const HorizontalNav = () => {
           `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
         }
       >
-        <span className="flex items-center gap-2">
-          <MessageCircle className="h-4 w-4" />
-          Support
-        </span>
+        Support
       </NavLink>
       
       <div className="flex items-center gap-3 ml-4">
