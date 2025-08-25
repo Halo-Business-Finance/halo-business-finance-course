@@ -83,7 +83,7 @@ export const HorizontalNav = () => {
               <NavLink to="/auth">Login</NavLink>
             </Button>
             <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
-              <NavLink to="/signup">Get Started</NavLink>
+              <NavLink to="/signup">Free Trial</NavLink>
             </Button>
           </div>
         </div>
