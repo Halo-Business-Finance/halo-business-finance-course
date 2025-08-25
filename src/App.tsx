@@ -31,7 +31,7 @@ import Blog from "./pages/Blog";
 import Article from "./pages/Article";
 import Support from "./pages/Support";
 import SignUp from "./pages/SignUp";
-import { FinPilotHeader } from "./components/HaloHeader";
+import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
 import { AccountTabs } from "./components/AccountTabs";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -125,8 +125,13 @@ const HeaderContent = () => {
         </div>
 
         {!user && (
-          <div className="lg:hidden">
-            <MobileNav />
+          <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto">
+            <div className="hidden lg:block w-full">
+              <HorizontalNav />
+            </div>
+            <div className="lg:hidden">
+              <MobileNav />
+            </div>
           </div>
         )}
         
@@ -172,17 +177,13 @@ const AppContent = () => {
   const { user, loading } = useAuth();
 
   return (
-    <>
-      {/* Header for non-logged in users */}
-      {!user && <FinPilotHeader />}
+    <div className="min-h-screen flex w-full">
+      {user && <AppSidebar />}
       
-      <div className="min-h-screen flex w-full">
-        {user && <AppSidebar />}
-        
-        <div className="flex-1 flex flex-col min-w-0">
-          {user && <HeaderContent />}
+      <div className="flex-1 flex flex-col min-w-0">
+        <HeaderContent />
 
-          <main className="flex-1 relative z-10 bg-white">
+        <main className="flex-1 relative z-10 bg-white">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={
@@ -240,7 +241,6 @@ const AppContent = () => {
         </main>
       </div>
     </div>
-    </>
   );
 };
 
