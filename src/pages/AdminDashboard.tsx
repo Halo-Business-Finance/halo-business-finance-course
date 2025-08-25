@@ -124,20 +124,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     loadDashboardData();
     
-    // Auto-delete the invalid user on component mount
-    const deleteInvalidUser = async () => {
-      const invalidUserId = '71ac2b44-b866-43e0-8895-1036f0cdf4f0';
-      try {
-        console.log('Auto-deleting invalid user:', invalidUserId);
-        await deleteUser(invalidUserId);
-      } catch (error) {
-        console.error('Failed to auto-delete invalid user:', error);
-      }
-    };
-    
-    // Run deletion after a short delay to ensure dashboard is loaded
-    setTimeout(deleteInvalidUser, 2000);
-    
     // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
       
