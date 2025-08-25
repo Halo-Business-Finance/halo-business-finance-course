@@ -251,37 +251,37 @@ const SignUpPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center text-blue-900 hover:text-blue-700 mb-4">
+          <Link to="/" className="inline-flex items-center text-black hover:text-gray-700 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Link>
           <h1 className="text-3xl font-bold text-blue-900">Get Started</h1>
-          <p className="text-gray-600 mt-2">Create your account and start your 3-day free trial</p>
+          <p className="text-black mt-2">Create your account and start your 3-day free trial</p>
         </div>
 
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
+            <CardTitle className="text-2xl text-center flex items-center justify-center gap-2 text-black">
               <UserPlus className="h-5 w-5" />
               Create Account
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="text-center text-black">
               Join Halo Business Finance Training Platform
             </CardDescription>
             
             {/* Subscription Information */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">3-Day Free Trial</h3>
-                <p className="text-sm text-blue-800 mb-3">
+                <h3 className="text-lg font-semibold text-black mb-2">3-Day Free Trial</h3>
+                <p className="text-sm text-black mb-3">
                   Get full access to all courses and materials - completely free for 3 days
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="space-y-2">
-                  <h4 className="font-medium text-blue-900">What's Included:</h4>
-                  <ul className="text-blue-700 space-y-1">
+                  <h4 className="font-medium text-black">What's Included:</h4>
+                  <ul className="text-black space-y-1">
                     <li>• Full access to all course materials</li>
                     <li>• Interactive lessons and assessments</li>
                     <li>• Student community access</li>
@@ -290,8 +290,8 @@ const SignUpPage = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h4 className="font-medium text-blue-900">Pricing & Guarantee:</h4>
-                  <ul className="text-blue-700 space-y-1">
+                  <h4 className="font-medium text-black">Pricing & Guarantee:</h4>
+                  <ul className="text-black space-y-1">
                     <li>• <strong>$49/month</strong> after trial ends</li>
                     <li>• Cancel anytime during trial</li>
                     <li>• 30-day money-back guarantee</li>
@@ -301,7 +301,7 @@ const SignUpPage = () => {
               </div>
               
               <div className="border-t border-blue-200 pt-3 mt-3">
-                <p className="text-xs text-blue-600 text-center">
+                <p className="text-xs text-black text-center">
                   <strong>How it works:</strong> Your 3-day free trial begins when you create your account. 
                   We'll send you a reminder email before it ends. If you don't cancel before the trial expires, 
                   your subscription will automatically begin at $49/month. You can cancel easily in your account settings 
@@ -438,7 +438,7 @@ const SignUpPage = () => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Shield className="h-4 w-4" />
-                      <span className="text-sm">Password strength: {passwordStrength}</span>
+                      <span className="text-sm text-black">Password strength: {passwordStrength}</span>
                     </div>
                     <Progress 
                       value={getPasswordStrengthPercentage()} 
@@ -486,7 +486,7 @@ const SignUpPage = () => {
                   <div className="flex-1">
                      <Label 
                        htmlFor="terms" 
-                       className="text-sm leading-5 cursor-pointer"
+                       className="text-sm leading-5 cursor-pointer text-black"
                      >
                        I have read and agree to the{" "}
                        <Link
@@ -510,7 +510,7 @@ const SignUpPage = () => {
                      </Label>
                   </div>
                 </div>
-                <p className="text-xs text-gray-600 ml-6">
+                <p className="text-xs text-black ml-6">
                   By creating an account, you agree to our terms of service and acknowledge that you have read our privacy policy.
                 </p>
               </div>
@@ -521,7 +521,7 @@ const SignUpPage = () => {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-black">
                 Already have an account?{" "}
                 <Link to="/auth" className="text-blue-600 hover:underline">
                   Sign in
