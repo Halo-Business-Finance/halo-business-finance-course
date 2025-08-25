@@ -41,7 +41,6 @@ const Support = () => {
       action: "Start Conversation",
       available: "Available 24/7",
       responseTime: "Avg. 2 min response",
-      badge: "Most Popular",
       color: "bg-blue-50 border-blue-100"
     }
   ];
@@ -106,13 +105,6 @@ const Support = () => {
                           <span className="text-black">{option.responseTime}</span>
                         </div>
                       </div>
-                      {option.badge && (
-                        <div className="mt-2">
-                          <Badge className="bg-black text-halo-orange border-yellow-400/30 hover:bg-black/90 text-xs">
-                            {option.badge}
-                          </Badge>
-                        </div>
-                      )}
                       <div className="mt-4">
                         <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
                           <Icon className="h-4 w-4" />
