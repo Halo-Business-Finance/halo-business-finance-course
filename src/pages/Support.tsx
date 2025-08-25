@@ -10,38 +10,58 @@ import { SEOHead } from "@/components/SEOHead";
 import supportHero from "@/assets/support-hero.jpg";
 
 const Support = () => {
-  const faqs = [
+  const faqCategories = [
     {
-      question: "How do I access my purchased courses?",
-      answer: "Once you've purchased a course, you can access it immediately from your dashboard. Simply log in and navigate to 'My Courses' section."
+      category: "Getting Started",
+      faqs: [
+        {
+          question: "How long is the free trial?",
+          answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
+        },
+        {
+          question: "How do I access my purchased courses?",
+          answer: "Once you've purchased a course, you can access it immediately from your dashboard. Simply log in and navigate to 'My Courses' section."
+        }
+      ]
     },
     {
-      question: "How long is the free trial?",
-      answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
+      category: "Course Content",
+      faqs: [
+        {
+          question: "How long do I have access to a course?",
+          answer: "You have lifetime access to all purchased courses. You can learn at your own pace and revisit the content anytime."
+        },
+        {
+          question: "Do you offer certificates upon completion?",
+          answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks."
+        }
+      ]
     },
     {
-      question: "How do I update my password or email?",
-      answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
+      category: "Technical Support",
+      faqs: [
+        {
+          question: "Is there a mobile app available?",
+          answer: "Yes, our mobile app is available for both iOS and Android devices. You can download lessons for offline viewing."
+        }
+      ]
     },
     {
-      question: "How do I update my billing information?",
-      answer: "To update your billing information, go to your Account settings and select the 'Billing' tab. From there, you can update your payment method, billing address, and view your payment history."
-    },
-    {
-      question: "Can I get a refund for a course?",
-      answer: "Yes, we offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund."
-    },
-    {
-      question: "How long do I have access to a course?",
-      answer: "You have lifetime access to all purchased courses. You can learn at your own pace and revisit the content anytime."
-    },
-    {
-      question: "Do you offer certificates upon completion?",
-      answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks."
-    },
-    {
-      question: "Is there a mobile app available?",
-      answer: "Yes, our mobile app is available for both iOS and Android devices. You can download lessons for offline viewing."
+      category: "User Account/Billing",
+      faqs: [
+        {
+          question: "How do I update my password or email?",
+          answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
+        },
+        {
+          question: "How do I update my billing information?",
+          answer: "To update your billing information, go to your Account settings and select the 'Billing' tab. From there, you can update your payment method, billing address, and view your payment history."
+        },
+        {
+          question: "Can I get a refund for a course?",
+          answer: "Yes, we offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund."
+        }
+      ]
     }
   ];
 
@@ -192,22 +212,31 @@ const Support = () => {
                   <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
                 </div>
               </div>
-              <Accordion type="single" collapsible className="space-y-4">
-                {faqs.map((faq, index) => (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`} 
-                    className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-black leading-relaxed pt-2">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
+              <div className="space-y-6">
+                {faqCategories.map((category, categoryIndex) => (
+                  <div key={categoryIndex} className="space-y-3">
+                    <h4 className="text-lg font-semibold text-foreground border-b border-gray-200 pb-2">
+                      {category.category}
+                    </h4>
+                    <Accordion type="single" collapsible className="space-y-3">
+                      {category.faqs.map((faq, faqIndex) => (
+                        <AccordionItem 
+                          key={`${categoryIndex}-${faqIndex}`} 
+                          value={`item-${categoryIndex}-${faqIndex}`} 
+                          className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
+                            {faq.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="text-black leading-relaxed pt-2">
+                            {faq.answer}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
                 ))}
-              </Accordion>
+              </div>
             </Card>
           </div>
         </div>
