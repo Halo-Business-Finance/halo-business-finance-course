@@ -12,6 +12,9 @@ import { SEOHead } from "@/components/SEOHead";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
+import courseFinanceProfessional from "@/assets/course-finance-professional.jpg";
+import courseCreditProfessional from "@/assets/course-credit-professional.jpg";
+import courseSbaProfessional from "@/assets/course-sba-professional.jpg";
 
 interface CourseModule {
   id: string;
@@ -145,6 +148,11 @@ const Courses = () => {
       case 'expert': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const getCourseImage = (index: number) => {
+    const images = [courseFinanceProfessional, courseCreditProfessional, courseSbaProfessional];
+    return images[index % images.length];
   };
 
   if (loading) {
@@ -288,11 +296,15 @@ const Courses = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {modules.map((module) => (
+            {modules.map((module, index) => (
               <Card key={module.id} className="hover:shadow-lg transition-all group">
                 <div className="relative">
-                  <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                    <BookOpen className="h-16 w-16 text-primary" />
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={getCourseImage(index)} 
+                      alt={`Professional instructor for ${module.title}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   <Badge className={`absolute top-3 right-3 ${getLevelColor(module.skill_level)}`}>
                     {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
