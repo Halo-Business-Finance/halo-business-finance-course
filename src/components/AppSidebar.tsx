@@ -9,7 +9,8 @@ import {
   FileText,
   User,
   LogIn,
-  LogOut
+  LogOut,
+  Lock
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -124,7 +125,11 @@ export function AppSidebar() {
           </div>
         );
       case "locked":
-        return <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60">🔒</Badge>;
+        return (
+          <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1">
+            <Lock size={12} className="text-halo-orange" />
+          </Badge>
+        );
       default:
         return (
           <Badge variant="success" className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-white shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -240,7 +245,7 @@ export function AppSidebar() {
                               ) : module.status === "in-progress" ? (
                                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                               ) : isModuleLocked ? (
-                                "🔒"
+                                <Lock size={14} className="text-blue-400" />
                               ) : (
                                 <span className="font-bold">{index + 1}</span>
                               )}
