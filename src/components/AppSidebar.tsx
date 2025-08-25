@@ -236,7 +236,7 @@ export function AppSidebar() {
                                    ? "bg-blue-500 text-white shadow-md" 
                                    : module.status === "available" 
                                      ? "bg-halo-orange text-white shadow-md" 
-                                     : "bg-gray-600 text-gray-300 shadow-sm"}
+                                     : "bg-halo-orange text-white shadow-md"}
                                group-hover:scale-105
                              `}>
                                {module.status === "completed" ? (
@@ -244,7 +244,7 @@ export function AppSidebar() {
                                ) : module.status === "in-progress" ? (
                                  <div className="w-2 h-2 bg-white rounded-full"></div>
                                ) : isModuleLocked ? (
-                                 <Lock size={16} className="text-gray-200" />
+                                 <Lock size={16} className="text-white" />
                                ) : (
                                  <span className="text-sm font-bold">{index + 1}</span>
                                )}
