@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield, Check } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
@@ -19,10 +19,9 @@ const Index = () => {
   const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
   const [selectedLearningPath, setSelectedLearningPath] = useState<any>(null);
 
-  // If user is logged in, redirect to dashboard
+  // If user is logged in, redirect to dashboard using React Router
   if (user) {
-    window.location.href = '/dashboard';
-    return null;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const stats = [
