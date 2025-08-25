@@ -241,12 +241,6 @@ const Blog = () => {
             </Card>
           ))}
         </div>
-
-        <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
-            Load More Articles
-          </Button>
-        </div>
         </div>
         
         <FinPilotBrandFooter />
