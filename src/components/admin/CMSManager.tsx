@@ -3,42 +3,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Image, Menu, Tag, Folder, Settings } from "lucide-react";
-// Note: These components are created as placeholders for the full CMS implementation
-const CMSPageManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Page management interface coming soon...</p>
-  </div>
-);
-
-const CMSMediaManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Media library interface available - check MediaLibrary component</p>
-  </div>
-);
-
-const CMSMenuManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Menu management interface coming soon...</p>
-  </div>
-);
-
-const CMSCategoryManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Category management interface available - check CMSCategoryManager component</p>
-  </div>
-);
-
-const CMSTagManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Tag management interface available - check CMSTagManager component</p>
-  </div>
-);
-
-const CMSSettingsManager = () => (
-  <div className="text-center py-8">
-    <p className="text-muted-foreground">Settings management interface available - check CMSSettingsManager component</p>
-  </div>
-);
+import { CMSPageManager } from './CMSPageManager';
+import { MediaLibrary } from './MediaLibrary';
+import { CMSMenuManager } from './CMSMenuManager';
+import { CMSCategoryManager } from './CMSCategoryManager';
+import { CMSTagManager } from './CMSTagManager';
+import { CMSSettingsManager } from './CMSSettingsManager';
 
 const CMSManager = () => {
   return (
@@ -114,7 +84,7 @@ const CMSManager = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CMSMediaManager />
+              <MediaLibrary />
             </CardContent>
           </Card>
         </TabsContent>
