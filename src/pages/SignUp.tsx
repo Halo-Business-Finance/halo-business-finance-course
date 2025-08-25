@@ -145,7 +145,7 @@ const SignUpPage = () => {
       if (!termsAccepted) {
         toast({
           title: "Terms Required",
-          description: "You must accept the Terms and Conditions to create an account",
+          description: "You must accept the Terms and Conditions and subscription terms to create an account",
           variant: "destructive",
         });
         return;
@@ -256,7 +256,7 @@ const SignUpPage = () => {
             Back to Home
           </Link>
           <h1 className="text-3xl font-bold text-blue-900">Get Started</h1>
-          <p className="text-gray-600 mt-2">Create your account to begin your finance training journey</p>
+          <p className="text-gray-600 mt-2">Create your account and start your 3-day free trial</p>
         </div>
 
         <Card>
@@ -268,6 +268,48 @@ const SignUpPage = () => {
             <CardDescription className="text-center">
               Join Halo Business Finance Training Platform
             </CardDescription>
+            
+            {/* Subscription Information */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">3-Day Free Trial</h3>
+                <p className="text-sm text-blue-800 mb-3">
+                  Get full access to all courses and materials - completely free for 3 days
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="space-y-2">
+                  <h4 className="font-medium text-blue-900">What's Included:</h4>
+                  <ul className="text-blue-700 space-y-1">
+                    <li>• Full access to all course materials</li>
+                    <li>• Interactive lessons and assessments</li>
+                    <li>• Student community access</li>
+                    <li>• Progress tracking tools</li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="font-medium text-blue-900">Pricing & Guarantee:</h4>
+                  <ul className="text-blue-700 space-y-1">
+                    <li>• <strong>$49/month</strong> after trial ends</li>
+                    <li>• Cancel anytime during trial</li>
+                    <li>• 30-day money-back guarantee</li>
+                    <li>• Email reminder before trial expires</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="border-t border-blue-200 pt-3 mt-3">
+                <p className="text-xs text-blue-600 text-center">
+                  <strong>How it works:</strong> Your 3-day free trial begins when you create your account. 
+                  We'll send you a reminder email before it ends. If you don't cancel before the trial expires, 
+                  your subscription will automatically begin at $49/month. You can cancel easily in your account settings 
+                  at any time. If you're not satisfied within the first 30 days of paid subscription, 
+                  contact our support team for a full refund.
+                </p>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignUpSubmit} className="space-y-4">
@@ -442,29 +484,30 @@ const SignUpPage = () => {
                     disabled={isLoading}
                   />
                   <div className="flex-1">
-                    <Label 
-                      htmlFor="terms" 
-                      className="text-sm leading-5 cursor-pointer"
-                    >
-                      I have read and agree to the{" "}
-                      <Link
-                        to="/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline font-medium"
-                      >
-                        FinPilot Terms and Conditions
-                      </Link>
-                      {" "}and{" "}
-                      <Link
-                        to="/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline font-medium"
-                      >
-                        Privacy Policy
-                      </Link>
-                    </Label>
+                     <Label 
+                       htmlFor="terms" 
+                       className="text-sm leading-5 cursor-pointer"
+                     >
+                       I have read and agree to the{" "}
+                       <Link
+                         to="/terms"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="text-blue-600 hover:text-blue-800 underline font-medium"
+                       >
+                         FinPilot Terms and Conditions
+                       </Link>
+                       {", "}
+                       <Link
+                         to="/privacy"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="text-blue-600 hover:text-blue-800 underline font-medium"
+                       >
+                         Privacy Policy
+                       </Link>
+                       {", and the 3-day free trial and monthly subscription terms outlined above."}
+                     </Label>
                   </div>
                 </div>
                 <p className="text-xs text-gray-600 ml-6">
