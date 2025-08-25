@@ -79,47 +79,46 @@ const Support = () => {
 
         {/* Contact Support Options */}
         <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
-            <p className="text-base text-black max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Choose the best way to reach us. Our expert support team is ready to help you succeed.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+          <div className="max-w-md mx-auto">
             {supportOptions.map((option, index) => {
               const Icon = option.icon;
               return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-1">
-                      <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
-                      <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
-                      <div className="text-xs text-black leading-relaxed mb-3">{option.description}</div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-xs">
-                          <Clock className="h-3 w-3 text-blue-400" />
-                          <span className="text-black">{option.available}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs">
-                          <CheckCircle className="h-3 w-3 text-blue-400" />
-                          <span className="text-black">{option.responseTime}</span>
-                        </div>
+                <Card key={index} className="p-8 hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Icon className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">{option.title}</h3>
+                    <p className="text-sm text-slate-600 mb-6 leading-relaxed">{option.description}</p>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-center gap-2 text-sm">
+                        <Clock className="h-4 w-4 text-green-500" />
+                        <span className="text-slate-700">{option.available}</span>
                       </div>
-                      {option.badge && (
-                        <div className="mt-2">
-                          <Badge className="bg-black text-halo-orange border-yellow-400/30 hover:bg-black/90 text-xs">
-                            {option.badge}
-                          </Badge>
-                        </div>
-                      )}
-                      <div className="mt-4">
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
-                          <Icon className="h-4 w-4" />
-                          {option.action}
-                        </Button>
+                      <div className="flex items-center justify-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-slate-700">{option.responseTime}</span>
                       </div>
                     </div>
+                    
+                    {option.badge && (
+                      <Badge className="bg-primary text-white mb-4 px-3 py-1">
+                        {option.badge}
+                      </Badge>
+                    )}
+                    
+                    <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold text-base">
+                      <Icon className="h-5 w-5 mr-2" />
+                      {option.action}
+                    </Button>
                   </div>
                 </Card>
               );
@@ -128,83 +127,89 @@ const Support = () => {
         </div>
 
 
-        {/* FAQ and Contact Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Help Resources */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* FAQ Section */}
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                <HelpCircle className="h-6 w-6 text-halo-orange" />
+          <Card className="h-fit">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <HelpCircle className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl font-bold">Frequently Asked Questions</CardTitle>
+                  <CardDescription>Find quick answers to common questions</CardDescription>
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="text-2xl font-bold text-foreground mb-1">Get Answers</div>
-                <div className="text-sm font-medium text-primary mb-2">Frequently Asked Questions</div>
-                <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
-              </div>
-            </div>
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`} 
-                  className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-black leading-relaxed pt-2">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="space-y-3">
+                {faqs.map((faq, index) => (
+                  <AccordionItem 
+                    key={index} 
+                    value={`item-${index}`} 
+                    className="border border-slate-200 rounded-lg px-4 py-1 hover:border-primary/30 transition-colors"
+                  >
+                    <AccordionTrigger className="text-left font-medium text-slate-900 hover:text-primary transition-colors text-sm">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-slate-600 leading-relaxed pt-2 text-sm">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
           </Card>
 
           {/* Contact Form */}
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Mail className="h-6 w-6 text-halo-orange" />
+          <Card className="h-fit">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl font-bold">Send us a Message</CardTitle>
+                  <CardDescription>We'll get back to you within 4 hours</CardDescription>
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
-                <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
-                <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Input 
+                    placeholder="First Name" 
+                    className="h-11 border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                  <Input 
+                    placeholder="Last Name" 
+                    className="h-11 border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
                 <Input 
-                  placeholder="First Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                  type="email" 
+                  placeholder="Your Email Address" 
+                  className="h-11 border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <Input 
-                  placeholder="Last Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                  placeholder="Subject" 
+                  className="h-11 border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
+                <Textarea 
+                  placeholder="How can we help you today?" 
+                  rows={4} 
+                  className="border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
+                />
+                <Button className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-medium">
+                  Send Message
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <p className="text-xs text-slate-500 text-center">
+                  We typically respond within 4 hours during business hours
+                </p>
               </div>
-              <Input 
-                type="email" 
-                placeholder="Email Address" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Input 
-                placeholder="Subject" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Textarea 
-                placeholder="Tell us how we can help you..." 
-                rows={4} 
-                className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
-              />
-              <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
-                Send Message
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <p className="text-xs text-muted-foreground text-center">
-                We typically respond within 4 hours during business hours
-              </p>
-            </div>
+            </CardContent>
           </Card>
         </div>
       </div>
