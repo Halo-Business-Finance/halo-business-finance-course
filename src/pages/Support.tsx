@@ -86,39 +86,89 @@ const Support = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Live Chat Widget */}
-            {supportOptions.map((option, index) => {
-              const Icon = option.icon;
-              return (
-                <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-1">
-                      <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
-                      <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
-                      <div className="text-xs text-black leading-relaxed mb-3">{option.description}</div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-xs">
-                          <Clock className="h-3 w-3 text-blue-400" />
-                          <span className="text-black">{option.available}</span>
+            {/* Left Column - Live Chat and Contact Form */}
+            <div className="space-y-8">
+              {/* Live Chat Widget */}
+              {supportOptions.map((option, index) => {
+                const Icon = option.icon;
+                return (
+                  <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-1">
+                        <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
+                        <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
+                        <div className="text-xs text-black leading-relaxed mb-3">{option.description}</div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-xs">
+                            <Clock className="h-3 w-3 text-blue-400" />
+                            <span className="text-black">{option.available}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs">
+                            <CheckCircle className="h-3 w-3 text-blue-400" />
+                            <span className="text-black">{option.responseTime}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 text-xs">
-                          <CheckCircle className="h-3 w-3 text-blue-400" />
-                          <span className="text-black">{option.responseTime}</span>
+                        <div className="mt-4">
+                          <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
+                            <Icon className="h-4 w-4" />
+                            {option.action}
+                          </Button>
                         </div>
-                      </div>
-                      <div className="mt-4">
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
-                          <Icon className="h-4 w-4" />
-                          {option.action}
-                        </Button>
                       </div>
                     </div>
-                  </div>
-                </Card>
-              );
-            })}
+                  </Card>
+                );
+              })}
 
-            {/* FAQ Widget */}
+              {/* Contact Form Widget */}
+              <Card className="p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Mail className="h-6 w-6 text-halo-orange" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
+                    <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
+                    <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input 
+                      placeholder="First Name" 
+                      className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                    />
+                    <Input 
+                      placeholder="Last Name" 
+                      className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                    />
+                  </div>
+                  <Input 
+                    type="email" 
+                    placeholder="Email Address" 
+                    className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                  />
+                  <Input 
+                    placeholder="Subject" 
+                    className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                  />
+                  <Textarea 
+                    placeholder="Tell us how we can help you..." 
+                    rows={4} 
+                    className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
+                  />
+                  <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                    Send Message
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center">
+                    We typically respond within 4 hours during business hours
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            {/* Right Column - FAQ Widget */}
             <Card className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -151,54 +201,6 @@ const Support = () => {
         </div>
 
 
-        {/* Contact Form */}
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Mail className="h-6 w-6 text-halo-orange" />
-              </div>
-              <div className="flex-1">
-                <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
-                <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
-                <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input 
-                  placeholder="First Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-                />
-                <Input 
-                  placeholder="Last Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-                />
-              </div>
-              <Input 
-                type="email" 
-                placeholder="Email Address" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Input 
-                placeholder="Subject" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Textarea 
-                placeholder="Tell us how we can help you..." 
-                rows={4} 
-                className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
-              />
-              <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
-                Send Message
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <p className="text-xs text-muted-foreground text-center">
-                We typically respond within 4 hours during business hours
-              </p>
-            </div>
-          </Card>
-        </div>
       </div>
         
       <FinPilotBrandFooter />
