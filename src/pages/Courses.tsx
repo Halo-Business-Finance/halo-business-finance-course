@@ -12,9 +12,12 @@ import { SEOHead } from "@/components/SEOHead";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
-import courseFinanceProfessional from "@/assets/course-finance-professional.jpg";
-import courseCreditProfessional from "@/assets/course-credit-professional.jpg";
-import courseSbaProfessional from "@/assets/course-sba-professional.jpg";
+import financeExpert1 from "@/assets/finance-expert-1.jpg";
+import creditAnalyst2 from "@/assets/credit-analyst-2.jpg";
+import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
+import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
+import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
+import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
 
 interface CourseModule {
   id: string;
@@ -151,7 +154,14 @@ const Courses = () => {
   };
 
   const getCourseImage = (index: number) => {
-    const images = [courseFinanceProfessional, courseCreditProfessional, courseSbaProfessional];
+    const images = [
+      financeExpert1, 
+      creditAnalyst2, 
+      commercialBanker3, 
+      riskSpecialist4, 
+      sbaSpecialist5, 
+      complianceOfficer6
+    ];
     return images[index % images.length];
   };
 
