@@ -88,8 +88,8 @@ export function AppSidebar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
+      // The signOut function now handles the redirect automatically
       await signOut();
-      navigate('/'); // Redirect to homepage after successful sign out
     } catch (error) {
       console.error('Sign out error:', error);
     } finally {

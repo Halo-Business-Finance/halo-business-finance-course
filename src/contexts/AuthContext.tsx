@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signOut: () => Promise<void>;
+  signOut: (redirectPath?: string) => Promise<void>;
   updateLastActivity: () => void;
 }
 
@@ -70,6 +70,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const handleAutoLogout = async () => {
+    // Check if user is admin for appropriate redirect
+    let isAdmin = false;
+    if (user) {
+      try {
+        const { data: statusData } = await supabase.rpc('check_current_user_admin_status');
+        if (statusData) {
+          const status = statusData as {
+            is_admin: boolean;
+            roles: Array<{ role: string; is_active: boolean }>;
+          };
+          isAdmin = status?.is_admin || false;
+        }
+      } catch (error) {
+        // Fallback check
+        try {
+          const { data: fallbackData } = await supabase.rpc('get_user_role');
+          if (fallbackData) {
+            isAdmin = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
+          }
+        } catch (fallbackError) {
+          console.error('Failed to check user role:', fallbackError);
+        }
+      }
+    }
+
     await supabase.auth.signOut();
     localStorage.removeItem('lastActivity');
     setSessionWarningShown(false);
@@ -78,17 +103,59 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       description: "You have been logged out due to inactivity.",
       variant: "destructive",
     });
+
+    // Redirect based on user role
+    if (isAdmin) {
+      window.location.href = '/admin/login';
+    } else {
+      window.location.href = '/auth';
+    }
   };
 
-  const signOut = async () => {
+  const signOut = async (redirectPath?: string) => {
     try {
+      // Check if user is admin before signing out
+      let isAdmin = false;
+      if (user) {
+        try {
+          const { data: statusData } = await supabase.rpc('check_current_user_admin_status');
+          if (statusData) {
+            const status = statusData as {
+              is_admin: boolean;
+              roles: Array<{ role: string; is_active: boolean }>;
+            };
+            isAdmin = status?.is_admin || false;
+          }
+        } catch (error) {
+          // Fallback check
+          try {
+            const { data: fallbackData } = await supabase.rpc('get_user_role');
+            if (fallbackData) {
+              isAdmin = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
+            }
+          } catch (fallbackError) {
+            console.error('Failed to check user role:', fallbackError);
+          }
+        }
+      }
+
       await supabase.auth.signOut();
       localStorage.removeItem('lastActivity');
       setSessionWarningShown(false);
+      
       toast({
         title: "Signed Out",
         description: "You have been successfully signed out.",
       });
+
+      // Redirect based on user role or provided path
+      if (redirectPath) {
+        window.location.href = redirectPath;
+      } else if (isAdmin) {
+        window.location.href = '/admin/login';
+      } else {
+        window.location.href = '/auth';
+      }
     } catch (error) {
       logger.error('Sign out failed', error, { component: 'AuthContext' });
       toast({
