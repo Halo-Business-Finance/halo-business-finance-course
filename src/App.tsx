@@ -13,6 +13,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { SecurityMonitor } from "@/components/SecurityMonitor";
 import { NotificationBell } from "@/components/NotificationBell";
+import { createTestNotifications } from "@/utils/createTestNotifications";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -135,6 +136,16 @@ const HeaderContent = () => {
               title="Support"
             >
               <MessageCircle className="h-4 w-4" />
+            </Button>
+            {/* Temporary test button - remove in production */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => createTestNotifications(user.id)}
+              className="text-xs px-2 py-1 text-blue-600 hover:text-blue-800"
+              title="Create Test Notifications (Dev Only)"
+            >
+              Test
             </Button>
             <div className="hidden sm:block">
               <div>{currentTime.toLocaleDateString('en-US', { 

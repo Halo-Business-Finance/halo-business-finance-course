@@ -18,7 +18,7 @@ interface Notification {
   type: string;
   read: boolean;
   user_id: string;
-  data?: any;
+  data?: any; // Json type from Supabase
   created_at: string;
 }
 
@@ -168,11 +168,11 @@ export const NotificationBell = () => {
           setUnreadCount(prev => prev + 1);
           
           // Show toast for important notifications
-          if (newNotification.type === 'error' || newNotification.type === 'alert') {
+          if (newNotification.type === 'error' || newNotification.type === 'alert' || newNotification.data?.priority === 'high') {
             toast({
               title: newNotification.title,
               description: newNotification.message,
-              variant: 'destructive',
+              variant: newNotification.type === 'error' || newNotification.type === 'alert' ? 'destructive' : 'default',
             });
           }
         }
