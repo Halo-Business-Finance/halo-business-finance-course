@@ -23,6 +23,245 @@ export const ContentImporter = () => {
 
   const existingPages: PageData[] = [
     {
+      title: "Home",
+      slug: "home",
+      content: `<div class="hero-section">
+        <h1>Master Business Finance</h1>
+        <p>Comprehensive training programs designed by industry experts to accelerate your career in business finance and commercial lending.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <h3>10,000+</h3>
+            <p>Industry Professionals Trained</p>
+          </div>
+          <div class="stat">
+            <h3>96%</h3>
+            <p>Certification Success Rate</p>
+          </div>
+          <div class="stat">
+            <h3>94%</h3>
+            <p>Course Completion Rate</p>
+          </div>
+          <div class="stat">
+            <h3>87%</h3>
+            <p>Career Advancement Rate</p>
+          </div>
+        </div>
+      </div>`,
+      meta_title: "Halo Business Finance - Master Commercial Lending & Business Finance",
+      meta_description: "Transform your career with comprehensive business finance training. Join 10,000+ professionals who've advanced their careers with our expert-led programs.",
+      status: 'published',
+      sort_order: 1
+    },
+    {
+      title: "Blog",
+      slug: "blog",
+      content: `<div class="blog-hero">
+        <h1>Financial Training Insights</h1>
+        <p>Stay updated with the latest trends, insights, and best practices in business finance and commercial lending.</p>
+      </div>
+      
+      <div class="blog-highlights">
+        <article class="featured-post">
+          <h2>The Future of Financial Technology in Commercial Lending</h2>
+          <p>Explore how emerging technologies are reshaping the commercial lending landscape and what it means for professionals.</p>
+          <div class="post-meta">
+            <span>By Sarah Johnson</span>
+            <span>5 min read</span>
+            <span>Technology</span>
+          </div>
+        </article>
+        
+        <article class="featured-post">
+          <h2>Essential Skills for Modern Credit Analysts</h2>
+          <p>A comprehensive guide to the key competencies every credit analyst needs to succeed in today's market.</p>
+          <div class="post-meta">
+            <span>By Michael Chen</span>
+            <span>8 min read</span>
+            <span>Career Development</span>
+          </div>
+        </article>
+      </div>`,
+      meta_title: "Blog - Financial Training Insights & Industry Updates",
+      meta_description: "Stay current with financial industry trends, career advice, and professional development insights from our experts.",
+      status: 'published',
+      sort_order: 5
+    },
+    {
+      title: "Courses",
+      slug: "courses",
+      content: `<div class="courses-hero">
+        <h1>Comprehensive Training Programs</h1>
+        <p>Advance your career with our expert-designed courses in business finance, commercial lending, and financial analysis.</p>
+      </div>
+      
+      <div class="course-categories">
+        <div class="category">
+          <h2>Business Finance Fundamentals</h2>
+          <p>Master the core principles of business finance with practical, real-world applications.</p>
+          <ul>
+            <li>Financial Statement Analysis</li>
+            <li>Cash Flow Management</li>
+            <li>Investment Decisions</li>
+            <li>Working Capital Management</li>
+          </ul>
+        </div>
+        
+        <div class="category">
+          <h2>Commercial Lending</h2>
+          <p>Develop expertise in commercial lending processes, risk assessment, and portfolio management.</p>
+          <ul>
+            <li>Credit Analysis</li>
+            <li>Loan Structuring</li>
+            <li>Risk Assessment</li>
+            <li>Portfolio Management</li>
+          </ul>
+        </div>
+        
+        <div class="category">
+          <h2>Advanced Finance</h2>
+          <p>Advanced topics for experienced professionals looking to enhance their expertise.</p>
+          <ul>
+            <li>Advanced Financial Modeling</li>
+            <li>Mergers & Acquisitions</li>
+            <li>International Finance</li>
+            <li>Financial Risk Management</li>
+          </ul>
+        </div>
+      </div>`,
+      meta_title: "Courses - Professional Business Finance Training Programs",
+      meta_description: "Explore our comprehensive course catalog featuring business finance, commercial lending, and advanced financial topics taught by industry experts.",
+      status: 'published',
+      sort_order: 6
+    },
+    {
+      title: "Resources",
+      slug: "resources",
+      content: `<div class="resources-hero">
+        <h1>Learning Resources</h1>
+        <p>Access comprehensive resources to support your learning journey including documents, videos, tools, and webinars.</p>
+      </div>
+      
+      <div class="resource-categories">
+        <div class="resource-type">
+          <h2>Documents & Templates</h2>
+          <p>Downloadable resources, worksheets, and templates to support your learning.</p>
+          <ul>
+            <li>Financial Analysis Templates</li>
+            <li>Loan Documentation Samples</li>
+            <li>Risk Assessment Checklists</li>
+            <li>Industry Best Practices Guides</li>
+          </ul>
+        </div>
+        
+        <div class="resource-type">
+          <h2>Interactive Tools</h2>
+          <p>Practical tools and calculators for real-world financial analysis.</p>
+          <ul>
+            <li>Financial Calculator</li>
+            <li>Loan Comparison Tool</li>
+            <li>Business Valuation Tool</li>
+            <li>Cash Flow Projector</li>
+          </ul>
+        </div>
+        
+        <div class="resource-type">
+          <h2>Video Library</h2>
+          <p>Extensive collection of training videos and expert presentations.</p>
+          <ul>
+            <li>Course Video Content</li>
+            <li>Expert Interviews</li>
+            <li>Case Study Walkthroughs</li>
+            <li>Industry Webinars</li>
+          </ul>
+        </div>
+        
+        <div class="resource-type">
+          <h2>Live Webinars</h2>
+          <p>Join live sessions with industry experts and fellow professionals.</p>
+          <ul>
+            <li>Monthly Expert Sessions</li>
+            <li>Q&A with Instructors</li>
+            <li>Industry Updates</li>
+            <li>Networking Events</li>
+          </ul>
+        </div>
+      </div>`,
+      meta_title: "Resources - Learning Materials & Tools for Finance Professionals",
+      meta_description: "Access comprehensive learning resources including documents, templates, interactive tools, videos, and live webinars to enhance your finance skills.",
+      status: 'published',
+      sort_order: 7
+    },
+    {
+      title: "Video Library",
+      slug: "video-library",
+      content: `<div class="video-library-hero">
+        <h1>Video Training Library</h1>
+        <p>Comprehensive video content covering all aspects of business finance and commercial lending.</p>
+      </div>
+      
+      <div class="video-categories">
+        <div class="video-category">
+          <h2>Business Finance Fundamentals</h2>
+          <p>Essential concepts and principles of business finance</p>
+          <div class="video-list">
+            <div class="video-item">
+              <h4>Introduction to Business Finance</h4>
+              <p>Overview of business finance principles and concepts • 32:45</p>
+              <span>Dr. Sarah Martinez</span>
+            </div>
+            <div class="video-item">
+              <h4>Time Value of Money</h4>
+              <p>Understanding present and future value calculations • 28:30</p>
+              <span>Prof. Michael Chen</span>
+            </div>
+            <div class="video-item">
+              <h4>Financial Statement Analysis</h4>
+              <p>How to read and analyze financial statements • 45:20</p>
+              <span>Dr. Lisa Wang</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-category">
+          <h2>Commercial Finance</h2>
+          <p>Specialized training in commercial lending and finance</p>
+          <div class="video-list">
+            <div class="video-item">
+              <h4>Commercial Loan Underwriting</h4>
+              <p>Complete guide to commercial loan underwriting process • 52:15</p>
+              <span>Jennifer Rodriguez</span>
+            </div>
+            <div class="video-item">
+              <h4>Credit Risk Assessment</h4>
+              <p>Evaluating and managing credit risk in commercial lending • 41:30</p>
+              <span>Robert Kim</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-category">
+          <h2>Advanced Topics</h2>
+          <p>In-depth coverage of specialized finance topics</p>
+          <div class="video-list">
+            <div class="video-item">
+              <h4>Financial Modeling Best Practices</h4>
+              <p>Advanced techniques for building robust financial models • 38:45</p>
+              <span>Dr. Amanda Foster</span>
+            </div>
+            <div class="video-item">
+              <h4>Regulatory Compliance</h4>
+              <p>Understanding regulatory requirements in commercial finance • 29:20</p>
+              <span>Mark Thompson</span>
+            </div>
+          </div>
+        </div>
+      </div>`,
+      meta_title: "Video Library - Comprehensive Finance Training Videos",
+      meta_description: "Access our extensive video library featuring expert-led training on business finance, commercial lending, and advanced financial topics.",
+      status: 'published',
+      sort_order: 8
+    },
+    {
       title: "Pricing",
       slug: "pricing",
       content: `<div class="pricing-hero">
@@ -355,7 +594,7 @@ export const ContentImporter = () => {
           Import Existing Pages
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Import your existing application pages (Pricing, Support, About, Business) into the CMS
+          Import all your application pages (Home, Blog, Courses, Resources, Video Library, Pricing, Support, About, Business) into the CMS
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
