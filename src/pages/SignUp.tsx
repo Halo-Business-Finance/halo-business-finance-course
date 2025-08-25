@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +19,7 @@ const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<'weak' | 'medium' | 'strong'>('weak');
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // Sign Up Form State
   const [signUpData, setSignUpData] = useState({
@@ -134,6 +136,16 @@ const SignUpPage = () => {
         toast({
           title: "Password Mismatch",
           description: "Passwords do not match",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate terms acceptance
+      if (!termsAccepted) {
+        toast({
+          title: "Terms Required",
+          description: "You must accept the Terms and Conditions to create an account",
           variant: "destructive",
         });
         return;
@@ -419,7 +431,48 @@ const SignUpPage = () => {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {/* Terms and Conditions Acceptance */}
+              <div className="space-y-3 p-4 bg-gray-50 rounded-lg border">
+                <div className="flex items-start space-x-3">
+                  <Checkbox
+                    id="terms"
+                    checked={termsAccepted}
+                    onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
+                    className="mt-1"
+                    disabled={isLoading}
+                  />
+                  <div className="flex-1">
+                    <Label 
+                      htmlFor="terms" 
+                      className="text-sm leading-5 cursor-pointer"
+                    >
+                      I have read and agree to the{" "}
+                      <Link
+                        to="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline font-medium"
+                      >
+                        FinPilot Terms and Conditions
+                      </Link>
+                      {" "}and{" "}
+                      <Link
+                        to="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline font-medium"
+                      >
+                        Privacy Policy
+                      </Link>
+                    </Label>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-600 ml-6">
+                  By creating an account, you agree to our terms of service and acknowledge that you have read our privacy policy.
+                </p>
+              </div>
+
+              <Button type="submit" className="w-full" disabled={isLoading || !termsAccepted}>
                 {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
