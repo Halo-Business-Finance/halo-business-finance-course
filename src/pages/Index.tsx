@@ -164,12 +164,10 @@ const Index = () => {
                     </span>
                   </h1>
                   
-                  <div className="text-center lg:text-left">
-                    <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
-                      <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
-                      <span className="sm:hidden">Top Industry Course</span>
-                    </Badge>
-                  </div>
+                  <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                    <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
+                    <span className="sm:hidden">Top Industry Course</span>
+                  </Badge>
                   
                   <p className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
                     Transform your career with our comprehensive business finance and commercial lending program. 
@@ -249,11 +247,9 @@ const Index = () => {
               <h2 id="learning-paths-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
-              <div className="text-center lg:text-left">
-                <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
-                  Structured Learning Paths
-                </Badge>
-              </div>
+              <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                Structured Learning Paths
+              </Badge>
               <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-primary">From Novice to Expert: We Train You Right.</span> Comprehensive training programs designed to meet you where you are and take you where you want to go.
               </p>
@@ -312,12 +308,10 @@ const Index = () => {
               <h2 id="features-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
-              <div className="text-center lg:text-left">
-                <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
-                  <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
-                  <span className="sm:hidden">Gold Standard Training</span>
-                </Badge>
-              </div>
+              <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
+                <span className="sm:hidden">Gold Standard Training</span>
+              </Badge>
               <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
                 <span className="font-medium text-black">The Definitive Course for Commercial Lending Software.</span> Building Tomorrow's Lending Experts Today through industry-leading curriculum designed to accelerate your success.
               </p>
