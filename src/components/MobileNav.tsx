@@ -40,7 +40,7 @@ export const MobileNav = () => {
             </Button>
             <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
               <NavLink to="/signup" className="flex items-center gap-1">
-                Free Trial
+                Start Free Trial
                 <ArrowRight className="h-3 w-3" />
               </NavLink>
             </Button>
@@ -96,7 +96,7 @@ export const MobileNav = () => {
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    <span className="font-medium">Free Trial</span>
+                    <span className="font-medium">Start Free Trial</span>
                     <ArrowRight className="h-4 w-4" />
                   </NavLink>
                 </div>

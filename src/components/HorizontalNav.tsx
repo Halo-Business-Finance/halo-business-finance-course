@@ -76,7 +76,7 @@ export const HorizontalNav = () => {
           </Button>
           <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
             <NavLink to="/signup" className="flex items-center gap-2">
-              Free Trial
+              Start Free Trial
               <ArrowRight className="h-4 w-4" />
             </NavLink>
           </Button>
