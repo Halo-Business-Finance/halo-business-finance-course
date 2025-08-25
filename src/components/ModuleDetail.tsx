@@ -58,38 +58,46 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <Card className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <CardHeader className="space-y-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle className="text-xl">{module.title}</CardTitle>
-              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 z-50">
+      <Card className="w-[95vw] max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <CardHeader className="space-y-4 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-lg sm:text-xl break-words">{module.title}</CardTitle>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-sm text-muted-foreground">
                 <span>{module.duration}</span>
                 <span>{module.lessons} lessons</span>
               </div>
             </div>
-            <Button variant="ghost" onClick={onClose}>×</Button>
+            <Button variant="ghost" onClick={onClose} className="self-start sm:self-auto">×</Button>
           </div>
-          <p className="text-muted-foreground">{module.description}</p>
+          <p className="text-muted-foreground text-sm sm:text-base">{module.description}</p>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 p-4 sm:p-6">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="structure">Course Structure</TabsTrigger>
-              <TabsTrigger value="examples">Loan Examples</TabsTrigger>
-              <TabsTrigger value="cases">Case Studies</TabsTrigger>
-              <TabsTrigger value="scripts">Scripts</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 gap-1 h-auto p-1">
+                <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 py-2">Overview</TabsTrigger>
+                <TabsTrigger value="structure" className="text-xs sm:text-sm px-2 py-2">
+                  <span className="hidden sm:inline">Course Structure</span>
+                  <span className="sm:hidden">Structure</span>
+                </TabsTrigger>
+                <TabsTrigger value="examples" className="text-xs sm:text-sm px-2 py-2">
+                  <span className="hidden sm:inline">Loan Examples</span>
+                  <span className="sm:hidden">Examples</span>
+                </TabsTrigger>
+                <TabsTrigger value="cases" className="text-xs sm:text-sm px-2 py-2">Cases</TabsTrigger>
+                <TabsTrigger value="scripts" className="text-xs sm:text-sm px-2 py-2">Scripts</TabsTrigger>
+              </TabsList>
+            </div>
             
             <TabsContent value="overview" className="space-y-4 mt-6">
               <div>
-                <h4 className="font-semibold mb-3">Learning Topics</h4>
+                <h4 className="font-semibold mb-3 text-sm sm:text-base">Learning Topics</h4>
                 <div className="flex flex-wrap gap-2">
                   {module.topics.map((topic, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
+                    <Badge key={index} variant="outline" className="text-xs break-words">
                       {topic}
                     </Badge>
                   ))}
@@ -99,7 +107,7 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
             
             <TabsContent value="structure" className="space-y-4 mt-6">
               <div>
-                <h4 className="font-semibold mb-3">Course Structure</h4>
+                <h4 className="font-semibold mb-3 text-sm sm:text-base">Course Structure</h4>
                 <div className="space-y-3">
                   {lessons.map((lesson, index) => (
                     <div
@@ -108,19 +116,19 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
                         lesson.completed ? "bg-accent/10" : "bg-muted/20"
                       }`}
                     >
-                      <div className={`${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
+                      <div className={`flex-shrink-0 ${lesson.completed ? "text-accent" : "text-muted-foreground"}`}>
                         {lesson.completed ? (
-                          <CheckCircle className="h-5 w-5" />
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
                         ) : (
                           getTypeIcon(lesson.type)
                         )}
                       </div>
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">{lesson.title}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-sm break-words">{lesson.title}</div>
                         <div className="text-xs text-muted-foreground">{lesson.duration}</div>
                       </div>
                       {lesson.completed && (
-                        <Badge variant="success" className="text-xs">
+                        <Badge variant="success" className="text-xs flex-shrink-0">
                           Complete
                         </Badge>
                       )}
@@ -217,7 +225,7 @@ const ModuleDetail = ({ module, onClose }: ModuleDetailProps) => {
 
           <div className="pt-4 border-t">
             <Button 
-              className="w-full" 
+              className="w-full text-sm sm:text-base" 
               variant={module.status === "completed" ? "success" : "default"}
               onClick={handleContinueLearning}
             >

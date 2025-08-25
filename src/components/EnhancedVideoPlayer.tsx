@@ -215,19 +215,19 @@ export const EnhancedVideoPlayer = ({
             />
           </div>
           
-          <div className="p-6 space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold mb-2">{title}</h3>
-                <p className="text-muted-foreground mb-4">{description}</p>
+          <div className="p-4 sm:p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 break-words">{title}</h3>
+                <p className="text-muted-foreground mb-4 text-sm sm:text-base">{description}</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="outline" className="flex items-center gap-1 text-xs sm:text-sm">
                   <Clock className="h-3 w-3" />
                   {duration}
                 </Badge>
                 {isCompleted && (
-                  <Badge variant="success" className="flex items-center gap-1">
+                  <Badge variant="success" className="flex items-center gap-1 text-xs sm:text-sm">
                     <CheckCircle className="h-3 w-3" />
                     Completed
                   </Badge>
@@ -235,13 +235,14 @@ export const EnhancedVideoPlayer = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm" onClick={addBookmark}>
-                      <BookmarkPlus className="h-4 w-4 mr-2" />
-                      Bookmark
+                    <Button variant="outline" size="sm" onClick={addBookmark} className="text-xs sm:text-sm">
+                      <BookmarkPlus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Bookmark</span>
+                      <span className="sm:hidden">+</span>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>Add bookmark at current time</TooltipContent>
@@ -252,9 +253,11 @@ export const EnhancedVideoPlayer = ({
                 variant="outline" 
                 size="sm" 
                 onClick={() => setShowNotes(!showNotes)}
+                className="text-xs sm:text-sm"
               >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Notes ({notes.length})
+                <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Notes ({notes.length})</span>
+                <span className="sm:hidden">({notes.length})</span>
               </Button>
             </div>
 

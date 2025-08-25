@@ -266,24 +266,24 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{questions.length}</div>
-                <div className="text-sm text-muted-foreground">Questions</div>
+                <div className="text-xl sm:text-2xl font-bold text-primary">{questions.length}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Questions</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">80%</div>
-                <div className="text-sm text-muted-foreground">Passing Score</div>
+                <div className="text-xl sm:text-2xl font-bold text-accent">80%</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Passing Score</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">30 min</div>
-                <div className="text-sm text-muted-foreground">Time Limit</div>
+                <div className="text-xl sm:text-2xl font-bold text-primary">30 min</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Time Limit</div>
               </div>
             </div>
             
-            <div className="bg-muted/20 p-4 rounded-lg">
-              <h4 className="font-medium mb-2">Instructions:</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
+            <div className="bg-muted/20 p-3 sm:p-4 rounded-lg">
+              <h4 className="font-medium mb-2 text-sm sm:text-base">Instructions:</h4>
+              <ul className="text-xs sm:text-sm text-muted-foreground space-y-1">
                 <li>• Select the best answer for each question</li>
                 <li>• You can navigate between questions and change answers</li>
                 <li>• You need 80% or higher to pass</li>
@@ -358,24 +358,24 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
                 const isCorrect = userAnswer === question.correctAnswer;
                 
                 return (
-                  <div key={question.id} className="border rounded-lg p-4">
+                  <div key={question.id} className="border rounded-lg p-3 sm:p-4">
                     <div className="flex items-start gap-2 mb-2">
                       {isCorrect ? (
-                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5 flex-shrink-0" />
                       ) : (
-                        <XCircle className="h-5 w-5 text-red-500 mt-0.5" />
+                        <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mt-0.5 flex-shrink-0" />
                       )}
-                      <div className="flex-1">
-                        <p className="font-medium">Q{index + 1}: {question.question}</p>
-                        <p className="text-sm text-muted-foreground mt-1">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm sm:text-base break-words">Q{index + 1}: {question.question}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                           Your answer: {userAnswer !== undefined ? question.options[userAnswer] : "Not answered"}
                         </p>
                         {!isCorrect && (
-                          <p className="text-sm text-green-600 mt-1">
+                          <p className="text-xs sm:text-sm text-green-600 mt-1">
                             Correct answer: {question.options[question.correctAnswer]}
                           </p>
                         )}
-                        <p className="text-sm text-muted-foreground mt-2">{question.explanation}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-2">{question.explanation}</p>
                       </div>
                     </div>
                   </div>
@@ -383,7 +383,7 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
               })}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button onClick={restartQuiz} variant="outline" className="flex-1">
                 Retake Quiz
               </Button>
@@ -405,22 +405,22 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <CardTitle>Question {currentQuestion + 1} of {questions.length}</CardTitle>
-            <CardDescription>Choose the best answer</CardDescription>
+            <CardTitle className="text-lg sm:text-xl">Question {currentQuestion + 1} of {questions.length}</CardTitle>
+            <CardDescription className="text-sm">Choose the best answer</CardDescription>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm sm:text-base">
             <Clock className="h-4 w-4" />
             <span className="font-mono">{formatTime(timeRemaining)}</span>
           </div>
         </div>
         <Progress value={progress} className="h-2" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium mb-4">{question.question}</h3>
+            <h3 className="text-base sm:text-lg font-medium mb-4 leading-relaxed">{question.question}</h3>
             
             <RadioGroup 
               value={selectedAnswers[currentQuestion]?.toString()} 
@@ -429,7 +429,7 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
               {question.options.map((option, index) => (
                 <div key={index} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/20 transition-colors">
                   <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                  <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">
+                  <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer text-sm sm:text-base break-words">
                     {option}
                   </Label>
                 </div>
@@ -437,20 +437,22 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
             </RadioGroup>
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
             <Button 
               variant="outline" 
               onClick={handlePreviousQuestion}
               disabled={currentQuestion === 0}
+              className="order-2 sm:order-1"
             >
               Previous
             </Button>
             
-            <div className="flex gap-2">
+            <div className="flex gap-2 order-1 sm:order-2">
               {currentQuestion === questions.length - 1 ? (
                 <Button 
                   onClick={handleFinishQuiz}
                   disabled={selectedAnswers[currentQuestion] === undefined}
+                  className="flex-1 sm:flex-none"
                 >
                   Finish Quiz
                 </Button>
@@ -458,6 +460,7 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
                 <Button 
                   onClick={handleNextQuestion}
                   disabled={selectedAnswers[currentQuestion] === undefined}
+                  className="flex-1 sm:flex-none"
                 >
                   Next
                 </Button>
@@ -467,7 +470,7 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
 
           {/* Question Navigation */}
           <div className="border-t pt-4">
-            <p className="text-sm text-muted-foreground mb-2">Question Navigation:</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Question Navigation:</p>
             <div className="flex flex-wrap gap-2">
               {questions.map((_, index) => (
                 <Button
@@ -475,7 +478,7 @@ export const ModuleQuiz = ({ moduleId, moduleTitle, totalQuestions, onComplete }
                   variant={currentQuestion === index ? "default" : selectedAnswers[index] !== undefined ? "secondary" : "outline"}
                   size="sm"
                   onClick={() => setCurrentQuestion(index)}
-                  className="w-10 h-10"
+                  className="w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm"
                 >
                   {index + 1}
                 </Button>

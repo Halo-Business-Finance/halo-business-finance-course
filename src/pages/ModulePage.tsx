@@ -85,29 +85,30 @@ const ModulePage = () => {
   if (!courseModule) {
     
     return (
-      <div className="container mx-auto p-6 text-center space-y-6">
+      <div className="container mx-auto p-4 sm:p-6 text-center space-y-4 sm:space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-foreground mb-4">Module Not Found</h1>
-          <p className="text-muted-foreground mb-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Module Not Found</h1>
+          <p className="text-muted-foreground mb-4 text-sm sm:text-base">
             The requested module "{moduleId}" could not be found.
           </p>
         </div>
         
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4">Available Modules:</h2>
+        <div className="max-w-2xl mx-auto px-4">
+          <h2 className="text-base sm:text-lg font-semibold mb-4">Available Modules:</h2>
           <div className="grid gap-3">
             {(courseData.modules || []).map((mod) => (
-              <Card key={mod?.id || 'unknown'} className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-center">
+              <Card key={mod?.id || 'unknown'} className="p-3 sm:p-4 hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <div className="text-left">
-                    <h3 className="font-medium">{mod?.title || 'Unknown Title'}</h3>
-                    <p className="text-sm text-muted-foreground">ID: {mod?.id || 'unknown'}</p>
+                    <h3 className="font-medium text-sm sm:text-base">{mod?.title || 'Unknown Title'}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground">ID: {mod?.id || 'unknown'}</p>
                   </div>
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => navigate(`/module/${mod?.id}`)}
                     disabled={!mod?.id}
+                    className="w-full sm:w-auto"
                   >
                     Go to Module
                   </Button>
@@ -117,7 +118,7 @@ const ModulePage = () => {
           </div>
         </div>
         
-        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+        <Button variant="outline" onClick={() => navigate("/dashboard")} className="w-full sm:w-auto">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Return to Dashboard
         </Button>
@@ -141,19 +142,19 @@ const ModulePage = () => {
   // Show locked content only to non-admin users
   if (courseModule.status === "locked" && !isAdmin) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-4 sm:p-6">
         <Card>
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              <Lock className="h-8 w-8 text-muted-foreground" />
+            <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+              <Lock className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
             </div>
-            <CardTitle className="text-2xl">{courseModule.title}</CardTitle>
-            <CardDescription className="text-base mt-2">
+            <CardTitle className="text-xl sm:text-2xl">{courseModule.title}</CardTitle>
+            <CardDescription className="text-sm sm:text-base mt-2">
               This module is currently locked. Please complete the prerequisite modules to access this content.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button onClick={() => navigate("/dashboard")} variant="outline">
+            <Button onClick={() => navigate("/dashboard")} variant="outline" className="w-full sm:w-auto">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Return to Dashboard
             </Button>
@@ -215,44 +216,46 @@ const ModulePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6 bg-white min-h-screen">
+    <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6 bg-white min-h-screen">
       {/* Module Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">{courseModule.title}</h1>
-          <p className="text-muted-foreground mt-2">{courseModule.description}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground break-words">{courseModule.title}</h1>
+          <p className="text-muted-foreground mt-2 text-sm sm:text-base">{courseModule.description}</p>
         </div>
-        {getStatusBadge(courseModule.status)}
+        <div className="flex-shrink-0">
+          {getStatusBadge(courseModule.status)}
+        </div>
       </div>
 
       {/* Progress and Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <Card>
-          <CardContent className="p-4 text-center">
-            <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{courseModule.duration}</div>
-            <div className="text-sm text-muted-foreground">Duration</div>
+          <CardContent className="p-3 sm:p-4 text-center">
+            <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2" />
+            <div className="text-lg sm:text-2xl font-bold">{courseModule.duration}</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Duration</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <BookOpen className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{courseModule.lessons}</div>
-            <div className="text-sm text-muted-foreground">Lessons</div>
+          <CardContent className="p-3 sm:p-4 text-center">
+            <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-accent mx-auto mb-2" />
+            <div className="text-lg sm:text-2xl font-bold">{courseModule.lessons}</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Lessons</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <Play className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold">{courseModule.videos?.length || 0}</div>
-            <div className="text-sm text-muted-foreground">Videos</div>
+          <CardContent className="p-3 sm:p-4 text-center">
+            <Play className="h-6 w-6 sm:h-8 sm:w-8 text-primary mx-auto mb-2" />
+            <div className="text-lg sm:text-2xl font-bold">{courseModule.videos?.length || 0}</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Videos</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <Award className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold">{courseModule.lessons}</div>
-            <div className="text-sm text-muted-foreground">Quiz Questions</div>
+          <CardContent className="p-3 sm:p-4 text-center">
+            <Award className="h-6 w-6 sm:h-8 sm:w-8 text-accent mx-auto mb-2" />
+            <div className="text-lg sm:text-2xl font-bold">{courseModule.lessons}</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Quiz Questions</div>
           </CardContent>
         </Card>
       </div>
@@ -276,14 +279,16 @@ const ModulePage = () => {
       )}
 
       {/* Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="lessons">Lessons</TabsTrigger>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="resources">Resources</TabsTrigger>
-          <TabsTrigger value="quiz">Quiz</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+        <div className="overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 gap-1 h-auto p-1">
+            <TabsTrigger value="lessons" className="text-xs sm:text-sm px-2 py-2">Lessons</TabsTrigger>
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 py-2">Overview</TabsTrigger>
+            <TabsTrigger value="videos" className="text-xs sm:text-sm px-2 py-2">Videos</TabsTrigger>
+            <TabsTrigger value="resources" className="text-xs sm:text-sm px-2 py-2">Resources</TabsTrigger>
+            <TabsTrigger value="quiz" className="text-xs sm:text-sm px-2 py-2">Quiz</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="videos">
           {renderVideosTab()}
@@ -298,26 +303,26 @@ const ModulePage = () => {
             <CardContent className="space-y-4">
               {courseModule.topics && courseModule.topics.length > 0 ? (
                 courseModule.topics.map((topic, index) => (
-                  <Card key={index} className="p-4 hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-4">
+                  <Card key={index} className="p-3 sm:p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                          <span className="text-sm font-medium text-primary">{index + 1}</span>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <span className="text-xs sm:text-sm font-medium text-primary">{index + 1}</span>
                         </div>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium text-foreground">{topic}</h3>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-foreground text-sm sm:text-base break-words">{topic}</h3>
                         <div className="flex items-center gap-2 mt-1">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">
+                          <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                          <span className="text-xs sm:text-sm text-muted-foreground">
                             {Math.ceil((courseModule.lessons || 12) / courseModule.topics.length * 15)} minutes
                           </span>
                         </div>
                       </div>
                       <div className="flex-shrink-0">
-                        <Badge variant="success">
+                        <Badge variant="success" className="text-xs">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          Available
+                          <span className="hidden sm:inline">Available</span>
                         </Badge>
                       </div>
                     </div>
@@ -365,7 +370,7 @@ const ModulePage = () => {
                   </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
                     <h5 className="font-semibold text-primary mb-2">Difficulty Level</h5>
                     <p className="text-sm text-muted-foreground">
