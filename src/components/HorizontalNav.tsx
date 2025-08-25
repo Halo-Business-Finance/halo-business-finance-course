@@ -16,60 +16,6 @@ export const HorizontalNav = () => {
         {/* Navigation Menu */}
         <div className="flex items-center gap-6 flex-nowrap flex-1 justify-end">
           <NavLink 
-            to="/about" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Why FinPilot
-          </NavLink>
-          
-          <NavLink 
-            to="/courses" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Courses
-          </NavLink>
-          
-          <NavLink 
-            to="/pricing" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Pricing
-          </NavLink>
-          
-          <NavLink 
-            to="/business" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Solutions
-          </NavLink>
-
-          <NavLink 
-            to="/resources" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Resources
-          </NavLink>
-
-          <NavLink 
-            to="/blog" 
-            className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
-            Blog
-          </NavLink>
-          
-          <NavLink 
             to="/support" 
             className={({ isActive }) => 
               `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`

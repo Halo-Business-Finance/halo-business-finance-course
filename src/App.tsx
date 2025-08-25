@@ -33,7 +33,6 @@ import Support from "./pages/Support";
 import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
-import { AccountTabs } from "./components/AccountTabs";
 import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
