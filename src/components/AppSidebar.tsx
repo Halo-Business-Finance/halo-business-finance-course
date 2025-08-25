@@ -189,8 +189,8 @@ export function AppSidebar() {
               </div>
             )}
           </SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-1">
-            <SidebarMenu className="space-y-1">
+          <SidebarGroupContent className="space-y-3">
+            <SidebarMenu className="space-y-3">
               {courseModules.map((module, index) => {
                 const isModuleLocked = module.status === "locked";
                 const canAccess = !isModuleLocked || isAdmin;
