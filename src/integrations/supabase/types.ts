@@ -1434,6 +1434,75 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          admin_notes: string | null
+          assigned_to: string | null
+          budget: string | null
+          company: string
+          company_size: string | null
+          created_at: string
+          email: string
+          first_name: string
+          follow_up_date: string | null
+          id: string
+          job_title: string | null
+          last_contacted: string | null
+          last_name: string
+          lead_source: string
+          lead_type: string
+          message: string | null
+          phone: string | null
+          status: string
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          assigned_to?: string | null
+          budget?: string | null
+          company: string
+          company_size?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          follow_up_date?: string | null
+          id?: string
+          job_title?: string | null
+          last_contacted?: string | null
+          last_name: string
+          lead_source?: string
+          lead_type?: string
+          message?: string | null
+          phone?: string | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          assigned_to?: string | null
+          budget?: string | null
+          company?: string
+          company_size?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          follow_up_date?: string | null
+          id?: string
+          job_title?: string | null
+          last_contacted?: string | null
+          last_name?: string
+          lead_source?: string
+          lead_type?: string
+          message?: string | null
+          phone?: string | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       learning_achievements: {
         Row: {
           achievement_description: string | null
