@@ -372,6 +372,8 @@ const AdminDashboard = () => {
         errorMessage = 'Only super admins can assign super admin roles';
       } else if (error?.message?.includes('privileges') || error?.message?.includes('permissions')) {
         errorMessage = 'Insufficient privileges to assign roles';
+      } else if (error?.message?.includes('@halobusinessfinance.com')) {
+        errorMessage = `${error.message}\n\nOnly users with @halobusinessfinance.com email addresses can be assigned admin roles.`;
       } else if (error?.message) {
         errorMessage = error.message;
       }

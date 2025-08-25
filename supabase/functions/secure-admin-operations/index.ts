@@ -154,6 +154,29 @@ async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserI
     }
   }
 
+  // For admin roles, validate email domain
+  if (['admin', 'super_admin', 'tech_support_admin'].includes(role)) {
+    // Get the target user's email
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(targetUserId);
+    if (userError) {
+      throw new Error(`Failed to get user data: ${userError.message}`);
+    }
+    
+    // Check if email domain is valid for admin roles
+    const { data: isValidDomain, error: validationError } = await supabaseAdmin.rpc('validate_email_domain_for_role', {
+      email_address: userData.user.email,
+      user_role: role
+    });
+    
+    if (validationError) {
+      throw new Error(`Email validation failed: ${validationError.message}`);
+    }
+    
+    if (!isValidDomain) {
+      throw new Error(`Admin roles require a @halobusinessfinance.com email address. User email: ${userData.user.email}`);
+    }
+  }
+
   // Use the secure function
   const { data, error } = await supabaseAdmin
     .rpc('assign_user_role', {
