@@ -215,7 +215,7 @@ const Support = () => {
               <div className="space-y-6">
                 {faqCategories.map((category, categoryIndex) => (
                   <div key={categoryIndex} className="space-y-3">
-                    <h4 className="text-lg font-semibold text-foreground border-b border-gray-200 pb-2">
+                    <h4 className="text-lg font-semibold text-foreground border-b border-black pb-2">
                       {category.category}
                     </h4>
                     <Accordion type="single" collapsible className="space-y-3">
