@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export const HorizontalNav = () => {
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm border border-gray-100 px-6 py-2">
+    <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm px-6 py-2">
       <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
@@ -14,7 +14,7 @@ export const HorizontalNav = () => {
         </NavLink>
 
         {/* Navigation Menu */}
-        <div className="flex items-center gap-4 lg:gap-6 flex-wrap">
+        <div className="flex items-center gap-6 flex-nowrap">
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
