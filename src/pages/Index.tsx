@@ -432,7 +432,7 @@ const Index = () => {
                   <CheckCircle className="h-4 w-4 text-halo-orange" />
                   <span>No Risk, 30-Day Money Back Guarantee</span>
                 </div>
-                <Link to="/auth" className="mt-2">
+                <Link to="/signup" className="mt-2">
                   <Button className="text-sm px-4 py-2 bg-halo-orange text-white hover:bg-halo-orange/90 shadow-hero group">
                     <ArrowRight className="mr-2 h-3 w-3 text-white group-hover:scale-110 transition-transform" />
                     Start Free Trial Now

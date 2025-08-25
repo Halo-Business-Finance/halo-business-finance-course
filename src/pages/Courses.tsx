@@ -441,9 +441,11 @@ const Courses = () => {
                   <Button size="lg" className="bg-primary text-white">
                     Browse All Courses
                   </Button>
-                  <Button size="lg" variant="outline">
-                    Start Free Trial
-                  </Button>
+                  <Link to="/signup">
+                    <Button size="lg" variant="outline">
+                      Start Free Trial
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
