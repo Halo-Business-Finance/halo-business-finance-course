@@ -3616,6 +3616,10 @@ export type Database = {
         }
         Returns: Json
       }
+      validate_email_domain_for_role: {
+        Args: { email_address: string; user_role?: string }
+        Returns: boolean
+      }
       validate_emergency_profile_access: {
         Args: { access_reason?: string; target_user_id: string }
         Returns: boolean

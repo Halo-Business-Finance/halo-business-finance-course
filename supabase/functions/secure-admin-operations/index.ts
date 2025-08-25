@@ -225,6 +225,22 @@ async function deleteUser(supabaseAdmin: any, adminUserId: string, { targetUserI
 }
 
 async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string, { email, password, fullName, role }) {
+  // Validate email domain for admin roles
+  if (role && role !== 'trainee') {
+    const { data: isValidDomain, error: domainError } = await supabaseAdmin.rpc('validate_email_domain_for_role', {
+      email_address: email,
+      user_role: role
+    });
+
+    if (domainError) {
+      throw new Error(`Email validation failed: ${domainError.message}`);
+    }
+
+    if (!isValidDomain) {
+      throw new Error(`Admin roles require a @halobusinessfinance.com email address. Provided: ${email}`);
+    }
+  }
+
   // Verify requesting user has appropriate permissions
   if (role === 'super_admin') {
     const { data: isSuperAdmin } = await supabaseAdmin
@@ -247,7 +263,7 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
     throw new Error(`Failed to create user: ${createError.message}`)
   }
 
-  // Assign the role using the secure function
+  // Assign the role using the secure function (this will be validated by the database trigger)
   const { error: roleError } = await supabaseAdmin
     .rpc('assign_user_role', {
       p_target_user_id: newUser.user.id,
@@ -265,7 +281,8 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
   await logAdminAction(supabaseAdmin, requestingAdminId, 'admin_account_created', newUser.user.id, 'auth.users', { 
     email, 
     role, 
-    fullName 
+    fullName,
+    email_domain_validated: true
   })
 
   return new Response(
