@@ -19,7 +19,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/courses" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Courses
@@ -27,7 +27,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/pricing" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Pricing
@@ -35,7 +35,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/business" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Enterprise
@@ -43,7 +43,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/blog" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Blog
@@ -51,7 +51,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             About
@@ -59,7 +59,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/support" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Support
