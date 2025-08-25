@@ -245,6 +245,26 @@ export const ContentImporter = () => {
     }
   ];
 
+  const clearExistingPages = async () => {
+    try {
+      // Delete all existing CMS pages to start fresh
+      const { error } = await supabase
+        .from('cms_pages')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all rows
+      
+      if (error) {
+        console.error('Error clearing existing pages:', error);
+        throw error;
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Error clearing existing pages:', error);
+      throw error;
+    }
+  };
+
   const importPage = async (pageData: PageData) => {
     try {
       const { error } = await supabase
@@ -257,7 +277,7 @@ export const ContentImporter = () => {
           meta_title: pageData.meta_title,
           meta_description: pageData.meta_description,
           sort_order: pageData.sort_order,
-          is_homepage: false,
+          is_homepage: pageData.slug === 'home',
           published_at: new Date().toISOString()
         }]);
 
@@ -271,21 +291,26 @@ export const ContentImporter = () => {
 
   const importAllPages = async () => {
     setImporting(true);
+    setImported([]); // Reset imported list
+    
     try {
+      // First clear all existing pages
+      await clearExistingPages();
+      
+      // Then import all pages
       for (const page of existingPages) {
-        if (!imported.includes(page.slug)) {
-          await importPage(page);
-        }
+        await importPage(page);
       }
       
       toast({
         title: "Success",
-        description: "All pages imported successfully into CMS"
+        description: `Successfully imported ${existingPages.length} pages into CMS`
       });
     } catch (error) {
+      console.error('Import error:', error);
       toast({
         title: "Error",
-        description: "Failed to import some pages",
+        description: "Failed to import pages. Check console for details.",
         variant: "destructive"
       });
     } finally {
@@ -330,17 +355,21 @@ export const ContentImporter = () => {
         <div className="flex gap-2">
           <Button 
             onClick={importAllPages} 
-            disabled={importing || imported.length === existingPages.length}
+            disabled={importing}
             className="flex items-center gap-2"
           >
             <Upload className="h-4 w-4" />
-            {importing ? 'Importing...' : 'Import All Pages'}
+            {importing ? 'Importing...' : 'Clear & Import All Pages'}
           </Button>
           {imported.length > 0 && (
             <Badge variant="secondary">
               {imported.length}/{existingPages.length} imported
             </Badge>
           )}
+        </div>
+        
+        <div className="text-sm text-muted-foreground">
+          <p><strong>Note:</strong> This will clear all existing CMS pages and import your application pages with rich content.</p>
         </div>
       </CardContent>
     </Card>
