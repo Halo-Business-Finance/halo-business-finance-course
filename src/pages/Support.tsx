@@ -1,8 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { HelpCircle, MessageCircle, Clock, CheckCircle } from "lucide-react";
+import { HelpCircle, MessageCircle, Mail, Clock, CheckCircle, ArrowRight } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import supportHero from "@/assets/support-hero.jpg";
@@ -126,8 +128,9 @@ const Support = () => {
         </div>
 
 
-        {/* FAQ Section */}
-        <div className="max-w-4xl mx-auto">
+        {/* FAQ and Contact Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* FAQ Section */}
           <Card className="p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -155,6 +158,53 @@ const Support = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+          </Card>
+
+          {/* Contact Form */}
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Mail className="h-6 w-6 text-halo-orange" />
+              </div>
+              <div className="flex-1">
+                <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
+                <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
+                <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input 
+                  placeholder="First Name" 
+                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                />
+                <Input 
+                  placeholder="Last Name" 
+                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+                />
+              </div>
+              <Input 
+                type="email" 
+                placeholder="Email Address" 
+                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+              />
+              <Input 
+                placeholder="Subject" 
+                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
+              />
+              <Textarea 
+                placeholder="Tell us how we can help you..." 
+                rows={4} 
+                className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
+              />
+              <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                Send Message
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                We typically respond within 4 hours during business hours
+              </p>
+            </div>
           </Card>
         </div>
       </div>
