@@ -42,6 +42,8 @@ import { ResourceManager } from "@/components/admin/ResourceManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 import { authRateLimiter } from "@/utils/validation";
+import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
+import { SecurityStatusIndicator } from "@/components/SecurityStatusIndicator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -207,10 +209,11 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_all_user_profiles_with_roles');
+        // Use new secure masked profile function for enhanced PII protection
+        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_masked_user_profiles');
 
         if (profilesError) {
-          console.warn('Secure function failed:', profilesError);
+          console.warn('Secure masked profile function failed:', profilesError);
           throw profilesError;
         }
 
@@ -755,6 +758,9 @@ const AdminDashboard = () => {
         </div>
       </div>
 
+      {/* Security Status */}
+      <SecurityStatusIndicator />
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
@@ -978,21 +984,25 @@ const AdminDashboard = () => {
                 <TableBody>
                    {userRoles.map((userRole) => (
                      <TableRow key={userRole.id}>
-                       <TableCell>
-                         <div className="flex flex-col">
-                           <span className="font-medium">
-                             {userRole.profiles?.name || 'No name'}
-                           </span>
-                           <span className="font-mono text-xs text-muted-foreground">
-                             {userRole.user_id.slice(0, 8)}...
-                           </span>
-                         </div>
-                       </TableCell>
-                       <TableCell>
-                         <span className="text-sm">
-                           {userRole.profiles?.email || 'No email'}
-                         </span>
-                       </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <SecurePIIDisplay 
+                              value={userRole.profiles?.name || null} 
+                              type="name" 
+                              showMaskingIndicator={true}
+                            />
+                            <span className="font-mono text-xs text-muted-foreground">
+                              {userRole.user_id.slice(0, 8)}...
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <SecurePIIDisplay 
+                            value={userRole.profiles?.email || null} 
+                            type="email" 
+                            showMaskingIndicator={true}
+                          />
+                        </TableCell>
                        <TableCell>
                          <Badge variant={getRoleBadgeVariant(userRole.role)}>
                            {userRole.role}

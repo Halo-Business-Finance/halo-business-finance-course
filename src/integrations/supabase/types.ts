@@ -2624,10 +2624,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      encrypt_pii_field: {
-        Args: { field_name: string; plain_data: string }
-        Returns: string
-      }
       encrypt_sensitive_data: {
         Args: { context?: string; plaintext: string }
         Returns: string
@@ -2791,6 +2787,26 @@ export type Database = {
           name: string
           state: string
           title: string
+          user_id: string
+        }[]
+      }
+      get_masked_user_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          city: string
+          company: string
+          created_at: string
+          email: string
+          join_date: string
+          name: string
+          phone: string
+          role: string
+          role_created_at: string
+          role_is_active: boolean
+          state: string
+          title: string
+          updated_at: string
           user_id: string
         }[]
       }
@@ -2977,6 +2993,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_admin_profile_access_detailed: {
+        Args: {
+          access_type: string
+          fields_accessed: string[]
+          reason?: string
+          target_user_id: string
+        }
+        Returns: undefined
+      }
       log_admin_profile_view: {
         Args: { viewed_user_id: string }
         Returns: undefined
@@ -3068,6 +3093,14 @@ export type Database = {
       mask_profile_data_advanced: {
         Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
         Returns: Json
+      }
+      mask_sensitive_data: {
+        Args: {
+          p_data: string
+          p_field_type: string
+          p_requesting_user_role?: string
+        }
+        Returns: string
       }
       mask_sensitive_profile_data: {
         Args: { profile_data: Json }
