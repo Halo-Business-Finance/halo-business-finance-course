@@ -50,11 +50,14 @@ const Courses = () => {
 
   const fetchCourseModules = async () => {
     try {
+      console.log('Fetching course modules...');
       const { data, error } = await supabase
         .from('course_modules')
         .select('*')
         .eq('is_active', true)
         .order('order_index', { ascending: true });
+
+      console.log('Course modules query result:', { data, error });
 
       if (error) {
         console.error('Error fetching course modules:', error);
@@ -66,6 +69,7 @@ const Courses = () => {
         return;
       }
 
+      console.log(`Found ${data?.length || 0} course modules`);
       setModules(data || []);
       
       // Check enrollment status for each module if user is logged in
