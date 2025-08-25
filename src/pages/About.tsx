@@ -177,18 +177,22 @@ const About = () => {
                 <div className="flex-1">
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
                   <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
-                  <div className="text-xs text-black leading-relaxed mb-3">{info.description}</div>
-                  <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                    <Link to="/signup" className="flex items-center gap-1">
-                      <Play className="h-3 w-3" />
-                      Start Free Trial
-                    </Link>
-                  </Button>
+                  <div className="text-xs text-black leading-relaxed">{info.description}</div>
                 </div>
               </div>
             </Card>
           );
         })}
+      </div>
+
+      <div className="text-center mb-12 md:mb-16">
+        <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Link to="/signup" className="flex items-center gap-2">
+            <Play className="h-4 w-4" />
+            Start Free Trial
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Button>
       </div>
 
       <div className="mb-12 md:mb-16">
