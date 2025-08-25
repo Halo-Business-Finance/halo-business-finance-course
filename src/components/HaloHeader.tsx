@@ -1,5 +1,6 @@
-import { Building2, Globe } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Globe, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router-dom";
 
 interface FinPilotHeaderProps {
   title?: string;
@@ -8,51 +9,100 @@ interface FinPilotHeaderProps {
 }
 
 export const FinPilotHeader = ({ 
-  title = "FinPilot Training Platform", 
-  subtitle = "Professional Development & Certification Program",
+  title = "FinPilot", 
+  subtitle = "Training Platform",
   showCompanyInfo = true 
 }: FinPilotHeaderProps) => {
   return (
-    <Card className="mb-6 bg-gradient-hero border-none text-white">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
+    <header className="bg-white border-b border-border">
+      {/* Top Utility Bar */}
+      <div className="bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-end items-center h-10 text-sm">
+            <div className="flex items-center gap-6">
+              <a href="/business" className="hover:text-accent transition-colors">For Business</a>
+              <a href="/support" className="hover:text-accent transition-colors">Support</a>
+              <a href="/about" className="hover:text-accent transition-colors">About</a>
+              <a href="/blog" className="hover:text-accent transition-colors">Blog</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <NavLink to="/" className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-sm flex items-center justify-center">
+              <span className="text-white font-bold text-sm">FP</span>
+            </div>
+            <div>
+              <span className="text-xl font-bold text-foreground">{title}</span>
+            </div>
+          </NavLink>
+
+          {/* Main Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            <NavLink 
+              to="/about" 
+              className={({ isActive }) => 
+                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+              }
+            >
+              Why FinPilot
+            </NavLink>
+            <NavLink 
+              to="/courses" 
+              className={({ isActive }) => 
+                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+              }
+            >
+              Courses
+            </NavLink>
+            <NavLink 
+              to="/pricing" 
+              className={({ isActive }) => 
+                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+              }
+            >
+              Pricing
+            </NavLink>
+            <NavLink 
+              to="/business" 
+              className={({ isActive }) => 
+                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+              }
+            >
+              Solutions
+            </NavLink>
+            <NavLink 
+              to="/resources" 
+              className={({ isActive }) => 
+                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+              }
+            >
+              Resources
+            </NavLink>
+          </nav>
+
+          {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            <div>
-              <h1 className="text-2xl font-bold mb-1" style={{color: '#1e3a8a'}}>{title}</h1>
-              <p className="text-white/90 text-sm">{subtitle}</p>
-            </div>
-          </div>
-          
-          {showCompanyInfo && (
-            <div className="text-right hidden md:block">
-              <div className="flex items-center gap-2 text-white/90 text-sm mb-1">
-                <Globe className="h-4 w-4" />
-                <span>www.finpilot.com</span>
-              </div>
-              <div className="text-white/80 text-xs">
-                Navigate Your Financial Future with Expert Guidance
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-left">
-            <div>
-              <div className="text-white/90 text-xs uppercase tracking-wide mb-1">Training Focus</div>
-              <div className="text-sm font-medium">Commercial Lending Excellence</div>
-            </div>
-            <div>
-              <div className="text-white/90 text-xs uppercase tracking-wide mb-1">Program Level</div>
-              <div className="text-sm font-medium">Professional Certification</div>
-            </div>
-            <div>
-              <div className="text-white/90 text-xs uppercase tracking-wide mb-1">Industry</div>
-              <div className="text-sm font-medium">Business Finance & Lending</div>
+            <button className="p-2 hover:bg-muted rounded-full transition-colors">
+              <Search className="h-5 w-5 text-muted-foreground" />
+            </button>
+            
+            <div className="hidden md:flex items-center gap-3">
+              <Button variant="outline" asChild>
+                <NavLink to="/auth">Login</NavLink>
+              </Button>
+              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                <NavLink to="/signup">Get Started</NavLink>
+              </Button>
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </header>
   );
 };
