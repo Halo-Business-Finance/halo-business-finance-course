@@ -6,6 +6,15 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import blogHero from "@/assets/blog-hero.jpg";
 import fintechProfessional from "@/assets/fintech-professional.jpg";
 import creditAnalystProfessional from "@/assets/credit-analyst-professional.jpg";
@@ -18,6 +27,8 @@ import gamificationProfessional from "@/assets/gamification-professional.jpg";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 8;
 
   const posts = [
     {
@@ -158,6 +169,24 @@ const Blog = () => {
     ? posts 
     : posts.filter(post => post.category === selectedCategory);
 
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredPosts.length / articlesPerPage);
+  const startIndex = (currentPage - 1) * articlesPerPage;
+  const endIndex = startIndex + articlesPerPage;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of articles section
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
   return (
     <>
       <SEOHead 
@@ -191,7 +220,7 @@ const Blog = () => {
           {categories.map((category) => (
             <Badge 
               key={category} 
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => handleCategoryChange(category)}
               className={`cursor-pointer text-xs md:text-sm transition-all ${
                 selectedCategory === category
                   ? "bg-transparent text-halo-orange underline underline-offset-4 decoration-2 decoration-halo-navy scale-105" 
@@ -204,7 +233,7 @@ const Blog = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {filteredPosts.map((post) => (
+          {currentPosts.map((post) => (
             <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
               <div className="h-40 md:h-48 overflow-hidden">
                 <img 
@@ -240,6 +269,66 @@ const Blog = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8 md:mt-12">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                    className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+                
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const page = i + 1;
+                  const showPage = 
+                    page === 1 || 
+                    page === totalPages || 
+                    Math.abs(page - currentPage) <= 1;
+                  
+                  if (!showPage) {
+                    if (page === currentPage - 2 || page === currentPage + 2) {
+                      return (
+                        <PaginationItem key={page}>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      );
+                    }
+                    return null;
+                  }
+                  
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => handlePageChange(page)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                    className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
+
+        {/* Results info */}
+        <div className="text-center mt-6 text-sm text-muted-foreground">
+          Showing {startIndex + 1}-{Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} articles
+          {selectedCategory !== "All" && ` in ${selectedCategory}`}
         </div>
         </div>
         
