@@ -14,7 +14,47 @@ export const HorizontalNav = () => {
         </NavLink>
 
         {/* Navigation Menu */}
-        <div className="flex items-center gap-6 flex-nowrap flex-1 justify-end">
+        <div className="flex items-center gap-6 flex-nowrap flex-1 justify-center">
+          <NavLink 
+            to="/courses" 
+            className={({ isActive }) => 
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+            }
+          >
+            Courses
+          </NavLink>
+          <NavLink 
+            to="/pricing" 
+            className={({ isActive }) => 
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+            }
+          >
+            Pricing
+          </NavLink>
+          <NavLink 
+            to="/business" 
+            className={({ isActive }) => 
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+            }
+          >
+            Business
+          </NavLink>
+          <NavLink 
+            to="/blog" 
+            className={({ isActive }) => 
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+            }
+          >
+            Blog
+          </NavLink>
+          <NavLink 
+            to="/about" 
+            className={({ isActive }) => 
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+            }
+          >
+            About
+          </NavLink>
           <NavLink 
             to="/support" 
             className={({ isActive }) => 
@@ -23,15 +63,16 @@ export const HorizontalNav = () => {
           >
             Support
           </NavLink>
-          
-          <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200">
-            <Button variant="outline" size="sm" asChild className="text-sm">
-              <NavLink to="/auth">Login</NavLink>
-            </Button>
-            <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
-              <NavLink to="/signup">Free Trial</NavLink>
-            </Button>
-          </div>
+        </div>
+        
+        {/* Auth Buttons */}
+        <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200 flex-shrink-0">
+          <Button variant="outline" size="sm" asChild className="text-sm">
+            <NavLink to="/auth">Login</NavLink>
+          </Button>
+          <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
+            <NavLink to="/signup">Free Trial</NavLink>
+          </Button>
         </div>
       </div>
     </div>
