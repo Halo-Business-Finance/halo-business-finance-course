@@ -311,65 +311,89 @@ const Courses = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        {module.duration || 'Self-paced'}
-                      </div>
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <BookOpen className="h-4 w-4" />
-                        {module.lessons_count || 0} lessons
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Users className="h-4 w-4" />
-                      <span>2,340 students enrolled</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                      <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
-                    </div>
-                  </div>
-                  
-                  {/* What You'll Learn */}
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold mb-2">What you'll learn:</h4>
-                    <ul className="text-xs text-muted-foreground space-y-1">
-                      <li>• Financial statement analysis techniques</li>
-                      <li>• Risk assessment methodologies</li>
-                      <li>• Industry best practices</li>
-                    </ul>
-                  </div>
-                  
                   {user ? (
-                    enrollmentStatus[module.module_id] ? (
-                      <Link to={`/module/${module.module_id}`}>
-                        <Button className="w-full" variant="outline">
+                    <>
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <Clock className="h-4 w-4" />
+                            {module.duration || 'Self-paced'}
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <BookOpen className="h-4 w-4" />
+                            {module.lessons_count || 0} lessons
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Users className="h-4 w-4" />
+                          <span>2,340 students enrolled</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          ))}
+                          <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
+                        </div>
+                      </div>
+                      
+                      {/* What You'll Learn */}
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold mb-2">What you'll learn:</h4>
+                        <ul className="text-xs text-muted-foreground space-y-1">
+                          <li>• Financial statement analysis techniques</li>
+                          <li>• Risk assessment methodologies</li>
+                          <li>• Industry best practices</li>
+                        </ul>
+                      </div>
+                      
+                      {enrollmentStatus[module.module_id] ? (
+                        <Link to={`/module/${module.module_id}`}>
+                          <Button className="w-full" variant="outline">
+                            <BookOpen className="h-4 w-4 mr-2" />
+                            Continue Learning
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Button 
+                          className="w-full" 
+                          onClick={() => handleEnroll(module.module_id)}
+                        >
                           <BookOpen className="h-4 w-4 mr-2" />
-                          Continue Learning
+                          Enroll Now
+                        </Button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {/* Limited preview for non-authenticated users */}
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <Clock className="h-4 w-4" />
+                            {module.duration || 'Self-paced'}
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <BookOpen className="h-4 w-4" />
+                            {module.lessons_count || 0} lessons
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
+                        <p className="text-sm text-center text-muted-foreground">
+                          Sign up to unlock full course details, enrollment, and start learning
+                        </p>
+                      </div>
+                      
+                      <Link to="/signup">
+                        <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Sign Up to Access Course
                         </Button>
                       </Link>
-                    ) : (
-                      <Button 
-                        className="w-full" 
-                        onClick={() => handleEnroll(module.module_id)}
-                      >
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        Enroll Now
-                      </Button>
-                    )
-                  ) : (
-                    <Link to="/signup">
-                      <Button className="w-full bg-black text-white hover:bg-gray-800">
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        Sign Up to Enroll
-                      </Button>
-                    </Link>
+                    </>
                   )}
                 </CardContent>
               </Card>
