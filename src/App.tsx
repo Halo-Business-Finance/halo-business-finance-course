@@ -32,6 +32,7 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Article from "./pages/Article";
 import Support from "./pages/Support";
+import Privacy from "./pages/Privacy";
 import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
@@ -234,6 +235,7 @@ const AppContent = () => {
             <Route path="/blog" element={<Blog />} />
             <Route path="/article/:id" element={<Article />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/privacy" element={<Privacy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
