@@ -30,10 +30,10 @@ export const MobileNav = () => {
 
         {/* Action Buttons and Menu */}
         <div className="flex items-center gap-2">
-          {/* Login/Signup buttons - visible on tablet */}
+          {/* Sign In/Signup buttons - visible on tablet */}
           <div className="hidden sm:flex items-center gap-2">
             <Button variant="outline" size="sm" asChild className="text-xs">
-              <NavLink to="/auth">Login</NavLink>
+              <NavLink to="/auth">Sign In</NavLink>
             </Button>
             <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
               <NavLink to="/signup">Free Trial</NavLink>
@@ -75,14 +75,14 @@ export const MobileNav = () => {
                   );
                 })}
                 
-                {/* Mobile Login/Signup buttons in menu */}
+                {/* Mobile Sign In/Signup buttons in menu */}
                 <div className="sm:hidden pt-4 mt-4 border-t border-border space-y-2">
                   <NavLink
                     to="/auth"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-muted text-foreground"
                   >
-                    <span className="font-medium">Login</span>
+                    <span className="font-medium">Sign In</span>
                   </NavLink>
                   <NavLink
                     to="/signup"
