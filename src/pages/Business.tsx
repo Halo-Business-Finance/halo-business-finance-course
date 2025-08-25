@@ -98,22 +98,6 @@ const Business = () => {
 
   const pricingTiers = [
     {
-      name: "Team",
-      userRange: "10-50 users",
-      price: "$25",
-      period: "per user/month",
-      features: ["All course content", "Basic analytics", "Email support", "Standard integrations"],
-      popular: false
-    },
-    {
-      name: "Business", 
-      userRange: "51-200 users",
-      price: "$20",
-      period: "per user/month",
-      features: ["Everything in Team", "Advanced analytics", "Priority support", "Custom branding", "API access"],
-      popular: true
-    },
-    {
       name: "Enterprise",
       userRange: "For organizations and large teams (10+ users)", 
       price: "Custom",
@@ -310,33 +294,31 @@ const Business = () => {
               Flexible pricing options designed to scale with your organization. All plans include our core curriculum and enterprise features.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="max-w-md mx-auto">
             {pricingTiers.map((tier, index) => (
-              <Card key={index} className={`relative ${tier.popular ? 'border-primary shadow-lg scale-105' : ''}`}>
-                {tier.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    Most Popular
-                  </Badge>
-                )}
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl">{tier.name}</CardTitle>
-                  <CardDescription className="text-sm">{tier.userRange}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-3xl font-bold">{tier.price}</span>
-                    <span className="text-muted-foreground ml-1 text-sm">{tier.period}</span>
+              <Card key={index} className="relative border-2 border-primary shadow-xl">
+                <CardHeader className="text-center pb-8">
+                  <CardTitle className="text-2xl font-bold">{tier.name}</CardTitle>
+                  <CardDescription className="text-base mt-2">{tier.userRange}</CardDescription>
+                  <div className="mt-6">
+                    <span className="text-4xl font-bold">{tier.price}</span>
+                    <span className="text-muted-foreground ml-2">{tier.period}</span>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
+                <CardContent className="pt-0">
+                  <ul className="space-y-3 mb-8">
                     {tier.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">{feature}</span>
+                      <li key={idx} className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full" variant={tier.popular ? "default" : "outline"}>
-                    {tier.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                  <Button 
+                    className="w-full h-12 text-base font-semibold"
+                    onClick={() => window.location.href = "mailto:sales@finpilot.com?subject=Enterprise Inquiry"}
+                  >
+                    Contact Sales
                   </Button>
                 </CardContent>
               </Card>
