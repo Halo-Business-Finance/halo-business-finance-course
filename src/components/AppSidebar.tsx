@@ -225,18 +225,17 @@ export function AppSidebar() {
                          <div className="relative z-10 flex items-center w-full gap-3">
                            {/* Status Indicator */}
                            <div className="relative flex-shrink-0">
-                             <div className={`
-                               w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold 
-                               transition-all duration-300 ease-out
-                               ${module.status === "completed" 
-                                 ? "bg-green-500 text-white shadow-md" 
-                                 : module.status === "in-progress" 
-                                   ? "bg-blue-500 text-white shadow-md" 
-                                   : module.status === "available" 
-                                     ? "bg-halo-orange text-white shadow-md" 
-                                     : "bg-halo-orange text-white shadow-md"}
-                               group-hover:scale-105
-                             `}>
+                              <div className={`
+                                w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold 
+                                transition-all duration-300 ease-out
+                                ${module.status === "completed" 
+                                  ? "bg-green-500 text-white shadow-md" 
+                                  : module.status === "in-progress" 
+                                    ? "bg-blue-500 text-white shadow-md" 
+                                    : module.status === "available" 
+                                      ? "bg-halo-orange text-white shadow-md" 
+                                      : "bg-halo-orange text-white shadow-md"}
+                              `}>
                                {module.status === "completed" ? (
                                  <span className="text-sm">✓</span>
                                ) : module.status === "in-progress" ? (
@@ -252,9 +251,9 @@ export function AppSidebar() {
                            {!collapsed && (
                              <div className="flex-1 min-w-0">
                                <div className="flex items-center justify-between">
-                                 <h3 className="text-xs font-medium text-white leading-tight truncate group-hover:text-white transition-colors">
-                                   {module.title}
-                                 </h3>
+                                  <h3 className="text-xs font-medium text-white leading-tight truncate transition-colors">
+                                    {module.title}
+                                  </h3>
                                  
                                  {/* Status Badge */}
                                  <div className="ml-2 flex-shrink-0">
