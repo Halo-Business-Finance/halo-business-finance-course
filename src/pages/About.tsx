@@ -1,8 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown, Shield, Lock, Zap, Monitor, Cloud, CheckCircle, Smartphone, Globe, Database, Cpu, Server } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown, Shield, Lock, Zap, Monitor, Cloud, CheckCircle, Smartphone, Globe, Database, Cpu, Server, ArrowRight, Play } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
+import { Link } from "react-router-dom";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
 import teamSarah from "@/assets/team-sarah.jpg";
@@ -175,7 +177,13 @@ const About = () => {
                 <div className="flex-1">
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
                   <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
-                  <div className="text-xs text-black leading-relaxed">{info.description}</div>
+                  <div className="text-xs text-black leading-relaxed mb-3">{info.description}</div>
+                  <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Link to="/signup" className="flex items-center gap-1">
+                      <Play className="h-3 w-3" />
+                      Start Free Trial
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </Card>
@@ -252,12 +260,19 @@ const About = () => {
           <CardContent className="p-8">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-foreground mb-4">Why Our Platform Stands Out</h3>
-              <p className="text-black leading-relaxed max-w-4xl mx-auto">
+              <p className="text-black leading-relaxed max-w-4xl mx-auto mb-6">
                 Our cutting-edge learning management system combines the latest in educational technology with 
                 practical commercial lending expertise. Built specifically for finance professionals, our platform 
                 delivers personalized learning experiences that adapt to your pace and learning style, ensuring 
                 maximum retention and real-world application.
               </p>
+              <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Link to="/signup" className="flex items-center gap-2">
+                  <Play className="h-4 w-4" />
+                  Start Free Trial
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -298,12 +313,19 @@ const About = () => {
           <CardContent className="p-8">
             <div className="text-center">
               <h3 className="text-2xl font-bold mb-4">Financial-Grade Security</h3>
-              <p className="leading-relaxed max-w-4xl mx-auto">
+              <p className="leading-relaxed max-w-4xl mx-auto mb-6">
                 We understand that financial training involves sensitive data. That's why we've implemented 
                 bank-level security measures including end-to-end encryption, multi-factor authentication, 
                 and compliance with SOC 2 and GDPR standards. Your learning data and personal information 
                 are protected with the same level of security used by major financial institutions.
               </p>
+              <Button size="lg" asChild className="bg-white text-halo-navy hover:bg-gray-100">
+                <Link to="/signup" className="flex items-center gap-2">
+                  <Play className="h-4 w-4" />
+                  Start Free Trial
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -347,11 +369,17 @@ const About = () => {
                 <Globe className="h-5 w-5 text-halo-orange" />
                 Global Accessibility
               </h3>
-              <p className="text-black leading-relaxed">
+              <p className="text-black leading-relaxed mb-4">
                 Access your training materials from anywhere in the world with our cloud-based platform. 
                 Our global content delivery network ensures fast loading times regardless of your location, 
                 making professional development accessible to finance professionals worldwide.
               </p>
+              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Link to="/signup" className="flex items-center gap-2">
+                  <Play className="h-4 w-4" />
+                  Start Free Trial
+                </Link>
+              </Button>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-halo-navy/10 to-halo-orange/10">
@@ -360,11 +388,17 @@ const About = () => {
                 <Database className="h-5 w-5 text-halo-orange" />
                 Continuous Innovation
               </h3>
-              <p className="text-black leading-relaxed">
+              <p className="text-black leading-relaxed mb-4">
                 Our platform continuously evolves with regular updates, new features, and enhanced 
                 capabilities. We stay ahead of industry trends and incorporate the latest educational 
                 technologies to ensure you're always learning with the most advanced tools available.
               </p>
+              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Link to="/signup" className="flex items-center gap-2">
+                  <Play className="h-4 w-4" />
+                  Start Free Trial
+                </Link>
+              </Button>
             </CardContent>
           </Card>
         </div>
