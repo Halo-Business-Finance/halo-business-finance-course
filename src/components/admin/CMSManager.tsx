@@ -9,6 +9,7 @@ import { CMSMenuManager } from './CMSMenuManager';
 import { CMSCategoryManager } from './CMSCategoryManager';
 import { CMSTagManager } from './CMSTagManager';
 import { CMSSettingsManager } from './CMSSettingsManager';
+import { ContentImporter } from './ContentImporter';
 
 const CMSManager = () => {
   return (
@@ -56,6 +57,8 @@ const CMSManager = () => {
         </TabsList>
 
         <TabsContent value="pages" className="space-y-6">
+          <ContentImporter />
+          
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
