@@ -348,7 +348,7 @@ const DataSecurity = () => {
                     <strong>Email:</strong> privacy@finpilot.com
                   </p>
                   <p className="text-sm">
-                    <strong>Address:</strong> Data Protection Officer, FinPilot, 123 Financial District, Suite 100
+                    <strong>Address:</strong> Data Protection Officer, FinPilot, 530 Technology Dr Suite 101, Irvine, CA 92618
                   </p>
                 </div>
               </CardContent>
