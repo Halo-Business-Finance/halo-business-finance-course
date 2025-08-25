@@ -216,12 +216,7 @@ const AuthPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <div className="flex items-center justify-center">
-            <div className="w-40 h-12 bg-halo-navy rounded-lg flex items-center justify-center">
-              <span className="text-halo-orange font-bold text-sm">FinPilot</span>
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold">Business Finance Mastery</h1>
+          <h1 className="text-2xl font-bold">Master Business Finance & Commercial Lending</h1>
         </div>
         
         {rateLimitWarning && (
