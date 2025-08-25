@@ -215,14 +215,12 @@ export function AppSidebar() {
                              });
                            }
                          }}
-                           className={({ isActive }) => `
-                             ${getNavCls(isActive)} 
-                             ${isModuleLocked ? "opacity-50" : ""} 
-                             ${!canAccess ? "cursor-not-allowed" : ""}
-                             group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
-                             hover:shadow-lg hover:scale-[1.02]
-                             border border-transparent hover:border-primary/20
-                           `}
+                            className={({ isActive }) => `
+                              ${getNavCls(isActive)} 
+                              ${isModuleLocked ? "opacity-50" : ""} 
+                              ${!canAccess ? "cursor-not-allowed" : ""}
+                              group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
+                            `}
                        >
                          <div className="relative z-10 flex items-center w-full gap-3">
                            {/* Status Indicator */}
