@@ -21,7 +21,7 @@ export const createTestNotifications = async (userId: string) => {
       user_id: userId,
       title: "Assignment Due Soon ⏰",
       message: "Your Credit Analysis assignment is due in 2 days. Don't forget to submit it on time!",
-      type: "reminder",
+      type: "warning",
       read: false,
       data: { 
         action_url: "/dashboard",

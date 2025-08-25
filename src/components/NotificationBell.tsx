@@ -31,10 +31,8 @@ const NotificationIcon = ({ type }: { type: string }) => {
     case 'warning':
       return <AlertTriangle {...iconProps} className="h-4 w-4 text-yellow-500" />;
     case 'error':
-    case 'alert':
       return <AlertCircle {...iconProps} className="h-4 w-4 text-red-500" />;
-    case 'reminder':
-      return <Bell {...iconProps} className="h-4 w-4 text-blue-500" />;
+    case 'info':
     default:
       return <Info {...iconProps} className="h-4 w-4 text-blue-500" />;
   }
@@ -168,11 +166,11 @@ export const NotificationBell = () => {
           setUnreadCount(prev => prev + 1);
           
           // Show toast for important notifications
-          if (newNotification.type === 'error' || newNotification.type === 'alert' || newNotification.data?.priority === 'high') {
+          if (newNotification.type === 'error' || newNotification.data?.priority === 'high') {
             toast({
               title: newNotification.title,
               description: newNotification.message,
-              variant: newNotification.type === 'error' || newNotification.type === 'alert' ? 'destructive' : 'default',
+              variant: newNotification.type === 'error' ? 'destructive' : 'default',
             });
           }
         }
