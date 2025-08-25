@@ -219,22 +219,59 @@ const AdminDashboard = () => {
         }
 
         if (profilesWithRoles && profilesWithRoles.length > 0) {
-          // Transform the data to match our expected format
-          userRolesData = profilesWithRoles.map((item: any) => ({
-            id: item.user_id,
-            user_id: item.user_id,
-            role: item.role,
-            is_active: item.role_is_active,
-            created_at: item.role_created_at || item.created_at,
-            updated_at: item.updated_at,
-            profiles: {
-              name: item.name,
-              email: item.email,
-              phone: item.phone,
-              title: item.title,
-              company: item.company
+          // Group by user_id to consolidate users with multiple roles
+          const userMap = new Map();
+          
+          profilesWithRoles.forEach((item: any) => {
+            const userId = item.user_id;
+            
+            if (userMap.has(userId)) {
+              // User already exists, keep the highest priority role
+              const existing = userMap.get(userId);
+              const rolePriority = { 'super_admin': 1, 'admin': 2, 'tech_support_admin': 3, 'instructor': 4, 'trainee': 5 };
+              const currentPriority = rolePriority[item.role as keyof typeof rolePriority] || 999;
+              const existingPriority = rolePriority[existing.role as keyof typeof rolePriority] || 999;
+              
+              if (currentPriority < existingPriority) {
+                // Replace with higher priority role
+                userMap.set(userId, {
+                  id: item.user_id,
+                  user_id: item.user_id,
+                  role: item.role,
+                  is_active: item.role_is_active,
+                  created_at: item.role_created_at || item.created_at,
+                  updated_at: item.updated_at,
+                  profiles: {
+                    name: item.name,
+                    email: item.email,
+                    phone: item.phone,
+                    title: item.title,
+                    company: item.company
+                  }
+                });
+              }
+            } else {
+              // New user
+              userMap.set(userId, {
+                id: item.user_id,
+                user_id: item.user_id,
+                role: item.role,
+                is_active: item.role_is_active,
+                created_at: item.role_created_at || item.created_at,
+                updated_at: item.updated_at,
+                profiles: {
+                  name: item.name,
+                  email: item.email,
+                  phone: item.phone,
+                  title: item.title,
+                  company: item.company
+                }
+              });
             }
-          }));
+          });
+          
+          // Convert map to array
+          userRolesData = Array.from(userMap.values());
         } else {
         }
       } catch (error) {
