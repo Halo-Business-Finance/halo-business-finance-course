@@ -255,18 +255,12 @@ export function AppSidebar() {
                                     {module.title}
                                   </h3>
                                  
-                                 {/* Status Badge */}
-                                 <div className="ml-2 flex-shrink-0">
-                                   {module.status === "completed" && (
-                                     <div className="w-2 h-2 bg-green-400 rounded-full shadow-sm shadow-green-400/50"></div>
-                                   )}
-                                   {module.status === "in-progress" && (
-                                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-sm shadow-blue-400/50"></div>
-                                   )}
-                                   {module.status === "available" && (
-                                     <div className="w-2 h-2 bg-primary/60 rounded-full"></div>
-                                   )}
-                                 </div>
+                                  {/* Status Badge */}
+                                  <div className="ml-2 flex-shrink-0">
+                                    {module.status === "completed" && (
+                                      <div className="w-2 h-2 bg-green-400 rounded-full shadow-sm shadow-green-400/50"></div>
+                                    )}
+                                  </div>
                                </div>
                                
                                {/* Progress Bar for in-progress modules */}
