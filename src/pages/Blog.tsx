@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import blogHero from "@/assets/blog-hero.jpg";
@@ -158,7 +159,14 @@ const Blog = () => {
     : posts.filter(post => post.category === selectedCategory);
 
   return (
-    <div className="bg-white min-h-screen">
+    <>
+      <SEOHead 
+        title="Finance Blog & Resources | FinPilot Professional Learning Insights"
+        description="Stay informed with expert insights on commercial lending, business finance, SBA loans, and professional development. Latest trends and best practices for finance professionals."
+        keywords="finance blog, commercial lending insights, business finance articles, SBA loan guidance, professional development, capital markets trends"
+        canonicalUrl="https://finpilot.com/blog"
+      />
+      <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
@@ -242,7 +250,8 @@ const Blog = () => {
         </div>
         
         <FinPilotBrandFooter />
-    </div>
+      </div>
+    </>
   );
 };
 

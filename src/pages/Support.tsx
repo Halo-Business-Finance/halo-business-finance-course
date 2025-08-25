@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { HelpCircle, MessageCircle, Mail, Phone, Search, Clock, CheckCircle, ArrowRight, Headphones, FileText, Video, Users } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import supportHero from "@/assets/support-hero.jpg";
 
 const Support = () => {
@@ -93,7 +94,14 @@ const Support = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
+    <>
+      <SEOHead 
+        title="Support Center | FinPilot Customer Support & Help Resources"
+        description="Get expert support for your FinPilot training. Live chat, phone support, FAQs, and comprehensive help resources available 24/7 for all finance professionals."
+        keywords="FinPilot support, customer help, training support, technical assistance, course help, live chat support"
+        canonicalUrl="https://finpilot.com/support"
+      />
+      <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
       {/* Hero Section */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
@@ -250,6 +258,7 @@ const Support = () => {
         
       <FinPilotBrandFooter />
     </div>
+    </>
   );
 };
 

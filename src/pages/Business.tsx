@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import businessHero from "@/assets/business-hero.jpg";
 import businessCta from "@/assets/business-cta.jpg";
 import businessMeeting from "@/assets/business-meeting.jpg";
@@ -123,7 +124,14 @@ const Business = () => {
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <>
+      <SEOHead 
+        title="Enterprise Business Training Solutions | FinPilot for Organizations"
+        description="Scale your team's finance expertise with FinPilot's enterprise learning platform. Custom branding, advanced analytics, and dedicated support for organizations of all sizes."
+        keywords="enterprise training solutions, business learning platform, corporate finance training, team development, LMS for business, enterprise education"
+        canonicalUrl="https://finpilot.com/business"
+      />
+      <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
@@ -435,6 +443,7 @@ const Business = () => {
       
       <FinPilotBrandFooter />
     </div>
+    </>
   );
 };
 export default Business;
