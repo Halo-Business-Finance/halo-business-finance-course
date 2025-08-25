@@ -258,7 +258,10 @@ export function AppSidebar() {
                                   {/* Status Badge */}
                                   <div className="ml-2 flex-shrink-0">
                                     {module.status === "completed" && (
-                                      <div className="w-2 h-2 bg-green-400 rounded-full shadow-sm shadow-green-400/50"></div>
+                                      <div className="w-2 h-2 bg-halo-orange rounded-full shadow-sm shadow-halo-orange/50"></div>
+                                    )}
+                                    {module.status === "available" && (
+                                      <div className="w-2 h-2 bg-white rounded-full shadow-sm shadow-white/50"></div>
                                     )}
                                   </div>
                                </div>
