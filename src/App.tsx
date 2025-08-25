@@ -126,6 +126,15 @@ const HeaderContent = () => {
         {user && (
           <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-black text-right">
             <Bell className="h-4 w-4 text-yellow-500" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/support')}
+              className="text-black hover:bg-black/10 p-1"
+              title="Support"
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Button>
             <div className="hidden sm:block">
               <div>{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
@@ -147,21 +156,6 @@ const HeaderContent = () => {
           </div>
         )}
       </div>
-      
-      {/* Support button positioned on the divider line - shown on all pages when logged in */}
-      {user && (
-        <div className="flex justify-center -mb-px">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/support')}
-            className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2 hover:bg-blue-600 w-24 flex items-center justify-center gap-1"
-          >
-            <MessageCircle className="h-3 w-3" />
-            Support
-          </Button>
-        </div>
-      )}
     </header>
   );
 };
