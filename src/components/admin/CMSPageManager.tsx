@@ -76,13 +76,16 @@ export const CMSPageManager = () => {
 
   const fetchPages = async () => {
     try {
+      console.log('Fetching CMS pages...');
       const { data, error } = await supabase
         .from('cms_pages')
         .select('*')
         .order('sort_order', { ascending: true });
 
+      console.log('CMS pages response:', { data, error });
       if (error) throw error;
       setPages((data || []) as CMSPage[]);
+      console.log('Pages set to state:', data);
     } catch (error) {
       console.error('Error fetching pages:', error);
       toast({
