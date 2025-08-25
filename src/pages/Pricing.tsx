@@ -7,9 +7,11 @@ import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import pricingHero from "@/assets/pricing-hero.jpg";
+import LeadIntakeModal from "@/components/LeadIntakeModal";
 
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const plans = [
     {
       name: "Basic",
@@ -217,6 +219,7 @@ const Pricing = () => {
                 <Button 
                   className="w-full flex items-center gap-2 bg-halo-navy text-white hover:bg-halo-navy/90 border-halo-navy hover:text-white" 
                   variant="outline"
+                  onClick={() => setIsLeadModalOpen(true)}
                 >
                   <Mail className="h-4 w-4" />
                   Contact Sales
@@ -284,6 +287,14 @@ const Pricing = () => {
       
       <FinPilotBrandFooter />
       </div>
+
+      {/* Lead Intake Modal */}
+      <LeadIntakeModal
+        isOpen={isLeadModalOpen}
+        onOpenChange={setIsLeadModalOpen}
+        leadType="sales"
+        leadSource="pricing_page"
+      />
     </div>
     </>
   );

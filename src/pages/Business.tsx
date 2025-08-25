@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
+import { useState } from "react";
 import businessHero from "@/assets/business-hero.jpg";
 import businessCta from "@/assets/business-cta.jpg";
 import businessMeeting from "@/assets/business-meeting.jpg";
@@ -15,8 +16,11 @@ import analyticsReporting from "@/assets/analytics-reporting.jpg";
 import securityCompliance from "@/assets/security-compliance.jpg";
 import customCertifications from "@/assets/custom-certifications.jpg";
 import dedicatedSupport from "@/assets/dedicated-support.jpg";
+import LeadIntakeModal from "@/components/LeadIntakeModal";
 
 const Business = () => {
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const features = [
     {
       icon: Building2,
@@ -316,7 +320,7 @@ const Business = () => {
                   </ul>
                   <Button 
                     className="w-full h-12 text-base font-semibold"
-                    onClick={() => window.location.href = "mailto:sales@finpilot.com?subject=Enterprise Inquiry"}
+                    onClick={() => setIsLeadModalOpen(true)}
                   >
                     Contact Sales
                   </Button>
@@ -425,10 +429,10 @@ const Business = () => {
             Schedule a personalized demo and see how FinPilot can drive results for your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-8">
+            <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-8" onClick={() => setIsDemoModalOpen(true)}>
               Schedule Demo
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black px-8">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black px-8" onClick={() => setIsLeadModalOpen(true)}>
               Contact Sales
             </Button>
           </div>
@@ -437,7 +441,21 @@ const Business = () => {
       </div>
       
       <FinPilotBrandFooter />
-    </div>
+      </div>
+
+      {/* Lead Intake Modals */}
+      <LeadIntakeModal
+        isOpen={isLeadModalOpen}
+        onOpenChange={setIsLeadModalOpen}
+        leadType="sales"
+        leadSource="business_page"
+      />
+      <LeadIntakeModal
+        isOpen={isDemoModalOpen}
+        onOpenChange={setIsDemoModalOpen}
+        leadType="demo"
+        leadSource="business_page"
+      />
     </>
   );
 };
