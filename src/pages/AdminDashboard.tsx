@@ -39,7 +39,7 @@ import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
-import { CMSManager } from "@/components/admin/CMSManager";
+import CMSManager from "@/components/admin/CMSManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 import { authRateLimiter } from "@/utils/validation";
