@@ -115,10 +115,23 @@ const Business = () => {
     },
     {
       name: "Enterprise",
-      userRange: "200+ users", 
+      userRange: "For organizations and large teams (10+ users)", 
       price: "Custom",
-      period: "volume pricing",
-      features: ["Everything in Business", "Dedicated CSM", "Custom development", "SLA guarantee", "On-site training"],
+      period: "contact us",
+      features: [
+        "Everything in Professional",
+        "Custom course development & branding",
+        "Dedicated customer success manager",
+        "Advanced team analytics & reporting",
+        "Single Sign-On (SSO) integration",
+        "API access for LMS integration",
+        "Custom user roles & permissions",
+        "White-label platform options",
+        "On-site training sessions",
+        "Compliance reporting & tracking",
+        "24/7 phone support",
+        "Service Level Agreement (SLA)"
+      ],
       popular: false
     }
   ];
