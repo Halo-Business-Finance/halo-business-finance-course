@@ -215,7 +215,7 @@ const Pricing = () => {
               </ul>
               {plan.name === "Enterprise" ? (
                 <Button 
-                  className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
+                  className="w-full flex items-center gap-2 bg-halo-navy text-white hover:bg-halo-navy/90 border-halo-navy hover:text-white" 
                   variant="outline"
                 >
                   <Mail className="h-4 w-4" />
@@ -223,7 +223,7 @@ const Pricing = () => {
                 </Button>
               ) : (
                 <Button 
-                  className="w-full flex items-center gap-2 bg-halo-navy text-halo-orange hover:bg-halo-navy/90 border-halo-navy hover:text-halo-orange" 
+                  className="w-full flex items-center gap-2 bg-halo-navy text-white hover:bg-halo-navy/90 border-halo-navy hover:text-white" 
                   variant="outline"
                   asChild
                 >
