@@ -39,6 +39,7 @@ import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
+import { CMSManager } from "@/components/admin/CMSManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 import { authRateLimiter } from "@/utils/validation";
@@ -824,6 +825,7 @@ const AdminDashboard = () => {
             Trainee Progress
           </TabsTrigger>
           <TabsTrigger value="content">Content Management</TabsTrigger>
+          <TabsTrigger value="cms">CMS</TabsTrigger>
           <TabsTrigger value="instructors">Instructors</TabsTrigger>
           <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
           <TabsTrigger value="settings">System Settings</TabsTrigger>
@@ -866,6 +868,10 @@ const AdminDashboard = () => {
               <ResourceManager />
             </TabsContent>
           </Tabs>
+        </TabsContent>
+
+        <TabsContent value="cms" className="space-y-4">
+          <CMSManager />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-4">
