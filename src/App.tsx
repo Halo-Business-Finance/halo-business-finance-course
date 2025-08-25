@@ -149,13 +149,18 @@ const HeaderContent = () => {
         )}
       </div>
       
-      {/* Account tabs positioned on the divider line - shown on all pages when logged in */}
+      {/* Support button positioned on the divider line - shown on all pages when logged in */}
       {user && (
         <div className="flex justify-center -mb-px">
-          <AccountTabs 
-            activeTab={location.pathname === '/my-account' ? (new URLSearchParams(location.search).get('tab') || 'account') : ''}
-            onTabChange={(tab) => navigate(`/my-account?tab=${tab}`)}
-          />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/support')}
+            className="bg-blue-700 text-white italic text-xs rounded-t-lg rounded-b-none border border-blue-600 border-b-0 px-3 py-2 hover:bg-blue-600 w-24 flex items-center justify-center gap-1"
+          >
+            <MessageCircle className="h-3 w-3" />
+            Support
+          </Button>
         </div>
       )}
     </header>

@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
+import { SEOHead } from "@/components/SEOHead";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -56,7 +57,12 @@ import { supabase } from "@/integrations/supabase/client";
 
 const AccountPage = () => {
   const location = useLocation();
-  const currentTab = new URLSearchParams(location.search).get('tab') || 'account';
+  const navigate = useNavigate();
+  const activeTab = new URLSearchParams(location.search).get('tab') || 'account';
+  
+  const handleTabChange = (tab: string) => {
+    navigate(`/my-account?tab=${tab}`);
+  };
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -434,7 +440,30 @@ const AccountPage = () => {
   }
 
   return (
-    <Tabs value={currentTab} className="container mx-auto p-4 sm:p-6 space-y-2 bg-white min-h-screen">
+    <div className="container mx-auto p-4 md:p-8 space-y-6">
+      <SEOHead 
+        title="My Account - FinPilot Academy"
+        description="Manage your account settings, learning preferences, privacy options, and billing information at FinPilot Academy."
+        keywords="account management, user settings, learning preferences, privacy, billing"
+      />
+      
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">My Account</h1>
+            <p className="text-muted-foreground mt-1">Manage your profile and account settings</p>
+          </div>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+            <TabsTrigger value="account">My Account</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="privacy">Privacy</TabsTrigger>
+            <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="account" className="space-y-6">
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-4 max-w-4xl mx-auto">
         <CardHeader className="pb-3">
@@ -635,82 +664,80 @@ const AccountPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-2">
-          <TabsContent value="account">
-            <div className="space-y-6">
-              
-              {/* Change Password Button */}
-              <Card>
-                <CardContent className="pt-6">
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => setShowPasswordForm(!showPasswordForm)}
-                  >
-                    <Shield className="h-4 w-4 mr-2" />
-                    {showPasswordForm ? 'Close Window' : 'Change Password'}
-                  </Button>
-                </CardContent>
-              </Card>
-              
-              {/* Password & Security Form - Only show when button is clicked */}
-              {showPasswordForm && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Password & Security</CardTitle>
-                    <CardDescription>
-                      Manage your password and security settings
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="currentPassword">Current Password</Label>
-                      <Input id="currentPassword" type="password" className="border-gray-800/20 text-black" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="newPassword">New Password</Label>
-                      <Input id="newPassword" type="password" className="border-gray-800/20 text-black" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                      <Input id="confirmPassword" type="password" className="border-gray-800/20 text-black" />
-                    </div>
-                    
-                    {/* Password Requirements */}
-                    <div className="bg-muted/30 rounded-lg p-4 space-y-2">
-                      <h4 className="text-sm font-medium text-foreground">Password Requirements:</h4>
-                      <ul className="text-xs text-black space-y-1">
-                        <li className="flex items-center gap-2">
-                          <span className="w-1 h-1 bg-primary rounded-full"></span>
-                          At least 8 characters long
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1 h-1 bg-primary rounded-full"></span>
-                          Contains at least one uppercase letter (A-Z)
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1 h-1 bg-primary rounded-full"></span>
-                          Contains at least one lowercase letter (a-z)
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1 h-1 bg-primary rounded-full"></span>
-                          Contains at least one number (0-9)
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1 h-1 bg-primary rounded-full"></span>
-                          Contains at least one special character (!@#$%^&*)
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <Button className="bg-blue-800 hover:bg-blue-900 text-white">Change Password</Button>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+        <div className="lg:col-span-2 space-y-6">              
+          {/* Change Password Button */}
+          <Card>
+            <CardContent className="pt-6">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowPasswordForm(!showPasswordForm)}
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                {showPasswordForm ? 'Close Window' : 'Change Password'}
+              </Button>
+            </CardContent>
+          </Card>
+          
+          {/* Password & Security Form - Only show when button is clicked */}
+          {showPasswordForm && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Password & Security</CardTitle>
+                <CardDescription>
+                  Manage your password and security settings
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Input id="currentPassword" type="password" className="border-gray-800/20 text-black" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input id="newPassword" type="password" className="border-gray-800/20 text-black" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Input id="confirmPassword" type="password" className="border-gray-800/20 text-black" />
+                </div>
+                
+                {/* Password Requirements */}
+                <div className="bg-muted/30 rounded-lg p-4 space-y-2">
+                  <h4 className="text-sm font-medium text-foreground">Password Requirements:</h4>
+                  <ul className="text-xs text-black space-y-1">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-primary rounded-full"></span>
+                      At least 8 characters long
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-primary rounded-full"></span>
+                      Contains at least one uppercase letter (A-Z)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-primary rounded-full"></span>
+                      Contains at least one lowercase letter (a-z)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-primary rounded-full"></span>
+                      Contains at least one number (0-9)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-primary rounded-full"></span>
+                      Contains at least one special character (!@#$%^&*)
+                    </li>
+                  </ul>
+                </div>
+                
+                <Button className="bg-blue-800 hover:bg-blue-900 text-white">Change Password</Button>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
           </TabsContent>
 
-          <TabsContent value="notifications">
+          <TabsContent value="notifications" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -793,7 +820,7 @@ const AccountPage = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="privacy">
+          <TabsContent value="privacy" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -859,7 +886,7 @@ const AccountPage = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="preferences">
+          <TabsContent value="preferences" className="space-y-6">
             <div className="space-y-6">
               <Card>
                 <CardHeader>
@@ -983,272 +1010,9 @@ const AccountPage = () => {
               </Card>
             </div>
           </TabsContent>
-
-          <TabsContent value="billing">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5" />
-                    Payment Methods
-                  </CardTitle>
-                  <CardDescription>
-                    Manage your payment methods and billing information
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="border rounded-lg p-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">VISA</span>
-                      </div>
-                      <div>
-                        <p className="font-medium">•••• •••• •••• 4242</p>
-                        <p className="text-sm text-muted-foreground">Expires 12/26</p>
-                      </div>
-                    </div>
-                    <Badge variant="secondary">Primary</Badge>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <Button variant="outline" className="flex-1">
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      Add Payment Method
-                    </Button>
-                    <Button variant="outline">
-                      Update Billing Address
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Subscription Details</CardTitle>
-                  <CardDescription>
-                    Your current subscription plan and billing cycle
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">Professional Plan</h3>
-                      <p className="text-sm text-muted-foreground">Full access to all courses and features</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-semibold">$49.99/month</p>
-                      <p className="text-sm text-muted-foreground">Next billing: Jan 15, 2025</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <Button variant="outline" className="flex-1">
-                      Change Plan
-                    </Button>
-                    <Button variant="outline">
-                      Cancel Subscription
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Billing History</CardTitle>
-                  <CardDescription>
-                    View and download your past invoices
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[
-                      { date: "Dec 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-12-001" },
-                      { date: "Nov 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-11-001" },
-                      { date: "Oct 15, 2024", amount: "$49.99", status: "Paid", invoice: "INV-2024-10-001" },
-                    ].map((bill, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center space-x-4">
-                          <div>
-                            <p className="font-medium">{bill.invoice}</p>
-                            <p className="text-sm text-muted-foreground">{bill.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          <span className="font-medium">{bill.amount}</span>
-                          <Badge variant={bill.status === "Paid" ? "default" : "secondary"}>
-                            {bill.status}
-                          </Badge>
-                          <Button variant="ghost" size="sm">
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-4 pt-4 border-t">
-                    <Button variant="outline" className="w-full">
-                      View All Billing History
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Billing Settings</CardTitle>
-                  <CardDescription>
-                    Configure your billing preferences and notifications
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Email Receipts</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Receive email receipts for all payments
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Payment Reminders</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Get notified before your subscription renews
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Failed Payment Alerts</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Receive alerts if a payment fails
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  
-                  <div className="pt-4">
-                    <Button>Save Billing Settings</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="support">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="h-5 w-5" />
-                    Get Help & Support
-                  </CardTitle>
-                  <CardDescription>
-                    Contact our support team or browse help resources
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <MessageCircle className="h-6 w-6 text-blue-600" />
-                        <h3 className="font-semibold">Live Chat</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Get instant help from our support team
-                      </p>
-                      <Button className="w-full">Start Chat</Button>
-                    </Card>
-                    
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Mail className="h-6 w-6 text-green-600" />
-                        <h3 className="font-semibold">Email Support</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Send us a detailed message
-                      </p>
-                      <Button variant="outline" className="w-full">Send Email</Button>
-                    </Card>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="font-semibold mb-4">Quick Actions</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <Button variant="outline" className="justify-start">
-                        <HelpCircle className="h-4 w-4 mr-2" />
-                        View FAQ
-                      </Button>
-                      <Button variant="outline" className="justify-start">
-                        <Phone className="h-4 w-4 mr-2" />
-                        Request Callback
-                      </Button>
-                      <Button variant="outline" className="justify-start">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Account Issues
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Form</CardTitle>
-                  <CardDescription>
-                    Can't find what you're looking for? Send us a message.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="support-name">Your Name</Label>
-                      <Input id="support-name" placeholder="Enter your name" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="support-email">Email Address</Label>
-                      <Input id="support-email" type="email" placeholder="Enter your email" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="support-subject">Subject</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a topic" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="account">Account Issues</SelectItem>
-                        <SelectItem value="billing">Billing Questions</SelectItem>
-                        <SelectItem value="technical">Technical Support</SelectItem>
-                        <SelectItem value="course">Course Content</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="support-message">Message</Label>
-                    <Textarea 
-                      id="support-message"
-                      placeholder="Describe your issue or question..." 
-                      rows={4} 
-                    />
-                  </div>
-                  <Button className="w-full">Send Message</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </div>
+        </Tabs>
       </div>
-    </Tabs>
+    </div>
   );
 };
-
 export default AccountPage;
