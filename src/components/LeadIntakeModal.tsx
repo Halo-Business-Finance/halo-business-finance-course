@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Calendar, ArrowRight, Building, User, Phone } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { checkFormSubmissionRate } from "@/utils/secureFormHandling";
 
 interface LeadIntakeModalProps {
   isOpen: boolean;
@@ -70,6 +71,22 @@ const LeadIntakeModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isSubmitting) return;
+    
+    // Rate limiting check - limit to 3 submissions per 10 minutes
+    const identifier = formData.email || 'anonymous';
+    const rateLimitCheck = checkFormSubmissionRate(identifier, 3, 600000); // 10 minutes
+    
+    if (!rateLimitCheck.allowed) {
+      const minutes = Math.ceil((rateLimitCheck.timeUntilReset || 0) / 60000);
+      toast({
+        title: "Rate Limit Exceeded",
+        description: `Too many submissions. Please try again in ${minutes} minute${minutes > 1 ? 's' : ''}.`,
+        variant: "destructive"
+      });
+      return;
+    }
     
     // Basic validation
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.company) {
