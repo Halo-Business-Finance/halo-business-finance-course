@@ -126,8 +126,8 @@ export function AppSidebar() {
         );
       case "locked":
         return (
-          <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1">
-            <Lock size={12} className="text-halo-orange" />
+          <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1 hover:opacity-80 transition-opacity">
+            <Lock size={12} className="text-halo-orange animate-pulse" />
           </Badge>
         );
       default:
@@ -208,7 +208,7 @@ export function AppSidebar() {
                            if (!canAccess) {
                              e.preventDefault();
                              toast({
-                               title: "🔒 Module Locked",
+                               title: "Module Locked",
                                description: "Complete the previous module to unlock this one!",
                                variant: "destructive",
                                duration: 3000,
@@ -245,7 +245,7 @@ export function AppSidebar() {
                               ) : module.status === "in-progress" ? (
                                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                               ) : isModuleLocked ? (
-                                <Lock size={14} className="text-blue-400" />
+                                <Lock size={14} className="text-blue-400 animate-pulse" />
                               ) : (
                                 <span className="font-bold">{index + 1}</span>
                               )}
