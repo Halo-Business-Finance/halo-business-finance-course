@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export const HorizontalNav = () => {
   return (
-    <div className="bg-white/95 backdrop-blur-sm px-8 py-2 w-full">
+    <div className="hidden lg:block bg-white/95 backdrop-blur-sm px-8 py-2 w-full">
       <div className="flex items-center gap-12 w-full max-w-7xl mx-auto">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
