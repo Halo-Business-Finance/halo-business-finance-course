@@ -165,6 +165,7 @@ const Index = () => {
                   </h1>
                   
                   <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                    <Star className="h-4 w-4" />
                     <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
                     <span className="sm:hidden">Top Industry Course</span>
                   </Badge>
@@ -248,6 +249,7 @@ const Index = () => {
                 Choose Your Path to Success
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                <Target className="h-4 w-4" />
                 Structured Learning Paths
               </Badge>
               <p className="text-sm md:text-base text-foreground max-w-3xl mx-auto lg:mx-0">
@@ -309,6 +311,7 @@ const Index = () => {
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
+                <Award className="h-4 w-4" />
                 <span className="hidden sm:inline">The Gold Standard in Commercial Lending Software Training</span>
                 <span className="sm:hidden">Gold Standard Training</span>
               </Badge>
