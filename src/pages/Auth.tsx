@@ -19,6 +19,7 @@ const AuthPage = () => {
   const [rateLimitWarning, setRateLimitWarning] = useState<string>('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [step, setStep] = useState<'email' | 'password'>('email');
 
   // Sign In Form State
   const [signInData, setSignInData] = useState({
@@ -39,6 +40,23 @@ const AuthPage = () => {
     }
   }, [user, loading, navigate]);
 
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate email
+    const emailValidation = validateEmail(signInData.email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Invalid Email",
+        description: emailValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setStep('password');
+  };
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -52,17 +70,6 @@ const AuthPage = () => {
     if (!rateLimitCheck.allowed) {
       const minutes = Math.ceil((rateLimitCheck.timeUntilReset || 0) / (1000 * 60));
       setRateLimitWarning(`Too many sign-in attempts. Please try again in ${minutes} minutes.`);
-      return;
-    }
-
-    // Validate inputs
-    const emailValidation = validateEmail(signInData.email);
-    if (!emailValidation.isValid) {
-      toast({
-        title: "Invalid Email",
-        description: emailValidation.message,
-        variant: "destructive"
-      });
       return;
     }
 
@@ -231,22 +238,28 @@ const AuthPage = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              {showForgotPassword && (
+              {(showForgotPassword || step === 'password') && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowForgotPassword(false)}
+                  onClick={() => {
+                    if (showForgotPassword) {
+                      setShowForgotPassword(false);
+                    } else {
+                      setStep('email');
+                    }
+                  }}
                   className="p-0 h-auto"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               )}
-              {showForgotPassword ? "Reset Password" : "Welcome Back"}
+              {showForgotPassword ? "Reset Password" : step === 'email' ? "Welcome Back" : "Enter Password"}
             </CardTitle>
             <CardDescription>
               {showForgotPassword 
                 ? "Enter your email to receive password reset instructions"
-                : ""
+                : step === 'email' ? "Enter your email to continue" : `Signing in as ${signInData.email}`
               }
             </CardDescription>
           </CardHeader>
@@ -273,8 +286,8 @@ const AuthPage = () => {
                   {isLoading ? "Sending Reset Email..." : "Send Reset Email"}
                 </Button>
               </form>
-            ) : (
-              <form onSubmit={handleSignIn} className="space-y-4">
+            ) : step === 'email' ? (
+              <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
                   <div className="relative">
@@ -287,10 +300,17 @@ const AuthPage = () => {
                       onChange={(e) => setSignInData({...signInData, email: e.target.value})}
                       className="pl-10"
                       required
+                      autoFocus
                     />
                   </div>
                 </div>
 
+                <Button type="submit" className="w-full">
+                  Continue
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
                   <div className="relative">
@@ -303,6 +323,7 @@ const AuthPage = () => {
                       onChange={(e) => setSignInData({...signInData, password: e.target.value})}
                       className="pl-10 pr-10"
                       required
+                      autoFocus
                     />
                     <button
                       type="button"
@@ -322,7 +343,10 @@ const AuthPage = () => {
                   <Button
                     variant="link"
                     type="button"
-                    onClick={() => setShowForgotPassword(true)}
+                    onClick={() => {
+                      setForgotPasswordEmail(signInData.email);
+                      setShowForgotPassword(true);
+                    }}
                     className="text-sm"
                   >
                     Forgot password?
@@ -334,15 +358,6 @@ const AuthPage = () => {
                   variant="outline" 
                   className="w-full"
                   onClick={async () => {
-                    if (!signInData.email) {
-                      toast({
-                        title: "Email Required",
-                        description: "Please enter your email address first.",
-                        variant: "destructive"
-                      });
-                      return;
-                    }
-                    
                     const { error } = await supabase.auth.resend({
                       type: 'signup',
                       email: signInData.email,

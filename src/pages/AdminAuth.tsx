@@ -27,6 +27,7 @@ const AdminAuthPage = () => {
   const [rateLimitWarning, setRateLimitWarning] = useState<string>('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [step, setStep] = useState<'email' | 'password'>('email');
 
   // Sign In Form State
   const [signInData, setSignInData] = useState({
@@ -41,6 +42,23 @@ const AdminAuthPage = () => {
     }
   }, [user, loading, navigate]);
 
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate email
+    const emailValidation = validateEmail(signInData.email);
+    if (!emailValidation.isValid) {
+      toast({
+        title: "Invalid Email",
+        description: emailValidation.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setStep('password');
+  };
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -52,16 +70,6 @@ const AdminAuthPage = () => {
     if (!rateLimitCheck.allowed) {
       const minutes = Math.ceil((rateLimitCheck.timeUntilReset || 0) / (1000 * 60));
       setRateLimitWarning(`Too many sign-in attempts. Please try again in ${minutes} minutes.`);
-      return;
-    }
-
-    const emailValidation = validateEmail(signInData.email);
-    if (!emailValidation.isValid) {
-      toast({
-        title: "Invalid Email",
-        description: emailValidation.message,
-        variant: "destructive"
-      });
       return;
     }
 
@@ -250,23 +258,29 @@ const AdminAuthPage = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              {showForgotPassword && (
+              {(showForgotPassword || step === 'password') && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowForgotPassword(false)}
+                  onClick={() => {
+                    if (showForgotPassword) {
+                      setShowForgotPassword(false);
+                    } else {
+                      setStep('email');
+                    }
+                  }}
                   className="p-0 h-auto"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               )}
               <LogIn className="h-5 w-5" />
-              {showForgotPassword ? "Reset Password" : "Admin Access"}
+              {showForgotPassword ? "Reset Password" : step === 'email' ? "Admin Access" : "Enter Password"}
             </CardTitle>
             <CardDescription>
               {showForgotPassword 
                 ? "Enter your email to receive password reset instructions"
-                : "Sign in with your administrator credentials"
+                : step === 'email' ? "Enter your admin email to continue" : `Signing in as ${signInData.email}`
               }
             </CardDescription>
           </CardHeader>
@@ -293,8 +307,8 @@ const AdminAuthPage = () => {
                   {isLoading ? "Sending Reset Email..." : "Send Reset Email"}
                 </Button>
               </form>
-            ) : (
-              <form onSubmit={handleSignIn} className="space-y-4">
+            ) : step === 'email' ? (
+              <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
                   <div className="relative">
@@ -307,10 +321,17 @@ const AdminAuthPage = () => {
                       onChange={(e) => setSignInData({...signInData, email: e.target.value})}
                       className="pl-10"
                       required
+                      autoFocus
                     />
                   </div>
                 </div>
 
+                <Button type="submit" className="w-full">
+                  Continue
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
                   <div className="relative">
@@ -323,6 +344,7 @@ const AdminAuthPage = () => {
                       onChange={(e) => setSignInData({...signInData, password: e.target.value})}
                       className="pl-10 pr-10"
                       required
+                      autoFocus
                     />
                     <button
                       type="button"
@@ -342,7 +364,10 @@ const AdminAuthPage = () => {
                   <Button
                     variant="link"
                     type="button"
-                    onClick={() => setShowForgotPassword(true)}
+                    onClick={() => {
+                      setForgotPasswordEmail(signInData.email);
+                      setShowForgotPassword(true);
+                    }}
                     className="text-sm"
                   >
                     Forgot password?
