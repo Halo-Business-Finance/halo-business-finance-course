@@ -113,7 +113,7 @@ const Support = () => {
           <div className="container mx-auto px-4 h-full flex items-center">
             <div className="max-w-2xl text-white">
               <Badge className="mb-4 bg-white/20 text-white border-white/30">Support Center</Badge>
-              <h1 className="text-5xl font-bold mb-4 leading-tight">We're here to help</h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">We're here to help</h1>
               <p className="text-xl text-white/90 leading-relaxed">
                 Get the support you need to succeed. Our dedicated team is ready to assist you every step of the way.
               </p>
@@ -127,7 +127,7 @@ const Support = () => {
         {/* Contact Support Options */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4">Contact Our Support Team</h2>
             <p className="text-base text-black max-w-2xl mx-auto">
               Choose the best way to reach us. Our expert support team is ready to help you succeed.
             </p>
