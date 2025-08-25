@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, X, MessageCircle, Lock } from "lucide-react";
+import { Menu, X, MessageCircle, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
@@ -39,7 +39,10 @@ export const MobileNav = () => {
               </NavLink>
             </Button>
             <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
-              <NavLink to="/signup">Free Trial</NavLink>
+              <NavLink to="/signup" className="flex items-center gap-1">
+                Free Trial
+                <ArrowRight className="h-3 w-3" />
+              </NavLink>
             </Button>
           </div>
 
@@ -94,6 +97,7 @@ export const MobileNav = () => {
                     className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors bg-blue-600 text-white hover:bg-blue-700"
                   >
                     <span className="font-medium">Free Trial</span>
+                    <ArrowRight className="h-4 w-4" />
                   </NavLink>
                 </div>
               </div>

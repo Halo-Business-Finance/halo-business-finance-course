@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Lock } from "lucide-react";
+import { Lock, ArrowRight } from "lucide-react";
 
 export const HorizontalNav = () => {
   return (
@@ -75,7 +75,10 @@ export const HorizontalNav = () => {
             </NavLink>
           </Button>
           <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
-            <NavLink to="/signup">Free Trial</NavLink>
+            <NavLink to="/signup" className="flex items-center gap-2">
+              Free Trial
+              <ArrowRight className="h-4 w-4" />
+            </NavLink>
           </Button>
         </div>
       </div>
