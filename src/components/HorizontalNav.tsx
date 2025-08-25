@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 export const HorizontalNav = () => {
   return (
     <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-sm border border-gray-100 px-6 py-2">
-      <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
+      <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3">
+        <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center">
             <span className="text-white font-bold text-sm">FP</span>
           </div>
@@ -14,11 +14,11 @@ export const HorizontalNav = () => {
         </NavLink>
 
         {/* Navigation Menu */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 lg:gap-6 flex-wrap">
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Why FinPilot
