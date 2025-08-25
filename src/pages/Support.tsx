@@ -16,6 +16,10 @@ const Support = () => {
       answer: "Once you've purchased a course, you can access it immediately from your dashboard. Simply log in and navigate to 'My Courses' section."
     },
     {
+      question: "How do I update my password or email?",
+      answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
+    },
+    {
       question: "Can I get a refund for a course?",
       answer: "Yes, we offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund."
     },
