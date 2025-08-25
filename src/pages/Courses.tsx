@@ -18,6 +18,10 @@ import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
 import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
 import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
 import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
+import financialAdvisor7 from "@/assets/financial-advisor-7.jpg";
+import investmentBanker8 from "@/assets/investment-banker-8.jpg";
+import loanOfficer9 from "@/assets/loan-officer-9.jpg";
+import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 
 interface CourseModule {
   id: string;
@@ -160,7 +164,11 @@ const Courses = () => {
       commercialBanker3, 
       riskSpecialist4, 
       sbaSpecialist5, 
-      complianceOfficer6
+      complianceOfficer6,
+      financialAdvisor7,
+      investmentBanker8,
+      loanOfficer9,
+      portfolioManager10
     ];
     return images[index % images.length];
   };
@@ -308,18 +316,18 @@ const Courses = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {modules.map((module, index) => (
               <Card key={module.id} className="hover:shadow-lg transition-all group">
-                <div className="relative">
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={getCourseImage(index)} 
-                      alt={`Professional instructor for ${module.title}`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <Badge className={`absolute top-3 right-3 ${getLevelColor(module.skill_level)}`}>
-                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                  </Badge>
-                </div>
+                 <div className="relative">
+                   <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                     <img 
+                       src={getCourseImage(index)} 
+                       alt={`Professional instructor for ${module.title}`}
+                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                     />
+                   </div>
+                   <Badge className={`absolute top-3 right-3 ${getLevelColor(module.skill_level)}`}>
+                     {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                   </Badge>
+                 </div>
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <Badge variant="secondary">Commercial Finance</Badge>
