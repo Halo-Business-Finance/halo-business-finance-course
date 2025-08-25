@@ -158,7 +158,7 @@ export type Database = {
           score: number
           started_at: string
           time_taken_minutes: number | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           answers: Json
@@ -171,7 +171,7 @@ export type Database = {
           score: number
           started_at?: string
           time_taken_minutes?: number | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           answers?: Json
@@ -184,7 +184,7 @@ export type Database = {
           score?: number
           started_at?: string
           time_taken_minutes?: number | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
