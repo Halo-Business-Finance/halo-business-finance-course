@@ -376,17 +376,11 @@ const About = () => {
                 <Globe className="h-5 w-5 text-halo-orange" />
                 Global Accessibility
               </h3>
-              <p className="text-black leading-relaxed mb-4">
+              <p className="text-black leading-relaxed">
                 Access your training materials from anywhere in the world with our cloud-based platform. 
                 Our global content delivery network ensures fast loading times regardless of your location, 
                 making professional development accessible to finance professionals worldwide.
               </p>
-              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                <Link to="/signup" className="flex items-center gap-2">
-                  <Play className="h-4 w-4" />
-                  Start Free Trial
-                </Link>
-              </Button>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-halo-navy/10 to-halo-orange/10">
@@ -395,19 +389,22 @@ const About = () => {
                 <Database className="h-5 w-5 text-halo-orange" />
                 Continuous Innovation
               </h3>
-              <p className="text-black leading-relaxed mb-4">
+              <p className="text-black leading-relaxed">
                 Our platform continuously evolves with regular updates, new features, and enhanced 
                 capabilities. We stay ahead of industry trends and incorporate the latest educational 
                 technologies to ensure you're always learning with the most advanced tools available.
               </p>
-              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                <Link to="/signup" className="flex items-center gap-2">
-                  <Play className="h-4 w-4" />
-                  Start Free Trial
-                </Link>
-              </Button>
             </CardContent>
           </Card>
+        </div>
+        <div className="text-center mt-8">
+          <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Link to="/signup" className="flex items-center gap-2">
+              <Play className="h-4 w-4" />
+              Start Free Trial
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
 
