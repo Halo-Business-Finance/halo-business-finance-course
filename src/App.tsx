@@ -125,7 +125,7 @@ const HeaderContent = () => {
         
         {user && (
           <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-black text-right">
-            <Bell className="h-4 w-4 text-yellow-500" />
+            <Bell className="h-4 w-4 text-amber-500" />
             <Button
               variant="ghost"
               size="sm"
