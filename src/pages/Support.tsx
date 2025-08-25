@@ -85,7 +85,8 @@ const Support = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Live Chat Widget */}
             {supportOptions.map((option, index) => {
               const Icon = option.icon;
               return (
@@ -116,43 +117,42 @@ const Support = () => {
                 </Card>
               );
             })}
+
+            {/* FAQ Widget */}
+            <Card className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <HelpCircle className="h-6 w-6 text-halo-orange" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-2xl font-bold text-foreground mb-1">Get Answers</div>
+                  <div className="text-sm font-medium text-primary mb-2">Frequently Asked Questions</div>
+                  <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
+                </div>
+              </div>
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <AccordionItem 
+                    key={index} 
+                    value={`item-${index}`} 
+                    className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-black leading-relaxed pt-2">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </Card>
           </div>
         </div>
 
 
-        {/* FAQ and Contact Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* FAQ Section */}
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                <HelpCircle className="h-6 w-6 text-halo-orange" />
-              </div>
-              <div className="flex-1">
-                <div className="text-2xl font-bold text-foreground mb-1">Get Answers</div>
-                <div className="text-sm font-medium text-primary mb-2">Frequently Asked Questions</div>
-                <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
-              </div>
-            </div>
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`} 
-                  className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-black leading-relaxed pt-2">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Card>
-
-          {/* Contact Form */}
+        {/* Contact Form */}
+        <div className="max-w-2xl mx-auto">
           <Card className="p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
