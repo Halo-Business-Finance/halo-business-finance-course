@@ -215,15 +215,14 @@ export function AppSidebar() {
                              });
                            }
                          }}
-                          className={({ isActive }) => `
-                            ${getNavCls(isActive)} 
-                            ${isModuleLocked ? "opacity-50" : ""} 
-                            ${!canAccess ? "cursor-not-allowed" : ""}
-                            group relative overflow-hidden rounded-xl p-3 transition-all duration-500 ease-out
-                            hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02]
-                            border border-transparent hover:border-primary/20
-                            backdrop-blur-sm
-                          `}
+                           className={({ isActive }) => `
+                             ${getNavCls(isActive)} 
+                             ${isModuleLocked ? "opacity-50" : ""} 
+                             ${!canAccess ? "cursor-not-allowed" : ""}
+                             group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
+                             hover:shadow-lg hover:scale-[1.02]
+                             border border-transparent hover:border-primary/20
+                           `}
                        >
                          <div className="relative z-10 flex items-center w-full gap-3">
                            {/* Status Indicator */}
@@ -275,7 +274,7 @@ export function AppSidebar() {
                                
                                {/* Progress Bar for in-progress modules */}
                                {module.status === "in-progress" && (
-                                 <div className="mt-2 w-full bg-muted/30 rounded-full h-1.5 overflow-hidden backdrop-blur-sm">
+                                 <div className="mt-2 w-full bg-muted/30 rounded-full h-1.5 overflow-hidden">
                                    <div className="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full transition-all duration-1000 ease-out shadow-sm"
                                         style={{ width: "65%" }}></div>
                                  </div>
