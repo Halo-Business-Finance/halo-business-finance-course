@@ -168,8 +168,8 @@ const Index = () => {
                     onClick={() => setIsDemoModalOpen(true)}
                   >
                     <Play className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
-                    <span className="hidden sm:inline">Watch Demo</span>
-                    <span className="sm:hidden">Demo</span>
+                    <span className="hidden sm:inline">Request Watch Demo</span>
+                    <span className="sm:hidden">Request Demo</span>
                   </Button>
                 </div>
 

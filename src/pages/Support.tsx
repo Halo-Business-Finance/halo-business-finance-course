@@ -171,7 +171,7 @@ const Support = () => {
     },
     {
       icon: CheckCircle,
-      title: "Schedule Demo",
+      title: "Request Schedule Demo",
       description: "Book a personalized demo to see how FinPilot can transform your training",
       action: "Schedule a Demo",
       available: "Flexible scheduling",
