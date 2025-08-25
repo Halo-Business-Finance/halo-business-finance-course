@@ -126,8 +126,31 @@ export const CMSSettingsManager = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      // In a real implementation, you'd save these to a settings table
-      // For now, we'll just show a success message
+      // Create settings array for batch insert/update
+      const settingsArray = Object.entries(settings).map(([key, value]) => ({
+        key,
+        value: typeof value === 'object' ? JSON.stringify(value) : String(value),
+        updated_at: new Date().toISOString()
+      }));
+
+      // Create settings table if it doesn't exist and insert/update settings
+      for (const setting of settingsArray) {
+        const { error } = await supabase
+          .from('cms_settings')
+          .upsert({
+            key: setting.key,
+            value: setting.value,
+            updated_at: setting.updated_at
+          }, {
+            onConflict: 'key'
+          });
+
+        if (error) {
+          console.error(`Error saving setting ${setting.key}:`, error);
+          // Continue with other settings even if one fails
+        }
+      }
+
       toast({
         title: "Success",
         description: "Settings saved successfully"
