@@ -98,6 +98,16 @@ const AuthPage = () => {
         // Reset rate limiter on successful login
         authRateLimiter.reset(clientId);
         
+        // Log successful authentication
+        try {
+          await supabase.rpc('log_successful_auth', {
+            auth_type: 'email_password_basic',
+            user_email: sanitizedEmail
+          });
+        } catch (logError) {
+          console.warn('Failed to log successful auth:', logError);
+        }
+        
         toast({
           title: "Welcome back!",
           description: "You have been successfully signed in.",

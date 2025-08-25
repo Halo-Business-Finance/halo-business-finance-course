@@ -2557,6 +2557,14 @@ export type Database = {
         }
         Returns: string
       }
+      create_permission_alert: {
+        Args: {
+          error_context?: string
+          table_name: string
+          user_id_attempted: string
+        }
+        Returns: undefined
+      }
       create_security_alert: {
         Args: {
           p_alert_type: string
@@ -3084,6 +3092,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_successful_auth: {
+        Args: { auth_type: string; user_email?: string }
+        Returns: undefined
+      }
       log_validated_security_event: {
         Args: {
           p_details: Json
@@ -3279,6 +3291,10 @@ export type Database = {
       }
       validate_ultra_secure_profile_access: {
         Args: { target_user_id: string }
+        Returns: boolean
+      }
+      validate_user_session: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       verify_complete_audit_chain: {

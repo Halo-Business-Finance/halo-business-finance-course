@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Question {
   id: string;
@@ -41,6 +42,7 @@ interface UserAnswers {
 }
 
 export function AssessmentQuiz({ assessmentId, onComplete }: AssessmentQuizProps) {
+  const { user } = useAuth();
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
@@ -138,7 +140,7 @@ export function AssessmentQuiz({ assessmentId, onComplete }: AssessmentQuizProps
   };
 
   const handleSubmit = async () => {
-    if (!assessment || submitting) return;
+    if (!assessment || submitting || !user) return;
 
     setSubmitting(true);
     const finalScore = calculateScore();
@@ -159,6 +161,7 @@ export function AssessmentQuiz({ assessmentId, onComplete }: AssessmentQuizProps
       await supabase
         .from("assessment_attempts")
         .insert({
+          user_id: user.id, // Add required user_id field
           assessment_id: assessmentId,
           attempt_number: attemptNumber,
           answers: userAnswers,

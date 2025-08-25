@@ -175,6 +175,16 @@ const SignUpPage = () => {
       }
 
       if (data.user && !data.session) {
+        // Log successful registration
+        try {
+          await supabase.rpc('log_successful_auth', {
+            auth_type: 'registration_basic',
+            user_email: sanitizedData.email
+          });
+        } catch (logError) {
+          console.warn('Failed to log successful registration:', logError);
+        }
+        
         toast({
           title: "Account Created Successfully!",
           description: "Please check your email for a confirmation link. You can now sign in to your account.",
