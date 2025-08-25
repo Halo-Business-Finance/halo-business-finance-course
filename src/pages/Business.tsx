@@ -123,7 +123,7 @@ const Business = () => {
   return (
     <>
       <SEOHead 
-        title="Enterprise Business Training Solutions | FinPilot for Organizations"
+        title="Enterprise Solutions | FinPilot for Organizations"
         description="Scale your team's finance expertise with FinPilot's enterprise learning platform. Custom branding, advanced analytics, and dedicated support for organizations of all sizes."
         keywords="enterprise training solutions, business learning platform, corporate finance training, team development, LMS for business, enterprise education"
         canonicalUrl="https://finpilot.com/business"
@@ -138,7 +138,7 @@ const Business = () => {
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">For Business</Badge>
+            <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">Enterprise</Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Transform Your Team's Skills</h1>
             <p className="text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
               Empower your organization with our comprehensive learning platform. Scale your team's expertise 

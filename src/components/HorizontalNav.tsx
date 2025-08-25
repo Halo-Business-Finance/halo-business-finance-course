@@ -37,7 +37,7 @@ export const HorizontalNav = () => {
               `text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
-            Business
+            Enterprise
           </NavLink>
           <NavLink 
             to="/blog" 
