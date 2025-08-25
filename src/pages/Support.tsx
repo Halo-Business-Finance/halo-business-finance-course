@@ -141,7 +141,35 @@ const Support = () => {
       action: "Start Conversation",
       available: "Available 24/7",
       responseTime: "Avg. 2 min response",
-      color: "bg-blue-50 border-blue-100"
+      color: "bg-blue-50 border-blue-100",
+      onClick: () => {
+        // Open live chat widget
+        console.log("Opening live chat...");
+      }
+    },
+    {
+      icon: Mail,
+      title: "Contact Sales",
+      description: "Speak with our sales team about custom solutions and enterprise pricing",
+      action: "Contact Sales",
+      available: "Mon-Fri 9AM-6PM EST",
+      responseTime: "Same day response",
+      color: "bg-green-50 border-green-100",
+      onClick: () => {
+        window.location.href = "mailto:sales@finpilot.com?subject=Sales Inquiry";
+      }
+    },
+    {
+      icon: CheckCircle,
+      title: "Schedule Demo",
+      description: "Book a personalized demo to see how FinPilot can transform your training",
+      action: "Schedule a Demo",
+      available: "Flexible scheduling",
+      responseTime: "Demo within 24hrs",
+      color: "bg-orange-50 border-orange-100",
+      onClick: () => {
+        window.open("https://calendly.com/finpilot/demo", "_blank");
+      }
     }
   ];
 
@@ -185,41 +213,43 @@ const Support = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Left Column - Live Chat and Contact Form */}
-            <div className="space-y-8">
-              {/* Live Chat Widget */}
-              {supportOptions.map((option, index) => {
-                const Icon = option.icon;
-                return (
-                  <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-1">
-                        <div className="text-2xl font-bold text-foreground mb-1">{option.action}</div>
-                        <div className="text-sm font-medium text-primary mb-2">{option.title}</div>
-                        <div className="text-xs text-black leading-relaxed mb-3">{option.description}</div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-xs">
-                            <Clock className="h-3 w-3 text-blue-400" />
-                            <span className="text-black">{option.available}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs">
-                            <CheckCircle className="h-3 w-3 text-blue-400" />
-                            <span className="text-black">{option.responseTime}</span>
-                          </div>
-                        </div>
-                        <div className="mt-4">
-                          <Button className="w-full bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2">
-                            <Icon className="h-4 w-4" />
-                            {option.action}
-                          </Button>
-                        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
+            {/* Support Options Cards */}
+            {supportOptions.map((option, index) => {
+              const Icon = option.icon;
+              return (
+                <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="text-center">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                      <Icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground mb-2">{option.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">{option.description}</p>
+                    <div className="space-y-1 mb-4">
+                      <div className="flex items-center justify-center gap-2 text-xs">
+                        <Clock className="h-3 w-3 text-primary" />
+                        <span className="text-muted-foreground">{option.available}</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2 text-xs">
+                        <CheckCircle className="h-3 w-3 text-primary" />
+                        <span className="text-muted-foreground">{option.responseTime}</span>
                       </div>
                     </div>
-                  </Card>
-                );
-              })}
+                    <Button 
+                      onClick={option.onClick}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                    >
+                      {option.action}
+                    </Button>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Left Column - Contact Form */}
+            <div className="space-y-8">
               {/* Contact Form Widget */}
               <Card className="p-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4 mb-6">
