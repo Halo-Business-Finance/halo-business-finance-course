@@ -25,7 +25,7 @@ const Blog = () => {
       title: "The Future of Financial Technology in Commercial Lending",
       excerpt: "Explore how emerging technologies are reshaping the commercial lending landscape and what it means for professionals.",
       author: "Sarah Johnson",
-      date: "2024-01-15",
+      date: "2025-08-15",
       category: "Technology",
       readTime: "5 min read",
       image: fintechProfessional
@@ -35,7 +35,7 @@ const Blog = () => {
       title: "Essential Skills for Modern Credit Analysts",
       excerpt: "A comprehensive guide to the key competencies every credit analyst needs to succeed in today's market.",
       author: "Michael Chen",
-      date: "2024-01-10",
+      date: "2025-08-05",
       category: "Career Development",
       readTime: "8 min read",
       image: creditAnalystProfessional
@@ -45,7 +45,7 @@ const Blog = () => {
       title: "Risk Management Best Practices for 2024",
       excerpt: "Stay ahead of the curve with the latest risk management strategies and regulatory updates.",
       author: "Dr. Emily Rodriguez",
-      date: "2024-01-05",
+      date: "2025-07-22",
       category: "Risk Management",
       readTime: "6 min read",
       image: riskManagementProfessional
@@ -55,7 +55,7 @@ const Blog = () => {
       title: "Digital Transformation in Corporate Training",
       excerpt: "How organizations are leveraging digital platforms to enhance employee learning and development.",
       author: "Sarah Johnson",
-      date: "2023-12-28",
+      date: "2025-07-10",
       category: "Technology",
       readTime: "7 min read",
       image: digitalTrainingProfessional
@@ -65,7 +65,7 @@ const Blog = () => {
       title: "Maximizing ROI with AI-Powered Learning Platforms",
       excerpt: "Discover how artificial intelligence is revolutionizing corporate training efficiency and measuring learning outcomes in financial services.",
       author: "Dr. Emily Rodriguez",
-      date: "2024-01-22",
+      date: "2025-06-28",
       category: "Technology",
       readTime: "6 min read",
       image: aiAnalyticsProfessional
@@ -75,7 +75,7 @@ const Blog = () => {
       title: "Microlearning: The Future of Professional Development",
       excerpt: "Learn why bite-sized learning modules are proving more effective than traditional training methods for busy finance professionals.",
       author: "Michael Chen",
-      date: "2024-01-18",
+      date: "2025-06-15",
       category: "Career Development",
       readTime: "5 min read",
       image: microlearningProfessional
@@ -85,7 +85,7 @@ const Blog = () => {
       title: "Adaptive Learning Systems in Financial Training",
       excerpt: "How personalized learning paths and intelligent content delivery are transforming professional education in commercial lending.",
       author: "Sarah Johnson",
-      date: "2024-01-12",
+      date: "2025-05-18",
       category: "Technology",
       readTime: "7 min read",
       image: adaptiveLearningProfessional
@@ -95,7 +95,7 @@ const Blog = () => {
       title: "Gamification Strategies for Enhanced Learning Engagement",
       excerpt: "Explore how interactive elements, progress tracking, and achievement systems boost completion rates in online training programs.",
       author: "Dr. Emily Rodriguez",
-      date: "2024-01-08",
+      date: "2025-05-05",
       category: "Technology",
       readTime: "6 min read",
       image: gamificationProfessional
@@ -105,7 +105,7 @@ const Blog = () => {
       title: "Commercial Lending Best Practices for 2024",
       excerpt: "Essential strategies and regulatory updates every commercial lender needs to know for successful loan origination and portfolio management.",
       author: "Michael Chen",
-      date: "2024-01-25",
+      date: "2025-04-20",
       category: "Commercial Lending",
       readTime: "8 min read",
       image: creditAnalystProfessional
@@ -115,7 +115,7 @@ const Blog = () => {
       title: "Optimizing Business Finance Operations",
       excerpt: "Learn how to streamline financial processes, improve cash flow management, and enhance profitability in today's competitive market.",
       author: "Sarah Johnson",
-      date: "2024-01-20",
+      date: "2025-04-08",
       category: "Business Finance",
       readTime: "7 min read",
       image: fintechProfessional
@@ -125,7 +125,7 @@ const Blog = () => {
       title: "SBA Lending: A Complete Guide for Lenders",
       excerpt: "Navigate the complexities of SBA loan programs, eligibility requirements, and application processes to better serve your small business clients.",
       author: "Dr. Emily Rodriguez",
-      date: "2024-01-17",
+      date: "2025-03-25",
       category: "SBA Loans",
       readTime: "9 min read",
       image: riskManagementProfessional
@@ -135,7 +135,7 @@ const Blog = () => {
       title: "USDA Rural Development Loan Programs",
       excerpt: "Understanding USDA loan programs for rural businesses and communities, including eligibility criteria and application best practices.",
       author: "Michael Chen",
-      date: "2024-01-14",
+      date: "2025-03-12",
       category: "USDA Loans",
       readTime: "7 min read",
       image: digitalTrainingProfessional
@@ -145,7 +145,7 @@ const Blog = () => {
       title: "Capital Markets Trends and Opportunities",
       excerpt: "Explore current capital market conditions, emerging investment opportunities, and strategies for optimizing funding structures.",
       author: "Sarah Johnson",
-      date: "2024-01-11",
+      date: "2025-02-28",
       category: "Capital Markets",
       readTime: "8 min read",
       image: aiAnalyticsProfessional
