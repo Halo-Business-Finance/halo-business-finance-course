@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Lock } from "lucide-react";
 
 export const HorizontalNav = () => {
   return (
@@ -68,7 +69,10 @@ export const HorizontalNav = () => {
         {/* Auth Buttons */}
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200 flex-shrink-0">
           <Button variant="outline" size="sm" asChild className="text-sm">
-            <NavLink to="/auth">Sign In</NavLink>
+            <NavLink to="/auth" className="flex items-center gap-2">
+              <Lock className="h-4 w-4" />
+              Sign In
+            </NavLink>
           </Button>
           <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-sm">
             <NavLink to="/signup">Free Trial</NavLink>
