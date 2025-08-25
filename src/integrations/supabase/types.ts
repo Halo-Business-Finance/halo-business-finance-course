@@ -2567,6 +2567,10 @@ export type Database = {
         }
         Returns: string
       }
+      current_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       decrypt_pii_field: {
         Args: { encrypted_data: string; field_name: string }
         Returns: string
@@ -2970,6 +2974,10 @@ export type Database = {
       }
       is_admin: {
         Args: { check_user_id?: string }
+        Returns: boolean
+      }
+      is_authenticated: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       is_current_user_session: {
