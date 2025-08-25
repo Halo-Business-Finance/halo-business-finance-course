@@ -129,7 +129,7 @@ export function EnhancedModuleCard({ module, userProgress }: EnhancedModuleCardP
           ) : (
             <Button asChild className="w-full">
               <Link to={`/module/${module.module_id}`}>
-                {isCompleted ? "Review Module" : progress > 0 ? "Continue Learning" : "Start Learning"}
+                {isCompleted ? "Review Module" : progress > 0 ? "Continue Learning" : "Start Learning Today"}
               </Link>
             </Button>
           )}

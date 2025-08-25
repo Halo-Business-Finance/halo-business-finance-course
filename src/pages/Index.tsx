@@ -156,7 +156,7 @@ const Index = () => {
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                   <Link to="/signup" className="w-full sm:w-auto">
                     <Button size="lg" className="w-full h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-gradient-primary text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
-                      <span className="sm:hidden">Start Learning</span>
+                      <span className="sm:hidden">Start Learning Today</span>
                       <span className="hidden sm:inline">Start Learning Today</span>
                       <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
