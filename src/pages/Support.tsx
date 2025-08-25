@@ -16,6 +16,10 @@ const Support = () => {
       answer: "Once you've purchased a course, you can access it immediately from your dashboard. Simply log in and navigate to 'My Courses' section."
     },
     {
+      question: "How long is the free trial?",
+      answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
+    },
+    {
       question: "How do I update my password or email?",
       answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
     },
