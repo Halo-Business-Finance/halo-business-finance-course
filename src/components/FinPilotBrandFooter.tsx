@@ -11,7 +11,7 @@ export const FinPilotBrandFooter = () => {
               <Building2 className="h-6 w-6 text-halo-orange" />
               <h3 className="text-lg font-semibold">FinPilot</h3>
             </div>
-            <p className="text-white/80 text-sm leading-relaxed">
+            <p className="text-white text-sm leading-relaxed">
               Navigate your financial future with expert guidance through comprehensive 
               professional development and certification programs.
             </p>
@@ -19,7 +19,7 @@ export const FinPilotBrandFooter = () => {
           
           <div>
             <h4 className="text-sm font-semibold mb-3 text-halo-orange">Contact Information</h4>
-            <div className="space-y-2 text-sm text-white/80">
+            <div className="space-y-2 text-sm text-white">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4" />
                 <span>www.finpilot.com</span>
@@ -37,7 +37,7 @@ export const FinPilotBrandFooter = () => {
           
           <div>
             <h4 className="text-sm font-semibold mb-3 text-halo-orange">Training Program</h4>
-            <div className="text-sm text-white/80 space-y-1">
+            <div className="text-sm text-white space-y-1">
               <p>Professional Certification</p>
               <p>Commercial Lending Excellence</p>
               <p>Business Finance Mastery</p>
@@ -47,25 +47,25 @@ export const FinPilotBrandFooter = () => {
         </div>
         
         <div className="mt-6 pt-6 border-t border-white/20 text-center">
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-white">
             © 2025 FinPilot. All rights reserved. | Training Platform powered by advanced learning technologies.
           </p>
           <div className="mt-2 flex gap-4 justify-center">
             <a 
               href="/privacy" 
-              className="text-xs text-white/60 hover:text-halo-orange transition-colors"
+              className="text-xs text-white hover:text-halo-orange transition-colors"
             >
               Privacy Policy
             </a>
             <a 
               href="/terms" 
-              className="text-xs text-white/60 hover:text-halo-orange transition-colors"
+              className="text-xs text-white hover:text-halo-orange transition-colors"
             >
               Terms of Use
             </a>
             <a 
               href="/data-security" 
-              className="text-xs text-white/60 hover:text-halo-orange transition-colors"
+              className="text-xs text-white hover:text-halo-orange transition-colors"
             >
               Data & Security
             </a>
