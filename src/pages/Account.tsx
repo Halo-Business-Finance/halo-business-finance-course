@@ -434,15 +434,15 @@ const AccountPage = () => {
   }
 
   return (
-    <Tabs value={currentTab} className="container mx-auto p-6 space-y-2 bg-white min-h-screen">
+    <Tabs value={currentTab} className="container mx-auto p-4 sm:p-6 space-y-2 bg-white min-h-screen">
       {/* Profile Info - Account Information Widget moved higher */}
       <Card className="mb-4 max-w-4xl mx-auto">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-semibold">My Account Information</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="flex flex-col items-center space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="flex flex-col items-center space-y-2 order-2 md:order-1">
               <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogTrigger asChild>
                   <Button variant="outline" size="sm" className="self-end mb-1">
@@ -450,7 +450,7 @@ const AccountPage = () => {
                     Edit
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="w-[95vw] max-w-[425px] max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Edit Profile</DialogTitle>
                     <DialogDescription>
@@ -458,7 +458,7 @@ const AccountPage = () => {
                     </DialogDescription>
                   </DialogHeader>
                   <form onSubmit={handleEditSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="name">Name</Label>
                         <Input
@@ -481,7 +481,7 @@ const AccountPage = () => {
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="phone">Phone</Label>
                         <Input

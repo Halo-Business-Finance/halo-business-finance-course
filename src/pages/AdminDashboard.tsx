@@ -786,15 +786,15 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6 bg-white min-h-screen">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6 bg-white min-h-screen">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-muted-foreground">System administration and user management</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">System administration and user management</p>
         </div>
         <div className="flex items-center gap-2">
-          <Crown className="h-5 w-5 text-primary" />
-          <Badge variant="destructive">Super Admin</Badge>
+          <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+          <Badge variant="destructive" className="text-xs sm:text-sm">Super Admin</Badge>
         </div>
       </div>
 
@@ -802,7 +802,7 @@ const AdminDashboard = () => {
       <SecurityStatusIndicator />
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -857,39 +857,59 @@ const AdminDashboard = () => {
       </div>
 
       <Tabs defaultValue="users" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="users">User Management</TabsTrigger>
-          <TabsTrigger value="trainee-progress">
-            <TrendingUp className="h-4 w-4 mr-2 text-orange-500" />
-            Trainee Progress
-          </TabsTrigger>
-          <TabsTrigger value="content">Content Management</TabsTrigger>
-          <TabsTrigger value="cms">CMS</TabsTrigger>
-          <TabsTrigger value="instructors">Instructors</TabsTrigger>
-          <TabsTrigger value="monitoring">Security Monitor</TabsTrigger>
-          <TabsTrigger value="settings">System Settings</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1 h-auto p-1">
+            <TabsTrigger value="users" className="text-xs sm:text-sm px-2 py-2">
+              <span className="hidden sm:inline">User Management</span>
+              <span className="sm:hidden">Users</span>
+            </TabsTrigger>
+            <TabsTrigger value="trainee-progress" className="text-xs sm:text-sm px-2 py-2">
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+              <span className="hidden sm:inline">Trainee Progress</span>
+              <span className="sm:hidden">Progress</span>
+            </TabsTrigger>
+            <TabsTrigger value="content" className="text-xs sm:text-sm px-2 py-2">
+              <span className="hidden sm:inline">Content Management</span>
+              <span className="sm:hidden">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="cms" className="text-xs sm:text-sm px-2 py-2">CMS</TabsTrigger>
+            <TabsTrigger value="instructors" className="text-xs sm:text-sm px-2 py-2">
+              <span className="hidden sm:inline">Instructors</span>
+              <span className="sm:hidden">Inst.</span>
+            </TabsTrigger>
+            <TabsTrigger value="monitoring" className="text-xs sm:text-sm px-2 py-2">
+              <span className="hidden sm:inline">Security Monitor</span>
+              <span className="sm:hidden">Security</span>
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm px-2 py-2">
+              <span className="hidden sm:inline">System Settings</span>
+              <span className="sm:hidden">Settings</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="content" className="space-y-4">
           <Tabs defaultValue="modules" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="modules">
-                <BookOpen className="h-4 w-4 mr-2 text-orange-500" />
-                Modules
-              </TabsTrigger>
-              <TabsTrigger value="videos">
-                <Video className="h-4 w-4 mr-2 text-orange-500" />
-                Videos
-              </TabsTrigger>
-              <TabsTrigger value="articles">
-                <FileText className="h-4 w-4 mr-2 text-orange-500" />
-                Articles
-              </TabsTrigger>
-              <TabsTrigger value="resources">
-                <FileText className="h-4 w-4 mr-2 text-orange-500" />
-                Resources
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">
+                <TabsTrigger value="modules" className="text-xs sm:text-sm px-2 py-2">
+                  <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+                  Modules
+                </TabsTrigger>
+                <TabsTrigger value="videos" className="text-xs sm:text-sm px-2 py-2">
+                  <Video className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+                  Videos
+                </TabsTrigger>
+                <TabsTrigger value="articles" className="text-xs sm:text-sm px-2 py-2">
+                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+                  Articles
+                </TabsTrigger>
+                <TabsTrigger value="resources" className="text-xs sm:text-sm px-2 py-2">
+                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+                  Resources
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="modules">
               <ModuleEditor />
@@ -916,21 +936,21 @@ const AdminDashboard = () => {
         <TabsContent value="users" className="space-y-4">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <CardTitle>User Roles Management</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg sm:text-xl">User Roles Management</CardTitle>
+                  <CardDescription className="text-sm">
                     Manage user roles and permissions. Use carefully as role changes affect system access.
                   </CardDescription>
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button>
+                    <Button className="w-full sm:w-auto">
                       <Plus className="h-4 w-4 mr-2 text-orange-500" />
                       New User
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className="w-[95vw] max-w-[425px] max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Create New User</DialogTitle>
                       <DialogDescription>
@@ -1015,18 +1035,20 @@ const AdminDashboard = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <Table>
-                 <TableHeader>
-                   <TableRow>
-                     <TableHead>User</TableHead>
-                     <TableHead>Email</TableHead>
-                     <TableHead>Role</TableHead>
-                     <TableHead>Status</TableHead>
-                     <TableHead>Created</TableHead>
-                     <TableHead>Actions</TableHead>
-                   </TableRow>
-                 </TableHeader>
-                <TableBody>
+              {!loading && userRoles.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <Table className="min-w-full">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="min-w-[150px]">User</TableHead>
+                        <TableHead className="min-w-[200px]">Email</TableHead>
+                        <TableHead className="min-w-[100px]">Role</TableHead>
+                        <TableHead className="min-w-[80px]">Status</TableHead>
+                        <TableHead className="min-w-[100px]">Joined</TableHead>
+                        <TableHead className="min-w-[300px]">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                    {userRoles.map((userRole) => (
                      <TableRow key={userRole.id}>
                         <TableCell>
@@ -1061,68 +1083,73 @@ const AdminDashboard = () => {
                        <TableCell>
                          {new Date(userRole.created_at).toLocaleDateString()}
                        </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => assignRole(userRole.user_id, 'trainee')}
-                            disabled={userRole.role === 'trainee'}
-                            title="Assign Trainee Role"
-                          >
-                            <GraduationCap className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => assignRole(userRole.user_id, 'tech_support_admin')}
-                            disabled={userRole.role === 'tech_support_admin'}
-                            title="Assign Tech Support Admin Role"
-                          >
-                            <Wrench className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => assignRole(userRole.user_id, 'admin')}
-                            disabled={userRole.role === 'admin'}
-                            title="Assign Admin Role"
-                          >
-                            <UserCheck className="h-3 w-3 text-orange-500" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => assignRole(userRole.user_id, 'super_admin')}
-                            disabled={userRole.role === 'super_admin'}
-                            title="Assign Super Admin Role"
-                          >
-                            <Crown className="h-3 w-3 text-orange-500" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => revokeRole(userRole.user_id)}
-                            disabled={!userRole.is_active}
-                            title="Revoke Role"
-                          >
-                            <UserX className="h-3 w-3 text-orange-500" />
-                          </Button>
+                       <TableCell className="min-w-[300px]">
+                         <div className="flex flex-wrap items-center gap-1">
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => assignRole(userRole.user_id, 'trainee')}
+                             disabled={userRole.role === 'trainee'}
+                             title="Assign Trainee Role"
+                             className="min-w-[36px]"
+                           >
+                             <GraduationCap className="h-3 w-3" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => assignRole(userRole.user_id, 'tech_support_admin')}
+                             disabled={userRole.role === 'tech_support_admin'}
+                             title="Assign Tech Support Admin Role"
+                             className="min-w-[36px]"
+                           >
+                             <Wrench className="h-3 w-3" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => assignRole(userRole.user_id, 'admin')}
+                             disabled={userRole.role === 'admin'}
+                             title="Assign Admin Role"
+                             className="min-w-[36px]"
+                           >
+                             <UserCheck className="h-3 w-3 text-orange-500" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => assignRole(userRole.user_id, 'super_admin')}
+                             disabled={userRole.role === 'super_admin'}
+                             title="Assign Super Admin Role"
+                             className="min-w-[36px]"
+                           >
+                             <Crown className="h-3 w-3 text-orange-500" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => revokeRole(userRole.user_id)}
+                             disabled={!userRole.is_active}
+                             title="Revoke Role"
+                             className="min-w-[36px]"
+                           >
+                             <UserX className="h-3 w-3 text-orange-500" />
+                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                disabled={userRole.user_id === user?.id || deletingUser === userRole.user_id}
-                                title={userRole.user_id === user?.id ? "Cannot delete your own account" : "Delete User"}
-                                className="hover:bg-destructive hover:text-destructive-foreground"
-                              >
-                                {deletingUser === userRole.user_id ? (
-                                  <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" />
-                                ) : (
-                                  <Trash2 className="h-3 w-3 text-orange-500" />
-                                )}
-                              </Button>
+                               <Button
+                                 size="sm"
+                                 variant="outline"
+                                 disabled={userRole.user_id === user?.id || deletingUser === userRole.user_id}
+                                 title={userRole.user_id === user?.id ? "Cannot delete your own account" : "Delete User"}
+                                 className="hover:bg-destructive hover:text-destructive-foreground min-w-[36px]"
+                               >
+                                 {deletingUser === userRole.user_id ? (
+                                   <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" />
+                                 ) : (
+                                   <Trash2 className="h-3 w-3 text-orange-500" />
+                                 )}
+                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
@@ -1151,8 +1178,14 @@ const AdminDashboard = () => {
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
-              </Table>
+                 </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground">No users found.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

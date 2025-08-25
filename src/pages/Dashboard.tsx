@@ -142,7 +142,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Course Header */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <CourseHeader 
           progress={courseData.totalProgress}
           totalModules={courseData.totalModules}
@@ -151,7 +151,7 @@ const Dashboard = () => {
         />
       </div>
 
-        <div className="container mx-auto px-4 space-y-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           {/* Instructor Information */}
           <InstructorInfo />
 
@@ -159,7 +159,7 @@ const Dashboard = () => {
           <LearningObjectives objectives={learningObjectives} />
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {statsData.map((stat, index) => {
             const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
             return (
@@ -186,9 +186,9 @@ const Dashboard = () => {
             </div>
 
             <Tabs defaultValue="modules" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 lg:w-fit">
-                <TabsTrigger value="modules">Learning Modules</TabsTrigger>
-                <TabsTrigger value="resources">Resources</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 sm:w-fit">
+                <TabsTrigger value="modules" className="text-sm">Learning Modules</TabsTrigger>
+                <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
               </TabsList>
 
               <TabsContent value="modules" className="space-y-6">
@@ -199,7 +199,7 @@ const Dashboard = () => {
                 />
 
                 {loading ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {[1, 2, 3, 4, 5, 6].map(i => (
                       <div key={i} className="animate-pulse">
                         <div className="bg-muted rounded-lg h-48" />
@@ -209,7 +209,7 @@ const Dashboard = () => {
                 ) : (
                   <>
                     {enhancedModules.length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {filteredModules.map((module) => (
                           <EnhancedModuleCard 
                             key={module.id} 
@@ -219,7 +219,7 @@ const Dashboard = () => {
                         ))}
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {modules.map((module) => (
                           <ModuleCard
                             key={module.id}
