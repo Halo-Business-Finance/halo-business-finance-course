@@ -206,11 +206,18 @@ const About = () => {
                     We recognized that traditional training methods weren't adequately preparing professionals for modern 
                     commercial lending complexities.
                   </p>
-                  <p className="text-black leading-relaxed">
+                  <p className="text-black leading-relaxed mb-6">
                     Our curriculum combines theoretical knowledge with practical, hands-on training that reflects current 
                     industry practices. We're committed to providing finance professionals with the skills and confidence 
                     they need to excel in commercial lending.
                   </p>
+                  <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Link to="/signup" className="flex items-center gap-2">
+                      <Play className="h-4 w-4" />
+                      Start Free Trial
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
                 <div className="h-64 lg:h-auto">
                   <img 
