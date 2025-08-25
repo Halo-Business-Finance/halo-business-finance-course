@@ -32,59 +32,62 @@ export const FinPilotHeader = ({
       {/* Main Header */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-sm flex items-center justify-center">
-              <span className="text-white font-bold text-sm">FP</span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-foreground">{title}</span>
-            </div>
-          </NavLink>
+          {/* Logo and Main Navigation */}
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <NavLink to="/" className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-sm flex items-center justify-center">
+                <span className="text-white font-bold text-sm">FP</span>
+              </div>
+              <div>
+                <span className="text-xl font-bold text-foreground">{title}</span>
+              </div>
+            </NavLink>
 
-          {/* Main Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <NavLink 
-              to="/about" 
-              className={({ isActive }) => 
-                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
-              }
-            >
-              Why FinPilot
-            </NavLink>
-            <NavLink 
-              to="/courses" 
-              className={({ isActive }) => 
-                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
-              }
-            >
-              Courses
-            </NavLink>
-            <NavLink 
-              to="/pricing" 
-              className={({ isActive }) => 
-                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
-              }
-            >
-              Pricing
-            </NavLink>
-            <NavLink 
-              to="/business" 
-              className={({ isActive }) => 
-                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
-              }
-            >
-              Solutions
-            </NavLink>
-            <NavLink 
-              to="/resources" 
-              className={({ isActive }) => 
-                `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
-              }
-            >
-              Resources
-            </NavLink>
-          </nav>
+            {/* Main Navigation */}
+            <nav className="hidden lg:flex items-center gap-8">
+              <NavLink 
+                to="/about" 
+                className={({ isActive }) => 
+                  `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+                }
+              >
+                Why FinPilot
+              </NavLink>
+              <NavLink 
+                to="/courses" 
+                className={({ isActive }) => 
+                  `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+                }
+              >
+                Courses
+              </NavLink>
+              <NavLink 
+                to="/pricing" 
+                className={({ isActive }) => 
+                  `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+                }
+              >
+                Pricing
+              </NavLink>
+              <NavLink 
+                to="/business" 
+                className={({ isActive }) => 
+                  `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+                }
+              >
+                Solutions
+              </NavLink>
+              <NavLink 
+                to="/resources" 
+                className={({ isActive }) => 
+                  `text-foreground hover:text-primary transition-colors font-medium ${isActive ? 'text-primary' : ''}`
+                }
+              >
+                Resources
+              </NavLink>
+            </nav>
+          </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
