@@ -136,7 +136,7 @@ export const CMSSettingsManager = () => {
       // Create settings table if it doesn't exist and insert/update settings
       for (const setting of settingsArray) {
         const { error } = await supabase
-          .from('cms_settings')
+          .from('cms_settings' as any)
           .upsert({
             key: setting.key,
             value: setting.value,
