@@ -93,7 +93,7 @@ const HeaderContent = () => {
     <header className="sticky top-0 h-14 md:h-16 lg:h-20 xl:h-24 flex flex-col border-b bg-white z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4">
         <div className="flex items-center gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black" />}
+          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-12 w-12 md:h-12 md:w-12 lg:h-6 lg:w-6" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
