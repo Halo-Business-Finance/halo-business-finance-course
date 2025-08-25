@@ -233,6 +233,11 @@ const Pricing = () => {
                   </Link>
                 </Button>
               )}
+              {plan.name === "Basic" && (
+                <p className="text-xs text-center text-black mt-2">
+                  3-day free trial, no credit card required
+                </p>
+              )}
               {plan.name === "Professional" && (
                 <p className="text-xs text-center text-black mt-2">
                   3-day free trial, no credit card required
