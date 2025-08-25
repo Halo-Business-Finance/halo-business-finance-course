@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Image, Menu, Tag, Folder, Settings } from "lucide-react";
 import { CMSPageManager } from './CMSPageManager';
 import { MediaLibrary } from './MediaLibrary';
+import { MediaImporter } from './MediaImporter';
 import { CMSMenuManager } from './CMSMenuManager';
 import { CMSCategoryManager } from './CMSCategoryManager';
 import { CMSTagManager } from './CMSTagManager';
@@ -76,6 +77,8 @@ const CMSManager = () => {
         </TabsContent>
 
         <TabsContent value="media" className="space-y-6">
+          <MediaImporter />
+          
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
