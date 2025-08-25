@@ -3084,6 +3084,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_suspicious_lead_access: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_unusual_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -3783,6 +3787,10 @@ export type Database = {
         Returns: Json
       }
       verify_profile_access_security: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      verify_security_implementation: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
