@@ -158,29 +158,6 @@ const HeaderContent = () => {
             </div>
           </div>
         )}
-
-        {!user && (
-          <div className="flex items-center gap-2 md:gap-4">
-            <Link to="/auth" className="hidden sm:block">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
-                <LogIn className="h-4 w-4" />
-                <span className="hidden md:inline">Sign In</span>
-              </Button>
-            </Link>
-            <Link to="/auth" className="sm:hidden">
-              <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700 shadow-none">
-                <LogIn className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-none flex items-center gap-2">
-                <Play className="h-4 w-4" />
-                <span className="hidden md:inline">Get Started</span>
-                <span className="md:hidden">Start</span>
-              </Button>
-            </Link>
-          </div>
-        )}
       </div>
       
       {/* Account tabs positioned on the divider line - shown on all pages when logged in */}
