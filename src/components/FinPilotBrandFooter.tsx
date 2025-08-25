@@ -63,6 +63,12 @@ export const FinPilotBrandFooter = () => {
             >
               Terms of Use
             </a>
+            <a 
+              href="/data-security" 
+              className="text-xs text-white/60 hover:text-halo-orange transition-colors"
+            >
+              Data & Security
+            </a>
           </div>
         </div>
       </CardContent>
