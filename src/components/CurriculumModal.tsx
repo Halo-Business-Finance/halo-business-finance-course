@@ -176,7 +176,7 @@ export const CurriculumModal = ({ open, onOpenChange, learningPath }: Curriculum
               <span className="text-black">Join hundreds of professionals who have advanced their careers</span>
             </div>
             <div className="space-y-3">
-              <Link to="/auth">
+              <Link to="/signup">
                 <Button size="lg" className="bg-gradient-primary text-white shadow-elevated">
                   Start Learning Today
                 </Button>
