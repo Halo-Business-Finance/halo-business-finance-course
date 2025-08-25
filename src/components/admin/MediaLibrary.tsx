@@ -81,14 +81,26 @@ export function MediaLibrary() {
   const loadMedia = async () => {
     try {
       setLoading(true);
+      console.log('Loading media from folder:', currentFolder);
       
-      // Load media items
-      const { data: mediaData, error: mediaError } = await supabase
+      // Load media items - show all media if in root, or specific folder media
+      let mediaQuery = supabase
         .from("cms_media")
         .select("*")
-        .eq("folder_path", currentFolder)
         .order("created_at", { ascending: false });
 
+      if (currentFolder === '/') {
+        // Root folder shows all media
+        console.log('Loading all media for root folder');
+      } else {
+        // Specific folder - exact match
+        mediaQuery = mediaQuery.eq("folder_path", currentFolder);
+        console.log('Loading media for specific folder:', currentFolder);
+      }
+
+      const { data: mediaData, error: mediaError } = await mediaQuery;
+
+      console.log('Media query result:', { mediaData, mediaError, currentFolder });
       if (mediaError) throw mediaError;
       setMedia(mediaData || []);
 
@@ -115,11 +127,25 @@ export function MediaLibrary() {
         return {
           path,
           name: parts[parts.length - 1] || 'Root',
-          count: allMedia?.filter(item => item.folder_path.startsWith(path)).length || 0
+          count: allMedia?.filter(item => 
+            path === '/' ? true : item.folder_path === path
+          ).length || 0
         };
       });
 
+      // Add imported folder if it has items
+      const importedItems = allMedia?.filter(item => item.folder_path === '/imported').length || 0;
+      if (importedItems > 0) {
+        folderList.push({
+          path: '/imported',
+          name: 'Imported',
+          count: importedItems
+        });
+      }
+
       setFolders(folderList);
+      console.log('Loaded folders:', folderList);
+      console.log('Loaded media items:', mediaData?.length || 0);
 
     } catch (error) {
       console.error("Error loading media:", error);

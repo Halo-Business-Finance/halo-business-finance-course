@@ -28,6 +28,42 @@ export const MediaImporter = () => {
       filename: 'software-training.png', 
       url: '/lovable-uploads/78cb3c25-cbc5-4554-bba1-11cf532ee81d.png',
       type: 'upload'
+    },
+    // Add some key static assets that can be imported
+    {
+      filename: 'hero-business-training.jpg',
+      url: '/src/assets/commercial-lending-hero.jpg',
+      type: 'asset'
+    },
+    {
+      filename: 'about-hero.jpg',
+      url: '/src/assets/about-hero.jpg', 
+      type: 'asset'
+    },
+    {
+      filename: 'business-hero.jpg',
+      url: '/src/assets/business-hero.jpg',
+      type: 'asset'
+    },
+    {
+      filename: 'courses-hero.jpg',
+      url: '/src/assets/courses-hero.jpg',
+      type: 'asset'
+    },
+    {
+      filename: 'pricing-hero.jpg',
+      url: '/src/assets/pricing-hero.jpg',
+      type: 'asset'
+    },
+    {
+      filename: 'support-hero.jpg',
+      url: '/src/assets/support-hero.jpg',
+      type: 'asset'
+    },
+    {
+      filename: 'blog-hero.jpg',
+      url: '/src/assets/blog-hero.jpg',
+      type: 'asset'
     }
   ];
 
