@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Play, Mail, Star } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import pricingHero from "@/assets/pricing-hero.jpg";
@@ -121,7 +122,14 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <>
+      <SEOHead 
+        title="Pricing Plans | FinPilot Business Finance Training - Choose Your Plan"
+        description="Compare FinPilot training plans starting at $29/month. Basic, Professional, and Enterprise options available. 30-day money-back guarantee and free trial included."
+        keywords="FinPilot pricing, business finance training cost, commercial lending course pricing, professional development plans"
+        canonicalUrl="https://finpilot.com/pricing"
+      />
+      <div className="bg-white min-h-screen">
       {/* Hero Section with Image */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
@@ -272,6 +280,7 @@ const Pricing = () => {
       <FinPilotBrandFooter />
       </div>
     </div>
+    </>
   );
 };
 

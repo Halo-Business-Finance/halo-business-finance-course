@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -193,9 +194,16 @@ const Courses = () => {
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <>
+      <SEOHead 
+        title="Professional Finance Courses | Business Finance Training & Commercial Lending"
+        description="Explore 25+ expert-led finance courses covering commercial lending, credit analysis, SBA loans, and risk management. Industry-recognized certifications with lifetime access."
+        keywords="finance courses, commercial lending training, credit analysis certification, SBA loan courses, business finance education, professional development"
+        canonicalUrl="https://finpilot.com/courses"
+      />
+      <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[32rem] overflow-hidden">
+      <header className="relative h-[32rem] overflow-hidden">
         <img 
           src={coursesHero} 
           alt="Professional online learning environment" 
@@ -225,7 +233,7 @@ const Courses = () => {
             </div>
           </div>
         </div>
-      </div>
+      </header>
       
       {/* Content Section */}
       <div className="container mx-auto px-4 py-12">
@@ -392,6 +400,7 @@ const Courses = () => {
       
       <FinPilotBrandFooter />
     </div>
+    </>
   );
 };
 

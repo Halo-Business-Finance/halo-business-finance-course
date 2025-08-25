@@ -7,6 +7,7 @@ import { Link, Navigate } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
 import { CurriculumModal } from "@/components/CurriculumModal";
+import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
@@ -79,8 +80,49 @@ const Index = () => {
     }
   ];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "FinPilot",
+    "description": "Professional business finance training and certification platform for commercial lending professionals",
+    "url": "https://finpilot.com",
+    "logo": "https://finpilot.com/logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US"
+    },
+    "offers": [
+      {
+        "@type": "Course",
+        "name": "Business Finance Foundations",
+        "description": "Master the fundamentals of business finance, financial analysis, and lending principles",
+        "provider": {
+          "@type": "Organization",
+          "name": "FinPilot"
+        }
+      },
+      {
+        "@type": "Course", 
+        "name": "Commercial Lending Mastery",
+        "description": "Advanced commercial lending strategies, underwriting, and portfolio management",
+        "provider": {
+          "@type": "Organization",
+          "name": "FinPilot"
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEOHead 
+        title="FinPilot - Master Business Finance & Commercial Lending | Professional Training"
+        description="Transform your career with FinPilot's comprehensive business finance and commercial lending program. 96% certification success rate. Join 10,000+ professionals who've advanced their careers."
+        keywords="business finance training, commercial lending certification, SBA loans, credit analysis, financial training, lending education, finance courses"
+        structuredData={structuredData}
+        canonicalUrl="https://finpilot.com"
+      />
+      <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
         <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
@@ -107,7 +149,7 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16" role="banner">
         <div className="absolute inset-0" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
@@ -172,7 +214,8 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 md:py-16 bg-halo-navy">
+      <section className="py-12 md:py-16 bg-halo-navy" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" className="sr-only">Training Statistics and Success Metrics</h2>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => {
@@ -192,7 +235,7 @@ const Index = () => {
       </section>
 
       {/* Learning Paths Section */}
-      <section className="py-16 md:py-20 bg-background">
+      <section className="py-16 md:py-20 bg-background" aria-labelledby="learning-paths-heading">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="order-2 lg:order-1">
@@ -203,7 +246,7 @@ const Index = () => {
               />
             </div>
             <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 id="learning-paths-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
               <div className="flex items-center justify-start">
@@ -262,11 +305,11 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-muted/30 to-background">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-muted/30 to-background" aria-labelledby="features-heading">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="text-center lg:text-left space-y-4">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 id="features-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange mt-4 text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
@@ -334,10 +377,10 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background" aria-labelledby="testimonials-heading">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+            <h2 id="testimonials-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
               What Our Graduates Say
             </h2>
             <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange border-0">
@@ -452,6 +495,7 @@ const Index = () => {
         />
       )}
     </div>
+    </>
   );
 };
 

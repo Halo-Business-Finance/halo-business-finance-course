@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Building, BookOpen, Award, TrendingUp, Clock, Users2, FileText, Crown, Shield, Lock, Zap, Monitor, Cloud, CheckCircle, Smartphone, Globe, Database, Cpu, Server } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { SEOHead } from "@/components/SEOHead";
 import aboutHero from "@/assets/about-hero.jpg";
 import companStory from "@/assets/company-story.jpg";
 import teamSarah from "@/assets/team-sarah.jpg";
@@ -133,7 +134,14 @@ const About = () => {
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <>
+      <SEOHead 
+        title="About Halo Business Finance | Professional Commercial Lending Training Company"
+        description="Learn about Halo Business Finance's mission to advance careers in commercial lending through our comprehensive FinPilot training program. 15+ years of industry expertise."
+        keywords="Halo Business Finance, commercial lending training company, FinPilot program, business finance education, lending professionals"
+        canonicalUrl="https://finpilot.com/about"
+      />
+      <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
         <img 
@@ -391,6 +399,7 @@ const About = () => {
       <FinPilotBrandFooter />
       </div>
     </div>
+    </>
   );
 };
 
