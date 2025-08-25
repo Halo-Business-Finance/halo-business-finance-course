@@ -1,10 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { HelpCircle, MessageCircle, Mail, Phone, Search, Clock, CheckCircle, ArrowRight, Headphones, FileText, Video, Users } from "lucide-react";
+import { HelpCircle, MessageCircle, Clock, CheckCircle } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import supportHero from "@/assets/support-hero.jpg";
@@ -43,53 +41,6 @@ const Support = () => {
       responseTime: "Avg. 2 min response",
       badge: "Most Popular",
       color: "bg-blue-50 border-blue-100"
-    },
-    {
-      icon: Phone,
-      title: "Phone Support",
-      description: "Speak directly with our expert support team for personalized help",
-      action: "Call (800) 555-0123",
-      available: "Mon-Fri 8AM-8PM EST",
-      responseTime: "Immediate connection",
-      badge: "Priority",
-      color: "bg-green-50 border-green-100"
-    },
-    {
-      icon: Mail,
-      title: "Email Support", 
-      description: "Send detailed questions and receive comprehensive written responses",
-      action: "Send Email",
-      available: "24/7 Submissions",
-      responseTime: "Within 4 hours",
-      badge: "Faster Response",
-      color: "bg-gray-50 border-gray-100"
-    }
-  ];
-
-  const quickHelp = [
-    {
-      icon: Video,
-      title: "Video Tutorials",
-      description: "Step-by-step guides",
-      count: "50+ videos"
-    },
-    {
-      icon: FileText,
-      title: "Documentation",
-      description: "Comprehensive guides",
-      count: "200+ articles"
-    },
-    {
-      icon: Users,
-      title: "Community",
-      description: "User discussions",
-      count: "5,000+ members"
-    },
-    {
-      icon: Headphones,
-      title: "Webinars",
-      description: "Live training sessions",
-      count: "Weekly sessions"
     }
   ];
 
@@ -97,7 +48,7 @@ const Support = () => {
     <>
       <SEOHead 
         title="Support Center | FinPilot Customer Support & Help Resources"
-        description="Get expert support for your FinPilot training. Live chat, phone support, FAQs, and comprehensive help resources available 24/7 for all finance professionals."
+        description="Get expert support for your FinPilot training. Live chat, FAQs, and comprehensive help resources available 24/7 for all finance professionals."
         keywords="FinPilot support, customer help, training support, technical assistance, course help, live chat support"
         canonicalUrl="https://finpilot.com/support"
       />
@@ -133,7 +84,7 @@ const Support = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
             {supportOptions.map((option, index) => {
               const Icon = option.icon;
               return (
@@ -175,9 +126,8 @@ const Support = () => {
         </div>
 
 
-        {/* FAQ and Contact Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* FAQ Section */}
+        {/* FAQ Section */}
+        <div className="max-w-4xl mx-auto">
           <Card className="p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start gap-4 mb-6">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -205,53 +155,6 @@ const Support = () => {
                 </AccordionItem>
               ))}
             </Accordion>
-          </Card>
-
-          {/* Contact Form */}
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Mail className="h-6 w-6 text-halo-orange" />
-              </div>
-              <div className="flex-1">
-                <div className="text-2xl font-bold text-foreground mb-1">Send Message</div>
-                <div className="text-sm font-medium text-primary mb-2">Contact Form</div>
-                <div className="text-xs text-black leading-relaxed">Can't find what you're looking for? Our team will get back to you within 4 hours.</div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input 
-                  placeholder="First Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-                />
-                <Input 
-                  placeholder="Last Name" 
-                  className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-                />
-              </div>
-              <Input 
-                type="email" 
-                placeholder="Email Address" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Input 
-                placeholder="Subject" 
-                className="h-12 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg"
-              />
-              <Textarea 
-                placeholder="Tell us how we can help you..." 
-                rows={4} 
-                className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
-              />
-              <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
-                Send Message
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <p className="text-xs text-muted-foreground text-center">
-                We typically respond within 4 hours during business hours
-              </p>
-            </div>
           </Card>
         </div>
       </div>
