@@ -50,12 +50,18 @@ export const FinPilotBrandFooter = () => {
           <p className="text-xs text-white/60">
             © 2025 FinPilot. All rights reserved. | Training Platform powered by advanced learning technologies.
           </p>
-          <div className="mt-2">
+          <div className="mt-2 flex gap-4 justify-center">
             <a 
               href="/privacy" 
               className="text-xs text-white/60 hover:text-halo-orange transition-colors"
             >
               Privacy Policy
+            </a>
+            <a 
+              href="/terms" 
+              className="text-xs text-white/60 hover:text-halo-orange transition-colors"
+            >
+              Terms of Use
             </a>
           </div>
         </div>
