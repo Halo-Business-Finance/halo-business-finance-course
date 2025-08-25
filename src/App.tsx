@@ -12,6 +12,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { SecurityMonitor } from "@/components/SecurityMonitor";
+import { NotificationBell } from "@/components/NotificationBell";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -125,7 +126,7 @@ const HeaderContent = () => {
         
         {user && (
           <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-black text-right">
-            <Bell className="h-4 w-4 text-amber-500" />
+            <NotificationBell />
             <Button
               variant="ghost"
               size="sm"
