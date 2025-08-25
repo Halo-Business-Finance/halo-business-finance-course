@@ -123,30 +123,6 @@ const Index = () => {
         canonicalUrl="https://finpilot.com"
       />
       <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border/50 z-50">
-        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Building className="h-4 w-4 md:h-5 md:w-5 text-white" />
-            </div>
-            <span className="font-playfair font-semibold text-lg md:text-xl text-halo-navy">FinPilot</span>
-          </div>
-          <div className="flex items-center gap-2 md:gap-4">
-            <Link to="/auth" className="hidden sm:block">
-              <Button variant="ghost" className="text-black hover:bg-black/10 border border-black/20 text-sm md:text-base px-3 md:px-4">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/auth">
-              <Button className="bg-black text-white hover:bg-black/90 shadow-elevated text-sm md:text-base px-3 md:px-6">
-                <span className="sm:hidden">Start</span>
-                <span className="hidden sm:inline">Get Started</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16" role="banner">
