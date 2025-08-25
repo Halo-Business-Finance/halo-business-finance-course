@@ -247,8 +247,9 @@ export const ContentImporter = () => {
 
   const clearExistingPages = async () => {
     try {
+      console.log('Starting to clear existing pages...');
       // Delete all existing CMS pages to start fresh
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from('cms_pages')
         .delete()
         .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all rows
@@ -258,6 +259,7 @@ export const ContentImporter = () => {
         throw error;
       }
       
+      console.log(`Successfully cleared ${count || 'unknown number of'} existing pages`);
       return true;
     } catch (error) {
       console.error('Error clearing existing pages:', error);
@@ -267,7 +269,8 @@ export const ContentImporter = () => {
 
   const importPage = async (pageData: PageData) => {
     try {
-      const { error } = await supabase
+      console.log(`Importing page: ${pageData.title} (${pageData.slug})`);
+      const { error, data } = await supabase
         .from('cms_pages')
         .insert([{
           title: pageData.title,
@@ -279,9 +282,15 @@ export const ContentImporter = () => {
           sort_order: pageData.sort_order,
           is_homepage: pageData.slug === 'home',
           published_at: new Date().toISOString()
-        }]);
+        }])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error(`Database error importing ${pageData.title}:`, error);
+        throw error;
+      }
+      
+      console.log(`Successfully imported: ${pageData.title}`, data);
       setImported(prev => [...prev, pageData.slug]);
     } catch (error) {
       console.error(`Error importing ${pageData.title}:`, error);
@@ -294,23 +303,43 @@ export const ContentImporter = () => {
     setImported([]); // Reset imported list
     
     try {
+      console.log('Starting import process...');
+      
       // First clear all existing pages
       await clearExistingPages();
+      console.log('Cleared existing pages, now importing...');
       
-      // Then import all pages
+      // Then import all pages one by one
+      let successCount = 0;
       for (const page of existingPages) {
-        await importPage(page);
+        try {
+          await importPage(page);
+          successCount++;
+          console.log(`Import progress: ${successCount}/${existingPages.length}`);
+        } catch (pageError) {
+          console.error(`Failed to import page ${page.title}:`, pageError);
+          // Continue with other pages even if one fails
+        }
       }
       
-      toast({
-        title: "Success",
-        description: `Successfully imported ${existingPages.length} pages into CMS`
-      });
+      if (successCount === existingPages.length) {
+        toast({
+          title: "Success",
+          description: `Successfully imported all ${existingPages.length} pages into CMS`
+        });
+      } else {
+        toast({
+          title: "Partial Success",
+          description: `Imported ${successCount}/${existingPages.length} pages. Check console for details.`,
+          variant: "destructive"
+        });
+      }
+      
     } catch (error) {
-      console.error('Import error:', error);
+      console.error('Import process failed:', error);
       toast({
         title: "Error",
-        description: "Failed to import pages. Check console for details.",
+        description: `Import failed: ${error.message || 'Unknown error'}`,
         variant: "destructive"
       });
     } finally {
