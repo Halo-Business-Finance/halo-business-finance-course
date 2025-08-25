@@ -4,12 +4,77 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { HelpCircle, MessageCircle, Mail, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { HelpCircle, MessageCircle, Mail, Clock, CheckCircle, ArrowRight, Calendar, Phone, Building, User } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 import supportHero from "@/assets/support-hero.jpg";
 
 const Support = () => {
+  const [isIntakeModalOpen, setIsIntakeModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'sales' | 'demo'>('sales');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    jobTitle: '',
+    companySize: '',
+    budget: '',
+    timeline: '',
+    message: ''
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmitIntake = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.company) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Here you would typically send the data to your backend
+    console.log('Intake form submitted:', { type: modalType, data: formData });
+    
+    toast({
+      title: modalType === 'sales' ? "Sales Inquiry Submitted" : "Demo Request Submitted",
+      description: `Thank you! Our team will contact you within ${modalType === 'sales' ? '24 hours' : '1 business day'}.`,
+    });
+
+    // Reset form and close modal
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      company: '',
+      jobTitle: '',
+      companySize: '',
+      budget: '',
+      timeline: '',
+      message: ''
+    });
+    setIsIntakeModalOpen(false);
+  };
+
+  const openIntakeModal = (type: 'sales' | 'demo') => {
+    setModalType(type);
+    setIsIntakeModalOpen(true);
+  };
   const faqCategories = [
     {
       category: "Getting Started",
@@ -156,7 +221,7 @@ const Support = () => {
       responseTime: "Same day response",
       color: "bg-green-50 border-green-100",
       onClick: () => {
-        window.location.href = "mailto:sales@finpilot.com?subject=Sales Inquiry";
+        openIntakeModal('sales');
       }
     },
     {
@@ -168,7 +233,7 @@ const Support = () => {
       responseTime: "Demo within 24hrs",
       color: "bg-orange-50 border-orange-100",
       onClick: () => {
-        window.open("https://calendly.com/finpilot/demo", "_blank");
+        openIntakeModal('demo');
       }
     }
   ];
@@ -203,6 +268,206 @@ const Support = () => {
       </div>
       
       <div className="container mx-auto px-4 py-16">
+
+        {/* Intake Form Modal */}
+        <Dialog open={isIntakeModalOpen} onOpenChange={setIsIntakeModalOpen}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-xl">
+                {modalType === 'sales' ? (
+                  <>
+                    <Mail className="h-5 w-5 text-green-600" />
+                    Contact Sales Team
+                  </>
+                ) : (
+                  <>
+                    <Calendar className="h-5 w-5 text-orange-600" />
+                    Schedule Demo
+                  </>
+                )}
+              </DialogTitle>
+              <DialogDescription>
+                {modalType === 'sales' 
+                  ? "Tell us about your needs and we'll connect you with the right solutions."
+                  : "Book a personalized demo to see how FinPilot can transform your training program."
+                }
+              </DialogDescription>
+            </DialogHeader>
+            
+            <form onSubmit={handleSubmitIntake} className="space-y-6">
+              {/* Personal Information */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Personal Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      placeholder="Enter your first name"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      placeholder="Enter your last name"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      placeholder="Enter your email address"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Company Information */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  <Building className="h-4 w-4" />
+                  Company Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="company">Company Name *</Label>
+                    <Input
+                      id="company"
+                      value={formData.company}
+                      onChange={(e) => handleInputChange('company', e.target.value)}
+                      placeholder="Enter your company name"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="jobTitle">Job Title</Label>
+                    <Input
+                      id="jobTitle"
+                      value={formData.jobTitle}
+                      onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                      placeholder="Enter your job title"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="companySize">Company Size</Label>
+                  <Select value={formData.companySize} onValueChange={(value) => handleInputChange('companySize', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select company size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1-10">1-10 employees</SelectItem>
+                      <SelectItem value="11-50">11-50 employees</SelectItem>
+                      <SelectItem value="51-200">51-200 employees</SelectItem>
+                      <SelectItem value="201-500">201-500 employees</SelectItem>
+                      <SelectItem value="501-1000">501-1000 employees</SelectItem>
+                      <SelectItem value="1000+">1000+ employees</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Project Details */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">
+                  {modalType === 'sales' ? 'Project Details' : 'Demo Requirements'}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="budget">
+                      {modalType === 'sales' ? 'Budget Range' : 'Current Training Budget'}
+                    </Label>
+                    <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select budget range" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="under-5k">Under $5,000</SelectItem>
+                        <SelectItem value="5k-15k">$5,000 - $15,000</SelectItem>
+                        <SelectItem value="15k-50k">$15,000 - $50,000</SelectItem>
+                        <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
+                        <SelectItem value="100k+">$100,000+</SelectItem>
+                        <SelectItem value="not-sure">Not sure yet</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="timeline">
+                      {modalType === 'sales' ? 'Implementation Timeline' : 'Decision Timeline'}
+                    </Label>
+                    <Select value={formData.timeline} onValueChange={(value) => handleInputChange('timeline', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select timeline" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="immediate">Immediate (within 1 month)</SelectItem>
+                        <SelectItem value="quarter">This quarter (1-3 months)</SelectItem>
+                        <SelectItem value="6-months">Next 6 months</SelectItem>
+                        <SelectItem value="planning">Just exploring options</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">
+                    {modalType === 'sales' ? 'Tell us about your needs' : 'What would you like to see in the demo?'}
+                  </Label>
+                  <Textarea
+                    id="message"
+                    value={formData.message}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
+                    placeholder={modalType === 'sales' 
+                      ? "Describe your training challenges and goals..."
+                      : "What specific features or use cases would you like us to focus on during the demo?"
+                    }
+                    rows={4}
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsIntakeModalOpen(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="flex-1">
+                  {modalType === 'sales' ? 'Contact Sales' : 'Schedule Demo'}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
 
         {/* Contact Support Options */}
         <div className="mb-16">
