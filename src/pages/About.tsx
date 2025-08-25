@@ -136,8 +136,8 @@ const About = () => {
   return (
     <>
       <SEOHead 
-        title="About Halo Business Finance | Professional Commercial Lending Training Company"
-        description="Learn about Halo Business Finance's mission to advance careers in commercial lending through our comprehensive FinPilot training program. 15+ years of industry expertise."
+        title="About FinPilot | Professional Commercial Lending Training Platform"
+        description="Learn about FinPilot's mission to advance careers in commercial lending through comprehensive training programs. Professional development for finance professionals."
         keywords="Halo Business Finance, commercial lending training company, FinPilot program, business finance education, lending professionals"
         canonicalUrl="https://finpilot.com/about"
       />
@@ -152,11 +152,7 @@ const About = () => {
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">About Us</Badge>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About Halo Business Finance</h1>
-            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
-              We're dedicated to advancing careers in commercial lending through our comprehensive 
-              FinPilot training program, providing world-class education for finance professionals.
-            </p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About FinPilot</h1>
           </div>
         </div>
       </div>
