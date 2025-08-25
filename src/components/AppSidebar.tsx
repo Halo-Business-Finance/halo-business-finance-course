@@ -261,7 +261,7 @@ export function AppSidebar() {
                                       <div className="w-2 h-2 bg-halo-orange rounded-full shadow-sm shadow-halo-orange/50"></div>
                                     )}
                                     {module.status === "available" && (
-                                      <div className="w-2 h-2 bg-white rounded-full shadow-sm shadow-white/50"></div>
+                                      <div className="w-2 h-2 bg-white rounded-full shadow-sm shadow-white/50 animate-pulse"></div>
                                     )}
                                   </div>
                                </div>
