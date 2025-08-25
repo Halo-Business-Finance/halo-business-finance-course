@@ -233,7 +233,7 @@ export function AppSidebar() {
                                ${module.status === "completed" 
                                  ? "bg-green-500 text-white shadow-md" 
                                  : module.status === "in-progress" 
-                                   ? "bg-blue-500 text-white shadow-md" 
+                                   ? "bg-white text-navy-900 shadow-md" 
                                    : module.status === "available" 
                                      ? "bg-halo-orange text-white shadow-md" 
                                      : "bg-halo-orange text-white shadow-md"}
@@ -241,8 +241,8 @@ export function AppSidebar() {
                              `}>
                                {module.status === "completed" ? (
                                  <span className="text-sm">✓</span>
-                               ) : module.status === "in-progress" ? (
-                                 <div className="w-2 h-2 bg-white rounded-full"></div>
+                                ) : module.status === "in-progress" ? (
+                                  <div className="w-2 h-2 bg-navy-900 rounded-full"></div>
                                ) : isModuleLocked ? (
                                  <Lock size={16} className="text-white" />
                                ) : (
