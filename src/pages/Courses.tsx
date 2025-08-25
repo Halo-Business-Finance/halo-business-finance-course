@@ -301,7 +301,6 @@ const Courses = () => {
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <Badge variant="secondary">Commercial Finance</Badge>
-                    <div className="text-xs text-muted-foreground">Updated Dec 2024</div>
                   </div>
                   <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
                     {module.title}
