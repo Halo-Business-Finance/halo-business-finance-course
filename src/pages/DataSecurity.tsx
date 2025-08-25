@@ -1,11 +1,21 @@
+import { useState } from "react";
 import { Shield, Lock, Eye, Database, FileCheck, Users, Globe, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SEOHead } from "@/components/SEOHead";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { DataRightsModal, DataRightType } from "@/components/DataRightsModal";
 
 const DataSecurity = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRightType, setSelectedRightType] = useState<DataRightType | null>(null);
+
+  const handleRightRequest = (rightType: DataRightType) => {
+    setSelectedRightType(rightType);
+    setModalOpen(true);
+  };
   return (
     <>
       <SEOHead 
@@ -165,41 +175,89 @@ const DataSecurity = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Access & Portability</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Request a copy of your personal data in a portable format
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("access-portability")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Request Data Copy
+                    </Button>
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Correction</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Update or correct inaccurate personal information
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("correction")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Request Correction
+                    </Button>
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Deletion</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Request deletion of your personal data when no longer needed
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("deletion")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Request Deletion
+                    </Button>
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Restriction</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Limit how we process your personal information
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("restriction")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Request Restriction
+                    </Button>
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Objection</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Object to processing based on legitimate interests
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("objection")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Object to Processing
+                    </Button>
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <h3 className="font-semibold text-gray-900 mb-2">Withdraw Consent</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mb-3">
                       Withdraw consent for data processing at any time
                     </p>
+                    <Button 
+                      onClick={() => handleRightRequest("withdraw-consent")}
+                      variant="outline" 
+                      size="sm"
+                      className="w-full"
+                    >
+                      Withdraw Consent
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -300,6 +358,12 @@ const DataSecurity = () => {
 
         <FinPilotBrandFooter />
       </div>
+      
+      <DataRightsModal 
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        requestType={selectedRightType}
+      />
     </>
   );
 };
