@@ -15,12 +15,28 @@ const Support = () => {
       category: "Getting Started",
       faqs: [
         {
+          question: "What is an online course and how does it work?",
+          answer: "An online course is a structured learning experience delivered over the internet. Our courses offer both live sessions (synchronous) and self-paced content (asynchronous), allowing you to learn in the format that works best for your schedule."
+        },
+        {
           question: "How long is the free trial?",
           answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
         },
         {
-          question: "How do I access my purchased courses?",
-          answer: "Once you've purchased a course, you can access it immediately from your dashboard. Simply log in and navigate to 'My Courses' section."
+          question: "How do I sign up for a course?",
+          answer: "Simply browse our course catalog, select the course you want, click 'Enroll Now', create your account or log in, and complete the payment process. You'll have immediate access to your course materials."
+        },
+        {
+          question: "Can courses be taken at one's own pace?",
+          answer: "Yes! Most of our courses are self-paced, allowing you to learn whenever it's convenient for you. Some courses may have optional live sessions or suggested timelines to help you stay on track."
+        },
+        {
+          question: "What are the prerequisites for courses?",
+          answer: "Prerequisites vary by course and are clearly listed on each course page. Most beginner courses have no prerequisites, while advanced courses may require completion of foundational courses or specific experience."
+        },
+        {
+          question: "What materials are required for courses?",
+          answer: "All course materials are provided digitally within our platform. You'll only need a computer or mobile device with internet access. Any specific software requirements are listed on the course page."
         }
       ]
     },
@@ -28,12 +44,32 @@ const Support = () => {
       category: "Course Content",
       faqs: [
         {
-          question: "How long do I have access to a course?",
-          answer: "You have lifetime access to all purchased courses. You can learn at your own pace and revisit the content anytime."
+          question: "Who are the instructors and what are their qualifications?",
+          answer: "Our instructors are industry experts with extensive experience in finance and lending. Each instructor's bio, credentials, and professional background are available on their course pages."
+        },
+        {
+          question: "What will be learned from courses?",
+          answer: "Each course page includes detailed learning objectives and outcomes. You'll gain practical skills, industry knowledge, and certifications that directly apply to your finance career."
+        },
+        {
+          question: "How are assignments and exams submitted?",
+          answer: "All assignments and exams are completed directly within our platform. Simply click submit when you're finished, and your work will be automatically saved and graded."
+        },
+        {
+          question: "How will feedback on work be received?",
+          answer: "You'll receive automated feedback immediately for quizzes and assignments. For subjective work, instructors provide detailed feedback within 48-72 hours through your course dashboard."
+        },
+        {
+          question: "How often is course content updated?",
+          answer: "We continuously update our course content to reflect current industry standards, regulations, and best practices. Major updates are released quarterly, with minor updates as needed."
+        },
+        {
+          question: "Is this program accredited or licensed?",
+          answer: "Our courses are designed to meet industry standards and many provide CPE credits. Specific accreditation details are available on individual course pages and certificates."
         },
         {
           question: "Do you offer certificates upon completion?",
-          answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks."
+          answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks like LinkedIn."
         }
       ]
     },
@@ -41,8 +77,24 @@ const Support = () => {
       category: "Technical Support",
       faqs: [
         {
-          question: "Is there a mobile app available?",
-          answer: "Yes, our mobile app is available for both iOS and Android devices. You can download lessons for offline viewing."
+          question: "What are the minimum technology requirements?",
+          answer: "You need a device with internet access (computer, tablet, or smartphone), a modern web browser (Chrome, Firefox, Safari, or Edge), and a stable internet connection. No special software installation required."
+        },
+        {
+          question: "What should be done if there are trouble logging in?",
+          answer: "Click 'Forgot Password' on the login page to reset your password. If you continue having issues, clear your browser cache or try a different browser. Contact support if problems persist."
+        },
+        {
+          question: "Who should be contacted for technical problems?",
+          answer: "Use our live chat feature for immediate assistance, or submit a support ticket through the 'Send Message' form. Our technical support team is available 24/7."
+        },
+        {
+          question: "How can common issues like frozen videos be troubleshooted?",
+          answer: "Try refreshing the page, clearing your browser cache, or switching to a different browser. For mobile issues, restart the app. If problems continue, check your internet connection or contact support."
+        },
+        {
+          question: "Can courses be accessed on different devices?",
+          answer: "Yes! Our platform works on computers, tablets, and smartphones. We also have mobile apps for iOS and Android that allow offline viewing of downloaded lessons."
         }
       ]
     },
@@ -50,16 +102,32 @@ const Support = () => {
       category: "User Account/Billing",
       faqs: [
         {
+          question: "How much do courses cost? Are there payment plans?",
+          answer: "Course prices vary depending on content and length. We offer individual course purchases, monthly subscriptions, and annual plans. Payment plans and corporate discounts are available - contact sales for details."
+        },
+        {
+          question: "What is the refund or cancellation policy?",
+          answer: "We offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund within 30 days of purchase."
+        },
+        {
+          question: "How can progress be tracked?",
+          answer: "Your dashboard shows completion percentages, quiz scores, time spent learning, and certificates earned. You can track progress for individual courses and your overall learning path."
+        },
+        {
           question: "How do I update my password or email?",
-          answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
+          answer: "Go to your Account settings by clicking your profile icon in the top right corner and select 'Account' to update your personal information and security settings."
         },
         {
           question: "How do I update my billing information?",
-          answer: "To update your billing information, go to your Account settings and select the 'Billing' tab. From there, you can update your payment method, billing address, and view your payment history."
+          answer: "In your Account settings, select the 'Billing' tab to update your payment method, billing address, and view your payment history."
         },
         {
-          question: "Can I get a refund for a course?",
-          answer: "Yes, we offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund."
+          question: "What is the privacy policy regarding personal data?",
+          answer: "We take your privacy seriously and follow strict data protection standards. Your personal information is encrypted and never shared with third parties. View our full privacy policy in your account settings."
+        },
+        {
+          question: "What happens if the program needs to be paused or stopped?",
+          answer: "You can pause your subscription at any time through your account settings. Your progress is saved, and you can resume whenever you're ready. For course withdrawals, contact support for assistance."
         }
       ]
     }
