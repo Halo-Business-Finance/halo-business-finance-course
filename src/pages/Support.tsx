@@ -24,6 +24,10 @@ const Support = () => {
       answer: "You can update your password or email address by going to your Account settings. Click on your profile icon in the top right corner and select 'Account' to access your personal information and security settings."
     },
     {
+      question: "How do I update my billing information?",
+      answer: "To update your billing information, go to your Account settings and select the 'Billing' tab. From there, you can update your payment method, billing address, and view your payment history."
+    },
+    {
       question: "Can I get a refund for a course?",
       answer: "Yes, we offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund."
     },
