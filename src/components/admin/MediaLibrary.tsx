@@ -145,14 +145,14 @@ export function MediaLibrary() {
         // Upload to Supabase Storage
         const filename = `${Date.now()}-${file.name}`;
         const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('media')
+          .from('cms-media')
           .upload(`${currentFolder}/${filename}`, file);
 
         if (uploadError) throw uploadError;
 
         // Get public URL
         const { data: publicUrlData } = supabase.storage
-          .from('media')
+          .from('cms-media')
           .getPublicUrl(uploadData.path);
 
         // Create database record
@@ -264,7 +264,7 @@ export function MediaLibrary() {
     try {
       // Delete from storage
       const { error: storageError } = await supabase.storage
-        .from('media')
+        .from('cms-media')
         .remove([storagePath]);
 
       if (storageError) throw storageError;
@@ -310,7 +310,7 @@ export function MediaLibrary() {
     try {
       const placeholderContent = new Blob([''], { type: 'text/plain' });
       const { error } = await supabase.storage
-        .from('media')
+        .from('cms-media')
         .upload(`${newFolderPath}/.keep`, placeholderContent);
 
       if (error) throw error;
