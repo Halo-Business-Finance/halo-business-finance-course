@@ -153,6 +153,10 @@ const About = () => {
           <div className="text-center text-white px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">About Us</Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About FinPilot</h1>
+            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              FinPilot is a comprehensive training platform designed to advance careers in commercial lending and business finance. 
+              We provide world-class education and certification programs for finance professionals seeking to excel in today's competitive market.
+            </p>
           </div>
         </div>
       </div>
