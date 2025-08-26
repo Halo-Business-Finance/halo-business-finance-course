@@ -51,26 +51,68 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourseModules();
-  }, []);
+  }, [user]); // Re-fetch when user authentication state changes
 
   const fetchCourseModules = async () => {
     try {
       console.log('Fetching course modules...');
-      const { data, error } = await supabase
-        .from('course_modules')
-        .select('*')
-        .eq('is_active', true)
-        .order('order_index', { ascending: true });
+      
+      let data = null;
+      let error = null;
+      
+      if (user) {
+        // Authenticated users can access full course modules
+        const result = await supabase
+          .from('course_modules')
+          .select('*')
+          .eq('is_active', true)
+          .order('order_index', { ascending: true });
+        
+        data = result.data;
+        error = result.error;
+      } else {
+        // Unauthenticated users get limited preview data
+        const result = await supabase
+          .rpc('get_public_course_previews');
+          
+        if (result.data) {
+          // Transform preview data to match expected format
+          data = result.data.map((preview: any) => ({
+            id: preview.module_id,
+            module_id: preview.module_id,
+            title: preview.title,
+            description: preview.preview_description,
+            duration: preview.preview_duration,
+            skill_level: preview.skill_level,
+            lessons_count: 0,
+            order_index: 0,
+            is_active: preview.is_active,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            prerequisites: []
+          }));
+        }
+        error = result.error;
+      }
 
-      console.log('Course modules query result:', { data, error });
+      console.log('Course modules query result:', { data, error, authenticated: !!user });
 
       if (error) {
         console.error('Error fetching course modules:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load course modules",
-          variant: "destructive",
-        });
+        if (!user) {
+          // For unauthenticated users, show a more friendly message
+          toast({
+            title: "Sign in Required",
+            description: "Please sign in to view full course details",
+            variant: "default",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to load course modules",
+            variant: "destructive",
+          });
+        }
         return;
       }
 
