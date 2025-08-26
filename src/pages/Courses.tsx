@@ -505,58 +505,50 @@ const Courses = () => {
                             </div>
                           </div>
 
-                          {/* Course preview with actual lesson titles */}
+                          {/* Course Lessons */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                              <BookOpen className="h-4 w-4" />
-                              Course Content Preview ({module.totalLessons || module.lessons_count || 0} items):
-                            </h4>
+                            <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
                             {module.lessons && module.lessons.length > 0 ? (
-                              <ul className="text-xs text-black space-y-1 max-h-24 overflow-y-auto">
+                              <ul className="text-xs text-black space-y-2">
                                 {module.lessons.slice(0, 4).map((lesson, lessonIndex) => (
-                                  <li key={lessonIndex} className="flex items-center gap-2">
-                                    <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${
-                                      lesson.type === 'video' ? 'bg-red-500' : 
-                                      lesson.type === 'article' ? 'bg-blue-500' : 
-                                      'bg-green-500'
-                                    }`} />
-                                    <span className="truncate">{lesson.title}</span>
-                                    <span className={`text-xs px-1.5 py-0.5 rounded-full text-white ${
-                                      lesson.type === 'video' ? 'bg-red-500' : 
-                                      lesson.type === 'article' ? 'bg-blue-500' : 
-                                      'bg-green-500'
-                                    }`}>
-                                      {lesson.type === 'video' ? '▶' : 
-                                       lesson.type === 'article' ? '📄' : 
-                                       '📝'}
-                                    </span>
+                                  <li key={lessonIndex}>
+                                    <div className="font-medium">{lesson.title}</div>
+                                    <div className="text-muted-foreground text-xs">
+                                      Learn key concepts and practical applications
+                                    </div>
                                   </li>
                                 ))}
                                 {module.lessons.length > 4 && (
                                   <li className="text-muted-foreground italic text-xs">
-                                    + {module.lessons.length - 4} more lessons available after signup...
+                                    + {module.lessons.length - 4} more lessons...
                                   </li>
                                 )}
                               </ul>
                             ) : (
-                              <ul className="text-xs text-black space-y-1">
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                  <span>Course introduction & fundamentals</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-red-500">▶</span>
+                              <ul className="text-xs text-black space-y-2">
+                                <li>
+                                  <div className="font-medium">Course Introduction</div>
+                                  <div className="text-muted-foreground text-xs">
+                                    Overview of fundamental concepts and objectives
+                                  </div>
                                 </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                  <span>Key concepts & industry practices</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-blue-500">📄</span>
+                                <li>
+                                  <div className="font-medium">Core Principles</div>
+                                  <div className="text-muted-foreground text-xs">
+                                    Essential knowledge and industry best practices
+                                  </div>
                                 </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                                  <span>Knowledge assessment & certification</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-green-500">📝</span>
+                                <li>
+                                  <div className="font-medium">Practical Application</div>
+                                  <div className="text-muted-foreground text-xs">
+                                    Real-world scenarios and case studies
+                                  </div>
                                 </li>
-                                <li className="text-muted-foreground italic text-xs">
-                                  + More comprehensive lessons available after signup...
+                                <li>
+                                  <div className="font-medium">Assessment & Certification</div>
+                                  <div className="text-muted-foreground text-xs">
+                                    Test your knowledge and earn certification
+                                  </div>
                                 </li>
                               </ul>
                             )}
