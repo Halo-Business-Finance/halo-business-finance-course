@@ -335,7 +335,7 @@ const Business = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4 text-black">What Our Enterprise Clients Say</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-black max-w-2xl mx-auto">
             See how leading organizations have transformed their training programs with FinPilot.
           </p>
         </div>
@@ -347,15 +347,15 @@ const Business = () => {
                   <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <p className="text-muted-foreground italic mb-6">"{testimonial.quote}"</p>
+              <p className="text-black italic mb-6">"{testimonial.quote}"</p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                   <span className="text-white font-semibold text-sm">{testimonial.logo}</span>
                 </div>
                 <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                  <p className="font-semibold text-black">{testimonial.name}</p>
+                  <p className="text-sm text-black">{testimonial.role}</p>
+                  <p className="text-sm text-black">{testimonial.company}</p>
                 </div>
               </div>
             </Card>
