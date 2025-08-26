@@ -137,10 +137,10 @@ const FilterContent = ({
               <span>{level.label}</span>
               <Badge 
                 variant="secondary" 
-                className={`text-xs ${
+                className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
                   selectedLevel === level.id 
-                    ? 'bg-halo-navy text-white border-white/20' 
-                    : ''
+                    ? 'bg-white text-halo-navy border-white' 
+                    : 'bg-halo-navy text-white'
                 }`}
               >
                 {level.count}
@@ -172,10 +172,10 @@ const FilterContent = ({
               <span>{category.label}</span>
               <Badge 
                 variant="secondary" 
-                className={`text-xs ${
+                className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
                   selectedCategory === category.id 
-                    ? 'bg-halo-navy text-white border-white/20' 
-                    : ''
+                    ? 'bg-white text-halo-navy border-white' 
+                    : 'bg-halo-navy text-white'
                 }`}
               >
                 {category.count}
@@ -218,10 +218,10 @@ const FilterContent = ({
                   <span>{category.label}</span>
                   <Badge 
                     variant="secondary" 
-                    className={`text-xs ${
+                    className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
                       selectedCategory === category.id 
-                        ? 'bg-halo-navy text-white border-white/20' 
-                        : ''
+                        ? 'bg-white text-halo-navy border-white' 
+                        : 'bg-halo-navy text-white'
                     }`}
                   >
                     {category.count}
