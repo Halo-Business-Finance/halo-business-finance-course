@@ -3102,6 +3102,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      check_lead_rate_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_lead_submission_rate_limit: {
         Args: { p_ip_address: unknown }
         Returns: Json
