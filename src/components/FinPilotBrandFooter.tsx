@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export const FinPilotBrandFooter = () => {
   return (
-    <Card className="mt-12 bg-halo-navy text-white border-none">
+    <Card className="mt-12 bg-halo-navy text-white border-none mx-4">
       <CardContent className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
