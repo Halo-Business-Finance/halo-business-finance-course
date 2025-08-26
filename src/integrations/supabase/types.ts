@@ -74,6 +74,45 @@ export type Database = {
         }
         Relationships: []
       }
+      advanced_rate_limits: {
+        Row: {
+          block_until: string | null
+          created_at: string | null
+          endpoint: string
+          id: string
+          identifier: string
+          is_blocked: boolean | null
+          request_count: number | null
+          threat_level: number | null
+          updated_at: string | null
+          window_start: string | null
+        }
+        Insert: {
+          block_until?: string | null
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          identifier: string
+          is_blocked?: boolean | null
+          request_count?: number | null
+          threat_level?: number | null
+          updated_at?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          block_until?: string | null
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          identifier?: string
+          is_blocked?: boolean | null
+          request_count?: number | null
+          threat_level?: number | null
+          updated_at?: string | null
+          window_start?: string | null
+        }
+        Relationships: []
+      }
       advanced_threat_intelligence: {
         Row: {
           attack_vectors: string[]
@@ -2406,6 +2445,48 @@ export type Database = {
         }
         Relationships: []
       }
+      threat_detection_events: {
+        Row: {
+          automated_response: string | null
+          created_at: string | null
+          event_type: string
+          geolocation: Json | null
+          id: string
+          is_blocked: boolean | null
+          request_path: string | null
+          severity: string
+          source_ip: unknown | null
+          threat_indicators: Json | null
+          user_agent: string | null
+        }
+        Insert: {
+          automated_response?: string | null
+          created_at?: string | null
+          event_type: string
+          geolocation?: Json | null
+          id?: string
+          is_blocked?: boolean | null
+          request_path?: string | null
+          severity: string
+          source_ip?: unknown | null
+          threat_indicators?: Json | null
+          user_agent?: string | null
+        }
+        Update: {
+          automated_response?: string | null
+          created_at?: string | null
+          event_type?: string
+          geolocation?: Json | null
+          id?: string
+          is_blocked?: boolean | null
+          request_path?: string | null
+          severity?: string
+          source_ip?: unknown | null
+          threat_indicators?: Json | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       threat_intelligence: {
         Row: {
           confidence_score: number | null
@@ -3135,6 +3216,10 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
+      check_user_has_role_secure: {
+        Args: { check_role: string }
+        Returns: boolean
+      }
       cleanup_old_security_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -3245,13 +3330,22 @@ export type Database = {
         Returns: boolean
       }
       enhanced_audit_log: {
-        Args: {
-          p_action: string
-          p_compliance_type?: string
-          p_details?: Json
-          p_target_resource?: string
-          p_target_user_id?: string
-        }
+        Args:
+          | {
+              p_action: string
+              p_admin_user_id: string
+              p_data_classification?: string
+              p_details?: Json
+              p_target_resource?: string
+              p_target_user_id?: string
+            }
+          | {
+              p_action: string
+              p_compliance_type?: string
+              p_details?: Json
+              p_target_resource?: string
+              p_target_user_id?: string
+            }
         Returns: undefined
       }
       evaluate_zero_trust_access: {
@@ -3565,6 +3659,10 @@ export type Database = {
         Args: { check_user_id?: string }
         Returns: string
       }
+      get_user_role_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_user_session_info: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -3682,6 +3780,18 @@ export type Database = {
       log_profile_access_comprehensive: {
         Args: { access_type?: string; accessed_user_id: string }
         Returns: undefined
+      }
+      log_security_threat: {
+        Args: {
+          p_auto_block?: boolean
+          p_event_type: string
+          p_request_path?: string
+          p_severity: string
+          p_source_ip?: unknown
+          p_threat_indicators?: Json
+          p_user_agent?: string
+        }
+        Returns: string
       }
       log_sensitive_data_access: {
         Args: {

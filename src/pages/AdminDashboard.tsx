@@ -1187,8 +1187,12 @@ const AdminDashboard = () => {
                 </div>
               )}
             </CardContent>
-          </Card>
-        </TabsContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="security" className="space-y-6">
+                <SecurityDashboard />
+              </TabsContent>
 
         <TabsContent value="trainee-progress" className="space-y-4">
           <TraineeProgressView />

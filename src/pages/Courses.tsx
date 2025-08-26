@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
@@ -437,7 +438,37 @@ const Courses = () => {
       
       {/* Content Section with Sidebar Layout */}
       <div className="container mx-auto px-4 py-12">
-        {modules.length === 0 ? (
+      {!user && (
+        <Alert className="mb-6 border-primary bg-primary/5">
+          <Shield className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Military-Grade Security Active:</strong> All course content is now protected and requires enrollment. 
+            <Link to="/auth" className="ml-2 font-medium text-primary hover:underline">
+              Sign up now to access our comprehensive training programs →
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {modules.length === 0 && !user ? (
+        <div className="text-center py-12 space-y-6">
+          <Shield className="h-24 w-24 text-muted-foreground mx-auto" />
+          <div>
+            <h3 className="text-2xl font-bold mb-2">Secure Course Access</h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Our military-grade security system protects all educational content. 
+              Enroll now to access over 50+ comprehensive modules on business finance, 
+              lending, and financial analysis.
+            </p>
+            <Link to="/auth">
+              <Button size="lg" className="gap-2">
+                <Shield className="h-5 w-5" />
+                Get Secure Access
+              </Button>
+            </Link>
+          </div>
+        </div>
+      ) : modules.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
