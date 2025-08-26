@@ -364,7 +364,7 @@ const Courses = () => {
       <div className="bg-white min-h-screen">
         
         {/* Header Section */}
-        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-24 lg:py-32">
+        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-16 lg:py-20">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-60"
             style={{ backgroundImage: `url(${coursesHero})` }}
