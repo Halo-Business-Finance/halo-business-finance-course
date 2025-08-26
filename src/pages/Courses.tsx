@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
+import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -42,6 +43,7 @@ const Courses = () => {
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [loading, setLoading] = useState(true);
   const [enrollmentStatus, setEnrollmentStatus] = useState<Record<string, boolean>>({});
+  const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const { user } = useAuth();
 
   useEffect(() => {
@@ -177,6 +179,20 @@ const Courses = () => {
     return images[index % images.length];
   };
 
+  // Filter modules based on selected level
+  const filteredModules = modules.filter(module => {
+    if (selectedLevel === 'all') return true;
+    return module.skill_level === selectedLevel;
+  });
+
+  // Calculate counts for each skill level
+  const skillLevelCounts = {
+    all: modules.length,
+    beginner: modules.filter(m => m.skill_level === 'beginner').length,
+    intermediate: modules.filter(m => m.skill_level === 'intermediate').length,
+    expert: modules.filter(m => m.skill_level === 'expert' || m.skill_level === 'advanced').length,
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
@@ -236,6 +252,17 @@ const Courses = () => {
       {/* Content Section - Only Course Cards */}
       <div className="container mx-auto px-4 py-12">
         
+        {/* Course Filter */}
+        {modules.length > 0 && (
+          <div className="mb-8">
+            <SkillLevelFilter 
+              selectedLevel={selectedLevel}
+              onLevelChange={setSelectedLevel}
+              counts={skillLevelCounts}
+            />
+          </div>
+        )}
+
         {/* Course Grid */}
         {modules.length === 0 ? (
           <Card className="text-center py-12">
@@ -250,10 +277,15 @@ const Courses = () => {
         ) : (
           <>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Available Courses ({modules.length})</h2>
+              <h2 className="text-2xl font-bold">
+                {selectedLevel === 'all' 
+                  ? `Available Courses (${filteredModules.length})` 
+                  : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredModules.length})`
+                }
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {modules.map((module, index) => (
+            {filteredModules.map((module, index) => (
               <Card key={module.id} className="hover:shadow-lg transition-all group">
                  <div className="relative">
                    <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
