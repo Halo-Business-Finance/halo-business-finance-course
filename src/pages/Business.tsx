@@ -192,7 +192,7 @@ const Business = () => {
 
         {/* Analytics Showcase */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <div>
+          <div className="order-2 lg:order-1">
             <Badge className="mb-4">Advanced Analytics</Badge>
             <h3 className="text-2xl font-bold mb-4">Data-Driven Learning Insights</h3>
             <p className="text-black mb-6">
@@ -217,7 +217,7 @@ const Business = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="order-1 lg:order-2">
             <img 
               src={businessAnalytics} 
               alt="Business analytics dashboard showing learning metrics and ROI data"
@@ -228,14 +228,14 @@ const Business = () => {
 
         {/* Team Collaboration Section */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <div className="order-2 lg:order-1">
+          <div className="order-1 lg:order-1">
             <img 
               src={businessTeam} 
               alt="Business team collaborating on training programs"
               className="w-full h-auto rounded-xl shadow-lg"
             />
           </div>
-          <div className="order-1 lg:order-2">
+          <div className="order-2 lg:order-2">
             <Badge className="mb-4">Team Collaboration</Badge>
             <h3 className="text-2xl font-bold mb-4">Built for Modern Teams</h3>
             <p className="text-black mb-6">
