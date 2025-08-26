@@ -55,7 +55,7 @@ const DataSecurity = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <Card className="text-center">
                 <CardHeader>
-                  <Shield className="h-12 w-12 text-halo-orange mx-auto mb-4" />
+                  <Shield className="h-12 w-12 text-navy-600 mx-auto mb-4" />
                   <CardTitle className="text-lg">Data Encryption</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -67,7 +67,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Lock className="h-12 w-12 text-halo-orange mx-auto mb-4" />
+                  <Lock className="h-12 w-12 text-navy-600 mx-auto mb-4" />
                   <CardTitle className="text-lg">Access Control</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -79,7 +79,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Eye className="h-12 w-12 text-halo-orange mx-auto mb-4" />
+                  <Eye className="h-12 w-12 text-navy-600 mx-auto mb-4" />
                   <CardTitle className="text-lg">Monitoring</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -91,7 +91,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <FileCheck className="h-12 w-12 text-halo-orange mx-auto mb-4" />
+                  <FileCheck className="h-12 w-12 text-navy-600 mx-auto mb-4" />
                   <CardTitle className="text-lg">Compliance</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -108,7 +108,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Database className="h-6 w-6 text-halo-orange" />
+                  <Database className="h-6 w-6 text-navy-600" />
                   Data Protection & Privacy
                 </CardTitle>
               </CardHeader>
@@ -169,7 +169,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Users className="h-6 w-6 text-halo-orange" />
+                  <Users className="h-6 w-6 text-navy-600" />
                   Your Data Rights
                 </CardTitle>
               </CardHeader>
@@ -269,7 +269,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Globe className="h-6 w-6 text-halo-orange" />
+                  <Globe className="h-6 w-6 text-navy-600" />
                   Compliance & Certifications
                 </CardTitle>
               </CardHeader>
@@ -303,7 +303,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <AlertTriangle className="h-6 w-6 text-halo-orange" />
+                  <AlertTriangle className="h-6 w-6 text-navy-600" />
                   Security Incident Response
                 </CardTitle>
               </CardHeader>
