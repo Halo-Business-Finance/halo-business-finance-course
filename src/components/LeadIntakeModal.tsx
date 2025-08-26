@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,6 +49,16 @@ const LeadIntakeModal = ({
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypotField, setHoneypotField] = useState('');
+  const formLoadTimeRef = useRef<number>(Date.now());
+
+  // Reset form load time when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      formLoadTimeRef.current = Date.now();
+      setHoneypotField(''); // Reset honeypot on modal open
+    }
+  }, [isOpen]);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -112,6 +122,9 @@ const LeadIntakeModal = ({
     setIsSubmitting(true);
 
     try {
+      // Calculate form load time in seconds
+      const formLoadTimeSeconds = Math.floor((Date.now() - formLoadTimeRef.current) / 1000);
+
       const { error } = await supabase
         .from('leads')
         .insert({
@@ -127,16 +140,35 @@ const LeadIntakeModal = ({
           message: formData.message || null,
           lead_source: leadSource,
           lead_type: leadType,
-          status: 'new'
+          status: 'new',
+          // Anti-spam fields
+          honeypot_field: honeypotField || null,
+          form_load_time: formLoadTimeSeconds
         });
 
       if (error) {
         console.error('Error submitting lead:', error);
-        toast({
-          title: "Submission Failed",
-          description: "There was an error submitting your information. Please try again.",
-          variant: "destructive",
-        });
+        
+        // Handle specific spam-related errors
+        if (error.message?.includes('Rate limit exceeded') || 
+            error.message?.includes('Submission too fast') ||
+            error.message?.includes('Spam detected') ||
+            error.message?.includes('Invalid submission') ||
+            error.message?.includes('Duplicate submission')) {
+          toast({
+            title: "Submission Issue",
+            description: error.message?.includes('Duplicate') 
+              ? "You've already submitted this information recently. Please wait before submitting again."
+              : "Your submission couldn't be processed. Please wait a moment and try again.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Submission Failed",
+            description: "There was an error submitting your information. Please try again.",
+            variant: "destructive",
+          });
+        }
         return;
       }
 
@@ -213,6 +245,25 @@ const LeadIntakeModal = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Hidden honeypot field for spam detection */}
+          <input
+            type="text"
+            name="website"
+            value={honeypotField}
+            onChange={(e) => setHoneypotField(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              top: '-9999px',
+              width: '0px',
+              height: '0px',
+              opacity: 0,
+              overflow: 'hidden'
+            }}
+          />
+          
           {/* Contact Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center gap-2">
