@@ -37,6 +37,7 @@ interface CourseModule {
   created_at: string;
   updated_at: string;
   prerequisites?: string[];
+  lessons?: { title: string; order_index: number }[];
 }
 
 const Courses = () => {
@@ -72,12 +73,34 @@ const Courses = () => {
       }
 
       console.log(`Found ${data?.length || 0} course modules`);
-      setModules(data || []);
+      
+      // Fetch lesson data for each module
+      let modulesWithLessons = data || [];
+      if (data) {
+        modulesWithLessons = await Promise.all(
+          data.map(async (module) => {
+            const { data: videos } = await supabase
+              .from('course_videos')
+              .select('title, order_index')
+              .eq('module_id', module.module_id)
+              .eq('is_active', true)
+              .order('order_index', { ascending: true })
+              .limit(3); // Show first 3 lessons
+            
+            return {
+              ...module,
+              lessons: videos || []
+            };
+          })
+        );
+      }
+      
+      setModules(modulesWithLessons);
       
       // Check enrollment status for each module if user is logged in
-      if (user && data) {
+      if (user && modulesWithLessons) {
         const enrollmentChecks = await Promise.all(
-          data.map(async (module) => {
+          modulesWithLessons.map(async (module) => {
             const { data: enrollment } = await supabase
               .from('course_enrollments')
               .select('id')
@@ -362,15 +385,31 @@ const Courses = () => {
                         </div>
                       </div>
                       
-                      {/* What You'll Learn */}
-                      <div className="mb-4">
-                        <h4 className="text-sm font-semibold mb-2">What you'll learn:</h4>
-                        <ul className="text-xs text-muted-foreground space-y-1">
-                          <li>• Financial statement analysis techniques</li>
-                          <li>• Risk assessment methodologies</li>
-                          <li>• Industry best practices</li>
-                        </ul>
-                      </div>
+                       {/* Course Lessons */}
+                       <div className="mb-4">
+                         <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
+                         {module.lessons && module.lessons.length > 0 ? (
+                           <ul className="text-xs text-black space-y-1">
+                             {module.lessons.map((lesson, lessonIndex) => (
+                               <li key={lessonIndex} className="flex items-center gap-2">
+                                 <span className="text-primary">•</span>
+                                 <span>{lesson.title}</span>
+                               </li>
+                             ))}
+                             {module.lessons_count > 3 && (
+                               <li className="text-muted-foreground italic">
+                                 + {module.lessons_count - 3} more lessons...
+                               </li>
+                             )}
+                           </ul>
+                         ) : (
+                           <ul className="text-xs text-black space-y-1">
+                             <li>• Financial statement analysis techniques</li>
+                             <li>• Risk assessment methodologies</li>
+                             <li>• Industry best practices</li>
+                           </ul>
+                         )}
+                       </div>
                       
                       {enrollmentStatus[module.module_id] ? (
                         <Link to={`/module/${module.module_id}`}>
