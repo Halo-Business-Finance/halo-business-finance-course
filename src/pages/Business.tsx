@@ -268,7 +268,7 @@ const Business = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 md:mb-16">
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-6">Trusted by Leading Organizations</h2>
-            <p className="text-white/80 max-w-2xl mx-auto text-sm md:text-base lg:text-lg">
+            <p className="text-white max-w-2xl mx-auto text-sm md:text-base lg:text-lg">
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
@@ -281,7 +281,7 @@ const Business = () => {
                     <Icon className="h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 text-halo-orange" />
                   </div>
                   <div className="text-lg md:text-2xl lg:text-3xl font-bold mb-1">{stat.value}</div>
-                  <div className="text-white/80 text-xs md:text-sm lg:text-base leading-tight">{stat.label}</div>
+                  <div className="text-white text-xs md:text-sm lg:text-base leading-tight">{stat.label}</div>
                 </div>
               );
             })}
