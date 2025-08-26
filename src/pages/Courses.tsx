@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
@@ -418,7 +418,7 @@ const Courses = () => {
                             </div>
                           </div>
                           
-                          {/* Course Lessons */}
+                          {/* Course Lessons - Only for authenticated users */}
                           <div className="mb-4">
                             <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
                               <BookOpen className="h-4 w-4" />
@@ -504,10 +504,35 @@ const Courses = () => {
                               </div>
                             </div>
                           </div>
+
+                          {/* Course preview - no detailed content */}
+                          <div className="mb-4 p-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Lock className="h-4 w-4 text-primary" />
+                              <span className="text-sm font-semibold text-primary">Premium Course Content</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground mb-3">
+                              This course includes expert-led videos, comprehensive articles, and interactive assessments.
+                            </p>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                HD Videos
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                Articles
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                Quizzes
+                              </span>
+                            </div>
+                          </div>
                           
                           <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
                             <p className="text-sm text-center text-black">
-                              Sign up to unlock full course details, enrollment, and start learning
+                              Sign up to unlock full course details and start learning
                             </p>
                           </div>
                         
