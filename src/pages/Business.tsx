@@ -293,7 +293,7 @@ const Business = () => {
       <div className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Enterprise Pricing</h2>
+            <h2 className="text-3xl font-bold mb-4 text-black">Enterprise Pricing</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Flexible pricing options designed to scale with your organization. All plans include our core curriculum and enterprise features.
             </p>
