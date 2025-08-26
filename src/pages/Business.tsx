@@ -150,32 +150,6 @@ const Business = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="bg-halo-navy py-4 md:py-6">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-6 md:mb-8">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
-            <p className="text-white/80 max-w-xl mx-auto text-xs">
-              Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
-            </p>
-          </div>
-          <div className="flex justify-center gap-8 md:gap-12">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={index} className="text-center text-white">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
-                    <Icon className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
-                  </div>
-                  <div className="text-lg md:text-2xl font-bold mb-1">{stat.value}</div>
-                  <div className="text-white/80 text-xs leading-tight">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
@@ -283,6 +257,32 @@ const Business = () => {
                 <span>Automated workflows</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="bg-halo-navy py-4 md:py-6">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6 md:mb-8">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
+            <p className="text-white/80 max-w-xl mx-auto text-xs">
+              Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
+            </p>
+          </div>
+          <div className="flex justify-center gap-8 md:gap-12">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div key={index} className="text-center text-white">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                    <Icon className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+                  </div>
+                  <div className="text-lg md:text-2xl font-bold mb-1">{stat.value}</div>
+                  <div className="text-white/80 text-xs leading-tight">{stat.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
