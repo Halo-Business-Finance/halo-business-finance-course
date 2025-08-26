@@ -172,7 +172,7 @@ const About = () => {
             <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon className="h-6 w-6 text-halo-orange" />
+                  <Icon className="h-6 w-6 text-halo-navy" />
                 </div>
                 <div className="flex-1">
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
@@ -248,7 +248,7 @@ const About = () => {
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-halo-orange" />
+                    <Icon className="h-6 w-6 text-halo-navy" />
                   </div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
                   <CardDescription className="text-black">{feature.description}</CardDescription>
@@ -301,7 +301,7 @@ const About = () => {
               <Card key={index} className="hover:shadow-lg transition-shadow border-2 border-transparent hover:border-halo-orange/20">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-halo-orange" />
+                    <Icon className="h-6 w-6 text-halo-navy" />
                   </div>
                   <CardTitle className="text-xl">{security.title}</CardTitle>
                   <CardDescription className="text-black">{security.description}</CardDescription>
@@ -354,7 +354,7 @@ const About = () => {
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="h-6 w-6 text-halo-orange" />
+                    <Icon className="h-6 w-6 text-halo-navy" />
                   </div>
                   <CardTitle className="text-xl">{advantage.title}</CardTitle>
                   <CardDescription className="text-black">{advantage.description}</CardDescription>
@@ -377,7 +377,7 @@ const About = () => {
           <Card className="bg-gradient-to-br from-halo-orange/10 to-halo-navy/10">
             <CardContent className="p-8">
               <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <Globe className="h-5 w-5 text-halo-orange" />
+                <Globe className="h-5 w-5 text-halo-navy" />
                 Global Accessibility
               </h3>
               <p className="text-black leading-relaxed">
@@ -390,7 +390,7 @@ const About = () => {
           <Card className="bg-gradient-to-br from-halo-navy/10 to-halo-orange/10">
             <CardContent className="p-8">
               <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <Database className="h-5 w-5 text-halo-orange" />
+                <Database className="h-5 w-5 text-halo-navy" />
                 Continuous Innovation
               </h3>
               <p className="text-black leading-relaxed">
