@@ -444,9 +444,12 @@ const Courses = () => {
                       </div>
                     </div>
                     <CardHeader>
-                      <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
-                        {module.title}
-                      </CardTitle>
+                      <div className="relative inline-block">
+                        <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
+                          {module.title}
+                        </CardTitle>
+                        <div className="h-0.5 bg-halo-orange mt-2 w-full"></div>
+                      </div>
                       <CardDescription className="text-black line-clamp-2">
                         {module.description}
                       </CardDescription>
