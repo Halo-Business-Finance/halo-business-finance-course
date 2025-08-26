@@ -337,22 +337,22 @@ const Courses = () => {
                 <CardContent>
                   {user ? (
                     <>
-                      <div className="space-y-3 mb-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            {module.duration || 'Self-paced'}
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <BookOpen className="h-4 w-4" />
-                            {module.lessons_count || 0} lessons
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          <span>2,340 students enrolled</span>
-                        </div>
+                       <div className="space-y-3 mb-4">
+                         <div className="flex items-center justify-between text-sm">
+                           <div className="flex items-center gap-1 text-black">
+                             <Clock className="h-4 w-4" />
+                             {module.duration || 'Self-paced'}
+                           </div>
+                           <div className="flex items-center gap-1 text-black">
+                             <BookOpen className="h-4 w-4" />
+                             {module.lessons_count || 0} lessons
+                           </div>
+                         </div>
+                         
+                         <div className="flex items-center gap-1 text-sm text-black">
+                           <Users className="h-4 w-4" />
+                           <span>2,340 students enrolled</span>
+                         </div>
                         
                         <div className="flex items-center gap-1">
                           {[...Array(5)].map((_, i) => (
@@ -392,24 +392,24 @@ const Courses = () => {
                   ) : (
                     <>
                       {/* Limited preview for non-authenticated users */}
-                      <div className="space-y-3 mb-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            {module.duration || 'Self-paced'}
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <BookOpen className="h-4 w-4" />
-                            {module.lessons_count || 0} lessons
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
-                        <p className="text-sm text-center text-muted-foreground">
-                          Sign up to unlock full course details, enrollment, and start learning
-                        </p>
-                      </div>
+                       <div className="space-y-3 mb-4">
+                         <div className="flex items-center justify-between text-sm">
+                           <div className="flex items-center gap-1 text-black">
+                             <Clock className="h-4 w-4" />
+                             {module.duration || 'Self-paced'}
+                           </div>
+                           <div className="flex items-center gap-1 text-black">
+                             <BookOpen className="h-4 w-4" />
+                             {module.lessons_count || 0} lessons
+                           </div>
+                         </div>
+                       </div>
+                       
+                       <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
+                         <p className="text-sm text-center text-black">
+                           Sign up to unlock full course details, enrollment, and start learning
+                         </p>
+                       </div>
                       
                       <Link to="/signup">
                         <Button className="w-full bg-primary text-white hover:bg-primary/90">
