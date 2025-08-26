@@ -205,6 +205,67 @@ const Courses = () => {
     }
   };
 
+  // Generate course-specific lesson content
+  const getCourseSpecificLessons = (moduleId: string, title: string) => {
+    const lessonTemplates = {
+      'sba-7a-loans': [
+        { title: 'SBA 7(a) Program Overview', description: 'Understanding the SBA\'s flagship loan program and eligibility requirements' },
+        { title: 'Loan Amounts & Terms', description: 'Maximum loan amounts up to $5 million and repayment terms' },
+        { title: 'Eligible Uses & Restrictions', description: 'What businesses can and cannot use SBA 7(a) funds for' },
+        { title: 'Application Process & Documentation', description: 'Step-by-step guide through the SBA 7(a) application process' }
+      ],
+      'sba-504-loans': [
+        { title: 'SBA 504 Program Structure', description: 'Understanding the three-party loan structure and 10% down payment' },
+        { title: 'Real Estate & Equipment Financing', description: 'Fixed-rate financing for owner-occupied commercial real estate' },
+        { title: 'Certified Development Companies', description: 'Working with CDCs to secure 504 loan approval' },
+        { title: 'Job Creation Requirements', description: 'Meeting employment and community development standards' }
+      ],
+      'capital-markets': [
+        { title: 'Capital Markets Fundamentals', description: 'Introduction to debt and equity capital market structures' },
+        { title: 'Commercial Finance Products', description: 'Overview of institutional lending and investment banking' },
+        { title: 'Market Analysis & Trends', description: 'Current market conditions and financing opportunities' },
+        { title: 'Deal Structuring Basics', description: 'Key principles in structuring commercial finance transactions' }
+      ],
+      'usda-bi-loans': [
+        { title: 'USDA B&I Program Overview', description: 'Rural business development financing backed by USDA guarantee' },
+        { title: 'Rural Area Eligibility', description: 'Determining if your business location qualifies for USDA funding' },
+        { title: 'Loan Amounts & Guarantees', description: 'Up to $25 million with government backing for rural businesses' },
+        { title: 'Application & Approval Process', description: 'Navigating USDA requirements and documentation' }
+      ],
+      'working-capital': [
+        { title: 'Working Capital Essentials', description: 'Understanding cash flow gaps and operational funding needs' },
+        { title: 'Revolving Credit Lines', description: 'Flexible access to capital for day-to-day business operations' },
+        { title: 'Seasonal Business Financing', description: 'Managing cash flow for businesses with seasonal variations' },
+        { title: 'Invoice Factoring & AR Finance', description: 'Converting receivables into immediate working capital' }
+      ],
+      'business-line-of-credit': [
+        { title: 'Line of Credit Fundamentals', description: 'How revolving credit lines work and when to use them' },
+        { title: 'Draw Periods & Repayment', description: 'Understanding interest-only payments and repayment terms' },
+        { title: 'Collateral & Personal Guarantees', description: 'Security requirements and personal liability considerations' },
+        { title: 'Credit Line Management', description: 'Best practices for utilizing and maintaining your credit line' }
+      ],
+      'term-loans': [
+        { title: 'Term Loan Structures', description: 'Fixed-rate financing for major investments and growth initiatives' },
+        { title: 'Loan Terms & Amortization', description: 'Understanding repayment schedules and interest calculations' },
+        { title: 'Collateral Requirements', description: 'Asset-based lending and security for term loan approval' },
+        { title: 'Use of Funds & Restrictions', description: 'Approved uses for term loan proceeds and compliance' }
+      ],
+      'lending-process': [
+        { title: 'Credit Analysis Framework', description: 'Comprehensive evaluation of borrower creditworthiness' },
+        { title: 'Underwriting Standards', description: 'Risk assessment methodologies and approval criteria' },
+        { title: 'Due Diligence Process', description: 'Financial statement analysis and business verification' },
+        { title: 'Loan Documentation & Closing', description: 'Legal requirements and loan agreement finalization' }
+      ]
+    };
+
+    return lessonTemplates[moduleId as keyof typeof lessonTemplates] || [
+      { title: 'Course Introduction', description: 'Overview of fundamental concepts and objectives' },
+      { title: 'Core Principles', description: 'Essential knowledge and industry best practices' },
+      { title: 'Practical Application', description: 'Real-world scenarios and case studies' },
+      { title: 'Assessment & Certification', description: 'Test your knowledge and earn certification' }
+    ];
+  };
+
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'beginner': return 'bg-green-100 text-green-800';
@@ -526,30 +587,14 @@ const Courses = () => {
                               </ul>
                             ) : (
                               <ul className="text-xs text-black space-y-2">
-                                <li>
-                                  <div className="font-medium">Course Introduction</div>
-                                  <div className="text-muted-foreground text-xs">
-                                    Overview of fundamental concepts and objectives
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="font-medium">Core Principles</div>
-                                  <div className="text-muted-foreground text-xs">
-                                    Essential knowledge and industry best practices
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="font-medium">Practical Application</div>
-                                  <div className="text-muted-foreground text-xs">
-                                    Real-world scenarios and case studies
-                                  </div>
-                                </li>
-                                <li>
-                                  <div className="font-medium">Assessment & Certification</div>
-                                  <div className="text-muted-foreground text-xs">
-                                    Test your knowledge and earn certification
-                                  </div>
-                                </li>
+                                {getCourseSpecificLessons(module.module_id, module.title).map((lesson, index) => (
+                                  <li key={index}>
+                                    <div className="font-medium">{lesson.title}</div>
+                                    <div className="text-muted-foreground text-xs">
+                                      {lesson.description}
+                                    </div>
+                                  </li>
+                                ))}
                               </ul>
                             )}
                           </div>
