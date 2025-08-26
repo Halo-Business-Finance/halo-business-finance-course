@@ -542,7 +542,7 @@ const Courses = () => {
                             </Link>
                           ) : (
                             <Button 
-                              className="w-full" 
+                              className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white"
                               onClick={() => handleEnroll(module.module_id)}
                             >
                               <BookOpen className="h-4 w-4 mr-2" />
@@ -606,7 +606,7 @@ const Courses = () => {
                           </div>
                         
                           <Link to="/signup">
-                            <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                            <Button className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white">
                               <BookOpen className="h-4 w-4 mr-2" />
                               Sign Up to Access Course
                             </Button>
