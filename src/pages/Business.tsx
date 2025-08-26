@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap } from "lucide-react";
+import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap, GraduationCap } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
@@ -68,7 +68,8 @@ const Business = () => {
 
   const stats = [
     { label: "Enterprise Clients", value: "500+", icon: Building2 },
-    { label: "User Satisfaction", value: "98%", icon: Star }
+    { label: "User Satisfaction", value: "98%", icon: Star },
+    { label: "Adaptive Learning for All Skill Levels", value: "100%", icon: GraduationCap }
   ];
 
   const testimonials = [
