@@ -151,7 +151,7 @@ const Business = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-halo-navy py-6 md:py-8">
+      <div className="bg-halo-navy py-4 md:py-6">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 md:mb-8">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
