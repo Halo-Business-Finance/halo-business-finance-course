@@ -3060,7 +3060,7 @@ export type Database = {
       public_course_overview: {
         Row: {
           description_preview: string | null
-          duration: string | null
+          duration_display: string | null
           is_active: boolean | null
           module_id: string | null
           public_preview: boolean | null
@@ -3069,7 +3069,7 @@ export type Database = {
         }
         Insert: {
           description_preview?: never
-          duration?: never
+          duration_display?: never
           is_active?: boolean | null
           module_id?: string | null
           public_preview?: boolean | null
@@ -3078,7 +3078,7 @@ export type Database = {
         }
         Update: {
           description_preview?: never
-          duration?: never
+          duration_display?: never
           is_active?: boolean | null
           module_id?: string | null
           public_preview?: boolean | null
