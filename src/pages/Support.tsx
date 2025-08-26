@@ -262,7 +262,7 @@ const Support = () => {
                     </div>
                     <Button 
                       onClick={option.onClick}
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                      className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white"
                     >
                       {option.action}
                     </Button>
@@ -312,7 +312,7 @@ const Support = () => {
                     rows={4} 
                     className="border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg resize-none"
                   />
-                  <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
+                  <Button className="w-full h-12 bg-halo-navy hover:bg-halo-navy/90 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all">
                     Send Message
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
