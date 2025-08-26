@@ -195,7 +195,7 @@ const Business = () => {
           <div>
             <Badge className="mb-4">Advanced Analytics</Badge>
             <h3 className="text-2xl font-bold mb-4">Data-Driven Learning Insights</h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-black mb-6">
               Track progress, measure ROI, and optimize your training programs with comprehensive analytics and reporting tools.
             </p>
             <div className="space-y-4">
