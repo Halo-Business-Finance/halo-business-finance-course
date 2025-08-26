@@ -318,16 +318,13 @@ const Courses = () => {
             {filteredModules.map((module, index) => (
               <Card key={module.id} className="hover:shadow-lg transition-all group">
                  <div className="relative">
-                   <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
-                     <img 
-                       src={getCourseImage(index)} 
-                       alt={`Professional instructor for ${module.title}`}
-                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                     />
-                   </div>
-                   <Badge className={`absolute top-3 right-3 ${getLevelColor(module.skill_level)}`}>
-                     {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                   </Badge>
+                    <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                      <img 
+                        src={getCourseImage(index)} 
+                        alt={`Professional instructor for ${module.title}`}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
                  </div>
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
