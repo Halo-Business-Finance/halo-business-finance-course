@@ -22,7 +22,7 @@ export const HorizontalNav = () => {
               `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
           >
-            Courses
+            Course Catalog
           </NavLink>
           <NavLink 
             to="/pricing" 

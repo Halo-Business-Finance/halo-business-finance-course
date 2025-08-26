@@ -9,7 +9,7 @@ export const MobileNav = () => {
 
   const navItems = [
     { title: "About Us", href: "/about" },
-    { title: "Courses", href: "/courses" },
+    { title: "Course Catalog", href: "/courses" },
     { title: "Pricing", href: "/pricing" },
     { title: "Enterprise", href: "/business" },
     { title: "Blog", href: "/blog" },
