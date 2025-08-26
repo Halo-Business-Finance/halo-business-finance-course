@@ -368,7 +368,7 @@ const Business = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">Seamless Implementation Process</h2>
+              <h2 className="text-3xl font-bold mb-6 text-black">Seamless Implementation Process</h2>
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">1</div>
