@@ -264,24 +264,24 @@ const Business = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-halo-navy py-4 md:py-6">
+      <div className="bg-halo-navy py-6 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-6 md:mb-8">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
-            <p className="text-white/80 max-w-xl mx-auto text-xs">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-6">Trusted by Leading Organizations</h2>
+            <p className="text-white/80 max-w-2xl mx-auto text-sm md:text-base lg:text-lg">
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
-          <div className="flex justify-center gap-8 md:gap-12">
+          <div className="flex justify-center gap-12 md:gap-16 lg:gap-24">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="text-center text-white">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
-                    <Icon className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
+                  <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                    <Icon className="h-5 w-5 md:h-7 md:w-7 lg:h-8 lg:w-8 text-halo-orange" />
                   </div>
-                  <div className="text-lg md:text-2xl font-bold mb-1">{stat.value}</div>
-                  <div className="text-white/80 text-xs leading-tight">{stat.label}</div>
+                  <div className="text-lg md:text-2xl lg:text-3xl font-bold mb-1">{stat.value}</div>
+                  <div className="text-white/80 text-xs md:text-sm lg:text-base leading-tight">{stat.label}</div>
                 </div>
               );
             })}
