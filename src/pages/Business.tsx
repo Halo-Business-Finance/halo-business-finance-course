@@ -159,7 +159,7 @@ const Business = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-halo-navy px-6 py-3"
+                className="border-white bg-transparent text-white hover:bg-white hover:text-halo-navy px-6 py-3"
                 onClick={() => setIsDemoModalOpen(true)}
               >
                 Schedule Demo
