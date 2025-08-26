@@ -25,7 +25,7 @@ export const FinPilotBrandFooter = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-white">FinPilot</h3>
               </div>
-              <p className="text-slate-300 text-base leading-relaxed mb-6 max-w-md">
+              <p className="text-white text-base leading-relaxed mb-6 max-w-md">
                 Navigate your financial future with expert guidance through comprehensive 
                 professional development and certification programs trusted by industry leaders.
               </p>
@@ -37,21 +37,21 @@ export const FinPilotBrandFooter = () => {
                     <Users className="h-6 w-6 text-primary" />
                   </div>
                   <div className="text-lg font-bold text-white">2,500+</div>
-                  <div className="text-xs text-slate-400">Students</div>
+                  <div className="text-xs text-white">Students</div>
                 </div>
                 <div className="group">
                   <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-xl mb-2 mx-auto group-hover:bg-accent/20 transition-colors">
                     <Award className="h-6 w-6 text-accent" />
                   </div>
                   <div className="text-lg font-bold text-white">98%</div>
-                  <div className="text-xs text-slate-400">Success Rate</div>
+                  <div className="text-xs text-white">Success Rate</div>
                 </div>
                 <div className="group">
                   <div className="flex items-center justify-center w-12 h-12 bg-emerald-500/10 rounded-xl mb-2 mx-auto group-hover:bg-emerald-500/20 transition-colors">
                     <Shield className="h-6 w-6 text-emerald-400" />
                   </div>
                   <div className="text-lg font-bold text-white">5★</div>
-                  <div className="text-xs text-slate-400">Rating</div>
+                  <div className="text-xs text-white">Rating</div>
                 </div>
               </div>
             </div>
@@ -62,42 +62,42 @@ export const FinPilotBrandFooter = () => {
               <div className="space-y-4">
                 <a 
                   href="https://www.finpilot.com" 
-                  className="group flex items-center gap-3 text-slate-300 hover:text-white transition-colors"
+                  className="group flex items-center gap-3 text-white hover:text-white transition-colors"
                 >
                   <div className="flex items-center justify-center w-10 h-10 bg-slate-700/50 rounded-lg group-hover:bg-primary/20 transition-colors">
                     <Globe className="h-4 w-4" />
                   </div>
                   <div>
                     <div className="text-sm font-medium">Website</div>
-                    <div className="text-xs text-slate-400">www.finpilot.com</div>
+                    <div className="text-xs text-white">www.finpilot.com</div>
                   </div>
                   <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
                 
                 <a 
                   href="mailto:training@finpilot.com" 
-                  className="group flex items-center gap-3 text-slate-300 hover:text-white transition-colors"
+                  className="group flex items-center gap-3 text-white hover:text-white transition-colors"
                 >
                   <div className="flex items-center justify-center w-10 h-10 bg-slate-700/50 rounded-lg group-hover:bg-accent/20 transition-colors">
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
                     <div className="text-sm font-medium">Email</div>
-                    <div className="text-xs text-slate-400">training@finpilot.com</div>
+                    <div className="text-xs text-white">training@finpilot.com</div>
                   </div>
                   <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
                 
                 <a 
                   href="tel:1-800-FINPILOT" 
-                  className="group flex items-center gap-3 text-slate-300 hover:text-white transition-colors"
+                  className="group flex items-center gap-3 text-white hover:text-white transition-colors"
                 >
                   <div className="flex items-center justify-center w-10 h-10 bg-slate-700/50 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
                     <Phone className="h-4 w-4" />
                   </div>
                   <div>
                     <div className="text-sm font-medium">Phone</div>
-                    <div className="text-xs text-slate-400">1-800-FINPILOT</div>
+                    <div className="text-xs text-white">1-800-FINPILOT</div>
                   </div>
                   <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
@@ -117,7 +117,7 @@ export const FinPilotBrandFooter = () => {
                   <a 
                     key={index}
                     href="#" 
-                    className="group flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
+                    className="group flex items-center gap-2 text-white hover:text-white transition-colors"
                   >
                     <div className="w-1.5 h-1.5 bg-primary rounded-full group-hover:bg-accent transition-colors"></div>
                     <span className="text-sm">{program}</span>
@@ -131,7 +131,7 @@ export const FinPilotBrandFooter = () => {
           {/* Bottom section */}
           <div className="pt-8 border-t border-slate-700/50">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-white">
                 © 2025 FinPilot. All rights reserved. Training Platform powered by advanced learning technologies.
               </p>
               
@@ -144,7 +144,7 @@ export const FinPilotBrandFooter = () => {
                   <a 
                     key={index}
                     href={link.href} 
-                    className="text-sm text-slate-400 hover:text-white transition-colors relative group"
+                    className="text-sm text-white hover:text-white transition-colors relative group"
                   >
                     {link.label}
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
