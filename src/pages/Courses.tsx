@@ -258,13 +258,13 @@ const Courses = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6">
+              <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6 text-white">
                 Master Commercial Finance
               </h1>
-              <p className="text-xl md:text-2xl mb-4 text-white/90">
+              <p className="text-xl md:text-2xl mb-4 text-white">
                 Expert-Led Courses for Finance Professionals
               </p>
-              <p className="text-lg mb-8 text-white/80 max-w-2xl mx-auto">
+              <p className="text-lg mb-8 text-white max-w-2xl mx-auto">
                 Advance your career with industry-recognized certifications in commercial lending, 
                 credit analysis, and risk management. Join 10,000+ professionals who trust FinPilot.
               </p>
