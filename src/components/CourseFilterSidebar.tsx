@@ -274,7 +274,7 @@ export function CourseFilterSidebar(props: CourseFilterSidebarProps) {
               Filter & Search Courses
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full sm:w-80 p-6">
+          <SheetContent side="left" className="w-full sm:w-80 p-6 overflow-y-auto max-h-screen">
             <SheetHeader>
               <SheetTitle>Course Filters</SheetTitle>
             </SheetHeader>
@@ -286,7 +286,7 @@ export function CourseFilterSidebar(props: CourseFilterSidebarProps) {
       </div>
 
       {/* Desktop Sidebar */}
-      <Card className="hidden lg:block sticky top-4 h-fit w-full p-6 bg-background border shadow-lg">
+      <Card className="hidden lg:block sticky top-4 h-fit max-h-[calc(100vh-2rem)] overflow-y-auto w-full p-6 bg-background border shadow-lg">
         <FilterContent {...props} />
       </Card>
     </>
