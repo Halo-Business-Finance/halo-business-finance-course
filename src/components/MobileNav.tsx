@@ -32,13 +32,13 @@ export const MobileNav = () => {
         <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
           {/* Sign In/Signup buttons - visible on tablet */}
           <div className="hidden md:flex items-center gap-1">
-            <Button variant="outline" size="sm" asChild className="text-xs bg-orange-600 hover:bg-orange-700 text-white border-orange-600">
+            <Button variant="outline" size="sm" asChild className="text-xs bg-orange-600 hover:bg-orange-700 text-white border-orange-600 px-2 py-1">
               <NavLink to="/auth" className="flex items-center gap-1">
                 <Lock className="h-3 w-3" />
                 Sign In
               </NavLink>
             </Button>
-            <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+            <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1">
               <NavLink to="/signup" className="flex items-center gap-1">
                 Start Free Trial
                 <ArrowRight className="h-3 w-3" />
