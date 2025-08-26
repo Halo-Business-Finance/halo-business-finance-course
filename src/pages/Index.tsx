@@ -208,7 +208,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
-              <Button size="lg" className="bg-halo-orange text-white hover:bg-halo-orange/90 px-8 py-3">
+              <Button size="lg" className="bg-halo-navy text-white hover:bg-halo-navy/90 px-8 py-3">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -271,7 +271,7 @@ const Index = () => {
                     ))}
                   </div>
                   <Button 
-                    className="w-full bg-gradient-primary text-white group-hover:shadow-md transition-all text-sm md:text-base"
+                    className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white group-hover:shadow-md transition-all text-sm md:text-base"
                     onClick={() => {
                       setSelectedLearningPath(path);
                       setIsCurriculumModalOpen(true);
@@ -285,7 +285,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-primary text-white shadow-elevated hover:shadow-hero px-8 py-3">
+               <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -366,7 +366,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-primary text-white shadow-elevated hover:shadow-hero px-8 py-3">
+               <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -412,7 +412,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
-              <Button size="lg" className="bg-gradient-primary text-white shadow-elevated hover:shadow-hero px-8 py-3">
+              <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -475,7 +475,7 @@ const Index = () => {
                   <span>No Risk, 30-Day Money Back Guarantee</span>
                 </div>
                 <Link to="/signup" className="mt-2">
-                  <Button className="text-sm px-4 py-2 bg-halo-orange text-white hover:bg-halo-orange/90 shadow-hero group">
+                  <Button className="text-sm px-4 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white shadow-hero group">
                     <ArrowRight className="mr-2 h-3 w-3 text-white group-hover:scale-110 transition-transform" />
                     Start Free Trial Now
                   </Button>
