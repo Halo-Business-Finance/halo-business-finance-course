@@ -45,6 +45,7 @@ const Courses = () => {
   const [loading, setLoading] = useState(true);
   const [enrollmentStatus, setEnrollmentStatus] = useState<Record<string, boolean>>({});
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
+  const [titleFilter, setTitleFilter] = useState<string>('');
   const { user } = useAuth();
 
   useEffect(() => {
@@ -206,10 +207,11 @@ const Courses = () => {
     return images[index % images.length];
   };
 
-  // Filter modules based on selected level
+  // Filter modules based on selected level and title
   const filteredModules = modules.filter(module => {
-    if (selectedLevel === 'all') return true;
-    return module.skill_level === selectedLevel;
+    const matchesLevel = selectedLevel === 'all' || module.skill_level === selectedLevel;
+    const matchesTitle = titleFilter === '' || module.title.toLowerCase().includes(titleFilter.toLowerCase());
+    return matchesLevel && matchesTitle;
   });
 
   // Calculate counts for each skill level
@@ -316,6 +318,8 @@ const Courses = () => {
               selectedLevel={selectedLevel}
               onLevelChange={setSelectedLevel}
               counts={skillLevelCounts}
+              titleFilter={titleFilter}
+              onTitleFilterChange={setTitleFilter}
             />
           </div>
         )}
