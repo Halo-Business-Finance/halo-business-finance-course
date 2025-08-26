@@ -68,9 +68,7 @@ const Business = () => {
 
   const stats = [
     { label: "Enterprise Clients", value: "500+", icon: Building2 },
-    { label: "Average ROI", value: "340%", icon: TrendingUp },
-    { label: "User Satisfaction", value: "98%", icon: Star },
-    { label: "Countries Served", value: "45", icon: Globe }
+    { label: "User Satisfaction", value: "98%", icon: Star }
   ];
 
   const testimonials = [
