@@ -963,6 +963,7 @@ export type Database = {
       }
       course_modules: {
         Row: {
+          content_classification: string | null
           created_at: string
           description: string | null
           duration: string | null
@@ -973,11 +974,13 @@ export type Database = {
           order_index: number
           prerequisites: string[] | null
           public_preview: boolean | null
+          security_metadata: Json | null
           skill_level: Database["public"]["Enums"]["skill_level"]
           title: string
           updated_at: string
         }
         Insert: {
+          content_classification?: string | null
           created_at?: string
           description?: string | null
           duration?: string | null
@@ -988,11 +991,13 @@ export type Database = {
           order_index: number
           prerequisites?: string[] | null
           public_preview?: boolean | null
+          security_metadata?: Json | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           title: string
           updated_at?: string
         }
         Update: {
+          content_classification?: string | null
           created_at?: string
           description?: string | null
           duration?: string | null
@@ -1003,6 +1008,7 @@ export type Database = {
           order_index?: number
           prerequisites?: string[] | null
           public_preview?: boolean | null
+          security_metadata?: Json | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           title?: string
           updated_at?: string
@@ -3755,6 +3761,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_course_access_attempt: {
+        Args: { access_type: string; module_id: string; success: boolean }
+        Returns: undefined
+      }
       log_critical_security_event: {
         Args: {
           event_details?: Json
@@ -3958,6 +3968,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: Json
+      }
+      validate_course_content_access: {
+        Args: { module_id: string; requested_fields?: string[] }
+        Returns: boolean
       }
       validate_email_domain_for_role: {
         Args: { email_address: string; user_role?: string }
