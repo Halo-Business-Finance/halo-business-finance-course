@@ -55,7 +55,7 @@ const DataSecurity = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <Card className="text-center">
                 <CardHeader>
-                  <Shield className="h-12 w-12 text-navy-600 mx-auto mb-4" />
+                  <Shield className="h-12 w-12 text-navy-700 mx-auto mb-4" />
                   <CardTitle className="text-lg">Data Encryption</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -67,7 +67,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Lock className="h-12 w-12 text-navy-600 mx-auto mb-4" />
+                  <Lock className="h-12 w-12 text-navy-700 mx-auto mb-4" />
                   <CardTitle className="text-lg">Access Control</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -79,7 +79,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <Eye className="h-12 w-12 text-navy-600 mx-auto mb-4" />
+                  <Eye className="h-12 w-12 text-navy-700 mx-auto mb-4" />
                   <CardTitle className="text-lg">Monitoring</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -91,7 +91,7 @@ const DataSecurity = () => {
 
               <Card className="text-center">
                 <CardHeader>
-                  <FileCheck className="h-12 w-12 text-navy-600 mx-auto mb-4" />
+                  <FileCheck className="h-12 w-12 text-navy-700 mx-auto mb-4" />
                   <CardTitle className="text-lg">Compliance</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -108,7 +108,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Database className="h-6 w-6 text-navy-600" />
+                  <Database className="h-6 w-6 text-navy-700" />
                   Data Protection & Privacy
                 </CardTitle>
               </CardHeader>
@@ -169,7 +169,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Users className="h-6 w-6 text-navy-600" />
+                  <Users className="h-6 w-6 text-navy-700" />
                   Your Data Rights
                 </CardTitle>
               </CardHeader>
@@ -183,7 +183,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("access-portability")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Request Data Copy
                     </Button>
@@ -196,7 +196,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("correction")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Request Correction
                     </Button>
@@ -209,7 +209,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("deletion")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Request Deletion
                     </Button>
@@ -222,7 +222,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("restriction")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Request Restriction
                     </Button>
@@ -235,7 +235,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("objection")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Object to Processing
                     </Button>
@@ -248,7 +248,7 @@ const DataSecurity = () => {
                     <Button 
                       onClick={() => handleRightRequest("withdraw-consent")}
                       size="sm"
-                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
+                      className="w-full bg-navy-700 hover:bg-navy-800 text-white"
                     >
                       Withdraw Consent
                     </Button>
@@ -263,26 +263,26 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <Globe className="h-6 w-6 text-navy-600" />
+                  <Globe className="h-6 w-6 text-navy-700" />
                   Compliance & Certifications
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center">
-                    <Badge className="mb-3 text-sm bg-navy-600 text-white">GDPR Compliant</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-700 text-white">GDPR Compliant</Badge>
                     <p className="text-sm text-gray-600">
                       Full compliance with European data protection regulations
                     </p>
                   </div>
                   <div className="text-center">
-                    <Badge className="mb-3 text-sm bg-navy-600 text-white">CCPA Compliant</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-700 text-white">CCPA Compliant</Badge>
                     <p className="text-sm text-gray-600">
                       California Consumer Privacy Act compliance for US users
                     </p>
                   </div>
                   <div className="text-center">
-                    <Badge className="mb-3 text-sm bg-navy-600 text-white">SOC 2 Type II</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-700 text-white">SOC 2 Type II</Badge>
                     <p className="text-sm text-gray-600">
                       Independent audit of security, availability, and confidentiality
                     </p>
@@ -297,7 +297,7 @@ const DataSecurity = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <AlertTriangle className="h-6 w-6 text-navy-600" />
+                  <AlertTriangle className="h-6 w-6 text-navy-700" />
                   Security Incident Response
                 </CardTitle>
               </CardHeader>
