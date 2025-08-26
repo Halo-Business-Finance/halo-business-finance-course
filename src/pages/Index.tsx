@@ -146,11 +146,11 @@ const Index = () => {
                     <span className="sm:hidden">Top Industry Course</span>
                   </Badge>
                   
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
-                    <span className="block font-medium text-black">Your Pathway to Lending Excellence.</span>
-                    <span className="hidden md:block mt-1 md:mt-2">Developed by industry experts and delivered through Stanford-level curriculum.</span>
-                    <span className="block mt-1 md:mt-2">Transform your career with our comprehensive business finance and commercial lending program.</span>
-                  </p>
+                  <div className="leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
+                    <span className="block font-medium text-black text-xs sm:text-sm md:text-base lg:text-lg">Your Pathway to Lending Excellence.</span>
+                    <span className="hidden md:block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Developed by industry experts and delivered through Stanford-level curriculum.</span>
+                    <span className="block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Transform your career with our comprehensive business finance and commercial lending program.</span>
+                  </div>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
