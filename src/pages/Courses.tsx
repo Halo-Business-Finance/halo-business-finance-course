@@ -37,7 +37,8 @@ interface CourseModule {
   created_at: string;
   updated_at: string;
   prerequisites?: string[];
-  lessons?: { title: string; order_index: number }[];
+  lessons?: { title: string; order_index: number; type: 'video' | 'article' | 'assessment' }[];
+  totalLessons?: number;
 }
 
 const Courses = () => {
@@ -80,21 +81,44 @@ const Courses = () => {
       if (data) {
         modulesWithLessons = await Promise.all(
           data.map(async (module) => {
-            console.log(`Fetching videos for module: ${module.module_id}`);
-            const { data: videos, error } = await supabase
+            console.log(`Fetching lessons for module: ${module.module_id}`);
+            
+            // Fetch videos
+            const { data: videos } = await supabase
               .from('course_videos')
               .select('title, order_index')
               .eq('module_id', module.module_id)
               .eq('is_active', true)
-              .order('order_index', { ascending: true })
-              .limit(3); // Show first 3 lessons
+              .order('order_index', { ascending: true });
             
-            console.log(`Videos for ${module.module_id}:`, videos);
-            if (error) console.error(`Error fetching videos for ${module.module_id}:`, error);
+            // Fetch articles
+            const { data: articles } = await supabase
+              .from('course_articles')
+              .select('title, order_index')
+              .eq('module_id', module.module_id)
+              .eq('is_published', true)
+              .order('order_index', { ascending: true });
+            
+            // Fetch assessments
+            const { data: assessments } = await supabase
+              .from('course_assessments')
+              .select('title, order_index')
+              .eq('module_id', module.module_id)
+              .order('order_index', { ascending: true });
+            
+            // Combine all lessons and sort by order_index
+            const allLessons = [
+              ...(videos || []).map(v => ({ ...v, type: 'video' })),
+              ...(articles || []).map(a => ({ ...a, type: 'article' })),
+              ...(assessments || []).map(a => ({ ...a, type: 'assessment' }))
+            ].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+            
+            console.log(`Lessons for ${module.module_id}:`, allLessons);
             
             return {
               ...module,
-              lessons: videos || []
+              lessons: allLessons,
+              totalLessons: allLessons.length
             };
           })
         );
@@ -377,7 +401,7 @@ const Courses = () => {
                               </div>
                               <div className="flex items-center gap-1 text-black">
                                 <BookOpen className="h-4 w-4" />
-                                {module.lessons_count || 0} lessons
+                                {module.totalLessons || module.lessons_count || 0} lessons
                               </div>
                             </div>
                             
@@ -396,34 +420,53 @@ const Courses = () => {
                           
                           {/* Course Lessons */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
+                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                              <BookOpen className="h-4 w-4" />
+                              Course Content ({module.totalLessons || 0} items):
+                            </h4>
                             {module.lessons && module.lessons.length > 0 ? (
-                              <ul className="text-xs text-black space-y-1">
-                                {module.lessons.map((lesson, lessonIndex) => (
+                              <ul className="text-xs text-black space-y-1 max-h-24 overflow-y-auto">
+                                {module.lessons.slice(0, 5).map((lesson, lessonIndex) => (
                                   <li key={lessonIndex} className="flex items-center gap-2">
-                                    <span className="text-primary">•</span>
-                                    <span>{lesson.title}</span>
+                                    <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${
+                                      lesson.type === 'video' ? 'bg-red-500' : 
+                                      lesson.type === 'article' ? 'bg-blue-500' : 
+                                      'bg-green-500'
+                                    }`} />
+                                    <span className="truncate">{lesson.title}</span>
+                                    <span className={`text-xs px-1.5 py-0.5 rounded-full text-white ${
+                                      lesson.type === 'video' ? 'bg-red-500' : 
+                                      lesson.type === 'article' ? 'bg-blue-500' : 
+                                      'bg-green-500'
+                                    }`}>
+                                      {lesson.type === 'video' ? '▶' : 
+                                       lesson.type === 'article' ? '📄' : 
+                                       '📝'}
+                                    </span>
                                   </li>
                                 ))}
-                                {module.lessons_count > 3 && (
-                                  <li className="text-muted-foreground italic">
-                                    + {module.lessons_count - 3} more lessons...
+                                {module.lessons.length > 5 && (
+                                  <li className="text-muted-foreground italic text-xs">
+                                    + {module.lessons.length - 5} more items...
                                   </li>
                                 )}
                               </ul>
                             ) : (
                               <ul className="text-xs text-black space-y-1">
                                 <li className="flex items-center gap-2">
-                                  <span className="text-primary">•</span>
-                                  <span>Commercial lending fundamentals</span>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                  <span>Course introduction video</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-red-500">▶</span>
                                 </li>
                                 <li className="flex items-center gap-2">
-                                  <span className="text-primary">•</span>
-                                  <span>Risk assessment techniques</span>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                  <span>Key concepts & principles</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-blue-500">📄</span>
                                 </li>
                                 <li className="flex items-center gap-2">
-                                  <span className="text-primary">•</span>
-                                  <span>Industry best practices</span>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                  <span>Knowledge assessment</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-green-500">📝</span>
                                 </li>
                               </ul>
                             )}
@@ -457,7 +500,7 @@ const Courses = () => {
                               </div>
                               <div className="flex items-center gap-1 text-black">
                                 <BookOpen className="h-4 w-4" />
-                                {module.lessons_count || 0} lessons
+                                {module.totalLessons || module.lessons_count || 0} lessons
                               </div>
                             </div>
                           </div>
