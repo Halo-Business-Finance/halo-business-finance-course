@@ -505,29 +505,61 @@ const Courses = () => {
                             </div>
                           </div>
 
-                          {/* Course preview - no detailed content */}
-                          <div className="mb-4 p-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Lock className="h-4 w-4 text-primary" />
-                              <span className="text-sm font-semibold text-primary">Premium Course Content</span>
-                            </div>
-                            <p className="text-xs text-muted-foreground mb-3">
-                              This course includes expert-led videos, comprehensive articles, and interactive assessments.
-                            </p>
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                HD Videos
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                Articles
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                                Quizzes
-                              </span>
-                            </div>
+                          {/* Course preview with actual lesson titles */}
+                          <div className="mb-4">
+                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                              <BookOpen className="h-4 w-4" />
+                              Course Content Preview ({module.totalLessons || module.lessons_count || 0} items):
+                            </h4>
+                            {module.lessons && module.lessons.length > 0 ? (
+                              <ul className="text-xs text-black space-y-1 max-h-24 overflow-y-auto">
+                                {module.lessons.slice(0, 4).map((lesson, lessonIndex) => (
+                                  <li key={lessonIndex} className="flex items-center gap-2">
+                                    <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${
+                                      lesson.type === 'video' ? 'bg-red-500' : 
+                                      lesson.type === 'article' ? 'bg-blue-500' : 
+                                      'bg-green-500'
+                                    }`} />
+                                    <span className="truncate">{lesson.title}</span>
+                                    <span className={`text-xs px-1.5 py-0.5 rounded-full text-white ${
+                                      lesson.type === 'video' ? 'bg-red-500' : 
+                                      lesson.type === 'article' ? 'bg-blue-500' : 
+                                      'bg-green-500'
+                                    }`}>
+                                      {lesson.type === 'video' ? '▶' : 
+                                       lesson.type === 'article' ? '📄' : 
+                                       '📝'}
+                                    </span>
+                                  </li>
+                                ))}
+                                {module.lessons.length > 4 && (
+                                  <li className="text-muted-foreground italic text-xs">
+                                    + {module.lessons.length - 4} more lessons available after signup...
+                                  </li>
+                                )}
+                              </ul>
+                            ) : (
+                              <ul className="text-xs text-black space-y-1">
+                                <li className="flex items-center gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                                  <span>Course introduction & fundamentals</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-red-500">▶</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                  <span>Key concepts & industry practices</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-blue-500">📄</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                  <span>Knowledge assessment & certification</span>
+                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-green-500">📝</span>
+                                </li>
+                                <li className="text-muted-foreground italic text-xs">
+                                  + More comprehensive lessons available after signup...
+                                </li>
+                              </ul>
+                            )}
                           </div>
                           
                           <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
