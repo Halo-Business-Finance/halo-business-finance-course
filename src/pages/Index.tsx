@@ -426,7 +426,17 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/90 to-halo-navy/70" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
+            {/* Image - shows first on mobile/tablet */}
+            <div className="order-1 lg:order-2">
+              <img 
+                src={careerSuccessImage} 
+                alt="Professional career success and advancement" 
+                className="w-full h-auto rounded-2xl shadow-hero"
+              />
+            </div>
+            
+            {/* Content - shows second on mobile/tablet */}
+            <div className="space-y-8 order-2 lg:order-1">
               <div className="space-y-4">
                 <h2 className="text-xl lg:text-2xl font-playfair font-bold">
                   Transform Your Skills. Transform Your Career.
@@ -471,14 +481,6 @@ const Index = () => {
                   </Button>
                 </Link>
               </div>
-            </div>
-            
-            <div>
-              <img 
-                src={careerSuccessImage} 
-                alt="Professional career success and advancement" 
-                className="w-full h-auto rounded-2xl shadow-hero"
-              />
             </div>
           </div>
         </div>
