@@ -475,7 +475,7 @@ const Index = () => {
                   <span>No Risk, 30-Day Money Back Guarantee</span>
                 </div>
                 <Link to="/signup" className="mt-2">
-                  <Button className="text-sm px-4 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white shadow-hero group">
+                  <Button className="text-sm px-4 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white border border-white shadow-hero group">
                     <ArrowRight className="mr-2 h-3 w-3 text-white group-hover:scale-110 transition-transform" />
                     Start Free Trial Now
                   </Button>
