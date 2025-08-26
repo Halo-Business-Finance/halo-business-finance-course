@@ -238,7 +238,7 @@ const Business = () => {
           <div className="order-1 lg:order-2">
             <Badge className="mb-4">Team Collaboration</Badge>
             <h3 className="text-2xl font-bold mb-4">Built for Modern Teams</h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-black mb-6">
               Foster collaboration and knowledge sharing across your organization with tools designed for modern workplace learning.
             </p>
             <div className="space-y-4">
