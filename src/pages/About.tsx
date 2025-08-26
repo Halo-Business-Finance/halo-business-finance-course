@@ -175,7 +175,9 @@ const About = () => {
                   <Icon className="h-6 w-6 text-halo-navy" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-2xl font-bold text-foreground mb-1">Business Finance</div>
+                  {info.label === "Industry Focus" && (
+                    <div className="text-2xl font-bold text-foreground mb-1">Business Finance</div>
+                  )}
                   <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
                   <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
                   <div className="text-xs text-black leading-relaxed">{info.description}</div>
