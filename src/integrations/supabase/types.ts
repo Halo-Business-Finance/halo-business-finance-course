@@ -775,6 +775,13 @@ export type Database = {
             referencedRelation: "course_modules"
             referencedColumns: ["module_id"]
           },
+          {
+            foreignKeyName: "course_articles_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "public_course_overview"
+            referencedColumns: ["module_id"]
+          },
         ]
       }
       course_assessments: {
@@ -829,6 +836,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "course_assessments_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "public_course_overview"
             referencedColumns: ["module_id"]
           },
         ]
@@ -888,6 +902,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "course_documents_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "public_course_overview"
             referencedColumns: ["module_id"]
           },
         ]
@@ -1067,6 +1088,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"
+            referencedColumns: ["module_id"]
+          },
+          {
+            foreignKeyName: "course_videos_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "public_course_overview"
             referencedColumns: ["module_id"]
           },
         ]
@@ -2840,6 +2868,13 @@ export type Database = {
             referencedRelation: "course_modules"
             referencedColumns: ["module_id"]
           },
+          {
+            foreignKeyName: "user_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "public_course_overview"
+            referencedColumns: ["module_id"]
+          },
         ]
       }
       user_roles: {
@@ -3022,7 +3057,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_course_overview: {
+        Row: {
+          description_preview: string | null
+          duration: string | null
+          is_active: boolean | null
+          module_id: string | null
+          public_preview: boolean | null
+          skill_level: Database["public"]["Enums"]["skill_level"] | null
+          title: string | null
+        }
+        Insert: {
+          description_preview?: never
+          duration?: never
+          is_active?: boolean | null
+          module_id?: string | null
+          public_preview?: boolean | null
+          skill_level?: Database["public"]["Enums"]["skill_level"] | null
+          title?: string | null
+        }
+        Update: {
+          description_preview?: never
+          duration?: never
+          is_active?: boolean | null
+          module_id?: string | null
+          public_preview?: boolean | null
+          skill_level?: Database["public"]["Enums"]["skill_level"] | null
+          title?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_emergency_mfa_reset: {
