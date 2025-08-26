@@ -212,7 +212,7 @@ const Support = () => {
       />
       <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[40rem] overflow-hidden">
+      <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[32rem] overflow-hidden">
         <img 
           src={supportHero}
           alt="Professional customer support environment" 
