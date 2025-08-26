@@ -153,24 +153,24 @@ const Business = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-halo-navy py-12 md:py-16">
+      <div className="bg-halo-navy py-8 md:py-10">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">Trusted by Leading Organizations</h2>
-            <p className="text-white/80 max-w-2xl mx-auto text-sm md:text-base">
+          <div className="text-center mb-6 md:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
+            <p className="text-white/80 max-w-xl mx-auto text-sm">
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="text-center text-white">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                    <Icon className="h-6 w-6 md:h-8 md:w-8 text-halo-orange" />
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                    <Icon className="h-5 w-5 md:h-6 md:w-6 text-halo-orange" />
                   </div>
-                  <div className="text-xl md:text-3xl font-bold mb-1 md:mb-2">{stat.value}</div>
-                  <div className="text-white/80 text-xs md:text-sm leading-tight">{stat.label}</div>
+                  <div className="text-lg md:text-2xl font-bold mb-1">{stat.value}</div>
+                  <div className="text-white/80 text-xs leading-tight">{stat.label}</div>
                 </div>
               );
             })}
