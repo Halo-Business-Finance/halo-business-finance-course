@@ -90,10 +90,10 @@ const HeaderContent = () => {
   };
 
   return (
-    <header className="sticky top-0 h-14 md:h-16 lg:h-20 xl:h-24 flex flex-col border-b bg-white z-50 px-2 md:px-4">
-      <div className="flex-1 flex items-center justify-between gap-2 md:gap-4">
-        <div className="flex items-center gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-12 w-12 md:h-12 md:w-12 lg:h-6 lg:w-6" />}
+    <header className="sticky top-0 h-12 sm:h-14 md:h-16 lg:h-18 flex flex-col border-b bg-white z-50 px-2 md:px-4">
+      <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
+          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-8 lg:w-8 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -129,29 +129,29 @@ const HeaderContent = () => {
         )}
         
         {user && (
-          <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-black text-right">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0">
             <NotificationBell />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/support')}
-              className="text-black hover:bg-black/10 p-1"
+              className="text-black hover:bg-black/10 p-1 h-8 w-8 flex-shrink-0"
               title="Support"
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
-            <div className="text-xs">
-              <div className="hidden sm:block">{currentTime.toLocaleDateString('en-US', { 
+            <div className="text-xs min-w-0 flex-shrink-0">
+              <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
                 month: 'short', 
                 day: 'numeric' 
               })}</div>
-              <div className="sm:hidden">{currentTime.toLocaleDateString('en-US', { 
+              <div className="sm:hidden whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 month: 'short', 
                 day: 'numeric' 
               })}</div>
-              <div>{currentTime.toLocaleTimeString('en-US', { 
+              <div className="whitespace-nowrap">{currentTime.toLocaleTimeString('en-US', { 
                 hour: '2-digit', 
                 minute: '2-digit' 
               })}</div>
