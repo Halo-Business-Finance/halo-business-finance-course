@@ -3541,10 +3541,13 @@ export type Database = {
       get_public_course_previews: {
         Args: Record<PropertyKey, never>
         Returns: {
+          description: string
+          duration: string
           is_active: boolean
+          lessons_count: number
           module_id: string
-          preview_description: string
-          preview_duration: string
+          order_index: number
+          prerequisites: string[]
           skill_level: string
           title: string
         }[]

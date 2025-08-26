@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { CourseFilterSidebar } from "@/components/CourseFilterSidebar";
+import PublicModuleCard from "@/components/PublicModuleCard";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -72,7 +73,7 @@ const Courses = () => {
         data = result.data;
         error = result.error;
       } else {
-        // Unauthenticated users get limited preview data
+        // Public users get course previews for marketing
         const result = await supabase
           .rpc('get_public_course_previews');
           
@@ -82,15 +83,15 @@ const Courses = () => {
             id: preview.module_id,
             module_id: preview.module_id,
             title: preview.title,
-            description: preview.preview_description,
-            duration: preview.preview_duration,
+            description: preview.description,
+            duration: preview.duration,
             skill_level: preview.skill_level,
-            lessons_count: 0,
-            order_index: 0,
+            lessons_count: preview.lessons_count,
+            order_index: preview.order_index,
             is_active: preview.is_active,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-            prerequisites: []
+            prerequisites: preview.prerequisites || []
           }));
         }
         error = result.error;
@@ -100,28 +101,19 @@ const Courses = () => {
 
       if (error) {
         console.error('Error fetching course modules:', error);
-        if (!user) {
-          // For unauthenticated users, show a more friendly message
-          toast({
-            title: "Sign in Required",
-            description: "Please sign in to view full course details",
-            variant: "default",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: "Failed to load course modules",
-            variant: "destructive",
-          });
-        }
+        toast({
+          title: "Error",
+          description: user ? "Failed to load course modules" : "Unable to load course catalog. Please try again.",
+          variant: "destructive",
+        });
         return;
       }
 
       console.log(`Found ${data?.length || 0} course modules`);
       
-      // Fetch lesson data for each module
+      // Fetch lesson data for each module (only for authenticated users)
       let modulesWithLessons = data || [];
-      if (data) {
+      if (data && user) {
         modulesWithLessons = await Promise.all(
           data.map(async (module) => {
             console.log(`Fetching lessons for module: ${module.module_id}`);
@@ -165,6 +157,13 @@ const Courses = () => {
             };
           })
         );
+      } else if (data && !user) {
+        // For public users, use the lessons_count from the preview data
+        modulesWithLessons = data.map(module => ({
+          ...module,
+          lessons: [],
+          totalLessons: module.lessons_count || 0
+        }));
       }
       
       setModules(modulesWithLessons);
@@ -419,7 +418,7 @@ const Courses = () => {
                 Master Commercial Finance
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
-                Expert-Led Courses for Finance Professionals
+                {user ? "Expert-Led Courses for Finance Professionals" : "Advance Your Finance Career with Expert Training"}
               </p>
               <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
                 Advance your career with industry-recognized certifications in commercial lending, 
@@ -506,191 +505,18 @@ const Courses = () => {
               {/* Course Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
                 {filteredModules.map((module, index) => (
-                  <Card key={module.id} className="hover:shadow-lg transition-all group">
-                    <div className="relative">
-                      <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
-                        <img 
-                          src={getCourseImage(index)} 
-                          alt={`Professional instructor for ${module.title}`}
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    </div>
-                    <CardHeader>
-                      <div className="relative inline-block">
-                        <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
-                          {module.title}
-                        </CardTitle>
-                        <div className="h-0.5 bg-halo-orange mt-2 w-full"></div>
-                      </div>
-                      <CardDescription className="text-black line-clamp-2">
-                        {module.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {user ? (
-                        <>
-                          <div className="space-y-3 mb-4">
-                            <div className="flex items-center justify-between text-sm">
-                              <div className="flex items-center gap-1 text-black">
-                                <Clock className="h-4 w-4" />
-                                {module.duration || 'Self-paced'}
-                              </div>
-                              <div className="flex items-center gap-1 text-black">
-                                <BookOpen className="h-4 w-4" />
-                                {module.totalLessons || module.lessons_count || 0} lessons
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-center gap-1 text-sm text-black">
-                              <Users className="h-4 w-4" />
-                              <span>2,340 students enrolled</span>
-                            </div>
-                          
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                              ))}
-                              <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
-                            </div>
-                          </div>
-                          
-                          {/* Course Lessons - Only for authenticated users */}
-                          <div className="mb-4">
-                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                              <BookOpen className="h-4 w-4" />
-                              Course Content ({module.totalLessons || 0} items):
-                            </h4>
-                            {module.lessons && module.lessons.length > 0 ? (
-                              <ul className="text-xs text-black space-y-1 max-h-24 overflow-y-auto">
-                                {module.lessons.slice(0, 5).map((lesson, lessonIndex) => (
-                                  <li key={lessonIndex} className="flex items-center gap-2">
-                                    <span className={`flex-shrink-0 w-1.5 h-1.5 rounded-full ${
-                                      lesson.type === 'video' ? 'bg-red-500' : 
-                                      lesson.type === 'article' ? 'bg-blue-500' : 
-                                      'bg-green-500'
-                                    }`} />
-                                    <span className="truncate">{lesson.title}</span>
-                                    <span className={`text-xs px-1.5 py-0.5 rounded-full text-white ${
-                                      lesson.type === 'video' ? 'bg-red-500' : 
-                                      lesson.type === 'article' ? 'bg-blue-500' : 
-                                      'bg-green-500'
-                                    }`}>
-                                      {lesson.type === 'video' ? '▶' : 
-                                       lesson.type === 'article' ? '📄' : 
-                                       '📝'}
-                                    </span>
-                                  </li>
-                                ))}
-                                {module.lessons.length > 5 && (
-                                  <li className="text-muted-foreground italic text-xs">
-                                    + {module.lessons.length - 5} more items...
-                                  </li>
-                                )}
-                              </ul>
-                            ) : (
-                              <ul className="text-xs text-black space-y-1">
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                  <span>Course introduction video</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-red-500">▶</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                  <span>Key concepts & principles</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-blue-500">📄</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                                  <span>Knowledge assessment</span>
-                                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white bg-green-500">📝</span>
-                                </li>
-                              </ul>
-                            )}
-                          </div>
-                        
-                          {enrollmentStatus[module.module_id] ? (
-                            <Link to={`/module/${module.module_id}`}>
-                              <Button className="w-full" variant="outline">
-                                <BookOpen className="h-4 w-4 mr-2" />
-                                Continue Learning
-                              </Button>
-                            </Link>
-                          ) : (
-                            <Button 
-                              className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white"
-                              onClick={() => handleEnroll(module.module_id)}
-                            >
-                              <BookOpen className="h-4 w-4 mr-2" />
-                              Enroll Now
-                            </Button>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          {/* Limited preview for non-authenticated users */}
-                          <div className="space-y-3 mb-4">
-                            <div className="flex items-center justify-between text-sm">
-                              <div className="flex items-center gap-1 text-black">
-                                <Clock className="h-4 w-4" />
-                                {module.duration || 'Self-paced'}
-                              </div>
-                              <div className="flex items-center gap-1 text-black">
-                                <BookOpen className="h-4 w-4" />
-                                {module.totalLessons || module.lessons_count || 0} lessons
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Course Lessons */}
-                          <div className="mb-4">
-                            <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
-                            {module.lessons && module.lessons.length > 0 ? (
-                              <ul className="text-xs text-black space-y-2">
-                                {module.lessons.slice(0, 4).map((lesson, lessonIndex) => (
-                                  <li key={lessonIndex}>
-                                    <div className="font-medium">{lesson.title}</div>
-                                    <div className="text-muted-foreground text-xs">
-                                      Learn key concepts and practical applications
-                                    </div>
-                                  </li>
-                                ))}
-                                {module.lessons.length > 4 && (
-                                  <li className="text-muted-foreground italic text-xs">
-                                    + {module.lessons.length - 4} more lessons...
-                                  </li>
-                                )}
-                              </ul>
-                            ) : (
-                              <ul className="text-xs text-black space-y-2">
-                                {getCourseSpecificLessons(module.module_id, module.title).map((lesson, index) => (
-                                  <li key={index}>
-                                    <div className="font-medium">{lesson.title}</div>
-                                    <div className="text-muted-foreground text-xs">
-                                      {lesson.description}
-                                    </div>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                          
-                          <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
-                            <p className="text-sm text-center text-black">
-                              Sign up to unlock full course details and start learning
-                            </p>
-                          </div>
-                        
-                          <Link to="/signup">
-                            <Button className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white">
-                              <BookOpen className="h-4 w-4 mr-2" />
-                              Sign Up to Access Course
-                            </Button>
-                          </Link>
-                        </>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <PublicModuleCard
+                    key={module.id}
+                    title={module.title}
+                    description={module.description}
+                    duration={module.duration || 'Self-paced'}
+                    lessons={module.totalLessons || module.lessons_count || 0}
+                    skillLevel={module.skill_level}
+                    moduleId={module.module_id}
+                    image={getCourseImage(index)}
+                    isAuthenticated={!!user}
+                    onEnrollClick={() => handleEnroll(module.module_id)}
+                  />
                 ))}
               </div>
               
