@@ -17,7 +17,7 @@ export const HorizontalNav = () => {
         {/* Navigation Menu */}
         <div className="flex items-center gap-6 flex-nowrap flex-1 justify-center">
           <NavLink 
-            to="/courses" 
+            to="/course-catalog" 
             className={({ isActive }) => 
               `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }
@@ -33,7 +33,7 @@ export const HorizontalNav = () => {
             Pricing
           </NavLink>
           <NavLink 
-            to="/business" 
+            to="/enterprise" 
             className={({ isActive }) => 
               `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
             }

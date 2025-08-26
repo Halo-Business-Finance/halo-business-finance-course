@@ -218,9 +218,13 @@ const AppContent = () => {
               </AdminProtectedRoute>
             } />
             <Route path="/module/:moduleId" element={<ModulePage />} />
-            <Route path="/courses" element={<Courses />} />
+            <Route path="/course-catalog" element={<Courses />} />
+            {/* Redirect old courses route to course-catalog page */}
+            <Route path="/courses" element={<Navigate to="/course-catalog" replace />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/business" element={<Business />} />
+            <Route path="/enterprise" element={<Business />} />
+            {/* Redirect old business route to enterprise page */}
+            <Route path="/business" element={<Navigate to="/enterprise" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/article/:id" element={<Article />} />
