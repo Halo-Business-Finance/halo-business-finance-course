@@ -319,7 +319,7 @@ const Business = () => {
                     ))}
                   </ul>
                   <Button 
-                    className="w-full h-12 text-base font-semibold"
+                    className="w-full h-12 text-base font-semibold bg-halo-navy hover:bg-halo-navy/90 text-white"
                     onClick={() => setIsLeadModalOpen(true)}
                   >
                     Contact Sales
