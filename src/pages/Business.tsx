@@ -227,7 +227,7 @@ const Business = () => {
         </div>
 
         {/* Team Collaboration Section */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
           <div className="order-1 lg:order-1">
             <img 
               src={businessTeam} 
@@ -238,10 +238,10 @@ const Business = () => {
           <div className="order-2 lg:order-2">
             <Badge className="mb-4">Team Collaboration</Badge>
             <h3 className="text-2xl font-bold mb-4">Built for Modern Teams</h3>
-            <p className="text-black mb-6">
+            <p className="text-black mb-4">
               Foster collaboration and knowledge sharing across your organization with tools designed for modern workplace learning.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Users className="h-5 w-5 text-primary" />
                 <span>Team-based learning paths</span>
