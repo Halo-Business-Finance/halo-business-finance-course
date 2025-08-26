@@ -274,12 +274,12 @@ const Pricing = () => {
 
       {/* FAQ Section */}
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-bold text-center mb-8 text-black">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <Card key={index} className="p-6">
-              <h3 className="font-semibold mb-2">{faq.question}</h3>
-              <p className="text-muted-foreground">{faq.answer}</p>
+              <h3 className="font-semibold mb-2 text-black">{faq.question}</h3>
+              <p className="text-black">{faq.answer}</p>
             </Card>
           ))}
         </div>
