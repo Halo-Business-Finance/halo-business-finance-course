@@ -9,7 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
-import { SkillLevelFilter } from "@/components/SkillLevelFilter";
+import { CourseFilterSidebar } from "@/components/CourseFilterSidebar";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -308,23 +308,8 @@ const Courses = () => {
           </div>
         </div>
       
-      {/* Content Section - Course Filters and Cards */}
+      {/* Content Section with Sidebar Layout */}
       <div className="container mx-auto px-4 py-12">
-        
-        {/* Course Filter */}
-        {modules.length > 0 && (
-          <div className="mb-8">
-            <SkillLevelFilter 
-              selectedLevel={selectedLevel}
-              onLevelChange={setSelectedLevel}
-              counts={skillLevelCounts}
-              titleFilter={titleFilter}
-              onTitleFilterChange={setTitleFilter}
-            />
-          </div>
-        )}
-
-        {/* Course Grid */}
         {modules.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
@@ -336,171 +321,188 @@ const Courses = () => {
             </CardContent>
           </Card>
         ) : (
-          <>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">
-                {selectedLevel === 'all' 
-                  ? `Available Courses (${filteredModules.length})` 
-                  : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredModules.length})`
-                }
-              </h2>
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sticky Sidebar Filters */}
+            <div className="lg:w-80 flex-shrink-0">
+              <CourseFilterSidebar
+                selectedLevel={selectedLevel}
+                onLevelChange={setSelectedLevel}
+                titleFilter={titleFilter}
+                onTitleFilterChange={setTitleFilter}
+                counts={skillLevelCounts}
+              />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredModules.map((module, index) => (
-              <Card key={module.id} className="hover:shadow-lg transition-all group">
-                 <div className="relative">
-                    <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
-                      <img 
-                        src={getCourseImage(index)} 
-                        alt={`Professional instructor for ${module.title}`}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                 </div>
-                 <CardHeader>
-                   <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
-                     {module.title}
-                   </CardTitle>
-                  <CardDescription className="text-black line-clamp-2">
-                    {module.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {user ? (
-                    <>
-                       <div className="space-y-3 mb-4">
-                         <div className="flex items-center justify-between text-sm">
-                           <div className="flex items-center gap-1 text-black">
-                             <Clock className="h-4 w-4" />
-                             {module.duration || 'Self-paced'}
-                           </div>
-                           <div className="flex items-center gap-1 text-black">
-                             <BookOpen className="h-4 w-4" />
-                             {module.lessons_count || 0} lessons
-                           </div>
-                         </div>
-                         
-                         <div className="flex items-center gap-1 text-sm text-black">
-                           <Users className="h-4 w-4" />
-                           <span>2,340 students enrolled</span>
-                         </div>
-                        
-                        <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          ))}
-                          <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
-                        </div>
+
+            {/* Main Content Area */}
+            <div className="flex-1">
+              {/* Results Header */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">
+                  {selectedLevel === 'all' 
+                    ? `Available Courses (${filteredModules.length})` 
+                    : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredModules.length})`
+                  }
+                </h2>
+              </div>
+
+              {/* Course Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
+                {filteredModules.map((module, index) => (
+                  <Card key={module.id} className="hover:shadow-lg transition-all group">
+                    <div className="relative">
+                      <div className="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                        <img 
+                          src={getCourseImage(index)} 
+                          alt={`Professional instructor for ${module.title}`}
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
-                      
-                       {/* Course Lessons */}
-                       <div className="mb-4">
-                         <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
-                         {module.lessons && module.lessons.length > 0 ? (
-                           <ul className="text-xs text-black space-y-1">
-                             {module.lessons.map((lesson, lessonIndex) => (
-                               <li key={lessonIndex} className="flex items-center gap-2">
-                                 <span className="text-primary">•</span>
-                                 <span>{lesson.title}</span>
-                               </li>
-                             ))}
-                             {module.lessons_count > 3 && (
-                               <li className="text-muted-foreground italic">
-                                 + {module.lessons_count - 3} more lessons...
-                               </li>
-                             )}
-                           </ul>
-                         ) : (
-                           <ul className="text-xs text-black space-y-1">
-                             <li className="flex items-center gap-2">
-                               <span className="text-primary">•</span>
-                               <span>Commercial lending fundamentals</span>
-                             </li>
-                             <li className="flex items-center gap-2">
-                               <span className="text-primary">•</span>
-                               <span>Risk assessment techniques</span>
-                             </li>
-                             <li className="flex items-center gap-2">
-                               <span className="text-primary">•</span>
-                               <span>Industry best practices</span>
-                             </li>
-                           </ul>
-                         )}
-                       </div>
-                      
-                      {enrollmentStatus[module.module_id] ? (
-                        <Link to={`/module/${module.module_id}`}>
-                          <Button className="w-full" variant="outline">
-                            <BookOpen className="h-4 w-4 mr-2" />
-                            Continue Learning
-                          </Button>
-                        </Link>
+                    </div>
+                    <CardHeader>
+                      <CardTitle className="text-xl text-blue-900 group-hover:text-primary transition-colors">
+                        {module.title}
+                      </CardTitle>
+                      <CardDescription className="text-black line-clamp-2">
+                        {module.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {user ? (
+                        <>
+                          <div className="space-y-3 mb-4">
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-1 text-black">
+                                <Clock className="h-4 w-4" />
+                                {module.duration || 'Self-paced'}
+                              </div>
+                              <div className="flex items-center gap-1 text-black">
+                                <BookOpen className="h-4 w-4" />
+                                {module.lessons_count || 0} lessons
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-1 text-sm text-black">
+                              <Users className="h-4 w-4" />
+                              <span>2,340 students enrolled</span>
+                            </div>
+                          
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              ))}
+                              <span className="text-sm text-muted-foreground ml-1">(4.8)</span>
+                            </div>
+                          </div>
+                          
+                          {/* Course Lessons */}
+                          <div className="mb-4">
+                            <h4 className="text-sm font-semibold mb-2">Course Lessons:</h4>
+                            {module.lessons && module.lessons.length > 0 ? (
+                              <ul className="text-xs text-black space-y-1">
+                                {module.lessons.map((lesson, lessonIndex) => (
+                                  <li key={lessonIndex} className="flex items-center gap-2">
+                                    <span className="text-primary">•</span>
+                                    <span>{lesson.title}</span>
+                                  </li>
+                                ))}
+                                {module.lessons_count > 3 && (
+                                  <li className="text-muted-foreground italic">
+                                    + {module.lessons_count - 3} more lessons...
+                                  </li>
+                                )}
+                              </ul>
+                            ) : (
+                              <ul className="text-xs text-black space-y-1">
+                                <li className="flex items-center gap-2">
+                                  <span className="text-primary">•</span>
+                                  <span>Commercial lending fundamentals</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                  <span className="text-primary">•</span>
+                                  <span>Risk assessment techniques</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                  <span className="text-primary">•</span>
+                                  <span>Industry best practices</span>
+                                </li>
+                              </ul>
+                            )}
+                          </div>
+                        
+                          {enrollmentStatus[module.module_id] ? (
+                            <Link to={`/module/${module.module_id}`}>
+                              <Button className="w-full" variant="outline">
+                                <BookOpen className="h-4 w-4 mr-2" />
+                                Continue Learning
+                              </Button>
+                            </Link>
+                          ) : (
+                            <Button 
+                              className="w-full" 
+                              onClick={() => handleEnroll(module.module_id)}
+                            >
+                              <BookOpen className="h-4 w-4 mr-2" />
+                              Enroll Now
+                            </Button>
+                          )}
+                        </>
                       ) : (
-                        <Button 
-                          className="w-full" 
-                          onClick={() => handleEnroll(module.module_id)}
-                        >
-                          <BookOpen className="h-4 w-4 mr-2" />
-                          Enroll Now
-                        </Button>
+                        <>
+                          {/* Limited preview for non-authenticated users */}
+                          <div className="space-y-3 mb-4">
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-1 text-black">
+                                <Clock className="h-4 w-4" />
+                                {module.duration || 'Self-paced'}
+                              </div>
+                              <div className="flex items-center gap-1 text-black">
+                                <BookOpen className="h-4 w-4" />
+                                {module.lessons_count || 0} lessons
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
+                            <p className="text-sm text-center text-black">
+                              Sign up to unlock full course details, enrollment, and start learning
+                            </p>
+                          </div>
+                        
+                          <Link to="/signup">
+                            <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                              <BookOpen className="h-4 w-4 mr-2" />
+                              Sign Up to Access Course
+                            </Button>
+                          </Link>
+                        </>
                       )}
-                    </>
-                  ) : (
-                    <>
-                      {/* Limited preview for non-authenticated users */}
-                       <div className="space-y-3 mb-4">
-                         <div className="flex items-center justify-between text-sm">
-                           <div className="flex items-center gap-1 text-black">
-                             <Clock className="h-4 w-4" />
-                             {module.duration || 'Self-paced'}
-                           </div>
-                           <div className="flex items-center gap-1 text-black">
-                             <BookOpen className="h-4 w-4" />
-                             {module.lessons_count || 0} lessons
-                           </div>
-                         </div>
-                       </div>
-                       
-                       <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 rounded-lg mb-4">
-                         <p className="text-sm text-center text-black">
-                           Sign up to unlock full course details, enrollment, and start learning
-                         </p>
-                       </div>
-                      
-                      <Link to="/signup">
-                        <Button className="w-full bg-primary text-white hover:bg-primary/90">
-                          <BookOpen className="h-4 w-4 mr-2" />
-                          Sign Up to Access Course
-                        </Button>
-                      </Link>
-                    </>
-                  )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              
+              {/* Call to Action */}
+              <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+                <CardContent className="text-center p-8">
+                  <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
+                  <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                    Join thousands of finance professionals who have advanced their careers with our comprehensive training programs.
+                    Start with our most popular course or explore our full catalog.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button size="lg" className="bg-primary text-white">
+                      Browse All Courses
+                    </Button>
+                    <Link to="/signup">
+                      <Button size="lg" variant="outline">
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
-            ))}
             </div>
-            
-            {/* Call to Action */}
-            <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
-              <CardContent className="text-center p-8">
-                <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
-                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  Join thousands of finance professionals who have advanced their careers with our comprehensive training programs.
-                  Start with our most popular course or explore our full catalog.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="bg-primary text-white">
-                    Browse All Courses
-                  </Button>
-                  <Link to="/signup">
-                    <Button size="lg" variant="outline">
-                      Start Free Trial
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </>
+          </div>
         )}
       </div>
       
