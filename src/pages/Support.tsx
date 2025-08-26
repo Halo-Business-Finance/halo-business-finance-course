@@ -19,126 +19,107 @@ const Support = () => {
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'sales' | 'demo'>('sales');
-  const faqCategories = [
+  // Flattened FAQ structure for minimalist design
+  const allFaqs = [
     {
-      category: "Getting Started",
-      faqs: [
-        {
-          question: "What is an online course and how does it work?",
-          answer: "An online course is a structured learning experience delivered over the internet. Our courses offer both live sessions (synchronous) and self-paced content (asynchronous), allowing you to learn in the format that works best for your schedule."
-        },
-        {
-          question: "How long is the free trial?",
-          answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
-        },
-        {
-          question: "How do I sign up for a course?",
-          answer: "Simply browse our course catalog, select the course you want, click 'Enroll Now', create your account or log in, and complete the payment process. You'll have immediate access to your course materials."
-        },
-        {
-          question: "Can courses be taken at one's own pace?",
-          answer: "Yes! Most of our courses are self-paced, allowing you to learn whenever it's convenient for you. Some courses may have optional live sessions or suggested timelines to help you stay on track."
-        },
-        {
-          question: "What are the prerequisites for courses?",
-          answer: "Prerequisites vary by course and are clearly listed on each course page. Most beginner courses have no prerequisites, while advanced courses may require completion of foundational courses or specific experience."
-        },
-        {
-          question: "What materials are required for courses?",
-          answer: "All course materials are provided digitally within our platform. You'll only need a computer or mobile device with internet access. Any specific software requirements are listed on the course page."
-        }
-      ]
+      question: "What is an online course and how does it work?",
+      answer: "An online course is a structured learning experience delivered over the internet. Our courses offer both live sessions (synchronous) and self-paced content (asynchronous), allowing you to learn in the format that works best for your schedule."
     },
     {
-      category: "Course Content",
-      faqs: [
-        {
-          question: "Who are the instructors and what are their qualifications?",
-          answer: "Our instructors are industry experts with extensive experience in finance and lending. Each instructor's bio, credentials, and professional background are available on their course pages."
-        },
-        {
-          question: "What will be learned from courses?",
-          answer: "Each course page includes detailed learning objectives and outcomes. You'll gain practical skills, industry knowledge, and certifications that directly apply to your finance career."
-        },
-        {
-          question: "How are assignments and exams submitted?",
-          answer: "All assignments and exams are completed directly within our platform. Simply click submit when you're finished, and your work will be automatically saved and graded."
-        },
-        {
-          question: "How will feedback on work be received?",
-          answer: "You'll receive automated feedback immediately for quizzes and assignments. For subjective work, instructors provide detailed feedback within 48-72 hours through your course dashboard."
-        },
-        {
-          question: "How often is course content updated?",
-          answer: "We continuously update our course content to reflect current industry standards, regulations, and best practices. Major updates are released quarterly, with minor updates as needed."
-        },
-        {
-          question: "Is this program accredited or licensed?",
-          answer: "Our courses are designed to meet industry standards and many provide CPE credits. Specific accreditation details are available on individual course pages and certificates."
-        },
-        {
-          question: "Do you offer certificates upon completion?",
-          answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks like LinkedIn."
-        }
-      ]
+      question: "How long is the free trial?",
+      answer: "We offer a free 3-day trial that gives you full access to our platform and courses. No credit card required to start your trial."
     },
     {
-      category: "Technical Support",
-      faqs: [
-        {
-          question: "What are the minimum technology requirements?",
-          answer: "You need a device with internet access (computer, tablet, or smartphone), a modern web browser (Chrome, Firefox, Safari, or Edge), and a stable internet connection. No special software installation required."
-        },
-        {
-          question: "What should be done if there are trouble logging in?",
-          answer: "Click 'Forgot Password' on the login page to reset your password. If you continue having issues, clear your browser cache or try a different browser. Contact support if problems persist."
-        },
-        {
-          question: "Who should be contacted for technical problems?",
-          answer: "Use our live chat feature for immediate assistance, or submit a support ticket through the 'Send Message' form. Our technical support team is available 24/7."
-        },
-        {
-          question: "How can common issues like frozen videos be troubleshooted?",
-          answer: "Try refreshing the page, clearing your browser cache, or switching to a different browser. For mobile issues, restart the app. If problems continue, check your internet connection or contact support."
-        },
-        {
-          question: "Can courses be accessed on different devices?",
-          answer: "Yes! Our platform works on computers, tablets, and smartphones. We also have mobile apps for iOS and Android that allow offline viewing of downloaded lessons."
-        }
-      ]
+      question: "How do I sign up for a course?",
+      answer: "Simply browse our course catalog, select the course you want, click 'Enroll Now', create your account or log in, and complete the payment process. You'll have immediate access to your course materials."
     },
     {
-      category: "User Account/Billing",
-      faqs: [
-        {
-          question: "How much do courses cost? Are there payment plans?",
-          answer: "Course prices vary depending on content and length. We offer individual course purchases, monthly subscriptions, and annual plans. Payment plans and corporate discounts are available - contact sales for details."
-        },
-        {
-          question: "What is the refund or cancellation policy?",
-          answer: "We offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund within 30 days of purchase."
-        },
-        {
-          question: "How can progress be tracked?",
-          answer: "Your dashboard shows completion percentages, quiz scores, time spent learning, and certificates earned. You can track progress for individual courses and your overall learning path."
-        },
-        {
-          question: "How do I update my password or email?",
-          answer: "Go to your Account settings by clicking your profile icon in the top right corner and select 'Account' to update your personal information and security settings."
-        },
-        {
-          question: "How do I update my billing information?",
-          answer: "In your Account settings, select the 'Billing' tab to update your payment method, billing address, and view your payment history."
-        },
-        {
-          question: "What is the privacy policy regarding personal data?",
-          answer: "We take your privacy seriously and follow strict data protection standards. Your personal information is encrypted and never shared with third parties. View our full privacy policy in your account settings."
-        },
-        {
-          question: "What happens if the program needs to be paused or stopped?",
-          answer: "You can pause your subscription at any time through your account settings. Your progress is saved, and you can resume whenever you're ready. For course withdrawals, contact support for assistance."
-        }
-      ]
+      question: "Can courses be taken at one's own pace?",
+      answer: "Yes! Most of our courses are self-paced, allowing you to learn whenever it's convenient for you. Some courses may have optional live sessions or suggested timelines to help you stay on track."
+    },
+    {
+      question: "What are the prerequisites for courses?",
+      answer: "Prerequisites vary by course and are clearly listed on each course page. Most beginner courses have no prerequisites, while advanced courses may require completion of foundational courses or specific experience."
+    },
+    {
+      question: "What materials are required for courses?",
+      answer: "All course materials are provided digitally within our platform. You'll only need a computer or mobile device with internet access. Any specific software requirements are listed on the course page."
+    },
+    {
+      question: "Who are the instructors and what are their qualifications?",
+      answer: "Our instructors are industry experts with extensive experience in finance and lending. Each instructor's bio, credentials, and professional background are available on their course pages."
+    },
+    {
+      question: "What will be learned from courses?",
+      answer: "Each course page includes detailed learning objectives and outcomes. You'll gain practical skills, industry knowledge, and certifications that directly apply to your finance career."
+    },
+    {
+      question: "How are assignments and exams submitted?",
+      answer: "All assignments and exams are completed directly within our platform. Simply click submit when you're finished, and your work will be automatically saved and graded."
+    },
+    {
+      question: "How will feedback on work be received?",
+      answer: "You'll receive automated feedback immediately for quizzes and assignments. For subjective work, instructors provide detailed feedback within 48-72 hours through your course dashboard."
+    },
+    {
+      question: "How often is course content updated?",
+      answer: "We continuously update our course content to reflect current industry standards, regulations, and best practices. Major updates are released quarterly, with minor updates as needed."
+    },
+    {
+      question: "Is this program accredited or licensed?",
+      answer: "Our courses are designed to meet industry standards and many provide CPE credits. Specific accreditation details are available on individual course pages and certificates."
+    },
+    {
+      question: "Do you offer certificates upon completion?",
+      answer: "Yes, you'll receive a certificate of completion for each course you finish. These can be downloaded and shared on professional networks like LinkedIn."
+    },
+    {
+      question: "What are the minimum technology requirements?",
+      answer: "You need a device with internet access (computer, tablet, or smartphone), a modern web browser (Chrome, Firefox, Safari, or Edge), and a stable internet connection. No special software installation required."
+    },
+    {
+      question: "What should be done if there are trouble logging in?",
+      answer: "Click 'Forgot Password' on the login page to reset your password. If you continue having issues, clear your browser cache or try a different browser. Contact support if problems persist."
+    },
+    {
+      question: "Who should be contacted for technical problems?",
+      answer: "Use our live chat feature for immediate assistance, or submit a support ticket through the 'Send Message' form. Our technical support team is available 24/7."
+    },
+    {
+      question: "How can common issues like frozen videos be troubleshooted?",
+      answer: "Try refreshing the page, clearing your browser cache, or switching to a different browser. For mobile issues, restart the app. If problems continue, check your internet connection or contact support."
+    },
+    {
+      question: "Can courses be accessed on different devices?",
+      answer: "Yes! Our platform works on computers, tablets, and smartphones. We also have mobile apps for iOS and Android that allow offline viewing of downloaded lessons."
+    },
+    {
+      question: "How much do courses cost? Are there payment plans?",
+      answer: "Course prices vary depending on content and length. We offer individual course purchases, monthly subscriptions, and annual plans. Payment plans and corporate discounts are available - contact sales for details."
+    },
+    {
+      question: "What is the refund or cancellation policy?",
+      answer: "We offer a 30-day money-back guarantee for all courses. If you're not satisfied, contact our support team for a full refund within 30 days of purchase."
+    },
+    {
+      question: "How can progress be tracked?",
+      answer: "Your dashboard shows completion percentages, quiz scores, time spent learning, and certificates earned. You can track progress for individual courses and your overall learning path."
+    },
+    {
+      question: "How do I update my password or email?",
+      answer: "Go to your Account settings by clicking your profile icon in the top right corner and select 'Account' to update your personal information and security settings."
+    },
+    {
+      question: "How do I update my billing information?",
+      answer: "In your Account settings, select the 'Billing' tab to update your payment method, billing address, and view your payment history."
+    },
+    {
+      question: "What is the privacy policy regarding personal data?",
+      answer: "We take your privacy seriously and follow strict data protection standards. Your personal information is encrypted and never shared with third parties. View our full privacy policy in your account settings."
+    },
+    {
+      question: "What happens if the program needs to be paused or stopped?",
+      answer: "You can pause your subscription at any time through your account settings. Your progress is saved, and you can resume whenever you're ready. For course withdrawals, contact support for assistance."
     }
   ];
 
@@ -335,30 +316,27 @@ const Support = () => {
                   <div className="text-xs text-black leading-relaxed">Find quick answers to common questions about our courses and platform.</div>
                 </div>
               </div>
-              <div className="space-y-6">
-                {faqCategories.map((category, categoryIndex) => (
-                  <div key={categoryIndex} className="space-y-3">
-                    <h4 className="text-lg font-semibold text-foreground border-b border-black pb-2">
-                      {category.category}
-                    </h4>
-                    <Accordion type="single" collapsible className="space-y-3">
-                      {category.faqs.map((faq, faqIndex) => (
-                        <AccordionItem 
-                          key={`${categoryIndex}-${faqIndex}`} 
-                          value={`item-${categoryIndex}-${faqIndex}`} 
-                          className="border border-gray-200 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-shadow"
-                        >
-                          <AccordionTrigger className="text-left font-semibold text-black hover:text-primary transition-colors">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-black leading-relaxed pt-2">
-                            {faq.answer}
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                ))}
+              
+              {/* Minimalist Interactive Accordion */}
+              <div className="max-h-96 overflow-y-auto">
+                <Accordion type="single" collapsible className="w-full space-y-0">
+                  {allFaqs.map((faq, index) => (
+                    <AccordionItem 
+                      key={index} 
+                      value={`item-${index}`}
+                      className="border-0 border-b border-muted last:border-b-0"
+                    >
+                      <AccordionTrigger className="py-4 px-0 text-left hover:no-underline hover:bg-muted/50 transition-colors rounded-none group">
+                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors pr-4">
+                          {faq.question}
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-4 pt-0 px-0 text-sm text-muted-foreground leading-relaxed animate-accordion-down">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
             </Card>
           </div>
