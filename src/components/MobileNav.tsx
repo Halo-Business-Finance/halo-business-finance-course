@@ -32,7 +32,7 @@ export const MobileNav = () => {
         <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
           {/* Sign In/Signup buttons - visible on tablet */}
           <div className="hidden md:flex items-center gap-1">
-            <Button size="sm" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-halo-orange text-xs px-2 py-1">
+            <Button size="sm" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white text-xs px-2 py-1">
               <NavLink to="/signup" className="flex items-center gap-1">
                 Start Free Trial
                 <ArrowRight className="h-3 w-3" />
@@ -86,7 +86,7 @@ export const MobileNav = () => {
                   <NavLink
                     to="/signup"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors bg-halo-navy text-halo-orange hover:bg-halo-navy/90"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors bg-halo-navy text-white hover:bg-halo-navy/90"
                   >
                     <span className="font-medium">Start Free Trial</span>
                     <ArrowRight className="h-4 w-4" />
