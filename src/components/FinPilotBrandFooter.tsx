@@ -15,7 +15,7 @@ export const FinPilotBrandFooter = () => {
       <div className="relative z-10">
         <CardContent className="p-8 lg:p-12">
           {/* Main content grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
             {/* Brand section */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-6">
@@ -126,6 +126,55 @@ export const FinPilotBrandFooter = () => {
                 ))}
               </div>
             </div>
+            
+            {/* Footer Menu Links */}
+            <div>
+              <h4 className="text-lg font-semibold mb-6 text-white">Quick Links</h4>
+              <div className="space-y-3">
+                {[
+                  { label: "About Us", href: "/about" },
+                  { label: "Courses", href: "/courses" },
+                  { label: "Pricing", href: "/pricing" },
+                  { label: "Support", href: "/support" },
+                  { label: "Blog", href: "/blog" },
+                  { label: "Resources", href: "/resources" }
+                ].map((link, index) => (
+                  <a 
+                    key={index}
+                    href={link.href} 
+                    className="group flex items-center gap-2 text-white hover:text-white transition-colors"
+                  >
+                    <div className="w-1.5 h-1.5 bg-accent rounded-full group-hover:bg-primary transition-colors"></div>
+                    <span className="text-sm">{link.label}</span>
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" />
+                  </a>
+                ))}
+              </div>
+            </div>
+            
+            {/* Legal Links */}
+            <div>
+              <h4 className="text-lg font-semibold mb-6 text-white">Legal</h4>
+              <div className="space-y-3">
+                {[
+                  { label: "Privacy Policy", href: "/privacy" },
+                  { label: "Terms of Use", href: "/terms" },
+                  { label: "Data Security", href: "/data-security" },
+                  { label: "Cookie Policy", href: "/cookies" },
+                  { label: "Accessibility", href: "/accessibility" }
+                ].map((link, index) => (
+                  <a 
+                    key={index}
+                    href={link.href} 
+                    className="group flex items-center gap-2 text-white hover:text-white transition-colors"
+                  >
+                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full group-hover:bg-accent transition-colors"></div>
+                    <span className="text-sm">{link.label}</span>
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" />
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
           
           {/* Social Media Section */}
@@ -163,27 +212,10 @@ export const FinPilotBrandFooter = () => {
           
           {/* Bottom section */}
           <div className="pt-8 border-t border-slate-700/50">
-            <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+            <div className="text-center">
               <p className="text-sm text-white">
                 © 2025 FinPilot. All rights reserved. Training Platform powered by advanced learning technologies.
               </p>
-              
-              <div className="flex items-center gap-6">
-                {[
-                  { label: "Privacy Policy", href: "/privacy" },
-                  { label: "Terms of Use", href: "/terms" },
-                  { label: "Data & Security", href: "/data-security" }
-                ].map((link, index) => (
-                  <a 
-                    key={index}
-                    href={link.href} 
-                    className="text-sm text-white hover:text-white transition-colors relative group"
-                  >
-                    {link.label}
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></div>
-                  </a>
-                ))}
-              </div>
             </div>
           </div>
         </CardContent>
