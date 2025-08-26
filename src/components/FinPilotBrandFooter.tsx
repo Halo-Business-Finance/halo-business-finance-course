@@ -1,4 +1,4 @@
-import { Building2, Mail, Phone, Globe, ArrowUpRight, Shield, Award, Users } from "lucide-react";
+import { Building2, Mail, Phone, Globe, ArrowUpRight, Shield, Award, Users, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const FinPilotBrandFooter = () => {
@@ -124,6 +124,39 @@ export const FinPilotBrandFooter = () => {
                     <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" />
                   </a>
                 ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Social Media Section */}
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
+                <p className="text-sm text-white/80">Stay connected for latest updates and insights</p>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                {[
+                  { icon: Linkedin, href: "https://linkedin.com/company/finpilot", label: "LinkedIn", color: "hover:bg-blue-600/20" },
+                  { icon: Twitter, href: "https://twitter.com/finpilot", label: "Twitter", color: "hover:bg-sky-500/20" },
+                  { icon: Facebook, href: "https://facebook.com/finpilot", label: "Facebook", color: "hover:bg-blue-700/20" },
+                  { icon: Instagram, href: "https://instagram.com/finpilot", label: "Instagram", color: "hover:bg-pink-500/20" }
+                ].map((social, index) => {
+                  const IconComponent = social.icon;
+                  return (
+                    <a
+                      key={index}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group flex items-center justify-center w-12 h-12 bg-slate-700/30 rounded-xl ${social.color} transition-all duration-300 hover:scale-110`}
+                      aria-label={social.label}
+                    >
+                      <IconComponent className="h-5 w-5 text-white group-hover:text-white transition-colors" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
