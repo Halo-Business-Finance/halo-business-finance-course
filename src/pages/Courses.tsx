@@ -79,13 +79,17 @@ const Courses = () => {
       if (data) {
         modulesWithLessons = await Promise.all(
           data.map(async (module) => {
-            const { data: videos } = await supabase
+            console.log(`Fetching videos for module: ${module.module_id}`);
+            const { data: videos, error } = await supabase
               .from('course_videos')
               .select('title, order_index')
               .eq('module_id', module.module_id)
               .eq('is_active', true)
               .order('order_index', { ascending: true })
               .limit(3); // Show first 3 lessons
+            
+            console.log(`Videos for ${module.module_id}:`, videos);
+            if (error) console.error(`Error fetching videos for ${module.module_id}:`, error);
             
             return {
               ...module,
@@ -404,9 +408,18 @@ const Courses = () => {
                            </ul>
                          ) : (
                            <ul className="text-xs text-black space-y-1">
-                             <li>• Financial statement analysis techniques</li>
-                             <li>• Risk assessment methodologies</li>
-                             <li>• Industry best practices</li>
+                             <li className="flex items-center gap-2">
+                               <span className="text-primary">•</span>
+                               <span>Commercial lending fundamentals</span>
+                             </li>
+                             <li className="flex items-center gap-2">
+                               <span className="text-primary">•</span>
+                               <span>Risk assessment techniques</span>
+                             </li>
+                             <li className="flex items-center gap-2">
+                               <span className="text-primary">•</span>
+                               <span>Industry best practices</span>
+                             </li>
                            </ul>
                          )}
                        </div>
