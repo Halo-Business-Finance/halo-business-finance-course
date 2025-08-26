@@ -20,6 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: [
+					'"Inter"',
 					'system-ui',
 					'-apple-system',
 					'BlinkMacSystemFont',
