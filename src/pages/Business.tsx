@@ -134,7 +134,7 @@ const Business = () => {
       />
       <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-80 sm:h-96 md:h-[28rem] lg:h-[36rem] overflow-hidden">
+      <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[40rem] overflow-hidden">
         <img 
           src={businessHero} 
           alt="Professional corporate training environment" 
