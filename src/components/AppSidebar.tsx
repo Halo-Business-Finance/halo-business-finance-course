@@ -77,7 +77,7 @@ const getProgressiveModules = () => {
 const courseModules = getProgressiveModules();
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { state, toggleSidebar, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
@@ -85,9 +85,32 @@ export function AppSidebar() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Function to handle navigation and close sidebar on mobile
+  const handleNavigation = (url: string, canAccess: boolean = true) => {
+    if (!canAccess) {
+      toast({
+        title: "Module Locked",
+        description: "Complete the previous module to unlock this one!",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    // Close sidebar on mobile/tablet after navigation
+    if (isMobile) {
+      toggleSidebar();
+    }
+    navigate(url);
+  };
+
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
+      // Close sidebar before signing out on mobile
+      if (isMobile) {
+        toggleSidebar();
+      }
       // The signOut function now handles the redirect automatically
       await signOut();
     } catch (error) {
@@ -98,6 +121,10 @@ export function AppSidebar() {
   };
 
   const handleSignIn = () => {
+    // Close sidebar before navigating on mobile
+    if (isMobile) {
+      toggleSidebar();
+    }
     navigate('/auth');
   };
   
@@ -167,10 +194,13 @@ export function AppSidebar() {
               {mainNavItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                     <NavLink to={item.url} end className={({ isActive }) => getNavCls(isActive)}>
+                     <button 
+                       onClick={() => handleNavigation(item.url)}
+                       className={`w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded`}
+                     >
                        <item.icon className="h-4 w-4 text-halo-orange" />
                        {!collapsed && <span className="text-white text-xs">{item.title}</span>}
-                     </NavLink>
+                     </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -202,24 +232,14 @@ export function AppSidebar() {
                 return (
                   <SidebarMenuItem key={module.title}>
                     <SidebarMenuButton asChild>
-                       <NavLink 
-                         to={canAccess ? module.url : "#"}
-                         onClick={(e) => {
-                           if (!canAccess) {
-                             e.preventDefault();
-                             toast({
-                               title: "Module Locked",
-                               description: "Complete the previous module to unlock this one!",
-                               variant: "destructive",
-                               duration: 3000,
-                             });
-                           }
-                         }}
-                            className={({ isActive }) => `
-                              ${getNavCls(isActive)} 
+                       <button 
+                         onClick={() => handleNavigation(module.url, canAccess)}
+                            className={`
+                              w-full text-left
                               ${isModuleLocked ? "opacity-50" : ""} 
                               ${!canAccess ? "cursor-not-allowed" : ""}
                               group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
+                              text-white hover:bg-white/10 hover:text-white
                             `}
                        >
                          <div className="relative z-10 flex items-center w-full gap-3">
@@ -284,11 +304,11 @@ export function AppSidebar() {
                            )}
                          </div>
                          
-                         {/* Active state indicator */}
-                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                          {/* Active state indicator */}
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
+                       </button>
+                     </SidebarMenuButton>
+                   </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>
