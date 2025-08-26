@@ -144,10 +144,27 @@ const Business = () => {
           <div className="text-center text-white max-w-4xl mx-auto px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">Enterprise</Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Transform Your Team's Skills</h1>
-            <p className="text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto mb-6 md:mb-8">
               Empower your organization with our comprehensive learning platform. Scale your team's expertise 
               with industry-leading courses and enterprise features.
             </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="bg-halo-navy hover:bg-halo-navy/90 text-white px-6 py-3"
+                onClick={() => setIsLeadModalOpen(true)}
+              >
+                Contact Sales
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-white hover:bg-white/10 px-6 py-3"
+                onClick={() => setIsDemoModalOpen(true)}
+              >
+                Schedule Demo
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -189,6 +206,17 @@ const Business = () => {
             );
           })}
         </div>
+        
+        {/* Features CTA */}
+        <div className="text-center mb-16">
+          <Button 
+            size="lg" 
+            className="bg-halo-navy hover:bg-halo-navy/90 text-white px-8 py-3"
+            onClick={() => setIsLeadModalOpen(true)}
+          >
+            Learn More About Enterprise Features
+          </Button>
+        </div>
 
         {/* Analytics Showcase */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
@@ -214,6 +242,15 @@ const Business = () => {
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-primary" />
                 <span>Time-to-completion analytics</span>
+              </div>
+              <div className="mt-6">
+                <Button 
+                  size="lg" 
+                  className="bg-halo-navy hover:bg-halo-navy/90 text-white"
+                  onClick={() => setIsDemoModalOpen(true)}
+                >
+                  See Analytics Demo
+                </Button>
               </div>
             </div>
           </div>
@@ -258,6 +295,15 @@ const Business = () => {
                 <Zap className="h-5 w-5 text-primary" />
                 <span>Automated workflows</span>
               </div>
+              <div className="mt-6">
+                <Button 
+                  size="lg" 
+                  className="bg-halo-navy hover:bg-halo-navy/90 text-white"
+                  onClick={() => setIsLeadModalOpen(true)}
+                >
+                  Contact Sales
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -285,6 +331,15 @@ const Business = () => {
                 </div>
               );
             })}
+          </div>
+          <div className="text-center mt-8">
+            <Button 
+              size="lg" 
+              className="bg-halo-orange hover:bg-halo-orange/90 text-white px-8 py-3"
+              onClick={() => setIsDemoModalOpen(true)}
+            >
+              Schedule a Demo
+            </Button>
           </div>
         </div>
       </div>
@@ -361,6 +416,17 @@ const Business = () => {
             </Card>
           ))}
         </div>
+        
+        {/* Testimonials CTA */}
+        <div className="text-center mt-12">
+          <Button 
+            size="lg" 
+            className="bg-halo-navy hover:bg-halo-navy/90 text-white px-8 py-3"
+            onClick={() => setIsLeadModalOpen(true)}
+          >
+            Join These Success Stories
+          </Button>
+        </div>
       </div>
 
       {/* Implementation Process */}
@@ -410,6 +476,15 @@ const Business = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+              <div className="mt-8">
+                <Button 
+                  size="lg" 
+                  className="bg-halo-navy hover:bg-halo-navy/90 text-white"
+                  onClick={() => setIsLeadModalOpen(true)}
+                >
+                  Start Implementation
+                </Button>
               </div>
             </div>
             <div>
