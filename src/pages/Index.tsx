@@ -147,9 +147,9 @@ const Index = () => {
                   </Badge>
                   
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
-                    Transform your career with our comprehensive business finance and commercial lending program. 
-                    <span className="block mt-1 md:mt-2 font-medium text-black">Your Pathway to Lending Excellence.</span>
-                    <span className="hidden md:inline">Developed by industry experts and delivered through Stanford-level curriculum.</span>
+                    <span className="block font-medium text-black">Your Pathway to Lending Excellence.</span>
+                    <span className="block mt-1 md:mt-2">Transform your career with our comprehensive business finance and commercial lending program.</span>
+                    <span className="hidden md:inline block mt-1 md:mt-2">Developed by industry experts and delivered through Stanford-level curriculum.</span>
                   </p>
                 </div>
                 
