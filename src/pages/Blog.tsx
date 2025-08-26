@@ -203,7 +203,7 @@ const Blog = () => {
           alt="Professional blog and knowledge sharing environment" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">Blog & Resources</h1>
             <p className="text-sm sm:text-base md:text-lg leading-relaxed">

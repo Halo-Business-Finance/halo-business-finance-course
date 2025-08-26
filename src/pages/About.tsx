@@ -151,7 +151,7 @@ const About = () => {
           alt="Professional team collaboration" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">About Us</Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About FinPilot</h1>

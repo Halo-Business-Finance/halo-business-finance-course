@@ -140,7 +140,7 @@ const Business = () => {
           alt="Professional corporate training environment" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <div className="text-center text-white max-w-4xl mx-auto px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">Enterprise</Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Transform Your Team's Skills</h1>
@@ -433,7 +433,7 @@ const Business = () => {
             backgroundPosition: 'center'
           }}
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/40" />
         <div className="relative p-12 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Organization?</h2>
           <p className="mb-8 max-w-2xl mx-auto text-lg opacity-90">

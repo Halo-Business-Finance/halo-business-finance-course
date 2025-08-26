@@ -200,7 +200,7 @@ const Support = () => {
           alt="Professional customer support environment" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/60">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-slate-900/40">
           <div className="container mx-auto px-4 h-full flex items-center">
             <div className="max-w-2xl text-white">
               <Badge className="mb-4 bg-white/20 text-white border-white/30">Support Center</Badge>
