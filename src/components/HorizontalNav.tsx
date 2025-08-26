@@ -19,7 +19,7 @@ export const HorizontalNav = () => {
           <NavLink 
             to="/course-catalog" 
             className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-sm ${isActive ? 'text-blue-600' : ''}`
+              `text-black hover:text-blue-600 transition-colors font-medium text-sm whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`
             }
           >
             Course Catalog
