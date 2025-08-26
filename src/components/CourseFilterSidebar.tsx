@@ -129,15 +129,19 @@ const FilterContent = ({
               size="sm"
               onClick={() => handleLevelChange(level.id)}
               className={`w-full justify-between ${
-                selectedLevel === level.id && level.id !== 'all'
-                  ? getSkillLevelColor(level.id)
+                selectedLevel === level.id 
+                  ? 'bg-halo-navy hover:bg-halo-navy/90 text-white'
                   : 'justify-between'
               } transition-all duration-200`}
             >
               <span>{level.label}</span>
               <Badge 
                 variant="secondary" 
-                className="text-xs"
+                className={`text-xs ${
+                  selectedLevel === level.id 
+                    ? 'bg-halo-navy text-white border-white/20' 
+                    : ''
+                }`}
               >
                 {level.count}
               </Badge>
@@ -159,10 +163,21 @@ const FilterContent = ({
               variant={selectedCategory === category.id ? "default" : "ghost"}
               size="sm"
               onClick={() => setSelectedCategory(category.id)}
-              className="w-full justify-between"
+              className={`w-full justify-between ${
+                selectedCategory === category.id 
+                  ? 'bg-halo-navy hover:bg-halo-navy/90 text-white'
+                  : ''
+              }`}
             >
               <span>{category.label}</span>
-              <Badge variant="secondary" className="text-xs">
+              <Badge 
+                variant="secondary" 
+                className={`text-xs ${
+                  selectedCategory === category.id 
+                    ? 'bg-halo-navy text-white border-white/20' 
+                    : ''
+                }`}
+              >
                 {category.count}
               </Badge>
             </Button>
@@ -194,10 +209,21 @@ const FilterContent = ({
                   variant={selectedCategory === category.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className="w-full justify-between"
+                  className={`w-full justify-between ${
+                    selectedCategory === category.id 
+                      ? 'bg-halo-navy hover:bg-halo-navy/90 text-white'
+                      : ''
+                  }`}
                 >
                   <span>{category.label}</span>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge 
+                    variant="secondary" 
+                    className={`text-xs ${
+                      selectedCategory === category.id 
+                        ? 'bg-halo-navy text-white border-white/20' 
+                        : ''
+                    }`}
+                  >
                     {category.count}
                   </Badge>
                 </Button>
@@ -218,7 +244,11 @@ const FilterContent = ({
                   variant={selectedDuration === duration.id ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setSelectedDuration(duration.id)}
-                  className="w-full justify-start"
+                  className={`w-full justify-start ${
+                    selectedDuration === duration.id 
+                      ? 'bg-halo-navy hover:bg-halo-navy/90 text-white'
+                      : ''
+                  }`}
                 >
                   {duration.label}
                 </Button>
