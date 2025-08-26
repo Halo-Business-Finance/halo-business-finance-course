@@ -20,19 +20,19 @@ export const FinPilotBrandFooter = () => {
               
               {/* Social Media Links */}
               <div className="flex space-x-4">
-                <a href="https://linkedin.com" className="text-black hover:text-primary transition-colors">
+                <a href="https://linkedin.com" className="text-blue-700 hover:text-blue-800 transition-colors">
                   <Linkedin className="h-5 w-5" />
                   <span className="sr-only">LinkedIn</span>
                 </a>
-                <a href="https://twitter.com" className="text-black hover:text-primary transition-colors">
+                <a href="https://twitter.com" className="text-blue-700 hover:text-blue-800 transition-colors">
                   <Twitter className="h-5 w-5" />
                   <span className="sr-only">Twitter</span>
                 </a>
-                <a href="https://facebook.com" className="text-black hover:text-primary transition-colors">
+                <a href="https://facebook.com" className="text-blue-700 hover:text-blue-800 transition-colors">
                   <Facebook className="h-5 w-5" />
                   <span className="sr-only">Facebook</span>
                 </a>
-                <a href="https://instagram.com" className="text-black hover:text-primary transition-colors">
+                <a href="https://instagram.com" className="text-blue-700 hover:text-blue-800 transition-colors">
                   <Instagram className="h-5 w-5" />
                   <span className="sr-only">Instagram</span>
                 </a>
