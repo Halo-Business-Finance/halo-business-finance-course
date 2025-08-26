@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap, GraduationCap } from "lucide-react";
+import { Building2, Users, TrendingUp, Shield, Award, HeadphonesIcon, CheckCircle, Star, BarChart3, Globe, Clock, Zap, GraduationCap, Check } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
@@ -373,29 +373,32 @@ const Business = () => {
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">1</div>
                   <div>
-                    <h3 className="font-semibold mb-2">Discovery & Planning</h3>
-                    <p className="text-muted-foreground">We analyze your needs and create a customized implementation plan.</p>
+                    <h3 className="font-semibold mb-2 text-black">Discovery & Planning</h3>
+                    <p className="text-black flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      We analyze your needs and create a customized implementation plan.
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">2</div>
                   <div>
-                    <h3 className="font-semibold mb-2">Setup & Configuration</h3>
-                    <p className="text-muted-foreground">Our team handles all technical setup and integrations.</p>
+                    <h3 className="font-semibold mb-2 text-black">Setup & Configuration</h3>
+                    <p className="text-black">Our team handles all technical setup and integrations.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">3</div>
                   <div>
-                    <h3 className="font-semibold mb-2">Training & Launch</h3>
-                    <p className="text-muted-foreground">Comprehensive training for administrators and end users.</p>
+                    <h3 className="font-semibold mb-2 text-black">Training & Launch</h3>
+                    <p className="text-black">Comprehensive training for administrators and end users.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">4</div>
                   <div>
-                    <h3 className="font-semibold mb-2">Ongoing Support</h3>
-                    <p className="text-muted-foreground">Continuous support and optimization to ensure success.</p>
+                    <h3 className="font-semibold mb-2 text-black">Ongoing Support</h3>
+                    <p className="text-black">Continuous support and optimization to ensure success.</p>
                   </div>
                 </div>
               </div>
