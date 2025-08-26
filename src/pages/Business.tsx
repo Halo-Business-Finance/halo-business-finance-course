@@ -155,7 +155,7 @@ const Business = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 md:mb-8">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 md:mb-3">Trusted by Leading Organizations</h2>
-            <p className="text-white/80 max-w-xl mx-auto text-sm">
+            <p className="text-white/80 max-w-xl mx-auto text-xs">
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
