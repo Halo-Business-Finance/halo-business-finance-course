@@ -375,7 +375,7 @@ const Business = () => {
                   <div>
                     <h3 className="font-semibold mb-2 text-black">Discovery & Planning</h3>
                     <p className="text-black flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
+                      <Check className="h-4 w-4 text-halo-orange" />
                       We analyze your needs and create a customized implementation plan.
                     </p>
                   </div>
@@ -384,21 +384,30 @@ const Business = () => {
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">2</div>
                   <div>
                     <h3 className="font-semibold mb-2 text-black">Setup & Configuration</h3>
-                    <p className="text-black">Our team handles all technical setup and integrations.</p>
+                    <p className="text-black flex items-center gap-2">
+                      <Check className="h-4 w-4 text-halo-orange" />
+                      Our team handles all technical setup and integrations.
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">3</div>
                   <div>
                     <h3 className="font-semibold mb-2 text-black">Training & Launch</h3>
-                    <p className="text-black">Comprehensive training for administrators and end users.</p>
+                    <p className="text-black flex items-center gap-2">
+                      <Check className="h-4 w-4 text-halo-orange" />
+                      Comprehensive training for administrators and end users.
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold">4</div>
                   <div>
                     <h3 className="font-semibold mb-2 text-black">Ongoing Support</h3>
-                    <p className="text-black">Continuous support and optimization to ensure success.</p>
+                    <p className="text-black flex items-center gap-2">
+                      <Check className="h-4 w-4 text-halo-orange" />
+                      Continuous support and optimization to ensure success.
+                    </p>
                   </div>
                 </div>
               </div>
