@@ -186,7 +186,7 @@ const About = () => {
       </div>
 
       <div className="text-center mb-12 md:mb-16">
-        <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+        <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
           <Link to="/signup" className="flex items-center gap-2">
             <Play className="h-4 w-4" />
             Start Free Trial
@@ -215,7 +215,7 @@ const About = () => {
                     industry practices. We're committed to providing finance professionals with the skills and confidence 
                     they need to excel in commercial lending.
                   </p>
-                  <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                     <Link to="/signup" className="flex items-center gap-2">
                       <Play className="h-4 w-4" />
                       Start Free Trial
@@ -277,7 +277,7 @@ const About = () => {
                 delivers personalized learning experiences that adapt to your pace and learning style, ensuring 
                 maximum retention and real-world application.
               </p>
-              <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                 <Link to="/signup" className="flex items-center gap-2">
                   <Play className="h-4 w-4" />
                   Start Free Trial
@@ -402,7 +402,7 @@ const About = () => {
           </Card>
         </div>
         <div className="text-center mt-8">
-          <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
             <Link to="/signup" className="flex items-center gap-2">
               <Play className="h-4 w-4" />
               Start Free Trial
