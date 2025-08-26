@@ -182,9 +182,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("access-portability")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Request Data Copy
                     </Button>
@@ -196,9 +195,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("correction")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Request Correction
                     </Button>
@@ -210,9 +208,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("deletion")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Request Deletion
                     </Button>
@@ -224,9 +221,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("restriction")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Request Restriction
                     </Button>
@@ -238,9 +234,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("objection")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Object to Processing
                     </Button>
@@ -252,9 +247,8 @@ const DataSecurity = () => {
                     </p>
                     <Button 
                       onClick={() => handleRightRequest("withdraw-consent")}
-                      variant="outline" 
                       size="sm"
-                      className="w-full"
+                      className="w-full bg-navy-600 hover:bg-navy-700 text-white"
                     >
                       Withdraw Consent
                     </Button>
@@ -276,19 +270,19 @@ const DataSecurity = () => {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center">
-                    <Badge variant="outline" className="mb-3 text-sm">GDPR Compliant</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-600 text-white">GDPR Compliant</Badge>
                     <p className="text-sm text-gray-600">
                       Full compliance with European data protection regulations
                     </p>
                   </div>
                   <div className="text-center">
-                    <Badge variant="outline" className="mb-3 text-sm">CCPA Compliant</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-600 text-white">CCPA Compliant</Badge>
                     <p className="text-sm text-gray-600">
                       California Consumer Privacy Act compliance for US users
                     </p>
                   </div>
                   <div className="text-center">
-                    <Badge variant="outline" className="mb-3 text-sm">SOC 2 Type II</Badge>
+                    <Badge className="mb-3 text-sm bg-navy-600 text-white">SOC 2 Type II</Badge>
                     <p className="text-sm text-gray-600">
                       Independent audit of security, availability, and confidentiality
                     </p>
