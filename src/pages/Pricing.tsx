@@ -133,7 +133,7 @@ const Pricing = () => {
       />
       <div className="bg-white min-h-screen">
       {/* Hero Section with Image */}
-      <div className="relative h-64 sm:h-80 md:h-96 lg:h-[32rem] overflow-hidden">
+      <div className="relative h-80 sm:h-96 md:h-[28rem] lg:h-[36rem] overflow-hidden">
         <img 
           src={pricingHero} 
           alt="Professional learning online with computer" 
