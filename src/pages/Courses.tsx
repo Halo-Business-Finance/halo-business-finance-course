@@ -285,7 +285,7 @@ const Courses = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-3xl md:text-5xl font-playfair font-bold mb-6 text-white">
+              <h1 className="text-2xl md:text-4xl font-playfair font-bold mb-6 text-white">
                 Master Commercial Finance
               </h1>
               <p className="text-xl md:text-2xl mb-4 text-white">
