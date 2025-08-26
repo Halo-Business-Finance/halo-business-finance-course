@@ -279,7 +279,7 @@ const Courses = () => {
       <div className="bg-white min-h-screen">
         
         {/* Header Section */}
-        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-24 md:py-32 lg:py-40">
+        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-24 lg:py-32">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-60"
             style={{ backgroundImage: `url(${coursesHero})` }}
@@ -287,19 +287,19 @@ const Courses = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-2xl md:text-4xl font-playfair font-bold mb-6 text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
                 Master Commercial Finance
               </h1>
-              <p className="text-xl md:text-2xl mb-4 text-white">
+              <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
                 Expert-Led Courses for Finance Professionals
               </p>
-              <p className="text-lg mb-8 text-white max-w-2xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
                 Advance your career with industry-recognized certifications in commercial lending, 
                 credit analysis, and risk management. Join 10,000+ professionals who trust FinPilot.
               </p>
-              <div className="flex justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link to="/signup">
-                  <Button size="lg" className="bg-white text-halo-navy hover:bg-white/90 font-semibold px-8 py-3">
+                  <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
                     Start Free Trial
                   </Button>
                 </Link>
@@ -321,8 +321,8 @@ const Courses = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sticky Sidebar Filters */}
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Filters - Mobile sheet, Desktop sidebar */}
             <div className="lg:w-80 flex-shrink-0">
               <CourseFilterSidebar
                 selectedLevel={selectedLevel}
@@ -334,10 +334,10 @@ const Courses = () => {
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               {/* Results Header */}
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+                <h2 className="text-xl sm:text-2xl font-bold">
                   {selectedLevel === 'all' 
                     ? `Available Courses (${filteredModules.length})` 
                     : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredModules.length})`
@@ -346,7 +346,7 @@ const Courses = () => {
               </div>
 
               {/* Course Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
                 {filteredModules.map((module, index) => (
                   <Card key={module.id} className="hover:shadow-lg transition-all group">
                     <div className="relative">
