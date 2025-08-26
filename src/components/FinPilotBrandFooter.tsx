@@ -1,77 +1,113 @@
-import { Building2, Mail, Phone, Globe } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Building2, Mail, Phone, Globe, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
 
 export const FinPilotBrandFooter = () => {
   return (
-    <Card className="mt-12 bg-halo-navy text-white border-none mx-4">
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Building2 className="h-6 w-6 text-halo-orange" />
-              <h3 className="text-lg font-semibold">FinPilot</h3>
+    <footer className="bg-background border-t border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Content */}
+        <div className="py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Company Info */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <Building2 className="h-8 w-8 text-primary" />
+                <h3 className="text-2xl font-bold text-foreground">FinPilot</h3>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-md">
+                Navigate your financial future with expert guidance through comprehensive 
+                professional development and certification programs.
+              </p>
+              
+              {/* Social Media Links */}
+              <div className="flex space-x-4">
+                <a href="https://linkedin.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Linkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a href="https://twitter.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Twitter className="h-5 w-5" />
+                  <span className="sr-only">Twitter</span>
+                </a>
+                <a href="https://facebook.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Facebook className="h-5 w-5" />
+                  <span className="sr-only">Facebook</span>
+                </a>
+                <a href="https://instagram.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  <Instagram className="h-5 w-5" />
+                  <span className="sr-only">Instagram</span>
+                </a>
+              </div>
             </div>
-            <p className="text-white text-sm leading-relaxed">
-              Navigate your financial future with expert guidance through comprehensive 
-              professional development and certification programs.
+
+            {/* Contact Information */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Contact</h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Globe className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span>www.finpilot.com</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Mail className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span>training@finpilot.com</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span>1-800-FINPILOT</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Training Programs */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wider">Programs</h4>
+              <div className="space-y-2">
+                <a href="/courses" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Professional Certification
+                </a>
+                <a href="/courses" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Commercial Lending Excellence
+                </a>
+                <a href="/courses" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Business Finance Mastery
+                </a>
+                <a href="/courses" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Industry-Leading Curriculum
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="py-6 border-t border-border">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-xs text-muted-foreground">
+              © 2025 FinPilot. All rights reserved.
             </p>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-semibold mb-3 text-halo-orange">Contact Information</h4>
-            <div className="space-y-2 text-sm text-white">
-              <div className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                <span>www.finpilot.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                <span>training@finpilot.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                <span>1-800-FINPILOT</span>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-semibold mb-3 text-halo-orange">Training Program</h4>
-            <div className="text-sm text-white space-y-1">
-              <p>Professional Certification</p>
-              <p>Commercial Lending Excellence</p>
-              <p>Business Finance Mastery</p>
-              <p>Industry-Leading Curriculum</p>
+            <div className="flex space-x-6">
+              <a 
+                href="/privacy" 
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a 
+                href="/terms" 
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                Terms of Use
+              </a>
+              <a 
+                href="/data-security" 
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                Data & Security
+              </a>
             </div>
           </div>
         </div>
-        
-        <div className="mt-6 pt-6 border-t border-white/20 text-center">
-          <p className="text-xs text-white">
-            © 2025 FinPilot. All rights reserved. | Training Platform powered by advanced learning technologies.
-          </p>
-          <div className="mt-2 flex gap-4 justify-center">
-            <a 
-              href="/privacy" 
-              className="text-xs text-white hover:text-halo-orange transition-colors"
-            >
-              Privacy Policy
-            </a>
-            <a 
-              href="/terms" 
-              className="text-xs text-white hover:text-halo-orange transition-colors"
-            >
-              Terms of Use
-            </a>
-            <a 
-              href="/data-security" 
-              className="text-xs text-white hover:text-halo-orange transition-colors"
-            >
-              Data & Security
-            </a>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </footer>
   );
 };
