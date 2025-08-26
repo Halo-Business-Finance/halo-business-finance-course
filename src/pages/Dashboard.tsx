@@ -20,6 +20,9 @@ import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTool
 import { GamificationSystem } from "@/components/GamificationSystem";
 import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
 import { RealTimeMarketData } from "@/components/RealTimeMarketData";
+import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
+import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
+import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -194,11 +197,13 @@ const Dashboard = () => {
             </div>
 
             <Tabs defaultValue="modules" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 sm:w-fit">
-                <TabsTrigger value="modules" className="text-sm">Learning Modules</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 sm:w-fit">
+                <TabsTrigger value="modules" className="text-sm">Modules</TabsTrigger>
+                <TabsTrigger value="progress" className="text-sm">Progress</TabsTrigger>
+                <TabsTrigger value="assessment" className="text-sm">Assessment</TabsTrigger>
                 <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
-                <TabsTrigger value="social" className="text-sm">Social Hub</TabsTrigger>
-                <TabsTrigger value="tools" className="text-sm">Financial Tools</TabsTrigger>
+                <TabsTrigger value="social" className="text-sm">Social</TabsTrigger>
+                <TabsTrigger value="tools" className="text-sm">Tools</TabsTrigger>
                 <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
                 <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
                 <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
@@ -289,6 +294,14 @@ const Dashboard = () => {
                 )}
               </TabsContent>
 
+              <TabsContent value="progress">
+                <EnhancedProgressTracking />
+              </TabsContent>
+
+              <TabsContent value="assessment">
+                <AdvancedAssessmentSystem />
+              </TabsContent>
+
               <TabsContent value="analytics">
                 <LearningAnalytics />
               </TabsContent>
@@ -322,6 +335,9 @@ const Dashboard = () => {
           {/* FinPilot Brand Footer */}
           <FinPilotBrandFooter />
         </div>
+
+      {/* Accessibility Enhancer */}
+      <AccessibilityEnhancer />
 
       {/* Module Detail Modal */}
       {selectedModule && (

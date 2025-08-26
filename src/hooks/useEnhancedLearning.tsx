@@ -68,16 +68,20 @@ export const useEnhancedLearning = () => {
     
     try {
       // Save session to database
-      await supabase.from('learning_sessions').insert({
-        user_id: user?.id,
-        module_id: currentSession.moduleId,
-        activity_type: currentSession.activityType,
-        duration_minutes: duration,
-        focus_score: currentSession.focusScore,
-        interaction_count: currentSession.interactionCount,
-        started_at: currentSession.startTime.toISOString(),
-        ended_at: endTime.toISOString()
-      });
+      try {
+        await supabase.from('learning_sessions').insert({
+          user_id: user?.id,
+          module_id: currentSession.moduleId,
+          activity_type: currentSession.activityType,
+          duration_minutes: duration,
+          focus_score: currentSession.focusScore,
+          interaction_count: currentSession.interactionCount,
+          started_at: currentSession.startTime.toISOString(),
+          ended_at: endTime.toISOString()
+        });
+      } catch (error) {
+        console.error('Session save failed:', error);
+      }
 
       trackLearningEvent('session_end', { 
         duration, 
@@ -104,21 +108,28 @@ export const useEnhancedLearning = () => {
       const [
         { data: completions },
         { data: assessments },
-        { data: sessions },
         { data: dailyActivity },
         { data: achievements }
       ] = await Promise.all([
         supabase.from('module_completions').select('*').eq('user_id', user.id),
         supabase.from('assessment_attempts').select('*').eq('user_id', user.id),
-        supabase.from('learning_sessions').select('*').eq('user_id', user.id),
         supabase.from('daily_learning_activity').select('*').eq('user_id', user.id).order('activity_date', { ascending: false }).limit(30),
         supabase.from('learning_achievements').select('*').eq('user_id', user.id)
       ]);
 
+      // Try to get sessions data separately to handle potential missing table
+      let sessions = [];
+      try {
+        const { data: sessionData } = await supabase.from('learning_sessions').select('*').eq('user_id', user.id);
+        sessions = sessionData || [];
+      } catch (error) {
+        console.error('Learning sessions table not available:', error);
+      }
+
       // Calculate comprehensive metrics
       const totalModules = 13; // From database count
       const completedModules = completions?.length || 0;
-      const totalTime = sessions?.reduce((sum, session) => sum + (session.duration_minutes || 0), 0) || 0;
+      const totalTime = sessions?.reduce((sum: number, session: any) => sum + (session.duration_minutes || 0), 0) || 0;
       const totalScores = assessments?.reduce((sum, assessment) => sum + assessment.score, 0) || 0;
       const assessmentCount = assessments?.length || 0;
 
@@ -261,6 +272,7 @@ export const useEnhancedLearning = () => {
     if (!user?.id) return;
 
     try {
+      // Try to insert learning event, but don't fail if table doesn't exist
       await supabase.from('learning_events').insert({
         user_id: user.id,
         event_type: eventType,
@@ -272,7 +284,7 @@ export const useEnhancedLearning = () => {
         }
       });
     } catch (error) {
-      console.error('Error tracking learning event:', error);
+      console.log('Learning events tracking not available:', error);
     }
   }, [user?.id]);
 

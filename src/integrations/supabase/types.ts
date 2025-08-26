@@ -1566,6 +1566,69 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      learning_sessions: {
+        Row: {
+          activity_type: string
+          created_at: string
+          duration_minutes: number | null
+          ended_at: string | null
+          focus_score: number | null
+          id: string
+          interaction_count: number | null
+          module_id: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          duration_minutes?: number | null
+          ended_at?: string | null
+          focus_score?: number | null
+          id?: string
+          interaction_count?: number | null
+          module_id?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          duration_minutes?: number | null
+          ended_at?: string | null
+          focus_score?: number | null
+          id?: string
+          interaction_count?: number | null
+          module_id?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       learning_stats: {
         Row: {
           created_at: string
