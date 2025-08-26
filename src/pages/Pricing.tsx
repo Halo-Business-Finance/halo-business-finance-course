@@ -253,7 +253,7 @@ const Pricing = () => {
 
       {/* Testimonials Section */}
       <div className="mb-16">
-        <h2 className="text-2xl font-bold text-center mb-8">What Our Students Say</h2>
+        <h2 className="text-2xl font-bold text-center mb-8 text-black">What Our Students Say</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="p-6">
@@ -262,10 +262,10 @@ const Pricing = () => {
                   <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <p className="text-muted-foreground italic mb-4">"{testimonial.quote}"</p>
+              <p className="text-black italic mb-4">"{testimonial.quote}"</p>
               <div>
-                <p className="font-semibold">{testimonial.name}</p>
-                <p className="text-sm text-muted-foreground">{testimonial.role}, {testimonial.company}</p>
+                <p className="font-semibold text-black">{testimonial.name}</p>
+                <p className="text-sm text-black">{testimonial.role}, {testimonial.company}</p>
               </div>
             </Card>
           ))}
