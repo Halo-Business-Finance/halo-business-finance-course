@@ -6,6 +6,7 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { BlogFilterSidebar } from "@/components/BlogFilterSidebar";
 import {
   Pagination,
   PaginationContent,
@@ -27,6 +28,8 @@ import gamificationProfessional from "@/assets/gamification-professional.jpg";
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [titleFilter, setTitleFilter] = useState("");
+  const [selectedDateRange, setSelectedDateRange] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 8;
 
@@ -165,13 +168,62 @@ const Blog = () => {
 
   const categories = ["All", "Commercial Lending", "Business Finance", "SBA Loans", "USDA Loans", "Capital Markets", "Technology", "Career Development", "Risk Management"];
 
-  const filteredPosts = selectedCategory === "All" 
-    ? posts 
-    : posts.filter(post => post.category === selectedCategory);
+  // Calculate category counts
+  const categoryCounts = categories.reduce((acc, category) => {
+    if (category === "All") {
+      acc[category] = posts.length;
+    } else {
+      acc[category] = posts.filter(post => post.category === category).length;
+    }
+    return acc;
+  }, {} as Record<string, number>);
 
-  // Reset to page 1 when category changes
+  // Date filtering logic
+  const filterByDate = (post: any) => {
+    if (selectedDateRange === 'all') return true;
+    
+    const postDate = new Date(post.date);
+    const now = new Date();
+    
+    switch (selectedDateRange) {
+      case 'this-month':
+        return postDate.getMonth() === now.getMonth() && postDate.getFullYear() === now.getFullYear();
+      case 'last-3-months':
+        const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+        return postDate >= threeMonthsAgo;
+      case 'last-6-months':
+        const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+        return postDate >= sixMonthsAgo;
+      case 'this-year':
+        return postDate.getFullYear() === now.getFullYear();
+      case 'last-year':
+        return postDate.getFullYear() === now.getFullYear() - 1;
+      default:
+        return true;
+    }
+  };
+
+  // Combined filtering
+  const filteredPosts = posts.filter(post => {
+    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
+    const matchesTitle = titleFilter === '' || post.title.toLowerCase().includes(titleFilter.toLowerCase());
+    const matchesDate = filterByDate(post);
+    return matchesCategory && matchesTitle && matchesDate;
+  });
+
+  // Reset to page 1 when filters change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const handleTitleFilterChange = (title: string) => {
+    setTitleFilter(title);
+    setCurrentPage(1);
+  };
+
+  const handleDateRangeChange = (range: string) => {
+    setSelectedDateRange(range);
     setCurrentPage(1);
   };
 
@@ -196,140 +248,158 @@ const Blog = () => {
         canonicalUrl="https://finpilot.com/blog"
       />
       <div className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[40rem] overflow-hidden">
-        <img 
-          src={blogHero} 
-          alt="Professional blog and knowledge sharing environment" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">Blog & Resources</h1>
-            <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-              Stay informed with the latest insights, trends, and best practices in finance and professional development.
-            </p>
+        {/* Hero Section */}
+        <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[40rem] overflow-hidden">
+          <img 
+            src={blogHero} 
+            alt="Professional blog and knowledge sharing environment" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+            <div className="text-center text-white max-w-4xl mx-auto px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">Blog & Resources</h1>
+              <p className="text-sm sm:text-base md:text-lg leading-relaxed">
+                Stay informed with the latest insights, trends, and best practices in finance and professional development.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Content Section */}
-      <div className="container mx-auto px-4 py-8 md:py-12">
+        
+        {/* Content Section with Sidebar Layout */}
+        <div className="container mx-auto px-4 py-12">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Filters - Mobile sheet, Desktop sidebar */}
+            <div className="lg:w-80 flex-shrink-0">
+              <BlogFilterSidebar
+                selectedCategory={selectedCategory}
+                onCategoryChange={handleCategoryChange}
+                titleFilter={titleFilter}
+                onTitleFilterChange={handleTitleFilterChange}
+                selectedDateRange={selectedDateRange}
+                onDateRangeChange={handleDateRangeChange}
+                counts={{
+                  all: posts.length,
+                  ...categoryCounts
+                }}
+              />
+            </div>
 
-        <div className="flex flex-wrap gap-2 justify-center items-center mb-6 md:mb-8">
-          {categories.map((category) => (
-            <Badge 
-              key={category} 
-              onClick={() => handleCategoryChange(category)}
-              className={`cursor-pointer text-xs md:text-sm transition-all ${
-                selectedCategory === category
-                  ? "bg-transparent text-halo-orange underline underline-offset-4 decoration-2 decoration-halo-navy scale-105" 
-                  : "bg-transparent text-halo-orange hover:scale-105 border border-transparent"
-              }`}
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {currentPosts.map((post) => (
-            <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-              <div className="h-40 md:h-48 overflow-hidden">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <CardHeader className="p-4 md:p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <Badge className="text-xs bg-transparent text-halo-orange border-none">{post.category}</Badge>
-                  <span className="text-xs md:text-sm text-black">{post.readTime}</span>
-                </div>
-                <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer text-black">
-                  {post.title}
-                </CardTitle>
-                <CardDescription className="text-sm text-black">{post.excerpt}</CardDescription>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6 pt-0">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-1 text-xs md:text-sm text-black">
-                    <Calendar className="h-3 w-3 md:h-4 md:w-4" />
-                    {new Date(post.date).toLocaleDateString()}
-                  </div>
-                  <Link to={`/article/${post.id}`}>
-                    <Button className="text-xs md:text-sm bg-halo-navy text-halo-orange hover:bg-halo-navy/90" size="sm">
-                      <span className="hidden sm:inline">Read More</span>
-                      <span className="sm:hidden">Read</span>
-                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-8 md:mt-12">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-                
-                {Array.from({ length: totalPages }, (_, i) => {
-                  const page = i + 1;
-                  const showPage = 
-                    page === 1 || 
-                    page === totalPages || 
-                    Math.abs(page - currentPage) <= 1;
-                  
-                  if (!showPage) {
-                    if (page === currentPage - 2 || page === currentPage + 2) {
-                      return (
-                        <PaginationItem key={page}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-                    return null;
+            {/* Main Content Area */}
+            <div className="flex-1 min-w-0">
+              {/* Results Header */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+                <h2 className="text-xl sm:text-2xl font-bold">
+                  {selectedCategory === 'All' 
+                    ? `Latest Articles (${filteredPosts.length})` 
+                    : `${selectedCategory} Articles (${filteredPosts.length})`
                   }
-                  
-                  return (
-                    <PaginationItem key={page}>
-                      <PaginationLink
-                        onClick={() => handlePageChange(page)}
-                        isActive={currentPage === page}
-                        className="cursor-pointer"
-                      >
-                        {page}
-                      </PaginationLink>
-                    </PaginationItem>
-                  );
-                })}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                    className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        )}
+                </h2>
+              </div>
 
-        {/* Results info */}
-        <div className="text-center mt-6 text-sm text-muted-foreground">
-          Showing {startIndex + 1}-{Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} articles
-          {selectedCategory !== "All" && ` in ${selectedCategory}`}
-        </div>
+              {/* Article Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+                {currentPosts.map((post) => (
+                  <Card key={post.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                    <div className="h-40 md:h-48 overflow-hidden">
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <CardHeader className="p-4 md:p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <Badge className="text-xs bg-transparent text-halo-orange border-none">{post.category}</Badge>
+                        <span className="text-xs md:text-sm text-black">{post.readTime}</span>
+                      </div>
+                      <div className="relative inline-block">
+                        <CardTitle className="text-lg md:text-xl hover:text-primary cursor-pointer text-black">
+                          {post.title}
+                        </CardTitle>
+                        <div className="h-0.5 bg-halo-orange mt-2 w-full"></div>
+                      </div>
+                      <CardDescription className="text-sm text-black mt-2">{post.excerpt}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 md:p-6 pt-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-1 text-xs md:text-sm text-black">
+                          <Calendar className="h-3 w-3 md:h-4 md:w-4" />
+                          {new Date(post.date).toLocaleDateString()}
+                        </div>
+                        <Link to={`/article/${post.id}`}>
+                          <Button className="text-xs md:text-sm bg-halo-navy text-white hover:bg-halo-navy/90" size="sm">
+                            <span className="hidden sm:inline">Read More</span>
+                            <span className="sm:hidden">Read</span>
+                            <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-8 md:mt-12">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                          className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      
+                      {Array.from({ length: totalPages }, (_, i) => {
+                        const page = i + 1;
+                        const showPage = 
+                          page === 1 || 
+                          page === totalPages || 
+                          Math.abs(page - currentPage) <= 1;
+                        
+                        if (!showPage) {
+                          if (page === currentPage - 2 || page === currentPage + 2) {
+                            return (
+                              <PaginationItem key={page}>
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            );
+                          }
+                          return null;
+                        }
+                        
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => handlePageChange(page)}
+                              isActive={currentPage === page}
+                              className="cursor-pointer"
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                          className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+
+              {/* Results info */}
+              <div className="text-center mt-6 text-sm text-muted-foreground">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredPosts.length)} of {filteredPosts.length} articles
+                {selectedCategory !== "All" && ` in ${selectedCategory}`}
+              </div>
+            </div>
+          </div>
         </div>
         
         <FinPilotBrandFooter />
