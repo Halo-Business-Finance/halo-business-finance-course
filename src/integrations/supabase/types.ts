@@ -933,6 +933,7 @@ export type Database = {
           module_id: string
           order_index: number
           prerequisites: string[] | null
+          public_preview: boolean | null
           skill_level: Database["public"]["Enums"]["skill_level"]
           title: string
           updated_at: string
@@ -947,6 +948,7 @@ export type Database = {
           module_id: string
           order_index: number
           prerequisites?: string[] | null
+          public_preview?: boolean | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           title: string
           updated_at?: string
@@ -961,6 +963,7 @@ export type Database = {
           module_id?: string
           order_index?: number
           prerequisites?: string[] | null
+          public_preview?: boolean | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           title?: string
           updated_at?: string

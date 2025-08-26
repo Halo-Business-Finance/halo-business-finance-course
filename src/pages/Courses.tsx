@@ -232,72 +232,10 @@ const Courses = () => {
         canonicalUrl="https://finpilot.com/courses"
       />
       <div className="bg-white min-h-screen">
-      {/* Hero Section */}
-      <header className="relative h-[32rem] overflow-hidden">
-        <img 
-          src={coursesHero} 
-          alt="Professional online learning environment" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl mx-auto px-4">
-            <Badge className="mb-4 bg-white/20 text-white border-white/30">Course Catalog</Badge>
-            <h1 className="text-4xl font-bold mb-4">Master Business Finance & Lending</h1>
-            <p className="text-lg mb-6">
-              Comprehensive professional training courses designed to advance your career in finance.
-              Join 10,000+ professionals who've transformed their careers with our programs.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4" />
-                <span>25+ Expert-Led Courses</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4" />
-                <span>Industry-Recognized Certificates</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4" />
-                <span>Lifetime Access</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
       
-      {/* Content Section */}
+      {/* Content Section - Only Course Cards */}
       <div className="container mx-auto px-4 py-12">
         
-        {/* Course Categories Filter */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Browse by Category</h2>
-          <div className="flex flex-wrap gap-2">
-            {courseCategories.map((category, index) => (
-              <Badge 
-                key={index}
-                variant={index === 0 ? "default" : "outline"}
-                className="cursor-pointer hover:bg-primary hover:text-primary-foreground px-4 py-2"
-              >
-                {category}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Learning Benefits */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-center mb-8">Why Choose Our Courses?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {learningBenefits.map((benefit, index) => (
-              <Card key={index} className="text-center p-6">
-                <div className="text-3xl mb-4">{benefit.icon}</div>
-                <h3 className="font-semibold mb-2">{benefit.title}</h3>
-                <p className="text-sm text-muted-foreground">{benefit.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-
         {/* Course Grid */}
         {modules.length === 0 ? (
           <Card className="text-center py-12">
@@ -313,9 +251,6 @@ const Courses = () => {
           <>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Available Courses ({modules.length})</h2>
-              <div className="text-sm text-muted-foreground">
-                Showing all courses • Sort by: Newest First
-              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {modules.map((module, index) => (
