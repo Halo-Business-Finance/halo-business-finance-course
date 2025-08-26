@@ -627,11 +627,11 @@ const Courses = () => {
                     Start with our most popular course or explore our full catalog.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" className="bg-primary text-white">
+                    <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                       Browse All Courses
                     </Button>
                     <Link to="/signup">
-                      <Button size="lg" variant="outline">
+                      <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy">
                         Start Free Trial
                       </Button>
                     </Link>
