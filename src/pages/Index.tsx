@@ -349,8 +349,8 @@ const Index = () => {
             ].map((feature, index) => (
               <Card key={index} className="text-center border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                 <CardHeader>
-                  <div className={`w-16 h-16 bg-${feature.color}/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                    <feature.icon className={`h-8 w-8 text-${feature.color}`} />
+                  <div className="w-16 h-16 bg-halo-navy rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <feature.icon className="h-8 w-8 text-halo-orange" />
                   </div>
                   <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
                     {feature.title}
