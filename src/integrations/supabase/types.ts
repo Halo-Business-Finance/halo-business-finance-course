@@ -3059,29 +3059,26 @@ export type Database = {
     Views: {
       public_course_overview: {
         Row: {
-          description_preview: string | null
-          duration_display: string | null
           is_active: boolean | null
           module_id: string | null
-          public_preview: boolean | null
+          preview_description: string | null
+          preview_duration: string | null
           skill_level: Database["public"]["Enums"]["skill_level"] | null
           title: string | null
         }
         Insert: {
-          description_preview?: never
-          duration_display?: never
           is_active?: boolean | null
           module_id?: string | null
-          public_preview?: boolean | null
+          preview_description?: never
+          preview_duration?: never
           skill_level?: Database["public"]["Enums"]["skill_level"] | null
           title?: string | null
         }
         Update: {
-          description_preview?: never
-          duration_display?: never
           is_active?: boolean | null
           module_id?: string | null
-          public_preview?: boolean | null
+          preview_description?: never
+          preview_duration?: never
           skill_level?: Database["public"]["Enums"]["skill_level"] | null
           title?: string | null
         }
