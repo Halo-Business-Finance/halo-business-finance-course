@@ -19,13 +19,13 @@ export const MobileNav = () => {
   return (
     <div className="lg:hidden w-full">
       {/* Mobile Header with Logo and Menu Button */}
-      <div className="flex items-center justify-between w-full px-4 py-2 gap-2">
+      <div className="flex items-center justify-between w-full px-4 py-4 gap-2">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 min-w-0">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">FP</span>
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
+            <span className="text-white font-bold text-base">FP</span>
           </div>
-          <span className="text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
+          <span className="text-xl md:text-2xl font-bold text-gray-900 truncate">FinPilot</span>
         </NavLink>
 
         {/* Action Buttons and Menu */}
