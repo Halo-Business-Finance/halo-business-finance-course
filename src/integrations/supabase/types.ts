@@ -1467,6 +1467,39 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_submission_rate_limits: {
+        Row: {
+          created_at: string | null
+          first_submission_at: string | null
+          id: string
+          ip_address: unknown
+          is_blocked: boolean | null
+          last_submission_at: string | null
+          submission_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          first_submission_at?: string | null
+          id?: string
+          ip_address: unknown
+          is_blocked?: boolean | null
+          last_submission_at?: string | null
+          submission_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          first_submission_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_blocked?: boolean | null
+          last_submission_at?: string | null
+          submission_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           admin_notes: string | null
@@ -1478,6 +1511,8 @@ export type Database = {
           email: string
           first_name: string
           follow_up_date: string | null
+          form_load_time: number | null
+          honeypot_field: string | null
           id: string
           job_title: string | null
           last_contacted: string | null
@@ -1487,6 +1522,7 @@ export type Database = {
           message: string | null
           phone: string | null
           status: string
+          submission_ip: unknown | null
           timeline: string | null
           updated_at: string
         }
@@ -1500,6 +1536,8 @@ export type Database = {
           email: string
           first_name: string
           follow_up_date?: string | null
+          form_load_time?: number | null
+          honeypot_field?: string | null
           id?: string
           job_title?: string | null
           last_contacted?: string | null
@@ -1509,6 +1547,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           status?: string
+          submission_ip?: unknown | null
           timeline?: string | null
           updated_at?: string
         }
@@ -1522,6 +1561,8 @@ export type Database = {
           email?: string
           first_name?: string
           follow_up_date?: string | null
+          form_load_time?: number | null
+          honeypot_field?: string | null
           id?: string
           job_title?: string | null
           last_contacted?: string | null
@@ -1531,6 +1572,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           status?: string
+          submission_ip?: unknown | null
           timeline?: string | null
           updated_at?: string
         }
@@ -3060,6 +3102,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      check_lead_submission_rate_limit: {
+        Args: { p_ip_address: unknown }
+        Returns: Json
+      }
       check_profile_access_rate_limit: {
         Args: { p_user_id: string }
         Returns: Json
@@ -3799,6 +3845,17 @@ export type Database = {
           p_ip_address?: unknown
           p_latitude: number
           p_longitude: number
+        }
+        Returns: Json
+      }
+      validate_lead_submission: {
+        Args: {
+          p_company: string
+          p_email: string
+          p_first_name: string
+          p_form_load_time: number
+          p_honeypot: string
+          p_last_name: string
         }
         Returns: Json
       }
