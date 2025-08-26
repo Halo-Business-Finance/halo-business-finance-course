@@ -208,7 +208,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
-              <Button size="lg" className="bg-halo-navy text-white hover:bg-halo-navy/90 px-8 py-3">
+              <Button size="lg" className="bg-halo-navy text-white hover:bg-halo-navy/90 border border-white px-8 py-3">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
