@@ -68,16 +68,16 @@ export const HorizontalNav = () => {
         
         {/* Auth Buttons */}
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200 flex-shrink-0">
-          <Button variant="outline" size="sm" asChild className="text-sm bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy">
-            <NavLink to="/auth" className="flex items-center gap-2">
-              <Lock className="h-4 w-4" />
-              Sign In
-            </NavLink>
-          </Button>
           <Button size="sm" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-halo-orange text-sm">
             <NavLink to="/signup" className="flex items-center gap-2">
               Start Free Trial
               <ArrowRight className="h-4 w-4" />
+            </NavLink>
+          </Button>
+          <Button variant="outline" size="sm" asChild className="text-sm bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy">
+            <NavLink to="/auth" className="flex items-center gap-2">
+              <Lock className="h-4 w-4" />
+              Sign In
             </NavLink>
           </Button>
         </div>
