@@ -76,6 +76,13 @@ const Courses = () => {
         // Public users get course previews for marketing
         const result = await supabase
           .rpc('get_public_course_previews');
+
+        // Log access attempt for security monitoring
+        await supabase.rpc('log_course_access_attempt', {
+          module_id: 'public_preview',
+          access_type: 'course_list_access',
+          success: !!result.data && !result.error
+        });
           
         if (result.data) {
           // Transform preview data to match expected format

@@ -2,7 +2,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, BookOpen, Users, Star } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PublicModuleCardProps {
   title: string;
@@ -27,6 +29,9 @@ const PublicModuleCard = ({
   isAuthenticated,
   onEnrollClick
 }: PublicModuleCardProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const getSkillLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':
@@ -38,6 +43,23 @@ const PublicModuleCard = ({
         return 'bg-red-100 text-red-800 border-red-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const handleEnrollClick = async () => {
+    // Log access attempt for security monitoring
+    await supabase.rpc('log_course_access_attempt', {
+      module_id: moduleId,
+      access_type: user ? 'module_access_enrolled' : 'module_access_signup_redirect',
+      success: true
+    });
+
+    if (user) {
+      navigate(`/module/${moduleId}`);
+    } else {
+      navigate('/auth?tab=signup', { 
+        state: { returnTo: `/module/${moduleId}` } 
+      });
     }
   };
 
@@ -118,7 +140,7 @@ const PublicModuleCard = ({
         )}
 
         <Button 
-          onClick={handleAction}
+          onClick={handleEnrollClick}
           className="w-full"
           variant={isAuthenticated ? "default" : "default"}
         >
