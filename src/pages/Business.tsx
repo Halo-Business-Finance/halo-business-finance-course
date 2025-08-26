@@ -69,7 +69,7 @@ const Business = () => {
   const stats = [
     { label: "Enterprise Clients", value: "500+", icon: Building2 },
     { label: "User Satisfaction", value: "98%", icon: Star },
-    { label: "Adaptive Learning for All Skill Levels", value: "100%", icon: GraduationCap },
+    { label: "Adaptive Learning", value: "100%", icon: GraduationCap },
     { label: "Career Advancement", value: "85%", icon: TrendingUp }
   ];
 
