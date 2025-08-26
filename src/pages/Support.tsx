@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { HelpCircle, MessageCircle, Mail, Clock, CheckCircle, ArrowRight, Calendar, Phone, Building, User } from "lucide-react";
+import { HelpCircle, MessageCircle, Mail, Clock, CheckCircle, ArrowRight, Calendar, Phone, Building, User, ThumbsUp, ThumbsDown, Search } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
@@ -19,6 +19,19 @@ const Support = () => {
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'sales' | 'demo'>('sales');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [faqFeedback, setFaqFeedback] = useState<Record<number, 'helpful' | 'not-helpful' | null>>({});
+  // Handle FAQ feedback
+  const handleFeedback = (index: number, feedback: 'helpful' | 'not-helpful') => {
+    setFaqFeedback(prev => ({ ...prev, [index]: feedback }));
+    toast({
+      title: feedback === 'helpful' ? "Thank you!" : "Thanks for your feedback",
+      description: feedback === 'helpful' 
+        ? "We're glad this answer was helpful." 
+        : "We'll work on improving this answer.",
+    });
+  };
+
   // Flattened FAQ structure for minimalist design
   const allFaqs = [
     {
@@ -122,6 +135,30 @@ const Support = () => {
       answer: "You can pause your subscription at any time through your account settings. Your progress is saved, and you can resume whenever you're ready. For course withdrawals, contact support for assistance."
     }
   ];
+
+  // Filter FAQs based on search term
+  const filteredFaqs = allFaqs.filter(faq =>
+    faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Dynamic FAQ ordering - show most relevant first (could be enhanced with user data)
+  const dynamicFaqs = filteredFaqs.sort((a, b) => {
+    // Prioritize popular/getting started questions for anonymous users
+    const popularQuestions = [
+      "What is an online course and how does it work?",
+      "How long is the free trial?",
+      "How do I sign up for a course?"
+    ];
+    
+    const aIndex = popularQuestions.indexOf(a.question);
+    const bIndex = popularQuestions.indexOf(b.question);
+    
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return 0;
+  });
 
   const supportOptions = [
     {
@@ -317,26 +354,95 @@ const Support = () => {
                 </div>
               </div>
               
+              {/* FAQ Search */}
+              <div className="mb-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Search frequently asked questions..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-10 border-muted focus:border-primary"
+                  />
+                </div>
+                {searchTerm && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {filteredFaqs.length} result{filteredFaqs.length !== 1 ? 's' : ''} found
+                  </p>
+                )}
+              </div>
+              
               {/* Minimalist Interactive Accordion */}
-              <div className="max-h-96 overflow-y-auto">
-                <Accordion type="single" collapsible className="w-full space-y-0">
-                  {allFaqs.map((faq, index) => (
-                    <AccordionItem 
-                      key={index} 
-                      value={`item-${index}`}
-                      className="border-0 border-b border-muted last:border-b-0"
+              <div className="max-h-80 overflow-y-auto">
+                {dynamicFaqs.length === 0 ? (
+                  <div className="text-center py-8">
+                    <HelpCircle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">No FAQs match your search.</p>
+                    <Button 
+                      variant="link" 
+                      className="text-primary p-0 h-auto mt-2"
+                      onClick={() => setSearchTerm('')}
                     >
-                      <AccordionTrigger className="py-4 px-0 text-left hover:no-underline hover:bg-muted/50 transition-colors rounded-none group">
-                        <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors pr-4">
-                          {faq.question}
-                        </span>
-                      </AccordionTrigger>
-                      <AccordionContent className="pb-4 pt-0 px-0 text-sm text-muted-foreground leading-relaxed animate-accordion-down">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                      Clear search
+                    </Button>
+                  </div>
+                ) : (
+                  <Accordion type="single" collapsible className="w-full space-y-0">
+                    {dynamicFaqs.map((faq, index) => (
+                      <AccordionItem 
+                        key={index} 
+                        value={`item-${index}`}
+                        className="border-0 border-b border-muted last:border-b-0"
+                      >
+                        <AccordionTrigger className="py-4 px-0 text-left hover:no-underline hover:bg-muted/50 transition-colors rounded-none group">
+                          <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors pr-4">
+                            {faq.question}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 pt-0 px-0 space-y-4">
+                          <div className="text-sm text-muted-foreground leading-relaxed animate-accordion-down">
+                            {faq.answer}
+                          </div>
+                          
+                          {/* Feedback Section */}
+                          <div className="border-t border-muted pt-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">Was this helpful?</span>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant={faqFeedback[index] === 'helpful' ? 'default' : 'ghost'}
+                                  size="sm"
+                                  className="h-8 px-3"
+                                  onClick={() => handleFeedback(index, 'helpful')}
+                                >
+                                  <ThumbsUp className="h-3 w-3 mr-1" />
+                                  <span className="text-xs">Yes</span>
+                                </Button>
+                                <Button
+                                  variant={faqFeedback[index] === 'not-helpful' ? 'destructive' : 'ghost'}
+                                  size="sm"
+                                  className="h-8 px-3"
+                                  onClick={() => handleFeedback(index, 'not-helpful')}
+                                >
+                                  <ThumbsDown className="h-3 w-3 mr-1" />
+                                  <span className="text-xs">No</span>
+                                </Button>
+                              </div>
+                            </div>
+                            {faqFeedback[index] && (
+                              <p className="text-xs text-muted-foreground mt-2">
+                                {faqFeedback[index] === 'helpful' 
+                                  ? "✓ Thank you for your feedback!" 
+                                  : "We'll work on improving this answer."}
+                              </p>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                )}
               </div>
             </Card>
           </div>
