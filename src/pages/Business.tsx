@@ -130,7 +130,7 @@ const Business = () => {
         title="Enterprise Solutions | FinPilot for Organizations"
         description="Scale your team's finance expertise with FinPilot's enterprise learning platform. Custom branding, advanced analytics, and dedicated support for organizations of all sizes."
         keywords="enterprise training solutions, business learning platform, corporate finance training, team development, LMS for business, enterprise education"
-        canonicalUrl="https://finpilot.com/business"
+        canonicalUrl="https://finpilot.com/enterprise"
       />
       <div className="bg-white min-h-screen">
       {/* Hero Section */}

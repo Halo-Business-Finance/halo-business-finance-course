@@ -62,16 +62,16 @@ export const FinPilotBrandFooter = () => {
             <div>
               <h4 className="text-sm font-semibold text-black mb-4 uppercase tracking-wider">Programs</h4>
               <div className="space-y-2">
-                <a href="/courses" className="block text-sm text-black hover:text-primary transition-colors">
+                <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
                   Professional Certification
                 </a>
-                <a href="/courses" className="block text-sm text-black hover:text-primary transition-colors">
+                <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
                   Commercial Lending Excellence
                 </a>
-                <a href="/courses" className="block text-sm text-black hover:text-primary transition-colors">
+                <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
                   Business Finance Mastery
                 </a>
-                <a href="/courses" className="block text-sm text-black hover:text-primary transition-colors">
+                <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
                   Industry-Leading Curriculum
                 </a>
               </div>

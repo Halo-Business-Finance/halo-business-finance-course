@@ -274,7 +274,7 @@ const Courses = () => {
         title="Professional Finance Courses | Business Finance Training & Commercial Lending"
         description="Explore 25+ expert-led finance courses covering commercial lending, credit analysis, SBA loans, and risk management. Industry-recognized certifications with lifetime access."
         keywords="finance courses, commercial lending training, credit analysis certification, SBA loan courses, business finance education, professional development"
-        canonicalUrl="https://finpilot.com/courses"
+        canonicalUrl="https://finpilot.com/course-catalog"
       />
       <div className="bg-white min-h-screen">
         

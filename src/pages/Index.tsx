@@ -449,7 +449,7 @@ const Index = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/courses">
+                <Link to="/course-catalog">
                   <Button variant="outline" className="text-base px-6 py-3 border-white text-white bg-transparent hover:bg-white hover:text-halo-navy">
                     <Shield className="mr-2 h-4 w-4" />
                     Learn More
