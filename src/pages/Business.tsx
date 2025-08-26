@@ -157,7 +157,7 @@ const Business = () => {
         <div className="text-center mb-12">
           <Badge className="mb-4">Enterprise Features</Badge>
           <h2 className="text-3xl font-bold mb-4">Everything Your Organization Needs</h2>
-          <p className="text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-black max-w-3xl mx-auto">
             Our enterprise platform is designed to scale with your organization and deliver measurable results.
           </p>
         </div>
