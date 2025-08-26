@@ -7,11 +7,14 @@ import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CourseHeader from "@/components/CourseHeader";
 import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
+import { LearningAnalytics } from "@/components/LearningAnalytics";
+import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -192,6 +195,32 @@ const Dashboard = () => {
               </TabsList>
 
               <TabsContent value="modules" className="space-y-6">
+                {/* Learning Analytics Section */}
+                <Card className="mb-6">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BookOpen className="h-5 w-5" />
+                      Learning Analytics
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <LearningAnalytics />
+                  </CardContent>
+                </Card>
+
+                {/* Interactive Learning Path */}
+                <Card className="mb-6">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5" />
+                      Your Learning Journey
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <InteractiveLearningPath />
+                  </CardContent>
+                </Card>
+
                 <SkillLevelFilter
                   selectedLevel={selectedSkillLevel}
                   onLevelChange={setSelectedSkillLevel}
