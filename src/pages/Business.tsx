@@ -159,7 +159,7 @@ const Business = () => {
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex justify-center gap-8 md:gap-12">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
