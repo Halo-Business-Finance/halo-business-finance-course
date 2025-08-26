@@ -15,6 +15,11 @@ import InstructorInfo from "@/components/InstructorInfo";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { LearningAnalytics } from "@/components/LearningAnalytics";
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
+import { SocialLearningHub } from "@/components/SocialLearningHub";
+import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
+import { GamificationSystem } from "@/components/GamificationSystem";
+import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
+import { RealTimeMarketData } from "@/components/RealTimeMarketData";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -189,8 +194,14 @@ const Dashboard = () => {
             </div>
 
             <Tabs defaultValue="modules" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 sm:w-fit">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 sm:w-fit">
                 <TabsTrigger value="modules" className="text-sm">Learning Modules</TabsTrigger>
+                <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
+                <TabsTrigger value="social" className="text-sm">Social Hub</TabsTrigger>
+                <TabsTrigger value="tools" className="text-sm">Financial Tools</TabsTrigger>
+                <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
+                <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
+                <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
                 <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
               </TabsList>
 
@@ -262,7 +273,7 @@ const Dashboard = () => {
                           />
                         ))}
                       </div>
-                    )}
+                )}
 
                     {filteredModules.length === 0 && enhancedModules.length > 0 && (
                       <div className="text-center py-12">
@@ -276,6 +287,30 @@ const Dashboard = () => {
                     )}
                   </>
                 )}
+              </TabsContent>
+
+              <TabsContent value="analytics">
+                <LearningAnalytics />
+              </TabsContent>
+
+              <TabsContent value="social">
+                <SocialLearningHub />
+              </TabsContent>
+
+              <TabsContent value="tools">
+                <InteractiveFinancialTools />
+              </TabsContent>
+
+              <TabsContent value="gamification">
+                <GamificationSystem />
+              </TabsContent>
+
+              <TabsContent value="adaptive">
+                <AdaptiveLearningEngine />
+              </TabsContent>
+
+              <TabsContent value="market">
+                <RealTimeMarketData />
               </TabsContent>
 
               <TabsContent value="resources">
