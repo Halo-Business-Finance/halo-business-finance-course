@@ -272,13 +272,13 @@ const Business = () => {
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>
-          <div className="flex justify-center gap-12 md:gap-16 lg:gap-24">
+          <div className="grid grid-cols-2 md:flex md:justify-center gap-6 md:gap-12 lg:gap-16 xl:gap-24">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
                 <div key={index} className="text-center text-white">
-                  <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
-                    <Icon className="h-5 w-5 md:h-7 md:w-7 lg:h-8 lg:w-8 text-halo-orange" />
+                  <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                    <Icon className="h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 text-halo-orange" />
                   </div>
                   <div className="text-lg md:text-2xl lg:text-3xl font-bold mb-1">{stat.value}</div>
                   <div className="text-white/80 text-xs md:text-sm lg:text-base leading-tight">{stat.label}</div>
