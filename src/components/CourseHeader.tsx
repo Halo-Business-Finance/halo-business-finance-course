@@ -13,7 +13,7 @@ interface CourseHeaderProps {
 
 const CourseHeader = ({ progress, totalModules, completedModules, onContinueLearning }: CourseHeaderProps) => {
   return (
-    <div className="relative overflow-hidden bg-gradient-hero rounded-2xl shadow-hero border border-border">
+    <div className="relative overflow-hidden bg-halo-navy rounded-2xl shadow-hero border border-border">
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
       <div className="relative px-8 py-12 lg:px-12 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
