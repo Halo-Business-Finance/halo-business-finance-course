@@ -14,6 +14,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { SecurityMonitor } from "@/components/SecurityMonitor";
 import { NotificationBell } from "@/components/NotificationBell";
+import { LiveChatSupport } from "@/components/LiveChatSupport";
 import { createTestNotifications } from "@/utils/createTestNotifications";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
@@ -43,7 +44,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-const HeaderContent = () => {
+const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; setIsChatOpen: (open: boolean) => void }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -146,7 +147,7 @@ const HeaderContent = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/support')}
+              onClick={() => setIsChatOpen(true)}
               className="text-black hover:bg-black/10 p-1 h-8 w-8 flex-shrink-0"
               title="Support"
             >
@@ -177,13 +178,14 @@ const HeaderContent = () => {
 
 const AppContent = () => {
   const { user, loading } = useAuth();
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex w-full">
       {user && <AppSidebar />}
       
       <div className="flex-1 flex flex-col min-w-0">
-        <HeaderContent />
+        <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
 
         <main className="flex-1 relative z-10 bg-white">
           <Routes>
@@ -249,6 +251,9 @@ const AppContent = () => {
           </Routes>
         </main>
       </div>
+
+      {/* Live Chat Support */}
+      <LiveChatSupport isOpen={isChatOpen} onOpenChange={setIsChatOpen} />
     </div>
   );
 };
