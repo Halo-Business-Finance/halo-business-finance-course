@@ -36,6 +36,25 @@ export interface Video {
   youtubeId?: string;
 }
 
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
+export interface Assessment {
+  id: string;
+  moduleId: string;
+  title: string;
+  description: string;
+  questions: QuizQuestion[];
+  passingScore: number;
+  timeLimit?: number;
+  maxAttempts: number;
+}
+
 export interface Module {
   id: string;
   title: string;
@@ -49,6 +68,8 @@ export interface Module {
   videos: Video[];
   caseStudies: CaseStudy[];
   scripts: Script[];
+  quiz: Assessment;
+  finalTest?: Assessment;
 }
 
 export interface CourseData {
@@ -61,17 +82,28 @@ export interface CourseData {
 export const courseData: CourseData = {
   totalProgress: 0,
   completedModules: 0,
-  totalModules: 8,
+  totalModules: 7,
   modules: [
     {
       id: "foundations",
       title: "Halo Business Finance Foundations",
       description: "Master the core business finance principles used at Halo Business Finance. This comprehensive module covers financial statement analysis, risk assessment, and decision-making frameworks essential for success in commercial lending and business finance.",
-      duration: "2.5 hours",
-      lessons: 12,
+      duration: "3.5 hours",
+      lessons: 10,
       progress: 85,
       status: "completed",
-      topics: ["Halo's Financial Analysis Framework", "Commercial Lending Principles", "Risk Assessment Methodologies", "Working Capital Solutions", "Financial Ratios & Metrics", "Cash Flow Analysis for Business Loans"],
+      topics: [
+        "Halo's Financial Analysis Framework", 
+        "Commercial Lending Principles", 
+        "Risk Assessment Methodologies", 
+        "Working Capital Solutions", 
+        "Financial Ratios & Metrics", 
+        "Cash Flow Analysis for Business Loans",
+        "Credit Decision Making Process",
+        "Customer Relationship Management",
+        "Regulatory Compliance Overview",
+        "Documentation and Due Diligence"
+      ],
       videos: [
         {
           title: "Welcome to Halo Business Finance Training",
@@ -227,17 +259,45 @@ export const courseData: CourseData = {
             "Explain why these ratios matter for lending decisions"
           ]
         }
-      ]
+      ],
+      quiz: {
+        id: "foundations-quiz",
+        moduleId: "foundations",
+        title: "Business Finance Foundations Quiz",
+        description: "Test your understanding of core business finance principles and Halo's methodologies.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the minimum debt service coverage ratio typically required for commercial loans?",
+            options: ["1.00x", "1.25x", "1.50x", "2.00x"],
+            correctAnswer: 1,
+            explanation: "Most lenders require a minimum debt service coverage ratio of 1.25x to ensure adequate cash flow to service debt."
+          }
+          // 19 more questions would be added here
+        ]
+      }
     },
     {
       id: "capital-markets",
       title: "Halo Capital Markets & Lending Systems",
       description: "Explore capital markets through Halo Business Finance's perspective. Learn how institutional funding, secondary markets, and capital allocation impact commercial lending decisions and portfolio management strategies.",
-      duration: "3 hours",
-      lessons: 15,
+      duration: "3.5 hours",
+      lessons: 8,
       progress: 45,
       status: "in-progress",
-      topics: ["Primary vs Secondary Markets", "Equity Markets", "Bond Markets", "Market Efficiency Theory", "Institutional Investors", "Trading Systems", "Market Regulation"],
+      topics: [
+        "Primary vs Secondary Markets", 
+        "Equity Markets & Valuation", 
+        "Bond Markets & Fixed Income", 
+        "Market Efficiency Theory", 
+        "Institutional Investors & Market Makers", 
+        "Trading Systems & Technology", 
+        "Market Regulation & Compliance",
+        "Risk Management in Capital Markets"
+      ],
       videos: [
         {
           title: "Capital Markets Overview & Structure",
@@ -362,7 +422,26 @@ export const courseData: CourseData = {
             "Assess market timing and interest rate environment"
           ]
         }
-      ]
+      ],
+      quiz: {
+        id: "capital-markets-quiz",
+        moduleId: "capital-markets", 
+        title: "Capital Markets & Lending Systems Quiz",
+        description: "Test your knowledge of capital markets, institutional funding, and lending systems.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the primary difference between primary and secondary markets?",
+            options: ["Primary markets trade existing securities", "Secondary markets issue new securities", "Primary markets issue new securities", "There is no difference"],
+            correctAnswer: 2,
+            explanation: "Primary markets are where new securities are issued, while secondary markets trade existing securities."
+          }
+          // 19 more questions would be added here
+        ]
+      }
     },
     {
       id: "sba-loans",
@@ -519,166 +598,45 @@ export const courseData: CourseData = {
             "Emphasize benefits: lower down payment, longer terms, competitive rates"
           ]
         }
-      ]
-    },
-    {
-      id: "conventional-loans",
-      title: "Conventional Business Lending",
-      description: "Master traditional bank lending products including term loans, lines of credit, equipment financing, and commercial real estate loans. Understand underwriting standards and pricing.",
-      duration: "2.5 hours",
-      lessons: 13,
-      progress: 25,
-      status: "in-progress",
-      topics: ["Term Loans", "Lines of Credit", "Equipment Financing", "Commercial Real Estate", "Underwriting Standards", "Credit Analysis", "Loan Pricing", "Collateral Requirements"],
-      videos: [
-        {
-          title: "Commercial Term Loans & Underwriting",
-          description: "Understanding traditional term loan structures and bank underwriting",
-          duration: "34:15",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Lines of Credit & Working Capital Solutions",
-          description: "Revolving credit facilities and managing business cash flow",
-          duration: "27:30",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Equipment Financing Strategies",
-          description: "Financing business equipment and machinery purchases",
-          duration: "23:45",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Commercial Real Estate Lending",
-          description: "CRE loan structures, LTV ratios, and DSCR requirements",
-          duration: "31:20",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        }
       ],
-      loanExamples: [
-        {
-          title: "Commercial Real Estate Acquisition",
-          scenario: "Industrial Partners LLC wants to purchase a warehouse facility for $1.2 million to consolidate their distribution operations.",
-          loanAmount: "$1,200,000",
-          loanType: "Commercial Real Estate Term Loan",
-          borrowerProfile: "Established distribution company with 15 years in business",
-          keyLearningPoints: [
-            "Analyze debt service coverage ratio requirements (typically 1.25x minimum)",
-            "Evaluate loan-to-value ratios for commercial real estate (typically 75-80%)",
-            "Structure amortization and balloon payment terms",
-            "Assess environmental and appraisal requirements"
-          ]
-        },
-        {
-          title: "Manufacturing Equipment Financing",
-          scenario: "Precision Manufacturing needs $500,000 to purchase new CNC machines to meet increased customer demand.",
-          loanAmount: "$500,000",
-          loanType: "Equipment Term Loan",
-          borrowerProfile: "Manufacturing company with strong order backlog and 12 years experience",
-          keyLearningPoints: [
-            "Match loan term to equipment useful life",
-            "Use equipment as primary collateral",
-            "Evaluate technology obsolescence risk",
-            "Structure seasonal payment options if applicable"
-          ]
-        },
-        {
-          title: "Business Line of Credit",
-          scenario: "Seasonal Sports Retailer needs a $200,000 revolving credit facility to manage inventory purchases and seasonal cash flow variations.",
-          loanAmount: "$200,000",
-          loanType: "Revolving Line of Credit",
-          borrowerProfile: "Seasonal retail business with 7 years operating history",
-          keyLearningPoints: [
-            "Structure revolving vs. non-revolving facilities",
-            "Set appropriate borrowing base on accounts receivable and inventory",
-            "Establish seasonal advance rates and cleanup periods",
-            "Monitor covenant compliance throughout the year"
-          ]
-        }
-      ],
-      caseStudies: [
-        {
-          title: "Distribution Company Warehouse Acquisition",
-          company: "Atlantic Logistics Partners",
-          situation: "Growing distribution company operating from leased facilities for 8 years. Found ideal warehouse for purchase at $2.1M. Strong cash flows but limited liquid assets for large down payment.",
-          challenge: "Needed to structure commercial real estate financing with acceptable loan-to-value ratio, meet debt service coverage requirements, coordinate with seller's timeline, and maintain working capital for operations.",
-          solution: "Structured 75% LTV commercial mortgage ($1.575M) with 25-year amortization and 7-year balloon. Required 1.35x debt service coverage ratio. Negotiated 60-day closing to accommodate due diligence.",
-          outcome: "Successfully purchased and occupied facility. Eliminated $18K monthly rent payments. Property appreciated 12% annually. Used equity buildup to finance expansion into adjacent markets.",
-          lessonsLearned: [
-            "Owner-occupied CRE provides stability and equity building",
-            "DSCR requirements must account for rent savings in occupied properties",
-            "Balloon payment structure requires refinancing planning",
-            "Real estate equity becomes valuable collateral for future growth"
-          ]
-        },
-        {
-          title: "Equipment Financing for Manufacturing Expansion", 
-          company: "Precision Machining Solutions",
-          situation: "Job shop manufacturer with strong order backlog needs $750K for new CNC equipment to meet demand. Equipment will increase capacity by 40% and improve margins through automation.",
-          challenge: "Large equipment purchase relative to company size, technology obsolescence risk, seasonal cash flow patterns affecting debt service, and need to maintain working capital during expansion.",
-          solution: "Structured equipment term loan matching 7-year useful life with seasonal payment adjustments. Equipment serves as primary collateral. Included technology upgrade provision for early refinancing.",
-          outcome: "Installed equipment ahead of schedule, achieved 35% capacity increase and 8% margin improvement. Seasonal payment structure managed cash flow effectively. Early technology upgrade option proved valuable after 4 years.",
-          lessonsLearned: [
-            "Match loan terms to equipment useful life and business cash flows",
-            "Technology provisions important for rapidly evolving equipment",
-            "Seasonal payment structures accommodate cyclical businesses",
-            "Equipment financing enables growth that creates additional debt capacity"
-          ]
-        }
-      ],
-      scripts: [
-        {
-          title: "Commercial Real Estate Loan Structuring",
-          scenario: "Discussing CRE loan structure and requirements with business owner",
-          dialogues: [
-            {
-              speaker: "Commercial Lender",
-              text: "Let's discuss structuring your commercial real estate purchase. The property is listed at $1.8M - what's your intended use and down payment capability?"
-            },
-            {
-              speaker: "Business Owner",
-              text: "We'll occupy 100% as our headquarters and warehouse. We can put down about $300K, maybe $350K if needed."
-            },
-            {
-              speaker: "Commercial Lender",
-              text: "That's about 17-19% down. For owner-occupied properties, we typically require 20-25% down. The good news is owner-occupied rates are more favorable than investment property."
-            },
-            {
-              speaker: "Business Owner",
-              text: "What about the debt service coverage ratio? Our rent is currently $12K monthly."
-            },
-            {
-              speaker: "Commercial Lender", 
-              text: "Excellent point. We'll add back your current rent when calculating DSCR since you'll save that expense. With your cash flow plus rent savings, you should easily meet our 1.25x minimum coverage requirement."
-            }
-          ],
-          keyPoints: [
-            "Owner-occupied properties have different LTV and rate structures",
-            "Include rent savings in debt service coverage calculations",
-            "Minimum down payment requirements vary by property type",
-            "Emphasize equity building benefits of ownership vs leasing"
-          ]
-        }
-      ]
+      quiz: {
+        id: "sba-lending-quiz", 
+        moduleId: "sba-lending",
+        title: "SBA Lending & Government Programs Quiz",
+        description: "Test your understanding of SBA loan programs, eligibility requirements, and application processes.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the maximum loan amount for an SBA 7(a) loan?",
+            options: ["$2 million", "$5 million", "$10 million", "$15 million"],
+            correctAnswer: 1,
+            explanation: "The maximum SBA 7(a) loan amount is $5 million."
+          }
+          // 19 more questions would be added here
+        ]
+      }
     },
     {
       id: "bridge-loans",
       title: "Bridge Financing & Short-Term Solutions",
       description: "Explore bridge loans, asset-based lending, and other short-term financing solutions. Learn when and how to structure these products for optimal client outcomes.",
-      duration: "1.5 hours",
+      duration: "2.5 hours",
       lessons: 8,
       progress: 0,
       status: "locked",
-      topics: ["Bridge Loan Structures", "Asset-Based Lending", "Invoice Factoring", "Short-Term Financing", "Exit Strategies", "Risk Mitigation", "Pricing Models"],
+      topics: [
+        "Bridge Loan Structures & Timing", 
+        "Asset-Based Lending Fundamentals", 
+        "Invoice Factoring & Receivables Finance", 
+        "Short-Term Financing Solutions", 
+        "Exit Strategies & Takeout Planning", 
+        "Risk Mitigation & Collateral Management", 
+        "Pricing Models & Fee Structures",
+        "Due Diligence & Underwriting Speed"
+      ],
       videos: [
         {
           title: "Bridge Loan Fundamentals",
@@ -809,17 +767,46 @@ export const courseData: CourseData = {
             "Track record and experience significantly impact approval and pricing"
           ]
         }
-      ]
+      ],
+      quiz: {
+        id: "cre-equipment-quiz",
+        moduleId: "cre-equipment", 
+        title: "Commercial Real Estate & Equipment Financing Quiz",
+        description: "Test your knowledge of CRE lending, equipment financing, and collateral evaluation.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the typical loan-to-value ratio for owner-occupied commercial real estate?",
+            options: ["70-75%", "75-80%", "80-85%", "85-90%"],
+            correctAnswer: 1,
+            explanation: "Owner-occupied commercial real estate typically has an LTV of 75-80%."
+          }
+          // 19 more questions would be added here
+        ]
+      }
     },
     {
       id: "alternative-finance",
       title: "Alternative Financing Solutions",
       description: "Comprehensive overview of non-traditional financing options including merchant cash advances, revenue-based financing, and peer-to-peer lending platforms.",
-      duration: "2 hours",
-      lessons: 11,
+      duration: "3 hours",
+      lessons: 9,
       progress: 0,
       status: "locked",
-      topics: ["Merchant Cash Advances", "Revenue-Based Financing", "P2P Lending", "Crowdfunding", "Fintech Solutions", "Alternative Credit Scoring", "Industry Trends"],
+      topics: [
+        "Merchant Cash Advances & Daily Repayment", 
+        "Revenue-Based Financing Models", 
+        "P2P Lending & Marketplace Platforms", 
+        "Crowdfunding & Community Finance", 
+        "Fintech Solutions & Digital Lending", 
+        "Alternative Credit Scoring Methods", 
+        "Industry Trends & Future Outlook",
+        "Regulatory Considerations",
+        "Client Counseling on Alternative Options"
+      ],
       videos: [
         {
           title: "Merchant Cash Advances Explained",
@@ -958,173 +945,45 @@ export const courseData: CourseData = {
             "Best suited for businesses with consistent card processing volume"
           ]
         }
-      ]
-    },
-    {
-      id: "credit-risk",
-      title: "Credit Analysis & Risk Management",
-      description: "Advanced credit analysis techniques, risk assessment methodologies, and portfolio management strategies used in commercial lending and business finance.",
-      duration: "2.5 hours",
-      lessons: 12,
-      progress: 0,
-      status: "locked",
-      topics: ["Financial Statement Analysis", "Cash Flow Modeling", "Industry Analysis", "Credit Scoring Models", "Portfolio Risk", "Loss Mitigation", "Regulatory Compliance"],
-      videos: [
-        {
-          title: "Advanced Financial Statement Analysis",
-          description: "Deep dive techniques for analyzing borrower financial health",
-          duration: "42:15",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Cash Flow Modeling & Projections",
-          description: "Building accurate cash flow models for credit decisions",
-          duration: "38:30",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Industry Risk Analysis",
-          description: "Evaluating sector-specific risks and market conditions",
-          duration: "31:45",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        {
-          title: "Credit Scoring & Risk Models",
-          description: "Modern credit scoring techniques and risk assessment tools",
-          duration: "29:20",
-          videoType: "youtube",
-          youtubeId: "dQw4w9WgXcQ",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        }
       ],
-      loanExamples: [
-        {
-          title: "Turnaround Financing Analysis",
-          scenario: "Manufacturing Solutions Inc. has declining profits and needs $400,000 to restructure operations and return to profitability.",
-          loanAmount: "$400,000",
-          loanType: "Turnaround/Workout Financing",
-          borrowerProfile: "Established manufacturer experiencing temporary financial difficulties",
-          keyLearningPoints: [
-            "Conduct deep-dive financial statement analysis to identify core problems",
-            "Build 13-week cash flow projections to ensure viability",
-            "Evaluate management team's turnaround capabilities",
-            "Structure enhanced monitoring and reporting requirements",
-            "Assess industry trends and competitive position"
-          ]
-        },
-        {
-          title: "Multi-Location Retail Credit Analysis",
-          scenario: "Regional Retail Chain wants $1.5 million to open 5 new locations but has inconsistent performance across existing stores.",
-          loanAmount: "$1,500,000",
-          loanType: "Multi-Location Expansion Loan",
-          borrowerProfile: "Retail chain with 15 existing locations, mixed performance",
-          keyLearningPoints: [
-            "Analyze same-store sales trends and location-specific performance",
-            "Evaluate market saturation and demographic analysis for new locations",
-            "Build comprehensive cash flow model incorporating expansion timeline",
-            "Assess management depth and operational scalability",
-            "Structure phased funding based on performance milestones"
-          ]
-        },
-        {
-          title: "Seasonal Business Risk Assessment",
-          scenario: "Holiday Decorations Warehouse needs $250,000 to fund inventory purchases, with 80% of annual sales occurring in Q4.",
-          loanAmount: "$250,000",
-          loanType: "Seasonal Term Loan",
-          borrowerProfile: "Seasonal wholesale business with 10-year track record",
-          keyLearningPoints: [
-            "Model seasonal cash flow patterns and working capital needs",
-            "Evaluate inventory management and obsolescence risks",
-            "Structure seasonal payment schedules aligned with cash generation",
-            "Assess weather and economic sensitivity impacts",
-            "Build stress testing scenarios for poor seasons"
-          ]
-        }
-      ],
-      caseStudies: [
-        {
-          title: "Manufacturing Turnaround Credit Analysis",
-          company: "Heritage Metal Works",
-          situation: "Family-owned manufacturing company with 40-year history experiencing declining margins due to foreign competition. Seeks $1M credit facility to modernize equipment and streamline operations.",
-          challenge: "Three consecutive years of declining profits, aging equipment affecting quality, increased competition from lower-cost imports, family succession planning uncertainties, and tight cash flows limiting investment capability.",
-          solution: "Comprehensive 13-week cash flow analysis, industry benchmarking study, management assessment, and operational improvement plan. Structured credit facility with performance milestones and enhanced reporting requirements.",
-          outcome: "Company invested in automation reducing labor costs 25%. Quality improvements won back key customers. EBITDA improved from $200K to $850K over 18 months. Successfully transitioned to next generation management.",
-          lessonsLearned: [
-            "Turnaround situations require operational analysis beyond financial metrics",
-            "Management capability assessment crucial for distressed lending", 
-            "Performance milestones protect lender while supporting borrower success",
-            "Industry trends analysis helps predict future viability"
-          ]
-        },
-        {
-          title: "Retail Chain Expansion Risk Assessment",
-          company: "Regional Home Goods Stores",
-          situation: "Successful 12-store retail chain wants to expand into new metropolitan market with 8 new locations over 24 months. Requesting $3M credit facility to fund buildouts and inventory.",
-          challenge: "Unproven market penetration strategy, significant capital requirements relative to current cash flows, execution risk of rapid expansion, competitive landscape analysis, and inventory management complexity.",
-          solution: "Detailed market analysis of expansion area, store-level profitability modeling, phased funding approach tied to performance metrics, comprehensive competitive assessment, and inventory management system evaluation.",
-          outcome: "Approved phased expansion with funding tied to same-store sales growth and new store performance. Successfully opened 6 stores in 18 months. Market penetration exceeded projections by 20%.",
-          lessonsLearned: [
-            "Expansion lending requires market analysis beyond financial statements",
-            "Phased funding reduces risk while supporting growth objectives",
-            "Same-store sales trends predict expansion success likelihood",
-            "Management depth becomes critical during rapid growth phases"
-          ]
-        }
-      ],
-      scripts: [
-        {
-          title: "Credit Risk Assessment Interview",
-          scenario: "Conducting detailed credit analysis interview with management team",
-          dialogues: [
-            {
-              speaker: "Credit Analyst",
-              text: "I'd like to understand your competitive position and market dynamics. Who are your main competitors and how do you differentiate your products?"
-            },
-            {
-              speaker: "CEO",
-              text: "We compete primarily on quality and service. Our main competitors are two national firms, but we've built strong relationships with regional customers over 20 years."
-            },
-            {
-              speaker: "Credit Analyst",
-              text: "That's valuable. How have market conditions affected your business over the past 3 years? I see some revenue volatility in your financials."
-            },
-            {
-              speaker: "CFO",
-              text: "2020 was tough due to supply chain issues, but we've recovered well. The volatility reflects some large project timing - our underlying customer base has been stable."
-            },
-            {
-              speaker: "Credit Analyst",
-              text: "Let's talk about this expansion plan. What gives you confidence you can execute successfully while maintaining current operations quality?"
-            },
-            {
-              speaker: "CEO",
-              text: "We've promoted our operations manager to VP and hired experienced regional managers. We're not trying to do this all at once - it's a carefully planned 18-month rollout."
-            }
-          ],
-          keyPoints: [
-            "Understand competitive positioning and differentiation strategy",
-            "Analyze historical performance in context of market conditions",
-            "Assess management depth and execution capability",
-            "Evaluate expansion plans for reasonableness and timing"
-          ]
-        }
-      ]
+      quiz: {
+        id: "alternative-finance-quiz",
+        moduleId: "alternative-finance",
+        title: "Alternative Financing Solutions Quiz",
+        description: "Test your knowledge of non-traditional financing options and fintech solutions.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the typical factor rate range for merchant cash advances?",
+            options: ["1.1-1.5", "1.5-2.0", "2.0-2.5", "2.5-3.0"],
+            correctAnswer: 0,
+            explanation: "Merchant cash advances typically have factor rates ranging from 1.1 to 1.5."
+          }
+          // 19 more questions would be added here
+        ]
+      }
     },
     {
       id: "regulatory-compliance",
       title: "Banking Regulations & Compliance",
       description: "Navigate the complex regulatory environment including BSA/AML, fair lending practices, consumer protection laws, and industry best practices for compliance management.",
-      duration: "2 hours",
-      lessons: 9,
+      duration: "3 hours",
+      lessons: 8,
       progress: 0,
       status: "locked",
-      topics: ["BSA/AML Requirements", "Fair Lending Laws", "UDAAP Prevention", "Consumer Protection", "Documentation Standards", "Audit Preparation", "Regulatory Reporting"],
+      topics: [
+        "BSA/AML Requirements & Due Diligence", 
+        "Fair Lending Laws & ECOA Compliance", 
+        "UDAAP Prevention & Consumer Protection", 
+        "Documentation Standards & Record Keeping", 
+        "Audit Preparation & Examination Readiness", 
+        "Regulatory Reporting Requirements", 
+        "Customer Identification Program (CIP)",
+        "Suspicious Activity Monitoring & Reporting"
+      ],
       videos: [
         {
           title: "BSA/AML Fundamentals for Lenders",
@@ -1274,7 +1133,130 @@ export const courseData: CourseData = {
             "Maintain comprehensive records for regulatory examination purposes"
           ]
         }
-      ]
+      ],
+      quiz: {
+        id: "regulatory-compliance-quiz",
+        moduleId: "regulatory-compliance",
+        title: "Banking Regulations & Compliance Quiz",
+        description: "Test your knowledge of banking regulations, compliance requirements, and risk management practices.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What is the minimum threshold for filing a Currency Transaction Report (CTR)?",
+            options: ["$5,000", "$10,000", "$15,000", "$20,000"],
+            correctAnswer: 1,
+            explanation: "A CTR must be filed for any cash transaction exceeding $10,000 in a single business day."
+          },
+          {
+            id: "q2", 
+            question: "Which law prohibits discrimination in lending based on protected characteristics?",
+            options: ["Fair Credit Reporting Act", "Equal Credit Opportunity Act", "Truth in Lending Act", "Community Reinvestment Act"],
+            correctAnswer: 1,
+            explanation: "The Equal Credit Opportunity Act (ECOA) prohibits discrimination in credit transactions based on protected characteristics."
+          }
+          // Additional questions would be added here to reach 20 total
+        ]
+      }
+    },
+    {
+      id: "portfolio-management",
+      title: "Portfolio Management & Performance Analytics",
+      description: "Master advanced portfolio management techniques, risk measurement, and performance analytics to optimize lending portfolios and maximize risk-adjusted returns.",
+      duration: "3.5 hours",
+      lessons: 9,
+      progress: 0,
+      status: "locked",
+      topics: [
+        "Portfolio Construction & Diversification",
+        "Risk-Adjusted Return Metrics",
+        "Credit Portfolio Analytics",
+        "Stress Testing & Scenario Analysis",
+        "Asset Allocation Strategies",
+        "Performance Attribution Analysis",
+        "Liquidity Management",
+        "Regulatory Capital Requirements",
+        "Portfolio Optimization Techniques"
+      ],
+      videos: [
+        {
+          title: "Portfolio Theory & Construction",
+          description: "Modern portfolio theory applied to commercial lending",
+          duration: "28:45",
+          videoType: "youtube",
+          youtubeId: "dQw4w9WgXcQ",
+          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
+      loanExamples: [
+        {
+          title: "Portfolio Diversification Analysis",
+          scenario: "Regional bank needs to analyze concentration risk across industry sectors and geographic regions.",
+          loanAmount: "$50M Portfolio",
+          loanType: "Portfolio Analysis",
+          borrowerProfile: "Regional bank with $500M in commercial loans",
+          keyLearningPoints: [
+            "Calculate concentration ratios by industry and geography",
+            "Analyze correlation between portfolio segments",
+            "Implement diversification strategies to reduce risk"
+          ]
+        }
+      ],
+      caseStudies: [
+        {
+          title: "Portfolio Optimization for Regional Bank",
+          company: "First National Bank",
+          situation: "Regional bank with concentrated exposure to real estate and agriculture needs portfolio diversification.",
+          challenge: "High concentration risk, limited geographic diversification, and cyclical industry exposure.",
+          solution: "Systematic portfolio rebalancing and targeted origination in growth sectors.",
+          outcome: "Reduced concentration risk by 40% while maintaining profitability and relationship quality.",
+          lessonsLearned: [
+            "Portfolio diversification requires systematic approach and patience",
+            "Geographic expansion can effectively reduce concentration risk"
+          ]
+        }
+      ],
+      scripts: [
+        {
+          title: "Portfolio Risk Review Meeting",
+          scenario: "Quarterly portfolio risk assessment with senior management",
+          dialogues: [
+            {
+              speaker: "Portfolio Manager",
+              text: "Our portfolio concentration in commercial real estate has increased to 35% this quarter."
+            },
+            {
+              speaker: "Chief Risk Officer",
+              text: "That's above our 30% target. What's our strategy to bring this back into compliance?"
+            }
+          ],
+          keyPoints: [
+            "Monitor concentration limits regularly",
+            "Develop action plans for limit breaches"
+          ]
+        }
+      ],
+      quiz: {
+        id: "portfolio-management-quiz",
+        moduleId: "portfolio-management", 
+        title: "Portfolio Management Quiz",
+        description: "Test your understanding of portfolio management principles and risk analytics.",
+        passingScore: 80,
+        maxAttempts: 3,
+        timeLimit: 30,
+        questions: [
+          {
+            id: "q1",
+            question: "What does the Sharpe ratio measure?",
+            options: ["Total return", "Risk-adjusted return", "Maximum drawdown", "Portfolio volatility"],
+            correctAnswer: 1,
+            explanation: "The Sharpe ratio measures risk-adjusted return by dividing excess return by standard deviation."
+          }
+          // Additional questions would be added here
+        ]
+      }
     }
   ]
 };
@@ -1282,9 +1264,9 @@ export const courseData: CourseData = {
 export const statsData = [
   {
     icon: "CheckCircle",
-    title: "Modules Completed",
+    title: "Modules Completed", 
     value: "2",
-    subtitle: "of 8 modules",
+    subtitle: "of 7 modules",
     trend: "+1 this week"
   },
   {
