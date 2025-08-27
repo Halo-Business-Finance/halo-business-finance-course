@@ -97,6 +97,15 @@ const HeaderContent = () => {
           {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-16 w-16 sm:h-18 sm:w-18 md:h-20 md:w-20 lg:h-16 lg:w-16 flex-shrink-0" />}
           
           {user && (
+            <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 min-w-0">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-sm md:text-base">FP</span>
+              </div>
+              <span className="hidden sm:block text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
+            </NavLink>
+          )}
+          
+          {user && (
             <div className="hidden md:flex items-center gap-2">
               <Button 
                 variant="ghost" 
