@@ -55,6 +55,7 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
         return (
           <div className="space-y-4">
             <VideoPlayer
+              videoType="file"
               videoUrl="https://example.com/sample-video.mp4"
               title={lesson.title}
               onProgress={(progressPercent) => setProgress(progressPercent)}
@@ -127,23 +128,30 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
       case "quiz":
         return (
           <EnhancedQuiz
+            moduleId="equipment-financing"
             questions={[
               {
                 id: "1",
+                type: "multiple-choice" as const,
                 question: "What is the typical loan-to-value ratio for equipment financing?",
                 options: ["60-70%", "70-80%", "80-90%", "90-100%"],
-                correctAnswer: "80-90%",
-                explanation: "Equipment financing typically offers 80-90% LTV because the equipment serves as collateral."
+                correctAnswers: ["80-90%"],
+                explanation: "Equipment financing typically offers 80-90% LTV because the equipment serves as collateral.",
+                points: 10,
+                difficulty: "medium" as const
               },
               {
                 id: "2",
+                type: "multiple-choice" as const,
                 question: "Which factor is most important when evaluating equipment financing applications?",
                 options: ["Personal credit score", "Equipment value", "Business cash flow", "Down payment amount"],
-                correctAnswer: "Business cash flow",
-                explanation: "Cash flow is critical as it demonstrates the business's ability to service the debt."
+                correctAnswers: ["Business cash flow"],
+                explanation: "Cash flow is critical as it demonstrates the business's ability to service the debt.",
+                points: 10,
+                difficulty: "medium" as const
               }
             ]}
-            onComplete={(score) => {
+            onComplete={(passed, score) => {
               toast({
                 title: score >= 80 ? "🎉 Quiz Passed!" : "📚 Review Needed",
                 description: `You scored ${score}%${score >= 80 ? " - Great job!" : " - Please review the material"}`,
