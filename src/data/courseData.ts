@@ -88,7 +88,7 @@ export interface CourseData {
   allCourses: Course[];
 }
 
-// Sample quiz questions for all courses (each course will have 20 quiz questions and 50 final test questions)
+// Sample quiz questions
 const sampleQuizQuestions: QuizQuestion[] = [
   {
     id: "q1",
@@ -96,20 +96,87 @@ const sampleQuizQuestions: QuizQuestion[] = [
     options: ["$1 million", "$3 million", "$5 million", "$10 million"],
     correctAnswer: 2,
     explanation: "The maximum SBA 7(a) loan amount is $5 million."
-  },
-  {
-    id: "q2", 
-    question: "What is the minimum debt service coverage ratio typically required?",
-    options: ["1.00x", "1.25x", "1.50x", "2.00x"],
-    correctAnswer: 1,
-    explanation: "Most lenders require a minimum debt service coverage ratio of 1.25x."
-  },
-  // ... 18 more questions would be added for each module
+  }
 ];
 
 const sampleFinalTestQuestions: QuizQuestion[] = [
-  // ... 50 comprehensive questions covering all module topics
+  {
+    id: "f1",
+    question: "Final test question",
+    options: ["A", "B", "C", "D"],
+    correctAnswer: 0,
+    explanation: "Sample final test explanation"
+  }
 ];
+
+// Helper function to create modules for each course
+const createModules = (courseType: string, level: "beginner" | "intermediate" | "expert"): Module[] => {
+  const baseDuration = level === "beginner" ? "3 hours" : level === "intermediate" ? "4 hours" : "5 hours";
+  const baseLessons = level === "beginner" ? 7 : level === "intermediate" ? 8 : 10;
+  const passingScore = level === "beginner" ? 75 : level === "intermediate" ? 80 : 85;
+
+  return [
+    {
+      id: `${courseType}-fundamentals-${level}`,
+      title: `${courseType} Fundamentals - ${level.charAt(0).toUpperCase() + level.slice(1)}`,
+      description: `${level.charAt(0).toUpperCase() + level.slice(1)} level fundamentals of ${courseType}`,
+      duration: baseDuration,
+      lessons: baseLessons,
+      progress: 0,
+      status: "available",
+      topics: [`${courseType} Overview`, "Basic Requirements", "Documentation", "Processing"],
+      videos: [],
+      loanExamples: [],
+      caseStudies: [],
+      scripts: [],
+      quiz: {
+        id: `${courseType}-quiz-${level}`,
+        moduleId: `${courseType}-fundamentals-${level}`,
+        title: `${courseType} Quiz - ${level.charAt(0).toUpperCase() + level.slice(1)}`,
+        description: `Test your ${level} knowledge`,
+        questions: sampleQuizQuestions,
+        passingScore,
+        maxAttempts: 3,
+        timeLimit: level === "beginner" ? 20 : level === "intermediate" ? 30 : 45
+      },
+      finalTest: level === "expert" ? {
+        id: `${courseType}-final-${level}`,
+        moduleId: `${courseType}-fundamentals-${level}`,
+        title: `${courseType} Final Test`,
+        description: `Comprehensive ${courseType} assessment`,
+        questions: sampleFinalTestQuestions,
+        passingScore,
+        maxAttempts: 2,
+        timeLimit: 90
+      } : undefined
+    },
+    // Add 6 more modules for each course (total 7 modules per course)
+    ...Array.from({ length: 6 }, (_, i) => ({
+      id: `${courseType}-module-${i + 2}-${level}`,
+      title: `${courseType} Module ${i + 2}`,
+      description: `Module ${i + 2} covering advanced ${courseType} concepts`,
+      duration: baseDuration,
+      lessons: baseLessons,
+      progress: 0,
+      status: "locked" as const,
+      topics: [`Topic ${i + 1}`, `Topic ${i + 2}`, `Topic ${i + 3}`],
+      videos: [],
+      loanExamples: [],
+      caseStudies: [],
+      scripts: [],
+      quiz: {
+        id: `${courseType}-quiz-${i + 2}-${level}`,
+        moduleId: `${courseType}-module-${i + 2}-${level}`,
+        title: `${courseType} Module ${i + 2} Quiz`,
+        description: `Test your knowledge of module ${i + 2}`,
+        questions: sampleQuizQuestions,
+        passingScore,
+        maxAttempts: 3,
+        timeLimit: level === "beginner" ? 20 : level === "intermediate" ? 30 : 45
+      }
+    }))
+  ];
+};
 
 export const courseData: CourseData = {
   totalProgress: 0,
@@ -117,318 +184,303 @@ export const courseData: CourseData = {
   totalModules: 273, // 13 course types x 3 levels x 7 modules each = 273 modules
   modules: [],
   allCourses: [
-    // BEGINNER LEVEL COURSES
+    // SBA 7(a) Loans - All Levels
     {
       id: "sba-7a-loans-beginner",
       title: "SBA 7(a) Loans - Beginner",
       description: "Introduction to SBA 7(a) loan programs, basic eligibility, and fundamental concepts.",
       level: "beginner",
-      modules: [
-        {
-          id: "sba7a-fundamentals-beginner",
-          title: "SBA 7(a) Program Fundamentals", 
-          description: "Foundation knowledge of SBA 7(a) loan program structure, eligibility requirements, and key features",
-          duration: "3 hours",
-          lessons: 7,
-          progress: 0,
-          status: "available",
-          topics: [
-            "SBA 7(a) Program Overview",
-            "Basic Eligibility Requirements",
-            "Size Standards Introduction",
-            "Simple Use of Proceeds",
-            "Government Guarantee Basics",
-            "Interest Rate Guidelines",
-            "Basic Loan Terms"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "sba7a-fund-quiz-beginner",
-            moduleId: "sba7a-fundamentals-beginner",
-            title: "SBA 7(a) Fundamentals Quiz - Beginner",
-            description: "Test your basic SBA 7(a) program knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 75,
-            maxAttempts: 3,
-            timeLimit: 20
-          }
-        }
-      ]
+      modules: createModules("SBA 7(a)", "beginner")
     },
     {
-      id: "commercial-real-estate-beginner",
-      title: "Commercial Real Estate Financing - Beginner",
-      description: "Introduction to commercial real estate loans, basic property analysis, and fundamental market concepts.",
-      level: "beginner",
-      modules: [
-        {
-          id: "cre-fundamentals-beginner",
-          title: "CRE Financing Fundamentals",
-          description: "Basic understanding of commercial real estate financing structures and requirements",
-          duration: "3 hours",
-          lessons: 7,
-          progress: 0,
-          status: "available",
-          topics: [
-            "Commercial Property Types Introduction",
-            "Basic Income Property Analysis",
-            "Simple Cap Rate Calculations",
-            "Loan-to-Value Basics",
-            "Basic Environmental Considerations",
-            "Appraisal Requirements Overview",
-            "Zoning and Use Basics"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "cre-fund-quiz-beginner",
-            moduleId: "cre-fundamentals-beginner",
-            title: "CRE Financing Quiz - Beginner", 
-            description: "Test your basic commercial real estate knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 75,
-            maxAttempts: 3,
-            timeLimit: 20
-          }
-        }
-      ]
+      id: "sba-7a-loans-intermediate",
+      title: "SBA 7(a) Loans - Intermediate", 
+      description: "Advanced SBA 7(a) loan underwriting, complex eligibility scenarios, and risk assessment.",
+      level: "intermediate",
+      modules: createModules("SBA 7(a)", "intermediate")
     },
     {
-      id: "sba-express-loans-beginner",
+      id: "sba-7a-loans-expert",
+      title: "SBA 7(a) Loans - Expert",
+      description: "Expert-level SBA 7(a) loan management, portfolio optimization, and advanced risk mitigation.",
+      level: "expert",
+      modules: createModules("SBA 7(a)", "expert")
+    },
+
+    // SBA Express Loans - All Levels
+    {
+      id: "sba-express-beginner",
       title: "SBA Express Loans - Beginner",
       description: "Introduction to fast-track SBA financing with basic processing knowledge.",
       level: "beginner",
-      modules: [
-        {
-          id: "sba-express-fundamentals-beginner",
-          title: "SBA Express Program Basics",
-          description: "Understanding the basic SBA Express loan program and its advantages",
-          duration: "2.5 hours",
-          lessons: 7,
-          progress: 0,
-          status: "available",
-          topics: [
-            "SBA Express Program Overview",
-            "Basic Approval Process",
-            "Simple Documentation Requirements",
-            "Basic Interest Rate Structure",
-            "Program Benefits Introduction",
-            "Basic Eligibility",
-            "Simple Processing Steps"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "sba-express-fund-quiz-beginner",
-            moduleId: "sba-express-fundamentals-beginner",
-            title: "SBA Express Fundamentals Quiz - Beginner", 
-            description: "Test your basic SBA Express knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 75,
-            maxAttempts: 3,
-            timeLimit: 20
-          }
-        }
-      ]
-    },
-
-    // INTERMEDIATE LEVEL COURSES
-    {
-      id: "sba-7a-loans-intermediate", 
-      title: "SBA 7(a) Loans - Intermediate",
-      description: "Advanced SBA 7(a) loan underwriting, complex eligibility scenarios, and risk assessment.",
-      level: "intermediate",
-      modules: [
-        {
-          id: "sba7a-fundamentals-intermediate",
-          title: "SBA 7(a) Intermediate Analysis",
-          description: "Advanced SBA 7(a) loan concepts and complex underwriting scenarios",
-          duration: "4.5 hours",
-          lessons: 8,
-          progress: 0,
-          status: "available",
-          topics: [
-            "Complex Eligibility Scenarios",
-            "Advanced Underwriting Techniques", 
-            "Risk Assessment Methods",
-            "Portfolio Management Basics",
-            "Secondary Market Analysis",
-            "Loan Structuring Strategies",
-            "Performance Analytics",
-            "Regulatory Compliance"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "sba7a-quiz-intermediate",
-            moduleId: "sba7a-fundamentals-intermediate", 
-            title: "SBA 7(a) Intermediate Quiz",
-            description: "Test your intermediate SBA knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 80,
-            maxAttempts: 3,
-            timeLimit: 30
-          }
-        }
-      ]
+      modules: createModules("SBA Express", "beginner")
     },
     {
-      id: "commercial-real-estate-intermediate",
-      title: "Commercial Real Estate Financing - Intermediate",
-      description: "Advanced property analysis, market evaluation, and complex CRE transaction structuring.",
-      level: "intermediate",
-      modules: [
-        {
-          id: "cre-fundamentals-intermediate",
-          title: "Advanced CRE Analysis",
-          description: "Complex commercial real estate financing and advanced market analysis",
-          duration: "4.5 hours",
-          lessons: 8,
-          progress: 0,
-          status: "available",
-          topics: [
-            "Advanced Property Valuation",
-            "Complex Income Analysis",
-            "Market Cycle Analysis",
-            "Advanced Risk Assessment",
-            "Sophisticated Deal Structuring",
-            "Environmental Risk Management",
-            "Advanced Appraisal Review",
-            "Market Trend Analysis"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "cre-quiz-intermediate",
-            moduleId: "cre-fundamentals-intermediate",
-            title: "CRE Financing Quiz - Intermediate",
-            description: "Test your intermediate CRE knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 80,
-            maxAttempts: 3,
-            timeLimit: 30
-          }
-        }
-      ]
+      id: "sba-express-intermediate",
+      title: "SBA Express Loans - Intermediate",
+      description: "Advanced SBA Express processing, risk assessment, and portfolio management.",
+      level: "intermediate", 
+      modules: createModules("SBA Express", "intermediate")
     },
-
-    // EXPERT LEVEL COURSES
     {
-      id: "sba-7a-loans-expert",
-      title: "SBA 7(a) Loans - Expert", 
-      description: "Expert-level SBA 7(a) loan management, portfolio optimization, and advanced risk mitigation strategies.",
+      id: "sba-express-expert",
+      title: "SBA Express Loans - Expert",
+      description: "Expert SBA Express loan optimization and strategic portfolio management.",
       level: "expert",
-      modules: [
-        {
-          id: "sba7a-fundamentals-expert",
-          title: "SBA 7(a) Expert Mastery",
-          description: "Expert-level SBA 7(a) loan portfolio management and optimization strategies",
-          duration: "6 hours", 
-          lessons: 10,
-          progress: 0,
-          status: "available",
-          topics: [
-            "Portfolio Optimization Strategies",
-            "Advanced Risk Mitigation",
-            "Regulatory Change Management",
-            "Market Analysis & Forecasting",
-            "Complex Problem Resolution",
-            "Stakeholder Management",
-            "Industry Leadership",
-            "Innovation & Best Practices",
-            "Advanced Analytics",
-            "Strategic Planning"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "sba7a-quiz-expert",
-            moduleId: "sba7a-fundamentals-expert",
-            title: "SBA 7(a) Expert Quiz", 
-            description: "Test your expert SBA knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 85,
-            maxAttempts: 2,
-            timeLimit: 45
-          },
-          finalTest: {
-            id: "sba7a-final-test-expert",
-            moduleId: "sba7a-fundamentals-expert",
-            title: "SBA 7(a) Expert Final Test",
-            description: "Comprehensive expert-level SBA assessment",
-            questions: sampleFinalTestQuestions,
-            passingScore: 85,
-            maxAttempts: 2,
-            timeLimit: 90
-          }
-        }
-      ]
+      modules: createModules("SBA Express", "expert")
+    },
+
+    // Commercial Real Estate - All Levels
+    {
+      id: "commercial-real-estate-beginner",
+      title: "Commercial Real Estate Financing - Beginner",
+      description: "Introduction to commercial real estate loans and basic property analysis.",
+      level: "beginner",
+      modules: createModules("Commercial Real Estate", "beginner")
+    },
+    {
+      id: "commercial-real-estate-intermediate", 
+      title: "Commercial Real Estate Financing - Intermediate",
+      description: "Advanced property analysis, market evaluation, and complex CRE transactions.",
+      level: "intermediate",
+      modules: createModules("Commercial Real Estate", "intermediate")
     },
     {
       id: "commercial-real-estate-expert",
-      title: "Commercial Real Estate Financing - Expert",
-      description: "Master-level CRE portfolio management, complex structuring, and market leadership strategies.",
+      title: "Commercial Real Estate Financing - Expert", 
+      description: "Expert-level CRE portfolio management and complex deal structuring.",
       level: "expert",
-      modules: [
-        {
-          id: "cre-fundamentals-expert",
-          title: "CRE Expert Mastery",
-          description: "Expert-level commercial real estate financing and market leadership",
-          duration: "6 hours",
-          lessons: 10,
-          progress: 0,
-          status: "available",
-          topics: [
-            "Master-Level Property Analysis",
-            "Advanced Portfolio Management",
-            "Complex Deal Structuring",
-            "Market Leadership Strategies",
-            "Risk Innovation Methods",
-            "Regulatory Expertise",
-            "Industry Thought Leadership",
-            "Advanced Technology Integration",
-            "Strategic Market Positioning",
-            "Executive Decision Making"
-          ],
-          videos: [],
-          loanExamples: [],
-          caseStudies: [],
-          scripts: [],
-          quiz: {
-            id: "cre-quiz-expert",
-            moduleId: "cre-fundamentals-expert",
-            title: "CRE Financing Quiz - Expert",
-            description: "Test your expert CRE knowledge",
-            questions: sampleQuizQuestions,
-            passingScore: 85,
-            maxAttempts: 2,
-            timeLimit: 45
-          },
-          finalTest: {
-            id: "cre-final-test-expert",
-            moduleId: "cre-fundamentals-expert", 
-            title: "CRE Expert Final Test",
-            description: "Comprehensive expert-level CRE assessment",
-            questions: sampleFinalTestQuestions,
-            passingScore: 85,
-            maxAttempts: 2,
-            timeLimit: 90
-          }
-        }
-      ]
+      modules: createModules("Commercial Real Estate", "expert")
+    },
+
+    // Equipment Financing - All Levels
+    {
+      id: "equipment-financing-beginner",
+      title: "Equipment Financing - Beginner",
+      description: "Basic equipment financing structures and simple equipment valuation.",
+      level: "beginner",
+      modules: createModules("Equipment Financing", "beginner")
+    },
+    {
+      id: "equipment-financing-intermediate",
+      title: "Equipment Financing - Intermediate", 
+      description: "Advanced equipment financing and complex asset evaluation strategies.",
+      level: "intermediate",
+      modules: createModules("Equipment Financing", "intermediate")
+    },
+    {
+      id: "equipment-financing-expert",
+      title: "Equipment Financing - Expert",
+      description: "Expert equipment portfolio management and innovative financing structures.",
+      level: "expert",
+      modules: createModules("Equipment Financing", "expert")
+    },
+
+    // Business Lines of Credit - All Levels  
+    {
+      id: "business-lines-credit-beginner",
+      title: "Business Lines of Credit - Beginner",
+      description: "Introduction to revolving credit facilities and basic credit management.",
+      level: "beginner", 
+      modules: createModules("Business Lines of Credit", "beginner")
+    },
+    {
+      id: "business-lines-credit-intermediate",
+      title: "Business Lines of Credit - Intermediate",
+      description: "Advanced credit line management and complex borrowing base analysis.",
+      level: "intermediate",
+      modules: createModules("Business Lines of Credit", "intermediate")
+    },
+    {
+      id: "business-lines-credit-expert", 
+      title: "Business Lines of Credit - Expert",
+      description: "Expert credit facility structuring and portfolio optimization.",
+      level: "expert",
+      modules: createModules("Business Lines of Credit", "expert")
+    },
+
+    // Invoice Factoring - All Levels
+    {
+      id: "invoice-factoring-beginner",
+      title: "Invoice Factoring - Beginner",
+      description: "Introduction to accounts receivable financing and basic factoring concepts.",
+      level: "beginner",
+      modules: createModules("Invoice Factoring", "beginner")
+    },
+    {
+      id: "invoice-factoring-intermediate",
+      title: "Invoice Factoring - Intermediate",
+      description: "Advanced factoring strategies and complex receivables analysis.", 
+      level: "intermediate",
+      modules: createModules("Invoice Factoring", "intermediate")
+    },
+    {
+      id: "invoice-factoring-expert",
+      title: "Invoice Factoring - Expert",
+      description: "Expert factoring portfolio management and innovative structures.",
+      level: "expert",
+      modules: createModules("Invoice Factoring", "expert")
+    },
+
+    // Merchant Cash Advances - All Levels
+    {
+      id: "merchant-cash-advances-beginner", 
+      title: "Merchant Cash Advances - Beginner",
+      description: "Basic merchant cash advance structures and simple revenue analysis.",
+      level: "beginner",
+      modules: createModules("Merchant Cash Advances", "beginner")
+    },
+    {
+      id: "merchant-cash-advances-intermediate",
+      title: "Merchant Cash Advances - Intermediate",
+      description: "Advanced MCA underwriting and complex revenue-based financing.",
+      level: "intermediate",
+      modules: createModules("Merchant Cash Advances", "intermediate")
+    },
+    {
+      id: "merchant-cash-advances-expert",
+      title: "Merchant Cash Advances - Expert",
+      description: "Expert MCA portfolio management and innovative funding solutions.",
+      level: "expert", 
+      modules: createModules("Merchant Cash Advances", "expert")
+    },
+
+    // Asset-Based Lending - All Levels
+    {
+      id: "asset-based-lending-beginner",
+      title: "Asset-Based Lending - Beginner", 
+      description: "Introduction to asset-based financing and basic collateral analysis.",
+      level: "beginner",
+      modules: createModules("Asset-Based Lending", "beginner")
+    },
+    {
+      id: "asset-based-lending-intermediate",
+      title: "Asset-Based Lending - Intermediate",
+      description: "Advanced asset valuation and complex borrowing base structures.",
+      level: "intermediate",
+      modules: createModules("Asset-Based Lending", "intermediate")
+    },
+    {
+      id: "asset-based-lending-expert",
+      title: "Asset-Based Lending - Expert",
+      description: "Expert ABL portfolio management and sophisticated asset strategies.",
+      level: "expert",
+      modules: createModules("Asset-Based Lending", "expert")
+    },
+
+    // Construction Loans - All Levels
+    {
+      id: "construction-loans-beginner",
+      title: "Construction Loans - Beginner",
+      description: "Basic construction financing and simple project evaluation.",
+      level: "beginner",
+      modules: createModules("Construction Loans", "beginner")
+    },
+    {
+      id: "construction-loans-intermediate", 
+      title: "Construction Loans - Intermediate",
+      description: "Advanced construction financing and complex project management.",
+      level: "intermediate",
+      modules: createModules("Construction Loans", "intermediate")
+    },
+    {
+      id: "construction-loans-expert",
+      title: "Construction Loans - Expert",
+      description: "Expert construction portfolio management and innovative project structures.",
+      level: "expert",
+      modules: createModules("Construction Loans", "expert")
+    },
+
+    // Franchise Financing - All Levels  
+    {
+      id: "franchise-financing-beginner",
+      title: "Franchise Financing - Beginner",
+      description: "Introduction to franchise funding and basic franchise evaluation.",
+      level: "beginner",
+      modules: createModules("Franchise Financing", "beginner")
+    },
+    {
+      id: "franchise-financing-intermediate",
+      title: "Franchise Financing - Intermediate", 
+      description: "Advanced franchise financing and complex franchise system analysis.",
+      level: "intermediate",
+      modules: createModules("Franchise Financing", "intermediate")
+    },
+    {
+      id: "franchise-financing-expert",
+      title: "Franchise Financing - Expert",
+      description: "Expert franchise portfolio management and strategic franchise funding.",
+      level: "expert",
+      modules: createModules("Franchise Financing", "expert")
+    },
+
+    // Working Capital Loans - All Levels
+    {
+      id: "working-capital-beginner",
+      title: "Working Capital Loans - Beginner",
+      description: "Basic working capital financing and simple cash flow analysis.",
+      level: "beginner",
+      modules: createModules("Working Capital", "beginner")
+    },
+    {
+      id: "working-capital-intermediate",
+      title: "Working Capital Loans - Intermediate",
+      description: "Advanced working capital management and complex cash flow modeling.",
+      level: "intermediate", 
+      modules: createModules("Working Capital", "intermediate")
+    },
+    {
+      id: "working-capital-expert",
+      title: "Working Capital Loans - Expert",
+      description: "Expert working capital optimization and strategic liquidity management.",
+      level: "expert",
+      modules: createModules("Working Capital", "expert")
+    },
+
+    // Healthcare Financing - All Levels
+    {
+      id: "healthcare-financing-beginner",
+      title: "Healthcare Financing - Beginner", 
+      description: "Basic healthcare financing and simple medical practice analysis.",
+      level: "beginner",
+      modules: createModules("Healthcare Financing", "beginner")
+    },
+    {
+      id: "healthcare-financing-intermediate",
+      title: "Healthcare Financing - Intermediate",
+      description: "Advanced healthcare financing and complex medical practice evaluation.",
+      level: "intermediate",
+      modules: createModules("Healthcare Financing", "intermediate")
+    },
+    {
+      id: "healthcare-financing-expert",
+      title: "Healthcare Financing - Expert",
+      description: "Expert healthcare portfolio management and specialized medical funding.",
+      level: "expert",
+      modules: createModules("Healthcare Financing", "expert")
+    },
+
+    // Restaurant Financing - All Levels
+    {
+      id: "restaurant-financing-beginner", 
+      title: "Restaurant Financing - Beginner",
+      description: "Basic restaurant financing and simple food service evaluation.",
+      level: "beginner",
+      modules: createModules("Restaurant Financing", "beginner")
+    },
+    {
+      id: "restaurant-financing-intermediate",
+      title: "Restaurant Financing - Intermediate",
+      description: "Advanced restaurant financing and complex food service analysis.",
+      level: "intermediate",
+      modules: createModules("Restaurant Financing", "intermediate")
+    },
+    {
+      id: "restaurant-financing-expert",
+      title: "Restaurant Financing - Expert", 
+      description: "Expert restaurant portfolio management and innovative food service funding.",
+      level: "expert",
+      modules: createModules("Restaurant Financing", "expert")
     }
   ]
 };
@@ -444,7 +496,7 @@ export const statsData = [
   {
     icon: "Clock",
     title: "Learning Time",
-    value: "0h",
+    value: "0h", 
     subtitle: "total logged",
     trend: "Begin your journey"
   },
