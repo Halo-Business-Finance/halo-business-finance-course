@@ -221,17 +221,10 @@ const Dashboard = () => {
                     {enhancedModules.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {filteredModules.map((module, index) => (
-                          <PublicModuleCard
-                            key={module.id}
-                            title={module.title}
-                            description={module.description || ""}
-                            duration={module.duration || ""}
-                            lessons={module.lessons_count || 0}
-                            skillLevel={module.skill_level}
-                            moduleId={module.module_id}
-                            image={getCourseImage(index)}
-                            isAuthenticated={true}
-                            onEnrollClick={() => handleModuleStart(module.module_id)}
+                          <EnhancedModuleCard 
+                            key={module.id} 
+                            module={module} 
+                            userProgress={userProgress[module.module_id]}
                           />
                         ))}
                       </div>
