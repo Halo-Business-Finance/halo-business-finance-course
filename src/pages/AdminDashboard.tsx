@@ -870,8 +870,8 @@ const AdminDashboard = () => {
               <span className="sm:hidden">Progress</span>
             </TabsTrigger>
             <TabsTrigger value="content" className="text-xs sm:text-sm px-2 py-2">
-              <span className="hidden sm:inline">Content Management</span>
-              <span className="sm:hidden">Content</span>
+              <span className="hidden sm:inline">Course Management</span>
+              <span className="sm:hidden">Course</span>
             </TabsTrigger>
             <TabsTrigger value="cms" className="text-xs sm:text-sm px-2 py-2">CMS</TabsTrigger>
             <TabsTrigger value="instructors" className="text-xs sm:text-sm px-2 py-2">
