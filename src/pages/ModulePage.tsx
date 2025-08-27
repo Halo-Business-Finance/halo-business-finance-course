@@ -33,9 +33,13 @@ const ModulePage = () => {
   // Find module with proper error handling
   let courseModule;
   try {
-    courseModule = courseData.modules?.find(m => m?.id === moduleId);
+    // Search through all courses to find the module
+    courseModule = courseData.allCourses
+      .flatMap(course => course.modules)
+      .find(m => m?.id === moduleId);
     
     if (courseModule) {
+      console.log('Found module:', courseModule.title);
     }
   } catch (error) {
     console.error('Error finding module:', error);
@@ -45,9 +49,10 @@ const ModulePage = () => {
   // Get next module for progression
   const getNextModule = () => {
     try {
-      const currentIndex = courseData.modules?.findIndex(m => m?.id === moduleId) ?? -1;
-      return currentIndex !== -1 && currentIndex < (courseData.modules?.length ?? 0) - 1 
-        ? courseData.modules?.[currentIndex + 1]
+      const allModules = courseData.allCourses.flatMap(course => course.modules);
+      const currentIndex = allModules.findIndex(m => m?.id === moduleId);
+      return currentIndex !== -1 && currentIndex < allModules.length - 1 
+        ? allModules[currentIndex + 1]
         : null;
     } catch (error) {
       console.error('Error getting next module:', error);
@@ -96,7 +101,7 @@ const ModulePage = () => {
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="text-base sm:text-lg font-semibold mb-4">Available Modules:</h2>
           <div className="grid gap-3">
-            {(courseData.modules || []).map((mod) => (
+            {courseData.allCourses.flatMap(course => course.modules).map((mod) => (
               <Card key={mod?.id || 'unknown'} className="p-3 sm:p-4 hover:shadow-md transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <div className="text-left">
