@@ -29,6 +29,7 @@ export function CourseManager({}: CourseManagerProps) {
     id: "",
     title: "",
     description: "",
+    level: "beginner" as "beginner" | "intermediate" | "expert",
   });
 
   const [moduleFormData, setModuleFormData] = useState({
@@ -46,6 +47,7 @@ export function CourseManager({}: CourseManagerProps) {
       id: "",
       title: "",
       description: "",
+      level: "beginner",
     });
   };
 
@@ -73,6 +75,7 @@ export function CourseManager({}: CourseManagerProps) {
       id: course.id,
       title: course.title,
       description: course.description,
+      level: course.level,
     });
     setShowAddCourseDialog(true);
   };
@@ -119,6 +122,7 @@ export function CourseManager({}: CourseManagerProps) {
       id: courseFormData.id || courseFormData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       title: courseFormData.title,
       description: courseFormData.description,
+      level: courseFormData.level,
       modules: editingCourse ? editingCourse.modules : [],
     };
 
@@ -315,14 +319,17 @@ export function CourseManager({}: CourseManagerProps) {
                       </CardDescription>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="secondary">
-                      {course.modules.length} Modules
-                    </Badge>
-                    <Badge variant="outline">
-                      {course.modules.reduce((total, module) => total + module.lessons, 0)} Lessons
-                    </Badge>
-                  </div>
+                   <div className="flex items-center gap-2 mt-2">
+                     <Badge variant="secondary">
+                       {course.modules.length} Modules
+                     </Badge>
+                     <Badge variant="outline">
+                       {course.modules.reduce((total, module) => total + module.lessons, 0)} Lessons
+                     </Badge>
+                     <Badge variant={course.level === "beginner" ? "default" : course.level === "intermediate" ? "secondary" : "destructive"}>
+                       {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+                     </Badge>
+                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="flex justify-between gap-2">
@@ -451,6 +458,19 @@ export function CourseManager({}: CourseManagerProps) {
                 placeholder="Enter course description"
                 rows={3}
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="course-level">Difficulty Level</Label>
+              <select
+                id="course-level"
+                value={courseFormData.level}
+                onChange={(e) => setCourseFormData(prev => ({ ...prev, level: e.target.value as "beginner" | "intermediate" | "expert" }))}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="expert">Expert</option>
+              </select>
             </div>
           </div>
           <DialogFooter>
