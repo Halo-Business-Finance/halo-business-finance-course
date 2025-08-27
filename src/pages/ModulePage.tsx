@@ -324,11 +324,26 @@ const ModulePage = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex-shrink-0">
+                      <div className="flex items-center gap-2">
                         <Badge variant="success" className="text-xs">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           <span className="hidden sm:inline">Available</span>
                         </Badge>
+                        <Button
+                          size="sm"
+                          className="h-7 px-3 text-xs"
+                          onClick={() => {
+                            toast({
+                              title: "🎯 Starting Lesson",
+                              description: `Beginning "${topic}"`,
+                              variant: "default",
+                            });
+                            // Future: Navigate to lesson content or open lesson modal
+                          }}
+                        >
+                          <Play className="h-3 w-3 mr-1" />
+                          Start
+                        </Button>
                       </div>
                     </div>
                   </Card>
