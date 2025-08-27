@@ -5,6 +5,7 @@ import ModuleCard from "@/components/ModuleCard"; // Default export
 import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
+import { DashboardFilterSidebar } from "@/components/DashboardFilterSidebar";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,6 +50,9 @@ const Dashboard = () => {
   const [modules, setModules] = useState(courseData.allCourses.flatMap(course => course.modules));
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [selectedSkillLevel, setSelectedSkillLevel] = useState("all");
+  const [titleFilter, setTitleFilter] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedCourse, setSelectedCourse] = useState("all");
   const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
   const [loading, setLoading] = useState(false);
@@ -90,9 +94,15 @@ const Dashboard = () => {
     }
   };
 
-  const filteredModules = flattenedModules.filter(module => 
-    selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel
-  );
+  const filteredModules = flattenedModules.filter(module => {
+    const matchesLevel = selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel;
+    const matchesTitle = titleFilter === "" || module.title.toLowerCase().includes(titleFilter.toLowerCase());
+    const matchesStatus = selectedStatus === "all" || module.status === selectedStatus;
+    const matchesCourse = selectedCourse === "all" || 
+      module.course_title.toLowerCase().replace(/\s+/g, '-').includes(selectedCourse.replace('-', ' '));
+    
+    return matchesLevel && matchesTitle && matchesStatus && matchesCourse;
+  });
 
   const skillLevelCounts = {
     all: flattenedModules.length,
@@ -188,7 +198,7 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* All Courses Section */}
+      {/* All Courses Section with Sidebar */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           <div className="text-left space-y-4">
@@ -198,87 +208,109 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <SkillLevelFilter
-            selectedLevel={selectedSkillLevel}
-            onLevelChange={setSelectedSkillLevel}
-            counts={skillLevelCounts}
-          />
-
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-                <div key={i} className="animate-pulse">
-                  <div className="bg-muted rounded-lg h-64" />
-                </div>
-              ))}
+          {/* Sidebar Layout */}
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Filter Sidebar */}
+            <div className="lg:w-80 flex-shrink-0">
+              <DashboardFilterSidebar
+                selectedLevel={selectedSkillLevel}
+                onLevelChange={setSelectedSkillLevel}
+                titleFilter={titleFilter}
+                onTitleFilterChange={setTitleFilter}
+                selectedStatus={selectedStatus}
+                onStatusChange={setSelectedStatus}
+                selectedCourse={selectedCourse}
+                onCourseChange={setSelectedCourse}
+                counts={skillLevelCounts}
+              />
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {filteredModules.map((module, index) => (
-                  <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                    <div className="relative overflow-hidden rounded-t-lg">
-                      <img 
-                        src={getCourseImage(index)} 
-                        alt={module.title}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                          {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                        </Badge>
-                      </div>
-                    </div>
-                    <CardHeader className="pb-2">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                          <CardDescription className="line-clamp-2 mt-1">
-                            {module.description}
-                          </CardDescription>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          <span>{module.duration}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="h-4 w-4" />
-                          <span>{module.lessons} lessons</span>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="space-y-2">
-                        <div className="text-sm text-muted-foreground">
-                          Course: {module.course_title}
-                        </div>
-                        <Button 
-                          onClick={() => handleModuleStart(module.id)} 
-                          className="w-full"
-                          variant={module.status === "completed" ? "secondary" : "default"}
-                        >
-                          {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+
+            {/* Main Content */}
+            <div className="flex-1 min-w-0">
+              {/* Results Summary */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+                <h3 className="text-xl font-semibold">
+                  {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Found
+                </h3>
               </div>
 
-              {filteredModules.length === 0 && (
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                    No modules found for {selectedSkillLevel} level
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Try selecting a different skill level to see available modules.
-                  </p>
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+                    <div key={i} className="animate-pulse">
+                      <div className="bg-muted rounded-lg h-64" />
+                    </div>
+                  ))}
                 </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                    {filteredModules.map((module, index) => (
+                      <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+                        <div className="relative overflow-hidden rounded-t-lg">
+                          <img 
+                            src={getCourseImage(index)} 
+                            alt={module.title}
+                            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute top-4 left-4">
+                            <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                              {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                            </Badge>
+                          </div>
+                        </div>
+                        <CardHeader className="pb-2">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                              <CardDescription className="line-clamp-2 mt-1">
+                                {module.description}
+                              </CardDescription>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-4 w-4" />
+                              <span>{module.duration}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <BookOpen className="h-4 w-4" />
+                              <span>{module.lessons} lessons</span>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="space-y-2">
+                            <div className="text-sm text-muted-foreground">
+                              Course: {module.course_title}
+                            </div>
+                            <Button 
+                              onClick={() => handleModuleStart(module.id)} 
+                              className="w-full"
+                              variant={module.status === "completed" ? "secondary" : "default"}
+                            >
+                              {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {filteredModules.length === 0 && (
+                    <div className="text-center py-12">
+                      <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                        No modules found matching your filters
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Try adjusting your filters to see more results.
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
+            </div>
+          </div>
         </div>
       </div>
 
