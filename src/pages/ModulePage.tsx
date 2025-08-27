@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen } from "lucide-react";
+import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap } from "lucide-react";
 import { courseData } from "@/data/courseData";
 import { LessonModal } from "@/components/LessonModal";
 import { useToast } from "@/hooks/use-toast";
@@ -62,19 +62,37 @@ const ModulePage = () => {
       title: "Core Concepts",
       type: "reading",
       duration: "20 min", 
-      completed: module.status === "completed" || module.progress > 25
+      completed: module.status === "completed" || module.progress > 15
+    },
+    {
+      title: "Interactive Calculator Exercise",
+      type: "interactive",
+      duration: "25 min",
+      completed: module.status === "completed" || module.progress > 30
     },
     {
       title: "Case Study Analysis",
       type: "assignment",
       duration: "30 min",
-      completed: module.status === "completed" || module.progress > 50
+      completed: module.status === "completed" || module.progress > 45
+    },
+    {
+      title: "Hands-on Scenario Simulation",
+      type: "interactive",
+      duration: "35 min",
+      completed: module.status === "completed" || module.progress > 60
     },
     {
       title: "Interactive Quiz",
       type: "quiz",
-      duration: "10 min",
+      duration: "15 min",
       completed: module.status === "completed" || module.progress > 75
+    },
+    {
+      title: "Drag & Drop Activity",
+      type: "interactive", 
+      duration: "20 min",
+      completed: module.status === "completed" || module.progress > 85
     }
   ];
 
@@ -84,6 +102,7 @@ const ModulePage = () => {
       case "reading": return <FileText className="h-4 w-4" />;
       case "assignment": return <BookOpen className="h-4 w-4" />;
       case "quiz": return <Users2 className="h-4 w-4" />;
+      case "interactive": return <Zap className="h-4 w-4" />;
       default: return <BookOpen className="h-4 w-4" />;
     }
   };

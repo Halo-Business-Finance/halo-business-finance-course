@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { EnhancedQuiz } from "@/components/EnhancedQuiz";
-import { CheckCircle, Play, FileText, BookOpen, Users2, X } from "lucide-react";
+import { InteractiveCalculator, InteractiveDragDrop, InteractiveScenario } from "@/components/InteractiveLessonComponents";
+import { CheckCircle, Play, FileText, BookOpen, Users2, X, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LessonModalProps {
@@ -33,6 +34,7 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
       case "reading": return <FileText className="h-4 w-4" />;
       case "assignment": return <BookOpen className="h-4 w-4" />;
       case "quiz": return <Users2 className="h-4 w-4" />;
+      case "interactive": return <Zap className="h-4 w-4" />;
       default: return <Play className="h-4 w-4" />;
     }
   };
@@ -164,6 +166,18 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
             moduleTitle={moduleTitle}
             passingScore={80}
           />
+        );
+      
+      case "interactive":
+        const interactiveTypes = ["calculator", "dragdrop", "scenario"];
+        const randomType = interactiveTypes[Math.floor(Math.random() * interactiveTypes.length)];
+        
+        return (
+          <div className="space-y-4">
+            {randomType === "calculator" && <InteractiveCalculator onComplete={handleComplete} />}
+            {randomType === "dragdrop" && <InteractiveDragDrop onComplete={handleComplete} />}
+            {randomType === "scenario" && <InteractiveScenario onComplete={handleComplete} />}
+          </div>
         );
       
       default:
