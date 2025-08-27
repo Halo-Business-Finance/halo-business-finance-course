@@ -49,8 +49,8 @@ export const MobileNav = () => {
           {/* Mobile Menu Button */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="lg" className="text-black hover:bg-black/10 p-4">
-                <Menu className="h-10 w-10" />
+              <Button variant="ghost" size="sm" className="text-black hover:bg-black/10 p-2">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-72 sm:w-80">
