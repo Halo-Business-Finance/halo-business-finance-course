@@ -28,12 +28,17 @@ import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
-// Import course images
-import courseCreditProfessional from "@/assets/course-credit-professional.jpg";
-import courseFinanceProfessional from "@/assets/course-finance-professional.jpg";
-import courseSbaProfessional from "@/assets/course-sba-professional.jpg";
-import businessHero from "@/assets/business-hero.jpg";
-import financialAnalytics from "@/assets/business-analytics.jpg";
+// Import course images to match the Courses page
+import financeExpert1 from "@/assets/finance-expert-1.jpg";
+import creditAnalyst2 from "@/assets/credit-analyst-2.jpg";
+import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
+import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
+import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
+import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
+import financialAdvisor7 from "@/assets/financial-advisor-7.jpg";
+import investmentBanker8 from "@/assets/investment-banker-8.jpg";
+import loanOfficer9 from "@/assets/loan-officer-9.jpg";
+import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
@@ -108,20 +113,21 @@ const Dashboard = () => {
     "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
   ];
 
-  // Course image mapping function
-  const getCourseImage = (skillLevel: string, moduleId: string) => {
-    // Map different skill levels and modules to appropriate images
-    if (moduleId?.includes('credit') || skillLevel === 'intermediate') {
-      return courseCreditProfessional;
-    } else if (moduleId?.includes('finance') || skillLevel === 'beginner') {
-      return courseFinanceProfessional;
-    } else if (moduleId?.includes('sba') || skillLevel === 'expert') {
-      return courseSbaProfessional;
-    } else if (moduleId?.includes('business')) {
-      return businessHero;
-    } else {
-      return financialAnalytics; // Default fallback
-    }
+  // Course image mapping function - matches the Courses page
+  const getCourseImage = (index: number) => {
+    const images = [
+      financeExpert1, 
+      creditAnalyst2, 
+      commercialBanker3, 
+      riskSpecialist4, 
+      sbaSpecialist5, 
+      complianceOfficer6,
+      financialAdvisor7,
+      investmentBanker8,
+      loanOfficer9,
+      portfolioManager10
+    ];
+    return images[index % images.length];
   };
 
   const handleModuleStart = (moduleId: string) => {
@@ -214,7 +220,7 @@ const Dashboard = () => {
             <>
                     {enhancedModules.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {filteredModules.map((module) => (
+                        {filteredModules.map((module, index) => (
                           <PublicModuleCard
                             key={module.id}
                             title={module.title}
@@ -223,7 +229,7 @@ const Dashboard = () => {
                             lessons={module.lessons_count || 0}
                             skillLevel={module.skill_level}
                             moduleId={module.module_id}
-                            image={getCourseImage(module.skill_level, module.module_id)}
+                            image={getCourseImage(index)}
                             isAuthenticated={true}
                             onEnrollClick={() => handleModuleStart(module.module_id)}
                           />
