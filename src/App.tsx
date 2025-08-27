@@ -124,7 +124,7 @@ const HeaderContent = () => {
               <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-sm md:text-base">FP</span>
               </div>
-              <span className="hidden sm:block text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
+              <span className="text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
             </NavLink>
           </div>
         )}
