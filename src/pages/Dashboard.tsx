@@ -8,7 +8,9 @@ import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import CourseHeader from "@/components/CourseHeader";
 import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
@@ -44,34 +46,28 @@ import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
   const { toast } = useToast();
-  const [modules, setModules] = useState(courseData.modules);
+  const [modules, setModules] = useState(courseData.allCourses.flatMap(course => course.modules));
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [selectedSkillLevel, setSelectedSkillLevel] = useState("all");
-  const [enhancedModules, setEnhancedModules] = useState([]);
+  const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
-      fetchEnhancedModules();
       fetchUserProgress();
     }
   }, [user]);
 
-  const fetchEnhancedModules = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("course_modules")
-        .select("*")
-        .eq("is_active", true)
-        .order("order_index");
-
-      if (error) throw error;
-      setEnhancedModules(data || []);
-    } catch (error) {
-      console.error("Error fetching modules:", error);
-    }
-  };
+  // Convert courses to module format for display
+  const flattenedModules = allCourses.flatMap(course => 
+    course.modules.map(module => ({
+      ...module,
+      course_title: course.title,
+      course_level: course.level,
+      skill_level: course.level
+    }))
+  );
 
   const fetchUserProgress = async () => {
     try {
@@ -94,15 +90,15 @@ const Dashboard = () => {
     }
   };
 
-  const filteredModules = enhancedModules.filter(module => 
+  const filteredModules = flattenedModules.filter(module => 
     selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel
   );
 
   const skillLevelCounts = {
-    all: enhancedModules.length,
-    beginner: enhancedModules.filter(m => m.skill_level === "beginner").length,
-    intermediate: enhancedModules.filter(m => m.skill_level === "intermediate").length,
-    expert: enhancedModules.filter(m => m.skill_level === "expert").length,
+    all: flattenedModules.length,
+    beginner: flattenedModules.filter(m => m.skill_level === "beginner").length,
+    intermediate: flattenedModules.filter(m => m.skill_level === "intermediate").length,
+    expert: flattenedModules.filter(m => m.skill_level === "expert").length,
   };
 
   const learningObjectives = [
@@ -132,8 +128,7 @@ const Dashboard = () => {
   };
 
   const handleModuleStart = (moduleId: string) => {
-    const module = modules.find(m => m.id === moduleId) || 
-                   enhancedModules.find(m => m.module_id === moduleId);
+    const module = flattenedModules.find(m => m.id === moduleId);
     if (!module) return;
 
     // Show module details
@@ -219,36 +214,60 @@ const Dashboard = () => {
             </div>
           ) : (
             <>
-              {enhancedModules.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {filteredModules.map((module, index) => (
-                    <EnhancedModuleCard 
-                      key={module.id} 
-                      module={module} 
-                      userProgress={userProgress[module.module_id]}
-                      image={getCourseImage(index)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {modules.map((module) => (
-                    <ModuleCard
-                      key={module.id}
-                      title={module.title}
-                      description={module.description}
-                      duration={module.duration}
-                      lessons={module.lessons}
-                      progress={module.progress}
-                      status={module.status}
-                      topics={module.topics}
-                      onStart={() => handleModuleStart(module.id)}
-                    />
-                  ))}
-                </div>
-              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {filteredModules.map((module, index) => (
+                  <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={getCourseImage(index)} 
+                        alt={module.title}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                          {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardHeader className="pb-2">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                          <CardDescription className="line-clamp-2 mt-1">
+                            {module.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{module.duration}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="h-4 w-4" />
+                          <span>{module.lessons} lessons</span>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="space-y-2">
+                        <div className="text-sm text-muted-foreground">
+                          Course: {module.course_title}
+                        </div>
+                        <Button 
+                          onClick={() => handleModuleStart(module.id)} 
+                          className="w-full"
+                          variant={module.status === "completed" ? "secondary" : "default"}
+                        >
+                          {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-              {filteredModules.length === 0 && enhancedModules.length > 0 && (
+              {filteredModules.length === 0 && (
                 <div className="text-center py-12">
                   <h3 className="text-lg font-medium text-muted-foreground mb-2">
                     No modules found for {selectedSkillLevel} level
@@ -354,36 +373,60 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <>
-                    {enhancedModules.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {filteredModules.map((module, index) => (
-                          <EnhancedModuleCard 
-                            key={module.id} 
-                            module={module} 
-                            userProgress={userProgress[module.module_id]}
-                            image={getCourseImage(index)}
-                          />
+                          <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+                            <div className="relative overflow-hidden rounded-t-lg">
+                              <img 
+                                src={getCourseImage(index)} 
+                                alt={module.title}
+                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute top-4 left-4">
+                                <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                                  {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                                </Badge>
+                              </div>
+                            </div>
+                            <CardHeader className="pb-2">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                                  <CardDescription className="line-clamp-2 mt-1">
+                                    {module.description}
+                                  </CardDescription>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-4 w-4" />
+                                  <span>{module.duration}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <BookOpen className="h-4 w-4" />
+                                  <span>{module.lessons} lessons</span>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                              <div className="space-y-2">
+                                <div className="text-sm text-muted-foreground">
+                                  Course: {module.course_title}
+                                </div>
+                                <Button 
+                                  onClick={() => handleModuleStart(module.id)} 
+                                  className="w-full"
+                                  variant={module.status === "completed" ? "secondary" : "default"}
+                                >
+                                  {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
                         ))}
                       </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {modules.map((module) => (
-                          <ModuleCard
-                            key={module.id}
-                            title={module.title}
-                            description={module.description}
-                            duration={module.duration}
-                            lessons={module.lessons}
-                            progress={module.progress}
-                            status={module.status}
-                            topics={module.topics}
-                            onStart={() => handleModuleStart(module.id)}
-                          />
-                        ))}
-                      </div>
-                )}
 
-                    {filteredModules.length === 0 && enhancedModules.length > 0 && (
+                    {filteredModules.length === 0 && (
                       <div className="text-center py-12">
                         <h3 className="text-lg font-medium text-muted-foreground mb-2">
                           No modules found for {selectedSkillLevel} level
@@ -445,7 +488,7 @@ const Dashboard = () => {
       {/* Module Detail Modal */}
       {selectedModule && (
         <ModuleDetail 
-          module={modules.find(m => m.id === selectedModule)!}
+          module={flattenedModules.find(m => m.id === selectedModule)!}
           onClose={closeModuleDetail}
         />
       )}

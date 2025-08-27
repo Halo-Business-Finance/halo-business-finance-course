@@ -12,6 +12,7 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { CourseFilterSidebar } from "@/components/CourseFilterSidebar";
 import PublicModuleCard from "@/components/PublicModuleCard";
+import { courseData } from "@/data/courseData";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
 import learningBackground from "@/assets/learning-background.jpg";
@@ -44,169 +45,66 @@ interface CourseModule {
 }
 
 const Courses = () => {
-  const [modules, setModules] = useState<CourseModule[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [enrollmentStatus, setEnrollmentStatus] = useState<Record<string, boolean>>({});
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [titleFilter, setTitleFilter] = useState<string>('');
   const { user } = useAuth();
 
+  // Use courseData directly instead of fetching from Supabase
+  const allModules = courseData.allCourses.flatMap(course => 
+    course.modules.map(module => ({
+      id: module.id,
+      module_id: module.id,
+      title: module.title,
+      description: module.description,
+      duration: module.duration,
+      skill_level: course.level as 'beginner' | 'intermediate' | 'advanced' | 'expert',
+      lessons_count: module.lessons,
+      order_index: 0,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      prerequisites: [],
+      lessons: [],
+      totalLessons: module.lessons,
+      course_title: course.title,
+      course_level: course.level
+    }))
+  );
+
   useEffect(() => {
-    fetchCourseModules();
-  }, [user]); // Re-fetch when user authentication state changes
+    if (user) {
+      checkEnrollmentStatus();
+    }
+  }, [user]);
 
-  const fetchCourseModules = async () => {
+  const checkEnrollmentStatus = async () => {
+    if (!user) return;
+    
     try {
-      console.log('Fetching course modules...');
-      
-      let data = null;
-      let error = null;
-      
-      if (user) {
-        // Authenticated users can access full course modules
-        const result = await supabase
-          .from('course_modules')
-          .select('*')
-          .eq('is_active', true)
-          .order('order_index', { ascending: true });
-        
-        data = result.data;
-        error = result.error;
-      } else {
-        // Public users get course previews for marketing
-        const result = await supabase
-          .rpc('get_public_course_previews');
-
-        // Log access attempt for security monitoring
-        await supabase.rpc('log_course_access_attempt', {
-          module_id: 'public_preview',
-          access_type: 'course_list_access',
-          success: !!result.data && !result.error
-        });
+      const enrollmentChecks = await Promise.all(
+        allModules.map(async (module) => {
+          const { data: enrollment } = await supabase
+            .from('course_enrollments')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('course_id', module.module_id)
+            .eq('status', 'active')
+            .single();
           
-        if (result.data) {
-          // Transform preview data to match expected format
-          data = result.data.map((preview: any) => ({
-            id: preview.module_id,
-            module_id: preview.module_id,
-            title: preview.title,
-            description: preview.description,
-            duration: preview.duration,
-            skill_level: preview.skill_level,
-            lessons_count: preview.lessons_count,
-            order_index: preview.order_index,
-            is_active: preview.is_active,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            prerequisites: preview.prerequisites || []
-          }));
-        }
-        error = result.error;
-      }
+          return { moduleId: module.module_id, isEnrolled: !!enrollment };
+        })
+      );
 
-      console.log('Course modules query result:', { data, error, authenticated: !!user });
+      const statusMap = enrollmentChecks.reduce((acc, { moduleId, isEnrolled }) => {
+        acc[moduleId] = isEnrolled;
+        return acc;
+      }, {} as Record<string, boolean>);
 
-      if (error) {
-        console.error('Error fetching course modules:', error);
-        toast({
-          title: "Error",
-          description: user ? "Failed to load course modules" : "Unable to load course catalog. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      console.log(`Found ${data?.length || 0} course modules`);
-      
-      // Fetch lesson data for each module (only for authenticated users)
-      let modulesWithLessons = data || [];
-      if (data && user) {
-        modulesWithLessons = await Promise.all(
-          data.map(async (module) => {
-            console.log(`Fetching lessons for module: ${module.module_id}`);
-            
-            // Fetch videos
-            const { data: videos } = await supabase
-              .from('course_videos')
-              .select('title, order_index')
-              .eq('module_id', module.module_id)
-              .eq('is_active', true)
-              .order('order_index', { ascending: true });
-            
-            // Fetch articles
-            const { data: articles } = await supabase
-              .from('course_articles')
-              .select('title, order_index')
-              .eq('module_id', module.module_id)
-              .eq('is_published', true)
-              .order('order_index', { ascending: true });
-            
-            // Fetch assessments
-            const { data: assessments } = await supabase
-              .from('course_assessments')
-              .select('title, order_index')
-              .eq('module_id', module.module_id)
-              .order('order_index', { ascending: true });
-            
-            // Combine all lessons and sort by order_index
-            const allLessons = [
-              ...(videos || []).map(v => ({ ...v, type: 'video' })),
-              ...(articles || []).map(a => ({ ...a, type: 'article' })),
-              ...(assessments || []).map(a => ({ ...a, type: 'assessment' }))
-            ].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-            
-            console.log(`Lessons for ${module.module_id}:`, allLessons);
-            
-            return {
-              ...module,
-              lessons: allLessons,
-              totalLessons: allLessons.length
-            };
-          })
-        );
-      } else if (data && !user) {
-        // For public users, use the lessons_count from the preview data
-        modulesWithLessons = data.map(module => ({
-          ...module,
-          lessons: [],
-          totalLessons: module.lessons_count || 0
-        }));
-      }
-      
-      setModules(modulesWithLessons);
-      
-      // Check enrollment status for each module if user is logged in
-      if (user && modulesWithLessons) {
-        const enrollmentChecks = await Promise.all(
-          modulesWithLessons.map(async (module) => {
-            const { data: enrollment } = await supabase
-              .from('course_enrollments')
-              .select('id')
-              .eq('user_id', user.id)
-              .eq('course_id', module.module_id)
-              .eq('status', 'active')
-              .single();
-            
-            return { moduleId: module.module_id, isEnrolled: !!enrollment };
-          })
-        );
-
-        const statusMap = enrollmentChecks.reduce((acc, { moduleId, isEnrolled }) => {
-          acc[moduleId] = isEnrolled;
-          return acc;
-        }, {} as Record<string, boolean>);
-
-        setEnrollmentStatus(statusMap);
-      }
+      setEnrollmentStatus(statusMap);
     } catch (error) {
-      console.error('Error in fetchCourseModules:', error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+      console.error('Error checking enrollment status:', error);
     }
   };
 
@@ -342,7 +240,7 @@ const Courses = () => {
   };
 
   // Filter modules based on selected level and title
-  const filteredModules = modules.filter(module => {
+  const filteredModules = allModules.filter(module => {
     const matchesLevel = selectedLevel === 'all' || module.skill_level === selectedLevel;
     const matchesTitle = titleFilter === '' || module.title.toLowerCase().includes(titleFilter.toLowerCase());
     return matchesLevel && matchesTitle;
@@ -350,10 +248,10 @@ const Courses = () => {
 
   // Calculate counts for each skill level
   const skillLevelCounts = {
-    all: modules.length,
-    beginner: modules.filter(m => m.skill_level === 'beginner').length,
-    intermediate: modules.filter(m => m.skill_level === 'intermediate').length,
-    expert: modules.filter(m => m.skill_level === 'expert' || m.skill_level === 'advanced').length,
+    all: allModules.length,
+    beginner: allModules.filter(m => m.skill_level === 'beginner').length,
+    intermediate: allModules.filter(m => m.skill_level === 'intermediate').length,
+    expert: allModules.filter(m => m.skill_level === 'expert' || m.skill_level === 'advanced').length,
   };
 
   if (loading) {
@@ -456,7 +354,7 @@ const Courses = () => {
         </Alert>
       )}
 
-      {modules.length === 0 && !user ? (
+      {allModules.length === 0 && !user ? (
         <div className="text-center py-12 space-y-6">
           <Shield className="h-24 w-24 text-muted-foreground mx-auto" />
           <div>
@@ -474,7 +372,7 @@ const Courses = () => {
             </Link>
           </div>
         </div>
-      ) : modules.length === 0 ? (
+      ) : allModules.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
