@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 import {
   Sidebar,
@@ -37,45 +38,6 @@ const mainNavItems = [
   { title: "My Account", url: "/my-account", icon: User },
 ];
 
-
-// Base course modules in order
-const baseCourseModules = [
-  { title: "Finance Foundations", url: "/module/foundations" },
-  { title: "Capital Markets", url: "/module/capital-markets" },
-  { title: "SBA Loan Programs", url: "/module/sba-loans" },
-  { title: "Conventional Lending", url: "/module/conventional-loans" },
-  { title: "Bridge Financing", url: "/module/bridge-loans" },
-  { title: "Alternative Finance", url: "/module/alternative-finance" },
-  { title: "Credit Analysis", url: "/module/credit-risk" },
-  { title: "Compliance", url: "/module/regulatory-compliance" },
-];
-
-// Progressive learning logic - strict sequential unlocking
-const getProgressiveModules = () => {
-  // In a real app, this would come from user progress data
-  // For now, simulating strict sequential progression
-  const userProgress = {
-    completedModules: [], // No modules completed initially - users start fresh
-    currentModule: "Finance Foundations" // Only the first module is available
-  };
-  
-  return baseCourseModules.map((module, index) => {
-    const isCompleted = userProgress.completedModules.includes(module.title);
-    const isCurrent = module.title === userProgress.currentModule;
-    
-    if (isCompleted) {
-      return { ...module, status: "completed" };
-    } else if (isCurrent) {
-      return { ...module, status: "available" }; // Available to start
-    } else {
-      // All other modules are locked until previous ones are completed
-      return { ...module, status: "locked" };
-    }
-  });
-};
-
-const courseModules = getProgressiveModules();
-
 export function AppSidebar() {
   const { state, toggleSidebar, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
@@ -84,6 +46,26 @@ export function AppSidebar() {
   const { isAdmin } = useAdminRole();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCourseModules, setSelectedCourseModules] = useState([]);
+  const [selectedCourseTitle, setSelectedCourseTitle] = useState("");
+
+  // Fetch modules for the selected course
+  useEffect(() => {
+    if (user) {
+      fetchSelectedCourseModules();
+    }
+  }, [user]);
+
+  const fetchSelectedCourseModules = async () => {
+    try {
+      // For now, show a simplified version without complex database queries
+      // In a real implementation, this would fetch from the user's selected course
+      setSelectedCourseTitle('Selected Course');
+      setSelectedCourseModules([]);
+    } catch (error) {
+      console.error('Error fetching selected course modules:', error);
+    }
+  };
 
   // Function to handle navigation and close sidebar on mobile
   const handleNavigation = (url: string, canAccess: boolean = true) => {
@@ -213,107 +195,99 @@ export function AppSidebar() {
           <Separator className="bg-gradient-to-r from-border/50 to-transparent" />
         </div>
 
-        {/* Course Modules */}
-        <SidebarGroup className="pt-2">
-          <SidebarGroupLabel className="pb-3 mb-2">
-            {!collapsed && (
-              <div className="flex-1">
-                <span className="text-sm font-semibold text-white tracking-wide">
-                  Course Modules
-                </span>
-              </div>
-            )}
-          </SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-3">
-            <SidebarMenu className="space-y-3">
-              {courseModules.map((module, index) => {
-                const isModuleLocked = module.status === "locked";
-                const canAccess = !isModuleLocked || isAdmin;
-                return (
-                  <SidebarMenuItem key={module.title}>
-                    <SidebarMenuButton asChild>
-                       <button 
-                         onClick={() => handleNavigation(module.url, canAccess)}
-                            className={`
-                              w-full text-left
-                              ${isModuleLocked ? "opacity-50" : ""} 
-                              ${!canAccess ? "cursor-not-allowed" : ""}
-                              group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
-                              text-white hover:bg-white/10 hover:text-white
-                            `}
-                       >
-                         <div className="relative z-10 flex items-center w-full gap-3">
-                           {/* Status Indicator */}
-                           <div className="relative flex-shrink-0">
-                              <div className={`
-                                w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold 
-                                transition-all duration-300 ease-out
-                                ${module.status === "completed" 
-                                  ? "bg-green-500 text-white shadow-md" 
-                                  : module.status === "in-progress" 
-                                    ? "bg-blue-500 text-white shadow-md" 
-                                    : module.status === "available" 
-                                      ? "bg-halo-orange text-white shadow-md" 
-                                      : "bg-halo-orange text-white shadow-md"}
-                              `}>
-                               {module.status === "completed" ? (
-                                 <span className="text-sm">✓</span>
-                               ) : module.status === "in-progress" ? (
-                                 <div className="w-2 h-2 bg-white rounded-full"></div>
-                               ) : isModuleLocked ? (
-                                 <Lock size={16} className="text-white" />
-                               ) : (
-                                 <span className="text-sm font-bold">{index + 1}</span>
-                               )}
-                             </div>
-                           </div>
-                         
-                           {!collapsed && (
-                             <div className="flex-1 min-w-0">
-                               <div className="flex items-center justify-between">
-                                  <h3 className="text-xs font-medium text-white leading-tight truncate transition-colors">
-                                    {module.title}
-                                  </h3>
-                                 
-                                  {/* Status Badge */}
-                                  <div className="ml-2 flex-shrink-0">
-                                    {module.status === "completed" && (
-                                      <div className="w-2 h-2 bg-halo-orange rounded-full shadow-sm shadow-halo-orange/50"></div>
-                                    )}
-                                    {module.status === "available" && (
-                                      <div className="w-2 h-2 bg-white rounded-full shadow-sm shadow-white/50 animate-pulse"></div>
-                                    )}
-                                  </div>
+        {/* Selected Course Modules */}
+        {selectedCourseModules.length > 0 && (
+          <SidebarGroup className="pt-2">
+            <SidebarGroupLabel className="pb-3 mb-2">
+              {!collapsed && (
+                <div className="flex-1">
+                  <span className="text-sm font-semibold text-white tracking-wide">
+                    {selectedCourseTitle}
+                  </span>
+                </div>
+              )}
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="space-y-3">
+              <SidebarMenu className="space-y-3">
+                {selectedCourseModules.map((module: any, index) => {
+                  const isModuleLocked = module.is_locked;
+                  const canAccess = !isModuleLocked || isAdmin;
+                  const moduleUrl = `/module/${module.module_id}`;
+                  
+                  return (
+                    <SidebarMenuItem key={module.id}>
+                      <SidebarMenuButton asChild>
+                         <button 
+                           onClick={() => handleNavigation(moduleUrl, canAccess)}
+                              className={`
+                                w-full text-left
+                                ${isModuleLocked ? "opacity-50" : ""} 
+                                ${!canAccess ? "cursor-not-allowed" : ""}
+                                group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
+                                text-white hover:bg-white/10 hover:text-white
+                              `}
+                         >
+                           <div className="relative z-10 flex items-center w-full gap-3">
+                             {/* Status Indicator */}
+                             <div className="relative flex-shrink-0">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                 {isModuleLocked ? (
+                                   <Lock size={16} className="text-white" />
+                                 ) : (
+                                   <span className="text-sm font-bold">{index + 1}</span>
+                                 )}
                                </div>
-                               
-                               {/* Progress Bar for in-progress modules */}
-                               {module.status === "in-progress" && (
-                                 <div className="mt-2 w-full bg-muted/30 rounded-full h-1.5 overflow-hidden">
-                                   <div className="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full transition-all duration-1000 ease-out shadow-sm"
-                                        style={{ width: "65%" }}></div>
-                                 </div>
-                               )}
-                               
-                               {/* Subtle description for available modules */}
-                               {module.status === "available" && !isModuleLocked && (
-                                 <p className="text-xs text-white/70 mt-1 transition-opacity duration-300">
-                                   Ready to start
-                                 </p>
-                               )}
                              </div>
-                           )}
-                         </div>
-                         
-                          {/* Active state indicator */}
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
-                       </button>
-                     </SidebarMenuButton>
-                   </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                           
+                             {!collapsed && (
+                               <div className="flex-1 min-w-0">
+                                 <div className="flex items-center justify-between">
+                                    <h3 className="text-xs font-medium text-white leading-tight truncate transition-colors">
+                                      {module.title}
+                                    </h3>
+                                   
+                                    {/* Status Badge */}
+                                    <div className="ml-2 flex-shrink-0">
+                                      {!isModuleLocked && (
+                                        <div className="w-2 h-2 bg-white rounded-full shadow-sm shadow-white/50 animate-pulse"></div>
+                                      )}
+                                    </div>
+                                 </div>
+                                 
+                                 {/* Subtle description for available modules */}
+                                 {!isModuleLocked && (
+                                   <p className="text-xs text-white/70 mt-1 transition-opacity duration-300">
+                                     Ready to start
+                                   </p>
+                                 )}
+                               </div>
+                             )}
+                           </div>
+                           
+                            {/* Active state indicator */}
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
+                         </button>
+                       </SidebarMenuButton>
+                     </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* Show message when no course is selected */}
+        {selectedCourseModules.length === 0 && user && !collapsed && (
+          <SidebarGroup className="pt-2">
+            <SidebarGroupContent>
+              <div className="px-4 py-6 text-center">
+                <p className="text-xs text-white/70">
+                  Select a course from the dashboard to see modules here
+                </p>
+              </div>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
 
         {/* Authentication */}
         <SidebarGroup className="-mt-2">
