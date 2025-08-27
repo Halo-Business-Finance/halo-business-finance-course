@@ -41,6 +41,7 @@ import { ModuleEditor } from "@/components/admin/ModuleEditor";
 import { ResourceManager } from "@/components/admin/ResourceManager";
 import CMSManager from "@/components/admin/CMSManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
+import { CourseManager } from "@/components/admin/CourseManager";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 import { authRateLimiter } from "@/utils/validation";
 import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
@@ -889,9 +890,13 @@ const AdminDashboard = () => {
         </div>
 
         <TabsContent value="content" className="space-y-4">
-          <Tabs defaultValue="modules" className="space-y-4">
+          <Tabs defaultValue="courses" className="space-y-4">
             <div className="overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">
+              <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 gap-1 h-auto p-1">
+                <TabsTrigger value="courses" className="text-xs sm:text-sm px-2 py-2">
+                  <GraduationCap className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
+                  Courses
+                </TabsTrigger>
                 <TabsTrigger value="modules" className="text-xs sm:text-sm px-2 py-2">
                   <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-orange-500" />
                   Modules
@@ -910,6 +915,10 @@ const AdminDashboard = () => {
                 </TabsTrigger>
               </TabsList>
             </div>
+
+            <TabsContent value="courses">
+              <CourseManager />
+            </TabsContent>
 
             <TabsContent value="modules">
               <ModuleEditor />
