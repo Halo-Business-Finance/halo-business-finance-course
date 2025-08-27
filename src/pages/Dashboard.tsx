@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSecureAuth } from '@/hooks/useSecureAuth';
 import ModuleCard from "@/components/ModuleCard"; // Default export
+import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
@@ -188,31 +189,38 @@ const Dashboard = () => {
             </div>
           ) : (
             <>
-              {enhancedModules.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {filteredModules.map((module) => (
-                    <EnhancedModuleCard 
-                      key={module.id} 
-                      module={module} 
-                      userProgress={userProgress[module.module_id]}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {modules.map((module) => (
-                    <ModuleCard
-                      key={module.id}
-                      title={module.title}
-                      description={module.description}
-                      duration={module.duration}
-                      lessons={module.lessons}
-                      progress={module.progress}
-                      status={module.status}
-                      onStart={() => handleModuleStart(module.id)}
-                    />
-                  ))}
-                </div>
+                    {enhancedModules.length > 0 ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        {filteredModules.map((module) => (
+                          <PublicModuleCard
+                            key={module.id}
+                            title={module.title}
+                            description={module.description || ""}
+                            duration={module.duration || ""}
+                            lessons={module.lessons_count || 0}
+                            skillLevel={module.skill_level}
+                            moduleId={module.module_id}
+                            image={`/assets/course-${module.skill_level}-professional.jpg`}
+                            isAuthenticated={true}
+                            onEnrollClick={() => handleModuleStart(module.module_id)}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        {modules.map((module) => (
+                          <ModuleCard
+                            key={module.id}
+                            title={module.title}
+                            description={module.description}
+                            duration={module.duration}
+                            lessons={module.lessons}
+                            progress={module.progress}
+                            status={module.status}
+                            onStart={() => handleModuleStart(module.id)}
+                          />
+                        ))}
+                      </div>
               )}
 
               {filteredModules.length === 0 && enhancedModules.length > 0 && (
