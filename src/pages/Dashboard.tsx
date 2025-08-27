@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSecureAuth } from '@/hooks/useSecureAuth';
 import ModuleCard from "@/components/ModuleCard"; // Default export
-import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
@@ -27,18 +26,6 @@ import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem"
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
-
-// Import course images to match the Courses page
-import financeExpert1 from "@/assets/finance-expert-1.jpg";
-import creditAnalyst2 from "@/assets/credit-analyst-2.jpg";
-import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
-import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
-import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
-import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
-import financialAdvisor7 from "@/assets/financial-advisor-7.jpg";
-import investmentBanker8 from "@/assets/investment-banker-8.jpg";
-import loanOfficer9 from "@/assets/loan-officer-9.jpg";
-import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
@@ -113,23 +100,6 @@ const Dashboard = () => {
     "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
   ];
 
-  // Course image mapping function - matches the Courses page
-  const getCourseImage = (index: number) => {
-    const images = [
-      financeExpert1, 
-      creditAnalyst2, 
-      commercialBanker3, 
-      riskSpecialist4, 
-      sbaSpecialist5, 
-      complianceOfficer6,
-      financialAdvisor7,
-      investmentBanker8,
-      loanOfficer9,
-      portfolioManager10
-    ];
-    return images[index % images.length];
-  };
-
   const handleModuleStart = (moduleId: string) => {
     const module = modules.find(m => m.id === moduleId) || 
                    enhancedModules.find(m => m.module_id === moduleId);
@@ -190,81 +160,6 @@ const Dashboard = () => {
           completedModules={courseData.completedModules}
           onContinueLearning={handleContinueLearning}
         />
-      </div>
-
-      {/* Course Catalog Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
-          <div className="text-left space-y-4">
-            <h2 className="text-3xl font-bold">Course Catalog</h2>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed">
-              Browse all available modules organized by skill level. Track your progress and continue your learning journey.
-            </p>
-          </div>
-
-          <SkillLevelFilter
-            selectedLevel={selectedSkillLevel}
-            onLevelChange={setSelectedSkillLevel}
-            counts={skillLevelCounts}
-          />
-
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="animate-pulse">
-                  <div className="bg-muted rounded-lg h-48" />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <>
-                    {enhancedModules.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {filteredModules.map((module, index) => (
-                          <PublicModuleCard
-                            key={module.id}
-                            title={module.title}
-                            description={module.description || ""}
-                            duration={module.duration || ""}
-                            lessons={module.lessons_count || 0}
-                            skillLevel={module.skill_level}
-                            moduleId={module.module_id}
-                            image={getCourseImage(index)}
-                            isAuthenticated={true}
-                            onEnrollClick={() => handleModuleStart(module.module_id)}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {modules.map((module) => (
-                          <ModuleCard
-                            key={module.id}
-                            title={module.title}
-                            description={module.description}
-                            duration={module.duration}
-                            lessons={module.lessons}
-                            progress={module.progress}
-                            status={module.status}
-                            onStart={() => handleModuleStart(module.id)}
-                          />
-                        ))}
-                      </div>
-              )}
-
-              {filteredModules.length === 0 && enhancedModules.length > 0 && (
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                    No modules found for {selectedSkillLevel} level
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Try selecting a different skill level to see available modules.
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
       </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
