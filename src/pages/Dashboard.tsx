@@ -162,6 +162,74 @@ const Dashboard = () => {
         />
       </div>
 
+      {/* Course Catalog Section */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="space-y-6">
+          <div className="text-left space-y-4">
+            <h2 className="text-3xl font-bold">Course Catalog</h2>
+            <p className="text-muted-foreground max-w-3xl leading-relaxed">
+              Browse all available modules organized by skill level. Track your progress and continue your learning journey.
+            </p>
+          </div>
+
+          <SkillLevelFilter
+            selectedLevel={selectedSkillLevel}
+            onLevelChange={setSelectedSkillLevel}
+            counts={skillLevelCounts}
+          />
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-muted rounded-lg h-48" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {enhancedModules.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {filteredModules.map((module) => (
+                    <EnhancedModuleCard 
+                      key={module.id} 
+                      module={module} 
+                      userProgress={userProgress[module.module_id]}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {modules.map((module) => (
+                    <ModuleCard
+                      key={module.id}
+                      title={module.title}
+                      description={module.description}
+                      duration={module.duration}
+                      lessons={module.lessons}
+                      progress={module.progress}
+                      status={module.status}
+                      onStart={() => handleModuleStart(module.id)}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {filteredModules.length === 0 && enhancedModules.length > 0 && (
+                <div className="text-center py-12">
+                  <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                    No modules found for {selectedSkillLevel} level
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Try selecting a different skill level to see available modules.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           {/* Learning Objectives */}
           <LearningObjectives objectives={learningObjectives} />
