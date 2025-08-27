@@ -13,6 +13,7 @@ import {
   Lock
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,27 +44,37 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
+  const { selectedCourse } = useCourseSelection();
   const { isAdmin } = useAdminRole();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCourseModules, setSelectedCourseModules] = useState([]);
-  const [selectedCourseTitle, setSelectedCourseTitle] = useState("");
 
   // Fetch modules for the selected course
   useEffect(() => {
-    if (user) {
+    if (user && selectedCourse) {
       fetchSelectedCourseModules();
+    } else {
+      setSelectedCourseModules([]);
     }
-  }, [user]);
+  }, [user, selectedCourse]);
 
   const fetchSelectedCourseModules = async () => {
+    if (!selectedCourse) return;
+
     try {
-      // For now, show a simplified version without complex database queries
-      // In a real implementation, this would fetch from the user's selected course
-      setSelectedCourseTitle('Selected Course');
-      setSelectedCourseModules([]);
+      const { data, error } = await supabase
+        .from("course_modules")
+        .select("*")
+        .like("module_id", `${selectedCourse.id}%`)
+        .eq("is_active", true)
+        .order("order_index");
+
+      if (error) throw error;
+      setSelectedCourseModules(data || []);
     } catch (error) {
       console.error('Error fetching selected course modules:', error);
+      setSelectedCourseModules([]);
     }
   };
 
@@ -202,7 +213,7 @@ export function AppSidebar() {
               {!collapsed && (
                 <div className="flex-1">
                   <span className="text-sm font-semibold text-white tracking-wide">
-                    {selectedCourseTitle}
+                    {selectedCourse?.title || 'Course Modules'}
                   </span>
                 </div>
               )}
@@ -282,7 +293,10 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <div className="px-4 py-6 text-center">
                 <p className="text-xs text-white/70">
-                  Select a course from the dashboard to see modules here
+                  {selectedCourse 
+                    ? 'No modules available for this course'
+                    : 'Select a course from the dashboard to see modules here'
+                  }
                 </p>
               </div>
             </SidebarGroupContent>

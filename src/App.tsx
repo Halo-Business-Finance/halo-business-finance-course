@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { CourseSelectionProvider } from "@/contexts/CourseSelectionContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { SecurityMonitor } from "@/components/SecurityMonitor";
@@ -249,10 +250,12 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AuthProvider>
-          <SidebarProvider defaultOpen={true} open={undefined}>
-            <SecurityMonitor />
-            <AppContent />
-          </SidebarProvider>
+          <CourseSelectionProvider>
+            <SidebarProvider defaultOpen={true} open={undefined}>
+              <SecurityMonitor />
+              <AppContent />
+            </SidebarProvider>
+          </CourseSelectionProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

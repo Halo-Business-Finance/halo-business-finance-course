@@ -24,6 +24,7 @@ import { RealTimeMarketData } from "@/components/RealTimeMarketData";
 import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
+import { CourseSelector } from "@/components/CourseSelector";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
@@ -192,15 +193,18 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Course Catalog Section */}
+      {/* Course Selection Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           <div className="text-left space-y-4">
             <h2 className="text-3xl font-bold">Course Catalog</h2>
             <p className="text-muted-foreground max-w-3xl leading-relaxed whitespace-nowrap">
-              Browse all available modules, organized by skill level. Track your progress and continue your learning journey.
+              Select a course to view its modules. Track your progress and continue your learning journey.
             </p>
           </div>
+
+          {/* Course Selector */}
+          <CourseSelector />
 
           <SkillLevelFilter
             selectedLevel={selectedSkillLevel}
