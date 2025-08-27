@@ -197,8 +197,8 @@ const Dashboard = () => {
         <div className="space-y-6">
           <div className="text-left space-y-4">
             <h2 className="text-3xl font-bold">Course Catalog</h2>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed">
-              Browse all available modules organized by skill level. Track your progress and continue your learning journey.
+            <p className="text-muted-foreground max-w-3xl leading-relaxed whitespace-nowrap">
+              Browse all available modules, organized by skill level. Track your progress and continue your learning journey.
             </p>
           </div>
 
