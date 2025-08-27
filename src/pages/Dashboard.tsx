@@ -28,6 +28,13 @@ import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy } from "lucide-react";
 
+// Import course images
+import courseCreditProfessional from "@/assets/course-credit-professional.jpg";
+import courseFinanceProfessional from "@/assets/course-finance-professional.jpg";
+import courseSbaProfessional from "@/assets/course-sba-professional.jpg";
+import businessHero from "@/assets/business-hero.jpg";
+import financialAnalytics from "@/assets/business-analytics.jpg";
+
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
   const { toast } = useToast();
@@ -100,6 +107,22 @@ const Dashboard = () => {
     "Structure financing solutions that align with client needs and risk tolerance parameters",
     "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
   ];
+
+  // Course image mapping function
+  const getCourseImage = (skillLevel: string, moduleId: string) => {
+    // Map different skill levels and modules to appropriate images
+    if (moduleId?.includes('credit') || skillLevel === 'intermediate') {
+      return courseCreditProfessional;
+    } else if (moduleId?.includes('finance') || skillLevel === 'beginner') {
+      return courseFinanceProfessional;
+    } else if (moduleId?.includes('sba') || skillLevel === 'expert') {
+      return courseSbaProfessional;
+    } else if (moduleId?.includes('business')) {
+      return businessHero;
+    } else {
+      return financialAnalytics; // Default fallback
+    }
+  };
 
   const handleModuleStart = (moduleId: string) => {
     const module = modules.find(m => m.id === moduleId) || 
@@ -200,7 +223,7 @@ const Dashboard = () => {
                             lessons={module.lessons_count || 0}
                             skillLevel={module.skill_level}
                             moduleId={module.module_id}
-                            image={`/assets/course-${module.skill_level}-professional.jpg`}
+                            image={getCourseImage(module.skill_level, module.module_id)}
                             isAuthenticated={true}
                             onEnrollClick={() => handleModuleStart(module.module_id)}
                           />
