@@ -111,10 +111,15 @@ const AccountPage = () => {
     loadProfile();
   }, []);
 
-  // Apply font size to body when preferences change
+  // Apply font size using CSS custom properties instead of body classes
   useEffect(() => {
-    document.body.className = document.body.className.replace(/font-(small|medium|large)/g, '');
-    document.body.classList.add(`font-${preferences.fontSize}`);
+    const root = document.documentElement;
+    const fontSizeMap = {
+      small: '14px',
+      medium: '16px',
+      large: '18px'
+    };
+    root.style.setProperty('--user-font-size', fontSizeMap[preferences.fontSize as keyof typeof fontSizeMap] || '16px');
   }, [preferences.fontSize]);
 
   const loadProfile = async () => {
@@ -928,6 +933,7 @@ const AccountPage = () => {
                       <SelectContent>
                         <SelectItem value="small">Small</SelectItem>
                         <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="large">Large</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
