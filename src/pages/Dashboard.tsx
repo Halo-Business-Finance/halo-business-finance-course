@@ -244,6 +244,7 @@ const Dashboard = () => {
                             lessons={module.lessons}
                             progress={module.progress}
                             status={module.status}
+                            topics={module.topics}
                             onStart={() => handleModuleStart(module.id)}
                           />
                         ))}
@@ -378,6 +379,7 @@ const Dashboard = () => {
                             lessons={module.lessons}
                             progress={module.progress}
                             status={module.status}
+                            topics={module.topics}
                             onStart={() => handleModuleStart(module.id)}
                           />
                         ))}

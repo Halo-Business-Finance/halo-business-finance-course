@@ -11,6 +11,7 @@ interface ModuleCardProps {
   lessons: number;
   progress: number;
   status: "locked" | "available" | "in-progress" | "completed";
+  topics?: string[];
   onStart: () => void;
 }
 
@@ -21,6 +22,7 @@ const ModuleCard = ({
   lessons, 
   progress, 
   status, 
+  topics,
   onStart 
 }: ModuleCardProps) => {
   const getStatusIcon = () => {
@@ -77,6 +79,20 @@ const ModuleCard = ({
         <CardDescription className="text-sm leading-relaxed">
           {description}
         </CardDescription>
+        
+        {topics && topics.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-foreground">Lesson Plan:</h4>
+            <ul className="space-y-1">
+              {topics.map((topic, index) => (
+                <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0" />
+                  <span>{topic}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="space-y-4">

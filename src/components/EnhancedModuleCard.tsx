@@ -15,6 +15,7 @@ interface EnhancedModule {
   lessons_count: number;
   order_index: number;
   prerequisites: string[];
+  topics?: string[];
   progress?: number;
   is_completed?: boolean;
   is_locked?: boolean;
@@ -87,6 +88,25 @@ export function EnhancedModuleCard({ module, userProgress, image }: EnhancedModu
         <CardDescription className="text-sm line-clamp-3">
           {module.description}
         </CardDescription>
+        
+        {module.topics && module.topics.length > 0 && (
+          <div className="space-y-2 mt-3">
+            <h4 className="text-sm font-medium text-foreground">Lesson Plan:</h4>
+            <ul className="space-y-1">
+              {module.topics.slice(0, 4).map((topic, index) => (
+                <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0" />
+                  <span>{topic}</span>
+                </li>
+              ))}
+              {module.topics.length > 4 && (
+                <li className="text-sm text-muted-foreground ml-3">
+                  +{module.topics.length - 4} more topics
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </CardHeader>
       
       <CardContent className="pt-0 space-y-4">
