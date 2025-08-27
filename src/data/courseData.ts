@@ -72,11 +72,19 @@ export interface Module {
   finalTest?: Assessment;
 }
 
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  modules: Module[];
+}
+
 export interface CourseData {
   modules: Module[];
   totalProgress: number;
   completedModules: number;
   totalModules: number;
+  allCourses: Course[];
 }
 
 export const courseData: CourseData = {
@@ -1257,6 +1265,26 @@ export const courseData: CourseData = {
           // Additional questions would be added here
         ]
       }
+    }
+  ],
+  allCourses: [
+    {
+      id: "halo-business-finance",
+      title: "Halo Business Finance Certification",
+      description: "Comprehensive business finance training covering all essential aspects of commercial lending, credit analysis, and financial decision-making.",
+      modules: [] // Will be populated with the modules array above
+    },
+    {
+      id: "advanced-commercial-lending",
+      title: "Advanced Commercial Lending",
+      description: "Advanced techniques in commercial lending, complex deal structuring, and portfolio management for experienced professionals.",
+      modules: [] // Additional course modules would go here
+    },
+    {
+      id: "credit-risk-management",
+      title: "Credit Risk Management",
+      description: "Specialized training in credit risk assessment, mitigation strategies, and regulatory compliance for financial institutions.",
+      modules: [] // Additional course modules would go here
     }
   ]
 };

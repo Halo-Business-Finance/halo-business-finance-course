@@ -193,18 +193,15 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Course Selection Section */}
+      {/* All Courses Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           <div className="text-left space-y-4">
-            <h2 className="text-3xl font-bold">Course Catalog</h2>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed whitespace-nowrap">
-              Select a course to view its modules. Track your progress and continue your learning journey.
+            <h2 className="text-3xl font-bold">All Course Modules</h2>
+            <p className="text-muted-foreground max-w-3xl leading-relaxed">
+              Browse all available course modules with detailed information, lesson plans, and progress tracking.
             </p>
           </div>
-
-          {/* Course Selector */}
-          <CourseSelector />
 
           <SkillLevelFilter
             selectedLevel={selectedSkillLevel}
@@ -214,41 +211,41 @@ const Dashboard = () => {
 
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {[1, 2, 3, 4, 5, 6].map(i => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
                 <div key={i} className="animate-pulse">
-                  <div className="bg-muted rounded-lg h-48" />
+                  <div className="bg-muted rounded-lg h-64" />
                 </div>
               ))}
             </div>
           ) : (
             <>
-                    {enhancedModules.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {filteredModules.map((module, index) => (
-                          <EnhancedModuleCard 
-                            key={module.id} 
-                            module={module} 
-                            userProgress={userProgress[module.module_id]}
-                            image={getCourseImage(index)}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {modules.map((module) => (
-                          <ModuleCard
-                            key={module.id}
-                            title={module.title}
-                            description={module.description}
-                            duration={module.duration}
-                            lessons={module.lessons}
-                            progress={module.progress}
-                            status={module.status}
-                            topics={module.topics}
-                            onStart={() => handleModuleStart(module.id)}
-                          />
-                        ))}
-                      </div>
+              {enhancedModules.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {filteredModules.map((module, index) => (
+                    <EnhancedModuleCard 
+                      key={module.id} 
+                      module={module} 
+                      userProgress={userProgress[module.module_id]}
+                      image={getCourseImage(index)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {modules.map((module) => (
+                    <ModuleCard
+                      key={module.id}
+                      title={module.title}
+                      description={module.description}
+                      duration={module.duration}
+                      lessons={module.lessons}
+                      progress={module.progress}
+                      status={module.status}
+                      topics={module.topics}
+                      onStart={() => handleModuleStart(module.id)}
+                    />
+                  ))}
+                </div>
               )}
 
               {filteredModules.length === 0 && enhancedModules.length > 0 && (
