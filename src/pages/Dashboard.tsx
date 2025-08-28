@@ -364,7 +364,15 @@ const Dashboard = () => {
                             m.course_title.toLowerCase().includes(courseName.toLowerCase())
                           );
                           return (
-                            <Card key={courseName} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer">
+                            <Card 
+                              key={courseName} 
+                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer"
+                              onClick={() => {
+                                // Navigate to level 1 for this course
+                                setCurrentFilterLevel(1);
+                                setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+                              }}
+                            >
                               <div className="relative overflow-hidden rounded-t-lg">
                                 <img 
                                   src={getCourseImage(index)} 
@@ -411,7 +419,17 @@ const Dashboard = () => {
                           m.skill_level === level
                         );
                         return (
-                          <Card key={level} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer">
+                          <Card 
+                            key={level} 
+                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer"
+                            onClick={() => {
+                              // Navigate to level 2 and filter by this specific course + skill level
+                              const courseSkillId = `${selectedCourse.id}-${level}`;
+                              setMultiLevelFilters([courseSkillId]);
+                              setCurrentFilterLevel(2);
+                              setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+                            }}
+                          >
                             <div className="relative overflow-hidden rounded-t-lg">
                               <img 
                                 src={getCourseImage(index)} 
