@@ -220,11 +220,11 @@ const AdminAuthPage = () => {
   // Show loading while checking auth state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-destructive/10 to-primary/10">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-navy-900">
+        <Card className="w-full max-w-md bg-navy-800 border-navy-700">
           <CardContent className="p-8 text-center space-y-4">
-            <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent mx-auto" />
-            <p className="text-muted-foreground">Loading...</p>
+            <div className="w-8 h-8 animate-spin rounded-full border-2 border-white border-t-transparent mx-auto" />
+            <p className="text-white/70">Loading...</p>
           </CardContent>
         </Card>
       </div>
@@ -232,16 +232,16 @@ const AdminAuthPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-destructive/10 to-primary/10 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-navy-900 p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center">
-            <div className="w-12 h-12 bg-gradient-to-br from-destructive to-primary rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-navy-600 to-navy-800 rounded-lg flex items-center justify-center">
               <Shield className="text-white h-6 w-6" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold">Business Finance Mastery Portal</h1>
-          <p className="text-muted-foreground">Administrative Access Only</p>
+          <h1 className="text-2xl font-bold text-white">Business Finance Mastery Portal</h1>
+          <p className="text-white/70">Administrative Access Only</p>
         </div>
         
         {rateLimitWarning && (
@@ -255,9 +255,9 @@ const AdminAuthPage = () => {
           </Card>
         )}
 
-        <Card>
+        <Card className="bg-navy-800 border-navy-700">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white">
               {(showForgotPassword || step === 'password') && (
                 <Button
                   variant="ghost"
@@ -269,7 +269,7 @@ const AdminAuthPage = () => {
                       setStep('email');
                     }
                   }}
-                  className="p-0 h-auto"
+                  className="p-0 h-auto text-white hover:bg-navy-700"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
@@ -277,7 +277,7 @@ const AdminAuthPage = () => {
               <LogIn className="h-5 w-5" />
               {showForgotPassword ? "Reset Password" : step === 'email' ? "Admin Access" : "Enter Password"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-white/70">
               {showForgotPassword 
                 ? "Enter your email to receive password reset instructions"
                 : step === 'email' ? "Enter your admin email to continue" : `Signing in as ${signInData.email}`
@@ -287,21 +287,21 @@ const AdminAuthPage = () => {
           <CardContent>
             {showForgotPassword ? (
               <form onSubmit={handleForgotPassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="forgot-email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="forgot-email"
-                      type="email"
-                      placeholder="Enter your admin email"
-                      value={forgotPasswordEmail}
-                      onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="forgot-email" className="text-white">Email</Label>
+                   <div className="relative">
+                     <Mail className="absolute left-3 top-3 h-4 w-4 text-white/70" />
+                     <Input
+                       id="forgot-email"
+                       type="email"
+                       placeholder="Enter your admin email"
+                       value={forgotPasswordEmail}
+                       onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                       className="pl-10 bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                       required
+                     />
+                   </div>
+                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Sending Reset Email..." : "Send Reset Email"}
@@ -309,22 +309,22 @@ const AdminAuthPage = () => {
               </form>
             ) : step === 'email' ? (
               <form onSubmit={handleEmailSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="signin-email"
-                      type="email"
-                      placeholder="Enter your admin email"
-                      value={signInData.email}
-                      onChange={(e) => setSignInData({...signInData, email: e.target.value})}
-                      className="pl-10"
-                      required
-                      autoFocus
-                    />
-                  </div>
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="signin-email" className="text-white">Email</Label>
+                   <div className="relative">
+                     <Mail className="absolute left-3 top-3 h-4 w-4 text-white/70" />
+                     <Input
+                       id="signin-email"
+                       type="email"
+                       placeholder="Enter your admin email"
+                       value={signInData.email}
+                       onChange={(e) => setSignInData({...signInData, email: e.target.value})}
+                       className="pl-10 bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                       required
+                       autoFocus
+                     />
+                   </div>
+                 </div>
 
                 <Button type="submit" className="w-full">
                   Continue
@@ -332,65 +332,65 @@ const AdminAuthPage = () => {
               </form>
             ) : (
               <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="signin-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={signInData.password}
-                      onChange={(e) => setSignInData({...signInData, password: e.target.value})}
-                      className="pl-10 pr-10"
-                      required
-                      autoFocus
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="signin-password" className="text-white">Password</Label>
+                   <div className="relative">
+                     <Lock className="absolute left-3 top-3 h-4 w-4 text-white/70" />
+                     <Input
+                       id="signin-password"
+                       type={showPassword ? "text" : "password"}
+                       placeholder="Enter your password"
+                       value={signInData.password}
+                       onChange={(e) => setSignInData({...signInData, password: e.target.value})}
+                       className="pl-10 pr-10 bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                       required
+                       autoFocus
+                     />
+                     <button
+                       type="button"
+                       onClick={() => setShowPassword(!showPassword)}
+                       className="absolute right-3 top-3 text-white/70 hover:text-white"
+                     >
+                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                     </button>
+                   </div>
+                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Signing In..." : "Sign In as Admin"}
                 </Button>
 
-                <div className="text-center">
-                  <Button
-                    variant="link"
-                    type="button"
-                    onClick={() => {
-                      setForgotPasswordEmail(signInData.email);
-                      setShowForgotPassword(true);
-                    }}
-                    className="text-sm"
-                  >
-                    Forgot password?
-                  </Button>
-                </div>
+                 <div className="text-center">
+                   <Button
+                     variant="link"
+                     type="button"
+                     onClick={() => {
+                       setForgotPasswordEmail(signInData.email);
+                       setShowForgotPassword(true);
+                     }}
+                     className="text-sm text-white hover:text-white/80"
+                   >
+                     Forgot password?
+                   </Button>
+                 </div>
               </form>
             )}
           </CardContent>
         </Card>
 
-        <div className="text-center space-y-2">
-          <p className="text-sm text-muted-foreground">
-            Need to set up initial admin access?
-          </p>
-          <Button variant="link" onClick={() => navigate('/auth')} className="text-sm">
-            Create Account & Set Up Admin Access
-          </Button>
-          <div className="pt-2">
-            <Button variant="link" onClick={() => navigate('/')}>
-              ← Back to Main Site
-            </Button>
-          </div>
-        </div>
+         <div className="text-center space-y-2">
+           <p className="text-sm text-white/70">
+             Need to set up initial admin access?
+           </p>
+           <Button variant="link" onClick={() => navigate('/auth')} className="text-sm text-white hover:text-white/80">
+             Create Account & Set Up Admin Access
+           </Button>
+           <div className="pt-2">
+             <Button variant="link" onClick={() => navigate('/')} className="text-white hover:text-white/80">
+               ← Back to Main Site
+             </Button>
+           </div>
+         </div>
       </div>
     </div>
   );
