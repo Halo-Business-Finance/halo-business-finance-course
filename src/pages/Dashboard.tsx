@@ -6,6 +6,7 @@ import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { SkillLevelFilter } from "@/components/SkillLevelFilter";
 import { DashboardFilterSidebar } from "@/components/DashboardFilterSidebar";
+import { MultiLevelCourseFilter } from "@/components/MultiLevelCourseFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -57,6 +58,9 @@ const Dashboard = () => {
   const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
   const [loading, setLoading] = useState(false);
+  const [useMultiLevelFilter, setUseMultiLevelFilter] = useState(false);
+  const [multiLevelFilters, setMultiLevelFilters] = useState<string[]>([]);
+  const [multiLevelSearch, setMultiLevelSearch] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -96,13 +100,49 @@ const Dashboard = () => {
   };
 
   const filteredModules = flattenedModules.filter(module => {
-    const matchesLevel = selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel;
-    const matchesTitle = titleFilter === "" || module.title.toLowerCase().includes(titleFilter.toLowerCase());
-    const matchesStatus = selectedStatus === "all" || module.status === selectedStatus;
-    const matchesCourse = selectedCourse === "all" || 
-      module.course_title.toLowerCase().replace(/\s+/g, '-').includes(selectedCourse.replace('-', ' '));
-    
-    return matchesLevel && matchesTitle && matchesStatus && matchesCourse;
+    if (useMultiLevelFilter) {
+      // Multi-level filter logic
+      const matchesMultiLevelSearch = multiLevelSearch === "" || 
+        module.title.toLowerCase().includes(multiLevelSearch.toLowerCase()) ||
+        module.course_title.toLowerCase().includes(multiLevelSearch.toLowerCase());
+      
+      const matchesMultiLevelCategories = multiLevelFilters.length === 0 || 
+        multiLevelFilters.some(filterId => {
+          // Map filter IDs to course patterns
+          const courseTitle = module.course_title.toLowerCase();
+          
+          // SBA category mappings
+          if (filterId.includes('sba-7a') && courseTitle.includes('sba 7(a)')) return true;
+          if (filterId.includes('sba-express') && courseTitle.includes('sba express')) return true;
+          if (filterId.includes('cre') && courseTitle.includes('commercial real estate')) return true;
+          if (filterId.includes('equipment') && courseTitle.includes('equipment financing')) return true;
+          if (filterId.includes('working-capital') && courseTitle.includes('working capital')) return true;
+          if (filterId.includes('factoring') && courseTitle.includes('invoice factoring')) return true;
+          if (filterId.includes('mca') && courseTitle.includes('merchant cash')) return true;
+          if (filterId.includes('abl') && courseTitle.includes('asset-based')) return true;
+          if (filterId.includes('construction') && courseTitle.includes('construction')) return true;
+          if (filterId.includes('healthcare') && courseTitle.includes('healthcare')) return true;
+          if (filterId.includes('restaurant') && courseTitle.includes('restaurant')) return true;
+          
+          // Level-specific matching
+          if (filterId.includes('beginner') && module.skill_level === 'beginner') return true;
+          if (filterId.includes('intermediate') && module.skill_level === 'intermediate') return true;
+          if (filterId.includes('expert') && module.skill_level === 'expert') return true;
+          
+          return false;
+        });
+      
+      return matchesMultiLevelSearch && matchesMultiLevelCategories;
+    } else {
+      // Original filter logic
+      const matchesLevel = selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel;
+      const matchesTitle = titleFilter === "" || module.title.toLowerCase().includes(titleFilter.toLowerCase());
+      const matchesStatus = selectedStatus === "all" || module.status === selectedStatus;
+      const matchesCourse = selectedCourse === "all" || 
+        module.course_title.toLowerCase().replace(/\s+/g, '-').includes(selectedCourse.replace('-', ' '));
+      
+      return matchesLevel && matchesTitle && matchesStatus && matchesCourse;
+    }
   });
 
   const skillLevelCounts = {
@@ -234,21 +274,52 @@ const Dashboard = () => {
             </p>
           </div>
 
+          {/* Filter Toggle */}
+          <div className="mb-6">
+            <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="multiLevelFilter"
+                  checked={useMultiLevelFilter}
+                  onChange={(e) => setUseMultiLevelFilter(e.target.checked)}
+                  className="rounded border-border"
+                />
+                <label htmlFor="multiLevelFilter" className="text-sm font-medium">
+                  Use Multi-Level Hierarchical Filter
+                </label>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {useMultiLevelFilter ? "Navigate categories step-by-step" : "Use standard filters"}
+              </div>
+            </div>
+          </div>
+
           {/* Sidebar Layout */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Filter Sidebar */}
             <div className="lg:w-80 flex-shrink-0">
-              <DashboardFilterSidebar
-                selectedLevel={selectedSkillLevel}
-                onLevelChange={setSelectedSkillLevel}
-                titleFilter={titleFilter}
-                onTitleFilterChange={setTitleFilter}
-                selectedStatus={selectedStatus}
-                onStatusChange={setSelectedStatus}
-                selectedCourse={selectedCourse}
-                onCourseChange={setSelectedCourse}
-                counts={skillLevelCounts}
-              />
+              {useMultiLevelFilter ? (
+                <MultiLevelCourseFilter
+                  onFilterChange={(categories, search) => {
+                    setMultiLevelFilters(categories);
+                    setMultiLevelSearch(search);
+                  }}
+                  totalCount={flattenedModules.length}
+                />
+              ) : (
+                <DashboardFilterSidebar
+                  selectedLevel={selectedSkillLevel}
+                  onLevelChange={setSelectedSkillLevel}
+                  titleFilter={titleFilter}
+                  onTitleFilterChange={setTitleFilter}
+                  selectedStatus={selectedStatus}
+                  onStatusChange={setSelectedStatus}
+                  selectedCourse={selectedCourse}
+                  onCourseChange={setSelectedCourse}
+                  counts={skillLevelCounts}
+                />
+              )}
             </div>
 
             {/* Main Content */}
