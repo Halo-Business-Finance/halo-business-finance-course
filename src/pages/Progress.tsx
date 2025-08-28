@@ -21,7 +21,7 @@ const ProgressPage = () => {
     { name: "Compliance", progress: 0, status: "locked", timeSpent: "0m", lessons: 8, completedLessons: 0 },
   ];
 
-  const certificates = [
+  const certificatesList = [
     {
       name: "Business Finance Foundations",
       status: "in-progress",
@@ -323,7 +323,7 @@ const ProgressPage = () => {
 
             {/* Certificates Grid */}
             <div className="grid gap-6">
-              {certificates.map((certificate, index) => (
+              {certificatesList.map((certificate, index) => (
                 <Card 
                   key={certificate.name} 
                   className={`group border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
