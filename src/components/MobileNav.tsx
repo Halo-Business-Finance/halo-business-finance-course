@@ -11,7 +11,7 @@ export const MobileNav = () => {
     { title: "About Us", href: "/about" },
     { title: "Course Catalog", href: "/course-catalog" },
     { title: "Pricing", href: "/pricing" },
-    { title: "Enterprise", href: "/enterprise" },
+    { title: "Enterprise Solutions", href: "/business" },
     { title: "Blog", href: "/blog" },
     { title: "Support", href: "/support", icon: MessageCircle },
   ];
