@@ -58,7 +58,7 @@ const Dashboard = () => {
   const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
   const [loading, setLoading] = useState(false);
-  const [useMultiLevelFilter, setUseMultiLevelFilter] = useState(false);
+  const [useMultiLevelFilter, setUseMultiLevelFilter] = useState(true);
   const [multiLevelFilters, setMultiLevelFilters] = useState<string[]>([]);
   const [multiLevelSearch, setMultiLevelSearch] = useState("");
 
@@ -274,52 +274,17 @@ const Dashboard = () => {
             </p>
           </div>
 
-          {/* Filter Toggle */}
-          <div className="mb-6">
-            <div className="flex items-center gap-4 p-4 bg-card rounded-lg border">
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="multiLevelFilter"
-                  checked={useMultiLevelFilter}
-                  onChange={(e) => setUseMultiLevelFilter(e.target.checked)}
-                  className="rounded border-border"
-                />
-                <label htmlFor="multiLevelFilter" className="text-sm font-medium">
-                  Use Multi-Level Hierarchical Filter
-                </label>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {useMultiLevelFilter ? "Navigate categories step-by-step" : "Use standard filters"}
-              </div>
-            </div>
-          </div>
-
           {/* Sidebar Layout */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Filter Sidebar */}
             <div className="lg:w-80 flex-shrink-0">
-              {useMultiLevelFilter ? (
-                <MultiLevelCourseFilter
-                  onFilterChange={(categories, search) => {
-                    setMultiLevelFilters(categories);
-                    setMultiLevelSearch(search);
-                  }}
-                  totalCount={flattenedModules.length}
-                />
-              ) : (
-                <DashboardFilterSidebar
-                  selectedLevel={selectedSkillLevel}
-                  onLevelChange={setSelectedSkillLevel}
-                  titleFilter={titleFilter}
-                  onTitleFilterChange={setTitleFilter}
-                  selectedStatus={selectedStatus}
-                  onStatusChange={setSelectedStatus}
-                  selectedCourse={selectedCourse}
-                  onCourseChange={setSelectedCourse}
-                  counts={skillLevelCounts}
-                />
-              )}
+              <MultiLevelCourseFilter
+                onFilterChange={(categories, search) => {
+                  setMultiLevelFilters(categories);
+                  setMultiLevelSearch(search);
+                }}
+                totalCount={flattenedModules.length}
+              />
             </div>
 
             {/* Main Content */}
