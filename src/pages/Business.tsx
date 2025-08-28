@@ -332,15 +332,6 @@ const Business = () => {
               );
             })}
           </div>
-          <div className="text-center mt-8">
-            <Button 
-              size="lg" 
-              className="bg-halo-orange hover:bg-halo-orange/90 text-white px-8 py-3"
-              onClick={() => setIsDemoModalOpen(true)}
-            >
-              Schedule a Demo
-            </Button>
-          </div>
         </div>
       </div>
 
