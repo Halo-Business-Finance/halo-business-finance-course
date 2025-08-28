@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -185,52 +186,12 @@ const FilterContent = ({
   totalCount,
   onCloseSheet 
 }: MultiLevelCourseFilterProps & { onCloseSheet?: () => void }) => {
-  const [currentLevel, setCurrentLevel] = useState<CategoryLevel[]>(categoryHierarchy);
-  const [navigationPath, setNavigationPath] = useState<{ id: string; name: string }[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     onFilterChange(selectedCategories, searchTerm);
   }, [selectedCategories, searchTerm, onFilterChange]);
-
-  const navigateToCategory = (category: CategoryLevel) => {
-    if (category.subcategories && category.subcategories.length > 0) {
-      setCurrentLevel(category.subcategories);
-      setNavigationPath([...navigationPath, { id: category.id, name: category.name }]);
-    } else {
-      // This is a final category, toggle selection
-      toggleCategorySelection(category.id);
-      onCloseSheet?.();
-    }
-  };
-
-  const navigateBack = () => {
-    if (navigationPath.length === 0) return;
-
-    const newPath = [...navigationPath];
-    newPath.pop();
-    setNavigationPath(newPath);
-
-    if (newPath.length === 0) {
-      setCurrentLevel(categoryHierarchy);
-    } else {
-      // Navigate to the parent category
-      let targetLevel = categoryHierarchy;
-      for (const pathItem of newPath) {
-        const category = targetLevel.find(cat => cat.id === pathItem.id);
-        if (category?.subcategories) {
-          targetLevel = category.subcategories;
-        }
-      }
-      setCurrentLevel(targetLevel);
-    }
-  };
-
-  const navigateToRoot = () => {
-    setCurrentLevel(categoryHierarchy);
-    setNavigationPath([]);
-  };
 
   const toggleCategorySelection = (categoryId: string) => {
     setSelectedCategories(prev => 
@@ -243,13 +204,6 @@ const FilterContent = ({
   const clearAllFilters = () => {
     setSelectedCategories([]);
     setSearchTerm("");
-    setCurrentLevel(categoryHierarchy);
-    setNavigationPath([]);
-  };
-
-  const getCategoryBreadcrumb = () => {
-    if (navigationPath.length === 0) return "All Categories";
-    return navigationPath.map(item => item.name).join(" → ");
   };
 
   return (
@@ -258,7 +212,7 @@ const FilterContent = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Layers className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-lg">Multi-Level Filter</h3>
+          <h3 className="font-semibold text-lg">Loan Program Filter</h3>
         </div>
         <Button 
           variant="ghost" 
@@ -274,44 +228,32 @@ const FilterContent = ({
       <div className="space-y-2">
         <Label htmlFor="search" className="text-sm font-medium flex items-center gap-2">
           <Search className="h-4 w-4" />
-          Search Modules
+          Search Loan Programs
         </Label>
         <Input
           id="search"
           type="text"
-          placeholder="Search across all categories..."
+          placeholder="Search loan programs..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full"
         />
       </div>
 
-      {/* Simple Navigation */}
-      {navigationPath.length > 0 && (
-        <div className="flex items-center justify-between pb-4 border-b">
-          <div className="text-sm font-medium">
-            {navigationPath[navigationPath.length - 1]?.name}
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={navigateBack}
-            className="h-8 px-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back
-          </Button>
-        </div>
-      )}
-
-      {/* Categories */}
+      {/* Loan Program Categories - First Level Only */}
       <div className="space-y-2">
-        {currentLevel.map(category => (
+        <div className="text-sm font-medium text-muted-foreground mb-3">
+          Loan Program Categories
+        </div>
+        {categoryHierarchy.map(category => (
           <Button
             key={category.id}
             variant={selectedCategories.includes(category.id) ? "default" : "ghost"}
             size="sm"
-            onClick={() => navigateToCategory(category)}
+            onClick={() => {
+              toggleCategorySelection(category.id);
+              onCloseSheet?.();
+            }}
             className={`w-full justify-between group hover:bg-accent transition-all duration-200 ${
               selectedCategories.includes(category.id) 
                 ? 'bg-primary hover:bg-primary/90 text-primary-foreground'
@@ -321,21 +263,16 @@ const FilterContent = ({
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <span className="truncate">{category.name}</span>
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <Badge 
-                variant="secondary" 
-                className={`text-xs rounded-full w-8 h-5 flex items-center justify-center ${
-                  selectedCategories.includes(category.id) 
-                    ? 'bg-primary-foreground text-primary' 
-                    : 'bg-primary text-primary-foreground'
-                }`}
-              >
-                {category.count}
-              </Badge>
-              {category.subcategories && (
-                <ChevronRight className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-              )}
-            </div>
+            <Badge 
+              variant="secondary" 
+              className={`text-xs rounded-full w-8 h-5 flex items-center justify-center ${
+                selectedCategories.includes(category.id) 
+                  ? 'bg-primary-foreground text-primary' 
+                  : 'bg-primary text-primary-foreground'
+              }`}
+            >
+              {category.count}
+            </Badge>
           </Button>
         ))}
       </div>
@@ -344,22 +281,11 @@ const FilterContent = ({
       {selectedCategories.length > 0 && (
         <div className="pt-4 border-t">
           <div className="text-sm text-muted-foreground mb-2">
-            Selected Categories ({selectedCategories.length}):
+            Selected Programs ({selectedCategories.length}):
           </div>
           <div className="flex flex-wrap gap-1">
             {selectedCategories.map(categoryId => {
-              // Find the category name in the hierarchy
-              const findCategoryName = (categories: CategoryLevel[], id: string): string => {
-                for (const cat of categories) {
-                  if (cat.id === id) return cat.name;
-                  if (cat.subcategories) {
-                    const found = findCategoryName(cat.subcategories, id);
-                    if (found) return found;
-                  }
-                }
-                return id;
-              };
-              
+              const category = categoryHierarchy.find(cat => cat.id === categoryId);
               return (
                 <Badge 
                   key={categoryId} 
@@ -367,7 +293,7 @@ const FilterContent = ({
                   className="text-xs cursor-pointer hover:bg-destructive hover:text-destructive-foreground transition-colors"
                   onClick={() => toggleCategorySelection(categoryId)}
                 >
-                  {findCategoryName(categoryHierarchy, categoryId)} ×
+                  {category?.name || categoryId} ×
                 </Badge>
               );
             })}
@@ -400,12 +326,12 @@ export function MultiLevelCourseFilter(props: MultiLevelCourseFilterProps) {
           <SheetTrigger asChild>
             <Button variant="outline" className="w-full">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Multi-Level Filter
+              Loan Program Filter
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:w-80 p-6 overflow-y-auto max-h-screen">
             <SheetHeader>
-              <SheetTitle>Multi-Level Course Filter</SheetTitle>
+              <SheetTitle>Loan Program Course Filter</SheetTitle>
             </SheetHeader>
             <div className="mt-6">
               <FilterContent {...props} onCloseSheet={() => setIsSheetOpen(false)} />
