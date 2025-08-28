@@ -248,40 +248,40 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-navy-900 p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center text-black hover:text-gray-700 mb-4">
+          <Link to="/" className="inline-flex items-center text-white hover:text-white/80 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Link>
-          <h1 className="text-3xl font-bold text-blue-900">Get Started</h1>
-          <p className="text-black mt-2">Create your account and start your 3-day free trial</p>
+          <h1 className="text-3xl font-bold text-white">Get Started</h1>
+          <p className="text-white/70 mt-2">Create your account and start your 3-day free trial</p>
         </div>
 
-        <Card>
+        <Card className="bg-navy-800 border-navy-700">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center flex items-center justify-center gap-2 text-black">
+            <CardTitle className="text-2xl text-center flex items-center justify-center gap-2 text-white">
               <UserPlus className="h-5 w-5" />
               Create Account
             </CardTitle>
-            <CardDescription className="text-center text-black">
+            <CardDescription className="text-center text-white/70">
               Join Halo Business Finance Training Platform
             </CardDescription>
             
             {/* Subscription Information */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+            <div className="bg-navy-700 border border-navy-600 rounded-lg p-4 space-y-3">
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-black mb-2">3-Day Free Trial</h3>
-                <p className="text-sm text-black mb-3">
+                <h3 className="text-lg font-semibold text-white mb-2">3-Day Free Trial</h3>
+                <p className="text-sm text-white/70 mb-3">
                   Get full access to all courses and materials - completely free for 3 days
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="space-y-2">
-                  <h4 className="font-medium text-black">What's Included:</h4>
-                  <ul className="text-black space-y-1">
+                  <h4 className="font-medium text-white">What's Included:</h4>
+                  <ul className="text-white/70 space-y-1">
                     <li>• Full access to all course materials</li>
                     <li>• Interactive lessons and assessments</li>
                     <li>• Student community access</li>
@@ -290,9 +290,9 @@ const SignUpPage = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h4 className="font-medium text-black">Pricing & Guarantee:</h4>
-                  <ul className="text-black space-y-1">
-                    <li>• <strong>$49/month</strong> after trial ends</li>
+                  <h4 className="font-medium text-white">Pricing & Guarantee:</h4>
+                  <ul className="text-white/70 space-y-1">
+                    <li>• <strong className="text-white">$49/month</strong> after trial ends</li>
                     <li>• Cancel anytime during trial</li>
                     <li>• 30-day money-back guarantee</li>
                     <li>• Email reminder before trial expires</li>
@@ -300,9 +300,9 @@ const SignUpPage = () => {
                 </div>
               </div>
               
-              <div className="border-t border-blue-200 pt-3 mt-3">
-                <p className="text-xs text-black text-center">
-                  <strong>How it works:</strong> Your 3-day free trial begins when you create your account. 
+              <div className="border-t border-navy-600 pt-3 mt-3">
+                <p className="text-xs text-white/70 text-center">
+                  <strong className="text-white">How it works:</strong> Your 3-day free trial begins when you create your account. 
                   We'll send you a reminder email before it ends. If you don't cancel before the trial expires, 
                   your subscription will automatically begin at $49/month. You can cancel easily in your account settings 
                   at any time. If you're not satisfied within the first 30 days of paid subscription, 
@@ -313,221 +313,229 @@ const SignUpPage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignUpSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Full Name
-                </Label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={signUpData.fullName}
-                  onChange={(e) => setSignUpData({...signUpData, fullName: e.target.value})}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="fullName" className="flex items-center gap-2 text-white">
+                   <User className="h-4 w-4" />
+                   Full Name
+                 </Label>
+                 <Input
+                   id="fullName"
+                   type="text"
+                   placeholder="Enter your full name"
+                   value={signUpData.fullName}
+                   onChange={(e) => setSignUpData({...signUpData, fullName: e.target.value})}
+                   className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                   required
+                   disabled={isLoading}
+                 />
+               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="company" className="flex items-center gap-2">
-                  <Building className="h-4 w-4" />
-                  Company Name (Optional)
-                </Label>
-                <Input
-                  id="company"
-                  type="text"
-                  placeholder="Enter your company name"
-                  value={signUpData.company}
-                  onChange={(e) => setSignUpData({...signUpData, company: e.target.value})}
-                  disabled={isLoading}
-                />
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="company" className="flex items-center gap-2 text-white">
+                   <Building className="h-4 w-4" />
+                   Company Name (Optional)
+                 </Label>
+                 <Input
+                   id="company"
+                   type="text"
+                   placeholder="Enter your company name"
+                   value={signUpData.company}
+                   onChange={(e) => setSignUpData({...signUpData, company: e.target.value})}
+                   className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                   disabled={isLoading}
+                 />
+               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  Phone Number
-                </Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="(XXX) XXX-XXXX"
-                  value={signUpData.phone}
-                  onChange={(e) => setSignUpData({...signUpData, phone: formatPhoneNumber(e.target.value)})}
-                  disabled={isLoading}
-                />
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="phone" className="flex items-center gap-2 text-white">
+                   <Phone className="h-4 w-4" />
+                   Phone Number
+                 </Label>
+                 <Input
+                   id="phone"
+                   type="tel"
+                   placeholder="(XXX) XXX-XXXX"
+                   value={signUpData.phone}
+                   onChange={(e) => setSignUpData({...signUpData, phone: formatPhoneNumber(e.target.value)})}
+                   className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                   disabled={isLoading}
+                 />
+               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    City
-                  </Label>
-                  <Input
-                    id="city"
-                    type="text"
-                    placeholder="Enter your city"
-                    value={signUpData.city}
-                    onChange={(e) => setSignUpData({...signUpData, city: e.target.value})}
-                    required
-                    disabled={isLoading}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="state" className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    State
-                  </Label>
-                  <Input
-                    id="state"
-                    type="text"
-                    placeholder="Enter your state"
-                    value={signUpData.state}
-                    onChange={(e) => setSignUpData({...signUpData, state: e.target.value})}
-                    required
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
+               <div className="grid grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                   <Label htmlFor="city" className="flex items-center gap-2 text-white">
+                     <MapPin className="h-4 w-4" />
+                     City
+                   </Label>
+                   <Input
+                     id="city"
+                     type="text"
+                     placeholder="Enter your city"
+                     value={signUpData.city}
+                     onChange={(e) => setSignUpData({...signUpData, city: e.target.value})}
+                     className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                     required
+                     disabled={isLoading}
+                   />
+                 </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="state" className="flex items-center gap-2 text-white">
+                     <MapPin className="h-4 w-4" />
+                     State
+                   </Label>
+                   <Input
+                     id="state"
+                     type="text"
+                     placeholder="Enter your state"
+                     value={signUpData.state}
+                     onChange={(e) => setSignUpData({...signUpData, state: e.target.value})}
+                     className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                     required
+                     disabled={isLoading}
+                   />
+                 </div>
+               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={signUpData.email}
-                  onChange={(e) => setSignUpData({...signUpData, email: e.target.value})}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="email" className="flex items-center gap-2 text-white">
+                   <Mail className="h-4 w-4" />
+                   Email
+                 </Label>
+                 <Input
+                   id="email"
+                   type="email"
+                   placeholder="Enter your email"
+                   value={signUpData.email}
+                   onChange={(e) => setSignUpData({...signUpData, email: e.target.value})}
+                   className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                   required
+                   disabled={isLoading}
+                 />
+               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Create a password"
-                    value={signUpData.password}
-                    onChange={(e) => {
-                      setSignUpData({...signUpData, password: e.target.value});
-                      setPasswordStrength(calculatePasswordStrength(e.target.value));
-                    }}
-                    required
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-                {signUpData.password && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4" />
-                      <span className="text-sm text-black">Password strength: {passwordStrength}</span>
-                    </div>
-                    <Progress 
-                      value={getPasswordStrengthPercentage()} 
-                      className={`h-2 ${getPasswordStrengthColor()}`}
-                    />
-                  </div>
-                )}
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="password" className="flex items-center gap-2 text-white">
+                   <Lock className="h-4 w-4" />
+                   Password
+                 </Label>
+                 <div className="relative">
+                   <Input
+                     id="password"
+                     type={showPassword ? "text" : "password"}
+                     placeholder="Create a password"
+                     value={signUpData.password}
+                     onChange={(e) => {
+                       setSignUpData({...signUpData, password: e.target.value});
+                       setPasswordStrength(calculatePasswordStrength(e.target.value));
+                     }}
+                     className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                     required
+                     disabled={isLoading}
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowPassword(!showPassword)}
+                     className="absolute right-3 top-3 text-white/70 hover:text-white"
+                   >
+                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                   </button>
+                 </div>
+                 {signUpData.password && (
+                   <div className="space-y-2">
+                     <div className="flex items-center gap-2">
+                       <Shield className="h-4 w-4 text-white" />
+                       <span className="text-sm text-white">Password strength: {passwordStrength}</span>
+                     </div>
+                     <Progress 
+                       value={getPasswordStrengthPercentage()} 
+                       className={`h-2 ${getPasswordStrengthColor()}`}
+                     />
+                   </div>
+                 )}
+               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  Confirm Password
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                    value={signUpData.confirmPassword}
-                    onChange={(e) => setSignUpData({...signUpData, confirmPassword: e.target.value})}
-                    required
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="confirmPassword" className="flex items-center gap-2 text-white">
+                   <Lock className="h-4 w-4" />
+                   Confirm Password
+                 </Label>
+                 <div className="relative">
+                   <Input
+                     id="confirmPassword"
+                     type={showConfirmPassword ? "text" : "password"}
+                     placeholder="Confirm your password"
+                     value={signUpData.confirmPassword}
+                     onChange={(e) => setSignUpData({...signUpData, confirmPassword: e.target.value})}
+                     className="bg-navy-700 border-navy-600 text-white placeholder:text-white/50"
+                     required
+                     disabled={isLoading}
+                   />
+                   <button
+                     type="button"
+                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                     className="absolute right-3 top-3 text-white/70 hover:text-white"
+                   >
+                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                   </button>
+                 </div>
+               </div>
 
-              {/* Terms and Conditions Acceptance */}
-              <div className="space-y-3 p-4 bg-gray-50 rounded-lg border">
-                <div className="flex items-start space-x-3">
-                  <Checkbox
-                    id="terms"
-                    checked={termsAccepted}
-                    onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
-                    className="mt-1"
-                    disabled={isLoading}
-                  />
-                  <div className="flex-1">
-                     <Label 
-                       htmlFor="terms" 
-                       className="text-sm leading-5 cursor-pointer text-black"
-                     >
-                       I have read and agree to the{" "}
-                       <Link
-                         to="/terms"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="text-blue-600 hover:text-blue-800 underline font-medium"
-                       >
-                         FinPilot Terms and Conditions
-                       </Link>
-                       {", "}
-                       <Link
-                         to="/privacy"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="text-blue-600 hover:text-blue-800 underline font-medium"
-                       >
-                         Privacy Policy
-                       </Link>
-                       {", and the 3-day free trial and monthly subscription terms outlined above."}
-                     </Label>
-                  </div>
-                </div>
-                <p className="text-xs text-black ml-6">
-                  By creating an account, you agree to our terms of service and acknowledge that you have read our privacy policy.
-                </p>
-              </div>
+               {/* Terms and Conditions Acceptance */}
+               <div className="space-y-3 p-4 bg-navy-700 rounded-lg border border-navy-600">
+                 <div className="flex items-start space-x-3">
+                   <Checkbox
+                     id="terms"
+                     checked={termsAccepted}
+                     onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
+                     className="mt-1"
+                     disabled={isLoading}
+                   />
+                   <div className="flex-1">
+                      <Label 
+                        htmlFor="terms" 
+                        className="text-sm leading-5 cursor-pointer text-white"
+                      >
+                        I have read and agree to the{" "}
+                        <Link
+                          to="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-300 underline font-medium"
+                        >
+                          FinPilot Terms and Conditions
+                        </Link>
+                        {", "}
+                        <Link
+                          to="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-300 underline font-medium"
+                        >
+                          Privacy Policy
+                        </Link>
+                        {", and the 3-day free trial and monthly subscription terms outlined above."}
+                      </Label>
+                   </div>
+                 </div>
+                 <p className="text-xs text-white/70 ml-6">
+                   By creating an account, you agree to our terms of service and acknowledge that you have read our privacy policy.
+                 </p>
+               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading || !termsAccepted}>
                 {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-black">
-                Already have an account?{" "}
-                <Link to="/auth" className="text-blue-600 hover:underline">
-                  Sign in
-                </Link>
-              </p>
-            </div>
+             <div className="mt-6 text-center">
+               <p className="text-sm text-white/70">
+                 Already have an account?{" "}
+                 <Link to="/auth" className="text-blue-400 hover:text-blue-300 underline">
+                   Sign in
+                 </Link>
+               </p>
+             </div>
           </CardContent>
         </Card>
       </div>
