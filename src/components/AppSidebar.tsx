@@ -191,8 +191,8 @@ export function AppSidebar() {
                        onClick={() => handleNavigation(item.url)}
                        className={`w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200`}
                      >
-                        <item.icon className="h-4 w-4 text-halo-orange" />
-                        {!collapsed && <span className="text-white text-xs font-medium">{item.title}</span>}
+                        <item.icon className="h-5 w-5 text-halo-orange" />
+                        {!collapsed && <span className="text-white text-sm font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -212,7 +212,7 @@ export function AppSidebar() {
             <SidebarGroupLabel className="pb-3 mb-2">
               {!collapsed && (
                 <div className="flex-1">
-                  <span className="text-xs font-semibold text-white tracking-wide">
+                  <span className="text-sm font-semibold text-white tracking-wide">
                     {selectedCourse?.title || 'Course Modules'}
                   </span>
                 </div>
@@ -241,11 +241,11 @@ export function AppSidebar() {
                            <div className="relative z-10 flex items-center w-full gap-4">
                              {/* Status Indicator */}
                              <div className="relative flex-shrink-0">
-                                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
                                   {isModuleLocked ? (
-                                    <Lock size={14} className="text-white" />
+                                    <Lock size={18} className="text-white" />
                                   ) : (
-                                    <span className="text-xs font-bold">{index + 1}</span>
+                                    <span className="text-sm font-bold">{index + 1}</span>
                                   )}
                                 </div>
                              </div>
@@ -253,7 +253,7 @@ export function AppSidebar() {
                              {!collapsed && (
                                <div className="flex-1 min-w-0">
                                  <div className="flex items-center justify-between">
-                                     <h3 className="text-xs font-medium text-white leading-tight truncate transition-colors">
+                                     <h3 className="text-sm font-medium text-white leading-tight truncate transition-colors">
                                        {module.title}
                                      </h3>
                                    
@@ -267,7 +267,7 @@ export function AppSidebar() {
                                  
                                  {/* Subtle description for available modules */}
                                  {!isModuleLocked && (
-                                    <p className="text-xs text-white/70 mt-1 transition-opacity duration-300">
+                                    <p className="text-sm text-white/70 mt-1 transition-opacity duration-300">
                                       Ready to start
                                     </p>
                                  )}
@@ -316,8 +316,8 @@ export function AppSidebar() {
                          disabled={isLoading}
                          className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg disabled:opacity-50 transition-all duration-200"
                        >
-                          <LogOut className="h-4 w-4 text-halo-orange" />
-                          {!collapsed && <span className="text-white text-xs font-medium">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                          <LogOut className="h-5 w-5 text-halo-orange" />
+                          {!collapsed && <span className="text-white text-sm font-medium">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                        </button>
                      </SidebarMenuButton>
                   ) : (
@@ -326,8 +326,8 @@ export function AppSidebar() {
                          onClick={handleSignIn}
                          className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200"
                        >
-                          <LogIn className="h-4 w-4 text-halo-orange" />
-                          {!collapsed && <span className="text-white text-xs font-medium">Sign In</span>}
+                          <LogIn className="h-5 w-5 text-halo-orange" />
+                          {!collapsed && <span className="text-white text-sm font-medium">Sign In</span>}
                        </button>
                      </SidebarMenuButton>
                   )}
