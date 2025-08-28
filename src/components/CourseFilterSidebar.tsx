@@ -86,8 +86,8 @@ const FilterContent = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Filter className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-lg">Filter Courses</h3>
+          <Filter className="h-4 w-4 text-primary" />
+          <h3 className="font-semibold text-base">Filter Courses</h3>
         </div>
         <Button 
           variant="ghost" 
@@ -101,8 +101,8 @@ const FilterContent = ({
 
       {/* Search */}
       <div className="space-y-2">
-        <Label htmlFor="search" className="text-sm font-medium flex items-center gap-2">
-          <Search className="h-4 w-4" />
+        <Label htmlFor="search" className="text-xs font-medium flex items-center gap-2">
+          <Search className="h-3 w-3" />
           Search Courses
         </Label>
         <Input
@@ -117,8 +117,8 @@ const FilterContent = ({
 
       {/* Skill Level Filter */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium flex items-center gap-2">
-          <GraduationCap className="h-4 w-4" />
+        <Label className="text-xs font-medium flex items-center gap-2">
+          <GraduationCap className="h-3 w-3" />
           Skill Level
         </Label>
         <div className="space-y-2">
@@ -134,10 +134,10 @@ const FilterContent = ({
                   : 'justify-between'
               } transition-all duration-200`}
             >
-              <span>{level.label}</span>
+              <span className="text-xs">{level.label}</span>
               <Badge 
                 variant="secondary" 
-                className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
+                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center ${
                   selectedLevel === level.id 
                     ? 'bg-white text-halo-navy border-white' 
                     : 'bg-halo-navy text-white'
@@ -152,8 +152,8 @@ const FilterContent = ({
 
       {/* Category Filter */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium flex items-center gap-2">
-          <Tag className="h-4 w-4" />
+        <Label className="text-xs font-medium flex items-center gap-2">
+          <Tag className="h-3 w-3" />
           Category
         </Label>
         <div className="space-y-2">
@@ -169,10 +169,10 @@ const FilterContent = ({
                   : ''
               }`}
             >
-              <span>{category.label}</span>
+              <span className="text-xs">{category.label}</span>
               <Badge 
                 variant="secondary" 
-                className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
+                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center ${
                   selectedCategory === category.id 
                     ? 'bg-white text-halo-navy border-white' 
                     : 'bg-halo-navy text-white'
@@ -189,11 +189,11 @@ const FilterContent = ({
       <Collapsible open={moreFiltersOpen} onOpenChange={setMoreFiltersOpen}>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" className="w-full justify-between p-0 h-auto">
-            <span className="text-sm font-medium">More Filters</span>
+            <span className="text-xs font-medium">More Filters</span>
             {moreFiltersOpen ? (
-              <ChevronUp className="h-4 w-4" />
+              <ChevronUp className="h-3 w-3" />
             ) : (
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-3 w-3" />
             )}
           </Button>
         </CollapsibleTrigger>
@@ -201,7 +201,7 @@ const FilterContent = ({
         <CollapsibleContent className="space-y-4 mt-4">
           {/* Additional Categories */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium">More Categories</Label>
+            <Label className="text-xs font-medium">More Categories</Label>
             <div className="space-y-2">
               {categories.slice(4).map(category => (
                 <Button
@@ -215,10 +215,10 @@ const FilterContent = ({
                       : ''
                   }`}
                 >
-                  <span>{category.label}</span>
+                  <span className="text-xs">{category.label}</span>
                   <Badge 
                     variant="secondary" 
-                    className={`text-xs rounded-full w-6 h-6 flex items-center justify-center ${
+                    className={`text-xs rounded-full w-5 h-5 flex items-center justify-center ${
                       selectedCategory === category.id 
                         ? 'bg-white text-halo-navy border-white' 
                         : 'bg-halo-navy text-white'
@@ -233,8 +233,8 @@ const FilterContent = ({
 
           {/* Duration Filter */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+            <Label className="text-xs font-medium flex items-center gap-2">
+              <Calendar className="h-3 w-3" />
               Duration
             </Label>
             <div className="space-y-2">
@@ -250,7 +250,7 @@ const FilterContent = ({
                       : ''
                   }`}
                 >
-                  {duration.label}
+                  <span className="text-xs">{duration.label}</span>
                 </Button>
               ))}
             </div>
@@ -261,7 +261,7 @@ const FilterContent = ({
       {/* Active Filters Summary */}
       {(selectedLevel !== 'all' || titleFilter || selectedCategory !== 'all' || selectedDuration !== 'all') && (
         <div className="pt-4 border-t">
-          <div className="text-sm text-muted-foreground mb-2">Active Filters:</div>
+          <div className="text-xs text-muted-foreground mb-2">Active Filters:</div>
           <div className="flex flex-wrap gap-1">
             {selectedLevel !== 'all' && (
               <Badge variant="secondary" className="text-xs">
@@ -300,8 +300,8 @@ export function CourseFilterSidebar(props: CourseFilterSidebarProps) {
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" className="w-full">
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Filter & Search Courses
+              <SlidersHorizontal className="h-3 w-3 mr-2" />
+              <span className="text-xs">Filter & Search Courses</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:w-80 p-6 overflow-y-auto max-h-screen">
