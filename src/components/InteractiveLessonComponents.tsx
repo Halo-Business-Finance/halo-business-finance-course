@@ -1,105 +1,105 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
-import { Calculator, DollarSign, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
+import { toast } from "@/hooks/use-toast";
+import { Calculator, Target, Move, CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
 
 interface InteractiveCalculatorProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
+// Interactive Calculator Component
 export const InteractiveCalculator = ({ onComplete }: InteractiveCalculatorProps) => {
   const [loanAmount, setLoanAmount] = useState(100000);
   const [interestRate, setInterestRate] = useState(5.5);
   const [loanTerm, setLoanTerm] = useState(60);
-  const [calculated, setCalculated] = useState(false);
-  const { toast } = useToast();
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  const [isCalculated, setIsCalculated] = useState(false);
 
   const calculatePayment = () => {
-    const monthlyRate = interestRate / 100 / 12;
-    const payment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanTerm)) / 
-                   (Math.pow(1 + monthlyRate, loanTerm) - 1);
-    setCalculated(true);
+    const principal = loanAmount;
+    const monthlyRate = (interestRate / 100) / 12;
+    const numberOfPayments = loanTerm;
+    
+    const payment = (principal * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                   (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    
+    setMonthlyPayment(Math.round(payment * 100) / 100);
+    setIsCalculated(true);
     
     toast({
-      title: "📊 Calculation Complete!",
+      title: "Calculation Complete!",
       description: `Monthly payment: $${payment.toFixed(2)}`,
     });
 
-    setTimeout(() => onComplete(), 3000);
-    return payment;
+    if (onComplete) onComplete();
   };
 
-  const monthlyPayment = calculated ? calculatePayment() : 0;
-
   return (
-    <Card className="w-full">
+    <Card className="w-full max-w-2xl mx-auto border-green-200 bg-green-50/50">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-green-800">
           <Calculator className="h-5 w-5" />
-          Equipment Financing Calculator
+          Interactive Loan Calculator
         </CardTitle>
+        <CardDescription>
+          Practice calculating loan payments with this interactive tool
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="loan-amount">Loan Amount: ${loanAmount.toLocaleString()}</Label>
-            <Slider
-              value={[loanAmount]}
-              onValueChange={(value) => setLoanAmount(value[0])}
-              max={500000}
-              min={10000}
-              step={5000}
-              className="mt-2"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="loanAmount">Loan Amount ($)</Label>
+            <Input
+              id="loanAmount"
+              type="number"
+              value={loanAmount}
+              onChange={(e) => setLoanAmount(Number(e.target.value))}
+              className="text-lg font-medium"
             />
           </div>
-          
-          <div>
-            <Label htmlFor="interest-rate">Interest Rate: {interestRate}%</Label>
-            <Slider
-              value={[interestRate]}
-              onValueChange={(value) => setInterestRate(value[0])}
-              max={15}
-              min={3}
-              step={0.1}
-              className="mt-2"
+          <div className="space-y-2">
+            <Label htmlFor="interestRate">Interest Rate (%)</Label>
+            <Input
+              id="interestRate"
+              type="number"
+              step="0.1"
+              value={interestRate}
+              onChange={(e) => setInterestRate(Number(e.target.value))}
+              className="text-lg font-medium"
             />
           </div>
-          
-          <div>
-            <Label htmlFor="loan-term">Loan Term: {loanTerm} months</Label>
-            <Slider
-              value={[loanTerm]}
-              onValueChange={(value) => setLoanTerm(value[0])}
-              max={84}
-              min={12}
-              step={6}
-              className="mt-2"
+          <div className="space-y-2">
+            <Label htmlFor="loanTerm">Loan Term (months)</Label>
+            <Input
+              id="loanTerm"
+              type="number"
+              value={loanTerm}
+              onChange={(e) => setLoanTerm(Number(e.target.value))}
+              className="text-lg font-medium"
             />
           </div>
         </div>
-
-        <div className="p-4 bg-muted rounded-lg">
-          <div className="flex items-center justify-between">
-            <span className="font-medium">Monthly Payment:</span>
-            <span className="text-2xl font-bold text-primary">
-              ${calculated ? monthlyPayment.toFixed(2) : "---"}
-            </span>
-          </div>
-          {calculated && (
-            <div className="mt-2 text-sm text-muted-foreground">
-              Total cost: ${(monthlyPayment * loanTerm).toLocaleString()}
-            </div>
-          )}
-        </div>
-
-        <Button onClick={calculatePayment} className="w-full" disabled={calculated}>
-          {calculated ? "✓ Calculated" : "Calculate Payment"}
+        
+        <Button onClick={calculatePayment} className="w-full" size="lg">
+          Calculate Monthly Payment
         </Button>
+        
+        {isCalculated && (
+          <div className="p-4 bg-white rounded-lg border-2 border-green-300">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">Estimated Monthly Payment</p>
+              <p className="text-3xl font-bold text-green-700">${monthlyPayment.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Total amount: ${(monthlyPayment * loanTerm).toFixed(2)}
+              </p>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -112,129 +112,144 @@ interface DragDropItem {
 }
 
 interface InteractiveDragDropProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
+// Interactive Drag & Drop Component
 export const InteractiveDragDrop = ({ onComplete }: InteractiveDragDropProps) => {
-  const [draggedItem, setDraggedItem] = useState<string | null>(null);
-  const [completed, setCompleted] = useState(false);
-  const { toast } = useToast();
+  const [items] = useState<DragDropItem[]>([
+    { id: "1", text: "Equipment Purchase", category: "Collateral" },
+    { id: "2", text: "Annual Revenue", category: "Cash Flow" },
+    { id: "3", text: "Debt Service Coverage", category: "Financial Ratio" },
+    { id: "4", text: "Real Estate", category: "Collateral" },
+    { id: "5", text: "Operating Expenses", category: "Cash Flow" },
+    { id: "6", text: "Current Ratio", category: "Financial Ratio" },
+  ]);
 
-  const items: DragDropItem[] = [
-    { id: "1", text: "Equipment Purchase", category: "collateral" },
-    { id: "2", text: "Personal Guarantee", category: "security" },
-    { id: "3", text: "Business Revenue", category: "cashflow" },
-    { id: "4", text: "Machinery Value", category: "collateral" },
-    { id: "5", text: "UCC Filing", category: "security" },
-    { id: "6", text: "Monthly Profit", category: "cashflow" },
-  ];
+  const [droppedItems, setDroppedItems] = useState<Record<string, DragDropItem[]>>({
+    "Collateral": [],
+    "Cash Flow": [],
+    "Financial Ratio": []
+  });
 
-  const categories = {
-    collateral: { title: "Collateral", color: "bg-blue-50", items: [] as DragDropItem[] },
-    security: { title: "Security Measures", color: "bg-green-50", items: [] as DragDropItem[] },
-    cashflow: { title: "Cash Flow Factors", color: "bg-purple-50", items: [] as DragDropItem[] },
-  };
+  const [score, setScore] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  const [categorizedItems, setCategorizedItems] = useState(categories);
-  const [availableItems, setAvailableItems] = useState(items);
+  const handleDrop = (item: DragDropItem, category: string) => {
+    const isCorrect = item.category === category;
+    
+    setDroppedItems(prev => ({
+      ...prev,
+      [category]: [...prev[category], item]
+    }));
 
-  const handleDragStart = (itemId: string) => {
-    setDraggedItem(itemId);
-  };
-
-  const handleDrop = (categoryKey: string) => {
-    if (!draggedItem) return;
-
-    const item = availableItems.find(i => i.id === draggedItem);
-    if (!item) return;
-
-    if (item.category === categoryKey) {
-      // Correct placement
-      setCategorizedItems(prev => ({
-        ...prev,
-        [categoryKey]: {
-          ...prev[categoryKey as keyof typeof categories],
-          items: [...prev[categoryKey as keyof typeof categories].items, item]
-        }
-      }));
-      
-      setAvailableItems(prev => prev.filter(i => i.id !== draggedItem));
-      
+    if (isCorrect) {
+      setScore(prev => prev + 1);
       toast({
-        title: "✅ Correct!",
-        description: `"${item.text}" belongs in ${categories[categoryKey as keyof typeof categories].title}`,
+        title: "Correct!",
+        description: `${item.text} belongs in ${category}`,
       });
-
-      // Check if all items are placed correctly
-      if (availableItems.length === 1) {
-        setCompleted(true);
-        setTimeout(() => onComplete(), 2000);
-      }
     } else {
-      // Incorrect placement
       toast({
-        title: "❌ Try Again",
-        description: `"${item.text}" doesn't belong there. Think about its role in lending.`,
-        variant: "destructive",
+        title: "Try Again",
+        description: `${item.text} doesn't belong in ${category}`,
+        variant: "destructive"
       });
     }
 
-    setDraggedItem(null);
+    // Check completion
+    const totalDropped = Object.values(droppedItems).reduce((sum, arr) => sum + arr.length, 0) + 1;
+    if (totalDropped === items.length) {
+      setIsCompleted(true);
+      if (onComplete) onComplete();
+    }
   };
 
+  const availableItems = items.filter(item => 
+    !Object.values(droppedItems).some(category => 
+      category.some(dropped => dropped.id === item.id)
+    )
+  );
+
   return (
-    <Card className="w-full">
+    <Card className="w-full max-w-4xl mx-auto border-blue-200 bg-blue-50/50">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5" />
-          Categorize Lending Factors
+        <CardTitle className="flex items-center gap-2 text-blue-800">
+          <Target className="h-5 w-5" />
+          Interactive Categorization Exercise
         </CardTitle>
+        <CardDescription>
+          Drag the lending factors into their correct categories
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <h4 className="font-semibold">Available Items:</h4>
-          <div className="flex flex-wrap gap-2 min-h-[60px] p-3 border-2 border-dashed rounded-lg">
-            {availableItems.map((item) => (
-              <Badge
-                key={item.id}
-                variant="outline"
-                className="cursor-move p-2 text-sm hover:bg-accent"
+        <div className="flex justify-between items-center">
+          <div className="text-sm font-medium">Progress: {score}/{items.length} correct</div>
+          <Progress value={(score / items.length) * 100} className="w-32" />
+        </div>
+
+        {/* Available Items */}
+        <div className="space-y-2">
+          <h4 className="font-medium">Available Items:</h4>
+          <div className="flex flex-wrap gap-2">
+            {availableItems.map(item => (
+              <Badge 
+                key={item.id} 
+                variant="outline" 
+                className="cursor-move p-2 hover:bg-gray-100"
                 draggable
-                onDragStart={() => handleDragStart(item.id)}
+                onDragStart={(e) => e.dataTransfer.setData("text/plain", JSON.stringify(item))}
               >
+                <Move className="h-3 w-3 mr-1" />
                 {item.text}
               </Badge>
             ))}
           </div>
         </div>
 
+        {/* Drop Zones */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Object.entries(categorizedItems).map(([key, category]) => (
-            <div
-              key={key}
-              className={`p-4 rounded-lg border-2 border-dashed min-h-[120px] ${category.color}`}
+          {Object.keys(droppedItems).map(category => (
+            <div 
+              key={category}
+              className="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-32"
               onDragOver={(e) => e.preventDefault()}
-              onDrop={() => handleDrop(key)}
+              onDrop={(e) => {
+                e.preventDefault();
+                const itemData = JSON.parse(e.dataTransfer.getData("text/plain"));
+                handleDrop(itemData, category);
+              }}
             >
-              <h5 className="font-medium mb-2">{category.title}</h5>
+              <h4 className="font-medium mb-2">{category}</h4>
               <div className="space-y-1">
-                {category.items.map((item) => (
-                  <Badge key={item.id} variant="secondary" className="block text-xs">
-                    <CheckCircle className="h-3 w-3 mr-1" />
+                {droppedItems[category].map(item => (
+                  <div 
+                    key={item.id} 
+                    className={`p-2 rounded text-sm ${
+                      item.category === category 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}
+                  >
+                    {item.category === category ? (
+                      <CheckCircle className="h-3 w-3 inline mr-1" />
+                    ) : (
+                      <AlertCircle className="h-3 w-3 inline mr-1" />
+                    )}
                     {item.text}
-                  </Badge>
+                  </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
 
-        {completed && (
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center gap-2 text-green-800">
-              <CheckCircle className="h-5 w-5" />
-              <span className="font-medium">Excellent work! All factors categorized correctly.</span>
-            </div>
+        {isCompleted && (
+          <div className="text-center p-4 bg-white rounded-lg border-2 border-green-300">
+            <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
+            <p className="font-medium text-green-800">
+              Exercise Complete! Score: {score}/{items.length}
+            </p>
           </div>
         )}
       </CardContent>
@@ -245,120 +260,190 @@ export const InteractiveDragDrop = ({ onComplete }: InteractiveDragDropProps) =>
 interface ScenarioChoice {
   id: string;
   text: string;
-  consequence: string;
   isCorrect: boolean;
+  feedback: string;
+  consequence: string;
 }
 
 interface InteractiveScenarioProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
+// Interactive Scenario Component
 export const InteractiveScenario = ({ onComplete }: InteractiveScenarioProps) => {
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const { toast } = useToast();
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const scenario = {
-    title: "Equipment Financing Decision",
-    description: "A manufacturing client needs $300K for new equipment. They have been in business for 3 years, with steady revenue of $2M annually, but their debt-to-equity ratio is 0.8. What's your recommendation?",
+    title: "SBA Loan Eligibility Scenario",
+    description: "A restaurant owner wants to expand their business with a second location. They have been operating for 3 years with annual revenue of $800,000. The owner wants to borrow $350,000 for the new location. What is your recommendation?",
     choices: [
       {
         id: "a",
-        text: "Approve the full amount at standard rates",
-        consequence: "High risk due to elevated debt ratios. Could lead to default if business faces challenges.",
-        isCorrect: false
+        text: "Recommend SBA 7(a) loan - meets all requirements",
+        isCorrect: true,
+        feedback: "Correct! This is an ideal SBA 7(a) candidate.",
+        consequence: "The business gets favorable terms and the expansion succeeds."
       },
       {
-        id: "b",
-        text: "Require additional collateral and approve at higher rates",
-        consequence: "Good approach! Additional security mitigates the risk from high debt levels.",
-        isCorrect: true
+        id: "b", 
+        text: "Decline - restaurant industry is too risky",
+        isCorrect: false,
+        feedback: "Incorrect. Restaurants are eligible for SBA loans.",
+        consequence: "You miss a good lending opportunity."
       },
       {
         id: "c",
-        text: "Decline the application entirely",
-        consequence: "Too conservative. The steady revenue and equipment collateral provide viable options.",
-        isCorrect: false
+        text: "Require 50% down payment due to industry risk",
+        isCorrect: false,
+        feedback: "Incorrect. SBA loans typically require only 10-15% down.",
+        consequence: "The borrower seeks financing elsewhere."
       },
       {
         id: "d",
-        text: "Approve 70% financing with equipment as sole collateral",
-        consequence: "Reasonable compromise, but may want additional guarantees given the debt ratio.",
-        isCorrect: true
+        text: "Recommend conventional loan instead",
+        isCorrect: false,
+        feedback: "Incorrect. SBA loan would offer better terms for this borrower.",
+        consequence: "Higher rates make the expansion less profitable."
       }
     ]
   };
 
   const handleChoice = (choiceId: string) => {
     setSelectedChoice(choiceId);
-    setShowResult(true);
+    setShowFeedback(true);
     
     const choice = scenario.choices.find(c => c.id === choiceId);
     if (choice?.isCorrect) {
       toast({
-        title: "🎯 Excellent Decision!",
-        description: "You demonstrated sound lending judgment.",
+        title: "Excellent Decision!",
+        description: choice.feedback,
       });
-      setTimeout(() => onComplete(), 4000);
     } else {
       toast({
-        title: "🤔 Consider the Risks",
-        description: "Review the consequence and try again.",
-        variant: "destructive",
+        title: "Learning Opportunity",
+        description: choice?.feedback,
+        variant: "destructive"
       });
     }
+
+    if (onComplete) onComplete();
   };
 
+  const selectedChoiceData = scenario.choices.find(c => c.id === selectedChoice);
+
   return (
-    <Card className="w-full">
+    <Card className="w-full max-w-4xl mx-auto border-purple-200 bg-purple-50/50">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-purple-800">
+          <Lightbulb className="h-5 w-5" />
           {scenario.title}
         </CardTitle>
+        <CardDescription>
+          Analyze the scenario and choose the best course of action
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="p-4 bg-muted rounded-lg">
-          <p className="text-sm leading-relaxed">{scenario.description}</p>
+        <div className="p-4 bg-white rounded-lg border">
+          <p className="text-gray-700 leading-relaxed">{scenario.description}</p>
         </div>
 
         <div className="space-y-3">
-          {scenario.choices.map((choice) => (
+          <h4 className="font-medium">What would you recommend?</h4>
+          {scenario.choices.map(choice => (
             <Button
               key={choice.id}
               variant={selectedChoice === choice.id ? "default" : "outline"}
-              className="w-full justify-start text-left h-auto p-4"
-              onClick={() => handleChoice(choice.id)}
-              disabled={showResult}
+              className={`w-full text-left justify-start p-4 h-auto ${
+                showFeedback && selectedChoice === choice.id
+                  ? choice.isCorrect 
+                    ? 'border-green-500 bg-green-50 text-green-800'
+                    : 'border-red-500 bg-red-50 text-red-800'
+                  : ''
+              }`}
+              onClick={() => !showFeedback && handleChoice(choice.id)}
+              disabled={showFeedback}
             >
-              <div>
-                <div className="font-medium">{choice.text}</div>
-                {showResult && selectedChoice === choice.id && (
-                  <div className={`mt-2 text-sm ${choice.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                    <div className="flex items-center gap-1">
-                      {choice.isCorrect ? <CheckCircle className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-                      {choice.consequence}
-                    </div>
-                  </div>
-                )}
+              <div className="text-wrap">
+                <span className="font-medium mr-2">{choice.id.toUpperCase()}.</span>
+                {choice.text}
               </div>
             </Button>
           ))}
         </div>
 
-        {showResult && !scenario.choices.find(c => c.id === selectedChoice)?.isCorrect && (
-          <Button 
-            variant="secondary" 
-            onClick={() => {
-              setSelectedChoice(null);
-              setShowResult(false);
-            }}
-            className="w-full"
-          >
-            Try Again
-          </Button>
+        {showFeedback && selectedChoiceData && (
+          <div className={`p-4 rounded-lg border-2 ${
+            selectedChoiceData.isCorrect 
+              ? 'bg-green-50 border-green-300'
+              : 'bg-red-50 border-red-300'
+          }`}>
+            <div className="flex items-start gap-3">
+              {selectedChoiceData.isCorrect ? (
+                <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+              )}
+              <div className="space-y-2">
+                <p className="font-medium">{selectedChoiceData.feedback}</p>
+                <p className="text-sm text-muted-foreground">
+                  <strong>Consequence:</strong> {selectedChoiceData.consequence}
+                </p>
+              </div>
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
+  );
+};
+
+// Main component that showcases all interactive elements
+export const InteractiveLessonComponents = () => {
+  const [completedComponents, setCompletedComponents] = useState<Set<string>>(new Set());
+
+  const handleComponentComplete = (componentName: string) => {
+    setCompletedComponents(prev => new Set([...prev, componentName]));
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl font-bold">Interactive Learning Components</h2>
+        <p className="text-muted-foreground">
+          Engage with hands-on tools and scenarios to master finance concepts
+        </p>
+        <div className="flex justify-center gap-4 text-sm">
+          <Badge variant={completedComponents.has('calculator') ? 'default' : 'outline'}>
+            Calculator {completedComponents.has('calculator') && '✓'}
+          </Badge>
+          <Badge variant={completedComponents.has('dragdrop') ? 'default' : 'outline'}>
+            Categorization {completedComponents.has('dragdrop') && '✓'}
+          </Badge>
+          <Badge variant={completedComponents.has('scenario') ? 'default' : 'outline'}>
+            Scenario {completedComponents.has('scenario') && '✓'}
+          </Badge>
+        </div>
+      </div>
+
+      <InteractiveCalculator onComplete={() => handleComponentComplete('calculator')} />
+      <InteractiveDragDrop onComplete={() => handleComponentComplete('dragdrop')} />
+      <InteractiveScenario onComplete={() => handleComponentComplete('scenario')} />
+
+      {completedComponents.size === 3 && (
+        <Card className="border-green-200 bg-green-50">
+          <CardContent className="text-center py-6">
+            <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-3" />
+            <h3 className="text-lg font-semibold text-green-800 mb-2">
+              All Interactive Components Completed!
+            </h3>
+            <p className="text-green-700">
+              You've successfully engaged with all interactive learning elements. 
+              Great job mastering these practical finance concepts!
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 };

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { EnhancedQuiz } from "@/components/EnhancedQuiz";
-import { InteractiveCalculator, InteractiveDragDrop, InteractiveScenario } from "@/components/InteractiveLessonComponents";
+import { InteractiveCalculator, InteractiveDragDrop, InteractiveScenario, InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
 import { CheckCircle, Play, FileText, BookOpen, Users2, X, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -169,14 +169,15 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
         );
       
       case "interactive":
-        const interactiveTypes = ["calculator", "dragdrop", "scenario"];
-        const randomType = interactiveTypes[Math.floor(Math.random() * interactiveTypes.length)];
-        
         return (
-          <div className="space-y-4">
-            {randomType === "calculator" && <InteractiveCalculator onComplete={handleComplete} />}
-            {randomType === "dragdrop" && <InteractiveDragDrop onComplete={handleComplete} />}
-            {randomType === "scenario" && <InteractiveScenario onComplete={handleComplete} />}
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-4">
+              <h3 className="font-semibold text-blue-800 mb-2">🤖 Adaptive Interactive Learning</h3>
+              <p className="text-sm text-blue-700">
+                This lesson features AI-powered adaptive content that adjusts to your learning pace and style.
+              </p>
+            </div>
+            <InteractiveLessonComponents />
           </div>
         );
       

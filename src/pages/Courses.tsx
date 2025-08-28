@@ -279,33 +279,33 @@ const Courses = () => {
 
   const learningBenefits = [
     {
-      title: "Industry-Leading Curriculum",
-      description: "Developed by finance professionals with 20+ years of experience",
-      icon: "🎓"
+      title: "AI-Powered Adaptive Learning",
+      description: "Personalized content that adapts to your learning style and pace",
+      icon: "🤖"
     },
     {
-      title: "Practical Application",
-      description: "Real-world case studies and hands-on exercises",
-      icon: "💼"
+      title: "Interactive Simulations",
+      description: "Hands-on practice with real-world loan scenarios and financial tools",
+      icon: "⚡"
     },
     {
-      title: "Recognized Certification",
-      description: "Certificates accepted by major financial institutions",
-      icon: "🏆"
+      title: "Gamified Progress",
+      description: "Achievement badges, progress tracking, and competitive learning elements",
+      icon: "🎯"
     },
     {
-      title: "Career Advancement",
-      description: "87% of graduates receive promotions within 12 months",
-      icon: "📈"
+      title: "Adaptive Assessments", 
+      description: "Smart quizzes that adjust difficulty based on your performance",
+      icon: "📊"
     }
   ];
 
   return (
     <>
       <SEOHead 
-        title="Professional Finance Courses | Business Finance Training & Commercial Lending"
-        description="Explore 25+ expert-led finance courses covering commercial lending, credit analysis, SBA loans, and risk management. Industry-recognized certifications with lifetime access."
-        keywords="finance courses, commercial lending training, credit analysis certification, SBA loan courses, business finance education, professional development"
+        title="Adaptive Interactive Learning | AI-Powered Finance Training | FinPilot"
+        description="Experience revolutionary adaptive interactive learning with AI-powered personalization, real-time assessments, and gamified content for commercial lending and finance professionals."
+        keywords="adaptive learning, interactive finance courses, AI-powered training, personalized learning paths, gamified education, commercial lending training"
         canonicalUrl="https://finpilot.com/course-catalog"
       />
       <div className="bg-white min-h-screen">
@@ -320,19 +320,19 @@ const Courses = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
-                Master Commercial Finance
+                Adaptive Interactive Learning Platform
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
-                {user ? "Expert-Led Courses for Finance Professionals" : "Advance Your Finance Career with Expert Training"}
+                {user ? "AI-Powered Personalized Finance Training" : "Revolutionary Adaptive Learning for Finance Professionals"}
               </p>
               <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
-                Advance your career with industry-recognized certifications in commercial lending, 
-                credit analysis, and risk management. Join 10,000+ professionals who trust FinPilot.
+                Experience personalized learning paths with AI-driven content adaptation, interactive simulations, 
+                and real-time progress tracking. Master finance through gamified, adaptive experiences.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link to="/signup">
                   <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
-                    Start Free Trial
+                    Start Adaptive Learning
                   </Button>
                 </Link>
               </div>

@@ -28,9 +28,10 @@ import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking"
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
+import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, Clock, Target, Trophy } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, Brain, Zap } from "lucide-react";
 
 // Import course images to match the Courses page
 import financeExpert1 from "@/assets/finance-expert-1.jpg";
@@ -188,8 +189,32 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Course Header */}
+      {/* Adaptive Learning Header */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Brain className="h-8 w-8 text-blue-600" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Adaptive Interactive Learning Dashboard</h1>
+              <p className="text-gray-600">AI-powered personalized learning experience</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-yellow-600" />
+              <span className="text-sm font-medium">Interactive Content</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-green-600" />
+              <span className="text-sm font-medium">Adaptive Assessments</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-purple-600" />
+              <span className="text-sm font-medium">Gamified Learning</span>
+            </div>
+          </div>
+        </div>
+        
         <CourseHeader 
           progress={courseData.totalProgress}
           totalModules={courseData.totalModules}
@@ -202,9 +227,10 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           <div className="text-left space-y-4">
-            <h2 className="text-3xl font-bold">All Course Modules</h2>
+            <h2 className="text-3xl font-bold">Adaptive Learning Modules</h2>
             <p className="text-muted-foreground max-w-3xl leading-relaxed">
-              Browse all available course modules with detailed information, lesson plans, and progress tracking.
+              Explore AI-powered adaptive modules that adjust to your learning pace, provide interactive content, 
+              and offer personalized pathways through advanced commercial finance concepts.
             </p>
           </div>
 
@@ -341,15 +367,17 @@ const Dashboard = () => {
           {/* Course Modules and Resources */}
           <div className="space-y-8 pb-16">
             <div className="text-left space-y-4">
-              <h3 className="text-3xl font-bold">Learning Platform</h3>
+              <h3 className="text-3xl font-bold">Adaptive Interactive Learning Platform</h3>
               <p className="text-muted-foreground max-w-3xl leading-relaxed">
-                Access enhanced learning modules organized by skill level, downloadable resources, 
-                and interactive assessments to master business finance and commercial lending.
+                Experience cutting-edge adaptive learning with AI-powered content delivery, real-time assessments, 
+                interactive simulations, gamification elements, and personalized learning paths for finance mastery.
               </p>
             </div>
 
-            <Tabs defaultValue="modules" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 sm:w-fit">
+            <Tabs defaultValue="adaptive" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-10 sm:w-fit">
+                <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
+                <TabsTrigger value="interactive" className="text-sm">Interactive</TabsTrigger>
                 <TabsTrigger value="modules" className="text-sm">Modules</TabsTrigger>
                 <TabsTrigger value="progress" className="text-sm">Progress</TabsTrigger>
                 <TabsTrigger value="assessment" className="text-sm">Assessment</TabsTrigger>
@@ -357,10 +385,45 @@ const Dashboard = () => {
                 <TabsTrigger value="social" className="text-sm">Social</TabsTrigger>
                 <TabsTrigger value="tools" className="text-sm">Tools</TabsTrigger>
                 <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
-                <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
                 <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
                 <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
               </TabsList>
+
+              <TabsContent value="adaptive" className="space-y-6">
+                {/* Adaptive Learning Engine */}
+                <Card className="mb-6 border-blue-200 bg-blue-50/50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <Brain className="h-5 w-5" />
+                      AI-Powered Adaptive Learning Engine
+                    </CardTitle>
+                    <CardDescription>
+                      Personalized learning recommendations based on your progress and learning style
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <AdaptiveLearningEngine />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="interactive" className="space-y-6">
+                {/* Interactive Learning Components */}
+                <Card className="mb-6 border-purple-200 bg-purple-50/50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <Zap className="h-5 w-5" />
+                      Interactive Learning Components
+                    </CardTitle>
+                    <CardDescription>
+                      Hands-on practice with financial calculators, scenarios, and simulations
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <InteractiveLessonComponents />
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
               <TabsContent value="modules" className="space-y-6">
                 {/* Learning Analytics Section */}
