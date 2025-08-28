@@ -675,63 +675,8 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <>
-                      {/* Only show modules if a specific skill level is selected */}
-                      {selectedSkillLevel !== "all" ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {filteredModules
-                            .filter(module => module.skill_level === selectedSkillLevel)
-                            .map((module, index) => (
-                            <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(index)} 
-                                  alt={module.title}
-                                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute top-4 left-4">
-                                  <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                                  </Badge>
-                                </div>
-                              </div>
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1">
-                                      {module.description}
-                                    </CardDescription>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="h-4 w-4" />
-                                    <span>{module.duration}</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{module.lessons} lessons</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <div className="space-y-2">
-                                  <div className="text-sm text-muted-foreground">
-                                    Course: {module.course_title}
-                                  </div>
-                                  <Button 
-                                    onClick={() => handleModuleStart(module.id)} 
-                                    className="w-full"
-                                    variant={module.status === "completed" ? "secondary" : "default"}
-                                  >
-                                    {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
-                                  </Button>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      ) : (
+                      {/* Show modules based on skill level selection */}
+                      {selectedSkillLevel === "all" ? (
                         <div className="text-center py-12">
                           <h3 className="text-lg font-medium text-muted-foreground mb-4">
                             Select Your Skill Level
@@ -745,18 +690,85 @@ const Dashboard = () => {
                             </p>
                           </div>
                         </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-lg font-semibold">
+                              {selectedSkillLevel.charAt(0).toUpperCase() + selectedSkillLevel.slice(1)} Level Modules
+                            </h4>
+                            <Badge variant="secondary">
+                              {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length} modules
+                            </Badge>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {filteredModules
+                              .filter(module => module.skill_level === selectedSkillLevel)
+                              .map((module, index) => (
+                              <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+                                <div className="relative overflow-hidden rounded-t-lg">
+                                  <img 
+                                    src={getCourseImage(index)} 
+                                    alt={module.title}
+                                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+                                  <div className="absolute top-4 left-4">
+                                    <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                                    </Badge>
+                                  </div>
+                                </div>
+                                <CardHeader className="pb-2">
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                                      <CardDescription className="line-clamp-2 mt-1">
+                                        {module.description}
+                                      </CardDescription>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                    <div className="flex items-center gap-1">
+                                      <Clock className="h-4 w-4" />
+                                      <span>{module.duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <BookOpen className="h-4 w-4" />
+                                      <span>{module.lessons} lessons</span>
+                                    </div>
+                                  </div>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                  <div className="space-y-2">
+                                    <div className="text-sm text-muted-foreground">
+                                      Course: {module.course_title}
+                                    </div>
+                                    <Button 
+                                      onClick={() => handleModuleStart(module.id)} 
+                                      className="w-full"
+                                      variant={module.status === "completed" ? "secondary" : "default"}
+                                    >
+                                      {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
+                                    </Button>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
+                          </div>
+                          
+                          {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length === 0 && (
+                            <div className="text-center py-12">
+                              <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                                No modules found for {selectedSkillLevel} level
+                              </h3>
+                              <p className="text-sm text-muted-foreground">
+                                Try selecting a different skill level to see available modules.
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       )}
 
-                    {selectedSkillLevel !== "all" && filteredModules.filter(module => module.skill_level === selectedSkillLevel).length === 0 && (
-                      <div className="text-center py-12">
-                        <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                          No modules found for {selectedSkillLevel} level
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          Try selecting a different skill level to see available modules.
-                        </p>
-                      </div>
-                    )}
                   </>
                 )}
               </TabsContent>
