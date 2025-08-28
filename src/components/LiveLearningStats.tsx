@@ -61,7 +61,7 @@ export const LiveLearningStats = () => {
   useEffect(() => {
     if (!user?.id) return;
 
-    // Subscribe to learning stats changes
+    // Subscribe to learning stats changes with error handling
     const statsChannel = supabase
       .channel('learning-stats-changes')
       .on(
@@ -73,7 +73,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          
+          console.log('Learning stats change received:', payload);
           if (payload.new) {
             setStats(payload.new as LearningStats);
             
@@ -88,9 +88,14 @@ export const LiveLearningStats = () => {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Stats channel subscription status:', status);
+        if (status === 'CLOSED') {
+          console.warn('Stats channel subscription closed - continuing without realtime updates');
+        }
+      });
 
-    // Subscribe to daily activity changes
+    // Subscribe to daily activity changes with error handling
     const activityChannel = supabase
       .channel('daily-activity-changes')
       .on(
@@ -102,13 +107,18 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          
+          console.log('Daily activity change received:', payload);
           loadRecentActivity();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Activity channel subscription status:', status);
+        if (status === 'CLOSED') {
+          console.warn('Activity channel subscription closed - continuing without realtime updates');
+        }
+      });
 
-    // Subscribe to new achievements
+    // Subscribe to new achievements with error handling
     const achievementsChannel = supabase
       .channel('achievements-changes')
       .on(
@@ -120,7 +130,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          
+          console.log('New achievement received:', payload);
           if (payload.new) {
             const newAchievement = payload.new as Achievement;
             setAchievements(prev => [newAchievement, ...prev]);
@@ -134,12 +144,21 @@ export const LiveLearningStats = () => {
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Achievements channel subscription status:', status);
+        if (status === 'CLOSED') {
+          console.warn('Achievements channel subscription closed - continuing without realtime updates');
+        }
+      });
 
     return () => {
-      supabase.removeChannel(statsChannel);
-      supabase.removeChannel(activityChannel);
-      supabase.removeChannel(achievementsChannel);
+      try {
+        supabase.removeChannel(statsChannel);
+        supabase.removeChannel(activityChannel);
+        supabase.removeChannel(achievementsChannel);
+      } catch (error) {
+        console.warn('Error cleaning up channels:', error);
+      }
     };
   }, [user?.id, toast]);
 

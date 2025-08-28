@@ -190,10 +190,19 @@ export const NotificationBell = () => {
           );
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Notifications channel subscription status:', status);
+        if (status === 'CLOSED') {
+          console.warn('Notifications channel subscription closed - continuing without realtime updates');
+        }
+      });
 
     return () => {
-      supabase.removeChannel(channel);
+      try {
+        supabase.removeChannel(channel);
+      } catch (error) {
+        console.warn('Error cleaning up notifications channel:', error);
+      }
     };
   }, [user]);
 
