@@ -186,15 +186,15 @@ export function AppSidebar() {
             <SidebarMenu>
               {mainNavItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                   <SidebarMenuButton asChild>
                      <button 
                        onClick={() => handleNavigation(item.url)}
-                       className={`w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded`}
+                       className={`w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200`}
                      >
-                       <item.icon className="h-4 w-4 text-halo-orange" />
-                       {!collapsed && <span className="text-white text-xs">{item.title}</span>}
+                       <item.icon className="h-5 w-5 text-halo-orange" />
+                       {!collapsed && <span className="text-white text-sm font-medium">{item.title}</span>}
                      </button>
-                  </SidebarMenuButton>
+                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -234,16 +234,16 @@ export function AppSidebar() {
                                 w-full text-left
                                 ${isModuleLocked ? "opacity-50" : ""} 
                                 ${!canAccess ? "cursor-not-allowed" : ""}
-                                group relative overflow-hidden rounded-xl p-3 transition-all duration-300 ease-out
-                                text-white hover:bg-white/10 hover:text-white
-                              `}
-                         >
-                           <div className="relative z-10 flex items-center w-full gap-3">
+                              group relative overflow-hidden rounded-xl p-4 transition-all duration-300 ease-out
+                               text-white hover:bg-white/10 hover:text-white
+                             `}
+                        >
+                           <div className="relative z-10 flex items-center w-full gap-4">
                              {/* Status Indicator */}
                              <div className="relative flex-shrink-0">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
                                  {isModuleLocked ? (
-                                   <Lock size={16} className="text-white" />
+                                   <Lock size={18} className="text-white" />
                                  ) : (
                                    <span className="text-sm font-bold">{index + 1}</span>
                                  )}
@@ -253,7 +253,7 @@ export function AppSidebar() {
                              {!collapsed && (
                                <div className="flex-1 min-w-0">
                                  <div className="flex items-center justify-between">
-                                    <h3 className="text-xs font-medium text-white leading-tight truncate transition-colors">
+                                    <h3 className="text-sm font-medium text-white leading-tight truncate transition-colors">
                                       {module.title}
                                     </h3>
                                    
@@ -267,16 +267,16 @@ export function AppSidebar() {
                                  
                                  {/* Subtle description for available modules */}
                                  {!isModuleLocked && (
-                                   <p className="text-xs text-white/70 mt-1 transition-opacity duration-300">
+                                   <p className="text-sm text-white/70 mt-1 transition-opacity duration-300">
                                      Ready to start
                                    </p>
                                  )}
                                </div>
                              )}
                            </div>
-                           
+                            
                             {/* Active state indicator */}
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-gradient-to-b from-primary to-primary/60 rounded-r-full opacity-0 transition-opacity duration-300 data-[active=true]:opacity-100"></div>
                          </button>
                        </SidebarMenuButton>
                      </SidebarMenuItem>
@@ -310,26 +310,26 @@ export function AppSidebar() {
               {!loading && (
                 <SidebarMenuItem>
                   {user ? (
-                    <SidebarMenuButton asChild>
+                     <SidebarMenuButton asChild>
                        <button 
                          onClick={handleSignOut}
                          disabled={isLoading}
-                         className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded disabled:opacity-50"
+                         className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg disabled:opacity-50 transition-all duration-200"
                        >
-                         <LogOut className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white text-xs">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
+                         <LogOut className="h-5 w-5 text-halo-orange" />
+                         {!collapsed && <span className="text-white text-sm font-medium">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
                        </button>
-                    </SidebarMenuButton>
+                     </SidebarMenuButton>
                   ) : (
-                    <SidebarMenuButton asChild>
+                     <SidebarMenuButton asChild>
                        <button 
                          onClick={handleSignIn}
-                         className="w-full flex items-center gap-2 text-white hover:bg-white/10 hover:text-white p-2 rounded"
+                         className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200"
                        >
-                         <LogIn className="h-4 w-4 text-halo-orange" />
-                         {!collapsed && <span className="text-white text-xs">Sign In</span>}
+                         <LogIn className="h-5 w-5 text-halo-orange" />
+                         {!collapsed && <span className="text-white text-sm font-medium">Sign In</span>}
                        </button>
-                    </SidebarMenuButton>
+                     </SidebarMenuButton>
                   )}
                 </SidebarMenuItem>
               )}
