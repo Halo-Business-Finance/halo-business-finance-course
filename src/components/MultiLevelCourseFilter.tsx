@@ -27,7 +27,7 @@ const categoryHierarchy: CategoryLevel[] = [
     subcategories: [
       {
         id: "sba-7a",
-        name: "SBA 7(a) Loans",
+        name: "SBA 7(a) Loan Fundamentals",
         count: 21,
         subcategories: [
           { id: "sba-7a-beginner", name: "Beginner Level", count: 7 },
@@ -37,7 +37,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "sba-express",
-        name: "SBA Express",
+        name: "SBA Express Processing",
         count: 21,
         subcategories: [
           { id: "sba-express-beginner", name: "Beginner Level", count: 7 },
@@ -47,7 +47,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "sba-504",
-        name: "SBA 504 Loans",
+        name: "SBA 504 Real Estate",
         count: 21,
         subcategories: [
           { id: "sba-504-beginner", name: "Beginner Level", count: 7 },
@@ -57,7 +57,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "sba-microloans",
-        name: "SBA Microloans",
+        name: "SBA Microloan Strategy",
         count: 21,
         subcategories: [
           { id: "sba-microloans-beginner", name: "Beginner Level", count: 7 },
@@ -74,7 +74,7 @@ const categoryHierarchy: CategoryLevel[] = [
     subcategories: [
       {
         id: "commercial-real-estate",
-        name: "Commercial Real Estate",
+        name: "Commercial Real Estate Analysis",
         count: 21,
         subcategories: [
           { id: "cre-beginner", name: "Beginner Level", count: 7 },
@@ -84,7 +84,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "equipment-financing",
-        name: "Equipment Financing",
+        name: "Equipment Financing Strategies",
         count: 21,
         subcategories: [
           { id: "equipment-beginner", name: "Beginner Level", count: 7 },
@@ -94,7 +94,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "working-capital",
-        name: "Working Capital",
+        name: "Working Capital Solutions",
         count: 21,
         subcategories: [
           { id: "working-capital-beginner", name: "Beginner Level", count: 7 },
@@ -111,7 +111,7 @@ const categoryHierarchy: CategoryLevel[] = [
     subcategories: [
       {
         id: "invoice-factoring",
-        name: "Invoice Factoring",
+        name: "Invoice Factoring Mastery",
         count: 21,
         subcategories: [
           { id: "factoring-beginner", name: "Beginner Level", count: 7 },
@@ -121,7 +121,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "merchant-cash",
-        name: "Merchant Cash Advances",
+        name: "Merchant Cash Advance Training",
         count: 21,
         subcategories: [
           { id: "mca-beginner", name: "Beginner Level", count: 7 },
@@ -131,7 +131,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "asset-based",
-        name: "Asset-Based Lending",
+        name: "Asset-Based Lending Essentials",
         count: 21,
         subcategories: [
           { id: "abl-beginner", name: "Beginner Level", count: 7 },
@@ -141,7 +141,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "construction",
-        name: "Construction Loans",
+        name: "Construction Loan Expertise",
         count: 21,
         subcategories: [
           { id: "construction-beginner", name: "Beginner Level", count: 7 },
@@ -153,12 +153,12 @@ const categoryHierarchy: CategoryLevel[] = [
   },
   {
     id: "industry",
-    name: "Industry-Specific",
+    name: "Industry-Specific Programs",
     count: 42,
     subcategories: [
       {
         id: "healthcare",
-        name: "Healthcare Financing",
+        name: "Healthcare Financing Certification",
         count: 21,
         subcategories: [
           { id: "healthcare-beginner", name: "Beginner Level", count: 7 },
@@ -168,7 +168,7 @@ const categoryHierarchy: CategoryLevel[] = [
       },
       {
         id: "restaurant",
-        name: "Restaurant Financing",
+        name: "Restaurant Financing Specialist",
         count: 21,
         subcategories: [
           { id: "restaurant-beginner", name: "Beginner Level", count: 7 },
