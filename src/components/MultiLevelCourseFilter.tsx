@@ -224,8 +224,8 @@ const FilterContent = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Layers className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-lg">Loan Program Filter</h3>
+          <Layers className="h-4 w-4 text-primary" />
+          <h3 className="font-semibold text-base">Loan Program Filter</h3>
         </div>
         <Button 
           variant="ghost" 
@@ -249,7 +249,7 @@ const FilterContent = ({
             }}
             className="text-muted-foreground hover:text-foreground p-1"
           >
-            <Home className="h-4 w-4" />
+            <Home className="h-3 w-3" />
           </Button>
           {currentLevel > 0 && (
             <Button
@@ -258,8 +258,8 @@ const FilterContent = ({
               onClick={goBack}
               className="text-muted-foreground hover:text-foreground"
             >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back
+              <ArrowLeft className="h-3 w-3 mr-1" />
+              <span className="text-xs">Back</span>
             </Button>
           )}
         </div>
@@ -267,8 +267,8 @@ const FilterContent = ({
 
       {/* Search */}
       <div className="space-y-2">
-        <Label htmlFor="search" className="text-sm font-medium flex items-center gap-2">
-          <Search className="h-4 w-4" />
+        <Label htmlFor="search" className="text-xs font-medium flex items-center gap-2">
+          <Search className="h-3 w-3" />
           Search Loan Programs
         </Label>
         <Input
@@ -283,7 +283,7 @@ const FilterContent = ({
 
       {/* Current Level Categories */}
       <div className="space-y-2">
-        <div className="text-sm font-medium text-muted-foreground mb-3">
+        <div className="text-xs font-medium text-muted-foreground mb-3">
           {getCurrentTitle()}
         </div>
         {categories.map(category => (
@@ -308,12 +308,12 @@ const FilterContent = ({
             }`}
           >
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <span className="truncate">{category.name}</span>
+              <span className="truncate text-xs">{category.name}</span>
             </div>
             <div className="flex items-center gap-2">
               <Badge 
                 variant="secondary" 
-                className={`text-xs rounded-full w-8 h-5 flex items-center justify-center ${
+                className={`text-xs rounded-full w-7 h-4 flex items-center justify-center ${
                   selectedCategories.includes(category.id) 
                     ? 'bg-primary-foreground text-primary' 
                     : 'bg-primary text-primary-foreground'
@@ -322,7 +322,7 @@ const FilterContent = ({
                 {category.count}
               </Badge>
               {(currentLevel < 2 && category.subcategories) && (
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                <ChevronRight className="h-3 w-3 text-muted-foreground" />
               )}
             </div>
           </Button>
@@ -332,7 +332,7 @@ const FilterContent = ({
       {/* Selected Categories Summary */}
       {selectedCategories.length > 0 && (
         <div className="pt-4 border-t">
-          <div className="text-sm text-muted-foreground mb-2">
+          <div className="text-xs text-muted-foreground mb-2">
             Selected Programs ({selectedCategories.length}):
           </div>
           <div className="flex flex-wrap gap-1">
@@ -368,7 +368,7 @@ const FilterContent = ({
 
       {/* Current Results Summary */}
       <div className="pt-4 border-t">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           {selectedCategories.length > 0 || searchTerm ? (
             <>Showing filtered results</>
           ) : (
@@ -390,8 +390,8 @@ export function MultiLevelCourseFilter(props: MultiLevelCourseFilterProps) {
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" className="w-full">
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Loan Program Filter
+              <SlidersHorizontal className="h-3 w-3 mr-2" />
+              <span className="text-xs">Loan Program Filter</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:w-80 p-6 overflow-y-auto max-h-screen">
