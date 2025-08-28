@@ -115,8 +115,17 @@ const Dashboard = () => {
         if (filterId === 'sba-express' && courseTitle.includes('sba express')) return true;
         if (filterId === 'commercial-real-estate' && courseTitle.includes('commercial real estate')) return true;
         if (filterId === 'equipment-financing' && courseTitle.includes('equipment financing')) return true;
+        if (filterId === 'business-lines-credit' && courseTitle.includes('business lines of credit')) return true;
+        if (filterId === 'invoice-factoring' && courseTitle.includes('invoice factoring')) return true;
+        if (filterId === 'merchant-cash-advances' && courseTitle.includes('merchant cash advances')) return true;
+        if (filterId === 'asset-based-lending' && courseTitle.includes('asset-based lending')) return true;
+        if (filterId === 'construction-loans' && courseTitle.includes('construction loans')) return true;
+        if (filterId === 'franchise-financing' && courseTitle.includes('franchise financing')) return true;
+        if (filterId === 'working-capital' && courseTitle.includes('working capital')) return true;
+        if (filterId === 'healthcare-financing' && courseTitle.includes('healthcare financing')) return true;
+        if (filterId === 'restaurant-financing' && courseTitle.includes('restaurant financing')) return true;
         
-        // Course + User level matching (Level 2)
+        // Course + User level matching (Level 2) - All courses
         if (filterId === 'sba-7a-loans-beginner' && courseTitle.includes('sba 7(a)') && moduleLevel === 'beginner') return true;
         if (filterId === 'sba-7a-loans-intermediate' && courseTitle.includes('sba 7(a)') && moduleLevel === 'intermediate') return true;
         if (filterId === 'sba-7a-loans-expert' && courseTitle.includes('sba 7(a)') && moduleLevel === 'expert') return true;
@@ -133,19 +142,41 @@ const Dashboard = () => {
         if (filterId === 'equipment-financing-intermediate' && courseTitle.includes('equipment financing') && moduleLevel === 'intermediate') return true;
         if (filterId === 'equipment-financing-expert' && courseTitle.includes('equipment financing') && moduleLevel === 'expert') return true;
         
-        // Individual module matching (Level 3)
-        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'beginner') return true;
-        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'intermediate') return true;
-        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'expert') return true;
-        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'beginner') return true;
-        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'intermediate') return true;
-        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'expert') return true;
-        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'beginner') return true;
-        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'intermediate') return true;
-        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'expert') return true;
-        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'beginner') return true;
-        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'intermediate') return true;
-        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'expert') return true;
+        if (filterId === 'business-lines-credit-beginner' && courseTitle.includes('business lines of credit') && moduleLevel === 'beginner') return true;
+        if (filterId === 'business-lines-credit-intermediate' && courseTitle.includes('business lines of credit') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'business-lines-credit-expert' && courseTitle.includes('business lines of credit') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'invoice-factoring-beginner' && courseTitle.includes('invoice factoring') && moduleLevel === 'beginner') return true;
+        if (filterId === 'invoice-factoring-intermediate' && courseTitle.includes('invoice factoring') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'invoice-factoring-expert' && courseTitle.includes('invoice factoring') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'merchant-cash-advances-beginner' && courseTitle.includes('merchant cash advances') && moduleLevel === 'beginner') return true;
+        if (filterId === 'merchant-cash-advances-intermediate' && courseTitle.includes('merchant cash advances') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'merchant-cash-advances-expert' && courseTitle.includes('merchant cash advances') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'asset-based-lending-beginner' && courseTitle.includes('asset-based lending') && moduleLevel === 'beginner') return true;
+        if (filterId === 'asset-based-lending-intermediate' && courseTitle.includes('asset-based lending') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'asset-based-lending-expert' && courseTitle.includes('asset-based lending') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'construction-loans-beginner' && courseTitle.includes('construction loans') && moduleLevel === 'beginner') return true;
+        if (filterId === 'construction-loans-intermediate' && courseTitle.includes('construction loans') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'construction-loans-expert' && courseTitle.includes('construction loans') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'franchise-financing-beginner' && courseTitle.includes('franchise financing') && moduleLevel === 'beginner') return true;
+        if (filterId === 'franchise-financing-intermediate' && courseTitle.includes('franchise financing') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'franchise-financing-expert' && courseTitle.includes('franchise financing') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'working-capital-beginner' && courseTitle.includes('working capital') && moduleLevel === 'beginner') return true;
+        if (filterId === 'working-capital-intermediate' && courseTitle.includes('working capital') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'working-capital-expert' && courseTitle.includes('working capital') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'healthcare-financing-beginner' && courseTitle.includes('healthcare financing') && moduleLevel === 'beginner') return true;
+        if (filterId === 'healthcare-financing-intermediate' && courseTitle.includes('healthcare financing') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'healthcare-financing-expert' && courseTitle.includes('healthcare financing') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'restaurant-financing-beginner' && courseTitle.includes('restaurant financing') && moduleLevel === 'beginner') return true;
+        if (filterId === 'restaurant-financing-intermediate' && courseTitle.includes('restaurant financing') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'restaurant-financing-expert' && courseTitle.includes('restaurant financing') && moduleLevel === 'expert') return true;
         
         return false;
       });
