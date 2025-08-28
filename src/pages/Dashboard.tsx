@@ -66,6 +66,8 @@ const Dashboard = () => {
   const [filterNavigationPath, setFilterNavigationPath] = useState<any[]>([]);
   const [selectedCourseProgram, setSelectedCourseProgram] = useState<string | null>(null);
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
+  // Add a key to force re-renders on mobile/tablet devices
+  const [renderKey, setRenderKey] = useState(0);
 
   useEffect(() => {
     if (user) {
@@ -123,6 +125,8 @@ const Dashboard = () => {
       );
       console.log('Course modules found:', courseModules.length);
       setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+      // Force re-render on mobile/tablet
+      setRenderKey(prev => prev + 1);
       console.log('Navigation updated successfully');
     } catch (error) {
       console.error('Error in handleStartCourse:', error);
@@ -145,6 +149,8 @@ const Dashboard = () => {
       );
       console.log('Level modules found:', levelModules.length);
       setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+      // Force re-render on mobile/tablet
+      setRenderKey(prev => prev + 1);
       console.log('Proceed to modules completed successfully');
     } catch (error) {
       console.error('Error in handleProceedToModules:', error);
@@ -276,6 +282,7 @@ const Dashboard = () => {
     setMultiLevelFilters([]);
     setSelectedCourseProgram(null);
     setSelectedSkillLevelForCourse(null);
+    setRenderKey(prev => prev + 1);
   };
 
   const filteredModules = flattenedModules.filter(module => {
@@ -446,7 +453,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" key={renderKey}>
       {/* Adaptive Learning Header */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
@@ -516,6 +523,10 @@ const Dashboard = () => {
                   {currentFilterLevel === 1 && "3 Skill Levels Available"}
                   {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
                 </h3>
+                {/* Debug info - remove after testing */}
+                <div className="text-xs text-muted-foreground bg-gray-100 p-2 rounded">
+                  Level: {currentFilterLevel} | Path: {filterNavigationPath.length} | Selected: {selectedCourseProgram || 'none'}
+                </div>
               </div>
 
               {loading ? (
@@ -577,13 +588,14 @@ const Dashboard = () => {
                               </CardHeader>
                               <CardContent className="pt-0">
                                 <Button 
+                                  type="button"
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                     console.log('Start Course button clicked for:', courseName);
                                     handleStartCourse(courseName);
                                   }}
-                                  className="w-full"
+                                  className="w-full touch-manipulation"
                                   variant="default"
                                 >
                                   Start Course
@@ -647,13 +659,14 @@ const Dashboard = () => {
                             </CardHeader>
                             <CardContent className="pt-0">
                               <Button 
+                                type="button"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
                                   console.log('Proceed to Modules button clicked for level:', level);
                                   handleProceedToModules(level);
                                 }}
-                                className="w-full"
+                                className="w-full touch-manipulation"
                                 variant="default"
                               >
                                 Proceed to Modules
@@ -691,149 +704,153 @@ const Dashboard = () => {
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
                         {filteredModules.map((module, index) => {
-                            const isUnlocked = isModuleUnlocked(index, filteredModules);
-                            const isCompleted = moduleProgress[module.id]?.completed || false;
-                            const isCurrent = moduleProgress[module.id]?.current || false;
-                            
-                            return (
-                              <Card 
-                                key={module.id} 
-                                className={`group transition-all duration-300 border-2 ${
-                                  isUnlocked 
-                                    ? 'hover:shadow-lg hover:border-primary/20' 
-                                    : 'opacity-50 cursor-not-allowed border-muted'
-                                } ${isCompleted ? 'border-green-200 bg-green-50/20' : ''}`}
-                              >
-                                <div className="relative overflow-hidden rounded-t-lg">
-                                  <img 
-                                    src={getCourseImage(index)} 
-                                    alt={module.title}
-                                    className={`w-full h-48 object-cover ${
-                                      isUnlocked ? 'group-hover:scale-105' : 'grayscale'
-                                    } transition-transform duration-300`}
-                                  />
-                                  <div className="absolute top-4 left-4 flex gap-2">
-                                    <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                          const isUnlocked = isModuleUnlocked(index, filteredModules);
+                          const isCompleted = moduleProgress[module.id]?.completed || false;
+                          const isCurrent = moduleProgress[module.id]?.current || false;
+                          
+                          return (
+                            <Card 
+                              key={module.id} 
+                              className={`group transition-all duration-300 border-2 ${
+                                isUnlocked 
+                                  ? 'hover:shadow-lg hover:border-primary/20' 
+                                  : 'opacity-50 cursor-not-allowed border-muted'
+                              } ${isCompleted ? 'border-green-200 bg-green-50/20' : ''}`}
+                            >
+                              <div className="relative overflow-hidden rounded-t-lg">
+                                <img 
+                                  src={getCourseImage(index)} 
+                                  alt={module.title}
+                                  className={`w-full h-48 object-cover ${
+                                    isUnlocked ? 'group-hover:scale-105' : 'grayscale'
+                                  } transition-transform duration-300`}
+                                />
+                                <div className="absolute top-4 left-4 flex gap-2">
+                                  <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                                  </Badge>
+                                  {isCompleted && (
+                                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+                                      Completed
                                     </Badge>
-                                    {isCompleted && (
-                                      <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
-                                        Completed
-                                      </Badge>
-                                    )}
-                                    {isCurrent && (
-                                      <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">
-                                        In Progress
-                                      </Badge>
-                                    )}
-                                    {!isUnlocked && (
-                                      <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300">
-                                        Locked
-                                      </Badge>
-                                    )}
-                                  </div>
-                                  <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1 text-xs font-medium">
-                                    {index + 1} of {filteredModules.length}
+                                  )}
+                                  {isCurrent && (
+                                    <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">
+                                      In Progress
+                                    </Badge>
+                                  )}
+                                  {!isUnlocked && (
+                                    <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300">
+                                      Locked
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1 text-xs font-medium">
+                                  {index + 1} of {filteredModules.length}
+                                </div>
+                              </div>
+                              <CardHeader className="pb-2">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                                    <CardDescription className="line-clamp-2 mt-1">
+                                      {module.description}
+                                    </CardDescription>
                                   </div>
                                 </div>
-                                <CardHeader className="pb-2">
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                      <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                      <CardDescription className="line-clamp-2 mt-1">
-                                        {module.description}
-                                      </CardDescription>
-                                    </div>
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-4 w-4" />
+                                    <span>{module.duration}</span>
                                   </div>
-                                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                    <div className="flex items-center gap-1">
-                                      <Clock className="h-4 w-4" />
-                                      <span>{module.duration}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                      <BookOpen className="h-4 w-4" />
-                                      <span>{module.lessons} lessons</span>
-                                    </div>
+                                  <div className="flex items-center gap-1">
+                                    <BookOpen className="h-4 w-4" />
+                                    <span>{module.lessons} lessons</span>
                                   </div>
-                                </CardHeader>
-                                <CardContent className="pt-0">
-                                  <div className="space-y-2">
-                                    <div className="text-sm text-muted-foreground">
-                                      Course: {module.course_title}
-                                    </div>
-                                    {!isUnlocked ? (
+                                </div>
+                              </CardHeader>
+                              <CardContent className="pt-0">
+                                <div className="space-y-2">
+                                  <div className="text-sm text-muted-foreground">
+                                    Course: {module.course_title}
+                                  </div>
+                                  {!isUnlocked ? (
+                                    <Button 
+                                      className="w-full"
+                                      variant="outline"
+                                      disabled
+                                    >
+                                      🔒 Complete Previous Module
+                                    </Button>
+                                  ) : isCompleted ? (
+                                    <div className="space-y-2">
                                       <Button 
-                                        className="w-full"
-                                        variant="outline"
-                                        disabled
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          console.log('Review Module button clicked for:', module.id);
+                                          handleModuleStart(module.id);
+                                        }}
+                                        className="w-full touch-manipulation"
+                                        variant="secondary"
                                       >
-                                        🔒 Complete Previous Module
+                                        ✅ Review Module
                                       </Button>
-                                    ) : isCompleted ? (
-                                      <div className="space-y-2">
+                                      {index === filteredModules.length - 1 ? (
                                         <Button 
+                                          type="button"
                                           onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
-                                            console.log('Review Module button clicked for:', module.id);
-                                            handleModuleStart(module.id);
+                                            console.log('Return to Dashboard button clicked');
+                                            handleReturnToDashboard();
                                           }}
-                                          className="w-full"
-                                          variant="secondary"
+                                          className="w-full touch-manipulation"
+                                          variant="outline"
                                         >
-                                          ✅ Review Module
+                                          🎉 Return to Dashboard
                                         </Button>
-                                        {index === filteredModules.length - 1 ? (
-                                          <Button 
-                                            onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              console.log('Return to Dashboard button clicked');
-                                              handleReturnToDashboard();
-                                            }}
-                                            className="w-full"
-                                            variant="outline"
-                                          >
-                                            🎉 Return to Dashboard
-                                          </Button>
-                                        ) : (
-                                          <div className="text-xs text-center text-muted-foreground">
-                                            Next module unlocked!
-                                          </div>
-                                        )}
-                                      </div>
-                                    ) : isCurrent ? (
-                                      <Button 
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                          console.log('Continue Module button clicked for:', module.id);
-                                          handleModuleStart(module.id);
-                                        }}
-                                        className="w-full"
-                                        variant="default"
-                                      >
-                                        🔄 Continue Module
-                                      </Button>
-                                    ) : (
-                                      <Button 
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                          console.log('Start Course Module button clicked for:', module.id);
-                                          handleStartCourseModule(module.id);
-                                        }}
-                                        className="w-full"
-                                        variant="default"
-                                      >
-                                        🚀 Start Course Module
-                                      </Button>
-                                    )}
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            );
-                          })}
+                                      ) : (
+                                        <div className="text-xs text-center text-muted-foreground">
+                                          Next module unlocked!
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : isCurrent ? (
+                                    <Button 
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        console.log('Continue Module button clicked for:', module.id);
+                                        handleModuleStart(module.id);
+                                      }}
+                                      className="w-full touch-manipulation"
+                                      variant="default"
+                                    >
+                                      🔄 Continue Module
+                                    </Button>
+                                  ) : (
+                                    <Button 
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        console.log('Start Course Module button clicked for:', module.id);
+                                        handleStartCourseModule(module.id);
+                                      }}
+                                      className="w-full touch-manipulation"
+                                      variant="default"
+                                    >
+                                      🚀 Start Course Module
+                                    </Button>
+                                  )}
+                                </div>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -857,15 +874,15 @@ const Dashboard = () => {
         </div>
       </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
-          {/* Learning Objectives */}
-          <LearningObjectives objectives={learningObjectives} />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        {/* Learning Objectives */}
+        <LearningObjectives objectives={learningObjectives} />
 
-          {/* Instructor Information */}
-          <InstructorInfo />
+        {/* Instructor Information */}
+        <InstructorInfo />
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {statsData.map((stat, index) => {
             const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
             return (
@@ -879,251 +896,251 @@ const Dashboard = () => {
               />
             );
           })}
+        </div>
+
+        {/* Course Modules and Resources */}
+        <div className="space-y-8 pb-16">
+          <div className="text-left space-y-4">
+            <h3 className="text-3xl font-bold">Adaptive Interactive Learning Platform</h3>
+            <p className="text-muted-foreground max-w-3xl leading-relaxed">
+              Experience cutting-edge adaptive learning with AI-powered content delivery, real-time assessments, 
+              interactive simulations, gamification elements, and personalized learning paths for finance mastery.
+            </p>
           </div>
 
-          {/* Course Modules and Resources */}
-          <div className="space-y-8 pb-16">
-            <div className="text-left space-y-4">
-              <h3 className="text-3xl font-bold">Adaptive Interactive Learning Platform</h3>
-              <p className="text-muted-foreground max-w-3xl leading-relaxed">
-                Experience cutting-edge adaptive learning with AI-powered content delivery, real-time assessments, 
-                interactive simulations, gamification elements, and personalized learning paths for finance mastery.
-              </p>
-            </div>
+          <Tabs defaultValue="adaptive" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-10 sm:w-fit">
+              <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
+              <TabsTrigger value="interactive" className="text-sm">Interactive</TabsTrigger>
+              <TabsTrigger value="modules" className="text-sm">Modules</TabsTrigger>
+              <TabsTrigger value="progress" className="text-sm">Progress</TabsTrigger>
+              <TabsTrigger value="assessment" className="text-sm">Assessment</TabsTrigger>
+              <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
+              <TabsTrigger value="social" className="text-sm">Social</TabsTrigger>
+              <TabsTrigger value="tools" className="text-sm">Tools</TabsTrigger>
+              <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
+              <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
+              <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
+            </TabsList>
 
-            <Tabs defaultValue="adaptive" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-10 sm:w-fit">
-                <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
-                <TabsTrigger value="interactive" className="text-sm">Interactive</TabsTrigger>
-                <TabsTrigger value="modules" className="text-sm">Modules</TabsTrigger>
-                <TabsTrigger value="progress" className="text-sm">Progress</TabsTrigger>
-                <TabsTrigger value="assessment" className="text-sm">Assessment</TabsTrigger>
-                <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
-                <TabsTrigger value="social" className="text-sm">Social</TabsTrigger>
-                <TabsTrigger value="tools" className="text-sm">Tools</TabsTrigger>
-                <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
-                <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
-                <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
-              </TabsList>
+            <TabsContent value="adaptive" className="space-y-6">
+              {/* Adaptive Learning Engine */}
+              <Card className="mb-6 border-blue-200 bg-blue-50/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-blue-800">
+                    <Brain className="h-5 w-5" />
+                    AI-Powered Adaptive Learning Engine
+                  </CardTitle>
+                  <CardDescription>
+                    Personalized learning recommendations based on your progress and learning style
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <AdaptiveLearningEngine />
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-              <TabsContent value="adaptive" className="space-y-6">
-                {/* Adaptive Learning Engine */}
-                <Card className="mb-6 border-blue-200 bg-blue-50/50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-blue-800">
-                      <Brain className="h-5 w-5" />
-                      AI-Powered Adaptive Learning Engine
-                    </CardTitle>
-                    <CardDescription>
-                      Personalized learning recommendations based on your progress and learning style
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <AdaptiveLearningEngine />
-                  </CardContent>
-                </Card>
-              </TabsContent>
+            <TabsContent value="interactive" className="space-y-6">
+              {/* Interactive Learning Components */}
+              <Card className="mb-6 border-purple-200 bg-purple-50/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-purple-800">
+                    <Zap className="h-5 w-5" />
+                    Interactive Learning Components
+                  </CardTitle>
+                  <CardDescription>
+                    Hands-on practice with financial calculators, scenarios, and simulations
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <InteractiveLessonComponents />
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-              <TabsContent value="interactive" className="space-y-6">
-                {/* Interactive Learning Components */}
-                <Card className="mb-6 border-purple-200 bg-purple-50/50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-800">
-                      <Zap className="h-5 w-5" />
-                      Interactive Learning Components
-                    </CardTitle>
-                    <CardDescription>
-                      Hands-on practice with financial calculators, scenarios, and simulations
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <InteractiveLessonComponents />
-                  </CardContent>
-                </Card>
-              </TabsContent>
+            <TabsContent value="modules" className="space-y-6">
+              {/* Learning Analytics Section */}
+              <Card className="mb-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5" />
+                    Learning Analytics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <LearningAnalytics />
+                </CardContent>
+              </Card>
 
-              <TabsContent value="modules" className="space-y-6">
-                {/* Learning Analytics Section */}
-                <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BookOpen className="h-5 w-5" />
-                      Learning Analytics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <LearningAnalytics />
-                  </CardContent>
-                </Card>
+              {/* Interactive Learning Path */}
+              <Card className="mb-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Your Learning Journey
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <InteractiveLearningPath />
+                </CardContent>
+              </Card>
 
-                {/* Interactive Learning Path */}
-                <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5" />
-                      Your Learning Journey
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <InteractiveLearningPath />
-                  </CardContent>
-                </Card>
+              <SkillLevelFilter
+                selectedLevel={selectedSkillLevel}
+                onLevelChange={setSelectedSkillLevel}
+                counts={skillLevelCounts}
+              />
 
-                <SkillLevelFilter
-                  selectedLevel={selectedSkillLevel}
-                  onLevelChange={setSelectedSkillLevel}
-                  counts={skillLevelCounts}
-                />
-
-                {loading ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {[1, 2, 3, 4, 5, 6].map(i => (
-                      <div key={i} className="animate-pulse">
-                        <div className="bg-muted rounded-lg h-48" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <>
-                      {/* Show modules based on skill level selection */}
-                      {selectedSkillLevel === "all" ? (
-                        <div className="text-center py-12">
-                          <h3 className="text-lg font-medium text-muted-foreground mb-4">
-                            Select Your Skill Level
-                          </h3>
-                          <p className="text-sm text-muted-foreground mb-6">
-                            Please choose your skill level above to view the relevant learning modules.
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {[1, 2, 3, 4, 5, 6].map(i => (
+                    <div key={i} className="animate-pulse">
+                      <div className="bg-muted rounded-lg h-48" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                    {/* Show modules based on skill level selection */}
+                    {selectedSkillLevel === "all" ? (
+                      <div className="text-center py-12">
+                        <h3 className="text-lg font-medium text-muted-foreground mb-4">
+                          Select Your Skill Level
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-6">
+                          Please choose your skill level above to view the relevant learning modules.
+                        </p>
+                        <div className="max-w-md mx-auto">
+                          <p className="text-xs text-muted-foreground">
+                            Choose from Beginner, Intermediate, or Expert levels to see personalized content.
                           </p>
-                          <div className="max-w-md mx-auto">
-                            <p className="text-xs text-muted-foreground">
-                              Choose from Beginner, Intermediate, or Expert levels to see personalized content.
-                            </p>
-                          </div>
                         </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-lg font-semibold">
-                              {selectedSkillLevel.charAt(0).toUpperCase() + selectedSkillLevel.slice(1)} Level Modules
-                            </h4>
-                            <Badge variant="secondary">
-                              {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length} modules
-                            </Badge>
-                          </div>
-                          
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                            {filteredModules
-                              .filter(module => module.skill_level === selectedSkillLevel)
-                              .map((module, index) => (
-                              <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                                <div className="relative overflow-hidden rounded-t-lg">
-                                  <img 
-                                    src={getCourseImage(index)} 
-                                    alt={module.title}
-                                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                  />
-                                  <div className="absolute top-4 left-4">
-                                    <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                                    </Badge>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-lg font-semibold">
+                            {selectedSkillLevel.charAt(0).toUpperCase() + selectedSkillLevel.slice(1)} Level Modules
+                          </h4>
+                          <Badge variant="secondary">
+                            {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length} modules
+                          </Badge>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                          {filteredModules
+                            .filter(module => module.skill_level === selectedSkillLevel)
+                            .map((module, index) => (
+                            <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+                              <div className="relative overflow-hidden rounded-t-lg">
+                                <img 
+                                  src={getCourseImage(index)} 
+                                  alt={module.title}
+                                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute top-4 left-4">
+                                  <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <CardHeader className="pb-2">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                                    <CardDescription className="line-clamp-2 mt-1">
+                                      {module.description}
+                                    </CardDescription>
                                   </div>
                                 </div>
-                                <CardHeader className="pb-2">
-                                  <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                      <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                      <CardDescription className="line-clamp-2 mt-1">
-                                        {module.description}
-                                      </CardDescription>
-                                    </div>
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-4 w-4" />
+                                    <span>{module.duration}</span>
                                   </div>
-                                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                    <div className="flex items-center gap-1">
-                                      <Clock className="h-4 w-4" />
-                                      <span>{module.duration}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                      <BookOpen className="h-4 w-4" />
-                                      <span>{module.lessons} lessons</span>
-                                    </div>
+                                  <div className="flex items-center gap-1">
+                                    <BookOpen className="h-4 w-4" />
+                                    <span>{module.lessons} lessons</span>
                                   </div>
-                                </CardHeader>
-                                <CardContent className="pt-0">
-                                  <div className="space-y-2">
-                                    <div className="text-sm text-muted-foreground">
-                                      Course: {module.course_title}
-                                    </div>
-                                    <Button 
-                                      onClick={() => handleModuleStart(module.id)} 
-                                      className="w-full"
-                                      variant={module.status === "completed" ? "secondary" : "default"}
-                                    >
-                                      {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
-                                    </Button>
+                                </div>
+                              </CardHeader>
+                              <CardContent className="pt-0">
+                                <div className="space-y-2">
+                                  <div className="text-sm text-muted-foreground">
+                                    Course: {module.course_title}
                                   </div>
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
-                          
-                          {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length === 0 && (
-                            <div className="text-center py-12">
-                              <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                                No modules found for {selectedSkillLevel} level
-                              </h3>
-                              <p className="text-sm text-muted-foreground">
-                                Try selecting a different skill level to see available modules.
-                              </p>
-                            </div>
-                          )}
+                                  <Button 
+                                    onClick={() => handleModuleStart(module.id)} 
+                                    className="w-full"
+                                    variant={module.status === "completed" ? "secondary" : "default"}
+                                  >
+                                    {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
                         </div>
-                      )}
+                        
+                        {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length === 0 && (
+                          <div className="text-center py-12">
+                            <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                              No modules found for {selectedSkillLevel} level
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              Try selecting a different skill level to see available modules.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                  </>
-                )}
-              </TabsContent>
+                </>
+              )}
+            </TabsContent>
 
-              <TabsContent value="progress">
-                <EnhancedProgressTracking />
-              </TabsContent>
+            <TabsContent value="progress">
+              <EnhancedProgressTracking />
+            </TabsContent>
 
-              <TabsContent value="assessment">
-                <AdvancedAssessmentSystem />
-              </TabsContent>
+            <TabsContent value="assessment">
+              <AdvancedAssessmentSystem />
+            </TabsContent>
 
-              <TabsContent value="analytics">
-                <LearningAnalytics />
-              </TabsContent>
+            <TabsContent value="analytics">
+              <LearningAnalytics />
+            </TabsContent>
 
-              <TabsContent value="social">
-                <SocialLearningHub />
-              </TabsContent>
+            <TabsContent value="social">
+              <SocialLearningHub />
+            </TabsContent>
 
-              <TabsContent value="tools">
-                <InteractiveFinancialTools />
-              </TabsContent>
+            <TabsContent value="tools">
+              <InteractiveFinancialTools />
+            </TabsContent>
 
-              <TabsContent value="gamification">
-                <GamificationSystem />
-              </TabsContent>
+            <TabsContent value="gamification">
+              <GamificationSystem />
+            </TabsContent>
 
-              <TabsContent value="adaptive">
-                <AdaptiveLearningEngine />
-              </TabsContent>
+            <TabsContent value="adaptive">
+              <AdaptiveLearningEngine />
+            </TabsContent>
 
-              <TabsContent value="market">
-                <RealTimeMarketData />
-              </TabsContent>
+            <TabsContent value="market">
+              <RealTimeMarketData />
+            </TabsContent>
 
-              <TabsContent value="resources">
-                <DocumentLibrary />
-              </TabsContent>
-            </Tabs>
-          </div>
-          
-          {/* FinPilot Brand Footer */}
-          <FinPilotBrandFooter />
+            <TabsContent value="resources">
+              <DocumentLibrary />
+            </TabsContent>
+          </Tabs>
         </div>
+        
+        {/* FinPilot Brand Footer */}
+        <FinPilotBrandFooter />
+      </div>
 
       {/* Accessibility Enhancer */}
       <AccessibilityEnhancer />
