@@ -20,155 +20,200 @@ interface MultiLevelCourseFilterProps {
   totalCount: number;
 }
 
-// Three-level hierarchy: Categories → User Levels → Module Levels
-const categoryHierarchy: CategoryLevel[] = [
+// Three-level hierarchy: Course Programs → User Levels → Individual Modules
+const coursePrograms: CategoryLevel[] = [
   {
-    id: "sba",
-    name: "SBA Financing",
-    count: 84,
+    id: "sba-7a-loans",
+    name: "SBA 7(a) Loans",
+    count: 21,
     subcategories: [
       {
-        id: "sba-beginner",
+        id: "sba-7a-loans-beginner",
         name: "Beginner Level",
-        count: 28,
+        count: 7,
         subcategories: [
-          { id: "sba-7a-beginner", name: "SBA 7(a) Loan Fundamentals", count: 7 },
-          { id: "sba-express-beginner", name: "SBA Express Processing", count: 7 },
-          { id: "sba-504-beginner", name: "SBA 504 Real Estate", count: 7 },
-          { id: "sba-microloans-beginner", name: "SBA Microloan Strategy", count: 7 }
+          { id: "sba-7a-loans-beginner-module-1", name: "SBA 7(a) Fundamentals", count: 1 },
+          { id: "sba-7a-loans-beginner-module-2", name: "Basic Eligibility Requirements", count: 1 },
+          { id: "sba-7a-loans-beginner-module-3", name: "Application Process", count: 1 },
+          { id: "sba-7a-loans-beginner-module-4", name: "Documentation Requirements", count: 1 },
+          { id: "sba-7a-loans-beginner-module-5", name: "Basic Underwriting", count: 1 },
+          { id: "sba-7a-loans-beginner-module-6", name: "SBA Guidelines", count: 1 },
+          { id: "sba-7a-loans-beginner-module-7", name: "Final Assessment", count: 1 }
         ]
       },
       {
-        id: "sba-intermediate",
-        name: "Intermediate Level", 
-        count: 28,
-        subcategories: [
-          { id: "sba-7a-intermediate", name: "SBA 7(a) Advanced Techniques", count: 7 },
-          { id: "sba-express-intermediate", name: "SBA Express Optimization", count: 7 },
-          { id: "sba-504-intermediate", name: "SBA 504 Complex Structures", count: 7 },
-          { id: "sba-microloans-intermediate", name: "Microloan Portfolio Management", count: 7 }
-        ]
-      },
-      {
-        id: "sba-expert",
-        name: "Expert Level",
-        count: 28,
-        subcategories: [
-          { id: "sba-7a-expert", name: "SBA 7(a) Master Class", count: 7 },
-          { id: "sba-express-expert", name: "SBA Express Innovation", count: 7 },
-          { id: "sba-504-expert", name: "SBA 504 Leadership", count: 7 },
-          { id: "sba-microloans-expert", name: "Microloan Strategy Expert", count: 7 }
-        ]
-      }
-    ]
-  },
-  {
-    id: "commercial",
-    name: "Commercial Lending",
-    count: 63,
-    subcategories: [
-      {
-        id: "commercial-beginner",
-        name: "Beginner Level",
-        count: 21,
-        subcategories: [
-          { id: "cre-beginner", name: "Commercial Real Estate Analysis", count: 7 },
-          { id: "equipment-beginner", name: "Equipment Financing Strategies", count: 7 },
-          { id: "working-capital-beginner", name: "Working Capital Solutions", count: 7 }
-        ]
-      },
-      {
-        id: "commercial-intermediate",
+        id: "sba-7a-loans-intermediate",
         name: "Intermediate Level",
-        count: 21,
+        count: 7,
         subcategories: [
-          { id: "cre-intermediate", name: "Advanced CRE Analysis", count: 7 },
-          { id: "equipment-intermediate", name: "Equipment Finance Optimization", count: 7 },
-          { id: "working-capital-intermediate", name: "Complex Working Capital", count: 7 }
+          { id: "sba-7a-loans-intermediate-module-1", name: "Advanced Underwriting", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-2", name: "Complex Eligibility Scenarios", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-3", name: "Risk Assessment", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-4", name: "Portfolio Management", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-5", name: "Compliance Issues", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-6", name: "Case Studies", count: 1 },
+          { id: "sba-7a-loans-intermediate-module-7", name: "Final Assessment", count: 1 }
         ]
       },
       {
-        id: "commercial-expert",
+        id: "sba-7a-loans-expert",
         name: "Expert Level",
-        count: 21,
+        count: 7,
         subcategories: [
-          { id: "cre-expert", name: "CRE Master Class", count: 7 },
-          { id: "equipment-expert", name: "Equipment Finance Leadership", count: 7 },
-          { id: "working-capital-expert", name: "Working Capital Innovation", count: 7 }
+          { id: "sba-7a-loans-expert-module-1", name: "Portfolio Optimization", count: 1 },
+          { id: "sba-7a-loans-expert-module-2", name: "Advanced Risk Mitigation", count: 1 },
+          { id: "sba-7a-loans-expert-module-3", name: "Strategic Planning", count: 1 },
+          { id: "sba-7a-loans-expert-module-4", name: "Market Analysis", count: 1 },
+          { id: "sba-7a-loans-expert-module-5", name: "Leadership in SBA Lending", count: 1 },
+          { id: "sba-7a-loans-expert-module-6", name: "Innovation Strategies", count: 1 },
+          { id: "sba-7a-loans-expert-module-7", name: "Final Assessment", count: 1 }
         ]
       }
     ]
   },
   {
-    id: "specialty",
-    name: "Specialty Financing",
-    count: 84,
+    id: "sba-express",
+    name: "SBA Express Loans",
+    count: 21,
     subcategories: [
       {
-        id: "specialty-beginner",
+        id: "sba-express-beginner",
         name: "Beginner Level",
-        count: 28,
+        count: 7,
         subcategories: [
-          { id: "factoring-beginner", name: "Invoice Factoring Mastery", count: 7 },
-          { id: "mca-beginner", name: "Merchant Cash Advance Training", count: 7 },
-          { id: "abl-beginner", name: "Asset-Based Lending Essentials", count: 7 },
-          { id: "construction-beginner", name: "Construction Loan Expertise", count: 7 }
+          { id: "sba-express-beginner-module-1", name: "Express Program Basics", count: 1 },
+          { id: "sba-express-beginner-module-2", name: "Fast-Track Processing", count: 1 },
+          { id: "sba-express-beginner-module-3", name: "Application Requirements", count: 1 },
+          { id: "sba-express-beginner-module-4", name: "Documentation Process", count: 1 },
+          { id: "sba-express-beginner-module-5", name: "Basic Guidelines", count: 1 },
+          { id: "sba-express-beginner-module-6", name: "Customer Service", count: 1 },
+          { id: "sba-express-beginner-module-7", name: "Final Assessment", count: 1 }
         ]
       },
       {
-        id: "specialty-intermediate",
-        name: "Intermediate Level", 
-        count: 28,
-        subcategories: [
-          { id: "factoring-intermediate", name: "Advanced Invoice Factoring", count: 7 },
-          { id: "mca-intermediate", name: "MCA Portfolio Management", count: 7 },
-          { id: "abl-intermediate", name: "Complex Asset-Based Lending", count: 7 },
-          { id: "construction-intermediate", name: "Advanced Construction Finance", count: 7 }
-        ]
-      },
-      {
-        id: "specialty-expert",
-        name: "Expert Level",
-        count: 28,
-        subcategories: [
-          { id: "factoring-expert", name: "Factoring Innovation Leader", count: 7 },
-          { id: "mca-expert", name: "MCA Strategy Expert", count: 7 },
-          { id: "abl-expert", name: "ABL Master Class", count: 7 },
-          { id: "construction-expert", name: "Construction Finance Leadership", count: 7 }
-        ]
-      }
-    ]
-  },
-  {
-    id: "industry",
-    name: "Industry-Specific Programs",
-    count: 42,
-    subcategories: [
-      {
-        id: "industry-beginner",
-        name: "Beginner Level",
-        count: 14,
-        subcategories: [
-          { id: "healthcare-beginner", name: "Healthcare Financing Certification", count: 7 },
-          { id: "restaurant-beginner", name: "Restaurant Financing Specialist", count: 7 }
-        ]
-      },
-      {
-        id: "industry-intermediate",
+        id: "sba-express-intermediate",
         name: "Intermediate Level",
-        count: 14,
+        count: 7,
         subcategories: [
-          { id: "healthcare-intermediate", name: "Advanced Healthcare Finance", count: 7 },
-          { id: "restaurant-intermediate", name: "Restaurant Finance Optimization", count: 7 }
+          { id: "sba-express-intermediate-module-1", name: "Advanced Processing", count: 1 },
+          { id: "sba-express-intermediate-module-2", name: "Complex Applications", count: 1 },
+          { id: "sba-express-intermediate-module-3", name: "Risk Management", count: 1 },
+          { id: "sba-express-intermediate-module-4", name: "Portfolio Analysis", count: 1 },
+          { id: "sba-express-intermediate-module-5", name: "Compliance Standards", count: 1 },
+          { id: "sba-express-intermediate-module-6", name: "Performance Metrics", count: 1 },
+          { id: "sba-express-intermediate-module-7", name: "Final Assessment", count: 1 }
         ]
       },
       {
-        id: "industry-expert",
+        id: "sba-express-expert",
         name: "Expert Level",
-        count: 14,
+        count: 7,
         subcategories: [
-          { id: "healthcare-expert", name: "Healthcare Finance Leadership", count: 7 },
-          { id: "restaurant-expert", name: "Restaurant Finance Innovation", count: 7 }
+          { id: "sba-express-expert-module-1", name: "Express Program Leadership", count: 1 },
+          { id: "sba-express-expert-module-2", name: "Strategic Implementation", count: 1 },
+          { id: "sba-express-expert-module-3", name: "Process Innovation", count: 1 },
+          { id: "sba-express-expert-module-4", name: "Team Management", count: 1 },
+          { id: "sba-express-expert-module-5", name: "Market Development", count: 1 },
+          { id: "sba-express-expert-module-6", name: "Best Practices", count: 1 },
+          { id: "sba-express-expert-module-7", name: "Final Assessment", count: 1 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "commercial-real-estate",
+    name: "Commercial Real Estate",
+    count: 21,
+    subcategories: [
+      {
+        id: "commercial-real-estate-beginner",
+        name: "Beginner Level",
+        count: 7,
+        subcategories: [
+          { id: "commercial-real-estate-beginner-module-1", name: "CRE Fundamentals", count: 1 },
+          { id: "commercial-real-estate-beginner-module-2", name: "Property Analysis", count: 1 },
+          { id: "commercial-real-estate-beginner-module-3", name: "Market Evaluation", count: 1 },
+          { id: "commercial-real-estate-beginner-module-4", name: "Financial Modeling", count: 1 },
+          { id: "commercial-real-estate-beginner-module-5", name: "Risk Assessment", count: 1 },
+          { id: "commercial-real-estate-beginner-module-6", name: "Due Diligence", count: 1 },
+          { id: "commercial-real-estate-beginner-module-7", name: "Final Assessment", count: 1 }
+        ]
+      },
+      {
+        id: "commercial-real-estate-intermediate",
+        name: "Intermediate Level",
+        count: 7,
+        subcategories: [
+          { id: "commercial-real-estate-intermediate-module-1", name: "Advanced Analysis", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-2", name: "Complex Transactions", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-3", name: "Portfolio Management", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-4", name: "Market Trends", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-5", name: "Regulatory Compliance", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-6", name: "Investment Strategies", count: 1 },
+          { id: "commercial-real-estate-intermediate-module-7", name: "Final Assessment", count: 1 }
+        ]
+      },
+      {
+        id: "commercial-real-estate-expert",
+        name: "Expert Level",
+        count: 7,
+        subcategories: [
+          { id: "commercial-real-estate-expert-module-1", name: "CRE Leadership", count: 1 },
+          { id: "commercial-real-estate-expert-module-2", name: "Strategic Planning", count: 1 },
+          { id: "commercial-real-estate-expert-module-3", name: "Market Innovation", count: 1 },
+          { id: "commercial-real-estate-expert-module-4", name: "Team Development", count: 1 },
+          { id: "commercial-real-estate-expert-module-5", name: "Advanced Modeling", count: 1 },
+          { id: "commercial-real-estate-expert-module-6", name: "Industry Expertise", count: 1 },
+          { id: "commercial-real-estate-expert-module-7", name: "Final Assessment", count: 1 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "equipment-financing",
+    name: "Equipment Financing",
+    count: 21,
+    subcategories: [
+      {
+        id: "equipment-financing-beginner",
+        name: "Beginner Level",
+        count: 7,
+        subcategories: [
+          { id: "equipment-financing-beginner-module-1", name: "Equipment Finance Basics", count: 1 },
+          { id: "equipment-financing-beginner-module-2", name: "Lease vs Purchase", count: 1 },
+          { id: "equipment-financing-beginner-module-3", name: "Vendor Programs", count: 1 },
+          { id: "equipment-financing-beginner-module-4", name: "Credit Analysis", count: 1 },
+          { id: "equipment-financing-beginner-module-5", name: "Documentation", count: 1 },
+          { id: "equipment-financing-beginner-module-6", name: "Industry Overview", count: 1 },
+          { id: "equipment-financing-beginner-module-7", name: "Final Assessment", count: 1 }
+        ]
+      },
+      {
+        id: "equipment-financing-intermediate",
+        name: "Intermediate Level",
+        count: 7,
+        subcategories: [
+          { id: "equipment-financing-intermediate-module-1", name: "Advanced Structures", count: 1 },
+          { id: "equipment-financing-intermediate-module-2", name: "Complex Transactions", count: 1 },
+          { id: "equipment-financing-intermediate-module-3", name: "Portfolio Management", count: 1 },
+          { id: "equipment-financing-intermediate-module-4", name: "Risk Mitigation", count: 1 },
+          { id: "equipment-financing-intermediate-module-5", name: "Vendor Relations", count: 1 },
+          { id: "equipment-financing-intermediate-module-6", name: "Market Analysis", count: 1 },
+          { id: "equipment-financing-intermediate-module-7", name: "Final Assessment", count: 1 }
+        ]
+      },
+      {
+        id: "equipment-financing-expert",
+        name: "Expert Level",
+        count: 7,
+        subcategories: [
+          { id: "equipment-financing-expert-module-1", name: "Strategic Leadership", count: 1 },
+          { id: "equipment-financing-expert-module-2", name: "Innovation Strategies", count: 1 },
+          { id: "equipment-financing-expert-module-3", name: "Team Management", count: 1 },
+          { id: "equipment-financing-expert-module-4", name: "Market Development", count: 1 },
+          { id: "equipment-financing-expert-module-5", name: "Advanced Analytics", count: 1 },
+          { id: "equipment-financing-expert-module-6", name: "Industry Expertise", count: 1 },
+          { id: "equipment-financing-expert-module-7", name: "Final Assessment", count: 1 }
         ]
       }
     ]
@@ -220,7 +265,7 @@ const FilterContent = ({
 
   const getCurrentCategories = () => {
     if (currentLevel === 0) {
-      return categoryHierarchy;
+      return coursePrograms;
     } else if (currentLevel === 1) {
       return navigationPath[0]?.subcategories || [];
     } else {
@@ -370,7 +415,7 @@ const FilterContent = ({
                 return id;
               };
               
-              const categoryName = findCategoryName(categoryHierarchy, categoryId);
+              const categoryName = findCategoryName(coursePrograms, categoryId);
               
               return (
                 <Badge 

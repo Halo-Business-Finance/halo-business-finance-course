@@ -110,49 +110,42 @@ const Dashboard = () => {
         const courseTitle = module.course_title.toLowerCase();
         const moduleLevel = module.skill_level;
         
-        // Main category matching
-        if (filterId === 'sba' && courseTitle.includes('sba')) return true;
-        if (filterId === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
-        if (filterId === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
-        if (filterId === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
+        // Course program matching (Level 1)
+        if (filterId === 'sba-7a-loans' && courseTitle.includes('sba 7(a)')) return true;
+        if (filterId === 'sba-express' && courseTitle.includes('sba express')) return true;
+        if (filterId === 'commercial-real-estate' && courseTitle.includes('commercial real estate')) return true;
+        if (filterId === 'equipment-financing' && courseTitle.includes('equipment financing')) return true;
         
-        // User level matching (second level)
-        if (filterId.includes('-beginner') && moduleLevel === 'beginner') {
-          const category = filterId.split('-')[0];
-          if (category === 'sba' && courseTitle.includes('sba')) return true;
-          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
-          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
-          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
-        }
-        if (filterId.includes('-intermediate') && moduleLevel === 'intermediate') {
-          const category = filterId.split('-')[0];
-          if (category === 'sba' && courseTitle.includes('sba')) return true;
-          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
-          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
-          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
-        }
-        if (filterId.includes('-expert') && moduleLevel === 'expert') {
-          const category = filterId.split('-')[0];
-          if (category === 'sba' && courseTitle.includes('sba')) return true;
-          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
-          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
-          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
-        }
+        // Course + User level matching (Level 2)
+        if (filterId === 'sba-7a-loans-beginner' && courseTitle.includes('sba 7(a)') && moduleLevel === 'beginner') return true;
+        if (filterId === 'sba-7a-loans-intermediate' && courseTitle.includes('sba 7(a)') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'sba-7a-loans-expert' && courseTitle.includes('sba 7(a)') && moduleLevel === 'expert') return true;
         
-        // Specific module matching (third level)
-        if (filterId.includes('sba-7a') && courseTitle.includes('sba 7(a)')) return true;
-        if (filterId.includes('sba-express') && courseTitle.includes('sba express')) return true;
-        if (filterId.includes('sba-504') && courseTitle.includes('sba 504')) return true;
-        if (filterId.includes('sba-microloans') && courseTitle.includes('microloan')) return true;
-        if (filterId.includes('cre') && courseTitle.includes('commercial real estate')) return true;
-        if (filterId.includes('equipment') && courseTitle.includes('equipment financing')) return true;
-        if (filterId.includes('working-capital') && courseTitle.includes('working capital')) return true;
-        if (filterId.includes('factoring') && courseTitle.includes('factoring')) return true;
-        if (filterId.includes('mca') && courseTitle.includes('merchant cash')) return true;
-        if (filterId.includes('abl') && courseTitle.includes('asset-based')) return true;
-        if (filterId.includes('construction') && courseTitle.includes('construction')) return true;
-        if (filterId.includes('healthcare') && courseTitle.includes('healthcare')) return true;
-        if (filterId.includes('restaurant') && courseTitle.includes('restaurant')) return true;
+        if (filterId === 'sba-express-beginner' && courseTitle.includes('sba express') && moduleLevel === 'beginner') return true;
+        if (filterId === 'sba-express-intermediate' && courseTitle.includes('sba express') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'sba-express-expert' && courseTitle.includes('sba express') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'commercial-real-estate-beginner' && courseTitle.includes('commercial real estate') && moduleLevel === 'beginner') return true;
+        if (filterId === 'commercial-real-estate-intermediate' && courseTitle.includes('commercial real estate') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'commercial-real-estate-expert' && courseTitle.includes('commercial real estate') && moduleLevel === 'expert') return true;
+        
+        if (filterId === 'equipment-financing-beginner' && courseTitle.includes('equipment financing') && moduleLevel === 'beginner') return true;
+        if (filterId === 'equipment-financing-intermediate' && courseTitle.includes('equipment financing') && moduleLevel === 'intermediate') return true;
+        if (filterId === 'equipment-financing-expert' && courseTitle.includes('equipment financing') && moduleLevel === 'expert') return true;
+        
+        // Individual module matching (Level 3)
+        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'beginner') return true;
+        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'intermediate') return true;
+        if (filterId.includes('module-') && courseTitle.includes('sba 7(a)') && moduleLevel === 'expert') return true;
+        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'beginner') return true;
+        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'intermediate') return true;
+        if (filterId.includes('module-') && courseTitle.includes('sba express') && moduleLevel === 'expert') return true;
+        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'beginner') return true;
+        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'intermediate') return true;
+        if (filterId.includes('module-') && courseTitle.includes('commercial real estate') && moduleLevel === 'expert') return true;
+        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'beginner') return true;
+        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'intermediate') return true;
+        if (filterId.includes('module-') && courseTitle.includes('equipment financing') && moduleLevel === 'expert') return true;
         
         return false;
       });
