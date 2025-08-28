@@ -195,7 +195,7 @@ const FilterContent = ({
   }, [selectedCategories, searchTerm, onFilterChange]);
 
   const navigateToCategory = (category: CategoryLevel) => {
-    if (category.subcategories) {
+    if (category.subcategories && category.subcategories.length > 0) {
       setCurrentLevel(category.subcategories);
       setNavigationPath([...navigationPath, { id: category.id, name: category.name }]);
     } else {
