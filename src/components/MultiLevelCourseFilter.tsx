@@ -286,35 +286,23 @@ const FilterContent = ({
         />
       </div>
 
-      {/* Navigation Breadcrumb */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            <Layers className="h-4 w-4 inline mr-1" />
-            {getCategoryBreadcrumb()}
+      {/* Simple Navigation */}
+      {navigationPath.length > 0 && (
+        <div className="flex items-center justify-between pb-4 border-b">
+          <div className="text-sm font-medium">
+            {navigationPath[navigationPath.length - 1]?.name}
           </div>
-          {navigationPath.length > 0 && (
-            <div className="flex gap-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={navigateToRoot}
-                className="h-8 px-2"
-              >
-                <Home className="h-3 w-3" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={navigateBack}
-                className="h-8 px-2"
-              >
-                <ArrowLeft className="h-3 w-3" />
-              </Button>
-            </div>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={navigateBack}
+            className="h-8 px-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
         </div>
-      </div>
+      )}
 
       {/* Categories */}
       <div className="space-y-2">
