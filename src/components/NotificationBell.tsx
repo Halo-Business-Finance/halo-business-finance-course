@@ -143,65 +143,81 @@ export const NotificationBell = () => {
     setIsOpen(false);
   };
 
-  // Real-time subscription for new notifications
+  // Real-time subscription for new notifications with error handling
   useEffect(() => {
     if (!user) return;
 
-    const channel = supabase
-      .channel('notifications-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`
-        },
-        (payload) => {
-          console.log('New notification received:', payload);
-          const newNotification = payload.new as Notification;
-          
-          // Add to notifications list
-          setNotifications(prev => [newNotification, ...prev.slice(0, 19)]);
-          setUnreadCount(prev => prev + 1);
-          
-          // Show toast for important notifications
-          if (newNotification.type === 'error' || newNotification.data?.priority === 'high') {
-            toast({
-              title: newNotification.title,
-              description: newNotification.message,
-              variant: newNotification.type === 'error' ? 'destructive' : 'default',
-            });
+    let channel: any = null;
+    
+    try {
+      channel = supabase
+        .channel('notifications-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            console.log('New notification received:', payload);
+            const newNotification = payload.new as Notification;
+            
+            // Add to notifications list
+            setNotifications(prev => [newNotification, ...prev.slice(0, 19)]);
+            setUnreadCount(prev => prev + 1);
+            
+            // Show toast for important notifications
+            if (newNotification.type === 'error' || newNotification.data?.priority === 'high') {
+              toast({
+                title: newNotification.title,
+                description: newNotification.message,
+                variant: newNotification.type === 'error' ? 'destructive' : 'default',
+              });
+            }
           }
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`
-        },
-        (payload) => {
-          const updatedNotification = payload.new as Notification;
-          setNotifications(prev =>
-            prev.map(n => n.id === updatedNotification.id ? updatedNotification : n)
-          );
-        }
-      )
-      .subscribe((status) => {
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            const updatedNotification = payload.new as Notification;
+            setNotifications(prev =>
+              prev.map(n => n.id === updatedNotification.id ? updatedNotification : n)
+            );
+          }
+        );
+
+      // Subscribe with error handling
+      channel.subscribe((status: string) => {
         console.log('Notifications channel subscription status:', status);
-        if (status === 'CLOSED') {
+        if (status === 'SUBSCRIBED') {
+          console.log('Successfully subscribed to notifications channel');
+        } else if (status === 'CLOSED') {
           console.warn('Notifications channel subscription closed - continuing without realtime updates');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.warn('Notifications channel error - continuing without realtime updates');
         }
       });
 
+    } catch (error) {
+      console.warn('Failed to set up notifications realtime subscription:', error);
+      // Continue without realtime updates - not critical functionality
+    }
+
     return () => {
-      try {
-        supabase.removeChannel(channel);
-      } catch (error) {
-        console.warn('Error cleaning up notifications channel:', error);
+      if (channel) {
+        try {
+          supabase.removeChannel(channel);
+        } catch (error) {
+          console.warn('Error cleaning up notifications channel:', error);
+        }
       }
     };
   }, [user]);
