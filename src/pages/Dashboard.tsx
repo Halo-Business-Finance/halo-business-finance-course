@@ -57,12 +57,15 @@ const Dashboard = () => {
   const [selectedCourse, setSelectedCourse] = useState("all");
   const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
+  const [moduleProgress, setModuleProgress] = useState<Record<string, {completed: boolean, current: boolean}>>({});
   const [loading, setLoading] = useState(false);
   const [useMultiLevelFilter, setUseMultiLevelFilter] = useState(true);
   const [multiLevelFilters, setMultiLevelFilters] = useState<string[]>([]);
   const [multiLevelSearch, setMultiLevelSearch] = useState("");
   const [currentFilterLevel, setCurrentFilterLevel] = useState(0);
   const [filterNavigationPath, setFilterNavigationPath] = useState<any[]>([]);
+  const [selectedCourseProgram, setSelectedCourseProgram] = useState<string | null>(null);
+  const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -83,22 +86,160 @@ const Dashboard = () => {
   const fetchUserProgress = async () => {
     try {
       const { data, error } = await supabase
-        .from("user_progress")
+        .from("course_progress")
         .select("*")
         .eq("user_id", user.id);
 
       if (error) throw error;
       
       const progressMap = {};
+      const moduleProgressMap = {};
+      
       data?.forEach(progress => {
         progressMap[progress.module_id] = progress;
+        moduleProgressMap[progress.module_id] = {
+          completed: progress.progress_percentage === 100,
+          current: progress.progress_percentage > 0 && progress.progress_percentage < 100
+        };
       });
+      
       setUserProgress(progressMap);
+      setModuleProgress(moduleProgressMap);
     } catch (error) {
       console.error("Error fetching progress:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Function to handle course program selection
+  const handleStartCourse = (courseName: string) => {
+    setSelectedCourseProgram(courseName);
+    setCurrentFilterLevel(1);
+    const courseModules = flattenedModules.filter(m => 
+      m.course_title.toLowerCase().includes(courseName.toLowerCase())
+    );
+    setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+  };
+
+  // Function to handle skill level selection and proceed to modules
+  const handleProceedToModules = (level: string) => {
+    const selectedCourse = filterNavigationPath[0];
+    const courseSkillId = `${selectedCourse.id}-${level}`;
+    setSelectedSkillLevelForCourse(level);
+    setMultiLevelFilters([courseSkillId]);
+    setCurrentFilterLevel(2);
+    const levelModules = flattenedModules.filter(m => 
+      m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
+      m.skill_level === level
+    );
+    setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+  };
+
+  // Function to determine if a module is unlocked
+  const isModuleUnlocked = (moduleIndex: number, modules: any[]) => {
+    if (moduleIndex === 0) return true; // First module is always unlocked
+    
+    const previousModule = modules[moduleIndex - 1];
+    return moduleProgress[previousModule.id]?.completed || false;
+  };
+
+  // Function to start a course module
+  const handleStartCourseModule = async (moduleId: string) => {
+    try {
+      // Update progress in database
+      const { error } = await supabase
+        .from("course_progress")
+        .upsert({
+          user_id: user.id,
+          module_id: moduleId,
+          progress_percentage: 10, // Mark as started
+          course_id: 'halo-launch-pad-learn'
+        });
+
+      if (error) throw error;
+
+      // Update local state
+      setModuleProgress(prev => ({
+        ...prev,
+        [moduleId]: { completed: false, current: true }
+      }));
+
+      toast({
+        title: "Module Started",
+        description: "You've started this learning module!",
+      });
+
+      // Navigate to module details
+      handleModuleStart(moduleId);
+    } catch (error) {
+      console.error("Error starting module:", error);
+      toast({
+        title: "Error",
+        description: "Failed to start module. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Function to complete a module and unlock the next one
+  const handleCompleteModule = async (moduleId: string, moduleIndex: number, totalModules: number) => {
+    try {
+      // Update progress in database
+      const { error } = await supabase
+        .from("course_progress")
+        .upsert({
+          user_id: user.id,
+          module_id: moduleId,
+          progress_percentage: 100,
+          completed_at: new Date().toISOString(),
+          course_id: 'halo-launch-pad-learn'
+        });
+
+      if (error) throw error;
+
+      // Update local state
+      setModuleProgress(prev => ({
+        ...prev,
+        [moduleId]: { completed: true, current: false }
+      }));
+
+      toast({
+        title: "Module Completed!",
+        description: "Congratulations! You've completed this module.",
+      });
+
+      // Check if this was the last module
+      if (moduleIndex === totalModules - 1) {
+        // Course completed - show options
+        toast({
+          title: "Course Completed!",
+          description: "You've finished this course! Choose your next step.",
+        });
+      } else {
+        // Show option to continue to next module
+        toast({
+          title: "Ready for Next Module",
+          description: "The next module has been unlocked!",
+        });
+      }
+    } catch (error) {
+      console.error("Error completing module:", error);
+      toast({
+        title: "Error",
+        description: "Failed to complete module. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Function to return to dashboard
+  const handleReturnToDashboard = () => {
+    setCurrentFilterLevel(0);
+    setFilterNavigationPath([]);
+    setMultiLevelFilters([]);
+    setSelectedCourseProgram(null);
+    setSelectedSkillLevelForCourse(null);
   };
 
   const filteredModules = flattenedModules.filter(module => {
@@ -366,12 +507,7 @@ const Dashboard = () => {
                           return (
                             <Card 
                               key={courseName} 
-                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer"
-                              onClick={() => {
-                                // Navigate to level 1 for this course
-                                setCurrentFilterLevel(1);
-                                setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
-                              }}
+                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
                             >
                               <div className="relative overflow-hidden rounded-t-lg">
                                 <img 
@@ -403,6 +539,15 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               </CardHeader>
+                              <CardContent className="pt-0">
+                                <Button 
+                                  onClick={() => handleStartCourse(courseName)}
+                                  className="w-full"
+                                  variant="default"
+                                >
+                                  Start Course
+                                </Button>
+                              </CardContent>
                             </Card>
                           );
                         })}
@@ -421,14 +566,7 @@ const Dashboard = () => {
                         return (
                           <Card 
                             key={level} 
-                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 cursor-pointer"
-                            onClick={() => {
-                              // Navigate to level 2 and filter by this specific course + skill level
-                              const courseSkillId = `${selectedCourse.id}-${level}`;
-                              setMultiLevelFilters([courseSkillId]);
-                              setCurrentFilterLevel(2);
-                              setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
-                            }}
+                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
                           >
                             <div className="relative overflow-hidden rounded-t-lg">
                               <img 
@@ -466,6 +604,15 @@ const Dashboard = () => {
                                 </div>
                               </div>
                             </CardHeader>
+                            <CardContent className="pt-0">
+                              <Button 
+                                onClick={() => handleProceedToModules(level)}
+                                className="w-full"
+                                variant="default"
+                              >
+                                Proceed to Modules
+                              </Button>
+                            </CardContent>
                           </Card>
                         );
                       })}
@@ -474,57 +621,154 @@ const Dashboard = () => {
 
                   {/* Level 2: Individual Module Cards */}
                   {currentFilterLevel === 2 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-                      {filteredModules.map((module, index) => (
-                        <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                          <div className="relative overflow-hidden rounded-t-lg">
-                            <img 
-                              src={getCourseImage(index)} 
-                              alt={module.title}
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute top-4 left-4">
-                              <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                              </Badge>
-                            </div>
-                          </div>
-                          <CardHeader className="pb-2">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                <CardDescription className="line-clamp-2 mt-1">
-                                  {module.description}
-                                </CardDescription>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                              <div className="flex items-center gap-1">
-                                <Clock className="h-4 w-4" />
-                                <span>{module.duration}</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <BookOpen className="h-4 w-4" />
-                                <span>{module.lessons} lessons</span>
-                              </div>
-                            </div>
-                          </CardHeader>
-                          <CardContent className="pt-0">
-                            <div className="space-y-2">
-                              <div className="text-sm text-muted-foreground">
-                                Course: {module.course_title}
-                              </div>
-                              <Button 
-                                onClick={() => handleModuleStart(module.id)} 
-                                className="w-full"
-                                variant={module.status === "completed" ? "secondary" : "default"}
+                    <div className="space-y-4">
+                      {/* Navigation breadcrumb */}
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={handleReturnToDashboard}
+                        >
+                          Dashboard
+                        </Button>
+                        <span>/</span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => setCurrentFilterLevel(1)}
+                        >
+                          {filterNavigationPath[0]?.name}
+                        </Button>
+                        <span>/</span>
+                        <span>{filterNavigationPath[1]?.name}</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                        {filteredModules.map((module, index) => {
+                            const isUnlocked = isModuleUnlocked(index, filteredModules);
+                            const isCompleted = moduleProgress[module.id]?.completed || false;
+                            const isCurrent = moduleProgress[module.id]?.current || false;
+                            
+                            return (
+                              <Card 
+                                key={module.id} 
+                                className={`group transition-all duration-300 border-2 ${
+                                  isUnlocked 
+                                    ? 'hover:shadow-lg hover:border-primary/20' 
+                                    : 'opacity-50 cursor-not-allowed border-muted'
+                                } ${isCompleted ? 'border-green-200 bg-green-50/20' : ''}`}
                               >
-                                {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                                <div className="relative overflow-hidden rounded-t-lg">
+                                  <img 
+                                    src={getCourseImage(index)} 
+                                    alt={module.title}
+                                    className={`w-full h-48 object-cover ${
+                                      isUnlocked ? 'group-hover:scale-105' : 'grayscale'
+                                    } transition-transform duration-300`}
+                                  />
+                                  <div className="absolute top-4 left-4 flex gap-2">
+                                    <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
+                                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                                    </Badge>
+                                    {isCompleted && (
+                                      <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+                                        Completed
+                                      </Badge>
+                                    )}
+                                    {isCurrent && (
+                                      <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">
+                                        In Progress
+                                      </Badge>
+                                    )}
+                                    {!isUnlocked && (
+                                      <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300">
+                                        Locked
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1 text-xs font-medium">
+                                    {index + 1} of {filteredModules.length}
+                                  </div>
+                                </div>
+                                <CardHeader className="pb-2">
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
+                                      <CardDescription className="line-clamp-2 mt-1">
+                                        {module.description}
+                                      </CardDescription>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                    <div className="flex items-center gap-1">
+                                      <Clock className="h-4 w-4" />
+                                      <span>{module.duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <BookOpen className="h-4 w-4" />
+                                      <span>{module.lessons} lessons</span>
+                                    </div>
+                                  </div>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                  <div className="space-y-2">
+                                    <div className="text-sm text-muted-foreground">
+                                      Course: {module.course_title}
+                                    </div>
+                                    {!isUnlocked ? (
+                                      <Button 
+                                        className="w-full"
+                                        variant="outline"
+                                        disabled
+                                      >
+                                        🔒 Complete Previous Module
+                                      </Button>
+                                    ) : isCompleted ? (
+                                      <div className="space-y-2">
+                                        <Button 
+                                          onClick={() => handleModuleStart(module.id)}
+                                          className="w-full"
+                                          variant="secondary"
+                                        >
+                                          ✅ Review Module
+                                        </Button>
+                                        {index === filteredModules.length - 1 ? (
+                                          <Button 
+                                            onClick={handleReturnToDashboard}
+                                            className="w-full"
+                                            variant="outline"
+                                          >
+                                            🎉 Return to Dashboard
+                                          </Button>
+                                        ) : (
+                                          <div className="text-xs text-center text-muted-foreground">
+                                            Next module unlocked!
+                                          </div>
+                                        )}
+                                      </div>
+                                    ) : isCurrent ? (
+                                      <Button 
+                                        onClick={() => handleModuleStart(module.id)}
+                                        className="w-full"
+                                        variant="default"
+                                      >
+                                        🔄 Continue Module
+                                      </Button>
+                                    ) : (
+                                      <Button 
+                                        onClick={() => handleStartCourseModule(module.id)}
+                                        className="w-full"
+                                        variant="default"
+                                      >
+                                        🚀 Start Course Module
+                                      </Button>
+                                    )}
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            );
+                          })}
+                      </div>
                     </div>
                   )}
 
