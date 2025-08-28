@@ -55,8 +55,13 @@ export const MobileNav = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-72 sm:w-80">
               <SheetHeader>
-                <SheetTitle className="text-left font-playfair text-lg text-halo-navy">
-                  Navigation
+                <SheetTitle className="text-left">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-sm">FP</span>
+                    </div>
+                    <span className="text-xl font-bold text-gray-900">FinPilot</span>
+                  </div>
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 space-y-2">
