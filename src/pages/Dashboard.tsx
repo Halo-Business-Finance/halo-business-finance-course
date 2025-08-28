@@ -100,49 +100,64 @@ const Dashboard = () => {
   };
 
   const filteredModules = flattenedModules.filter(module => {
-    if (useMultiLevelFilter) {
-      // Multi-level filter logic
-      const matchesMultiLevelSearch = multiLevelSearch === "" || 
-        module.title.toLowerCase().includes(multiLevelSearch.toLowerCase()) ||
-        module.course_title.toLowerCase().includes(multiLevelSearch.toLowerCase());
-      
-      const matchesMultiLevelCategories = multiLevelFilters.length === 0 || 
-        multiLevelFilters.some(filterId => {
-          // Map filter IDs to course patterns
-          const courseTitle = module.course_title.toLowerCase();
-          
-          // SBA category mappings
-          if (filterId.includes('sba-7a') && courseTitle.includes('sba 7(a)')) return true;
-          if (filterId.includes('sba-express') && courseTitle.includes('sba express')) return true;
-          if (filterId.includes('cre') && courseTitle.includes('commercial real estate')) return true;
-          if (filterId.includes('equipment') && courseTitle.includes('equipment financing')) return true;
-          if (filterId.includes('working-capital') && courseTitle.includes('working capital')) return true;
-          if (filterId.includes('factoring') && courseTitle.includes('invoice factoring')) return true;
-          if (filterId.includes('mca') && courseTitle.includes('merchant cash')) return true;
-          if (filterId.includes('abl') && courseTitle.includes('asset-based')) return true;
-          if (filterId.includes('construction') && courseTitle.includes('construction')) return true;
-          if (filterId.includes('healthcare') && courseTitle.includes('healthcare')) return true;
-          if (filterId.includes('restaurant') && courseTitle.includes('restaurant')) return true;
-          
-          // Level-specific matching
-          if (filterId.includes('beginner') && module.skill_level === 'beginner') return true;
-          if (filterId.includes('intermediate') && module.skill_level === 'intermediate') return true;
-          if (filterId.includes('expert') && module.skill_level === 'expert') return true;
-          
-          return false;
-        });
-      
-      return matchesMultiLevelSearch && matchesMultiLevelCategories;
-    } else {
-      // Original filter logic
-      const matchesLevel = selectedSkillLevel === "all" || module.skill_level === selectedSkillLevel;
-      const matchesTitle = titleFilter === "" || module.title.toLowerCase().includes(titleFilter.toLowerCase());
-      const matchesStatus = selectedStatus === "all" || module.status === selectedStatus;
-      const matchesCourse = selectedCourse === "all" || 
-        module.course_title.toLowerCase().replace(/\s+/g, '-').includes(selectedCourse.replace('-', ' '));
-      
-      return matchesLevel && matchesTitle && matchesStatus && matchesCourse;
-    }
+    // Multi-level filter logic
+    const matchesMultiLevelSearch = multiLevelSearch === "" || 
+      module.title.toLowerCase().includes(multiLevelSearch.toLowerCase()) ||
+      module.course_title.toLowerCase().includes(multiLevelSearch.toLowerCase());
+    
+    const matchesMultiLevelCategories = multiLevelFilters.length === 0 || 
+      multiLevelFilters.some(filterId => {
+        const courseTitle = module.course_title.toLowerCase();
+        const moduleLevel = module.skill_level;
+        
+        // Main category matching
+        if (filterId === 'sba' && courseTitle.includes('sba')) return true;
+        if (filterId === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
+        if (filterId === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
+        if (filterId === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
+        
+        // User level matching (second level)
+        if (filterId.includes('-beginner') && moduleLevel === 'beginner') {
+          const category = filterId.split('-')[0];
+          if (category === 'sba' && courseTitle.includes('sba')) return true;
+          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
+          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
+          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
+        }
+        if (filterId.includes('-intermediate') && moduleLevel === 'intermediate') {
+          const category = filterId.split('-')[0];
+          if (category === 'sba' && courseTitle.includes('sba')) return true;
+          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
+          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
+          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
+        }
+        if (filterId.includes('-expert') && moduleLevel === 'expert') {
+          const category = filterId.split('-')[0];
+          if (category === 'sba' && courseTitle.includes('sba')) return true;
+          if (category === 'commercial' && (courseTitle.includes('commercial') || courseTitle.includes('equipment') || courseTitle.includes('working capital'))) return true;
+          if (category === 'specialty' && (courseTitle.includes('factoring') || courseTitle.includes('merchant') || courseTitle.includes('asset') || courseTitle.includes('construction'))) return true;
+          if (category === 'industry' && (courseTitle.includes('healthcare') || courseTitle.includes('restaurant'))) return true;
+        }
+        
+        // Specific module matching (third level)
+        if (filterId.includes('sba-7a') && courseTitle.includes('sba 7(a)')) return true;
+        if (filterId.includes('sba-express') && courseTitle.includes('sba express')) return true;
+        if (filterId.includes('sba-504') && courseTitle.includes('sba 504')) return true;
+        if (filterId.includes('sba-microloans') && courseTitle.includes('microloan')) return true;
+        if (filterId.includes('cre') && courseTitle.includes('commercial real estate')) return true;
+        if (filterId.includes('equipment') && courseTitle.includes('equipment financing')) return true;
+        if (filterId.includes('working-capital') && courseTitle.includes('working capital')) return true;
+        if (filterId.includes('factoring') && courseTitle.includes('factoring')) return true;
+        if (filterId.includes('mca') && courseTitle.includes('merchant cash')) return true;
+        if (filterId.includes('abl') && courseTitle.includes('asset-based')) return true;
+        if (filterId.includes('construction') && courseTitle.includes('construction')) return true;
+        if (filterId.includes('healthcare') && courseTitle.includes('healthcare')) return true;
+        if (filterId.includes('restaurant') && courseTitle.includes('restaurant')) return true;
+        
+        return false;
+      });
+    
+    return matchesMultiLevelSearch && matchesMultiLevelCategories;
   });
 
   const skillLevelCounts = {
