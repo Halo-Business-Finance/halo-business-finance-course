@@ -16,7 +16,7 @@ interface CategoryLevel {
 }
 
 interface MultiLevelCourseFilterProps {
-  onFilterChange: (selectedCategories: string[], searchTerm: string) => void;
+  onFilterChange: (selectedCategories: string[], searchTerm: string, currentLevel: number, navigationPath: CategoryLevel[]) => void;
   totalCount: number;
 }
 
@@ -165,8 +165,8 @@ const FilterContent = ({
   const [navigationPath, setNavigationPath] = useState<CategoryLevel[]>([]);
 
   useEffect(() => {
-    onFilterChange(selectedCategories, searchTerm);
-  }, [selectedCategories, searchTerm, onFilterChange]);
+    onFilterChange(selectedCategories, searchTerm, currentLevel, navigationPath);
+  }, [selectedCategories, searchTerm, currentLevel, navigationPath, onFilterChange]);
 
   const toggleCategorySelection = (categoryId: string) => {
     setSelectedCategories(prev => 
