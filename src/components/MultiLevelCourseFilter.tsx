@@ -20,164 +20,27 @@ interface MultiLevelCourseFilterProps {
   totalCount: number;
 }
 
+// Only first level categories - no subcategories
 const categoryHierarchy: CategoryLevel[] = [
   {
     id: "sba",
     name: "SBA Financing",
-    count: 84,
-    subcategories: [
-      {
-        id: "sba-7a",
-        name: "SBA 7(a) Loan Fundamentals",
-        count: 21,
-        subcategories: [
-          { id: "sba-7a-beginner", name: "Beginner Level", count: 7 },
-          { id: "sba-7a-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "sba-7a-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "sba-express",
-        name: "SBA Express Processing",
-        count: 21,
-        subcategories: [
-          { id: "sba-express-beginner", name: "Beginner Level", count: 7 },
-          { id: "sba-express-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "sba-express-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "sba-504",
-        name: "SBA 504 Real Estate",
-        count: 21,
-        subcategories: [
-          { id: "sba-504-beginner", name: "Beginner Level", count: 7 },
-          { id: "sba-504-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "sba-504-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "sba-microloans",
-        name: "SBA Microloan Strategy",
-        count: 21,
-        subcategories: [
-          { id: "sba-microloans-beginner", name: "Beginner Level", count: 7 },
-          { id: "sba-microloans-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "sba-microloans-expert", name: "Expert Level", count: 7 }
-        ]
-      }
-    ]
+    count: 84
   },
   {
     id: "commercial",
     name: "Commercial Lending",
-    count: 63,
-    subcategories: [
-      {
-        id: "commercial-real-estate",
-        name: "Commercial Real Estate Analysis",
-        count: 21,
-        subcategories: [
-          { id: "cre-beginner", name: "Beginner Level", count: 7 },
-          { id: "cre-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "cre-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "equipment-financing",
-        name: "Equipment Financing Strategies",
-        count: 21,
-        subcategories: [
-          { id: "equipment-beginner", name: "Beginner Level", count: 7 },
-          { id: "equipment-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "equipment-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "working-capital",
-        name: "Working Capital Solutions",
-        count: 21,
-        subcategories: [
-          { id: "working-capital-beginner", name: "Beginner Level", count: 7 },
-          { id: "working-capital-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "working-capital-expert", name: "Expert Level", count: 7 }
-        ]
-      }
-    ]
+    count: 63
   },
   {
     id: "specialty",
     name: "Specialty Financing",
-    count: 84,
-    subcategories: [
-      {
-        id: "invoice-factoring",
-        name: "Invoice Factoring Mastery",
-        count: 21,
-        subcategories: [
-          { id: "factoring-beginner", name: "Beginner Level", count: 7 },
-          { id: "factoring-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "factoring-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "merchant-cash",
-        name: "Merchant Cash Advance Training",
-        count: 21,
-        subcategories: [
-          { id: "mca-beginner", name: "Beginner Level", count: 7 },
-          { id: "mca-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "mca-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "asset-based",
-        name: "Asset-Based Lending Essentials",
-        count: 21,
-        subcategories: [
-          { id: "abl-beginner", name: "Beginner Level", count: 7 },
-          { id: "abl-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "abl-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "construction",
-        name: "Construction Loan Expertise",
-        count: 21,
-        subcategories: [
-          { id: "construction-beginner", name: "Beginner Level", count: 7 },
-          { id: "construction-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "construction-expert", name: "Expert Level", count: 7 }
-        ]
-      }
-    ]
+    count: 84
   },
   {
     id: "industry",
     name: "Industry-Specific Programs",
-    count: 42,
-    subcategories: [
-      {
-        id: "healthcare",
-        name: "Healthcare Financing Certification",
-        count: 21,
-        subcategories: [
-          { id: "healthcare-beginner", name: "Beginner Level", count: 7 },
-          { id: "healthcare-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "healthcare-expert", name: "Expert Level", count: 7 }
-        ]
-      },
-      {
-        id: "restaurant",
-        name: "Restaurant Financing Specialist",
-        count: 21,
-        subcategories: [
-          { id: "restaurant-beginner", name: "Beginner Level", count: 7 },
-          { id: "restaurant-intermediate", name: "Intermediate Level", count: 7 },
-          { id: "restaurant-expert", name: "Expert Level", count: 7 }
-        ]
-      }
-    ]
+    count: 42
   }
 ];
 
