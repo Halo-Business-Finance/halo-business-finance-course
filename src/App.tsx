@@ -195,13 +195,14 @@ const AppContent = () => {
                 <Dashboard />
               </ProtectedRoute>
             } />
-            <Route path="/progress" element={
+            <Route path="/my-course" element={
               <ProtectedRoute>
                 <Progress />
               </ProtectedRoute>
             } />
-            {/* Redirect old certificates route to progress page */}
-            <Route path="/certificates" element={<Navigate to="/progress" replace />} />
+            {/* Redirect old progress and certificates routes to my-course page */}
+            <Route path="/progress" element={<Navigate to="/my-course" replace />} />
+            <Route path="/certificates" element={<Navigate to="/my-course" replace />} />
             <Route path="/videos" element={<VideoLibrary />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/my-account" element={
