@@ -114,26 +114,41 @@ const Dashboard = () => {
 
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
-    setSelectedCourseProgram(courseName);
-    setCurrentFilterLevel(1);
-    const courseModules = flattenedModules.filter(m => 
-      m.course_title.toLowerCase().includes(courseName.toLowerCase())
-    );
-    setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+    console.log('handleStartCourse called with:', courseName);
+    try {
+      setSelectedCourseProgram(courseName);
+      setCurrentFilterLevel(1);
+      const courseModules = flattenedModules.filter(m => 
+        m.course_title.toLowerCase().includes(courseName.toLowerCase())
+      );
+      console.log('Course modules found:', courseModules.length);
+      setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+      console.log('Navigation updated successfully');
+    } catch (error) {
+      console.error('Error in handleStartCourse:', error);
+    }
   };
 
   // Function to handle skill level selection and proceed to modules
   const handleProceedToModules = (level: string) => {
-    const selectedCourse = filterNavigationPath[0];
-    const courseSkillId = `${selectedCourse.id}-${level}`;
-    setSelectedSkillLevelForCourse(level);
-    setMultiLevelFilters([courseSkillId]);
-    setCurrentFilterLevel(2);
-    const levelModules = flattenedModules.filter(m => 
-      m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
-      m.skill_level === level
-    );
-    setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+    console.log('handleProceedToModules called with level:', level);
+    try {
+      const selectedCourse = filterNavigationPath[0];
+      console.log('Selected course:', selectedCourse);
+      const courseSkillId = `${selectedCourse.id}-${level}`;
+      setSelectedSkillLevelForCourse(level);
+      setMultiLevelFilters([courseSkillId]);
+      setCurrentFilterLevel(2);
+      const levelModules = flattenedModules.filter(m => 
+        m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
+        m.skill_level === level
+      );
+      console.log('Level modules found:', levelModules.length);
+      setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+      console.log('Proceed to modules completed successfully');
+    } catch (error) {
+      console.error('Error in handleProceedToModules:', error);
+    }
   };
 
   // Function to determine if a module is unlocked
@@ -146,7 +161,21 @@ const Dashboard = () => {
 
   // Function to start a course module
   const handleStartCourseModule = async (moduleId: string) => {
+    console.log('handleStartCourseModule called with:', moduleId);
+    
+    if (!user?.id) {
+      console.error('User not authenticated or user.id missing');
+      toast({
+        title: "Authentication Error",
+        description: "Please refresh the page and try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
+      console.log('Updating database for user:', user.id, 'module:', moduleId);
+      
       // Update progress in database
       const { error } = await supabase
         .from("course_progress")
@@ -157,13 +186,20 @@ const Dashboard = () => {
           course_id: 'halo-launch-pad-learn'
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+
+      console.log('Database updated successfully');
 
       // Update local state
       setModuleProgress(prev => ({
         ...prev,
         [moduleId]: { completed: false, current: true }
       }));
+
+      console.log('Local state updated');
 
       toast({
         title: "Module Started",
@@ -541,7 +577,12 @@ const Dashboard = () => {
                               </CardHeader>
                               <CardContent className="pt-0">
                                 <Button 
-                                  onClick={() => handleStartCourse(courseName)}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Start Course button clicked for:', courseName);
+                                    handleStartCourse(courseName);
+                                  }}
                                   className="w-full"
                                   variant="default"
                                 >
@@ -606,7 +647,12 @@ const Dashboard = () => {
                             </CardHeader>
                             <CardContent className="pt-0">
                               <Button 
-                                onClick={() => handleProceedToModules(level)}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  console.log('Proceed to Modules button clicked for level:', level);
+                                  handleProceedToModules(level);
+                                }}
                                 className="w-full"
                                 variant="default"
                               >
@@ -726,7 +772,12 @@ const Dashboard = () => {
                                     ) : isCompleted ? (
                                       <div className="space-y-2">
                                         <Button 
-                                          onClick={() => handleModuleStart(module.id)}
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            console.log('Review Module button clicked for:', module.id);
+                                            handleModuleStart(module.id);
+                                          }}
                                           className="w-full"
                                           variant="secondary"
                                         >
@@ -734,7 +785,12 @@ const Dashboard = () => {
                                         </Button>
                                         {index === filteredModules.length - 1 ? (
                                           <Button 
-                                            onClick={handleReturnToDashboard}
+                                            onClick={(e) => {
+                                              e.preventDefault();
+                                              e.stopPropagation();
+                                              console.log('Return to Dashboard button clicked');
+                                              handleReturnToDashboard();
+                                            }}
                                             className="w-full"
                                             variant="outline"
                                           >
@@ -748,7 +804,12 @@ const Dashboard = () => {
                                       </div>
                                     ) : isCurrent ? (
                                       <Button 
-                                        onClick={() => handleModuleStart(module.id)}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          console.log('Continue Module button clicked for:', module.id);
+                                          handleModuleStart(module.id);
+                                        }}
                                         className="w-full"
                                         variant="default"
                                       >
@@ -756,7 +817,12 @@ const Dashboard = () => {
                                       </Button>
                                     ) : (
                                       <Button 
-                                        onClick={() => handleStartCourseModule(module.id)}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          console.log('Start Course Module button clicked for:', module.id);
+                                          handleStartCourseModule(module.id);
+                                        }}
                                         className="w-full"
                                         variant="default"
                                       >
