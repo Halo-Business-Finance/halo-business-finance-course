@@ -64,7 +64,7 @@ export const MobileNav = () => {
                   </div>
                 </SheetTitle>
               </SheetHeader>
-              <div className="mt-6 space-y-2">
+              <div className="mt-6 space-y-2 animate-fade-in">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   return (
