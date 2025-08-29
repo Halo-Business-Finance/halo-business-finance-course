@@ -4,9 +4,6 @@ import { useSecureAuth } from '@/hooks/useSecureAuth';
 import ModuleCard from "@/components/ModuleCard"; // Default export
 import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
-import { SkillLevelFilter } from "@/components/SkillLevelFilter";
-import { DashboardFilterSidebar } from "@/components/DashboardFilterSidebar";
-import { MultiLevelCourseFilter } from "@/components/MultiLevelCourseFilter";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,7 +29,7 @@ import { CourseSelector } from "@/components/CourseSelector";
 import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, Clock, Target, Trophy, Brain, Zap } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
 
 // Import course images to match the Courses page
 import financeExpert1 from "@/assets/finance-expert-1.jpg";
@@ -51,30 +48,15 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [modules, setModules] = useState(courseData.allCourses.flatMap(course => course.modules));
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
-  const [selectedSkillLevel, setSelectedSkillLevel] = useState("all");
-  const [titleFilter, setTitleFilter] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [selectedCourse, setSelectedCourse] = useState("all");
   const [allCourses, setAllCourses] = useState(courseData.allCourses);
   const [userProgress, setUserProgress] = useState({});
   const [moduleProgress, setModuleProgress] = useState<Record<string, {completed: boolean, current: boolean}>>({});
   const [loading, setLoading] = useState(false);
-  const [useMultiLevelFilter, setUseMultiLevelFilter] = useState(true);
-  const [multiLevelFilters, setMultiLevelFilters] = useState<string[]>([]);
-  const [multiLevelSearch, setMultiLevelSearch] = useState("");
   const [currentFilterLevel, setCurrentFilterLevel] = useState(0);
   const [filterNavigationPath, setFilterNavigationPath] = useState<any[]>([]);
   const [selectedCourseProgram, setSelectedCourseProgram] = useState<string | null>(null);
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
-  // Add a key to force re-renders on mobile/tablet devices
   const [renderKey, setRenderKey] = useState(0);
-
-  // Debug state changes
-  useEffect(() => {
-    console.log('=== STATE CHANGE ===');
-    console.log('currentFilterLevel changed to:', currentFilterLevel);
-    console.log('filterNavigationPath changed to:', filterNavigationPath);
-  }, [currentFilterLevel, filterNavigationPath]);
 
   useEffect(() => {
     if (user) {
@@ -105,7 +87,7 @@ const Dashboard = () => {
       const moduleProgressMap = {};
       
       data?.forEach(progress => {
-        progressMap[progress.module_id] = progress;
+        progressMap[progress.module_id] = progress.progress_percentage;
         moduleProgressMap[progress.module_id] = {
           completed: progress.progress_percentage === 100,
           current: progress.progress_percentage > 0 && progress.progress_percentage < 100
@@ -136,8 +118,6 @@ const Dashboard = () => {
       console.log('Sample module course_title:', courseModules[0]?.course_title);
       
       // Reset state for clean transition
-      setMultiLevelFilters([]);
-      setMultiLevelSearch("");
       setSelectedCourseProgram(courseName);
       
       const navigationPath = [{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }];
@@ -165,7 +145,6 @@ const Dashboard = () => {
       console.log('Selected course:', selectedCourse);
       const courseSkillId = `${selectedCourse.id}-${level}`;
       setSelectedSkillLevelForCourse(level);
-      setMultiLevelFilters([courseSkillId]);
       setCurrentFilterLevel(2);
       const levelModules = flattenedModules.filter(m => 
         m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
@@ -272,23 +251,11 @@ const Dashboard = () => {
 
       toast({
         title: "Module Completed!",
-        description: "Congratulations! You've completed this module.",
+        description: moduleIndex < totalModules - 1 
+          ? "Next module unlocked!"
+          : "Course completed! Congratulations!",
       });
 
-      // Check if this was the last module
-      if (moduleIndex === totalModules - 1) {
-        // Course completed - show options
-        toast({
-          title: "Course Completed!",
-          description: "You've finished this course! Choose your next step.",
-        });
-      } else {
-        // Show option to continue to next module
-        toast({
-          title: "Ready for Next Module",
-          description: "The next module has been unlocked!",
-        });
-      }
     } catch (error) {
       console.error("Error completing module:", error);
       toast({
@@ -303,241 +270,84 @@ const Dashboard = () => {
   const handleReturnToDashboard = () => {
     setCurrentFilterLevel(0);
     setFilterNavigationPath([]);
-    setMultiLevelFilters([]);
     setSelectedCourseProgram(null);
     setSelectedSkillLevelForCourse(null);
     setRenderKey(prev => prev + 1);
   };
 
+  // Simple filtering function for Level 2 modules
   const filteredModules = flattenedModules.filter(module => {
-    // Multi-level filter logic
-    const matchesMultiLevelSearch = multiLevelSearch === "" || 
-      module.title.toLowerCase().includes(multiLevelSearch.toLowerCase()) ||
-      module.course_title.toLowerCase().includes(multiLevelSearch.toLowerCase());
+    if (currentFilterLevel !== 2) return true;
     
-    const matchesMultiLevelCategories = multiLevelFilters.length === 0 || 
-      multiLevelFilters.some(filterId => {
-        const courseTitle = module.course_title.toLowerCase();
-        const moduleLevel = module.skill_level;
-        
-        // Course program matching (Level 1)
-        if (filterId === 'sba-7a-loans' && courseTitle.includes('sba 7(a)')) return true;
-        if (filterId === 'sba-express' && courseTitle.includes('sba express')) return true;
-        if (filterId === 'commercial-real-estate' && courseTitle.includes('commercial real estate')) return true;
-        if (filterId === 'equipment-financing' && courseTitle.includes('equipment financing')) return true;
-        if (filterId === 'business-lines-credit' && courseTitle.includes('business lines of credit')) return true;
-        if (filterId === 'invoice-factoring' && courseTitle.includes('invoice factoring')) return true;
-        if (filterId === 'merchant-cash-advances' && courseTitle.includes('merchant cash advances')) return true;
-        if (filterId === 'asset-based-lending' && courseTitle.includes('asset-based lending')) return true;
-        if (filterId === 'construction-loans' && courseTitle.includes('construction loans')) return true;
-        if (filterId === 'franchise-financing' && courseTitle.includes('franchise financing')) return true;
-        if (filterId === 'working-capital' && courseTitle.includes('working capital')) return true;
-        if (filterId === 'healthcare-financing' && courseTitle.includes('healthcare financing')) return true;
-        if (filterId === 'restaurant-financing' && courseTitle.includes('restaurant financing')) return true;
-        
-        // Course + User level matching (Level 2) - All courses
-        if (filterId === 'sba-7a-loans-beginner' && courseTitle.includes('sba 7(a)') && moduleLevel === 'beginner') return true;
-        if (filterId === 'sba-7a-loans-intermediate' && courseTitle.includes('sba 7(a)') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'sba-7a-loans-expert' && courseTitle.includes('sba 7(a)') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'sba-express-beginner' && courseTitle.includes('sba express') && moduleLevel === 'beginner') return true;
-        if (filterId === 'sba-express-intermediate' && courseTitle.includes('sba express') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'sba-express-expert' && courseTitle.includes('sba express') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'commercial-real-estate-beginner' && courseTitle.includes('commercial real estate') && moduleLevel === 'beginner') return true;
-        if (filterId === 'commercial-real-estate-intermediate' && courseTitle.includes('commercial real estate') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'commercial-real-estate-expert' && courseTitle.includes('commercial real estate') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'equipment-financing-beginner' && courseTitle.includes('equipment financing') && moduleLevel === 'beginner') return true;
-        if (filterId === 'equipment-financing-intermediate' && courseTitle.includes('equipment financing') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'equipment-financing-expert' && courseTitle.includes('equipment financing') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'business-lines-credit-beginner' && courseTitle.includes('business lines of credit') && moduleLevel === 'beginner') return true;
-        if (filterId === 'business-lines-credit-intermediate' && courseTitle.includes('business lines of credit') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'business-lines-credit-expert' && courseTitle.includes('business lines of credit') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'invoice-factoring-beginner' && courseTitle.includes('invoice factoring') && moduleLevel === 'beginner') return true;
-        if (filterId === 'invoice-factoring-intermediate' && courseTitle.includes('invoice factoring') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'invoice-factoring-expert' && courseTitle.includes('invoice factoring') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'merchant-cash-advances-beginner' && courseTitle.includes('merchant cash advances') && moduleLevel === 'beginner') return true;
-        if (filterId === 'merchant-cash-advances-intermediate' && courseTitle.includes('merchant cash advances') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'merchant-cash-advances-expert' && courseTitle.includes('merchant cash advances') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'asset-based-lending-beginner' && courseTitle.includes('asset-based lending') && moduleLevel === 'beginner') return true;
-        if (filterId === 'asset-based-lending-intermediate' && courseTitle.includes('asset-based lending') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'asset-based-lending-expert' && courseTitle.includes('asset-based lending') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'construction-loans-beginner' && courseTitle.includes('construction loans') && moduleLevel === 'beginner') return true;
-        if (filterId === 'construction-loans-intermediate' && courseTitle.includes('construction loans') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'construction-loans-expert' && courseTitle.includes('construction loans') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'franchise-financing-beginner' && courseTitle.includes('franchise financing') && moduleLevel === 'beginner') return true;
-        if (filterId === 'franchise-financing-intermediate' && courseTitle.includes('franchise financing') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'franchise-financing-expert' && courseTitle.includes('franchise financing') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'working-capital-beginner' && courseTitle.includes('working capital') && moduleLevel === 'beginner') return true;
-        if (filterId === 'working-capital-intermediate' && courseTitle.includes('working capital') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'working-capital-expert' && courseTitle.includes('working capital') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'healthcare-financing-beginner' && courseTitle.includes('healthcare financing') && moduleLevel === 'beginner') return true;
-        if (filterId === 'healthcare-financing-intermediate' && courseTitle.includes('healthcare financing') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'healthcare-financing-expert' && courseTitle.includes('healthcare financing') && moduleLevel === 'expert') return true;
-        
-        if (filterId === 'restaurant-financing-beginner' && courseTitle.includes('restaurant financing') && moduleLevel === 'beginner') return true;
-        if (filterId === 'restaurant-financing-intermediate' && courseTitle.includes('restaurant financing') && moduleLevel === 'intermediate') return true;
-        if (filterId === 'restaurant-financing-expert' && courseTitle.includes('restaurant financing') && moduleLevel === 'expert') return true;
-        
-        return false;
-      });
+    const selectedCourse = filterNavigationPath[0];
+    const selectedLevel = selectedSkillLevelForCourse;
     
-    return matchesMultiLevelSearch && matchesMultiLevelCategories;
+    return module.course_title.toLowerCase().includes(selectedCourse?.name.toLowerCase() || '') &&
+           (selectedLevel ? module.skill_level === selectedLevel : true);
   });
 
-  const skillLevelCounts = {
-    all: flattenedModules.length,
-    beginner: flattenedModules.filter(m => m.skill_level === "beginner").length,
-    intermediate: flattenedModules.filter(m => m.skill_level === "intermediate").length,
-    expert: flattenedModules.filter(m => m.skill_level === "expert").length,
+  // Function to handle module start
+  const handleModuleStart = (moduleId: string) => {
+    setSelectedModule(moduleId);
   };
 
-  const learningObjectives = [
-    "Analyze financial statements and assess business creditworthiness using industry-standard methodologies",
-    "Differentiate between various loan products including SBA 7(a), 504, conventional, and bridge financing options",
-    "Navigate capital markets and understand the role of financial intermediaries in business lending",
-    "Apply risk assessment techniques and regulatory compliance standards in commercial lending decisions",
-    "Structure financing solutions that align with client needs and risk tolerance parameters",
-    "Demonstrate proficiency in credit analysis, underwriting, and portfolio management principles"
-  ];
-
-  // Course image mapping function - matches the Courses page
+  // Course image mapping function
   const getCourseImage = (index: number) => {
     const images = [
-      financeExpert1, 
-      creditAnalyst2, 
-      commercialBanker3, 
-      riskSpecialist4, 
-      sbaSpecialist5, 
-      complianceOfficer6,
-      financialAdvisor7,
-      investmentBanker8,
-      loanOfficer9,
-      portfolioManager10
+      financeExpert1, creditAnalyst2, commercialBanker3, riskSpecialist4, 
+      sbaSpecialist5, complianceOfficer6, financialAdvisor7, investmentBanker8, 
+      loanOfficer9, portfolioManager10
     ];
     return images[index % images.length];
   };
 
-  const handleModuleStart = (moduleId: string) => {
-    const module = flattenedModules.find(m => m.id === moduleId);
-    if (!module) return;
-
-    // Show module details
-    setSelectedModule(moduleId);
-  };
-
-  const closeModuleDetail = () => {
-    setSelectedModule(null);
-  };
-
-  const handleContinueLearning = () => {
-    // Find the first available or in-progress module
-    const nextModule = modules.find(m => m.status === "in-progress" || m.status === "available");
-    if (nextModule) {
-      handleModuleStart(nextModule.id);
-    }
-  };
-
-  // Show loading state or redirect to auth if no user
   if (authLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (!user || !hasEnrollment) {
-    return (
-      <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
+      <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Access Restricted</h2>
-          <p className="text-muted-foreground mb-6">
-            You need to be enrolled in the course to access this content. Please contact an administrator.
-          </p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading your learning dashboard...</p>
         </div>
       </div>
     );
   }
 
-  const iconMap = {
-    0: BookOpen,
-    1: Clock,
-    2: Target,
-    3: Trophy
-  };
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Access Required</CardTitle>
+            <CardDescription>Please sign in to access your learning dashboard</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => window.location.href = '/auth'}>
+              Sign In
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background" key={renderKey}>
-      {/* Adaptive Learning Header */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Brain className="h-8 w-8 text-blue-600" />
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
+      <div className="container mx-auto px-4 py-6 lg:py-8">
+        {/* Header Section */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Adaptive Interactive Learning Dashboard</h1>
-              <p className="text-gray-600">AI-powered personalized learning experience</p>
+              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
+                Learning Dashboard
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Your personalized financial education journey
+              </p>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-yellow-600" />
-              <span className="text-sm font-medium">Interactive Content</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-green-600" />
-              <span className="text-sm font-medium">Adaptive Assessments</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-purple-600" />
-              <span className="text-sm font-medium">Gamified Learning</span>
-            </div>
-          </div>
-        </div>
-        
-        <CourseHeader 
-          progress={courseData.totalProgress}
-          totalModules={courseData.totalModules}
-          completedModules={courseData.completedModules}
-          onContinueLearning={handleContinueLearning}
-        />
-      </div>
-
-      {/* All Courses Section with Sidebar */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
-          <div className="text-left space-y-4">
-            <h2 className="text-3xl font-bold">Adaptive Learning Modules</h2>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed">
-              Explore AI-powered adaptive modules that adjust to your learning pace, provide interactive content, 
-              and offer personalized pathways through advanced commercial finance concepts.
-            </p>
           </div>
 
           {/* Sidebar Layout */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Filter Sidebar */}
-            <div className="lg:w-80 flex-shrink-0">
-              <MultiLevelCourseFilter
-                onFilterChange={(categories, search, level, path) => {
-                  setMultiLevelFilters(categories);
-                  setMultiLevelSearch(search);
-                  setCurrentFilterLevel(level);
-                  setFilterNavigationPath(path);
-                }}
-                totalCount={flattenedModules.length}
-              />
-            </div>
-
+          <div className="flex flex-col gap-6 lg:gap-8">
             {/* Main Content */}
             <div className="flex-1 min-w-0">
               {/* Results Summary */}
@@ -547,10 +357,6 @@ const Dashboard = () => {
                   {currentFilterLevel === 1 && "3 Skill Levels Available"}
                   {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
                 </h3>
-                {/* Debug info - remove after testing */}
-                <div className="text-xs text-muted-foreground bg-gray-100 p-2 rounded">
-                  Level: {currentFilterLevel} | Path: {filterNavigationPath.length} | Selected: {selectedCourseProgram || 'none'}
-                </div>
               </div>
 
               {loading ? (
@@ -641,72 +447,85 @@ const Dashboard = () => {
                     console.log('Should render Level 1:', shouldRender);
                     return shouldRender;
                   })() && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                      {['beginner', 'intermediate', 'expert'].map((level, index) => {
-                        const selectedCourse = filterNavigationPath[0];
-                        const levelModules = flattenedModules.filter(m => 
-                          m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
-                          m.skill_level === level
-                        );
-                        return (
-                          <Card 
-                            key={level} 
-                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
-                          >
-                            <div className="relative overflow-hidden rounded-t-lg">
-                              <img 
-                                src={getCourseImage(index)} 
-                                alt={`${selectedCourse.name} - ${level}`}
-                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                              <div className="absolute top-4 left-4">
-                                <Badge variant={level === "beginner" ? "default" : level === "intermediate" ? "secondary" : "destructive"}>
-                                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                                </Badge>
-                              </div>
-                            </div>
-                            <CardHeader className="pb-2">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <CardTitle className="text-lg line-clamp-2">
-                                    {selectedCourse.name} - {level.charAt(0).toUpperCase() + level.slice(1)}
-                                  </CardTitle>
-                                  <CardDescription className="line-clamp-2 mt-1">
-                                    {level === 'beginner' && 'Introduction and fundamental concepts'}
-                                    {level === 'intermediate' && 'Advanced techniques and strategies'}
-                                    {level === 'expert' && 'Expert-level mastery and leadership'}
-                                  </CardDescription>
+                    <div className="space-y-4">
+                      {/* Back button */}
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={handleReturnToDashboard}
+                        className="mb-4"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Back to Courses
+                      </Button>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                        {['beginner', 'intermediate', 'expert'].map((level, index) => {
+                          const selectedCourse = filterNavigationPath[0];
+                          const levelModules = flattenedModules.filter(m => 
+                            m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
+                            m.skill_level === level
+                          );
+                          return (
+                            <Card 
+                              key={level} 
+                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+                            >
+                              <div className="relative overflow-hidden rounded-t-lg">
+                                <img 
+                                  src={getCourseImage(index)} 
+                                  alt={`${selectedCourse.name} - ${level}`}
+                                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute top-4 left-4">
+                                  <Badge variant={level === "beginner" ? "default" : level === "intermediate" ? "secondary" : "destructive"}>
+                                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                                  </Badge>
                                 </div>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                <div className="flex items-center gap-1">
-                                  <BookOpen className="h-4 w-4" />
-                                  <span>{levelModules.length} modules</span>
+                              <CardHeader className="pb-2">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1">
+                                    <CardTitle className="text-lg line-clamp-2">
+                                      {selectedCourse.name} - {level.charAt(0).toUpperCase() + level.slice(1)}
+                                    </CardTitle>
+                                    <CardDescription className="line-clamp-2 mt-1">
+                                      {level === 'beginner' && 'Introduction and fundamental concepts'}
+                                      {level === 'intermediate' && 'Advanced techniques and strategies'}
+                                      {level === 'expert' && 'Expert-level mastery and leadership'}
+                                    </CardDescription>
+                                  </div>
                                 </div>
-                                <div className="flex items-center gap-1">
-                                  <Clock className="h-4 w-4" />
-                                  <span>{levelModules.length * 30} min</span>
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                  <div className="flex items-center gap-1">
+                                    <BookOpen className="h-4 w-4" />
+                                    <span>{levelModules.length} modules</span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-4 w-4" />
+                                    <span>{levelModules.length * 30} min</span>
+                                  </div>
                                 </div>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="pt-0">
-                              <Button 
-                                type="button"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  console.log('Proceed to Modules button clicked for level:', level);
-                                  handleProceedToModules(level);
-                                }}
-                                className="w-full touch-manipulation"
-                                variant="default"
-                              >
-                                Proceed to Modules
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
+                              </CardHeader>
+                              <CardContent className="pt-0">
+                                <Button 
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Proceed to Modules button clicked for level:', level);
+                                    handleProceedToModules(level);
+                                  }}
+                                  className="w-full touch-manipulation"
+                                  variant="default"
+                                >
+                                  Proceed to Modules
+                                </Button>
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
 
@@ -731,156 +550,33 @@ const Dashboard = () => {
                           {filterNavigationPath[0]?.name}
                         </Button>
                         <span>/</span>
-                        <span>{filterNavigationPath[1]?.name}</span>
+                        <span className="text-foreground">{filterNavigationPath[1]?.name}</span>
                       </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                         {filteredModules.map((module, index) => {
                           const isUnlocked = isModuleUnlocked(index, filteredModules);
-                          const isCompleted = moduleProgress[module.id]?.completed || false;
-                          const isCurrent = moduleProgress[module.id]?.current || false;
+                          const moduleProgress = userProgress[module.id] || 0;
                           
                           return (
-                            <Card 
-                              key={module.id} 
-                              className={`group transition-all duration-300 border-2 ${
-                                isUnlocked 
-                                  ? 'hover:shadow-lg hover:border-primary/20' 
-                                  : 'opacity-50 cursor-not-allowed border-muted'
-                              } ${isCompleted ? 'border-green-200 bg-green-50/20' : ''}`}
-                            >
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(index)} 
-                                  alt={module.title}
-                                  className={`w-full h-48 object-cover ${
-                                    isUnlocked ? 'group-hover:scale-105' : 'grayscale'
-                                  } transition-transform duration-300`}
-                                />
-                                <div className="absolute top-4 left-4 flex gap-2">
-                                  <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                                  </Badge>
-                                  {isCompleted && (
-                                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
-                                      Completed
-                                    </Badge>
-                                  )}
-                                  {isCurrent && (
-                                    <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-300">
-                                      In Progress
-                                    </Badge>
-                                  )}
-                                  {!isUnlocked && (
-                                    <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300">
-                                      Locked
-                                    </Badge>
-                                  )}
-                                </div>
-                                <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm rounded-full px-2 py-1 text-xs font-medium">
-                                  {index + 1} of {filteredModules.length}
-                                </div>
-                              </div>
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1">
-                                      {module.description}
-                                    </CardDescription>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="h-4 w-4" />
-                                    <span>{module.duration}</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{module.lessons} lessons</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <div className="space-y-2">
-                                  <div className="text-sm text-muted-foreground">
-                                    Course: {module.course_title}
-                                  </div>
-                                  {!isUnlocked ? (
-                                    <Button 
-                                      className="w-full"
-                                      variant="outline"
-                                      disabled
-                                    >
-                                      🔒 Complete Previous Module
-                                    </Button>
-                                  ) : isCompleted ? (
-                                    <div className="space-y-2">
-                                      <Button 
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                          console.log('Review Module button clicked for:', module.id);
-                                          handleModuleStart(module.id);
-                                        }}
-                                        className="w-full touch-manipulation"
-                                        variant="secondary"
-                                      >
-                                        ✅ Review Module
-                                      </Button>
-                                      {index === filteredModules.length - 1 ? (
-                                        <Button 
-                                          type="button"
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            console.log('Return to Dashboard button clicked');
-                                            handleReturnToDashboard();
-                                          }}
-                                          className="w-full touch-manipulation"
-                                          variant="outline"
-                                        >
-                                          🎉 Return to Dashboard
-                                        </Button>
-                                      ) : (
-                                        <div className="text-xs text-center text-muted-foreground">
-                                          Next module unlocked!
-                                        </div>
-                                      )}
-                                    </div>
-                                  ) : isCurrent ? (
-                                    <Button 
-                                      type="button"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        console.log('Continue Module button clicked for:', module.id);
-                                        handleModuleStart(module.id);
-                                      }}
-                                      className="w-full touch-manipulation"
-                                      variant="default"
-                                    >
-                                      🔄 Continue Module
-                                    </Button>
-                                  ) : (
-                                    <Button 
-                                      type="button"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        console.log('Start Course Module button clicked for:', module.id);
-                                        handleStartCourseModule(module.id);
-                                      }}
-                                      className="w-full touch-manipulation"
-                                      variant="default"
-                                    >
-                                      🚀 Start Course Module
-                                    </Button>
-                                  )}
-                                </div>
-                              </CardContent>
-                            </Card>
+                            <EnhancedModuleCard
+                              key={module.id}
+                              module={{
+                                ...module,
+                                module_id: module.id,
+                                lessons_count: parseInt(module.lessons.toString()) || 6,
+                                order_index: index,
+                                progress: moduleProgress,
+                                is_completed: moduleProgress >= 100,
+                                is_locked: !isUnlocked,
+                                prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
+                              }}
+                              userProgress={{
+                                completion_percentage: moduleProgress,
+                                is_completed: moduleProgress >= 100,
+                                time_spent_minutes: Math.floor(moduleProgress * 30 / 100) // Estimate based on progress
+                              }}
+                            />
                           );
                         })}
                       </div>
@@ -904,67 +600,30 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
-        {/* Learning Objectives */}
-        <LearningObjectives objectives={learningObjectives} />
-
-        {/* Instructor Information */}
-        <InstructorInfo />
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {statsData.map((stat, index) => {
-            const Icon = iconMap[index as keyof typeof iconMap] || BookOpen;
-            return (
-              <StatsCard
-                key={stat.title}
-                title={stat.title}
-                value={stat.value}
-                description={stat.subtitle}
-                icon={Icon}
-                trend={{ value: 0, isPositive: true }}
-              />
-            );
-          })}
-        </div>
-
-        {/* Course Modules and Resources */}
-        <div className="space-y-8 pb-16">
-          <div className="text-left space-y-4">
-            <h3 className="text-3xl font-bold">Adaptive Interactive Learning Platform</h3>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed">
-              Experience cutting-edge adaptive learning with AI-powered content delivery, real-time assessments, 
-              interactive simulations, gamification elements, and personalized learning paths for finance mastery.
-            </p>
-          </div>
-
-          <Tabs defaultValue="adaptive" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-10 sm:w-fit">
-              <TabsTrigger value="adaptive" className="text-sm">AI Learning</TabsTrigger>
-              <TabsTrigger value="interactive" className="text-sm">Interactive</TabsTrigger>
-              <TabsTrigger value="modules" className="text-sm">Modules</TabsTrigger>
-              <TabsTrigger value="progress" className="text-sm">Progress</TabsTrigger>
-              <TabsTrigger value="assessment" className="text-sm">Assessment</TabsTrigger>
-              <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
-              <TabsTrigger value="social" className="text-sm">Social</TabsTrigger>
-              <TabsTrigger value="tools" className="text-sm">Tools</TabsTrigger>
-              <TabsTrigger value="gamification" className="text-sm">Achievements</TabsTrigger>
-              <TabsTrigger value="market" className="text-sm">Market Data</TabsTrigger>
-              <TabsTrigger value="resources" className="text-sm">Resources</TabsTrigger>
+        {/* Feature Showcase Tabs */}
+        <div className="mt-12">
+          <Tabs defaultValue="ai-learning" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8">
+              <TabsTrigger value="ai-learning" className="text-xs">AI Learning</TabsTrigger>
+              <TabsTrigger value="interactive" className="text-xs">Interactive</TabsTrigger>
+              <TabsTrigger value="progress" className="text-xs">Progress</TabsTrigger>
+              <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
+              <TabsTrigger value="social" className="text-xs">Social Hub</TabsTrigger>
+              <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
+              <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
+              <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="adaptive" className="space-y-6">
-              {/* Adaptive Learning Engine */}
-              <Card className="mb-6 border-blue-200 bg-blue-50/50">
+            <TabsContent value="ai-learning" className="mt-6">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-blue-800">
+                  <CardTitle className="flex items-center gap-2">
                     <Brain className="h-5 w-5" />
-                    AI-Powered Adaptive Learning Engine
+                    AI-Powered Adaptive Learning
                   </CardTitle>
                   <CardDescription>
-                    Personalized learning recommendations based on your progress and learning style
+                    Personalized learning paths that adapt to your progress and learning style
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -973,16 +632,15 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="interactive" className="space-y-6">
-              {/* Interactive Learning Components */}
-              <Card className="mb-6 border-purple-200 bg-purple-50/50">
+            <TabsContent value="interactive" className="mt-6">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-purple-800">
+                  <CardTitle className="flex items-center gap-2">
                     <Zap className="h-5 w-5" />
                     Interactive Learning Components
                   </CardTitle>
                   <CardDescription>
-                    Hands-on practice with financial calculators, scenarios, and simulations
+                    Engage with dynamic content, simulations, and hands-on exercises
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -991,199 +649,108 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="modules" className="space-y-6">
-              {/* Learning Analytics Section */}
-              <Card className="mb-6">
+            <TabsContent value="progress" className="mt-6">
+              <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5" />
-                    Learning Analytics
+                    <Target className="h-5 w-5" />
+                    Enhanced Progress Tracking
                   </CardTitle>
+                  <CardDescription>
+                    Detailed insights into your learning journey and achievements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <EnhancedProgressTracking />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="analytics" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Learning Analytics Dashboard</CardTitle>
+                  <CardDescription>
+                    Comprehensive analytics to optimize your learning experience
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <LearningAnalytics />
                 </CardContent>
               </Card>
+            </TabsContent>
 
-              {/* Interactive Learning Path */}
-              <Card className="mb-6">
+            <TabsContent value="social" className="mt-6">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    Your Learning Journey
-                  </CardTitle>
+                  <CardTitle>Social Learning Hub</CardTitle>
+                  <CardDescription>
+                    Connect with peers, participate in discussions, and learn together
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <InteractiveLearningPath />
+                  <SocialLearningHub />
                 </CardContent>
               </Card>
-
-              <SkillLevelFilter
-                selectedLevel={selectedSkillLevel}
-                onLevelChange={setSelectedSkillLevel}
-                counts={skillLevelCounts}
-              />
-
-              {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {[1, 2, 3, 4, 5, 6].map(i => (
-                    <div key={i} className="animate-pulse">
-                      <div className="bg-muted rounded-lg h-48" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <>
-                    {/* Show modules based on skill level selection */}
-                    {selectedSkillLevel === "all" ? (
-                      <div className="text-center py-12">
-                        <h3 className="text-lg font-medium text-muted-foreground mb-4">
-                          Select Your Skill Level
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-6">
-                          Please choose your skill level above to view the relevant learning modules.
-                        </p>
-                        <div className="max-w-md mx-auto">
-                          <p className="text-xs text-muted-foreground">
-                            Choose from Beginner, Intermediate, or Expert levels to see personalized content.
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-lg font-semibold">
-                            {selectedSkillLevel.charAt(0).toUpperCase() + selectedSkillLevel.slice(1)} Level Modules
-                          </h4>
-                          <Badge variant="secondary">
-                            {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length} modules
-                          </Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                          {filteredModules
-                            .filter(module => module.skill_level === selectedSkillLevel)
-                            .map((module, index) => (
-                            <Card key={module.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(index)} 
-                                  alt={module.title}
-                                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute top-4 left-4">
-                                  <Badge variant={module.skill_level === "beginner" ? "default" : module.skill_level === "intermediate" ? "secondary" : "destructive"}>
-                                    {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                                  </Badge>
-                                </div>
-                              </div>
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-lg line-clamp-2">{module.title}</CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1">
-                                      {module.description}
-                                    </CardDescription>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="h-4 w-4" />
-                                    <span>{module.duration}</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{module.lessons} lessons</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <div className="space-y-2">
-                                  <div className="text-sm text-muted-foreground">
-                                    Course: {module.course_title}
-                                  </div>
-                                  <Button 
-                                    onClick={() => handleModuleStart(module.id)} 
-                                    className="w-full"
-                                    variant={module.status === "completed" ? "secondary" : "default"}
-                                  >
-                                    {module.status === "completed" ? "Review" : module.status === "in-progress" ? "Continue" : "Start Learning"}
-                                  </Button>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                        
-                        {filteredModules.filter(module => module.skill_level === selectedSkillLevel).length === 0 && (
-                          <div className="text-center py-12">
-                            <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                              No modules found for {selectedSkillLevel} level
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Try selecting a different skill level to see available modules.
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                </>
-              )}
             </TabsContent>
 
-            <TabsContent value="progress">
-              <EnhancedProgressTracking />
+            <TabsContent value="tools" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Interactive Financial Tools</CardTitle>
+                  <CardDescription>
+                    Practice with real-world financial calculators and simulators
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <InteractiveFinancialTools />
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="assessment">
-              <AdvancedAssessmentSystem />
+            <TabsContent value="gamification" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5" />
+                    Gamification & Achievements
+                  </CardTitle>
+                  <CardDescription>
+                    Earn badges, compete on leaderboards, and track your achievements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <GamificationSystem />
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="analytics">
-              <LearningAnalytics />
-            </TabsContent>
-
-            <TabsContent value="social">
-              <SocialLearningHub />
-            </TabsContent>
-
-            <TabsContent value="tools">
-              <InteractiveFinancialTools />
-            </TabsContent>
-
-            <TabsContent value="gamification">
-              <GamificationSystem />
-            </TabsContent>
-
-            <TabsContent value="adaptive">
-              <AdaptiveLearningEngine />
-            </TabsContent>
-
-            <TabsContent value="market">
-              <RealTimeMarketData />
-            </TabsContent>
-
-            <TabsContent value="resources">
-              <DocumentLibrary />
+            <TabsContent value="market-data" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Real-Time Market Data</CardTitle>
+                  <CardDescription>
+                    Stay updated with live financial market information and trends
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RealTimeMarketData />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
-        
-        {/* FinPilot Brand Footer */}
-        <FinPilotBrandFooter />
+
+        {/* Module Detail Modal */}
+        {selectedModule && (
+          <ModuleDetail
+            module={flattenedModules.find(m => m.id === selectedModule) || flattenedModules[0]}
+            onClose={() => setSelectedModule(null)}
+          />
+        )}
       </div>
 
-      {/* Accessibility Enhancer */}
-      <AccessibilityEnhancer />
-
-      {/* Module Detail Modal */}
-      {selectedModule && (
-        <ModuleDetail 
-          module={flattenedModules.find(m => m.id === selectedModule)!}
-          onClose={closeModuleDetail}
-        />
-      )}
+      <FinPilotBrandFooter />
     </div>
   );
 };
