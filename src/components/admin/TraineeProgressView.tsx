@@ -62,6 +62,7 @@ export const TraineeProgressView = () => {
     try {
       setLoading(true);
       
+      // Use secure function with PII protection and audit logging
       const { data, error } = await supabase.rpc('get_trainee_progress_data');
       
       if (error) {

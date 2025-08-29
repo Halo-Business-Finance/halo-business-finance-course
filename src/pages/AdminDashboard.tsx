@@ -35,6 +35,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { InstructorForm } from "@/components/InstructorForm";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
+import { SecurityMonitoringDashboard } from "@/components/SecurityMonitoringDashboard";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
@@ -207,15 +208,15 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
-      // Load user roles using the secure database function
+      // Load user roles using the new secure database function with PII protection
       let userRolesData = [];
       
       try {
-        // Use new secure masked profile function for enhanced PII protection
-        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_masked_user_profiles');
+        // Use new secure admin profiles function with comprehensive PII protection and audit logging
+        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_secure_admin_profiles');
 
         if (profilesError) {
-          console.warn('Secure masked profile function failed:', profilesError);
+          console.warn('Secure admin profiles function failed:', profilesError);
           throw profilesError;
         }
 
@@ -1200,7 +1201,7 @@ const AdminDashboard = () => {
               </TabsContent>
 
               <TabsContent value="security" className="space-y-6">
-                <SecurityDashboard />
+                <SecurityMonitoringDashboard />
               </TabsContent>
 
         <TabsContent value="trainee-progress" className="space-y-4">
