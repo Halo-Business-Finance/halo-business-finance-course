@@ -3499,6 +3499,19 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_course_modules_with_security_metadata: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          content_classification: string
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean
+          module_id: string
+          security_metadata: Json
+          title: string
+        }[]
+      }
       get_leads_secure: {
         Args: { access_justification?: string; include_full_pii?: boolean }
         Returns: {
@@ -3539,6 +3552,25 @@ export type Database = {
       get_profile_encryption_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      get_profiles_secure: {
+        Args: {
+          access_justification?: string
+          include_sensitive_fields?: boolean
+          target_user_id?: string
+        }
+        Returns: {
+          city: string
+          company: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          state: string
+          title: string
+          user_id: string
+        }[]
       }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
