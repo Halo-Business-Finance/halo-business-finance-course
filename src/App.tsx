@@ -27,9 +27,9 @@ import AdminAuth from "./pages/AdminAuth";
 import AdminDashboard from "./pages/AdminDashboard";
 import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
-
+import Courses from "./pages/Courses";
 import Pricing from "./pages/Pricing";
-
+import Business from "./pages/Business";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Article from "./pages/Article";
@@ -233,13 +233,13 @@ const AppContent = () => {
               </AdminProtectedRoute>
             } />
             <Route path="/module/:moduleId" element={<ModulePage />} />
-            <Route path="/course-catalog" element={<Navigate to="/" replace />} />
+            <Route path="/course-catalog" element={<Courses />} />
             {/* Redirect old courses route to course-catalog page */}
             <Route path="/courses" element={<Navigate to="/course-catalog" replace />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/enterprise" element={<Navigate to="/" replace />} />
-            {/* Redirect old business route to homepage */}
-            <Route path="/business" element={<Navigate to="/" replace />} />
+            <Route path="/enterprise" element={<Business />} />
+            {/* Redirect old business route to enterprise page */}
+            <Route path="/business" element={<Navigate to="/enterprise" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/article/:id" element={<Article />} />

@@ -3499,36 +3499,6 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_course_modules_with_security_metadata: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          content_classification: string
-          created_at: string
-          description: string
-          id: string
-          is_active: boolean
-          module_id: string
-          security_metadata: Json
-          title: string
-        }[]
-      }
-      get_leads_secure: {
-        Args: { access_justification?: string; include_full_pii?: boolean }
-        Returns: {
-          company: string
-          created_at: string
-          email: string
-          first_name: string
-          id: string
-          job_title: string
-          last_name: string
-          lead_type: string
-          message: string
-          phone: string
-          status: string
-          submission_ip: unknown
-        }[]
-      }
       get_masked_user_profiles: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -3552,25 +3522,6 @@ export type Database = {
       get_profile_encryption_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
-      }
-      get_profiles_secure: {
-        Args: {
-          access_justification?: string
-          include_sensitive_fields?: boolean
-          target_user_id?: string
-        }
-        Returns: {
-          city: string
-          company: string
-          created_at: string
-          email: string
-          id: string
-          name: string
-          phone: string
-          state: string
-          title: string
-          user_id: string
-        }[]
       }
       get_profiles_with_roles: {
         Args: Record<PropertyKey, never>
@@ -3834,8 +3785,8 @@ export type Database = {
         Args: {
           access_reason?: string
           access_type: string
-          fields_accessed: string[]
-          target_user_id: string
+          accessed_user_id: string
+          fields_accessed?: string[]
         }
         Returns: undefined
       }
@@ -3888,14 +3839,6 @@ export type Database = {
       }
       make_current_user_admin: {
         Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      mask_pii_field: {
-        Args: {
-          field_type: string
-          field_value: string
-          requesting_user_role?: string
-        }
         Returns: string
       }
       mask_profile_data_advanced: {
