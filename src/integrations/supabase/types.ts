@@ -3628,6 +3628,37 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_secured_admin_profiles: {
+        Args: { p_limit?: number; p_offset?: number; p_search_term?: string }
+        Returns: {
+          company: string
+          join_date: string
+          last_activity: string
+          location: string
+          masked_email: string
+          masked_name: string
+          masked_phone: string
+          total_records: number
+          user_id: string
+          user_role: string
+        }[]
+      }
+      get_secured_leads_data: {
+        Args: { p_limit?: number; p_offset?: number; p_status_filter?: string }
+        Returns: {
+          admin_notes: string
+          company: string
+          created_at: string
+          id: string
+          lead_source: string
+          masked_email: string
+          masked_first_name: string
+          masked_last_name: string
+          masked_phone: string
+          status: string
+          total_records: number
+        }[]
+      }
       get_security_headers: {
         Args: Record<PropertyKey, never>
         Returns: Json

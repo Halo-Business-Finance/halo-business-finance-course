@@ -36,6 +36,7 @@ import { useAdminRole } from "@/hooks/useAdminRole";
 import { InstructorForm } from "@/components/InstructorForm";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { SecurityMonitoringDashboard } from "@/components/SecurityMonitoringDashboard";
+import { SecurityMonitoringWidget } from "@/components/SecurityMonitoringWidget";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
@@ -1340,7 +1341,10 @@ const AdminDashboard = () => {
 
 
         <TabsContent value="monitoring" className="space-y-4">
-          <SecurityDashboard />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <SecurityMonitoringWidget />
+            <SecurityDashboard />
+          </div>
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">

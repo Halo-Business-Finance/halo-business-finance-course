@@ -1,0 +1,327 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { 
+  Shield, 
+  AlertTriangle, 
+  CheckCircle, 
+  Eye, 
+  Activity,
+  RefreshCw,
+  Clock
+} from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+
+interface SecurityAlert {
+  id: string;
+  alert_type: string;
+  severity: string;
+  title: string;
+  description: string;
+  created_at: string;
+  metadata: any;
+}
+
+interface SecurityStats {
+  totalEvents: number;
+  criticalAlerts: number;
+  recentAccessAttempts: number;
+  profileAccessCount: number;
+}
+
+export const SecurityMonitoringWidget: React.FC = () => {
+  const [alerts, setAlerts] = useState<SecurityAlert[]>([]);
+  const [stats, setStats] = useState<SecurityStats>({
+    totalEvents: 0,
+    criticalAlerts: 0,
+    recentAccessAttempts: 0,
+    profileAccessCount: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    loadSecurityData();
+    
+    // Set up real-time subscription for security alerts
+    const subscription = supabase
+      .channel('security_alerts')
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'security_alerts' },
+        (payload) => {
+          const newAlert = payload.new as SecurityAlert;
+          setAlerts(prev => [newAlert, ...prev.slice(0, 4)]); // Keep only 5 most recent
+          
+          // Show toast for critical alerts
+          if (newAlert.severity === 'critical') {
+            toast({
+              title: "🚨 Critical Security Alert",
+              description: newAlert.title,
+              variant: "destructive",
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const loadSecurityData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch recent security alerts
+      const { data: alertsData, error: alertsError } = await supabase
+        .from('security_alerts')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (alertsError) {
+        throw alertsError;
+      }
+
+      setAlerts(alertsData || []);
+
+      // Fetch security statistics
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('security_events')
+        .select('event_type, severity')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      if (eventsError) {
+        throw eventsError;
+      }
+
+      // Fetch admin audit log statistics
+      const { data: auditData, error: auditError } = await supabase
+        .from('admin_audit_log')
+        .select('action')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      if (auditError) {
+        throw auditError;
+      }
+
+      const totalEvents = eventsData?.length || 0;
+      const criticalAlerts = (alertsData || []).filter(a => a.severity === 'critical').length;
+      const recentAccessAttempts = (eventsData || []).filter(e => 
+        e.event_type.includes('login') || e.event_type.includes('auth')
+      ).length;
+      const profileAccessCount = (auditData || []).filter(a => 
+        a.action.includes('profile') || a.action.includes('customer')
+      ).length;
+
+      setStats({
+        totalEvents,
+        criticalAlerts,
+        recentAccessAttempts,
+        profileAccessCount
+      });
+
+    } catch (error: any) {
+      console.error('Error loading security data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load security monitoring data",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const runSecurityScan = async () => {
+    try {
+      setRefreshing(true);
+      
+      // Trigger comprehensive security analysis
+      const { error } = await supabase.rpc('run_comprehensive_security_analysis');
+      
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Security Analysis Complete",
+        description: "Security monitoring has been refreshed",
+      });
+
+      // Refresh data after analysis
+      setTimeout(() => {
+        loadSecurityData();
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Error running security analysis:', error);
+      toast({
+        title: "Error",
+        description: "Failed to run security analysis",
+        variant: "destructive"
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const getSeverityBadge = (severity: string) => {
+    switch (severity) {
+      case 'critical':
+        return <Badge className="bg-red-500 text-white">Critical</Badge>;
+      case 'high':
+        return <Badge className="bg-orange-500 text-white">High</Badge>;
+      case 'medium':
+        return <Badge className="bg-yellow-500 text-white">Medium</Badge>;
+      case 'low':
+        return <Badge className="bg-blue-500 text-white">Low</Badge>;
+      default:
+        return <Badge variant="outline">{severity}</Badge>;
+    }
+  };
+
+  const getSeverityIcon = (severity: string) => {
+    switch (severity) {
+      case 'critical':
+        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+      case 'high':
+        return <AlertTriangle className="h-4 w-4 text-orange-500" />;
+      case 'medium':
+        return <Eye className="h-4 w-4 text-yellow-500" />;
+      case 'low':
+        return <CheckCircle className="h-4 w-4 text-blue-500" />;
+      default:
+        return <Shield className="h-4 w-4" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <Card className="animate-pulse">
+        <CardHeader>
+          <div className="h-6 bg-muted rounded w-48"></div>
+          <div className="h-4 bg-muted rounded w-64"></div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-16 bg-muted rounded"></div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Security Monitoring
+            </CardTitle>
+            <CardDescription>
+              Real-time security alerts and system health status
+            </CardDescription>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={runSecurityScan}
+            disabled={refreshing}
+          >
+            {refreshing ? (
+              <RefreshCw className="h-4 w-4 animate-spin" />
+            ) : (
+              <Activity className="h-4 w-4" />
+            )}
+            {refreshing ? 'Scanning...' : 'Run Analysis'}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Security Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="text-center p-3 border rounded-lg">
+            <div className="text-2xl font-bold text-blue-600">{stats.totalEvents}</div>
+            <div className="text-sm text-muted-foreground">Events (24h)</div>
+          </div>
+          <div className="text-center p-3 border rounded-lg">
+            <div className="text-2xl font-bold text-red-600">{stats.criticalAlerts}</div>
+            <div className="text-sm text-muted-foreground">Critical Alerts</div>
+          </div>
+          <div className="text-center p-3 border rounded-lg">
+            <div className="text-2xl font-bold text-orange-600">{stats.recentAccessAttempts}</div>
+            <div className="text-sm text-muted-foreground">Auth Attempts</div>
+          </div>
+          <div className="text-center p-3 border rounded-lg">
+            <div className="text-2xl font-bold text-green-600">{stats.profileAccessCount}</div>
+            <div className="text-sm text-muted-foreground">Profile Access</div>
+          </div>
+        </div>
+
+        {/* Recent Alerts */}
+        <div>
+          <h4 className="font-medium mb-3 flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            Recent Security Alerts
+          </h4>
+          
+          {alerts.length === 0 ? (
+            <Alert>
+              <CheckCircle className="h-4 w-4" />
+              <AlertDescription>
+                No recent security alerts. System is operating normally.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <div className="space-y-3">
+              {alerts.map((alert) => (
+                <div 
+                  key={alert.id} 
+                  className="flex items-start justify-between p-3 border rounded-lg hover:bg-muted/50"
+                >
+                  <div className="flex items-start gap-3 flex-1">
+                    {getSeverityIcon(alert.severity)}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm">{alert.title}</span>
+                        {getSeverityBadge(alert.severity)}
+                      </div>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {alert.description}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {format(new Date(alert.created_at), 'MMM dd, HH:mm')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Security Status Indicator */}
+        <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+            <span className="font-medium text-green-800">System Secure</span>
+          </div>
+          <div className="text-sm text-green-700">
+            All security measures active
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};

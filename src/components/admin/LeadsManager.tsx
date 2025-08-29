@@ -62,24 +62,50 @@ const LeadsManager = () => {
     fetchLeads();
   }, []);
 
-  const fetchLeads = async () => {
+const fetchLeads = async () => {
     try {
-      const { data, error } = await supabase
-        .from('leads')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Use secure function with PII masking and audit logging
+      const { data, error } = await supabase.rpc('get_secured_leads_data', {
+        p_limit: 500,
+        p_offset: 0,
+        p_status_filter: statusFilter !== 'all' ? statusFilter : null
+      });
 
       if (error) {
         console.error('Error fetching leads:', error);
         toast({
           title: "Error",
-          description: "Failed to load leads",
+          description: "Failed to load leads. " + (error.message?.includes('Super admin') ? 'Super admin privileges required.' : 'Please try again.'),
           variant: "destructive",
         });
         return;
       }
 
-      setLeads(data || []);
+      // Transform secured lead data to expected format
+      const transformedData = (data || []).map((lead: any) => ({
+        id: lead.id,
+        created_at: lead.created_at,
+        updated_at: lead.created_at,
+        first_name: lead.masked_first_name,
+        last_name: lead.masked_last_name,
+        email: lead.masked_email,
+        phone: lead.masked_phone,
+        company: lead.company,
+        job_title: '',
+        company_size: '',
+        budget: '',
+        timeline: '',
+        message: '',
+        lead_source: lead.lead_source,
+        lead_type: 'sales',
+        status: lead.status,
+        assigned_to: '',
+        admin_notes: lead.admin_notes,
+        follow_up_date: '',
+        last_contacted: ''
+      }));
+
+      setLeads(transformedData);
     } catch (error) {
       console.error('Error in fetchLeads:', error);
       toast({
