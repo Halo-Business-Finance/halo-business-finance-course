@@ -118,16 +118,24 @@ const Dashboard = () => {
   const handleStartCourse = (courseName: string) => {
     console.log('handleStartCourse called with:', courseName);
     try {
-      setSelectedCourseProgram(courseName);
-      setCurrentFilterLevel(1);
       const courseModules = flattenedModules.filter(m => 
         m.course_title.toLowerCase().includes(courseName.toLowerCase())
       );
       console.log('Course modules found:', courseModules.length);
+      
+      // Reset state for clean transition
+      setMultiLevelFilters([]);
+      setMultiLevelSearch("");
+      setSelectedCourseProgram(courseName);
       setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
-      // Force re-render on mobile/tablet
-      setRenderKey(prev => prev + 1);
-      console.log('Navigation updated successfully');
+      
+      // Use setTimeout to ensure state updates are processed
+      setTimeout(() => {
+        setCurrentFilterLevel(1);
+        setRenderKey(prev => prev + 1);
+        console.log('Navigation updated successfully - Level set to 1, Path length:', 1);
+      }, 0);
+      
     } catch (error) {
       console.error('Error in handleStartCourse:', error);
     }
