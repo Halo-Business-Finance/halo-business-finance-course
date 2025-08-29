@@ -3762,7 +3762,7 @@ export type Database = {
         Returns: undefined
       }
       log_course_access_attempt: {
-        Args: { access_type: string; module_id: string; success: boolean }
+        Args: { p_access_type: string; p_module_id: string; p_success: boolean }
         Returns: undefined
       }
       log_critical_security_event: {
