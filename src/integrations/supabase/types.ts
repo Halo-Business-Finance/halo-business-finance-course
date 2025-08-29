@@ -3957,6 +3957,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      run_periodic_security_monitoring: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       run_security_compliance_check: {
         Args: Record<PropertyKey, never>
         Returns: Json

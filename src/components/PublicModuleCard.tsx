@@ -49,9 +49,9 @@ const PublicModuleCard = ({
   const handleEnrollClick = async () => {
     // Log access attempt for security monitoring
     await supabase.rpc('log_course_access_attempt', {
-      module_id: moduleId,
-      access_type: user ? 'module_access_enrolled' : 'module_access_signup_redirect',
-      success: true
+      p_module_id: moduleId,
+      p_access_type: user ? 'module_access_enrolled' : 'module_access_signup_redirect',
+      p_success: true
     });
 
     if (user) {

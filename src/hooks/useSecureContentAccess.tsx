@@ -47,9 +47,9 @@ export const useSecureContentAccess = (moduleId: string, requestedFields: string
 
         // Log access attempt
         await supabase.rpc('log_course_access_attempt', {
-          module_id: moduleId,
-          access_type: 'content_validation',
-          success: canAccess || false
+          p_module_id: moduleId,
+          p_access_type: 'content_validation',
+          p_success: canAccess || false
         });
 
         const securityMetadata = moduleData?.security_metadata as any;
@@ -71,9 +71,9 @@ export const useSecureContentAccess = (moduleId: string, requestedFields: string
 
         // Log failed validation attempt
         await supabase.rpc('log_course_access_attempt', {
-          module_id: moduleId,
-          access_type: 'content_validation_error',
-          success: false
+          p_module_id: moduleId,
+          p_access_type: 'content_validation_error',
+          p_success: false
         });
       }
     };
