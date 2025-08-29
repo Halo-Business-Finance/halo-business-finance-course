@@ -69,6 +69,13 @@ const Dashboard = () => {
   // Add a key to force re-renders on mobile/tablet devices
   const [renderKey, setRenderKey] = useState(0);
 
+  // Debug state changes
+  useEffect(() => {
+    console.log('=== STATE CHANGE ===');
+    console.log('currentFilterLevel changed to:', currentFilterLevel);
+    console.log('filterNavigationPath changed to:', filterNavigationPath);
+  }, [currentFilterLevel, filterNavigationPath]);
+
   useEffect(() => {
     if (user) {
       fetchUserProgress();
@@ -116,24 +123,33 @@ const Dashboard = () => {
 
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
+    console.log('=== handleStartCourse START ===');
     console.log('handleStartCourse called with:', courseName);
+    console.log('Current currentFilterLevel:', currentFilterLevel);
+    console.log('Current filterNavigationPath:', filterNavigationPath);
+    
     try {
       const courseModules = flattenedModules.filter(m => 
         m.course_title.toLowerCase().includes(courseName.toLowerCase())
       );
       console.log('Course modules found:', courseModules.length);
+      console.log('Sample module course_title:', courseModules[0]?.course_title);
       
       // Reset state for clean transition
       setMultiLevelFilters([]);
       setMultiLevelSearch("");
       setSelectedCourseProgram(courseName);
-      setFilterNavigationPath([{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }]);
+      
+      const navigationPath = [{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }];
+      console.log('Setting navigationPath:', navigationPath);
+      setFilterNavigationPath(navigationPath);
       
       // Use setTimeout to ensure state updates are processed
       setTimeout(() => {
+        console.log('About to set currentFilterLevel to 1');
         setCurrentFilterLevel(1);
         setRenderKey(prev => prev + 1);
-        console.log('Navigation updated successfully - Level set to 1, Path length:', 1);
+        console.log('=== handleStartCourse END - Level set to 1 ===');
       }, 0);
       
     } catch (error) {
@@ -616,7 +632,15 @@ const Dashboard = () => {
                   )}
 
                   {/* Level 1: Skill Level Cards */}
-                  {currentFilterLevel === 1 && filterNavigationPath.length > 0 && (
+                  {(() => {
+                    console.log('=== LEVEL 1 RENDER CHECK ===');
+                    console.log('currentFilterLevel:', currentFilterLevel);
+                    console.log('filterNavigationPath.length:', filterNavigationPath.length);
+                    console.log('filterNavigationPath:', filterNavigationPath);
+                    const shouldRender = currentFilterLevel === 1 && filterNavigationPath.length > 0;
+                    console.log('Should render Level 1:', shouldRender);
+                    return shouldRender;
+                  })() && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                       {['beginner', 'intermediate', 'expert'].map((level, index) => {
                         const selectedCourse = filterNavigationPath[0];
