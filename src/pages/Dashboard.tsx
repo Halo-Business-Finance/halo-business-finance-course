@@ -350,6 +350,17 @@ const Dashboard = () => {
           {/* Live Learning Stats Widget */}
           <LiveLearningStats />
 
+          {/* Course Header - Business Finance Mastery */}
+          <CourseHeader 
+            progress={75}
+            totalModules={flattenedModules.length}
+            completedModules={Math.floor(flattenedModules.length * 0.75)}
+            onContinueLearning={() => setCurrentFilterLevel(0)}
+          />
+
+          {/* Instructor Information */}
+          <InstructorInfo />
+
           {/* Sidebar Layout */}
           <div className="flex flex-col gap-6 lg:gap-8">
             {/* Main Content */}
