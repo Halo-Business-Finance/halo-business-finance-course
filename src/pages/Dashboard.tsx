@@ -27,6 +27,7 @@ import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
 import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
+import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
@@ -345,6 +346,9 @@ const Dashboard = () => {
               </p>
             </div>
           </div>
+
+          {/* Live Learning Stats Widget */}
+          <LiveLearningStats />
 
           {/* Sidebar Layout */}
           <div className="flex flex-col gap-6 lg:gap-8">
