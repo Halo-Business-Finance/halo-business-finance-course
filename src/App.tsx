@@ -29,7 +29,7 @@ import ModulePage from "./pages/ModulePage";
 import NotFound from "./pages/NotFound";
 
 import Pricing from "./pages/Pricing";
-import Business from "./pages/Business";
+
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Article from "./pages/Article";
@@ -237,7 +237,7 @@ const AppContent = () => {
             {/* Redirect old courses route to course-catalog page */}
             <Route path="/courses" element={<Navigate to="/course-catalog" replace />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/enterprise" element={<Business />} />
+            <Route path="/enterprise" element={<Navigate to="/" replace />} />
             {/* Redirect old business route to enterprise page */}
             <Route path="/business" element={<Navigate to="/enterprise" replace />} />
             <Route path="/about" element={<About />} />
