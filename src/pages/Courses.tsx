@@ -405,10 +405,9 @@ const Courses = () => {
                           <BookOpen className="h-4 w-4" />
                           <span>{course.modules.length} modules</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4" />
-                          <span>{course.level}</span>
-                        </div>
+                         <Badge className={getLevelColor(course.level)}>
+                           {course.level}
+                         </Badge>
                       </div>
 
                       <div className="flex items-center justify-between">
