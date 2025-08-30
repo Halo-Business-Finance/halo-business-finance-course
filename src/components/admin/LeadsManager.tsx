@@ -22,6 +22,8 @@ import {
   Filter,
   Download
 } from "lucide-react";
+import { SecurityStatusIndicator } from "@/components/SecurityStatusIndicator";
+import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
@@ -29,7 +31,7 @@ import { format } from "date-fns";
 interface Lead {
   id: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -40,13 +42,14 @@ interface Lead {
   budget?: string;
   timeline?: string;
   message?: string;
-  lead_source: string;
-  lead_type: string;
+  lead_source?: string;
+  lead_type?: string;
   status: string;
   assigned_to?: string;
   admin_notes?: string;
   follow_up_date?: string;
   last_contacted?: string;
+  is_masked?: boolean;
 }
 
 const LeadsManager = () => {
@@ -64,47 +67,31 @@ const LeadsManager = () => {
 
 const fetchLeads = async () => {
     try {
-      // Use secure function with PII masking and audit logging
-      const { data, error } = await supabase.rpc('get_secured_leads_data', {
+      // Use enhanced secure function with strict PII masking and audit logging
+      const { data, error } = await supabase.rpc('get_secure_leads', {
         p_limit: 500,
         p_offset: 0,
-        p_status_filter: statusFilter !== 'all' ? statusFilter : null
+        p_status: statusFilter !== 'all' ? statusFilter : null
       });
 
       if (error) {
         console.error('Error fetching leads:', error);
         toast({
           title: "Error",
-          description: "Failed to load leads. " + (error.message?.includes('Super admin') ? 'Super admin privileges required.' : 'Please try again.'),
+          description: "Failed to load leads. " + (error.message?.includes('privileges') ? 'Admin privileges required.' : 'Please try again.'),
           variant: "destructive",
         });
         return;
       }
 
-      // Transform secured lead data to expected format
+      // Transform the secure leads data to match Lead interface
       const transformedData = (data || []).map((lead: any) => ({
-        id: lead.id,
-        created_at: lead.created_at,
+        ...lead,
         updated_at: lead.created_at,
-        first_name: lead.masked_first_name,
-        last_name: lead.masked_last_name,
-        email: lead.masked_email,
-        phone: lead.masked_phone,
-        company: lead.company,
-        job_title: '',
-        company_size: '',
-        budget: '',
-        timeline: '',
-        message: '',
-        lead_source: lead.lead_source,
-        lead_type: 'sales',
-        status: lead.status,
-        assigned_to: '',
-        admin_notes: lead.admin_notes,
-        follow_up_date: '',
-        last_contacted: ''
+        lead_source: 'contact_sales',
+        lead_type: 'sales'
       }));
-
+      
       setLeads(transformedData);
     } catch (error) {
       console.error('Error in fetchLeads:', error);
@@ -212,12 +199,12 @@ const fetchLeads = async () => {
 
   const filteredLeads = leads.filter(lead => {
     const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
-    const matchesType = leadTypeFilter === 'all' || lead.lead_type === leadTypeFilter;
+    const matchesType = leadTypeFilter === 'all' || (lead.lead_type && lead.lead_type === leadTypeFilter);
     const matchesSearch = searchTerm === '' || 
-      lead.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.company.toLowerCase().includes(searchTerm.toLowerCase());
+      lead.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.company?.toLowerCase().includes(searchTerm.toLowerCase());
     
     return matchesStatus && matchesType && matchesSearch;
   });
@@ -240,7 +227,7 @@ const fetchLeads = async () => {
         lead.company_size || '',
         lead.budget || '',
         lead.timeline || '',
-        lead.lead_type,
+        lead.lead_type || 'sales',
         lead.status,
         `"${lead.message || ''}"`
       ].join(','))
@@ -396,10 +383,18 @@ const fetchLeads = async () => {
       {/* Leads Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Leads ({filteredLeads.length})</CardTitle>
-          <CardDescription>
-            Recent leads and their current status
-          </CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Leads ({filteredLeads.length})</CardTitle>
+              <CardDescription>
+                Recent leads and their current status
+              </CardDescription>
+            </div>
+            <SecurityStatusIndicator 
+              isDataMasked={leads.length > 0 ? leads[0].is_masked : false}
+              showDetails={false}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           {filteredLeads.length === 0 ? (
@@ -430,10 +425,29 @@ const fetchLeads = async () => {
                     <tr key={lead.id} className="border-b hover:bg-muted/50">
                       <td className="p-2">
                         <div>
-                          <p className="font-medium">{lead.first_name} {lead.last_name}</p>
-                          <p className="text-sm text-muted-foreground">{lead.email}</p>
+                          <SecurePIIDisplay 
+                            value={`${lead.first_name} ${lead.last_name}`} 
+                            type="name" 
+                            isMasked={lead.is_masked}
+                            showMaskingIndicator={false}
+                          />
+                          <div className="text-sm text-muted-foreground">
+                            <SecurePIIDisplay 
+                              value={lead.email} 
+                              type="email" 
+                              isMasked={lead.is_masked}
+                              showMaskingIndicator={false}
+                            />
+                          </div>
                           {lead.phone && (
-                            <p className="text-sm text-muted-foreground">{lead.phone}</p>
+                            <div className="text-sm text-muted-foreground">
+                              <SecurePIIDisplay 
+                                value={lead.phone} 
+                                type="phone" 
+                                isMasked={lead.is_masked}
+                                showMaskingIndicator={false}
+                              />
+                            </div>
                           )}
                         </div>
                       </td>
@@ -445,9 +459,9 @@ const fetchLeads = async () => {
                           )}
                         </div>
                       </td>
-                      <td className="p-2">
-                        {getLeadTypeBadge(lead.lead_type)}
-                      </td>
+                       <td className="p-2">
+                         {getLeadTypeBadge(lead.lead_type || 'sales')}
+                       </td>
                       <td className="p-2">
                         {getStatusBadge(lead.status)}
                       </td>
@@ -590,18 +604,18 @@ const fetchLeads = async () => {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Lead Information</h3>
                 <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label>Type</Label>
-                    <div className="mt-1">{getLeadTypeBadge(selectedLead.lead_type)}</div>
-                  </div>
+                   <div>
+                     <Label>Type</Label>
+                     <div className="mt-1">{getLeadTypeBadge(selectedLead.lead_type || 'sales')}</div>
+                   </div>
                   <div>
                     <Label>Status</Label>
                     <div className="mt-1">{getStatusBadge(selectedLead.status)}</div>
                   </div>
-                  <div>
-                    <Label>Source</Label>
-                    <p className="font-medium">{selectedLead.lead_source}</p>
-                  </div>
+                   <div>
+                     <Label>Source</Label>
+                     <p className="font-medium">{selectedLead.lead_source || 'contact_sales'}</p>
+                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -610,12 +624,12 @@ const fetchLeads = async () => {
                       {format(new Date(selectedLead.created_at), 'MMM dd, yyyy HH:mm')}
                     </p>
                   </div>
-                  <div>
-                    <Label>Last Updated</Label>
-                    <p className="font-medium">
-                      {format(new Date(selectedLead.updated_at), 'MMM dd, yyyy HH:mm')}
-                    </p>
-                  </div>
+                   <div>
+                     <Label>Last Updated</Label>
+                     <p className="font-medium">
+                       {format(new Date(selectedLead.updated_at || selectedLead.created_at), 'MMM dd, yyyy HH:mm')}
+                     </p>
+                   </div>
                 </div>
               </div>
 

@@ -3501,20 +3501,13 @@ export type Database = {
       get_masked_user_profiles: {
         Args: Record<PropertyKey, never>
         Returns: {
-          avatar_url: string
-          city: string
           company: string
-          created_at: string
           email: string
-          join_date: string
+          is_masked: boolean
+          location: string
           name: string
           phone: string
           role: string
-          role_created_at: string
-          role_is_active: boolean
-          state: string
-          title: string
-          updated_at: string
           user_id: string
         }[]
       }
@@ -3609,6 +3602,20 @@ export type Database = {
           title: string
           updated_at: string
           user_id: string
+        }[]
+      }
+      get_secure_leads: {
+        Args: { p_limit?: number; p_offset?: number; p_status?: string }
+        Returns: {
+          company: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          is_masked: boolean
+          last_name: string
+          phone: string
+          status: string
         }[]
       }
       get_secure_profile_data: {

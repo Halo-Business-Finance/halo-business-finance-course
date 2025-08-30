@@ -1,51 +1,82 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, ShieldCheck, Eye, EyeOff, Lock } from 'lucide-react';
+import { Shield, Eye, Lock, AlertTriangle } from 'lucide-react';
 
-export const SecurityStatusIndicator = () => {
+interface SecurityStatusIndicatorProps {
+  isDataMasked?: boolean;
+  userRole?: string;
+  showDetails?: boolean;
+}
+
+export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({ 
+  isDataMasked = false, 
+  userRole = 'user',
+  showDetails = true 
+}) => {
+  const getSecurityLevel = () => {
+    if (userRole === 'super_admin') {
+      return {
+        level: 'Full Access',
+        color: 'destructive',
+        icon: AlertTriangle,
+        description: 'Viewing unmasked customer data'
+      };
+    } else if (userRole === 'admin') {
+      return {
+        level: 'Protected Access',
+        color: 'secondary',
+        icon: Eye,
+        description: 'Customer data is masked for protection'
+      };
+    } else {
+      return {
+        level: 'Standard Access',
+        color: 'default',
+        icon: Lock,
+        description: 'Limited data access'
+      };
+    }
+  };
+
+  const security = getSecurityLevel();
+  const IconComponent = security.icon;
+
+  if (!showDetails) {
+    return (
+      <Badge variant={security.color as any} className="flex items-center gap-1">
+        <Shield className="h-3 w-3" />
+        {security.level}
+      </Badge>
+    );
+  }
+
   return (
-    <Card className="border-green-200 bg-green-50">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-green-800">
-          <ShieldCheck className="h-5 w-5" />
-          Enhanced PII Protection Active
+    <Card className="border-l-4 border-l-primary">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-sm">
+          <IconComponent className="h-4 w-4" />
+          Security Status
         </CardTitle>
-        <CardDescription className="text-green-700">
-          Customer personal information is now protected with advanced security measures
-        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="flex items-center gap-2 p-3 bg-white rounded-lg">
-            <EyeOff className="h-4 w-4 text-blue-600" />
-            <div>
-              <div className="font-medium text-sm">Data Masking</div>
-              <div className="text-xs text-muted-foreground">PII fields masked for non-super admins</div>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2 p-3 bg-white rounded-lg">
-            <Eye className="h-4 w-4 text-orange-600" />
-            <div>
-              <div className="font-medium text-sm">Enhanced Logging</div>
-              <div className="text-xs text-muted-foreground">Detailed audit trails for all access</div>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2 p-3 bg-white rounded-lg">
-            <Lock className="h-4 w-4 text-purple-600" />
-            <div>
-              <div className="font-medium text-sm">Access Control</div>
-              <div className="text-xs text-muted-foreground">Strict role-based permissions</div>
-            </div>
-          </div>
+      <CardContent className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">Access Level:</span>
+          <Badge variant={security.color as any}>{security.level}</Badge>
         </div>
-        
-        <div className="flex items-center gap-2 text-sm text-green-700">
-          <Shield className="h-4 w-4" />
-          <span>This addresses the security concern about potential customer data theft by hackers</span>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">Data Protection:</span>
+          <Badge variant={isDataMasked ? "default" : "destructive"}>
+            {isDataMasked ? "Masked" : "Unmasked"}
+          </Badge>
         </div>
+        <p className="text-xs text-muted-foreground">{security.description}</p>
+        {userRole === 'super_admin' && (
+          <div className="flex items-center gap-1 text-xs text-orange-600 dark:text-orange-400">
+            <AlertTriangle className="h-3 w-3" />
+            Enhanced security logging active
+          </div>
+        )}
       </CardContent>
     </Card>
   );

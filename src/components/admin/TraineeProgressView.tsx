@@ -17,6 +17,8 @@ import {
   Mail,
   Phone
 } from "lucide-react";
+import { SecurityStatusIndicator } from "@/components/SecurityStatusIndicator";
+import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
@@ -27,13 +29,15 @@ interface TraineeProgress {
   trainee_email: string;
   trainee_phone: string;
   trainee_company: string;
-  join_date: string;
+  join_date?: string;
   total_courses: number;
   completed_courses: number;
   in_progress_courses: number;
   overall_progress_percentage: number;
-  last_activity: string;
+  last_activity?: string;
   course_progress_details: any;
+  is_masked?: boolean;
+  role?: string;
 }
 
 interface TraineeStats {
@@ -63,11 +67,8 @@ const loadTraineeProgress = async () => {
       setLoading(true);
       
       // Use enhanced secure function with strict PII masking and audit logging
-      const { data, error } = await supabase.rpc('get_secured_admin_profiles', {
-        p_limit: 100,
-        p_offset: 0,
-        p_search_term: null
-      });
+      // Use enhanced secure function with strict PII masking and audit logging
+      const { data, error } = await supabase.rpc('get_masked_user_profiles');
       
       if (error) {
         throw error;
@@ -76,12 +77,14 @@ const loadTraineeProgress = async () => {
       // Transform secured profile data to trainee progress format
       const transformedData = (data || []).map((profile: any) => ({
         user_id: profile.user_id,
-        trainee_name: profile.masked_name,
-        trainee_email: profile.masked_email,
-        trainee_phone: profile.masked_phone,
+        trainee_name: profile.name,
+        trainee_email: profile.email,
+        trainee_phone: profile.phone,
         trainee_company: profile.company,
-        join_date: profile.join_date,
-        last_activity: profile.last_activity,
+        join_date: new Date().toISOString(), // Mock join date
+        last_activity: new Date().toISOString(), // Mock last activity  
+        is_masked: profile.is_masked,
+        role: profile.role,
         // Mock progress data - in production, this would come from learning analytics
         total_courses: 1,
         completed_courses: 0,
@@ -240,10 +243,19 @@ const loadTraineeProgress = async () => {
       {/* Trainees Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Trainee Progress Overview</CardTitle>
-          <CardDescription>
-            Monitor individual trainee progress and course completion status
-          </CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Trainee Progress Overview</CardTitle>
+              <CardDescription>
+                Monitor individual trainee progress and course completion status
+              </CardDescription>
+            </div>
+            <SecurityStatusIndicator 
+              isDataMasked={trainees.length > 0 ? trainees[0].is_masked : false}
+              userRole={trainees.length > 0 ? trainees[0].role : 'user'}
+              showDetails={false}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
@@ -264,9 +276,19 @@ const loadTraineeProgress = async () => {
                   <TableRow key={trainee.user_id}>
                     <TableCell>
                       <div className="space-y-1">
-                        <div className="font-medium">{trainee.trainee_name}</div>
+                        <SecurePIIDisplay 
+                          value={trainee.trainee_name} 
+                          type="name" 
+                          isMasked={trainee.is_masked}
+                          showMaskingIndicator={false}
+                        />
                         <div className="text-sm text-muted-foreground">
-                          {trainee.trainee_email}
+                          <SecurePIIDisplay 
+                            value={trainee.trainee_email} 
+                            type="email" 
+                            isMasked={trainee.is_masked}
+                            showMaskingIndicator={false}
+                          />
                         </div>
                       </div>
                     </TableCell>
