@@ -396,7 +396,7 @@ const Courses = () => {
                     </div>
                     <CardContent className="p-6">
                       <CardTitle className="text-lg mb-2 line-clamp-2">{course.title}</CardTitle>
-                      <CardDescription className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      <CardDescription className="text-sm text-gray-900 mb-4 line-clamp-3">
                         {course.description}
                       </CardDescription>
                       
