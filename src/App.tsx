@@ -234,8 +234,6 @@ const AppContent = () => {
             } />
             <Route path="/module/:moduleId" element={<ModulePage />} />
             <Route path="/course-catalog" element={<Courses />} />
-            {/* Redirect old courses route to course-catalog page */}
-            <Route path="/courses" element={<Navigate to="/course-catalog" replace />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/enterprise" element={<Business />} />
             <Route path="/about" element={<About />} />
