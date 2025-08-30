@@ -237,9 +237,7 @@ const AppContent = () => {
             {/* Redirect old courses route to course-catalog page */}
             <Route path="/courses" element={<Navigate to="/course-catalog" replace />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/business" element={<Business />} />
-            {/* Redirect old enterprise route to business page */}
-            <Route path="/enterprise" element={<Navigate to="/business" replace />} />
+            <Route path="/enterprise" element={<Business />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/article/:id" element={<Article />} />
