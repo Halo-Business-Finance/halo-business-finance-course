@@ -430,7 +430,7 @@ const Courses = () => {
                           )
                         ) : (
                           <Link to="/auth" className="w-full">
-                            <Button variant="outline" className="w-full gap-2">
+                            <Button className="w-full gap-2 bg-halo-navy text-white hover:bg-halo-navy/90">
                               <Lock className="h-4 w-4" />
                               Sign In to Enroll
                             </Button>
