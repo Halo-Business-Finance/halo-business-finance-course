@@ -386,7 +386,7 @@ const Courses = () => {
                       <img 
                         src={getCourseImage(index)} 
                         alt={course.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-center"
                       />
                       <div className="absolute top-4 right-4">
                         <Badge className={getLevelColor(course.level)}>
