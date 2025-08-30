@@ -379,7 +379,7 @@ const Courses = () => {
               </div>
 
               {/* Course Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
                 {filteredCourses.map((course, index) => (
                   <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
                     <div className="relative h-48 overflow-hidden">
@@ -395,8 +395,8 @@ const Courses = () => {
                       </div>
                     </div>
                     <CardContent className="p-6">
-                      <CardTitle className="text-lg mb-2 line-clamp-1">{course.title}</CardTitle>
-                      <CardDescription className="text-sm text-gray-900 mb-4 line-clamp-2">
+                      <CardTitle className="text-xl mb-2 line-clamp-2">{course.title}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground mb-4 line-clamp-3">
                         {course.description}
                       </CardDescription>
                       
