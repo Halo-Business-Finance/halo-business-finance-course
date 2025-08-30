@@ -27,21 +27,12 @@ import investmentBanker8 from "@/assets/investment-banker-8.jpg";
 import loanOfficer9 from "@/assets/loan-officer-9.jpg";
 import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 
-interface CourseModule {
+interface Course {
   id: string;
-  module_id: string;
   title: string;
   description: string;
-  duration: string;
-  skill_level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-  lessons_count: number;
-  order_index: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-  prerequisites?: string[];
-  lessons?: { title: string; order_index: number; type: 'video' | 'article' | 'assessment' }[];
-  totalLessons?: number;
+  level: 'beginner' | 'intermediate' | 'expert';
+  modules: any[];
 }
 
 const Courses = () => {
@@ -51,27 +42,8 @@ const Courses = () => {
   const [titleFilter, setTitleFilter] = useState<string>('');
   const { user } = useAuth();
 
-  // Use courseData directly instead of fetching from Supabase
-  const allModules = courseData.allCourses.flatMap(course => 
-    course.modules.map(module => ({
-      id: module.id,
-      module_id: module.id,
-      title: module.title,
-      description: module.description,
-      duration: module.duration,
-      skill_level: course.level as 'beginner' | 'intermediate' | 'advanced' | 'expert',
-      lessons_count: module.lessons,
-      order_index: 0,
-      is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      prerequisites: [],
-      lessons: [],
-      totalLessons: module.lessons,
-      course_title: course.title,
-      course_level: course.level
-    }))
-  );
+  // Use courseData directly for courses instead of individual modules
+  const allCourses = courseData.allCourses;
 
   useEffect(() => {
     if (user) {
@@ -84,21 +56,21 @@ const Courses = () => {
     
     try {
       const enrollmentChecks = await Promise.all(
-        allModules.map(async (module) => {
+        allCourses.map(async (course) => {
           const { data: enrollment } = await supabase
             .from('course_enrollments')
             .select('id')
             .eq('user_id', user.id)
-            .eq('course_id', module.module_id)
+            .eq('course_id', course.id)
             .eq('status', 'active')
             .single();
           
-          return { moduleId: module.module_id, isEnrolled: !!enrollment };
+          return { courseId: course.id, isEnrolled: !!enrollment };
         })
       );
 
-      const statusMap = enrollmentChecks.reduce((acc, { moduleId, isEnrolled }) => {
-        acc[moduleId] = isEnrolled;
+      const statusMap = enrollmentChecks.reduce((acc, { courseId, isEnrolled }) => {
+        acc[courseId] = isEnrolled;
         return acc;
       }, {} as Record<string, boolean>);
 
@@ -108,7 +80,7 @@ const Courses = () => {
     }
   };
 
-  const handleEnroll = async (moduleId: string) => {
+  const handleEnroll = async (courseId: string) => {
     if (!user) {
       toast({
         title: "Authentication Required",
@@ -123,7 +95,7 @@ const Courses = () => {
         .from('course_enrollments')
         .insert({
           user_id: user.id,
-          course_id: moduleId,
+          course_id: courseId,
           status: 'active'
         });
 
@@ -137,7 +109,7 @@ const Courses = () => {
         return;
       }
 
-      setEnrollmentStatus(prev => ({ ...prev, [moduleId]: true }));
+      setEnrollmentStatus(prev => ({ ...prev, [courseId]: true }));
       toast({
         title: "Enrollment Successful",
         description: "You have been enrolled in the course!",
@@ -239,19 +211,19 @@ const Courses = () => {
     return images[index % images.length];
   };
 
-  // Filter modules based on selected level and title
-  const filteredModules = allModules.filter(module => {
-    const matchesLevel = selectedLevel === 'all' || module.skill_level === selectedLevel;
-    const matchesTitle = titleFilter === '' || module.title.toLowerCase().includes(titleFilter.toLowerCase());
+  // Filter courses based on selected level and title
+  const filteredCourses = allCourses.filter(course => {
+    const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
+    const matchesTitle = titleFilter === '' || course.title.toLowerCase().includes(titleFilter.toLowerCase());
     return matchesLevel && matchesTitle;
   });
 
   // Calculate counts for each skill level
   const skillLevelCounts = {
-    all: allModules.length,
-    beginner: allModules.filter(m => m.skill_level === 'beginner').length,
-    intermediate: allModules.filter(m => m.skill_level === 'intermediate').length,
-    expert: allModules.filter(m => m.skill_level === 'expert' || m.skill_level === 'advanced').length,
+    all: allCourses.length,
+    beginner: allCourses.filter(c => c.level === 'beginner').length,
+    intermediate: allCourses.filter(c => c.level === 'intermediate').length,
+    expert: allCourses.filter(c => c.level === 'expert').length,
   };
 
   if (loading) {
@@ -354,15 +326,14 @@ const Courses = () => {
         </Alert>
       )}
 
-      {allModules.length === 0 && !user ? (
+      {allCourses.length === 0 && !user ? (
         <div className="text-center py-12 space-y-6">
           <Shield className="h-24 w-24 text-muted-foreground mx-auto" />
           <div>
             <h3 className="text-2xl font-bold mb-2">Secure Course Access</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Our military-grade security system protects all educational content. 
-              Enroll now to access over 50+ comprehensive modules on business finance, 
-              lending, and financial analysis.
+              Enroll now to access our comprehensive training programs.
             </p>
             <Link to="/auth">
               <Button size="lg" className="gap-2">
@@ -372,13 +343,13 @@ const Courses = () => {
             </Link>
           </div>
         </div>
-      ) : allModules.length === 0 ? (
+      ) : allCourses.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Courses Available</h3>
               <p className="text-muted-foreground">
-                Course modules will appear here once they are added by administrators.
+                Courses will appear here once they are added by administrators.
               </p>
             </CardContent>
           </Card>
@@ -401,27 +372,73 @@ const Courses = () => {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
                 <h2 className="text-xl sm:text-2xl font-bold">
                   {selectedLevel === 'all' 
-                    ? `Available Courses (${filteredModules.length})` 
-                    : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredModules.length})`
+                    ? `Available Courses (${filteredCourses.length})` 
+                    : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredCourses.length})`
                   }
                 </h2>
               </div>
 
               {/* Course Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
-                {filteredModules.map((module, index) => (
-                  <PublicModuleCard
-                    key={module.id}
-                    title={module.title}
-                    description={module.description}
-                    duration={module.duration || 'Self-paced'}
-                    lessons={module.totalLessons || module.lessons_count || 0}
-                    skillLevel={module.skill_level}
-                    moduleId={module.module_id}
-                    image={getCourseImage(index)}
-                    isAuthenticated={!!user}
-                    onEnrollClick={() => handleEnroll(module.module_id)}
-                  />
+                {filteredCourses.map((course, index) => (
+                  <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={getCourseImage(index)} 
+                        alt={course.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <Badge className={getLevelColor(course.level)}>
+                          {course.level}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardContent className="p-6">
+                      <CardTitle className="text-xl mb-2 line-clamp-2">{course.title}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                        {course.description}
+                      </CardDescription>
+                      
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="h-4 w-4" />
+                          <span>{course.modules.length} modules</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="h-4 w-4" />
+                          <span>{course.level}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        {user ? (
+                          enrollmentStatus[course.id] ? (
+                            <Link to={`/module/${course.modules[0]?.id}`} className="w-full">
+                              <Button className="w-full gap-2">
+                                <Check className="h-4 w-4" />
+                                Continue Learning
+                              </Button>
+                            </Link>
+                          ) : (
+                            <Button 
+                              onClick={() => handleEnroll(course.id)}
+                              className="w-full"
+                            >
+                              Enroll Now
+                            </Button>
+                          )
+                        ) : (
+                          <Link to="/auth" className="w-full">
+                            <Button variant="outline" className="w-full gap-2">
+                              <Lock className="h-4 w-4" />
+                              Sign In to Enroll
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
               
@@ -431,14 +448,10 @@ const Courses = () => {
                   <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
                   <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                     Join thousands of finance professionals who have advanced their careers with our comprehensive training programs.
-                    Start with our most popular course or explore our full catalog.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white">
-                      Browse All Courses
-                    </Button>
                     <Link to="/signup">
-                      <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy">
+                      <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                         Start Free Trial
                       </Button>
                     </Link>
