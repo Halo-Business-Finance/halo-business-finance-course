@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   Shield, 
   AlertTriangle, 
@@ -35,6 +36,7 @@ interface FixResult {
 }
 
 export const SecurityFixCenter = () => {
+  const { user } = useAuth();
   const [securityIssues, setSecurityIssues] = useState<SecurityIssue[]>([]);
   const [loading, setLoading] = useState(true);
   const [scanning, setScanning] = useState(false);
@@ -271,7 +273,7 @@ export const SecurityFixCenter = () => {
           .from('security_alerts')
           .update({ 
             resolved_at: new Date().toISOString(),
-            resolved_by: 'auto_fix_system'
+            resolved_by: user?.id || null
           })
           .in('id', alerts.map(a => a.id));
 
