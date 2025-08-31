@@ -165,7 +165,7 @@ export function AppSidebar() {
       variant="inset"
       className="bg-white border-gray-200"
     >
-      <SidebarContent>
+      <SidebarContent className="bg-white">
         {/* Welcome Message */}
         {user && !collapsed && (
           <div className="px-4 py-4 border-b border-gray-200">
