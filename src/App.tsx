@@ -147,10 +147,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
               variant="ghost"
               size="sm"
               onClick={() => setIsChatOpen(true)}
-              className="text-black hover:bg-black/10 p-1 h-8 w-8 flex-shrink-0"
+              className="text-black hover:bg-black/10 p-1 h-10 w-10 flex-shrink-0"
               title="Support"
             >
-              <MessageCircle className="h-4 w-4" />
+              <MessageCircle className="h-6 w-6" />
             </Button>
             <NotificationBell />
             <div className="text-xs min-w-0 flex-shrink-0">
