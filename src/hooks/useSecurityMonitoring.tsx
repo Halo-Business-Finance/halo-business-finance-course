@@ -14,18 +14,25 @@ export const useSecurityMonitoring = () => {
   const logSecurityEvent = async (event: SecurityEvent) => {
     if (!user) return;
 
-    // Only log actual security threats, not development activities
+    // Only log real security threats, not development noise
     const realSecurityEvents = [
+      'unauthorized_access_attempt',
+      'suspicious_activity', 
+      'potential_breach',
+      'authentication_failure',
+      'rate_limit_exceeded',
+      'malicious_injection_attempt',
       'suspicious_rapid_navigation',
       'potential_credential_paste',
       'multiple_auth_failures',
-      'unauthorized_access_attempt',
       'data_breach_attempt',
-      'malicious_injection_attempt'
+      'high_risk_session_detected',
+      'rapid_click_bot_behavior',
+      'code_injection_attempt'
     ];
 
     if (!realSecurityEvents.includes(event.type)) {
-      // Skip fake development events
+      // Skip fake development events - no logging
       return;
     }
 
@@ -57,7 +64,7 @@ export const useSecurityMonitoring = () => {
 
     const handleNavigation = () => {
       navigationCount++;
-      if (navigationCount > 50) { // Increased threshold to reduce false positives
+      if (navigationCount > 50) { // High threshold to reduce false positives
         logSecurityEvent({
           type: 'suspicious_rapid_navigation',
           severity: 'medium',
@@ -70,10 +77,7 @@ export const useSecurityMonitoring = () => {
       }
     };
 
-    // REMOVED: Console access monitoring (was generating fake events)
-    // This was causing "developer_tools_detected" spam
-
-    // Monitor for copy/paste of sensitive data
+    // Monitor for copy/paste of sensitive data only
     const handlePaste = (event: ClipboardEvent) => {
       const pastedText = event.clipboardData?.getData('text') || '';
       
@@ -100,7 +104,7 @@ export const useSecurityMonitoring = () => {
       }
     };
 
-    // Set up event listeners (removed console monitoring)
+    // Set up event listeners (NO console monitoring)
     window.addEventListener('beforeunload', handleNavigation);
     window.addEventListener('popstate', handleNavigation);
     document.addEventListener('paste', handlePaste);
@@ -144,9 +148,6 @@ export const useSecurityMonitoring = () => {
 
     // Initialize security monitoring only for actual threats
     const cleanup = detectSuspiciousActivity();
-
-    // REMOVED: Fake "user_session_started" event logging
-    // This was creating noise in security monitoring
 
     return cleanup;
   }, [user]);

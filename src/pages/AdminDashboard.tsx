@@ -338,6 +338,13 @@ const AdminDashboard = () => {
           console.warn('Security events query failed:', eventsError);
         } else if (!eventsError) {
           eventsData = securityEventsData || [];
+          // Focus on detecting real threats only
+          eventsData = eventsData?.filter(event => 
+            event.severity !== 'low' && 
+            event.event_type !== 'developer_tools_detected' &&
+            event.event_type !== 'profile_self_access' &&
+            event.event_type !== 'session_validation'
+          ) || [];
         }
       } catch (securityError) {
         console.warn('Could not load security events (insufficient permissions):', securityError);

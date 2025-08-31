@@ -8,13 +8,13 @@ export const SecurityMonitor = () => {
   const { logSecurityEvent } = useSecurityMonitoring();
   const [threatLevel, setThreatLevel] = useState(0);
 
-  // Military-grade security monitoring
+  // Real-time security monitoring focused on actual threats
   useEffect(() => {
     if (!user) return;
 
-    const initializeMilitaryGradeSecurity = async () => {
+    const initializeRealSecurityMonitoring = async () => {
       try {
-        // Enhanced session analysis
+        // Enhanced session analysis for actual security threats only
         const sessionData = {
           device_changed: localStorage.getItem('lastDevice') !== navigator.userAgent,
           location_anomaly: false, // Would need geolocation API
@@ -23,7 +23,7 @@ export const SecurityMonitor = () => {
           concurrent_sessions: 1
         };
 
-        // Analyze session security
+        // Analyze session security for real threats
         const { data: sessionAnalysis } = await supabase.functions.invoke('military-security-monitor', {
           body: {
             action: 'analyze_session',
@@ -37,7 +37,7 @@ export const SecurityMonitor = () => {
         if (sessionAnalysis?.session_risk_score) {
           setThreatLevel(sessionAnalysis.session_risk_score);
           
-          // Log high-risk sessions
+          // Only log high-risk sessions (actual security concerns)
           if (sessionAnalysis.session_risk_score >= 6) {
             logSecurityEvent({
               type: 'high_risk_session_detected',
@@ -51,25 +51,25 @@ export const SecurityMonitor = () => {
           }
         }
 
-        // Store device fingerprint
+        // Store device fingerprint for legitimate security tracking
         localStorage.setItem('lastDevice', navigator.userAgent);
 
       } catch (error) {
-        console.error('Military security initialization failed:', error);
+        console.error('Security initialization failed:', error);
       }
     };
 
-    // Advanced threat detection patterns
-    const detectSuspiciousActivity = () => {
+    // Real threat detection patterns
+    const detectActualThreats = () => {
       let rapidClickCount = 0;
       let lastClickTime = 0;
 
       const handleSuspiciousClick = () => {
         const now = Date.now();
-        if (now - lastClickTime < 100) { // Clicks faster than 100ms
+        if (now - lastClickTime < 50) { // Clicks faster than 50ms (likely bot)
           rapidClickCount++;
-          if (rapidClickCount > 10) {
-            // Potential bot behavior
+          if (rapidClickCount > 20) { // Much higher threshold for actual bots
+            // Potential bot behavior - actual security threat
             supabase.functions.invoke('military-security-monitor', {
               body: {
                 action: 'detect_threat',
@@ -92,7 +92,7 @@ export const SecurityMonitor = () => {
         lastClickTime = now;
       };
 
-      // Enhanced keyboard monitoring for injection attempts
+      // Enhanced keyboard monitoring for actual injection attempts
       const handleSuspiciousKeyboard = (e: KeyboardEvent) => {
         const input = e.target as HTMLInputElement;
         if (input && input.value) {
@@ -127,31 +127,8 @@ export const SecurityMonitor = () => {
         }
       };
 
-      // Console access detection (developer tools)
-      const detectConsoleAccess = () => {
-        const threshold = 160;
-        setInterval(() => {
-          if (window.outerHeight - window.innerHeight > threshold ||
-              window.outerWidth - window.innerWidth > threshold) {
-            logSecurityEvent({
-              type: 'developer_tools_detected',
-              severity: 'medium',
-              details: { 
-                potential_debugging: true,
-                window_dimensions: {
-                  outer: { width: window.outerWidth, height: window.outerHeight },
-                  inner: { width: window.innerWidth, height: window.innerHeight }
-                },
-                timestamp: new Date().toISOString()
-              }
-            });
-          }
-        }, 5000);
-      };
-
       document.addEventListener('click', handleSuspiciousClick);
       document.addEventListener('keydown', handleSuspiciousKeyboard);
-      detectConsoleAccess();
 
       return () => {
         document.removeEventListener('click', handleSuspiciousClick);
@@ -159,26 +136,16 @@ export const SecurityMonitor = () => {
       };
     };
 
-    // Initialize military-grade security
-    initializeMilitaryGradeSecurity();
+    // Initialize real security monitoring
+    initializeRealSecurityMonitoring();
     
-    // Track session start with enhanced logging
+    // Only track session start for legitimate security purposes
     if (!localStorage.getItem('sessionStart')) {
       localStorage.setItem('sessionStart', Date.now().toString());
-      logSecurityEvent({
-        type: 'military_grade_session_started',
-        severity: 'low',
-        details: { 
-          security_level: 'military_grade',
-          timestamp: new Date().toISOString(),
-          user_agent: navigator.userAgent,
-          screen_resolution: `${screen.width}x${screen.height}`,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-        }
-      });
+      // No logging for normal session starts - only log actual threats
     }
 
-    const cleanup = detectSuspiciousActivity();
+    const cleanup = detectActualThreats();
     return cleanup;
   }, [user, logSecurityEvent]);
 
