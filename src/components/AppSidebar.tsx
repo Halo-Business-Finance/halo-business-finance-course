@@ -50,33 +50,30 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   const { isAdmin } = useAdminRole();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCourseModules, setSelectedCourseModules] = useState([]);
+  const [modules, setModules] = useState([]);
 
-  // Fetch modules for the selected course
+  // Fetch modules directly
   useEffect(() => {
-    if (user && selectedCourse) {
-      fetchSelectedCourseModules();
+    if (user) {
+      fetchModules();
     } else {
-      setSelectedCourseModules([]);
+      setModules([]);
     }
-  }, [user, selectedCourse]);
+  }, [user]);
 
-  const fetchSelectedCourseModules = async () => {
-    if (!selectedCourse) return;
-
+  const fetchModules = async () => {
     try {
       const { data, error } = await supabase
         .from("course_modules")
         .select("*")
-        .like("module_id", `${selectedCourse.id}%`)
         .eq("is_active", true)
         .order("order_index");
 
       if (error) throw error;
-      setSelectedCourseModules(data || []);
+      setModules(data || []);
     } catch (error) {
-      console.error('Error fetching selected course modules:', error);
-      setSelectedCourseModules([]);
+      console.error('Error fetching modules:', error);
+      setModules([]);
     }
   };
 
@@ -228,21 +225,21 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
           <Separator className="bg-gradient-to-r from-border/50 to-transparent" />
         </div>
 
-        {/* Selected Course Modules */}
-        {selectedCourseModules.length > 0 && (
+        {/* Modules */}
+        {modules.length > 0 && (
           <SidebarGroup className="pt-2">
             <SidebarGroupLabel className="pb-3 mb-2">
               {!collapsed && (
                 <div className="flex-1">
                   <span className="text-sm font-semibold text-black tracking-wide">
-                    {selectedCourse?.title || 'Course Modules'}
+                    Modules
                   </span>
                 </div>
               )}
             </SidebarGroupLabel>
             <SidebarGroupContent className="space-y-3">
               <SidebarMenu className="space-y-3">
-                {selectedCourseModules.map((module: any, index) => {
+                {modules.map((module: any, index) => {
                   const isModuleLocked = module.is_locked;
                   const canAccess = !isModuleLocked || isAdmin;
                   const moduleUrl = `/module/${module.module_id}`;
@@ -309,16 +306,13 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
           </SidebarGroup>
         )}
 
-        {/* Show message when no course is selected */}
-        {selectedCourseModules.length === 0 && user && !collapsed && (
+        {/* Show message when no modules are available */}
+        {modules.length === 0 && user && !collapsed && (
           <SidebarGroup className="pt-2">
             <SidebarGroupContent>
               <div className="px-4 py-6 text-center">
                 <p className="text-xs text-black">
-                  {selectedCourse 
-                    ? 'No modules available for this course'
-                    : 'Select a course from the dashboard to see modules here'
-                  }
+                  No modules available yet
                 </p>
               </div>
             </SidebarGroupContent>
