@@ -19,7 +19,7 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 
 import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
-import { GamificationSystem } from "@/components/GamificationSystem";
+
 
 
 
@@ -604,9 +604,8 @@ const Dashboard = () => {
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
           <Tabs defaultValue="tools" className="w-full">
-            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-2 mb-8">
+            <TabsList className="grid w-full grid-cols-1 mb-8">
               <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
-              <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
             </TabsList>
 
 
@@ -624,22 +623,6 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="gamification" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Trophy className="h-5 w-5" />
-                    Gamification & Achievements
-                  </CardTitle>
-                  <CardDescription>
-                    Earn badges, compete on leaderboards, and track your achievements
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <GamificationSystem />
-                </CardContent>
-              </Card>
-            </TabsContent>
 
           </Tabs>
         </div>

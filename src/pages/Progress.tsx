@@ -9,6 +9,7 @@ import { LiveLearningStats } from "@/components/LiveLearningStats";
 import CourseHeader from "@/components/CourseHeader";
 import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
 import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
+import { GamificationSystem } from "@/components/GamificationSystem";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -184,8 +185,8 @@ const ProgressPage = () => {
             <TabsTrigger value="certificates" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Certificates
             </TabsTrigger>
-            <TabsTrigger value="achievements" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
-              Achievements
+            <TabsTrigger value="gamification" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
+              Gamification
             </TabsTrigger>
           </TabsList>
           
@@ -449,56 +450,22 @@ const ProgressPage = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="achievements" className="space-y-8 animate-fade-in">
+          <TabsContent value="gamification" className="space-y-8 animate-fade-in">
             <Card className="relative overflow-hidden border-0 shadow-lg bg-gradient-to-br from-background to-accent/5">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5 opacity-50" />
               <CardHeader className="relative z-10">
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <div className="p-2 rounded-lg bg-accent/10">
-                    <Gift className="h-6 w-6 text-accent" />
+                    <Trophy className="h-6 w-6 text-accent" />
                   </div>
-                  Achievements & Milestones
+                  Gamification & Achievements
                 </CardTitle>
                 <CardDescription className="text-base text-black">
-                  Unlock achievements as you progress through your learning journey
+                  Earn badges, compete on leaderboards, and track your achievements
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="grid gap-4">
-                  {achievements.map((achievement, index) => (
-                    <div 
-                      key={achievement.title}
-                      className={`flex items-center gap-4 p-4 rounded-lg border transition-all duration-200 ${
-                        achievement.earned 
-                          ? "bg-emerald-50 border-emerald-200 hover:bg-emerald-100" 
-                          : "bg-muted/30 border-border/50 hover:bg-muted/50"
-                      }`}
-                    >
-                      <div className={`p-3 rounded-full ${
-                        achievement.earned ? "bg-emerald-100" : "bg-muted"
-                      }`}>
-                        <Trophy className={`h-5 w-5 ${
-                          achievement.earned ? "text-emerald-600" : "text-muted-foreground"
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className={`font-semibold ${
-                          achievement.earned ? "text-emerald-900" : "text-black"
-                        }`}>
-                          {achievement.title}
-                        </h3>
-                        <p className="text-sm text-black">
-                          {achievement.description}
-                        </p>
-                      </div>
-                      {achievement.earned && (
-                        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
-                          Earned
-                        </Badge>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <GamificationSystem />
               </CardContent>
             </Card>
           </TabsContent>
