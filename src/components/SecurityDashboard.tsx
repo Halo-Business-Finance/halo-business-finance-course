@@ -55,9 +55,9 @@ export const SecurityDashboard = () => {
 
       if (error) throw error;
 
-      setThreatStats(data.threat_stats);
-      setRecentThreats(data.recent_threats);
-      setRecentEvents(data.recent_security_events);
+      setThreatStats(data?.threat_stats || null);
+      setRecentThreats(data?.recent_threats || []);
+      setRecentEvents(data?.recent_security_events || []);
     } catch (error) {
       console.error('Failed to load security data:', error);
       toast({
@@ -203,10 +203,10 @@ export const SecurityDashboard = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {recentThreats.length === 0 ? (
+            {(recentThreats || []).length === 0 ? (
               <p className="text-center text-muted-foreground py-4">No threats detected</p>
             ) : (
-              recentThreats.map((threat) => (
+              (recentThreats || []).map((threat) => (
                 <div key={threat.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
                     {getSeverityIcon(threat.severity)}
@@ -243,10 +243,10 @@ export const SecurityDashboard = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {recentEvents.length === 0 ? (
+            {(recentEvents || []).length === 0 ? (
               <p className="text-center text-muted-foreground py-4">No recent events</p>
             ) : (
-              recentEvents.map((event) => (
+              (recentEvents || []).map((event) => (
                 <div key={event.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
                     {getSeverityIcon(event.severity)}
