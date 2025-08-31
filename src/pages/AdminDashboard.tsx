@@ -309,26 +309,22 @@ const AdminDashboard = () => {
       // Get active admins based on recent CMS and course management activity
       let activeAdmins = 0;
       try {
-        const { data: activeAdminsData } = await supabase
-          .from('profiles')
-          .select(`
-            name, 
-            email, 
-            user_id,
-            user_roles!inner(role, is_active),
-            admin_audit_log!inner(created_at)
-          `)
-          .eq('user_roles.is_active', true)
-          .in('user_roles.role', ['admin', 'super_admin'])
-          .gte('admin_audit_log.created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
-
+        // Use RPC call to get active admins with recent activity
+        const { data: activeAdminsData, error } = await supabase.rpc('get_active_admins_with_activity');
+        
+        if (error) {
+          throw error;
+        }
+        
         activeAdmins = activeAdminsData?.length || 0;
+        console.log('Active admins from activity:', activeAdmins, activeAdminsData);
       } catch (error) {
-        console.warn('Could not fetch active admins from CMS/course activity, falling back to role count');
-        // Fallback to counting role assignments
+        console.warn('Could not fetch active admins from activity, falling back to role count:', error);
+        // Fallback to counting role assignments from userRolesData
         activeAdmins = userRolesData.filter((role: UserRole) => 
           role.is_active && ['admin', 'super_admin'].includes(role.role)
         ).length;
+        console.log('Active admins from fallback:', activeAdmins);
       }
 
       // Calculate stats from the data
