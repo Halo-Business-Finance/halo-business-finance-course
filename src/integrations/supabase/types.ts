@@ -2879,6 +2879,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_privacy_consents: {
+        Row: {
+          consent_given: boolean
+          consent_timestamp: string | null
+          consent_type: string
+          consent_version: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          updated_at: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          consent_given?: boolean
+          consent_timestamp?: string | null
+          consent_type: string
+          consent_version?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          consent_given?: boolean
+          consent_timestamp?: string | null
+          consent_type?: string
+          consent_version?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           completed_at: string | null
@@ -3226,6 +3265,10 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
+      cleanup_old_behavioral_data: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_old_security_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -3324,6 +3367,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      encrypt_pii_data: {
+        Args: { data_text: string; encryption_key?: string }
+        Returns: string
+      }
       encrypt_sensitive_data: {
         Args: { context?: string; plaintext: string }
         Returns: string
@@ -3356,6 +3403,10 @@ export type Database = {
       }
       evaluate_zero_trust_access: {
         Args: { p_context: Json; p_resource_path: string; p_user_id: string }
+        Returns: Json
+      }
+      export_user_data: {
+        Args: { target_user_id: string }
         Returns: Json
       }
       get_admin_all_users: {
@@ -3632,6 +3683,21 @@ export type Database = {
           status: string
         }[]
       }
+      get_secure_leads_encrypted: {
+        Args: { p_limit?: number; p_offset?: number; p_status?: string }
+        Returns: {
+          access_level: string
+          company: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          is_masked: boolean
+          last_name: string
+          phone: string
+          status: string
+        }[]
+      }
       get_secure_profile_data: {
         Args: { target_user_id: string }
         Returns: {
@@ -3646,6 +3712,19 @@ export type Database = {
           state: string
           title: string
           updated_at: string
+          user_id: string
+        }[]
+      }
+      get_secure_profiles_with_encryption: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          company: string
+          email: string
+          is_masked: boolean
+          location: string
+          name: string
+          phone: string
+          role: string
           user_id: string
         }[]
       }
