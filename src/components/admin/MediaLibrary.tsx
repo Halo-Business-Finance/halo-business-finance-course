@@ -397,8 +397,8 @@ export function MediaLibrary() {
 
     console.log('Creating folder with name:', newFolderName.trim());
     
-    // Create folder path - always create at root level regardless of current view
-    const newFolderPath = '/' + newFolderName.trim();
+    // Create folder path - if current folder is "all", create at root level
+    const newFolderPath = currentFolder === 'all' ? '/' + newFolderName.trim() : currentFolder + (currentFolder.endsWith('/') ? '' : '/') + newFolderName.trim();
     
     console.log('New folder path will be:', newFolderPath);
     
@@ -406,15 +406,29 @@ export function MediaLibrary() {
     try {
       const placeholderContent = new Blob([''], { type: 'text/plain' });
       
+      console.log('Attempting to upload .keep file to:', `${newFolderPath}/.keep`);
+      
       // Try to upload the .keep file (may fail if it already exists)
       const { error: storageError } = await supabase.storage
         .from('cms-media')
         .upload(`${newFolderPath}/.keep`, placeholderContent);
 
+      if (storageError) {
+        console.log('Storage upload error:', storageError);
+        // Don't throw error if file already exists
+        if (!storageError.message.includes('already exists')) {
+          throw storageError;
+        }
+      } else {
+        console.log('Storage upload successful');
+      }
+
       // Get public URL for the placeholder file (whether we just created it or it already exists)
       const { data: publicUrlData } = supabase.storage
         .from('cms-media')
         .getPublicUrl(`${newFolderPath}/.keep`);
+
+      console.log('Public URL generated:', publicUrlData.publicUrl);
 
       // Check if database record already exists
       const { data: existingRecord, error: checkError } = await supabase
@@ -424,8 +438,11 @@ export function MediaLibrary() {
         .eq('filename', '.keep')
         .single();
 
+      console.log('Existing record check:', { existingRecord, checkError });
+
       // Only create database record if it doesn't exist
-      if (!existingRecord && !checkError) {
+      if (!existingRecord) {
+        console.log('Creating database record for .keep file');
         const { error: dbError } = await supabase
           .from('cms_media')
           .insert({
@@ -440,7 +457,14 @@ export function MediaLibrary() {
             caption: `Placeholder file for ${newFolderPath} folder`,
           });
 
-        if (dbError) throw dbError;
+        if (dbError) {
+          console.error('Database insert error:', dbError);
+          throw dbError;
+        } else {
+          console.log('Database record created successfully');
+        }
+      } else {
+        console.log('Database record already exists, skipping insert');
       }
 
       toast({
