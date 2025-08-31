@@ -334,33 +334,8 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto px-4 py-6 lg:py-8">
-        {/* Header Section */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
-                Learning Dashboard
-              </h1>
-              <p className="text-muted-foreground mt-2">
-                Your personalized financial education journey
-              </p>
-            </div>
-          </div>
-
-          {/* Live Learning Stats Widget */}
-          <LiveLearningStats />
-
-          {/* Course Header - Business Finance Mastery */}
-          <CourseHeader 
-            progress={75}
-            totalModules={flattenedModules.length}
-            completedModules={Math.floor(flattenedModules.length * 0.75)}
-            onContinueLearning={() => setCurrentFilterLevel(0)}
-          />
-
-          {/* Instructor Information */}
-          <InstructorInfo />
-        </div>
+        {/* Instructor Information */}
+        <InstructorInfo />
 
         {/* Learning Dashboard - Moved below Instructor Information */}
         <div className="container mx-auto px-4 mb-8">

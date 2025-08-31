@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Clock, CheckCircle, Target, Award, Lock, Star, BookOpen, Calendar, TrendingUp, Zap, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { LiveLearningStats } from "@/components/LiveLearningStats";
+import CourseHeader from "@/components/CourseHeader";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -135,15 +137,40 @@ const ProgressPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container mx-auto p-6 space-y-8">
+        {/* Learning Dashboard Header */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
+                Learning Dashboard
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Your personalized financial education journey
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Learning Stats Widget */}
+        <LiveLearningStats />
+
+        {/* Course Header - Business Finance Mastery */}
+        <CourseHeader 
+          progress={75}
+          totalModules={8} // Total modules from moduleProgress array
+          completedModules={0} // Count completed modules from moduleProgress
+          onContinueLearning={() => {}}
+        />
+
         {/* Hero Section */}
         <div className="text-center space-y-4 py-8 animate-fade-in">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
             <Target className="h-5 w-5 text-primary" />
             <span className="text-sm font-medium text-primary">Learning Progress</span>
           </div>
-          <h1 className="text-4xl font-bold text-black">
+          <h2 className="text-4xl font-bold text-black">
             Your Learning Journey
-          </h1>
+          </h2>
           <p className="text-lg text-black max-w-2xl mx-auto">
             Track your progress through the comprehensive Halo Business Finance certification program
           </p>
