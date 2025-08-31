@@ -929,9 +929,11 @@ export function MediaLibrary() {
   };
 
   const filteredMedia = media.filter(item =>
-    item.original_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    // Hide .keep placeholder files
+    item.filename !== '.keep' &&
+    (item.original_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.alt_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+    item.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
   );
 
   if (loading) {
