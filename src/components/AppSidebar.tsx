@@ -37,7 +37,7 @@ const mainNavItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "My Course", url: "/my-course", icon: BarChart3 },
   { title: "Learning Resources", url: "/resources", icon: FileText },
-  { title: "Support", url: "#support", icon: LifeBuoy, action: "openSupport" },
+  { title: "Live Support", url: "#support", icon: LifeBuoy, action: "openSupport" },
   { title: "My Account", url: "/my-account", icon: User },
 ];
 
