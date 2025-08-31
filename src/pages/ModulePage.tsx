@@ -37,13 +37,28 @@ const ModulePage = () => {
       
       console.log('Raw moduleId from URL:', moduleId);
       
+      // Create a mapping from URL patterns to actual database module_ids
+      const moduleIdMappings: { [key: string]: string } = {
+        'sba-7(a)-loans': 'sba-7a-loans',
+        'sba-7(a)-module-1': 'sba-7a-loans',
+        'sba-504': 'sba-504-loans',
+        'business-line-of-credit': 'business-line-of-credit',
+        'capital-markets': 'capital-markets',
+        'lending-process': 'lending-process',
+        'term-loans': 'term-loans',
+        'usda-bi': 'usda-bi-loans',
+        'working-capital': 'working-capital'
+      };
+      
       // Extract the base module name from the URL parameter
-      // Convert "sba-7(a)-loans-beginner" to "sba-7a-loans"
       let cleanModuleId = moduleId
-        .replace(/\([^)]*\)/g, '') // Remove parentheses and content inside
         .replace(/-beginner$|-intermediate$|-advanced$/, '') // Remove skill level suffix
-        .replace(/--+/g, '-') // Replace multiple dashes with single dash
-        .replace(/-$/, ''); // Remove trailing dash
+        .replace(/-module-\d+$/, ''); // Remove module number suffix
+      
+      // Check if we have a direct mapping
+      if (moduleIdMappings[cleanModuleId]) {
+        cleanModuleId = moduleIdMappings[cleanModuleId];
+      }
       
       console.log('Cleaned moduleId for database query:', cleanModuleId);
       
