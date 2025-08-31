@@ -179,11 +179,11 @@ export function AppSidebar() {
                 <button 
                   onClick={handleSignOut}
                   disabled={isLoading}
-                  className="flex items-center gap-1 text-white/80 hover:text-white hover:bg-white/10 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
+                  className="flex items-center gap-1 text-white hover:bg-white/10 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
                   title="Sign Out"
                 >
-                  <LogOut className="h-4 w-4" />
-                  {!collapsed && <span className="text-xs">{isLoading ? "..." : "Sign Out"}</span>}
+                  <LogOut className="h-4 w-4 text-halo-orange" />
+                  {!collapsed && <span className="text-xs text-white">{isLoading ? "..." : "Sign Out"}</span>}
                 </button>
               </div>
             </div>
