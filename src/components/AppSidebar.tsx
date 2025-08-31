@@ -275,7 +275,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                              {!collapsed && (
                                <div className="flex-1 min-w-0">
                                  <div className="flex items-center justify-between">
-                                       <h3 className="text-sm font-medium text-black leading-tight truncate transition-colors">
+                                       <h3 className="text-xs font-medium text-black leading-tight truncate transition-colors">
                                          {module.title}
                                        </h3>
                                      
@@ -289,7 +289,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                                    
                                    {/* Subtle description for available modules */}
                                    {!isModuleLocked && (
-                                      <p className="text-sm text-black mt-1 transition-opacity duration-300">
+                                      <p className="text-xs text-black mt-1 transition-opacity duration-300">
                                         Ready to start
                                       </p>
                                    )}
