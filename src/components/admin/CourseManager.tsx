@@ -256,9 +256,9 @@ export function CourseManager({}: CourseManagerProps) {
                             </div>
                             
                             <div>
-                              <div className="font-medium">{course.title}</div>
+                              <div className="font-medium text-left">{course.title}</div>
                               <div className="w-full h-px bg-border mt-1 mb-2"></div>
-                              <div className="text-sm text-muted-foreground line-clamp-1">
+                              <div className="text-sm text-muted-foreground line-clamp-1 text-left">
                                 {course.description}
                               </div>
                             </div>
