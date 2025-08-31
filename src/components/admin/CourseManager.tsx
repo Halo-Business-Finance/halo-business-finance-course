@@ -250,12 +250,9 @@ export function CourseManager({}: CourseManagerProps) {
                               />
                             </div>
                             
-                            <Badge 
-                              className={skillLevels.find(level => level.value === course.level)?.color}
-                            >
-                              {skillLevels.find(level => level.value === course.level)?.icon}{" "}
+                            <div className="text-sm font-medium text-black">
                               {course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
-                            </Badge>
+                            </div>
                             <div>
                               <div className="font-medium">{course.title}</div>
                               <div className="text-sm text-muted-foreground line-clamp-1">
