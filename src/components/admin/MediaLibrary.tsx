@@ -401,33 +401,43 @@ export function MediaLibrary() {
     // Create a placeholder file to create the folder structure in storage
     try {
       const placeholderContent = new Blob([''], { type: 'text/plain' });
+      
+      // Try to upload the .keep file (may fail if it already exists)
       const { error: storageError } = await supabase.storage
         .from('cms-media')
         .upload(`${newFolderPath}/.keep`, placeholderContent);
 
-      if (storageError) throw storageError;
-
-      // Get public URL for the placeholder file
+      // Get public URL for the placeholder file (whether we just created it or it already exists)
       const { data: publicUrlData } = supabase.storage
         .from('cms-media')
         .getPublicUrl(`${newFolderPath}/.keep`);
 
-      // Create a database record for the folder placeholder
-      const { error: dbError } = await supabase
+      // Check if database record already exists
+      const { data: existingRecord, error: checkError } = await supabase
         .from('cms_media')
-        .insert({
-          filename: '.keep',
-          original_name: '.keep',
-          file_type: 'text/plain',
-          file_size: 0,
-          storage_path: `${newFolderPath}/.keep`,
-          public_url: publicUrlData.publicUrl,
-          folder_path: newFolderPath,
-          alt_text: 'Folder placeholder',
-          caption: `Placeholder file for ${newFolderPath} folder`,
-        });
+        .select('id')
+        .eq('folder_path', newFolderPath)
+        .eq('filename', '.keep')
+        .single();
 
-      if (dbError) throw dbError;
+      // Only create database record if it doesn't exist
+      if (!existingRecord && !checkError) {
+        const { error: dbError } = await supabase
+          .from('cms_media')
+          .insert({
+            filename: '.keep',
+            original_name: '.keep',
+            file_type: 'text/plain',
+            file_size: 0,
+            storage_path: `${newFolderPath}/.keep`,
+            public_url: publicUrlData.publicUrl,
+            folder_path: newFolderPath,
+            alt_text: 'Folder placeholder',
+            caption: `Placeholder file for ${newFolderPath} folder`,
+          });
+
+        if (dbError) throw dbError;
+      }
 
       toast({
         title: "Success",
