@@ -5,11 +5,21 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap } from "lucide-react";
-import { courseData } from "@/data/courseData";
+import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download } from "lucide-react";
 import { LessonModal } from "@/components/LessonModal";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+
+interface Lesson {
+  id: string;
+  title: string;
+  type: 'video' | 'reading' | 'quiz' | 'document' | 'interactive';
+  duration: string;
+  completed: boolean;
+  content?: any;
+  url?: string;
+  order_index: number;
+}
 
 const ModulePage = () => {
   const { moduleId } = useParams();
@@ -18,84 +28,135 @@ const ModulePage = () => {
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
   const [module, setModule] = useState<any>(null);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Define lessons array at the top level to avoid undefined errors
-  const lessons = [
-    {
-      title: "Introduction & Overview",
-      type: "video",
-      duration: "15 min",
-      completed: false // Will be updated when we have progress tracking
-    },
-    {
-      title: "Core Concepts",
-      type: "reading",
-      duration: "20 min", 
-      completed: false
-    },
-    {
-      title: "Interactive Calculator Exercise",
-      type: "interactive",
-      duration: "25 min",
-      completed: false
-    },
-    {
-      title: "Case Study Analysis",
-      type: "assignment",
-      duration: "30 min",
-      completed: false
-    },
-    {
-      title: "Hands-on Scenario Simulation",
-      type: "interactive",
-      duration: "35 min",
-      completed: false
-    },
-    {
-      title: "Interactive Quiz",
-      type: "quiz",
-      duration: "15 min",
-      completed: false
-    },
-    {
-      title: "Drag & Drop Activity",
-      type: "interactive", 
-      duration: "20 min",
-      completed: false
-    }
-  ];
-
   useEffect(() => {
-    const fetchModule = async () => {
+    const fetchModuleAndContent = async () => {
       if (!moduleId) return;
       
       try {
-        // First try to get from database
-        const { data: dbModule, error } = await supabase
+        // Fetch module data
+        const { data: dbModule, error: moduleError } = await supabase
           .from('course_modules')
           .select('*')
           .eq('module_id', moduleId)
           .single();
 
-        if (dbModule) {
-          setModule(dbModule);
-        } else {
-          // Fallback to courseData for backwards compatibility
-          const fallbackModule = courseData.modules.find(m => m.id === moduleId);
-          setModule(fallbackModule);
+        if (moduleError) {
+          console.error('Error fetching module:', moduleError);
+          setLoading(false);
+          return;
         }
+
+        setModule(dbModule);
+
+        // Fetch all content types for this module
+        const [videosResponse, articlesResponse, assessmentsResponse, documentsResponse] = await Promise.all([
+          supabase
+            .from('course_videos')
+            .select('*')
+            .eq('module_id', moduleId)
+            .eq('is_active', true)
+            .order('order_index'),
+          
+          supabase
+            .from('course_articles')
+            .select('*')
+            .eq('module_id', moduleId)
+            .eq('is_published', true)
+            .order('order_index'),
+          
+          supabase
+            .from('course_assessments')
+            .select('*')
+            .eq('module_id', moduleId)
+            .order('order_index'),
+          
+          supabase
+            .from('course_documents')
+            .select('*')
+            .eq('module_id', moduleId)
+            .order('title')
+        ]);
+
+        // Combine all content into lessons array
+        const allLessons: Lesson[] = [];
+
+        // Add videos
+        if (videosResponse.data) {
+          videosResponse.data.forEach(video => {
+            allLessons.push({
+              id: video.id,
+              title: video.title,
+              type: 'video',
+              duration: video.duration_seconds ? `${Math.round(video.duration_seconds / 60)} min` : '15 min',
+              completed: false, // TODO: Get from user progress
+              content: video,
+              url: video.video_url,
+              order_index: video.order_index
+            });
+          });
+        }
+
+        // Add articles
+        if (articlesResponse.data) {
+          articlesResponse.data.forEach(article => {
+            allLessons.push({
+              id: article.id,
+              title: article.title,
+              type: 'reading',
+              duration: article.reading_time_minutes ? `${article.reading_time_minutes} min` : '10 min',
+              completed: false, // TODO: Get from user progress
+              content: article,
+              order_index: article.order_index
+            });
+          });
+        }
+
+        // Add assessments
+        if (assessmentsResponse.data) {
+          assessmentsResponse.data.forEach(assessment => {
+            allLessons.push({
+              id: assessment.id,
+              title: assessment.title,
+              type: 'quiz',
+              duration: assessment.time_limit_minutes ? `${assessment.time_limit_minutes} min` : '20 min',
+              completed: false, // TODO: Get from user progress
+              content: assessment,
+              order_index: assessment.order_index
+            });
+          });
+        }
+
+        // Add documents
+        if (documentsResponse.data) {
+          documentsResponse.data.forEach(document => {
+            allLessons.push({
+              id: document.id,
+              title: document.title,
+              type: 'document',
+              duration: '5 min',
+              completed: false,
+              content: document,
+              url: document.file_url,
+              order_index: 0 // Documents don't have order_index, put them at the end
+            });
+          });
+        }
+
+        // Sort by order_index
+        allLessons.sort((a, b) => a.order_index - b.order_index);
+        setLessons(allLessons);
+
       } catch (error) {
-        console.error('Error fetching module:', error);
-        // Fallback to courseData
-        const fallbackModule = courseData.modules.find(m => m.id === moduleId);
-        setModule(fallbackModule);
+        console.error('Error fetching module content:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchModule();
+    fetchModuleAndContent();
   }, [moduleId]);
 
   if (loading) {
@@ -147,8 +208,8 @@ const ModulePage = () => {
     switch (type) {
       case "video": return <Video className="h-4 w-4" />;
       case "reading": return <FileText className="h-4 w-4" />;
-      case "assignment": return <BookOpen className="h-4 w-4" />;
       case "quiz": return <Users2 className="h-4 w-4" />;
+      case "document": return <Download className="h-4 w-4" />;
       case "interactive": return <Zap className="h-4 w-4" />;
       default: return <BookOpen className="h-4 w-4" />;
     }
@@ -171,7 +232,7 @@ const ModulePage = () => {
             <div className="h-6 w-px bg-border" />
             <div>
               <h1 className="text-xl font-semibold">{module.title}</h1>
-              <p className="text-sm text-muted-foreground">{module.duration || '45 minutes'} • {module.lessons_count || 6} lessons</p>
+              <p className="text-sm text-muted-foreground">{module.duration || '45 minutes'} • {lessons.length} lessons</p>
             </div>
           </div>
         </div>
