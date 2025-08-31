@@ -14,7 +14,6 @@ import {
   LifeBuoy
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,7 +45,6 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
-  const { selectedCourse } = useCourseSelection();
   const { isAdmin } = useAdminRole();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -62,6 +60,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   }, [user]);
 
   const fetchModules = async () => {
+    console.log('Fetching modules...');
     try {
       const { data, error } = await supabase
         .from("course_modules")
@@ -69,6 +68,8 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
         .eq("is_active", true)
         .order("order_index");
 
+      console.log('Modules data:', data);
+      console.log('Modules error:', error);
       if (error) throw error;
       setModules(data || []);
     } catch (error) {
