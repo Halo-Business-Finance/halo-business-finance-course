@@ -15,7 +15,7 @@ import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
-import { LearningAnalytics } from "@/components/LearningAnalytics";
+
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 import { SocialLearningHub } from "@/components/SocialLearningHub";
 import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
@@ -603,30 +603,13 @@ const Dashboard = () => {
 
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
-          <Tabs defaultValue="analytics" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-8">
-              <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
+          <Tabs defaultValue="social" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8">
               <TabsTrigger value="social" className="text-xs">Social Hub</TabsTrigger>
               <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
               <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
               <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
-
-
-
-            <TabsContent value="analytics" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Learning Analytics Dashboard</CardTitle>
-                  <CardDescription>
-                    Comprehensive analytics to optimize your learning experience
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <LearningAnalytics />
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             <TabsContent value="social" className="mt-6">
               <Card>
