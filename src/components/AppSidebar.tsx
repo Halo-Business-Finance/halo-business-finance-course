@@ -214,7 +214,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                        className={`w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200`}
                      >
                         <item.icon className="h-5 w-5 text-halo-orange" />
-                        {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
+                        {!collapsed && <span className="text-black text-xs font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -338,7 +338,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                          className="w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200"
                        >
                           <LogIn className="h-5 w-5 text-halo-orange" />
-                          {!collapsed && <span className="text-black text-sm font-medium">Sign In</span>}
+                          {!collapsed && <span className="text-black text-xs font-medium">Sign In</span>}
                        </button>
                      </SidebarMenuButton>
                    </SidebarMenuItem>
