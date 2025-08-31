@@ -3409,6 +3409,18 @@ export type Database = {
         Args: { target_user_id: string }
         Returns: Json
       }
+      get_active_admins_with_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          email: string
+          is_active: boolean
+          last_activity: string
+          name: string
+          recent_activity_count: number
+          role: string
+          user_id: string
+        }[]
+      }
       get_admin_all_users: {
         Args: Record<PropertyKey, never>
         Returns: {

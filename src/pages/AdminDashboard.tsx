@@ -316,7 +316,7 @@ const AdminDashboard = () => {
           throw error;
         }
         
-        activeAdmins = activeAdminsData?.length || 0;
+        activeAdmins = Array.isArray(activeAdminsData) ? activeAdminsData.length : 0;
         console.log('Active admins from activity:', activeAdmins, activeAdminsData);
       } catch (error) {
         console.warn('Could not fetch active admins from activity, falling back to role count:', error);
