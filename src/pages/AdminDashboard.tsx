@@ -1,4 +1,4 @@
-// Admin Dashboard with User Management
+// Admin Dashboard with User Management - Updated
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
