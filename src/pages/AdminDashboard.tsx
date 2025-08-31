@@ -306,12 +306,18 @@ const AdminDashboard = () => {
       setUserRoles(userRolesData);
       setSecurityEvents(eventsData || []);
       
+      // Debug logging
+      console.log('Loaded userRolesData:', userRolesData);
+      console.log('Current user:', user);
+      console.log('Current user role:', userRole);
 
       // Calculate stats from the data
       const totalUsers = new Set(userRolesData.map((role: UserRole) => role.user_id)).size;
-      const activeAdmins = userRolesData.filter((role: UserRole) => 
-        role.is_active && ['admin', 'super_admin'].includes(role.role)
-      ).length;
+      const activeAdmins = userRolesData.filter((role: UserRole) => {
+        console.log('Checking role:', role.role, 'is_active:', role.is_active, 'user_id:', role.user_id);
+        return role.is_active && ['admin', 'super_admin'].includes(role.role);
+      }).length;
+      console.log('Active admins count:', activeAdmins);
       const recentEvents = eventsData?.filter(event => 
         event.created_at && new Date(event.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
       ).length || 0;
