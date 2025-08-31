@@ -371,7 +371,7 @@ const Dashboard = () => {
                 <>
                   {/* Level 0: Course Program Cards */}
                   {currentFilterLevel === 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                       {courseData.allCourses
                         .filter((course, index, self) => 
                           index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
