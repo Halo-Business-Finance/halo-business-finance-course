@@ -17,7 +17,7 @@ import InstructorInfo from "@/components/InstructorInfo";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
-import { SocialLearningHub } from "@/components/SocialLearningHub";
+
 import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
 import { GamificationSystem } from "@/components/GamificationSystem";
 
@@ -603,27 +603,13 @@ const Dashboard = () => {
 
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
-          <Tabs defaultValue="social" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8">
-              <TabsTrigger value="social" className="text-xs">Social Hub</TabsTrigger>
+          <Tabs defaultValue="tools" className="w-full">
+            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-3 mb-8">
               <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
               <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
               <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="social" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Social Learning Hub</CardTitle>
-                  <CardDescription>
-                    Connect with peers, participate in discussions, and learn together
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <SocialLearningHub />
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             <TabsContent value="tools" className="mt-6">
               <Card>
