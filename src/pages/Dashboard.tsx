@@ -389,15 +389,13 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
-      {/* Business Finance Mastery Header - Primary Dashboard Header */}
-      <div className="container mx-auto px-4 pt-6 lg:pt-8">
-        <CourseHeader 
-          progress={75}
-          totalModules={flattenedModules.length}
-          completedModules={Math.floor(flattenedModules.length * 0.75)}
-          onContinueLearning={() => setCurrentFilterLevel(0)}
-        />
-      </div>
+      {/* Business Finance Mastery Header - Full Width Connected */}
+      <CourseHeader 
+        progress={75}
+        totalModules={flattenedModules.length}
+        completedModules={Math.floor(flattenedModules.length * 0.75)}
+        onContinueLearning={() => setCurrentFilterLevel(0)}
+      />
 
       {/* Main Dashboard Content */}
       <div className="container mx-auto px-4 py-6 lg:py-8">

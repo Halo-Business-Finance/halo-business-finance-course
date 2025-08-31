@@ -53,9 +53,9 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
   };
 
   return (
-    <div className="relative overflow-hidden bg-halo-navy rounded-2xl shadow-hero border border-border">
+    <div className="relative overflow-hidden bg-halo-navy shadow-hero border-b border-border w-full">
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
-      <div className="relative px-8 py-12 lg:px-12 lg:py-16">
+      <div className="relative px-4 lg:px-8 py-12 lg:py-16 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
