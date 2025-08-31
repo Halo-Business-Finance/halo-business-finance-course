@@ -635,11 +635,7 @@ export function MediaLibrary() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold">Media Library</h3>
-          <p className="text-sm text-muted-foreground">
-            Manage your images, videos, and documents
-          </p>
+        <div className="flex items-center space-x-2">
         </div>
 
         <div className="flex items-center space-x-2">
