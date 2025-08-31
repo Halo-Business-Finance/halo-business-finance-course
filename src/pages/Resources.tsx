@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play, Zap, TrendingUp } from "lucide-react";
+import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play, Zap, TrendingUp, Calculator } from "lucide-react";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ToolModal } from "@/components/tools/ToolModal";
 import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { RealTimeMarketData } from "@/components/RealTimeMarketData";
+import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
 
 const ResourcesPage = () => {
   const [documents, setDocuments] = useState<any[]>([]);
@@ -138,6 +139,21 @@ const ResourcesPage = () => {
             </CardHeader>
             <CardContent>
               <InteractiveLessonComponents />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calculator className="h-5 w-5" />
+                Interactive Financial Tools
+              </CardTitle>
+              <CardDescription>
+                Practice with real-world financial calculators and simulators
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <InteractiveFinancialTools />
             </CardContent>
           </Card>
         </TabsContent>

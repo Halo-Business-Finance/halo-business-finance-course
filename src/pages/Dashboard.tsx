@@ -18,7 +18,7 @@ import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 
-import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
+
 
 
 
@@ -601,31 +601,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Feature Showcase Tabs */}
-        <div className="mt-12">
-          <Tabs defaultValue="tools" className="w-full">
-            <TabsList className="grid w-full grid-cols-1 mb-8">
-              <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
-            </TabsList>
-
-
-            <TabsContent value="tools" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Interactive Financial Tools</CardTitle>
-                  <CardDescription>
-                    Practice with real-world financial calculators and simulators
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <InteractiveFinancialTools />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-
-          </Tabs>
-        </div>
 
         {/* Module Detail Modal */}
         {selectedModule && (
