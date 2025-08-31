@@ -14,6 +14,21 @@ export const useSecurityMonitoring = () => {
   const logSecurityEvent = async (event: SecurityEvent) => {
     if (!user) return;
 
+    // Only log actual security threats, not development activities
+    const realSecurityEvents = [
+      'suspicious_rapid_navigation',
+      'potential_credential_paste',
+      'multiple_auth_failures',
+      'unauthorized_access_attempt',
+      'data_breach_attempt',
+      'malicious_injection_attempt'
+    ];
+
+    if (!realSecurityEvents.includes(event.type)) {
+      // Skip fake development events
+      return;
+    }
+
     try {
       await supabase.rpc('log_client_security_event', {
         event_type: event.type,
@@ -42,7 +57,7 @@ export const useSecurityMonitoring = () => {
 
     const handleNavigation = () => {
       navigationCount++;
-      if (navigationCount > 20) {
+      if (navigationCount > 50) { // Increased threshold to reduce false positives
         logSecurityEvent({
           type: 'suspicious_rapid_navigation',
           severity: 'medium',
@@ -55,23 +70,8 @@ export const useSecurityMonitoring = () => {
       }
     };
 
-    // Monitor console access (potential developer tools usage)
-    const originalConsole = window.console;
-    let consoleAccessCount = 0;
-
-    const detectConsoleAccess = () => {
-      consoleAccessCount++;
-      if (consoleAccessCount > 5) {
-        logSecurityEvent({
-          type: 'developer_tools_detected',
-          severity: 'low',
-          details: {
-            console_access_count: consoleAccessCount
-          }
-        });
-        consoleAccessCount = 0; // Reset
-      }
-    };
+    // REMOVED: Console access monitoring (was generating fake events)
+    // This was causing "developer_tools_detected" spam
 
     // Monitor for copy/paste of sensitive data
     const handlePaste = (event: ClipboardEvent) => {
@@ -88,7 +88,7 @@ export const useSecurityMonitoring = () => {
 
       const hasCredentials = credentialPatterns.some(pattern => pattern.test(pastedText));
       
-      if (hasCredentials && pastedText.length > 10) {
+      if (hasCredentials && pastedText.length > 20) { // Increased threshold
         logSecurityEvent({
           type: 'potential_credential_paste',
           severity: 'medium',
@@ -100,18 +100,10 @@ export const useSecurityMonitoring = () => {
       }
     };
 
-    // Set up event listeners
+    // Set up event listeners (removed console monitoring)
     window.addEventListener('beforeunload', handleNavigation);
     window.addEventListener('popstate', handleNavigation);
     document.addEventListener('paste', handlePaste);
-    
-    // Monitor console access
-    Object.defineProperty(window, 'console', {
-      get: () => {
-        detectConsoleAccess();
-        return originalConsole;
-      }
-    });
 
     // Set up navigation reset timer
     const navigationTimer = setInterval(resetNavigationCount, navigationWindow);
@@ -150,17 +142,11 @@ export const useSecurityMonitoring = () => {
   useEffect(() => {
     if (!user) return;
 
-    // Initialize security monitoring
+    // Initialize security monitoring only for actual threats
     const cleanup = detectSuspiciousActivity();
 
-    // Log successful login
-    logSecurityEvent({
-      type: 'user_session_started',
-      severity: 'low',
-      details: {
-        login_time: new Date().toISOString()
-      }
-    });
+    // REMOVED: Fake "user_session_started" event logging
+    // This was creating noise in security monitoring
 
     return cleanup;
   }, [user]);
