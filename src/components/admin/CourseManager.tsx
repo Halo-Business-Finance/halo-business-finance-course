@@ -14,6 +14,7 @@ import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3
 import { useToast } from "@/hooks/use-toast";
 import { courseData, Course } from "@/data/courseData";
 import { CourseImageEditor } from "./CourseImageEditor";
+import { CourseInstructorManager } from "./CourseInstructorManager";
 
 // Import course images to match the user dashboard
 import financeExpert1 from "@/assets/finance-expert-1.jpg";
@@ -279,6 +280,10 @@ export function CourseManager({}: CourseManagerProps) {
                             >
                               <ImageIcon className="h-4 w-4" />
                             </Button>
+                            <CourseInstructorManager 
+                              courseId={course.id} 
+                              courseTitle={course.title}
+                            />
                             <Button
                               variant="outline"
                               size="sm"
