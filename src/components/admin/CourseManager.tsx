@@ -15,6 +15,18 @@ import { useToast } from "@/hooks/use-toast";
 import { courseData, Course } from "@/data/courseData";
 import { CourseImageEditor } from "./CourseImageEditor";
 
+// Import course images to match the user dashboard
+import financeExpert1 from "@/assets/finance-expert-1.jpg";
+import creditAnalyst2 from "@/assets/credit-analyst-2.jpg";
+import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
+import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
+import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
+import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
+import financialAdvisor7 from "@/assets/financial-advisor-7.jpg";
+import investmentBanker8 from "@/assets/investment-banker-8.jpg";
+import loanOfficer9 from "@/assets/loan-officer-9.jpg";
+import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
+
 interface CourseManagerProps {}
 
 export function CourseManager({}: CourseManagerProps) {
@@ -39,6 +51,38 @@ export function CourseManager({}: CourseManagerProps) {
     { value: "intermediate", label: "Intermediate", icon: "🌿", color: "bg-amber-100 text-amber-800" },
     { value: "expert", label: "Expert", icon: "🌳", color: "bg-red-100 text-red-800" },
   ];
+
+  // Course image mapping function to match user dashboard
+  const getCourseImage = (courseId: string) => {
+    const images = [
+      financeExpert1, creditAnalyst2, commercialBanker3, riskSpecialist4, 
+      sbaSpecialist5, complianceOfficer6, financialAdvisor7, investmentBanker8, 
+      loanOfficer9, portfolioManager10
+    ];
+    
+    // Map course IDs to image indices based on course type
+    const courseImageMap: Record<string, number> = {
+      'sba-7a-loans': 0,
+      'equipment-financing': 1,
+      'commercial-real-estate': 2,
+      'working-capital-loans': 3,
+      'business-credit-lines': 4,
+      'asset-based-lending': 5,
+      'mezzanine-financing': 6,
+      'acquisition-financing': 7,
+      'export-import-financing': 8,
+      'specialty-lending': 9,
+      'credit-analysis': 1,
+      'risk-assessment': 3,
+      'loan-documentation': 7
+    };
+
+    // Extract base course type from ID
+    const baseCourseType = courseId.replace(/-(?:beginner|intermediate|expert)$/, '');
+    const imageIndex = courseImageMap[baseCourseType] || 0;
+    
+    return images[imageIndex % images.length];
+  };
 
   const resetForm = () => {
     setFormData({
@@ -199,17 +243,11 @@ export function CourseManager({}: CourseManagerProps) {
                           <div className="flex items-center gap-4">
                             {/* Course Image */}
                             <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                              {course.imageUrl ? (
-                                <img 
-                                  src={course.imageUrl} 
-                                  alt={course.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                                  <BookOpen className="h-6 w-6 text-primary/60" />
-                                </div>
-                              )}
+                              <img 
+                                src={getCourseImage(course.id)} 
+                                alt={course.title}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
                             
                             <Badge 
