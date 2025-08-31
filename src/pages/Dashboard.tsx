@@ -301,7 +301,8 @@ const Dashboard = () => {
 
   // Function to handle module start
   const handleModuleStart = (moduleId: string) => {
-    setSelectedModule(moduleId);
+    // Navigate to the actual module page instead of just opening a modal
+    window.location.href = `/module/${moduleId}`;
   };
 
   // Function to get comprehensive course details
