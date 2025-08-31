@@ -263,9 +263,9 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                            <div className="relative z-10 flex items-center w-full gap-4">
                               {/* Status Indicator */}
                               <div className="relative flex-shrink-0">
-                                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                  <div className="w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
                                    {isModuleLocked ? (
-                                     <Lock size={14} className="text-white" />
+                                     <Lock size={12} className="text-white" />
                                    ) : (
                                      <span className="text-xs font-bold">{index + 1}</span>
                                    )}
