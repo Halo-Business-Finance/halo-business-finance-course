@@ -362,45 +362,29 @@ export function MediaLibrary() {
   const clearImportedMedia = async () => {
     setClearingImported(true);
     try {
-      // Get all imported media files - specifically targeting only imported content
+      // Get ONLY media files that are specifically in the "/imported" folder
       const { data: importedMedia, error: fetchError } = await supabase
         .from("cms_media")
         .select("*")
-        .or("folder_path.eq./imported,tags.cs.{imported}"); // Target both folder path and tagged imported content
+        .eq("folder_path", "/imported");
 
       if (fetchError) throw fetchError;
 
       if (!importedMedia || importedMedia.length === 0) {
         toast({
           title: "No Imported Files",
-          description: "There are no imported files to clear from the media library.",
+          description: "There are no files in the imported folder to clear.",
         });
         setShowClearImportedDialog(false);
         setClearingImported(false);
         return;
       }
 
-      // Filter to only include imported files (extra safety check)
-      const confirmedImportedMedia = importedMedia.filter(item => 
-        item.folder_path === '/imported' || 
-        (item.tags && item.tags.includes('imported'))
-      );
-
-      if (confirmedImportedMedia.length === 0) {
-        toast({
-          title: "No Imported Files",
-          description: "No files were identified as imported content to clear.",
-        });
-        setShowClearImportedDialog(false);
-        setClearingImported(false);
-        return;
-      }
-
-      console.log(`Clearing ${confirmedImportedMedia.length} imported media files`, 
-        confirmedImportedMedia.map(item => ({ name: item.original_name, folder: item.folder_path })));
+      console.log(`Clearing ${importedMedia.length} files from /imported folder:`, 
+        importedMedia.map(item => ({ name: item.original_name, folder: item.folder_path })));
 
       // Delete files from storage
-      const storagePaths = confirmedImportedMedia.map(item => item.storage_path);
+      const storagePaths = importedMedia.map(item => item.storage_path);
       const { error: storageError } = await supabase.storage
         .from('cms-media')
         .remove(storagePaths);
@@ -410,18 +394,17 @@ export function MediaLibrary() {
         // Continue with database cleanup even if storage cleanup partially fails
       }
 
-      // Delete database records for imported content only
-      const importedIds = confirmedImportedMedia.map(item => item.id);
+      // Delete database records - only from /imported folder
       const { error: dbError } = await supabase
         .from("cms_media")
         .delete()
-        .in('id', importedIds);
+        .eq("folder_path", "/imported");
 
       if (dbError) throw dbError;
 
       toast({
         title: "Success",
-        description: `${confirmedImportedMedia.length} imported files have been cleared from the media library. Other media files remain untouched.`,
+        description: `${importedMedia.length} imported files have been cleared from the /imported folder.`,
       });
 
       setShowClearImportedDialog(false);
@@ -531,7 +514,7 @@ export function MediaLibrary() {
               <DialogHeader>
                 <DialogTitle>Clear Imported Media</DialogTitle>
                 <DialogDescription>
-                  This will permanently delete ONLY imported media files (files in the "/imported" folder and files tagged as "imported"). Regular uploaded media will remain untouched.
+                  This will permanently delete ONLY files in the "/imported" folder. Regular uploaded media and other folders will remain completely untouched.
                 </DialogDescription>
               </DialogHeader>
               
