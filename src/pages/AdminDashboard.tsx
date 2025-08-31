@@ -306,18 +306,33 @@ const AdminDashboard = () => {
       setUserRoles(userRolesData);
       setSecurityEvents(eventsData || []);
       
-      // Debug logging
-      console.log('Loaded userRolesData:', userRolesData);
-      console.log('Current user:', user);
-      console.log('Current user role:', userRole);
+      // Get active admins based on recent CMS and course management activity
+      let activeAdmins = 0;
+      try {
+        const { data: activeAdminsData } = await supabase
+          .from('profiles')
+          .select(`
+            name, 
+            email, 
+            user_id,
+            user_roles!inner(role, is_active),
+            admin_audit_log!inner(created_at)
+          `)
+          .eq('user_roles.is_active', true)
+          .in('user_roles.role', ['admin', 'super_admin'])
+          .gte('admin_audit_log.created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+        activeAdmins = activeAdminsData?.length || 0;
+      } catch (error) {
+        console.warn('Could not fetch active admins from CMS/course activity, falling back to role count');
+        // Fallback to counting role assignments
+        activeAdmins = userRolesData.filter((role: UserRole) => 
+          role.is_active && ['admin', 'super_admin'].includes(role.role)
+        ).length;
+      }
 
       // Calculate stats from the data
       const totalUsers = new Set(userRolesData.map((role: UserRole) => role.user_id)).size;
-      const activeAdmins = userRolesData.filter((role: UserRole) => {
-        console.log('Checking role:', role.role, 'is_active:', role.is_active, 'user_id:', role.user_id);
-        return role.is_active && ['admin', 'super_admin'].includes(role.role);
-      }).length;
-      console.log('Active admins count:', activeAdmins);
       const recentEvents = eventsData?.filter(event => 
         event.created_at && new Date(event.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
       ).length || 0;
