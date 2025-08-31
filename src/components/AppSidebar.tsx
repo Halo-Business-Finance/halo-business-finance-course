@@ -170,10 +170,21 @@ export function AppSidebar() {
           <div className="px-4 py-4 border-b border-white/10">
             <div className="text-white">
               <div className="text-xs font-medium text-white">Welcome back,</div>
-              <div className="text-sm font-semibold text-white">
-                {user.user_metadata?.full_name?.split(' ')[0] || 
-                 user.user_metadata?.name?.split(' ')[0] || 
-                 user.email?.split('@')[0] || 'User'}!
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">
+                  {user.user_metadata?.full_name?.split(' ')[0] || 
+                   user.user_metadata?.name?.split(' ')[0] || 
+                   user.email?.split('@')[0] || 'User'}!
+                </div>
+                <button 
+                  onClick={handleSignOut}
+                  disabled={isLoading}
+                  className="flex items-center gap-1 text-white/80 hover:text-white hover:bg-white/10 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
+                  title="Sign Out"
+                >
+                  <LogOut className="h-4 w-4" />
+                  {!collapsed && <span className="text-xs">{isLoading ? "..." : "Sign Out"}</span>}
+                </button>
               </div>
             </div>
           </div>
@@ -302,44 +313,33 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
 
-        {/* Authentication */}
-        <SidebarGroup className="-mt-2">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {!loading && (
-                <SidebarMenuItem>
-                  {user ? (
-                     <SidebarMenuButton asChild>
-                       <button 
-                         onClick={handleSignOut}
-                         disabled={isLoading}
-                         className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg disabled:opacity-50 transition-all duration-200"
-                       >
-                          <LogOut className="h-5 w-5 text-halo-orange" />
-                          {!collapsed && <span className="text-white text-sm font-medium">{isLoading ? "Signing Out..." : "Sign Out"}</span>}
-                       </button>
-                     </SidebarMenuButton>
-                  ) : (
-                     <SidebarMenuButton asChild>
-                       <button 
-                         onClick={handleSignIn}
-                         className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200"
-                       >
-                          <LogIn className="h-5 w-5 text-halo-orange" />
-                          {!collapsed && <span className="text-white text-sm font-medium">Sign In</span>}
-                       </button>
-                     </SidebarMenuButton>
-                  )}
-                </SidebarMenuItem>
-              )}
-              {loading && (
-                <SidebarMenuItem>
-                   <div className="text-xs text-white/70 p-2">Loading...</div>
-                 </SidebarMenuItem>
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* Authentication - Only show if not logged in */}
+        {!user && (
+          <SidebarGroup className="-mt-2">
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {!loading && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <button 
+                        onClick={handleSignIn}
+                        className="w-full flex items-center gap-3 text-white hover:bg-white/10 hover:text-white p-3 rounded-lg transition-all duration-200"
+                      >
+                         <LogIn className="h-5 w-5 text-halo-orange" />
+                         {!collapsed && <span className="text-white text-sm font-medium">Sign In</span>}
+                      </button>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+                {loading && (
+                  <SidebarMenuItem>
+                     <div className="text-xs text-white/70 p-2">Loading...</div>
+                    </SidebarMenuItem>
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
     </Sidebar>
   );
