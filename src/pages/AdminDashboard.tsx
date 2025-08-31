@@ -310,7 +310,7 @@ const AdminDashboard = () => {
       let activeAdmins = 0;
       try {
         // Use RPC call to get active admins with recent activity
-        const { data: activeAdminsData, error } = await supabase.rpc('get_active_admins_with_activity');
+        const { data: activeAdminsData, error } = await (supabase as any).rpc('get_active_admins_with_activity');
         
         if (error) {
           throw error;
