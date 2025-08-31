@@ -142,7 +142,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         )}
         
         {user && (
-          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0 pt-2">
+          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0 pt-1 pr-1">
             <NotificationBell />
             <Button
               variant="ghost"
