@@ -153,7 +153,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
-            <div className="text-xs min-w-0 flex-shrink-0">
+            <div className="text-xs min-w-0 flex-shrink-0 self-start mt-2">
               <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
