@@ -23,7 +23,8 @@ import {
   Grid,
   List,
   Folder,
-  FolderPlus
+  FolderPlus,
+  Trash2 as TrashIcon
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -64,6 +65,8 @@ export function MediaLibrary() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [showNewFolderDialog, setShowNewFolderDialog] = useState(false);
+  const [showClearImportedDialog, setShowClearImportedDialog] = useState(false);
+  const [clearingImported, setClearingImported] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -356,6 +359,66 @@ export function MediaLibrary() {
     }
   };
 
+  const clearImportedMedia = async () => {
+    setClearingImported(true);
+    try {
+      // Get all imported media files
+      const { data: importedMedia, error: fetchError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("folder_path", "/imported");
+
+      if (fetchError) throw fetchError;
+
+      if (!importedMedia || importedMedia.length === 0) {
+        toast({
+          title: "No Imported Files",
+          description: "There are no files in the imported folder to clear.",
+        });
+        setShowClearImportedDialog(false);
+        setClearingImported(false);
+        return;
+      }
+
+      // Delete files from storage
+      const storagePaths = importedMedia.map(item => item.storage_path);
+      const { error: storageError } = await supabase.storage
+        .from('cms-media')
+        .remove(storagePaths);
+
+      if (storageError) {
+        console.warn('Some storage files could not be deleted:', storageError);
+        // Continue with database cleanup even if storage cleanup partially fails
+      }
+
+      // Delete database records
+      const { error: dbError } = await supabase
+        .from("cms_media")
+        .delete()
+        .eq("folder_path", "/imported");
+
+      if (dbError) throw dbError;
+
+      toast({
+        title: "Success",
+        description: `${importedMedia.length} imported files have been cleared from the media library.`,
+      });
+
+      setShowClearImportedDialog(false);
+      loadMedia(); // Refresh the media list
+
+    } catch (error: any) {
+      console.error('Error clearing imported media:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to clear imported media files",
+        variant: "destructive",
+      });
+    } finally {
+      setClearingImported(false);
+    }
+  };
+
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith('image/')) return <Image className="h-5 w-5" />;
     if (fileType.startsWith('video/')) return <Video className="h-5 w-5" />;
@@ -432,6 +495,49 @@ export function MediaLibrary() {
                 </Button>
                 <Button onClick={createFolder}>
                   Create Folder
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showClearImportedDialog} onOpenChange={setShowClearImportedDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <TrashIcon className="h-4 w-4 mr-2" />
+                Clear Imported
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Clear Imported Media</DialogTitle>
+                <DialogDescription>
+                  This will permanently delete all files in the "imported" folder. This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <TrashIcon className="h-5 w-5 text-destructive mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-destructive">Warning: Permanent Deletion</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      All imported media files will be permanently removed from both the database and storage. 
+                      Make sure you have moved any files you want to keep to other folders first.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowClearImportedDialog(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={clearImportedMedia}
+                  disabled={clearingImported}
+                >
+                  {clearingImported ? "Clearing..." : "Clear All Imported"}
                 </Button>
               </DialogFooter>
             </DialogContent>
