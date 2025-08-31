@@ -1423,14 +1423,7 @@ export function MediaLibrary() {
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                    {filteredMedia.map((item) => (
-                     console.log('Rendering media item:', {
-                       filename: item.filename,
-                       file_type: item.file_type,
-                       public_url: item.public_url,
-                       isImage: item.file_type.startsWith('image/')
-                     });
-                     return (
-                      <Card key={item.id} className="group relative">
+                     <Card key={item.id} className="group relative">
                        {/* Selection checkbox */}
                        <div className="absolute top-2 left-2 z-10">
                          <input
@@ -1513,9 +1506,9 @@ export function MediaLibrary() {
                           </div>
                         </div>
                       </CardContent>
-                    </Card>
-                   )}
-                </div>
+                     </Card>
+                  ))}
+                 </div>
               ) : (
                 <div className="space-y-2">
                   {filteredMedia.map((item) => (
