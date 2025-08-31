@@ -19,12 +19,10 @@ import {
   Copy,
   Download,
   Search,
-  Filter,
   Grid,
   List,
   Folder,
-  FolderPlus,
-  Trash2 as TrashIcon
+  FolderPlus
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -36,15 +34,16 @@ interface MediaItem {
   original_name: string;
   file_type: string;
   file_size: number;
-  width?: number;
-  height?: number;
-  alt_text?: string;
-  caption?: string;
+  width?: number | null;
+  height?: number | null;
+  alt_text?: string | null;
+  caption?: string | null;
   storage_path: string;
   public_url: string;
   folder_path: string;
-  tags?: string[];
+  tags?: string[] | null;
   created_at: string;
+  uploaded_by?: string | null;
 }
 
 interface MediaFolder {
@@ -109,7 +108,10 @@ export function MediaLibrary() {
       }
 
       const { data: mediaData, error: mediaError } = await mediaQuery;
-      if (mediaError) throw mediaError;
+      if (mediaError) {
+        console.error("Error loading media:", mediaError);
+        throw mediaError;
+      }
       setMedia(mediaData || []);
 
       // Load folders
@@ -117,21 +119,26 @@ export function MediaLibrary() {
         .from("cms_media")
         .select("folder_path");
 
-      if (allMediaError) throw allMediaError;
+      if (allMediaError) {
+        console.error("Error loading folders:", allMediaError);
+        throw allMediaError;
+      }
 
       const folderSet = new Set<string>();
       allMedia?.forEach(item => {
         folderSet.add(item.folder_path);
       });
 
-      const folderList: MediaFolder[] = Array.from(folderSet).map(path => {
-        const parts = path.split('/').filter(Boolean);
-        return {
-          path,
-          name: parts[parts.length - 1] || 'Root',
-          count: allMedia?.filter(item => item.folder_path === path).length || 0
-        };
-      });
+      const folderList: MediaFolder[] = Array.from(folderSet)
+        .filter(path => path && path.trim() !== '')
+        .map(path => {
+          const parts = path.split('/').filter(Boolean);
+          return {
+            path,
+            name: parts[parts.length - 1] || 'Root',
+            count: allMedia?.filter(item => item.folder_path === path).length || 0
+          };
+        });
 
       folderList.unshift({
         path: 'all',
@@ -162,12 +169,19 @@ export function MediaLibrary() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
-        const filename = `${Date.now()}-${file.name}`;
+        const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        const uploadPath = currentFolder === 'all' || currentFolder === '/' 
+          ? filename 
+          : `${currentFolder.replace(/^\//, '')}/${filename}`;
+          
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('cms-media')
-          .upload(`${currentFolder}/${filename}`, file);
+          .upload(uploadPath, file);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw uploadError;
+        }
 
         const { data: publicUrlData } = supabase.storage
           .from('cms-media')
@@ -176,11 +190,12 @@ export function MediaLibrary() {
         const mediaData = {
           filename,
           original_name: file.name,
-          file_type: file.type,
+          file_type: file.type || 'application/octet-stream',
           file_size: file.size,
           storage_path: uploadData.path,
           public_url: publicUrlData.publicUrl,
-          folder_path: currentFolder,
+          folder_path: currentFolder === 'all' ? '/' : currentFolder,
+          uploaded_by: null, // Will be set by RLS if user is authenticated
         };
 
         if (file.type.startsWith('image/')) {
@@ -252,7 +267,7 @@ export function MediaLibrary() {
         .update({
           alt_text: editForm.alt_text,
           caption: editForm.caption,
-          tags: editForm.tags.split(",").map(tag => tag.trim()).filter(Boolean),
+          tags: editForm.tags ? editForm.tags.split(",").map(tag => tag.trim()).filter(Boolean) : null,
         })
         .eq("id", editingItem.id);
 
@@ -577,7 +592,7 @@ export function MediaLibrary() {
                     size="sm"
                     onClick={() => setShowBulkDeleteDialog(true)}
                   >
-                    <TrashIcon className="h-4 w-4 mr-2" />
+                    <Trash2 className="h-4 w-4 mr-2" />
                     Delete Selected
                   </Button>
                 </>
@@ -893,7 +908,7 @@ export function MediaLibrary() {
           
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">
-              <TrashIcon className="h-5 w-5 text-destructive mt-0.5" />
+              <Trash2 className="h-5 w-5 text-destructive mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-destructive">Warning: Permanent Deletion</p>
                 <p className="text-sm text-muted-foreground mt-1">
