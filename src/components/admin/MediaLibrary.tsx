@@ -125,8 +125,10 @@ export function MediaLibrary() {
       }
 
       const folderSet = new Set<string>();
-      allMedia?.forEach(item => {
-        folderSet.add(item.folder_path);
+      (allMedia || []).forEach(item => {
+        if (item?.folder_path) {
+          folderSet.add(item.folder_path);
+        }
       });
 
       const folderList: MediaFolder[] = Array.from(folderSet)
@@ -160,7 +162,7 @@ export function MediaLibrary() {
     }
   };
 
-  const handleFileUpload = async (files: FileList) => {
+      const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
     setUploading(true);
@@ -403,7 +405,8 @@ export function MediaLibrary() {
   };
 
   const handleSelectAll = () => {
-    if (selectedItems.size === filteredMedia.length) {
+    const mediaLength = filteredMedia?.length || 0;
+    if (selectedItems.size === mediaLength) {
       setSelectedItems(new Set());
     } else {
       setSelectedItems(new Set(filteredMedia.map(item => item.id)));
@@ -413,7 +416,7 @@ export function MediaLibrary() {
   const handleBulkDelete = async () => {
     setBulkDeleting(true);
     try {
-      const itemsToDelete = media.filter(item => selectedItems.has(item.id));
+      const itemsToDelete = (media || []).filter(item => selectedItems.has(item.id));
       
       const storagePaths = itemsToDelete.map(item => item.storage_path);
       const { error: storageError } = await supabase.storage
@@ -467,11 +470,11 @@ export function MediaLibrary() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const filteredMedia = media.filter(item =>
+  const filteredMedia = (media || []).filter(item =>
     item.filename !== '.keep' &&
-    (item.original_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.original_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.alt_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+    item.tags?.some(tag => tag?.toLowerCase().includes(searchTerm.toLowerCase())))
   );
 
   if (loading) {
@@ -573,14 +576,14 @@ export function MediaLibrary() {
       {/* Toolbar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          {filteredMedia.length > 0 && (
+          {(filteredMedia?.length || 0) > 0 && (
             <div className="flex items-center space-x-2 border-r pr-4 mr-4">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleSelectAll}
               >
-                {selectedItems.size === filteredMedia.length ? "Deselect All" : "Select All"}
+                {selectedItems.size === (filteredMedia?.length || 0) ? "Deselect All" : "Select All"}
               </Button>
               {selectedItems.size > 0 && (
                 <>
@@ -668,7 +671,7 @@ export function MediaLibrary() {
           <Card className="h-[calc(100vh-200px)]">
             <CardContent className="p-6 h-full">
               <ScrollArea className="h-full">
-                {filteredMedia.length === 0 ? (
+                {!filteredMedia || filteredMedia.length === 0 ? (
                   <div className="text-center py-8">
                     <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">No media files</h3>
