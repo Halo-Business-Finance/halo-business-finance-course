@@ -250,7 +250,7 @@ export function CourseManager({}: CourseManagerProps) {
                                   className="w-full h-full object-cover"
                                 />
                               </div>
-                              <div className="text-sm font-medium text-black">
+                              <div className="text-sm font-medium text-black text-left">
                                 {course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
                               </div>
                             </div>
