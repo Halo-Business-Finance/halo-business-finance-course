@@ -114,7 +114,19 @@ export const SecurityMonitoringDashboard = () => {
         .order('created_at', { ascending: false })
         .limit(100);
 
-      if (alertsError) throw alertsError;
+      if (alertsError) {
+        console.error('Error loading security alerts:', alertsError);
+        // Set empty arrays to prevent undefined errors
+        setAlerts([]);
+        setAuditEvents([]);
+        setStats({
+          totalAlerts: 0,
+          criticalAlerts: 0,
+          piiAccessEvents: 0,
+          suspiciousActivity: 0
+        });
+        return;
+      }
 
       // Load admin audit events
       const { data: auditData, error: auditError } = await supabase
@@ -123,20 +135,38 @@ export const SecurityMonitoringDashboard = () => {
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (auditError) throw auditError;
+      if (auditError) {
+        console.error('Error loading audit data:', auditError);
+        // Continue with alerts data but set audit to empty
+        setAlerts(alertsData || []);
+        setAuditEvents([]);
+        setStats({
+          totalAlerts: (alertsData || []).length,
+          criticalAlerts: (alertsData || []).filter(a => a.severity === 'critical').length,
+          piiAccessEvents: 0,
+          suspiciousActivity: (alertsData || []).filter(a => 
+            a.alert_type?.includes('suspicious') || a.alert_type?.includes('breach')
+          ).length
+        });
+        return;
+      }
 
-      setAlerts(alertsData || []);
-      setAuditEvents(auditData || []);
+      // Set the data with proper fallbacks
+      const safeAlertsData = alertsData || [];
+      const safeAuditData = auditData || [];
+      
+      setAlerts(safeAlertsData);
+      setAuditEvents(safeAuditData);
 
-      // Calculate stats
-      const totalAlerts = alertsData?.length || 0;
-      const criticalAlerts = alertsData?.filter(a => a.severity === 'critical').length || 0;
-      const piiAccessEvents = auditData?.filter(e => 
+      // Calculate stats with safe array access
+      const totalAlerts = safeAlertsData.length;
+      const criticalAlerts = safeAlertsData.filter(a => a.severity === 'critical').length;
+      const piiAccessEvents = safeAuditData.filter(e => 
         e.action?.includes('pii') || e.action?.includes('profile')
-      ).length || 0;
-      const suspiciousActivity = alertsData?.filter(a => 
+      ).length;
+      const suspiciousActivity = safeAlertsData.filter(a => 
         a.alert_type?.includes('suspicious') || a.alert_type?.includes('breach')
-      ).length || 0;
+      ).length;
 
       setStats({
         totalAlerts,
@@ -147,9 +177,20 @@ export const SecurityMonitoringDashboard = () => {
 
     } catch (error: any) {
       console.error('Error loading security data:', error);
+      
+      // Set safe defaults to prevent render errors
+      setAlerts([]);
+      setAuditEvents([]);
+      setStats({
+        totalAlerts: 0,
+        criticalAlerts: 0,
+        piiAccessEvents: 0,
+        suspiciousActivity: 0
+      });
+      
       toast({
         title: "Error",
-        description: "Failed to load security monitoring data",
+        description: "Failed to load security monitoring data. Check console for details.",
         variant: "destructive"
       });
     } finally {
