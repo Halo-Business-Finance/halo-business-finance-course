@@ -221,6 +221,9 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       
+      // Initialize active admin count
+      let activeAdminsCount = 0;
+      
       // Load user roles using the new secure database function with PII protection
       let userRolesData = [];
       
@@ -234,6 +237,16 @@ const AdminDashboard = () => {
         }
 
         if (profilesWithRoles && profilesWithRoles.length > 0) {
+          // Count active admins directly from the get_secure_admin_profiles response
+          const activeAdminsFromProfiles = profilesWithRoles.filter((profile: any) => {
+            const isAdminRole = ['admin', 'super_admin', 'tech_support_admin'].includes(profile.role);
+            console.log(`User ${profile.name} (${profile.user_id}) - Role: ${profile.role}, IsAdmin: ${isAdminRole}`);
+            return isAdminRole;
+          });
+          
+          activeAdminsCount = activeAdminsFromProfiles.length;
+          console.log('Active admins found:', activeAdminsCount, activeAdminsFromProfiles.map(p => ({ name: p.name, role: p.role })));
+          
           // Group by user_id to consolidate users with multiple roles
           const userMap = new Map();
           
@@ -333,18 +346,8 @@ const AdminDashboard = () => {
       setUserRoles(userRolesData);
       setSecurityEvents(eventsData || []);
       
-      // Count active admins from the userRolesData we already have
-      console.log('UserRolesData for admin counting:', JSON.stringify(userRolesData, null, 2));
-      
-      const adminRoles = userRolesData.filter((role: UserRole) => {
-        const isAdminRole = ['admin', 'super_admin', 'tech_support_admin'].includes(role.role);
-        const isActive = role.is_active;
-        console.log(`User ${role.user_id} - Role: ${role.role}, IsAdmin: ${isAdminRole}, IsActive: ${isActive}`);
-        return isActive && isAdminRole;
-      });
-      
-      const activeAdmins = adminRoles.length;
-      console.log('Active admins found:', activeAdmins, adminRoles.map(r => ({ id: r.user_id, role: r.role, name: r.profiles?.name })));
+      // Use the active admins count we calculated earlier
+      const activeAdmins = activeAdminsCount;
 
       // Calculate stats from the data
       const totalUsers = new Set(userRolesData.map((role: UserRole) => role.user_id)).size;
