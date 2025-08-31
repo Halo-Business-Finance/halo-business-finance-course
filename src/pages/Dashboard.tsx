@@ -448,23 +448,22 @@ const Dashboard = () => {
                                   alt={courseName}
                                   className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
                                 />
-                                <div className="absolute top-4 left-4">
-                                  <Badge variant="default">Course Program</Badge>
-                                </div>
                               </div>
                               <CardHeader className="pb-2">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
+                                    <Badge variant="default" className="mt-2 mb-2">Course Program</Badge>
                                     <CardDescription className="line-clamp-3 mt-1 text-foreground">
                                       {getCourseDetails(courseName).description}
                                     </CardDescription>
                                   </div>
                                 </div>
                                 
-                                {/* Course Details Section */}
-                                <div className="space-y-3 mt-4">
-                                  <div className="flex items-center justify-between text-xs">
+                                {/* Course Details Section - Exactly 3 Rows */}
+                                <div className="space-y-2 mt-4">
+                                  {/* Row 1: Duration and Difficulty */}
+                                  <div className="flex items-center justify-between text-xs h-6">
                                     <div className="flex items-center gap-2">
                                       <Clock className="h-3 w-3 text-muted-foreground" />
                                       <span className="text-muted-foreground">{getCourseDetails(courseName).duration}</span>
@@ -474,8 +473,8 @@ const Dashboard = () => {
                                     </Badge>
                                   </div>
                                   
-                                  <div className="space-y-2">
-                                    <h4 className="text-xs font-medium text-foreground">Key Topics:</h4>
+                                  {/* Row 2: Key Topics */}
+                                  <div className="h-8">
                                     <div className="flex flex-wrap gap-1">
                                       {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => (
                                         <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5">
@@ -485,9 +484,12 @@ const Dashboard = () => {
                                     </div>
                                   </div>
                                   
-                                  <div className="bg-muted/50 p-2 rounded text-xs">
-                                    <span className="font-medium text-foreground">Learning Outcome: </span>
-                                    <span className="text-muted-foreground">{getCourseDetails(courseName).outcome}</span>
+                                  {/* Row 3: Learning Outcome */}
+                                  <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
+                                    <div className="line-clamp-2">
+                                      <span className="font-medium text-foreground">Outcome: </span>
+                                      <span className="text-muted-foreground">{getCourseDetails(courseName).outcome}</span>
+                                    </div>
                                   </div>
                                 </div>
 
