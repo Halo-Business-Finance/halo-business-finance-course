@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -147,10 +147,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
               variant="ghost"
               size="sm"
               onClick={() => setIsChatOpen(true)}
-              className="text-black hover:bg-black/10 p-1 h-10 w-10 flex-shrink-0"
+              className="bg-gray-800 hover:bg-gray-700 p-1 h-10 w-10 flex-shrink-0 rounded-lg"
               title="Support"
             >
-              <MessageCircle className="h-6 w-6" fill="currentColor" />
+              <LifeBuoy className="h-6 w-6 text-white" fill="currentColor" />
             </Button>
             <NotificationBell />
             <div className="text-xs min-w-0 flex-shrink-0">
