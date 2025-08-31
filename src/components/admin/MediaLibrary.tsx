@@ -1051,6 +1051,35 @@ export function MediaLibrary() {
                 <Button variant="outline" onClick={() => setShowNewFolderDialog(false)}>
                   Cancel
                 </Button>
+                <Button onClick={createFolder} disabled={!newFolderName.trim()}>
+                  Create Folder
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create New Folder</DialogTitle>
+                <DialogDescription>
+                  Create a new folder to organize your media files
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-2">
+                <Label htmlFor="folder-name">Folder Name</Label>
+                <Input
+                  id="folder-name"
+                  value={newFolderName}
+                  onChange={(e) => setNewFolderName(e.target.value)}
+                  placeholder="Enter folder name"
+                />
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowNewFolderDialog(false)}>
+                  Cancel
+                </Button>
                 <Button onClick={createFolder}>
                   Create Folder
                 </Button>
