@@ -73,7 +73,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('Learning stats change received:', payload);
+          // Learning stats updated via realtime subscription
           if (payload.new) {
             setStats(payload.new as LearningStats);
             
@@ -89,7 +89,7 @@ export const LiveLearningStats = () => {
         }
       )
       .subscribe((status) => {
-        console.log('Stats channel subscription status:', status);
+        // Stats channel subscription active
         if (status === 'CLOSED') {
           console.warn('Stats channel subscription closed - continuing without realtime updates');
         }
@@ -107,12 +107,12 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('Daily activity change received:', payload);
+          // Daily activity updated via realtime subscription
           loadRecentActivity();
         }
       )
       .subscribe((status) => {
-        console.log('Activity channel subscription status:', status);
+        // Activity channel subscription active
         if (status === 'CLOSED') {
           console.warn('Activity channel subscription closed - continuing without realtime updates');
         }
@@ -130,7 +130,7 @@ export const LiveLearningStats = () => {
           filter: `user_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('New achievement received:', payload);
+          // Achievement unlocked via realtime subscription
           if (payload.new) {
             const newAchievement = payload.new as Achievement;
             setAchievements(prev => [newAchievement, ...prev]);
@@ -145,7 +145,7 @@ export const LiveLearningStats = () => {
         }
       )
       .subscribe((status) => {
-        console.log('Achievements channel subscription status:', status);
+        // Achievements channel subscription active
         if (status === 'CLOSED') {
           console.warn('Achievements channel subscription closed - continuing without realtime updates');
         }
