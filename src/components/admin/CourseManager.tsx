@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye } from "lucide-react";
+import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { courseData, Course } from "@/data/courseData";
 
@@ -111,6 +111,14 @@ export function CourseManager({}: CourseManagerProps) {
     });
   };
 
+  const handleEditImage = (course: Course) => {
+    toast({
+      title: "Edit Course Image",
+      description: `Opening image editor for "${course.title}"`,
+    });
+    // TODO: Implement image editing functionality
+  };
+
   const getModuleCount = (course: Course) => {
     return course.modules?.length || 0;
   };
@@ -206,6 +214,14 @@ export function CourseManager({}: CourseManagerProps) {
                                 onClick={() => setSelectedCourse(course)}
                               >
                                 <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditImage(course)}
+                                title="Edit Course Image"
+                              >
+                                <ImageIcon className="h-4 w-4" />
                               </Button>
                               <Button
                                 variant="outline"
