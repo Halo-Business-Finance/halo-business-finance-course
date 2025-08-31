@@ -84,6 +84,13 @@ interface AdminStats {
   systemHealth: 'excellent' | 'good' | 'warning' | 'critical';
 }
 
+interface SystemStatus {
+  database: 'online' | 'offline' | 'degraded';
+  authentication: 'active' | 'inactive' | 'error';
+  securityMonitoring: 'enabled' | 'disabled' | 'partial';
+  realTimeUpdates: 'connected' | 'disconnected' | 'reconnecting';
+}
+
 
 // Add type definition for the RPC response
 interface ActiveAdminWithActivity {
@@ -104,6 +111,12 @@ const AdminDashboard = () => {
     activeAdmins: 0,
     securityEvents: 0,
     systemHealth: 'excellent'
+  });
+  const [systemStatus, setSystemStatus] = useState<SystemStatus>({
+    database: 'online',
+    authentication: 'active',
+    securityMonitoring: 'enabled',
+    realTimeUpdates: 'disconnected'
   });
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
@@ -181,10 +194,13 @@ const AdminDashboard = () => {
         )
         .subscribe((status) => {
           if (status === 'SUBSCRIBED') {
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
             });
+          } else if (status === 'CHANNEL_ERROR') {
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
           }
         });
         
@@ -366,6 +382,9 @@ const AdminDashboard = () => {
                       recentEvents > 5 ? 'warning' : 
                       recentEvents > 0 ? 'good' : 'excellent'
       });
+
+      // Check system status in real-time
+      await checkSystemStatus();
       
       // Reset access error since we successfully loaded data
       setHasAccessError(false);
@@ -385,6 +404,39 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const checkSystemStatus = async () => {
+    const newStatus: SystemStatus = {
+      database: 'online',
+      authentication: 'active', 
+      securityMonitoring: 'enabled',
+      realTimeUpdates: realtimeChannel?.state === 'joined' ? 'connected' : 'disconnected'
+    };
+
+    try {
+      // Test database connectivity
+      const { error: dbTest } = await supabase.from('profiles').select('count').limit(1);
+      newStatus.database = dbTest ? 'degraded' : 'online';
+
+      // Test authentication status
+      const { data: { user }, error: authTest } = await supabase.auth.getUser();
+      newStatus.authentication = authTest || !user ? 'error' : 'active';
+
+      // Check security monitoring by testing access to security events
+      try {
+        const { error: securityTest } = await supabase.from('security_events').select('count').limit(1);
+        newStatus.securityMonitoring = securityTest ? 'partial' : 'enabled';
+      } catch {
+        newStatus.securityMonitoring = 'disabled';
+      }
+
+    } catch (error) {
+      console.warn('System status check failed:', error);
+      newStatus.database = 'offline';
+    }
+
+    setSystemStatus(newStatus);
   };
 
   const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'trainee' | 'tech_support_admin' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
@@ -954,15 +1006,51 @@ const AdminDashboard = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Database</span>
-                        <Badge variant="default" className="bg-accent text-accent-foreground shadow-sm">Online</Badge>
+                        <Badge 
+                          variant={systemStatus.database === 'online' ? 'default' : systemStatus.database === 'degraded' ? 'secondary' : 'destructive'} 
+                          className="shadow-sm capitalize"
+                        >
+                          {systemStatus.database === 'online' && '🟢'} 
+                          {systemStatus.database === 'degraded' && '🟡'} 
+                          {systemStatus.database === 'offline' && '🔴'} 
+                          {systemStatus.database}
+                        </Badge>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Authentication</span>
-                        <Badge variant="default" className="bg-accent text-accent-foreground shadow-sm">Active</Badge>
+                        <Badge 
+                          variant={systemStatus.authentication === 'active' ? 'default' : 'destructive'} 
+                          className="shadow-sm capitalize"
+                        >
+                          {systemStatus.authentication === 'active' && '🟢'} 
+                          {systemStatus.authentication === 'inactive' && '🟡'} 
+                          {systemStatus.authentication === 'error' && '🔴'} 
+                          {systemStatus.authentication}
+                        </Badge>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Security Monitoring</span>
-                        <Badge variant="default" className="bg-accent text-accent-foreground shadow-sm">Enabled</Badge>
+                        <Badge 
+                          variant={systemStatus.securityMonitoring === 'enabled' ? 'default' : systemStatus.securityMonitoring === 'partial' ? 'secondary' : 'destructive'} 
+                          className="shadow-sm capitalize"
+                        >
+                          {systemStatus.securityMonitoring === 'enabled' && '🟢'} 
+                          {systemStatus.securityMonitoring === 'partial' && '🟡'} 
+                          {systemStatus.securityMonitoring === 'disabled' && '🔴'} 
+                          {systemStatus.securityMonitoring}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                        <span className="text-sm font-medium">Real-time Updates</span>
+                        <Badge 
+                          variant={systemStatus.realTimeUpdates === 'connected' ? 'default' : systemStatus.realTimeUpdates === 'reconnecting' ? 'secondary' : 'destructive'} 
+                          className="shadow-sm capitalize"
+                        >
+                          {systemStatus.realTimeUpdates === 'connected' && '🟢'} 
+                          {systemStatus.realTimeUpdates === 'reconnecting' && '🟡'} 
+                          {systemStatus.realTimeUpdates === 'disconnected' && '🔴'} 
+                          {systemStatus.realTimeUpdates}
+                        </Badge>
                       </div>
                     </div>
                   </CardContent>
