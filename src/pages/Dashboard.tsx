@@ -657,18 +657,18 @@ const Dashboard = () => {
                         const moduleProgress = userProgress[module.id] || 0;
                         
                         return (
-                          <EnhancedModuleCard
-                            key={module.id}
-                            module={{
-                              ...module,
-                              module_id: module.id,
-                              lessons_count: parseInt(module.lessons.toString()) || 6,
-                              order_index: index,
-                              progress: moduleProgress,
-                              is_completed: moduleProgress >= 100,
-                              is_locked: !isUnlocked,
-                              prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
-                            }}
+          <EnhancedModuleCard
+            key={module.id}
+            module={{
+              ...module,
+              module_id: module.id.replace(/-module-\d+-.*$/, ''), // Extract base course ID
+              lessons_count: parseInt(module.lessons.toString()) || 6,
+              order_index: index,
+              progress: moduleProgress,
+              is_completed: moduleProgress >= 100,
+              is_locked: !isUnlocked,
+              prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
+            }}
                             userProgress={{
                               completion_percentage: moduleProgress,
                               is_completed: moduleProgress >= 100,
