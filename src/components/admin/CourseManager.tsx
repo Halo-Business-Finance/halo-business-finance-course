@@ -197,6 +197,21 @@ export function CourseManager({}: CourseManagerProps) {
                       return (
                         <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                           <div className="flex items-center gap-4">
+                            {/* Course Image */}
+                            <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                              {course.imageUrl ? (
+                                <img 
+                                  src={course.imageUrl} 
+                                  alt={course.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                                  <BookOpen className="h-6 w-6 text-primary/60" />
+                                </div>
+                              )}
+                            </div>
+                            
                             <Badge 
                               className={skillLevels.find(level => level.value === course.level)?.color}
                             >

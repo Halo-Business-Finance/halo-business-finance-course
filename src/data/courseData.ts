@@ -78,6 +78,7 @@ export interface Course {
   description: string;
   level: "beginner" | "intermediate" | "expert";
   modules: Module[];
+  imageUrl?: string;
 }
 
 export interface CourseData {
