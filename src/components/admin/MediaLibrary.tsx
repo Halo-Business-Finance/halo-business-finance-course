@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Upload, 
   Image, 
@@ -543,9 +544,10 @@ export function MediaLibrary() {
 
         {/* Media grid/list */}
         <div className="lg:col-span-3">
-          <Card>
-            <CardContent className="p-6">
-              {filteredMedia.length === 0 ? (
+          <Card className="h-[calc(100vh-200px)]">
+            <CardContent className="p-6 h-full">
+              <ScrollArea className="h-full">
+                {filteredMedia.length === 0 ? (
                 <div className="text-center py-8">
                   <Image className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No media files</h3>
@@ -702,8 +704,9 @@ export function MediaLibrary() {
                       </div>
                     </div>
                   ))}
-                </div>
-              )}
+                  </div>
+                )}
+              </ScrollArea>
             </CardContent>
           </Card>
         </div>
