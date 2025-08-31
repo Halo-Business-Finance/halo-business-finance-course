@@ -242,9 +242,9 @@ export function CourseManager({}: CourseManagerProps) {
                         <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                           <div className="flex items-center gap-4">
                             {/* Course Image and Skill Level */}
-                            <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                            <div className="flex flex-col items-start gap-2 flex-shrink-0">
                               <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
-                                <img 
+                                <img
                                   src={getCourseImage(course.title)} 
                                   alt={course.title}
                                   className="w-full h-full object-cover"
