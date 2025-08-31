@@ -389,306 +389,303 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
-      <div className="container mx-auto px-4 py-6 lg:py-8">
-        {/* Course Header - Business Finance Mastery */}
+      {/* Business Finance Mastery Header - Primary Dashboard Header */}
+      <div className="container mx-auto px-4 pt-6 lg:pt-8">
         <CourseHeader 
           progress={75}
           totalModules={flattenedModules.length}
           completedModules={Math.floor(flattenedModules.length * 0.75)}
           onContinueLearning={() => setCurrentFilterLevel(0)}
         />
+      </div>
 
-        {/* Instructor Information */}
-        <InstructorInfo />
+      {/* Main Dashboard Content */}
+      <div className="container mx-auto px-4 py-6 lg:py-8">
+        {/* Learning Dashboard */}
+        <div className="flex flex-col gap-6 lg:gap-8">
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            {/* Results Summary */}
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+              <h3 className="text-xl font-semibold">
+                {currentFilterLevel === 0 && "13 Course Programs Available"}
+                {currentFilterLevel === 1 && "3 Skill Levels Available"}
+                {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
+              </h3>
+            </div>
 
-        {/* Learning Dashboard - Moved below Instructor Information */}
-        <div className="container mx-auto px-4 mb-8">
-          <div className="flex flex-col gap-6 lg:gap-8">
-            {/* Main Content */}
-            <div className="flex-1 min-w-0">
-              {/* Results Summary */}
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-                <h3 className="text-xl font-semibold">
-                  {currentFilterLevel === 0 && "13 Course Programs Available"}
-                  {currentFilterLevel === 1 && "3 Skill Levels Available"}
-                  {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
-                </h3>
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-muted rounded-lg h-64" />
+                  </div>
+                ))}
               </div>
-
-              {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-                    <div key={i} className="animate-pulse">
-                      <div className="bg-muted rounded-lg h-64" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <>
-                  {/* Level 0: Course Program Cards */}
-                  {currentFilterLevel === 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                      {courseData.allCourses
-                        .filter((course, index, self) => 
-                          index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
-                        )
-                        .map((course, index) => {
-                          const courseName = course.title.split(' - ')[0];
-                          const courseModules = flattenedModules.filter(m => 
-                            m.course_title.toLowerCase().includes(courseName.toLowerCase())
-                          );
-                          return (
-                            <Card 
-                              key={courseName} 
-                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
-                            >
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(index)} 
-                                  alt={courseName}
-                                  className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                                />
+            ) : (
+              <>
+                {/* Level 0: Course Program Cards */}
+                {currentFilterLevel === 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {courseData.allCourses
+                      .filter((course, index, self) => 
+                        index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
+                      )
+                      .map((course, index) => {
+                        const courseName = course.title.split(' - ')[0];
+                        const courseModules = flattenedModules.filter(m => 
+                          m.course_title.toLowerCase().includes(courseName.toLowerCase())
+                        );
+                        return (
+                          <Card 
+                            key={courseName} 
+                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+                          >
+                            <div className="relative overflow-hidden rounded-t-lg">
+                              <img 
+                                src={getCourseImage(index)} 
+                                alt={courseName}
+                                className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                            <CardHeader className="pb-2">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
+                                  <Badge variant="default" className="mt-2 mb-2">Course Program</Badge>
+                                  <CardDescription className="line-clamp-3 mt-1 text-foreground">
+                                    {getCourseDetails(courseName).description}
+                                  </CardDescription>
+                                </div>
                               </div>
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
-                                    <Badge variant="default" className="mt-2 mb-2">Course Program</Badge>
-                                    <CardDescription className="line-clamp-3 mt-1 text-foreground">
-                                      {getCourseDetails(courseName).description}
-                                    </CardDescription>
+                              
+                              {/* Course Details Section - Exactly 3 Rows */}
+                              <div className="space-y-2 mt-4">
+                                {/* Row 1: Duration and Difficulty */}
+                                <div className="flex items-center justify-between text-xs h-6">
+                                  <div className="flex items-center gap-2">
+                                    <Clock className="h-3 w-3 text-muted-foreground" />
+                                    <span className="text-muted-foreground">{getCourseDetails(courseName).duration}</span>
+                                  </div>
+                                  <Badge variant="secondary" className="text-xs">
+                                    {getCourseDetails(courseName).difficulty}
+                                  </Badge>
+                                </div>
+                                
+                                {/* Row 2: Key Topics */}
+                                <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
+                                  <div className="flex flex-wrap gap-1">
+                                    {getCourseDetails(courseName).topics.slice(0, 2).map((topic, topicIndex) => (
+                                      <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap">
+                                        {topic}
+                                      </Badge>
+                                    ))}
                                   </div>
                                 </div>
                                 
-                                {/* Course Details Section - Exactly 3 Rows */}
-                                <div className="space-y-2 mt-4">
-                                  {/* Row 1: Duration and Difficulty */}
-                                  <div className="flex items-center justify-between text-xs h-6">
-                                    <div className="flex items-center gap-2">
-                                      <Clock className="h-3 w-3 text-muted-foreground" />
-                                      <span className="text-muted-foreground">{getCourseDetails(courseName).duration}</span>
-                                    </div>
-                                    <Badge variant="secondary" className="text-xs">
-                                      {getCourseDetails(courseName).difficulty}
-                                    </Badge>
-                                  </div>
-                                  
-                                  {/* Row 2: Key Topics */}
-                                  <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
-                                    <div className="flex flex-wrap gap-1">
-                                      {getCourseDetails(courseName).topics.slice(0, 2).map((topic, topicIndex) => (
-                                        <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap">
-                                          {topic}
-                                        </Badge>
-                                      ))}
-                                    </div>
-                                  </div>
-                                  
-                                  {/* Row 3: Learning Outcome */}
-                                  <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
-                                    <div className="line-clamp-2">
-                                      <span className="font-medium text-foreground">Outcome: </span>
-                                      <span className="text-muted-foreground">{getCourseDetails(courseName).outcome}</span>
-                                    </div>
+                                {/* Row 3: Learning Outcome */}
+                                <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
+                                  <div className="line-clamp-2">
+                                    <span className="font-medium text-foreground">Outcome: </span>
+                                    <span className="text-muted-foreground">{getCourseDetails(courseName).outcome}</span>
                                   </div>
                                 </div>
+                              </div>
 
-                                <div className="flex items-center gap-4 text-sm mt-3">
-                                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{courseModules.length} modules</span>
-                                  </div>
-                                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
-                                    <Target className="h-4 w-4" />
-                                    <span>3 levels</span>
-                                  </div>
+                              <div className="flex items-center gap-4 text-sm mt-3">
+                                <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                                  <BookOpen className="h-4 w-4" />
+                                  <span>{courseModules.length} modules</span>
                                 </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <Button 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Start Course button clicked for:', courseName);
-                                    handleStartCourse(courseName);
-                                  }}
-                                  className="w-full touch-manipulation"
-                                  variant="default"
-                                >
-                                  Start Course
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          );
-                        })}
+                                <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                                  <Target className="h-4 w-4" />
+                                  <span>3 levels</span>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                              <Button 
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  console.log('Start Course button clicked for:', courseName);
+                                  handleStartCourse(courseName);
+                                }}
+                                className="w-full touch-manipulation"
+                                variant="default"
+                              >
+                                Start Course
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                  </div>
+                )}
+
+                {/* Level 1: Skill Level Cards */}
+                {(() => {
+                  console.log('=== LEVEL 1 RENDER CHECK ===');
+                  console.log('currentFilterLevel:', currentFilterLevel);
+                  console.log('filterNavigationPath.length:', filterNavigationPath.length);
+                  console.log('filterNavigationPath:', filterNavigationPath);
+                  const shouldRender = currentFilterLevel === 1 && filterNavigationPath.length > 0;
+                  console.log('Should render Level 1:', shouldRender);
+                  return shouldRender;
+                })() && (
+                  <div className="space-y-4">
+                    {/* Back button */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleReturnToDashboard}
+                      className="mb-4"
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      Back to Courses
+                    </Button>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                      {['beginner', 'intermediate', 'expert'].map((level, index) => {
+                        const selectedCourse = filterNavigationPath[0];
+                        const levelModules = flattenedModules.filter(m => 
+                          m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
+                          m.skill_level === level
+                        );
+                        return (
+                          <Card 
+                            key={level} 
+                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+                          >
+                            <div className="relative overflow-hidden rounded-t-lg">
+                              <img 
+                                src={getCourseImage(index)} 
+                                alt={`${selectedCourse.name} - ${level}`}
+                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute top-4 left-4">
+                                <Badge variant={level === "beginner" ? "default" : level === "intermediate" ? "secondary" : "destructive"}>
+                                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                                </Badge>
+                              </div>
+                            </div>
+                            <CardHeader className="pb-2">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle className="text-lg line-clamp-2">
+                                    {selectedCourse.name} - {level.charAt(0).toUpperCase() + level.slice(1)}
+                                  </CardTitle>
+                                  <CardDescription className="line-clamp-2 mt-1">
+                                    {level === 'beginner' && 'Introduction and fundamental concepts'}
+                                    {level === 'intermediate' && 'Advanced techniques and strategies'}
+                                    {level === 'expert' && 'Expert-level mastery and leadership'}
+                                  </CardDescription>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                                <div className="flex items-center gap-1">
+                                  <BookOpen className="h-4 w-4" />
+                                  <span>{levelModules.length} modules</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-4 w-4" />
+                                  <span>{levelModules.length * 30} min</span>
+                                </div>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                              <Button 
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  console.log('Proceed to Modules button clicked for level:', level);
+                                  handleProceedToModules(level);
+                                }}
+                                className="w-full touch-manipulation"
+                                variant="default"
+                              >
+                                Proceed to Modules
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* Level 1: Skill Level Cards */}
-                  {(() => {
-                    console.log('=== LEVEL 1 RENDER CHECK ===');
-                    console.log('currentFilterLevel:', currentFilterLevel);
-                    console.log('filterNavigationPath.length:', filterNavigationPath.length);
-                    console.log('filterNavigationPath:', filterNavigationPath);
-                    const shouldRender = currentFilterLevel === 1 && filterNavigationPath.length > 0;
-                    console.log('Should render Level 1:', shouldRender);
-                    return shouldRender;
-                  })() && (
-                    <div className="space-y-4">
-                      {/* Back button */}
+                {/* Level 2: Individual Module Cards */}
+                {currentFilterLevel === 2 && (
+                  <div className="space-y-4">
+                    {/* Navigation breadcrumb */}
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                       <Button 
                         variant="ghost" 
                         size="sm"
                         onClick={handleReturnToDashboard}
-                        className="mb-4"
                       >
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Courses
+                        Dashboard
                       </Button>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {['beginner', 'intermediate', 'expert'].map((level, index) => {
-                          const selectedCourse = filterNavigationPath[0];
-                          const levelModules = flattenedModules.filter(m => 
-                            m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
-                            m.skill_level === level
-                          );
-                          return (
-                            <Card 
-                              key={level} 
-                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
-                            >
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(index)} 
-                                  alt={`${selectedCourse.name} - ${level}`}
-                                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute top-4 left-4">
-                                  <Badge variant={level === "beginner" ? "default" : level === "intermediate" ? "secondary" : "destructive"}>
-                                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                                  </Badge>
-                                </div>
-                              </div>
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-lg line-clamp-2">
-                                      {selectedCourse.name} - {level.charAt(0).toUpperCase() + level.slice(1)}
-                                    </CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1">
-                                      {level === 'beginner' && 'Introduction and fundamental concepts'}
-                                      {level === 'intermediate' && 'Advanced techniques and strategies'}
-                                      {level === 'expert' && 'Expert-level mastery and leadership'}
-                                    </CardDescription>
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                  <div className="flex items-center gap-1">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{levelModules.length} modules</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Clock className="h-4 w-4" />
-                                    <span>{levelModules.length * 30} min</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <Button 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Proceed to Modules button clicked for level:', level);
-                                    handleProceedToModules(level);
-                                  }}
-                                  className="w-full touch-manipulation"
-                                  variant="default"
-                                >
-                                  Proceed to Modules
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          );
-                        })}
-                      </div>
+                      <span>/</span>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => setCurrentFilterLevel(1)}
+                      >
+                        {filterNavigationPath[0]?.name}
+                      </Button>
+                      <span>/</span>
+                      <span className="text-foreground">{filterNavigationPath[1]?.name}</span>
                     </div>
-                  )}
 
-                  {/* Level 2: Individual Module Cards */}
-                  {currentFilterLevel === 2 && (
-                    <div className="space-y-4">
-                      {/* Navigation breadcrumb */}
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={handleReturnToDashboard}
-                        >
-                          Dashboard
-                        </Button>
-                        <span>/</span>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => setCurrentFilterLevel(1)}
-                        >
-                          {filterNavigationPath[0]?.name}
-                        </Button>
-                        <span>/</span>
-                        <span className="text-foreground">{filterNavigationPath[1]?.name}</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        {filteredModules.map((module, index) => {
-                          const isUnlocked = isModuleUnlocked(index, filteredModules);
-                          const moduleProgress = userProgress[module.id] || 0;
-                          
-                          return (
-                            <EnhancedModuleCard
-                              key={module.id}
-                              module={{
-                                ...module,
-                                module_id: module.id,
-                                lessons_count: parseInt(module.lessons.toString()) || 6,
-                                order_index: index,
-                                progress: moduleProgress,
-                                is_completed: moduleProgress >= 100,
-                                is_locked: !isUnlocked,
-                                prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
-                              }}
-                              userProgress={{
-                                completion_percentage: moduleProgress,
-                                is_completed: moduleProgress >= 100,
-                                time_spent_minutes: Math.floor(moduleProgress * 30 / 100) // Estimate based on progress
-                              }}
-                            />
-                          );
-                        })}
-                      </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                      {filteredModules.map((module, index) => {
+                        const isUnlocked = isModuleUnlocked(index, filteredModules);
+                        const moduleProgress = userProgress[module.id] || 0;
+                        
+                        return (
+                          <EnhancedModuleCard
+                            key={module.id}
+                            module={{
+                              ...module,
+                              module_id: module.id,
+                              lessons_count: parseInt(module.lessons.toString()) || 6,
+                              order_index: index,
+                              progress: moduleProgress,
+                              is_completed: moduleProgress >= 100,
+                              is_locked: !isUnlocked,
+                              prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
+                            }}
+                            userProgress={{
+                              completion_percentage: moduleProgress,
+                              is_completed: moduleProgress >= 100,
+                              time_spent_minutes: Math.floor(moduleProgress * 30 / 100) // Estimate based on progress
+                            }}
+                          />
+                        );
+                      })}
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* No results message */}
-                  {((currentFilterLevel === 2 && filteredModules.length === 0) || 
-                    (currentFilterLevel === 1 && filterNavigationPath.length === 0)) && (
-                    <div className="text-center py-12">
-                      <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                        No content found
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Try navigating back or adjusting your selection.
-                      </p>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+                {/* No results message */}
+                {((currentFilterLevel === 2 && filteredModules.length === 0) || 
+                  (currentFilterLevel === 1 && filterNavigationPath.length === 0)) && (
+                  <div className="text-center py-12">
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                      No content found
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Try navigating back or adjusting your selection.
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
-
 
         {/* Module Detail Modal */}
         {selectedModule && (
