@@ -405,16 +405,16 @@ const Dashboard = () => {
                                     </CardDescription>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                  <div className="flex items-center gap-1">
-                                    <BookOpen className="h-4 w-4" />
-                                    <span>{courseModules.length} modules</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Target className="h-4 w-4" />
-                                    <span>3 levels</span>
-                                  </div>
-                                </div>
+                <div className="flex items-center gap-4 text-sm mt-2">
+                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                    <BookOpen className="h-4 w-4" />
+                    <span>{courseModules.length} modules</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                    <Target className="h-4 w-4" />
+                    <span>3 levels</span>
+                  </div>
+                </div>
                               </CardHeader>
                               <CardContent className="pt-0">
                                 <Button 
