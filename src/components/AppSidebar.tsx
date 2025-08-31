@@ -163,7 +163,7 @@ export function AppSidebar() {
     <Sidebar
       collapsible="icon"
       variant="inset"
-      className="bg-white border-gray-200"
+      className="bg-white border-gray-200 border-r-2 border-gray-300"
     >
       <SidebarContent className="bg-white">
         {/* Welcome Message */}
