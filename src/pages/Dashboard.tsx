@@ -29,6 +29,7 @@ import { CourseSelector } from "@/components/CourseSelector";
 
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { courseData, statsData } from "@/data/courseData";
+import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
 
@@ -46,6 +47,7 @@ import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
+  const { setSelectedCourse } = useCourseSelection();
   const { toast } = useToast();
   const [modules, setModules] = useState(courseData.allCourses.flatMap(course => course.modules));
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
@@ -153,6 +155,16 @@ const Dashboard = () => {
       );
       console.log('Level modules found:', levelModules.length);
       setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
+      
+      // Set the selected course in the context for the sidebar
+      const courseForSidebar = {
+        id: courseSkillId,
+        title: `${selectedCourse.name} - ${level.charAt(0).toUpperCase() + level.slice(1)}`,
+        description: `${level.charAt(0).toUpperCase() + level.slice(1)} level modules for ${selectedCourse.name}`
+      };
+      console.log('Setting course in context:', courseForSidebar);
+      setSelectedCourse(courseForSidebar);
+      
       // Force re-render on mobile/tablet
       setRenderKey(prev => prev + 1);
       console.log('Proceed to modules completed successfully');
