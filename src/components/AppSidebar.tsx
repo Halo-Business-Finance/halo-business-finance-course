@@ -180,10 +180,10 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
         {/* Welcome Message */}
         {user && !collapsed && (
           <div className="px-4 py-4 border-b border-gray-200">
-            <div className="text-gray-900">
-              <div className="text-sm font-medium text-gray-600">Welcome back,</div>
+            <div className="text-black">
+              <div className="text-sm font-medium text-black">Welcome back,</div>
               <div className="flex items-center justify-between">
-                <div className="text-base font-semibold text-gray-900">
+                <div className="text-base font-semibold text-black">
                   {user.user_metadata?.full_name?.split(' ')[0] || 
                    user.user_metadata?.name?.split(' ')[0] || 
                    user.email?.split('@')[0] || 'User'}!
@@ -191,11 +191,11 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                 <button 
                   onClick={handleSignOut}
                   disabled={isLoading}
-                  className="flex items-center gap-1 text-gray-700 hover:bg-gray-100 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
+                  className="flex items-center gap-1 text-black hover:bg-gray-100 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
                   title="Sign Out"
                 >
                   <LogOut className="h-4 w-4 text-halo-orange" />
-                  {!collapsed && <span className="text-xs text-gray-700">{isLoading ? "..." : "Sign Out"}</span>}
+                  {!collapsed && <span className="text-xs text-black">{isLoading ? "..." : "Sign Out"}</span>}
                 </button>
               </div>
             </div>
@@ -211,10 +211,10 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                    <SidebarMenuButton asChild>
                      <button 
                        onClick={() => handleNavigation(item.url, true, (item as any).action)}
-                       className={`w-full flex items-center gap-3 text-gray-700 hover:bg-gray-100 hover:text-gray-900 p-3 rounded-lg transition-all duration-200`}
+                       className={`w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200`}
                      >
                         <item.icon className="h-5 w-5 text-halo-orange" />
-                        {!collapsed && <span className="text-gray-700 text-sm font-medium">{item.title}</span>}
+                        {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -234,7 +234,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
             <SidebarGroupLabel className="pb-3 mb-2">
               {!collapsed && (
                 <div className="flex-1">
-                  <span className="text-sm font-semibold text-gray-900 tracking-wide">
+                  <span className="text-sm font-semibold text-black tracking-wide">
                     {selectedCourse?.title || 'Course Modules'}
                   </span>
                 </div>
@@ -257,7 +257,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                                  ${isModuleLocked ? "opacity-50" : ""} 
                                  ${!canAccess ? "cursor-not-allowed" : ""}
                                group relative overflow-hidden rounded-xl p-4 transition-all duration-300 ease-out
-                                text-gray-700 hover:bg-gray-100 hover:text-gray-900
+                                 text-black hover:bg-gray-100 hover:text-black
                               `}
                          >
                            <div className="relative z-10 flex items-center w-full gap-4">
@@ -275,24 +275,24 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                              {!collapsed && (
                                <div className="flex-1 min-w-0">
                                  <div className="flex items-center justify-between">
-                                      <h3 className="text-sm font-medium text-gray-900 leading-tight truncate transition-colors">
-                                        {module.title}
-                                      </h3>
-                                    
-                                     {/* Status Badge */}
-                                     <div className="ml-2 flex-shrink-0">
-                                       {!isModuleLocked && (
-                                         <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm animate-pulse"></div>
-                                       )}
-                                     </div>
-                                  </div>
-                                  
-                                  {/* Subtle description for available modules */}
-                                  {!isModuleLocked && (
-                                     <p className="text-sm text-gray-600 mt-1 transition-opacity duration-300">
-                                       Ready to start
-                                     </p>
-                                  )}
+                                       <h3 className="text-sm font-medium text-black leading-tight truncate transition-colors">
+                                         {module.title}
+                                       </h3>
+                                     
+                                      {/* Status Badge */}
+                                      <div className="ml-2 flex-shrink-0">
+                                        {!isModuleLocked && (
+                                          <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm animate-pulse"></div>
+                                        )}
+                                      </div>
+                                   </div>
+                                   
+                                   {/* Subtle description for available modules */}
+                                   {!isModuleLocked && (
+                                      <p className="text-sm text-black mt-1 transition-opacity duration-300">
+                                        Ready to start
+                                      </p>
+                                   )}
                                </div>
                              )}
                            </div>
@@ -314,7 +314,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
           <SidebarGroup className="pt-2">
             <SidebarGroupContent>
               <div className="px-4 py-6 text-center">
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-black">
                   {selectedCourse 
                     ? 'No modules available for this course'
                     : 'Select a course from the dashboard to see modules here'
@@ -335,19 +335,19 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                     <SidebarMenuButton asChild>
                        <button 
                          onClick={handleSignIn}
-                         className="w-full flex items-center gap-3 text-gray-700 hover:bg-gray-100 hover:text-gray-900 p-3 rounded-lg transition-all duration-200"
+                         className="w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200"
                        >
                           <LogIn className="h-5 w-5 text-halo-orange" />
-                          {!collapsed && <span className="text-gray-700 text-sm font-medium">Sign In</span>}
+                          {!collapsed && <span className="text-black text-sm font-medium">Sign In</span>}
                        </button>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )}
-                 {loading && (
-                   <SidebarMenuItem>
-                      <div className="text-xs text-gray-500 p-2">Loading...</div>
-                     </SidebarMenuItem>
+                     </SidebarMenuButton>
+                   </SidebarMenuItem>
                  )}
+                  {loading && (
+                    <SidebarMenuItem>
+                       <div className="text-xs text-black p-2">Loading...</div>
+                      </SidebarMenuItem>
+                  )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
