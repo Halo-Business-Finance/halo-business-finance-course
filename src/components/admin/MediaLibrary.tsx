@@ -395,8 +395,12 @@ export function MediaLibrary() {
   const createFolder = async () => {
     if (!newFolderName.trim()) return;
 
+    console.log('Creating folder with name:', newFolderName.trim());
+    
     // Create folder path - if current folder is "all", create at root level
     const newFolderPath = currentFolder === 'all' ? '/' + newFolderName.trim() : currentFolder + (currentFolder.endsWith('/') ? '' : '/') + newFolderName.trim();
+    
+    console.log('New folder path will be:', newFolderPath);
     
     // Create a placeholder file to create the folder structure in storage
     try {
