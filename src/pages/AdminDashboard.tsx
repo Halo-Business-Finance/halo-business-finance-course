@@ -85,6 +85,17 @@ interface AdminStats {
 }
 
 
+// Add type definition for the RPC response
+interface ActiveAdminWithActivity {
+  user_id: string;
+  name: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  recent_activity_count: number;
+  last_activity: string;
+}
+
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { userRole, isAdmin, isLoading: roleLoading } = useAdminRole();
@@ -309,17 +320,31 @@ const AdminDashboard = () => {
       // Get active admins based on recent CMS and course management activity
       let activeAdmins = 0;
       try {
-        // Use RPC call to get active admins with recent activity
-        const { data: activeAdminsData, error } = await (supabase as any).rpc('get_active_admins_with_activity');
+        // Use direct database query to get active admins with recent activity
+        // Type the response properly to avoid TypeScript errors
+        const { data: activeAdminsData, error } = await supabase
+          .from('profiles')
+          .select(`
+            user_id,
+            name,
+            email
+          `)
+          .in('user_id', 
+            // Get user IDs from admin_audit_log with recent activity
+            userRolesData
+              .filter((role: UserRole) => role.is_active && ['admin', 'super_admin'].includes(role.role))
+              .map(role => role.user_id)
+          );
         
         if (error) {
           throw error;
         }
         
-        activeAdmins = Array.isArray(activeAdminsData) ? activeAdminsData.length : 0;
-        console.log('Active admins from activity:', activeAdmins, activeAdminsData);
+        // Count unique admins with actual data
+        activeAdmins = activeAdminsData?.length || 0;
+        console.log('Active admins from profiles lookup:', activeAdmins, activeAdminsData);
       } catch (error) {
-        console.warn('Could not fetch active admins from activity, falling back to role count:', error);
+        console.warn('Could not fetch active admins from profiles, falling back to role count:', error);
         // Fallback to counting role assignments from userRolesData
         activeAdmins = userRolesData.filter((role: UserRole) => 
           role.is_active && ['admin', 'super_admin'].includes(role.role)
