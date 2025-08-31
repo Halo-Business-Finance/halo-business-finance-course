@@ -10,7 +10,8 @@ import {
   User,
   LogIn,
   LogOut,
-  Lock
+  Lock,
+  LifeBuoy
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
@@ -36,10 +37,11 @@ const mainNavItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "My Course", url: "/my-course", icon: BarChart3 },
   { title: "Learning Resources", url: "/resources", icon: FileText },
+  { title: "Support", url: "#support", icon: LifeBuoy, action: "openSupport" },
   { title: "My Account", url: "/my-account", icon: User },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   const { state, toggleSidebar, isMobile } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
@@ -79,7 +81,7 @@ export function AppSidebar() {
   };
 
   // Function to handle navigation and close sidebar on mobile
-  const handleNavigation = (url: string, canAccess: boolean = true) => {
+  const handleNavigation = (url: string, canAccess: boolean = true, action?: string) => {
     if (!canAccess) {
       toast({
         title: "Module Locked",
@@ -87,6 +89,15 @@ export function AppSidebar() {
         variant: "destructive",
         duration: 3000,
       });
+      return;
+    }
+    
+    // Handle special actions
+    if (action === "openSupport") {
+      onOpenSupport?.();
+      if (isMobile) {
+        toggleSidebar();
+      }
       return;
     }
     
@@ -199,7 +210,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                    <SidebarMenuButton asChild>
                      <button 
-                       onClick={() => handleNavigation(item.url)}
+                       onClick={() => handleNavigation(item.url, true, (item as any).action)}
                        className={`w-full flex items-center gap-3 text-gray-700 hover:bg-gray-100 hover:text-gray-900 p-3 rounded-lg transition-all duration-200`}
                      >
                         <item.icon className="h-5 w-5 text-halo-orange" />

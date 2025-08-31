@@ -143,15 +143,6 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         
         {user && (
           <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0 pt-1 pr-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsChatOpen(true)}
-              className="bg-gray-800 hover:bg-gray-700 p-1 h-10 w-10 flex-shrink-0 rounded-lg"
-              title="Support"
-            >
-              <LifeBuoy className="h-6 w-6 text-white" fill="currentColor" />
-            </Button>
             <NotificationBell />
             <div className="text-xs min-w-0 flex-shrink-0">
               <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
@@ -182,7 +173,7 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen flex w-full">
-      {user && <AppSidebar />}
+      {user && <AppSidebar onOpenSupport={() => setIsChatOpen(true)} />}
       
       <div className="flex-1 flex flex-col min-w-0">
         <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
