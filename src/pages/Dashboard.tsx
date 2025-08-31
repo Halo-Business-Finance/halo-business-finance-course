@@ -390,7 +390,7 @@ const Dashboard = () => {
                                 <img 
                                   src={getCourseImage(index)} 
                                   alt={courseName}
-                                  className="w-full h-48 object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                  className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform duration-300"
                                 />
                                 <div className="absolute top-4 left-4">
                                   <Badge variant="default">Course Program</Badge>
