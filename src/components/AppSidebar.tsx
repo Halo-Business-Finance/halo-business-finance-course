@@ -161,7 +161,6 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className="bg-halo-navy border-halo-navy/30"
       collapsible="icon"
       variant="inset"
     >
