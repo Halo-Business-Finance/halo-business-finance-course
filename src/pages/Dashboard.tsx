@@ -26,7 +26,7 @@ import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking"
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
-import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
+
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { courseData, statsData } from "@/data/courseData";
 import { supabase } from "@/integrations/supabase/client";
@@ -603,9 +603,8 @@ const Dashboard = () => {
 
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
-          <Tabs defaultValue="interactive" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 lg:grid-cols-7 mb-8">
-              <TabsTrigger value="interactive" className="text-xs">Interactive</TabsTrigger>
+          <Tabs defaultValue="progress" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8">
               <TabsTrigger value="progress" className="text-xs">Progress</TabsTrigger>
               <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
               <TabsTrigger value="social" className="text-xs">Social Hub</TabsTrigger>
@@ -614,22 +613,6 @@ const Dashboard = () => {
               <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="interactive" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-5 w-5" />
-                    Interactive Learning Components
-                  </CardTitle>
-                  <CardDescription>
-                    Engage with dynamic content, simulations, and hands-on exercises
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <InteractiveLessonComponents />
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             <TabsContent value="progress" className="mt-6">
               <Card>
