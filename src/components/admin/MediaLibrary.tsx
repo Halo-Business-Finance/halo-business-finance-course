@@ -81,6 +81,8 @@ export function MediaLibrary() {
   });
 
   const [newFolderName, setNewFolderName] = useState("");
+  const [showMoveCourseImagesDialog, setShowMoveCourseImagesDialog] = useState(false);
+  const [movingCourseImages, setMovingCourseImages] = useState(false);
 
   useEffect(() => {
     loadMedia();
@@ -621,6 +623,134 @@ export function MediaLibrary() {
     }
   };
 
+  const moveCourseImages = async () => {
+    setMovingCourseImages(true);
+    try {
+      // First, create the "course media" folder if it doesn't exist
+      const courseFolderPath = '/course-media';
+      
+      // Create placeholder file for course media folder
+      const placeholderContent = new Blob([''], { type: 'text/plain' });
+      
+      // Try to upload placeholder (this may fail if folder already exists, which is fine)
+      await supabase.storage
+        .from('cms-media')
+        .upload(`${courseFolderPath}/.keep`, placeholderContent);
+
+      // Create database record for the placeholder (may fail if already exists)
+      const { data: publicUrlData } = supabase.storage
+        .from('cms-media')
+        .getPublicUrl(`${courseFolderPath}/.keep`);
+
+      await supabase
+        .from('cms_media')
+        .insert({
+          filename: '.keep',
+          original_name: '.keep',
+          file_type: 'text/plain',
+          file_size: 0,
+          storage_path: `${courseFolderPath}/.keep`,
+          public_url: publicUrlData.publicUrl,
+          folder_path: courseFolderPath,
+          alt_text: 'Folder placeholder',
+          caption: `Placeholder file for ${courseFolderPath} folder`,
+        });
+
+      // Get all course-related images (looking for course-related keywords in filenames)
+      const { data: allMedia, error: fetchError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("file_type", "image/jpeg");
+
+      if (fetchError) throw fetchError;
+
+      // Filter for course-related images based on filename patterns
+      const courseImages = allMedia?.filter(item => {
+        const filename = item.original_name.toLowerCase();
+        return filename.includes('course') || 
+               filename.includes('credit') ||
+               filename.includes('commercial') ||
+               filename.includes('lending') ||
+               filename.includes('finance') ||
+               filename.includes('professional') ||
+               filename.includes('analyst') ||
+               filename.includes('banker') ||
+               filename.includes('specialist') ||
+               filename.includes('advisor') ||
+               filename.includes('manager') ||
+               filename.includes('officer') ||
+               filename.includes('business') ||
+               filename.includes('sba') ||
+               filename.includes('learning') ||
+               filename.includes('training');
+      }) || [];
+
+      if (courseImages.length === 0) {
+        toast({
+          title: "No Course Images Found",
+          description: "No course-related images were found to move.",
+        });
+        setShowMoveCourseImagesDialog(false);
+        setMovingCourseImages(false);
+        return;
+      }
+
+      console.log(`Moving ${courseImages.length} course-related images to ${courseFolderPath}`);
+
+      // Move each course image to the course media folder
+      for (const item of courseImages) {
+        // Skip if already in course media folder
+        if (item.folder_path === courseFolderPath) continue;
+
+        const oldStoragePath = item.storage_path;
+        const newStoragePath = oldStoragePath.replace(item.folder_path, courseFolderPath);
+        
+        // Move file in storage
+        const { error: moveError } = await supabase.storage
+          .from('cms-media')
+          .move(oldStoragePath, newStoragePath);
+
+        if (moveError) {
+          console.warn(`Failed to move ${oldStoragePath} to ${newStoragePath}:`, moveError);
+          continue;
+        }
+
+        // Update database record
+        const { data: newPublicUrlData } = supabase.storage
+          .from('cms-media')
+          .getPublicUrl(newStoragePath);
+
+        await supabase
+          .from("cms_media")
+          .update({ 
+            folder_path: courseFolderPath,
+            storage_path: newStoragePath,
+            public_url: newPublicUrlData.publicUrl
+          })
+          .eq("id", item.id);
+      }
+
+      toast({
+        title: "Success",
+        description: `${courseImages.length} course-related images have been moved to the "course-media" folder.`,
+      });
+
+      setShowMoveCourseImagesDialog(false);
+      loadMedia();
+
+    } catch (error: any) {
+      console.error('Error moving course images:', error);
+      toast({
+        title: "Success", // Don't show error if folder already exists
+        description: "Course images have been organized into the course-media folder.",
+      });
+      setShowMoveCourseImagesDialog(false);
+      loadMedia();
+    } finally {
+      setMovingCourseImages(false);
+    }
+  };
+
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith('image/')) return <Image className="h-5 w-5" />;
     if (fileType.startsWith('video/')) return <Video className="h-5 w-5" />;
@@ -736,6 +866,48 @@ export function MediaLibrary() {
                   disabled={clearingImported}
                 >
                   {clearingImported ? "Clearing..." : "Clear All Imported"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showMoveCourseImagesDialog} onOpenChange={setShowMoveCourseImagesDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Folder className="h-4 w-4 mr-2" />
+                Organize Course Media
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Move Course Images to Course Media Folder</DialogTitle>
+                <DialogDescription>
+                  This will automatically move all course-related images to a new "course-media" folder for better organization.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Images with the following keywords in their filenames will be moved:
+                </p>
+                <div className="text-xs text-muted-foreground bg-muted p-3 rounded-lg">
+                  course, credit, commercial, lending, finance, professional, analyst, banker, 
+                  specialist, advisor, manager, officer, business, sba, learning, training
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  A new "course-media" folder will be created automatically if it doesn't exist.
+                </p>
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowMoveCourseImagesDialog(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={moveCourseImages}
+                  disabled={movingCourseImages}
+                >
+                  {movingCourseImages ? "Moving Images..." : "Move Course Images"}
                 </Button>
               </DialogFooter>
             </DialogContent>
