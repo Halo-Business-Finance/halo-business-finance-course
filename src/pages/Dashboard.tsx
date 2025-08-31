@@ -292,25 +292,60 @@ const Dashboard = () => {
     setSelectedModule(moduleId);
   };
 
-  // Function to get course description based on course name
-  const getCourseDescription = (courseName: string) => {
-    const courseDescriptions = {
-      "SBA 7(a) Loans": "Government-backed lending with favorable terms and flexible qualification requirements",
-      "SBA Express Loans": "Fast-track SBA financing with streamlined processing and quick approvals",
-      "Commercial Real Estate Financing": "Property acquisition and development funding for commercial real estate",
-      "Equipment Financing": "Asset-based lending solutions for machinery, vehicles, and business equipment",
-      "Business Lines of Credit": "Flexible revolving credit facilities for working capital and cash flow management",
-      "Invoice Factoring": "Immediate cash flow solutions through accounts receivable financing",
-      "Term Loans": "Traditional fixed-rate financing for business expansion and capital investments",
-      "Construction Loans": "Specialized financing for building projects and property development",
-      "Bridge Loans": "Short-term financing solutions for transitional business needs",
-      "Merchant Cash Advances": "Quick funding based on future credit card sales and daily receipts",
-      "Asset-Based Lending": "Collateral-focused financing using business assets as security",
-      "Working Capital Loans": "Short-term funding for operational expenses and inventory management",
-      "Acquisition Financing": "Strategic funding for business purchases and mergers"
+  // Function to get comprehensive course details
+  const getCourseDetails = (courseName: string) => {
+    const courseDetailsMap = {
+      "SBA 7(a) Loans": {
+        description: "Government-backed lending with favorable terms and flexible qualification requirements",
+        duration: "8-12 weeks",
+        difficulty: "Intermediate",
+        topics: ["Loan Eligibility", "Underwriting Process", "SBA Guidelines", "Risk Assessment", "Documentation", "Portfolio Management"],
+        outcome: "Master SBA 7(a) loan processing from application to closing"
+      },
+      "SBA Express Loans": {
+        description: "Fast-track SBA financing with streamlined processing and quick approvals",
+        duration: "6-8 weeks", 
+        difficulty: "Beginner to Intermediate",
+        topics: ["Express Processing", "Quick Approvals", "Risk Assessment", "Compliance", "Portfolio Optimization"],
+        outcome: "Efficiently process SBA Express loans with speed and accuracy"
+      },
+      "Commercial Real Estate Financing": {
+        description: "Property acquisition and development funding for commercial real estate",
+        duration: "10-14 weeks",
+        difficulty: "Advanced",
+        topics: ["Property Analysis", "Market Valuation", "Construction Loans", "Investment Analysis", "Risk Mitigation"],
+        outcome: "Structure complex commercial real estate financing deals"
+      },
+      "Equipment Financing": {
+        description: "Asset-based lending solutions for machinery, vehicles, and business equipment",
+        duration: "6-8 weeks",
+        difficulty: "Intermediate", 
+        topics: ["Asset Valuation", "Depreciation Analysis", "Lease vs Buy", "Security Interests", "Collection Strategies"],
+        outcome: "Evaluate and finance equipment purchases effectively"
+      },
+      "Business Lines of Credit": {
+        description: "Flexible revolving credit facilities for working capital and cash flow management",
+        duration: "8-10 weeks",
+        difficulty: "Intermediate",
+        topics: ["Credit Analysis", "Borrowing Base", "Covenant Structure", "Monitoring", "Risk Management"],
+        outcome: "Structure and manage revolving credit facilities"
+      },
+      "Invoice Factoring": {
+        description: "Immediate cash flow solutions through accounts receivable financing",
+        duration: "4-6 weeks",
+        difficulty: "Beginner",
+        topics: ["A/R Analysis", "Credit Risk", "Factor Agreements", "Collection Process", "Client Relations"],
+        outcome: "Implement factoring solutions for immediate cash flow"
+      }
     };
     
-    return courseDescriptions[courseName] || "Comprehensive training program with practical applications";
+    return courseDetailsMap[courseName] || {
+      description: "Comprehensive training program with practical applications",
+      duration: "6-8 weeks",
+      difficulty: "Intermediate", 
+      topics: ["Core Concepts", "Practical Applications", "Risk Management", "Best Practices"],
+      outcome: "Master essential skills for professional success"
+    };
   };
 
   // Course image mapping function
@@ -419,23 +454,53 @@ const Dashboard = () => {
                               </div>
                               <CardHeader className="pb-2">
                                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
-                    <CardDescription className="line-clamp-2 mt-1 text-foreground">
-                      {getCourseDescription(courseName)}
-                    </CardDescription>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-sm mt-2">
-                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{courseModules.length} modules</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
-                    <Target className="h-4 w-4" />
-                    <span>3 levels</span>
-                  </div>
-                </div>
+                                  <div className="flex-1">
+                                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
+                                    <CardDescription className="line-clamp-3 mt-1 text-foreground">
+                                      {getCourseDetails(courseName).description}
+                                    </CardDescription>
+                                  </div>
+                                </div>
+                                
+                                {/* Course Details Section */}
+                                <div className="space-y-3 mt-4">
+                                  <div className="flex items-center justify-between text-xs">
+                                    <div className="flex items-center gap-2">
+                                      <Clock className="h-3 w-3 text-muted-foreground" />
+                                      <span className="text-muted-foreground">{getCourseDetails(courseName).duration}</span>
+                                    </div>
+                                    <Badge variant="secondary" className="text-xs">
+                                      {getCourseDetails(courseName).difficulty}
+                                    </Badge>
+                                  </div>
+                                  
+                                  <div className="space-y-2">
+                                    <h4 className="text-xs font-medium text-foreground">Key Topics:</h4>
+                                    <div className="flex flex-wrap gap-1">
+                                      {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => (
+                                        <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5">
+                                          {topic}
+                                        </Badge>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="bg-muted/50 p-2 rounded text-xs">
+                                    <span className="font-medium text-foreground">Learning Outcome: </span>
+                                    <span className="text-muted-foreground">{getCourseDetails(courseName).outcome}</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-4 text-sm mt-3">
+                                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                                    <BookOpen className="h-4 w-4" />
+                                    <span>{courseModules.length} modules</span>
+                                  </div>
+                                  <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
+                                    <Target className="h-4 w-4" />
+                                    <span>3 levels</span>
+                                  </div>
+                                </div>
                               </CardHeader>
                               <CardContent className="pt-0">
                                 <Button 
