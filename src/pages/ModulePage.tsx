@@ -35,48 +35,87 @@ const ModulePage = () => {
     const fetchModuleAndContent = async () => {
       if (!moduleId) return;
       
+      console.log('Raw moduleId from URL:', moduleId);
+      
+      // Extract the base module name from the URL parameter
+      // Convert "sba-7(a)-loans-beginner" to "sba-7a-loans"
+      let cleanModuleId = moduleId
+        .replace(/\([^)]*\)/g, '') // Remove parentheses and content inside
+        .replace(/-beginner$|-intermediate$|-advanced$/, '') // Remove skill level suffix
+        .replace(/--+/g, '-') // Replace multiple dashes with single dash
+        .replace(/-$/, ''); // Remove trailing dash
+      
+      console.log('Cleaned moduleId for database query:', cleanModuleId);
+      
       try {
-        // Fetch module data
+        // Fetch module data using the cleaned module ID
         const { data: dbModule, error: moduleError } = await supabase
           .from('course_modules')
           .select('*')
-          .eq('module_id', moduleId)
+          .eq('module_id', cleanModuleId)
           .single();
 
         if (moduleError) {
           console.error('Error fetching module:', moduleError);
-          setLoading(false);
-          return;
+          
+          // Try alternative formats if the first attempt fails
+          const alternativeIds = [
+            moduleId, // Try original URL as-is
+            moduleId.replace(/\([^)]*\)/g, ''), // Just remove parentheses
+            cleanModuleId.replace(/-/g, ''), // Remove all dashes
+            cleanModuleId.replace('7a', '7-a'), // Try with dash between 7 and a
+          ];
+          
+          for (const altId of alternativeIds) {
+            console.log('Trying alternative module ID:', altId);
+            const { data: altModule, error: altError } = await supabase
+              .from('course_modules')
+              .select('*')
+              .eq('module_id', altId)
+              .single();
+              
+            if (altModule) {
+              console.log('Found module with alternative ID:', altId);
+              setModule(altModule);
+              cleanModuleId = altId;
+              break;
+            }
+          }
+          
+          if (!module) {
+            setLoading(false);
+            return;
+          }
+        } else {
+          setModule(dbModule);
         }
 
-        setModule(dbModule);
-
-        // Fetch all content types for this module
+        // Fetch all content types for this module using the correct module ID
         const [videosResponse, articlesResponse, assessmentsResponse, documentsResponse] = await Promise.all([
           supabase
             .from('course_videos')
             .select('*')
-            .eq('module_id', moduleId)
+            .eq('module_id', cleanModuleId)
             .eq('is_active', true)
             .order('order_index'),
           
           supabase
             .from('course_articles')
             .select('*')
-            .eq('module_id', moduleId)
+            .eq('module_id', cleanModuleId)
             .eq('is_published', true)
             .order('order_index'),
           
           supabase
             .from('course_assessments')
             .select('*')
-            .eq('module_id', moduleId)
+            .eq('module_id', cleanModuleId)
             .order('order_index'),
           
           supabase
             .from('course_documents')
             .select('*')
-            .eq('module_id', moduleId)
+            .eq('module_id', cleanModuleId)
             .order('title')
         ]);
 
