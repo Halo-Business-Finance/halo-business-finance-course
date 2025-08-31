@@ -616,20 +616,7 @@ const Dashboard = () => {
             </TabsList>
 
             <TabsContent value="ai-learning" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Brain className="h-5 w-5" />
-                    AI-Powered Adaptive Learning
-                  </CardTitle>
-                  <CardDescription>
-                    Personalized learning paths that adapt to your progress and learning style
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AdaptiveLearningEngine />
-                </CardContent>
-              </Card>
+              <AdaptiveLearningEngine />
             </TabsContent>
 
             <TabsContent value="interactive" className="mt-6">
