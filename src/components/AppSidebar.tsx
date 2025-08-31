@@ -170,7 +170,7 @@ export function AppSidebar() {
           <div className="px-4 py-4 border-b border-white/10">
             <div className="text-white">
               <div className="text-xs font-medium text-white/80">Welcome back,</div>
-              <div className="text-sm font-semibold text-halo-orange">
+              <div className="text-sm font-semibold text-white">
                 {user.user_metadata?.full_name?.split(' ')[0] || 
                  user.user_metadata?.name?.split(' ')[0] || 
                  user.email?.split('@')[0] || 'User'}!
