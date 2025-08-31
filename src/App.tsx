@@ -92,10 +92,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
   };
 
   return (
-    <header className="sticky top-0 h-16 sm:h-18 md:h-20 lg:h-22 flex flex-col border-b bg-halo-navy border-halo-navy z-50 px-2 md:px-4">
+    <header className="sticky top-0 h-16 sm:h-18 md:h-20 lg:h-22 flex flex-col border-b bg-white z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-white hover:bg-white/10 hover:text-white h-16 w-16 sm:h-18 sm:w-18 md:h-20 md:w-20 lg:h-16 lg:w-16 flex-shrink-0" />}
+          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-16 w-16 sm:h-18 sm:w-18 md:h-20 md:w-20 lg:h-16 lg:w-16 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -103,7 +103,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
                 variant="ghost" 
                 size="sm" 
                 onClick={goBack}
-                className="h-8 w-8 p-0 text-white hover:bg-white/10"
+                className="h-8 w-8 p-0 text-black hover:bg-black/10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -111,7 +111,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
                 variant="ghost" 
                 size="sm" 
                 onClick={goForward}
-                className="h-8 w-8 p-0 text-white hover:bg-white/10"
+                className="h-8 w-8 p-0 text-black hover:bg-black/10"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -125,7 +125,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
               <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-sm md:text-base">FP</span>
               </div>
-              <span className="text-lg md:text-xl font-bold text-white truncate">FinPilot</span>
+              <span className="text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
             </NavLink>
           </div>
         )}
@@ -142,13 +142,13 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         )}
         
         {user && (
-          <div className="flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-white text-right flex-shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0">
             <NotificationBell />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsChatOpen(true)}
-              className="text-white hover:bg-white/10 p-1 h-8 w-8 flex-shrink-0"
+              className="text-black hover:bg-black/10 p-1 h-8 w-8 flex-shrink-0"
               title="Support"
             >
               <MessageCircle className="h-4 w-4" />
