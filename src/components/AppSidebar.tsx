@@ -261,16 +261,16 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                               `}
                          >
                            <div className="relative z-10 flex items-center w-full gap-4">
-                             {/* Status Indicator */}
-                             <div className="relative flex-shrink-0">
-                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
-                                  {isModuleLocked ? (
-                                    <Lock size={18} className="text-white" />
-                                  ) : (
-                                    <span className="text-sm font-bold">{index + 1}</span>
-                                  )}
-                                </div>
-                             </div>
+                              {/* Status Indicator */}
+                              <div className="relative flex-shrink-0">
+                                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                   {isModuleLocked ? (
+                                     <Lock size={14} className="text-white" />
+                                   ) : (
+                                     <span className="text-xs font-bold">{index + 1}</span>
+                                   )}
+                                 </div>
+                              </div>
                            
                              {!collapsed && (
                                <div className="flex-1 min-w-0">
