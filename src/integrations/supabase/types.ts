@@ -3652,20 +3652,18 @@ export type Database = {
         }[]
       }
       get_secure_admin_profiles: {
-        Args: Record<PropertyKey, never> | { requesting_user_role?: string }
+        Args: Record<PropertyKey, never>
         Returns: {
           city: string
           company: string
           created_at: string
           email: string
+          is_masked: boolean
           name: string
           phone: string
           role: string
-          role_created_at: string
-          role_is_active: boolean
           state: string
           title: string
-          updated_at: string
           user_id: string
         }[]
       }
