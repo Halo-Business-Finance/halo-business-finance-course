@@ -318,7 +318,6 @@ const Courses = () => {
         <Alert className="mb-6 border-primary bg-primary/5">
           <Shield className="h-4 w-4" />
           <AlertDescription>
-            <strong>Military-Grade Security Active:</strong> All course content is now protected and requires enrollment. 
             <Link to="/auth" className="ml-2 font-medium text-primary hover:underline">
               Sign up now to access our comprehensive training programs →
             </Link>
