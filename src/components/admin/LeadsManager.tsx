@@ -67,8 +67,8 @@ const LeadsManager = () => {
 
 const fetchLeads = async () => {
     try {
-      // Use enhanced secure function with strict PII masking and audit logging
-      const { data, error } = await supabase.rpc('get_secure_admin_leads', {
+      // Use new encrypted secure leads function with enhanced PII protection
+      const { data, error } = await supabase.rpc('get_secure_leads_encrypted', {
         p_limit: 500,
         p_offset: 0
       });

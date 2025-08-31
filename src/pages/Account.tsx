@@ -17,6 +17,7 @@ import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, 
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { SEOHead } from "@/components/SEOHead";
+import { SecurityPrivacyManager } from "@/components/SecurityPrivacyManager";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -827,69 +828,7 @@ const AccountPage = () => {
           </TabsContent>
 
           <TabsContent value="privacy" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  Privacy & Data
-                </CardTitle>
-                <CardDescription>
-                  Control your privacy settings and data preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Profile Visibility</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Allow other learners to see your profile and achievements
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Learning Analytics</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Share anonymous learning data to improve the platform
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Activity Tracking</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Track your learning activities for progress reports
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-                </div>
-                <div className="pt-4 border-t">
-                  <h3 className="font-medium mb-2">Data Management</h3>
-                  <div className="space-y-2">
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start"
-                      onClick={handleDownloadData}
-                    >
-                      Download My Data
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start"
-                      onClick={handleRequestDataDeletion}
-                    >
-                      Request Data Deletion
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <SecurityPrivacyManager />
           </TabsContent>
 
           <TabsContent value="preferences" className="space-y-6">

@@ -48,6 +48,7 @@ import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/
 import { authRateLimiter } from "@/utils/validation";
 import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
 import { SecurityStatusIndicator } from "@/components/SecurityStatusIndicator";
+import { SecurityComplianceStatus } from "@/components/SecurityComplianceStatus";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -213,8 +214,8 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        // Use new secure admin profiles function with comprehensive PII protection and audit logging
-        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_secure_admin_profiles');
+        // Use enhanced secure profiles function with encryption and comprehensive PII protection
+        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_secure_profiles_with_encryption');
 
         if (profilesError) {
           console.warn('Secure admin profiles function failed:', profilesError);
@@ -1202,7 +1203,12 @@ const AdminDashboard = () => {
               </TabsContent>
 
               <TabsContent value="security" className="space-y-6">
-                <SecurityMonitoringDashboard />
+                <SecurityComplianceStatus />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <SecurityDashboard />
+                  <SecurityMonitoringDashboard />
+                </div>
+                <SecurityMonitoringWidget />
               </TabsContent>
 
         <TabsContent value="trainee-progress" className="space-y-4">
