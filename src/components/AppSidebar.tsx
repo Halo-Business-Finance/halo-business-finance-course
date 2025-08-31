@@ -14,6 +14,7 @@ import {
   LifeBuoy
  } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,36 +46,40 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
+  const { selectedCourse } = useCourseSelection();
   const { isAdmin } = useAdminRole();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [modules, setModules] = useState([]);
+  const [selectedCourseModules, setSelectedCourseModules] = useState([]);
 
-  // Fetch modules directly
+  // Fetch modules for the selected course
   useEffect(() => {
-    if (user) {
-      fetchModules();
+    if (user && selectedCourse) {
+      fetchSelectedCourseModules();
     } else {
-      setModules([]);
+      setSelectedCourseModules([]);
     }
-  }, [user]);
+  }, [user, selectedCourse]);
 
-  const fetchModules = async () => {
-    console.log('Fetching modules...');
+  const fetchSelectedCourseModules = async () => {
+    if (!selectedCourse) return;
+
+    console.log('Fetching modules for course:', selectedCourse);
     try {
       const { data, error } = await supabase
         .from("course_modules")
         .select("*")
+        .like("module_id", `${selectedCourse.id}%`)
         .eq("is_active", true)
         .order("order_index");
 
-      console.log('Modules data:', data);
-      console.log('Modules error:', error);
+      console.log('Course modules data:', data);
+      console.log('Course modules error:', error);
       if (error) throw error;
-      setModules(data || []);
+      setSelectedCourseModules(data || []);
     } catch (error) {
-      console.error('Error fetching modules:', error);
-      setModules([]);
+      console.error('Error fetching selected course modules:', error);
+      setSelectedCourseModules([]);
     }
   };
 
@@ -226,21 +231,21 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
           <Separator className="bg-gradient-to-r from-border/50 to-transparent" />
         </div>
 
-        {/* Modules */}
-        {modules.length > 0 && (
+        {/* Selected Course Modules */}
+        {selectedCourseModules.length > 0 && (
           <SidebarGroup className="pt-2">
             <SidebarGroupLabel className="pb-3 mb-2">
               {!collapsed && (
                 <div className="flex-1">
                   <span className="text-sm font-semibold text-black tracking-wide">
-                    Modules
+                    {selectedCourse?.title || 'Course Modules'}
                   </span>
                 </div>
               )}
             </SidebarGroupLabel>
             <SidebarGroupContent className="space-y-3">
               <SidebarMenu className="space-y-3">
-                {modules.map((module: any, index) => {
+                {selectedCourseModules.map((module: any, index) => {
                   const isModuleLocked = module.is_locked;
                   const canAccess = !isModuleLocked || isAdmin;
                   const moduleUrl = `/module/${module.module_id}`;
@@ -307,13 +312,16 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
           </SidebarGroup>
         )}
 
-        {/* Show message when no modules are available */}
-        {modules.length === 0 && user && !collapsed && (
+        {/* Show message when no course is selected */}
+        {selectedCourseModules.length === 0 && user && !collapsed && (
           <SidebarGroup className="pt-2">
             <SidebarGroupContent>
               <div className="px-4 py-6 text-center">
                 <p className="text-xs text-black">
-                  No modules available yet
+                  {selectedCourse 
+                    ? 'No modules available for this course'
+                    : 'Select a course from the dashboard to see modules here'
+                  }
                 </p>
               </div>
             </SidebarGroupContent>
