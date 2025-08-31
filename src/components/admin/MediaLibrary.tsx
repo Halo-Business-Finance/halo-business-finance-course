@@ -56,7 +56,7 @@ export function MediaLibrary() {
   const [folders, setFolders] = useState<MediaFolder[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [currentFolder, setCurrentFolder] = useState("/");
+  const [currentFolder, setCurrentFolder] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -83,15 +83,15 @@ export function MediaLibrary() {
       setLoading(true);
       console.log('Loading media from folder:', currentFolder);
       
-      // Load media items - show all media if in root, or specific folder media
+      // Load media items - show all media by default, or specific folder media
       let mediaQuery = supabase
         .from("cms_media")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (currentFolder === '/') {
-        // Root folder shows all media
-        console.log('Loading all media for root folder');
+      if (currentFolder === 'all') {
+        // Show all media regardless of folder
+        console.log('Loading all media');
       } else {
         // Specific folder - exact match
         mediaQuery = mediaQuery.eq("folder_path", currentFolder);
@@ -127,21 +127,17 @@ export function MediaLibrary() {
         return {
           path,
           name: parts[parts.length - 1] || 'Root',
-          count: allMedia?.filter(item => 
-            path === '/' ? true : item.folder_path === path
-          ).length || 0
+          count: allMedia?.filter(item => item.folder_path === path).length || 0
         };
       });
 
-      // Add imported folder if it has items
-      const importedItems = allMedia?.filter(item => item.folder_path === '/imported').length || 0;
-      if (importedItems > 0) {
-        folderList.push({
-          path: '/imported',
-          name: 'Imported',
-          count: importedItems
-        });
-      }
+      // Add "All Media" option at the beginning
+      folderList.unshift({
+        path: 'all',
+        name: 'All Media',
+        count: allMedia?.length || 0
+      });
+
 
       setFolders(folderList);
       console.log('Loaded folders:', folderList);
@@ -494,7 +490,7 @@ export function MediaLibrary() {
           </div>
           
           <div className="text-sm text-muted-foreground">
-            Current folder: {currentFolder}
+            Current view: {currentFolder === 'all' ? 'All Media' : folders.find(f => f.path === currentFolder)?.name || currentFolder}
           </div>
         </div>
 
@@ -526,14 +522,6 @@ export function MediaLibrary() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="space-y-1">
-                <Button
-                  variant={currentFolder === '/' ? 'secondary' : 'ghost'}
-                  className="w-full justify-start"
-                  onClick={() => setCurrentFolder('/')}
-                >
-                  <Folder className="h-4 w-4 mr-2" />
-                  Root
-                </Button>
                 {folders.map((folder) => (
                   <Button
                     key={folder.path}
