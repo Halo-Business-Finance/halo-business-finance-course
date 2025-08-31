@@ -474,10 +474,10 @@ const Dashboard = () => {
                                   </div>
                                   
                                   {/* Row 2: Key Topics */}
-                                  <div className="h-8">
+                                  <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
                                     <div className="flex flex-wrap gap-1">
-                                      {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => (
-                                        <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5">
+                                      {getCourseDetails(courseName).topics.slice(0, 2).map((topic, topicIndex) => (
+                                        <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap">
                                           {topic}
                                         </Badge>
                                       ))}
