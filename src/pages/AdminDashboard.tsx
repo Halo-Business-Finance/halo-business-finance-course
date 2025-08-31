@@ -198,8 +198,8 @@ const AdminDashboard = () => {
       let userRolesData = [];
       
       try {
-        // Use enhanced secure profiles function with encryption and comprehensive PII protection
-        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_secure_profiles_with_encryption');
+        // Use the working secure admin profiles function  
+        const { data: profilesWithRoles, error: profilesError } = await supabase.rpc('get_secure_admin_profiles');
 
         if (profilesError) {
           console.warn('Secure admin profiles function failed:', profilesError);
