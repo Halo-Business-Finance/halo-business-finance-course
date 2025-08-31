@@ -104,7 +104,12 @@ export function MediaLibrary() {
 
       const { data: mediaData, error: mediaError } = await mediaQuery;
 
-      console.log('Media query result:', { mediaData, mediaError, currentFolder });
+      console.log('Media query result:', { 
+        mediaDataCount: mediaData?.length || 0, 
+        mediaError, 
+        currentFolder,
+        firstFewItems: mediaData?.slice(0, 3).map(item => ({ filename: item.original_name, folder: item.folder_path }))
+      });
       if (mediaError) throw mediaError;
       setMedia(mediaData || []);
 
@@ -117,13 +122,8 @@ export function MediaLibrary() {
 
       const folderSet = new Set<string>();
       allMedia?.forEach(item => {
-        const parts = item.folder_path.split('/').filter(Boolean);
-        for (let i = 0; i <= parts.length; i++) {
-          const folderPath = '/' + parts.slice(0, i).join('/');
-          if (folderPath !== currentFolder) {
-            folderSet.add(folderPath);
-          }
-        }
+        // Add the exact folder path from the database
+        folderSet.add(item.folder_path);
       });
 
       const folderList: MediaFolder[] = Array.from(folderSet).map(path => {
