@@ -37,8 +37,13 @@ const ModulePage = () => {
       
       console.log('Raw moduleId from URL:', moduleId);
       
+      // Decode URL encoding first
+      const decodedModuleId = decodeURIComponent(moduleId);
+      console.log('Decoded moduleId:', decodedModuleId);
+      
       // Create a mapping from URL patterns to actual database module_ids
       const moduleIdMappings: { [key: string]: string } = {
+        'sba-7(a)': 'sba-7a-loans',
         'sba-7(a)-loans': 'sba-7a-loans',
         'sba-7(a)-module-1': 'sba-7a-loans',
         'sba-504': 'sba-504-loans',
@@ -51,7 +56,7 @@ const ModulePage = () => {
       };
       
       // Extract the base module name from the URL parameter
-      let cleanModuleId = moduleId
+      let cleanModuleId = decodedModuleId
         .replace(/-beginner$|-intermediate$|-advanced$/, '') // Remove skill level suffix
         .replace(/-module-\d+$/, ''); // Remove module number suffix
       
