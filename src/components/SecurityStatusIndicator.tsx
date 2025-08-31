@@ -1,12 +1,15 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Eye, Lock, AlertTriangle } from 'lucide-react';
+import { Shield, Eye, Lock, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 interface SecurityStatusIndicatorProps {
   isDataMasked?: boolean;
   userRole?: string;
   showDetails?: boolean;
+  level?: 'secure' | 'protected' | 'masked' | 'warning';
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({ 
