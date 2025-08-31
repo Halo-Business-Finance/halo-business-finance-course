@@ -337,14 +337,36 @@ export function MediaLibrary() {
     // Create folder path - if current folder is "all", create at root level
     const newFolderPath = currentFolder === 'all' ? '/' + newFolderName.trim() : currentFolder + (currentFolder.endsWith('/') ? '' : '/') + newFolderName.trim();
     
-    // Create a placeholder file to create the folder structure
+    // Create a placeholder file to create the folder structure in storage
     try {
       const placeholderContent = new Blob([''], { type: 'text/plain' });
-      const { error } = await supabase.storage
+      const { error: storageError } = await supabase.storage
         .from('cms-media')
         .upload(`${newFolderPath}/.keep`, placeholderContent);
 
-      if (error) throw error;
+      if (storageError) throw storageError;
+
+      // Get public URL for the placeholder file
+      const { data: publicUrlData } = supabase.storage
+        .from('cms-media')
+        .getPublicUrl(`${newFolderPath}/.keep`);
+
+      // Create a database record for the folder placeholder
+      const { error: dbError } = await supabase
+        .from('cms_media')
+        .insert({
+          filename: '.keep',
+          original_name: '.keep',
+          file_type: 'text/plain',
+          file_size: 0,
+          storage_path: `${newFolderPath}/.keep`,
+          public_url: publicUrlData.publicUrl,
+          folder_path: newFolderPath,
+          alt_text: 'Folder placeholder',
+          caption: `Placeholder file for ${newFolderPath} folder`,
+        });
+
+      if (dbError) throw dbError;
 
       toast({
         title: "Success",
