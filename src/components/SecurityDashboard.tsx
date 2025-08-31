@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
-import { Shield, AlertTriangle, Activity, Eye, Lock, Zap } from 'lucide-react';
+import { Shield, AlertTriangle, Activity, Eye, Lock, Zap, Settings, CheckCircle, XCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface ThreatStats {
@@ -37,6 +37,7 @@ export const SecurityDashboard = () => {
   const [recentThreats, setRecentThreats] = useState<ThreatEvent[]>([]);
   const [recentEvents, setRecentEvents] = useState<SecurityEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [remediating, setRemediating] = useState<string | null>(null);
   const [isMonitoring, setIsMonitoring] = useState(false);
 
   useEffect(() => {
@@ -104,6 +105,81 @@ export const SecurityDashboard = () => {
       case 'low': return <Eye className="h-4 w-4 text-blue-500" />;
       default: return <Activity className="h-4 w-4" />;
     }
+  };
+
+  const remediateThreat = async (threat: ThreatEvent, actionType: string) => {
+    setRemediating(threat.id);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('military-security-monitor', {
+        body: { 
+          action: 'remediate_threat',
+          threat_id: threat.id,
+          action_type: actionType,
+          target_ip: threat.source_ip
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        toast({
+          title: "Threat Remediated",
+          description: data.message,
+        });
+        
+        // Reload security data to reflect changes
+        loadSecurityData();
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Remediation Failed",
+        description: error.message || "Failed to remediate threat",
+        variant: "destructive"
+      });
+    } finally {
+      setRemediating(null);
+    }
+  };
+
+  const getRemediationActions = (threat: ThreatEvent) => {
+    const actions = [];
+    
+    if (threat.severity === 'critical' || threat.severity === 'high') {
+      actions.push({
+        label: 'Block IP',
+        action: 'block_ip',
+        variant: 'destructive' as const,
+        description: 'Block this IP address for 24 hours'
+      });
+      
+      actions.push({
+        label: 'Clear Sessions',
+        action: 'clear_sessions', 
+        variant: 'outline' as const,
+        description: 'Terminate all sessions from this IP'
+      });
+    }
+    
+    if (!threat.is_blocked) {
+      actions.push({
+        label: 'Auto Remediate',
+        action: 'auto_remediate',
+        variant: 'default' as const,
+        description: 'Apply automatic remediation based on threat level'
+      });
+    }
+    
+    actions.push({
+      label: 'Enhanced Monitor',
+      action: 'enable_enhanced_monitoring',
+      variant: 'secondary' as const,
+      description: 'Enable enhanced monitoring for 72 hours'
+    });
+    
+    return actions;
   };
 
   if (loading) {
@@ -221,8 +297,32 @@ export const SecurityDashboard = () => {
                     <Badge variant={getSeverityColor(threat.severity)}>
                       {threat.severity}
                     </Badge>
-                    {threat.is_blocked && (
+                    {threat.is_blocked ? (
                       <Badge variant="destructive">BLOCKED</Badge>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        {getRemediationActions(threat).slice(0, 2).map((action) => (
+                          <Button
+                            key={action.action}
+                            variant={action.variant}
+                            size="sm"
+                            onClick={() => remediateThreat(threat, action.action)}
+                            disabled={remediating === threat.id}
+                            className="px-2 py-1 text-xs"
+                            title={action.description}
+                          >
+                            {remediating === threat.id ? (
+                              <div className="animate-spin rounded-full h-3 w-3 border-b border-current" />
+                            ) : action.action === 'auto_remediate' ? (
+                              <Settings className="h-3 w-3" />
+                            ) : action.action === 'block_ip' ? (
+                              <XCircle className="h-3 w-3" />
+                            ) : (
+                              <CheckCircle className="h-3 w-3" />
+                            )}
+                          </Button>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </div>

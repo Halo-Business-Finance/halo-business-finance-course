@@ -197,6 +197,146 @@ serve(async (req) => {
         )
       }
 
+      case 'remediate_threat': {
+        const { threat_id, action_type, target_ip } = data
+
+        console.log(`[MILITARY-SECURITY] Remediating threat ${threat_id} with action: ${action_type}`)
+
+        let remediationResult = { success: false, message: 'Unknown remediation action' }
+
+        switch (action_type) {
+          case 'block_ip': {
+            // Block the IP for 24 hours
+            const { error } = await supabase
+              .from('advanced_rate_limits')
+              .upsert({
+                identifier: target_ip,
+                endpoint: '*',
+                is_blocked: true,
+                block_until: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                threat_level: 10,
+                request_count: 0
+              })
+
+            if (!error) {
+              // Log the remediation action
+              await supabase.from('security_events').insert({
+                event_type: 'threat_remediation_ip_blocked',
+                severity: 'medium',
+                details: {
+                  threat_id,
+                  blocked_ip: target_ip,
+                  action: 'manual_ip_block',
+                  duration_hours: 24,
+                  timestamp: new Date().toISOString()
+                }
+              })
+
+              remediationResult = { success: true, message: `IP ${target_ip} blocked for 24 hours` }
+            }
+            break
+          }
+
+          case 'clear_sessions': {
+            // Clear all active sessions for suspicious users
+            const { error } = await supabase
+              .from('user_sessions')
+              .update({ 
+                is_active: false, 
+                terminated_at: new Date().toISOString(),
+                termination_reason: 'security_remediation'
+              })
+              .eq('ip_address', target_ip)
+
+            if (!error) {
+              await supabase.from('security_events').insert({
+                event_type: 'threat_remediation_sessions_cleared',
+                severity: 'high',
+                details: {
+                  threat_id,
+                  target_ip,
+                  action: 'clear_suspicious_sessions',
+                  timestamp: new Date().toISOString()
+                }
+              })
+
+              remediationResult = { success: true, message: `All sessions from IP ${target_ip} terminated` }
+            }
+            break
+          }
+
+          case 'enable_enhanced_monitoring': {
+            // Enable enhanced monitoring for the IP
+            await supabase.from('security_events').insert({
+              event_type: 'enhanced_monitoring_enabled',
+              severity: 'low',
+              details: {
+                threat_id,
+                target_ip,
+                monitoring_duration_hours: 72,
+                enhanced_logging: true,
+                timestamp: new Date().toISOString()
+              }
+            })
+
+            remediationResult = { success: true, message: `Enhanced monitoring enabled for IP ${target_ip}` }
+            break
+          }
+
+          case 'auto_remediate': {
+            // Perform automatic remediation based on threat level
+            const { data: threat } = await supabase
+              .from('threat_detection_events')
+              .select('*')
+              .eq('id', threat_id)
+              .single()
+
+            if (threat) {
+              const threatScore = threat.threat_indicators?.threat_score || 0
+
+              if (threatScore >= 8) {
+                // High threat: Block IP and clear sessions
+                await supabase.from('advanced_rate_limits').upsert({
+                  identifier: threat.source_ip,
+                  endpoint: '*',
+                  is_blocked: true,
+                  block_until: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                  threat_level: threatScore
+                })
+
+                await supabase.from('user_sessions').update({ 
+                  is_active: false, 
+                  terminated_at: new Date().toISOString(),
+                  termination_reason: 'auto_security_remediation'
+                }).eq('ip_address', threat.source_ip)
+
+                remediationResult = { success: true, message: `Auto-remediation: IP blocked and sessions cleared` }
+              } else if (threatScore >= 5) {
+                // Medium threat: Enable enhanced monitoring
+                await supabase.from('security_events').insert({
+                  event_type: 'auto_enhanced_monitoring',
+                  severity: 'medium',
+                  details: {
+                    threat_id,
+                    target_ip: threat.source_ip,
+                    threat_score: threatScore,
+                    auto_remediation: true
+                  }
+                })
+
+                remediationResult = { success: true, message: `Auto-remediation: Enhanced monitoring activated` }
+              }
+            }
+            break
+          }
+        }
+
+        return new Response(
+          JSON.stringify(remediationResult),
+          { headers: securityHeaders }
+        )
+      }
+
       default:
         return new Response(
           JSON.stringify({ error: 'Invalid action' }),
