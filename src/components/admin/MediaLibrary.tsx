@@ -294,6 +294,29 @@ export function MediaLibrary() {
 
   const handleDelete = async (itemId: string, storagePath: string) => {
     try {
+      // Get the item being deleted to know its folder
+      const { data: itemToDelete, error: fetchError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("id", itemId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const folderPath = itemToDelete.folder_path;
+
+      // Check how many items will remain in this folder after deletion
+      const { data: remainingItems, error: countError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("folder_path", folderPath)
+        .neq("id", itemId); // Exclude the item being deleted
+
+      if (countError) throw countError;
+
+      // Count visible items (not .keep files)
+      const visibleItems = remainingItems?.filter(item => item.filename !== '.keep') || [];
+
       // Delete from storage
       const { error: storageError } = await supabase.storage
         .from('cms-media')
@@ -308,6 +331,42 @@ export function MediaLibrary() {
         .eq("id", itemId);
 
       if (dbError) throw dbError;
+
+      // If this was the last visible item in the folder, ensure .keep file exists
+      if (visibleItems.length === 0 && folderPath !== '/imported') {
+        const keepExists = remainingItems?.some(item => item.filename === '.keep');
+        
+        if (!keepExists) {
+          console.log(`Creating .keep file to preserve folder: ${folderPath}`);
+          
+          // Create placeholder file in storage
+          const placeholderContent = new Blob([''], { type: 'text/plain' });
+          const { error: keepStorageError } = await supabase.storage
+            .from('cms-media')
+            .upload(`${folderPath}/.keep`, placeholderContent);
+
+          if (!keepStorageError) {
+            // Create database record for the placeholder
+            const { data: keepPublicUrlData } = supabase.storage
+              .from('cms-media')
+              .getPublicUrl(`${folderPath}/.keep`);
+
+            await supabase
+              .from('cms_media')
+              .insert({
+                filename: '.keep',
+                original_name: '.keep',
+                file_type: 'text/plain',
+                file_size: 0,
+                storage_path: `${folderPath}/.keep`,
+                public_url: keepPublicUrlData.publicUrl,
+                folder_path: folderPath,
+                alt_text: 'Folder placeholder',
+                caption: `Placeholder file for ${folderPath} folder`,
+              });
+          }
+        }
+      }
 
       toast({
         title: "Success",
