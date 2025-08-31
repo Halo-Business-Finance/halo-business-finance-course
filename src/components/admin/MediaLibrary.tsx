@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Upload, 
-  Image, 
+  Image as ImageIcon, 
   FileText, 
   Video, 
   Music, 
@@ -980,7 +980,7 @@ export function MediaLibrary() {
   };
 
   const getFileIcon = (fileType: string) => {
-    if (fileType.startsWith('image/')) return <Image className="h-5 w-5" />;
+    if (fileType.startsWith('image/')) return <ImageIcon className="h-5 w-5" />;
     if (fileType.startsWith('video/')) return <Video className="h-5 w-5" />;
     if (fileType.startsWith('audio/')) return <Music className="h-5 w-5" />;
     if (fileType.includes('pdf') || fileType.includes('document')) return <FileText className="h-5 w-5" />;
@@ -1057,36 +1057,6 @@ export function MediaLibrary() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create New Folder</DialogTitle>
-                <DialogDescription>
-                  Create a new folder to organize your media files
-                </DialogDescription>
-              </DialogHeader>
-              
-              <div className="space-y-2">
-                <Label htmlFor="folder-name">Folder Name</Label>
-                <Input
-                  id="folder-name"
-                  value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                  placeholder="Enter folder name"
-                />
-              </div>
-
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setShowNewFolderDialog(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={createFolder}>
-                  Create Folder
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-
           <Dialog open={showClearImportedDialog} onOpenChange={setShowClearImportedDialog}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
@@ -1444,7 +1414,7 @@ export function MediaLibrary() {
               <ScrollArea className="h-full">
                 {filteredMedia.length === 0 ? (
                 <div className="text-center py-8">
-                  <Image className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No media files</h3>
                   <p className="text-muted-foreground">
                     Upload some files to get started with your media library.
