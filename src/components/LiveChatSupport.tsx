@@ -150,7 +150,7 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md w-[95vw] h-[600px] p-0 gap-0 fixed bottom-4 right-4 sm:bottom-4 sm:right-4 m-0 translate-x-0 translate-y-0">
+      <DialogContent className="sm:max-w-md w-[95vw] h-[600px] p-0 gap-0 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 m-0 z-50">
         <DialogHeader className="p-4 pb-2 border-b bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
