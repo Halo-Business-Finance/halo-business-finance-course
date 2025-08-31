@@ -360,8 +360,10 @@ const Dashboard = () => {
 
           {/* Instructor Information */}
           <InstructorInfo />
+        </div>
 
-          {/* Sidebar Layout */}
+        {/* Learning Dashboard - Moved below Instructor Information */}
+        <div className="container mx-auto px-4 mb-8">
           <div className="flex flex-col gap-6 lg:gap-8">
             {/* Main Content */}
             <div className="flex-1 min-w-0">
