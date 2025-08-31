@@ -1423,7 +1423,14 @@ export function MediaLibrary() {
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                    {filteredMedia.map((item) => (
-                     <Card key={item.id} className="group relative">
+                     console.log('Rendering media item:', {
+                       filename: item.filename,
+                       file_type: item.file_type,
+                       public_url: item.public_url,
+                       isImage: item.file_type.startsWith('image/')
+                     });
+                     return (
+                      <Card key={item.id} className="group relative">
                        {/* Selection checkbox */}
                        <div className="absolute top-2 left-2 z-10">
                          <input
@@ -1435,17 +1442,22 @@ export function MediaLibrary() {
                        </div>
                        <CardContent className="p-4">
                         <div className="aspect-square bg-muted rounded-lg mb-2 flex items-center justify-center overflow-hidden">
-                          {item.file_type.startsWith('image/') ? (
-                            <img 
-                              src={item.public_url} 
-                              alt={item.alt_text || item.original_name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="text-muted-foreground">
-                              {getFileIcon(item.file_type)}
-                            </div>
-                          )}
+                           {item.file_type.startsWith('image/') ? (
+                             <img 
+                               src={item.public_url} 
+                               alt={item.alt_text || item.original_name}
+                               className="w-full h-full object-cover"
+                               onLoad={() => console.log('Image loaded successfully:', item.filename)}
+                               onError={(e) => {
+                                 console.error('Image failed to load:', item.filename, item.public_url, e);
+                                 e.currentTarget.style.display = 'none';
+                               }}
+                             />
+                           ) : (
+                             <div className="text-muted-foreground">
+                               {getFileIcon(item.file_type)}
+                             </div>
+                           )}
                         </div>
                         
                         <div className="space-y-1">
@@ -1502,7 +1514,7 @@ export function MediaLibrary() {
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                   )}
                 </div>
               ) : (
                 <div className="space-y-2">
