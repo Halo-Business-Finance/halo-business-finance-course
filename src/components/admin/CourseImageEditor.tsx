@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Canvas as FabricCanvas, Rect, Circle, Image as FabricImage, IText } from "fabric";
-import { Upload, Download, RotateCw, Crop, Palette, Type, Save, X } from "lucide-react";
+import { Upload, Download, RotateCw, Crop, Palette, Type, Save, X, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Course } from "@/data/courseData";
+import { MediaSelector } from "./MediaSelector";
 
 interface CourseImageEditorProps {
   course: Course | null;
@@ -24,6 +25,7 @@ export function CourseImageEditor({ course, open, onOpenChange, onSave }: Course
   const [activeTool, setActiveTool] = useState<"select" | "draw" | "rectangle" | "circle" | "text">("select");
   const [isLoading, setIsLoading] = useState(false);
   const [originalImageData, setOriginalImageData] = useState<string | null>(null);
+  const [showMediaSelector, setShowMediaSelector] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -87,6 +89,39 @@ export function CourseImageEditor({ course, open, onOpenChange, onSave }: Course
       imgElement.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleMediaSelect = (imageUrl: string, mediaItem: any) => {
+    if (!fabricCanvas) return;
+
+    const imgElement = new Image();
+    imgElement.crossOrigin = "anonymous"; // Handle CORS for external images
+    imgElement.onload = () => {
+      // Clear existing content
+      fabricCanvas.clear();
+      fabricCanvas.backgroundColor = "#ffffff";
+
+      // Create fabric image
+      const fabricImg = new FabricImage(imgElement, {
+        left: 0,
+        top: 0,
+        scaleX: Math.min(600 / imgElement.width, 400 / imgElement.height),
+        scaleY: Math.min(600 / imgElement.width, 400 / imgElement.height),
+      });
+
+      fabricCanvas.add(fabricImg);
+      fabricCanvas.centerObject(fabricImg);
+      fabricCanvas.renderAll();
+
+      // Store original image data for reset functionality
+      setOriginalImageData(imageUrl);
+      
+      toast({
+        title: "Image Loaded",
+        description: `"${mediaItem.original_name}" has been loaded into the editor.`,
+      });
+    };
+    imgElement.src = imageUrl;
   };
 
   const handleToolClick = (tool: typeof activeTool) => {
@@ -237,8 +272,9 @@ export function CourseImageEditor({ course, open, onOpenChange, onSave }: Course
 
         <div className="flex flex-col space-y-4 max-h-[70vh] overflow-hidden">
           <Tabs defaultValue="upload" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="upload">Upload & Edit</TabsTrigger>
+              <TabsTrigger value="media">Media Library</TabsTrigger>
               <TabsTrigger value="create">Create New</TabsTrigger>
             </TabsList>
 
@@ -253,6 +289,22 @@ export function CourseImageEditor({ course, open, onOpenChange, onSave }: Course
                   onChange={handleFileUpload}
                   className="cursor-pointer"
                 />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="media" className="space-y-4">
+              <div className="space-y-4">
+                <div className="text-sm text-muted-foreground">
+                  Select an image from your media library to use as the course image.
+                </div>
+                <Button
+                  onClick={() => setShowMediaSelector(true)}
+                  className="w-full"
+                  variant="outline"
+                >
+                  <ImageIcon className="h-4 w-4 mr-2" />
+                  Browse Media Library
+                </Button>
               </div>
             </TabsContent>
 
@@ -349,6 +401,13 @@ export function CourseImageEditor({ course, open, onOpenChange, onSave }: Course
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      {/* Media Selector */}
+      <MediaSelector
+        open={showMediaSelector}
+        onOpenChange={setShowMediaSelector}
+        onSelectImage={handleMediaSelect}
+      />
     </Dialog>
   );
 }
