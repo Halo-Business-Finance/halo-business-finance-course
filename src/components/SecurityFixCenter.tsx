@@ -42,7 +42,16 @@ export const SecurityFixCenter = () => {
   const [scanning, setScanning] = useState(false);
   const [fixing, setFixing] = useState<string | null>(null);
   const [fixResults, setFixResults] = useState<FixResult[]>([]);
-  const [resolvedIssues, setResolvedIssues] = useState<Set<string>>(new Set());
+  const [resolvedIssues, setResolvedIssues] = useState<Set<string>>(() => {
+    // Load resolved issues from localStorage on component mount
+    const stored = localStorage.getItem('security-resolved-issues');
+    return stored ? new Set(JSON.parse(stored)) : new Set();
+  });
+
+  // Save resolved issues to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('security-resolved-issues', JSON.stringify([...resolvedIssues]));
+  }, [resolvedIssues]);
 
   useEffect(() => {
     scanSecurityIssues();
