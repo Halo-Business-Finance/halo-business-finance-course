@@ -86,6 +86,9 @@ export function MediaLibrary() {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
   const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [showMoveSelectedDialog, setShowMoveSelectedDialog] = useState(false);
+  const [targetMoveFolder, setTargetMoveFolder] = useState("");
+  const [movingSelected, setMovingSelected] = useState(false);
 
   useEffect(() => {
     loadMedia();
@@ -784,6 +787,70 @@ export function MediaLibrary() {
     }
   };
 
+  const handleMoveSelected = async () => {
+    if (!targetMoveFolder || selectedItems.size === 0) return;
+
+    setMovingSelected(true);
+    try {
+      const itemsToMove = media.filter(item => selectedItems.has(item.id));
+      
+      console.log(`Moving ${itemsToMove.length} items to folder: ${targetMoveFolder}`);
+
+      // Move each selected item to the target folder
+      for (const item of itemsToMove) {
+        // Skip if already in target folder
+        if (item.folder_path === targetMoveFolder) continue;
+
+        const oldStoragePath = item.storage_path;
+        const newStoragePath = oldStoragePath.replace(item.folder_path, targetMoveFolder);
+        
+        // Move file in storage
+        const { error: moveError } = await supabase.storage
+          .from('cms-media')
+          .move(oldStoragePath, newStoragePath);
+
+        if (moveError) {
+          console.warn(`Failed to move ${oldStoragePath} to ${newStoragePath}:`, moveError);
+          continue;
+        }
+
+        // Update database record
+        const { data: newPublicUrlData } = supabase.storage
+          .from('cms-media')
+          .getPublicUrl(newStoragePath);
+
+        await supabase
+          .from("cms_media")
+          .update({ 
+            folder_path: targetMoveFolder,
+            storage_path: newStoragePath,
+            public_url: newPublicUrlData.publicUrl
+          })
+          .eq("id", item.id);
+      }
+
+      toast({
+        title: "Success",
+        description: `${selectedItems.size} items moved to "${targetMoveFolder}" folder successfully`,
+      });
+
+      setSelectedItems(new Set());
+      setShowMoveSelectedDialog(false);
+      setTargetMoveFolder("");
+      loadMedia();
+
+    } catch (error: any) {
+      console.error('Error moving selected items:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to move selected items",
+        variant: "destructive",
+      });
+    } finally {
+      setMovingSelected(false);
+    }
+  };
+
   const moveCourseImages = async () => {
     setMovingCourseImages(true);
     try {
@@ -1034,6 +1101,62 @@ export function MediaLibrary() {
             </DialogContent>
           </Dialog>
 
+          {/* Move Selected Dialog */}
+          <Dialog open={showMoveSelectedDialog} onOpenChange={setShowMoveSelectedDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Move Selected Images</DialogTitle>
+                <DialogDescription>
+                  Choose a folder to move {selectedItems.size} selected image(s) to.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="target-folder">Target Folder</Label>
+                  <select
+                    id="target-folder"
+                    value={targetMoveFolder}
+                    onChange={(e) => setTargetMoveFolder(e.target.value)}
+                    className="w-full p-2 border rounded-md"
+                  >
+                    <option value="">Select a folder...</option>
+                    {folders
+                      .filter(folder => folder.path !== 'all') // Exclude "All Media" view
+                      .map(folder => (
+                        <option key={folder.path} value={folder.path}>
+                          {folder.name} ({folder.count} files)
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                
+                {targetMoveFolder && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p className="text-sm text-blue-800">
+                      {selectedItems.size} image(s) will be moved to the "{folders.find(f => f.path === targetMoveFolder)?.name}" folder.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => {
+                  setShowMoveSelectedDialog(false);
+                  setTargetMoveFolder("");
+                }}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleMoveSelected}
+                  disabled={movingSelected || !targetMoveFolder}
+                >
+                  {movingSelected ? "Moving..." : `Move ${selectedItems.size} Image(s)`}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           {/* Bulk Delete Dialog */}
           <Dialog open={showBulkDeleteDialog} onOpenChange={setShowBulkDeleteDialog}>
             <DialogContent>
@@ -1178,6 +1301,14 @@ export function MediaLibrary() {
                   >
                     <TrashIcon className="h-4 w-4 mr-2" />
                     Delete Selected
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowMoveSelectedDialog(true)}
+                  >
+                    <Folder className="h-4 w-4 mr-2" />
+                    Move Selected
                   </Button>
                 </>
               )}
