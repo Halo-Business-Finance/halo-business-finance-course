@@ -83,6 +83,9 @@ export function MediaLibrary() {
   const [newFolderName, setNewFolderName] = useState("");
   const [showMoveCourseImagesDialog, setShowMoveCourseImagesDialog] = useState(false);
   const [movingCourseImages, setMovingCourseImages] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   useEffect(() => {
     loadMedia();
@@ -720,6 +723,67 @@ export function MediaLibrary() {
     }
   };
 
+  const handleSelectItem = (itemId: string) => {
+    const newSelected = new Set(selectedItems);
+    if (newSelected.has(itemId)) {
+      newSelected.delete(itemId);
+    } else {
+      newSelected.add(itemId);
+    }
+    setSelectedItems(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedItems.size === filteredMedia.length) {
+      setSelectedItems(new Set());
+    } else {
+      setSelectedItems(new Set(filteredMedia.map(item => item.id)));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    setBulkDeleting(true);
+    try {
+      const itemsToDelete = media.filter(item => selectedItems.has(item.id));
+      
+      // Delete files from storage
+      const storagePaths = itemsToDelete.map(item => item.storage_path);
+      const { error: storageError } = await supabase.storage
+        .from('cms-media')
+        .remove(storagePaths);
+
+      if (storageError) {
+        console.warn('Some storage files could not be deleted:', storageError);
+      }
+
+      // Delete database records
+      const { error: dbError } = await supabase
+        .from("cms_media")
+        .delete()
+        .in("id", Array.from(selectedItems));
+
+      if (dbError) throw dbError;
+
+      toast({
+        title: "Success",
+        description: `${selectedItems.size} items deleted successfully`,
+      });
+
+      setSelectedItems(new Set());
+      setShowBulkDeleteDialog(false);
+      loadMedia();
+
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete selected items",
+        variant: "destructive",
+      });
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
   const moveCourseImages = async () => {
     setMovingCourseImages(true);
     try {
@@ -968,6 +1032,43 @@ export function MediaLibrary() {
             </DialogContent>
           </Dialog>
 
+          {/* Bulk Delete Dialog */}
+          <Dialog open={showBulkDeleteDialog} onOpenChange={setShowBulkDeleteDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Delete Selected Images</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete {selectedItems.size} selected image(s)? This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <TrashIcon className="h-5 w-5 text-destructive mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-destructive">Warning: Permanent Deletion</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {selectedItems.size} image(s) will be permanently removed from both the database and storage.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowBulkDeleteDialog(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={handleBulkDelete}
+                  disabled={bulkDeleting}
+                >
+                  {bulkDeleting ? "Deleting..." : `Delete ${selectedItems.size} Image(s)`}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           <Dialog open={showMoveCourseImagesDialog} onOpenChange={setShowMoveCourseImagesDialog}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
@@ -1053,6 +1154,34 @@ export function MediaLibrary() {
       {/* Toolbar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
+          {/* Selection controls */}
+          {filteredMedia.length > 0 && (
+            <div className="flex items-center space-x-2 border-r pr-4 mr-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSelectAll}
+              >
+                {selectedItems.size === filteredMedia.length ? "Deselect All" : "Select All"}
+              </Button>
+              {selectedItems.size > 0 && (
+                <>
+                  <span className="text-sm text-muted-foreground">
+                    {selectedItems.size} selected
+                  </span>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setShowBulkDeleteDialog(true)}
+                  >
+                    <TrashIcon className="h-4 w-4 mr-2" />
+                    Delete Selected
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+          
           <div className="relative">
             <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
             <Input
@@ -1161,9 +1290,18 @@ export function MediaLibrary() {
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {filteredMedia.map((item) => (
-                    <Card key={item.id} className="group relative">
-                      <CardContent className="p-4">
+                   {filteredMedia.map((item) => (
+                     <Card key={item.id} className="group relative">
+                       {/* Selection checkbox */}
+                       <div className="absolute top-2 left-2 z-10">
+                         <input
+                           type="checkbox"
+                           checked={selectedItems.has(item.id)}
+                           onChange={() => handleSelectItem(item.id)}
+                           className="w-4 h-4 rounded border-gray-300 bg-white/80 backdrop-blur-sm"
+                         />
+                       </div>
+                       <CardContent className="p-4">
                         <div className="aspect-square bg-muted rounded-lg mb-2 flex items-center justify-center overflow-hidden">
                           {item.file_type.startsWith('image/') ? (
                             <img 
