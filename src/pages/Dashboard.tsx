@@ -399,8 +399,8 @@ const Dashboard = () => {
                               <CardHeader className="pb-2">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
-                                    <CardTitle className="text-base line-clamp-2">{courseName}</CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1">
+                                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
+                                    <CardDescription className="line-clamp-2 mt-1 text-foreground">
                                       Complete training program with 3 skill levels
                                     </CardDescription>
                                   </div>
