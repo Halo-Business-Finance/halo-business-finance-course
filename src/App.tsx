@@ -142,7 +142,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         )}
         
         {user && (
-          <div className="flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0">
+          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0 pt-2">
             <NotificationBell />
             <Button
               variant="ghost"
@@ -153,7 +153,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
-            <div className="text-xs min-w-0 flex-shrink-0 self-start mt-2">
+            <div className="text-xs min-w-0 flex-shrink-0">
               <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
