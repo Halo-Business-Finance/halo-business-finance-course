@@ -66,7 +66,11 @@ export function MediaLibrary() {
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [showNewFolderDialog, setShowNewFolderDialog] = useState(false);
   const [showClearImportedDialog, setShowClearImportedDialog] = useState(false);
+  const [showEditFolderDialog, setShowEditFolderDialog] = useState(false);
+  const [showDeleteFolderDialog, setShowDeleteFolderDialog] = useState(false);
   const [clearingImported, setClearingImported] = useState(false);
+  const [editingFolder, setEditingFolder] = useState<MediaFolder | null>(null);
+  const [deletingFolder, setDeletingFolder] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -422,6 +426,178 @@ export function MediaLibrary() {
     }
   };
 
+  const handleEditFolder = (folder: MediaFolder) => {
+    if (folder.path === 'all') {
+      toast({
+        title: "Cannot Edit",
+        description: "The 'All Media' view cannot be renamed.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setEditingFolder(folder);
+    setNewFolderName(folder.name);
+    setShowEditFolderDialog(true);
+  };
+
+  const handleSaveEditFolder = async () => {
+    if (!editingFolder || !newFolderName.trim()) return;
+
+    try {
+      const oldFolderPath = editingFolder.path;
+      const newFolderPath = '/' + newFolderName.trim();
+
+      console.log(`Renaming folder from ${oldFolderPath} to ${newFolderPath}`);
+
+      // Update all media items in this folder to the new folder path
+      const { error: updateError } = await supabase
+        .from("cms_media")
+        .update({ folder_path: newFolderPath })
+        .eq("folder_path", oldFolderPath);
+
+      if (updateError) throw updateError;
+
+      // Update storage paths for all files in this folder
+      const { data: mediaInFolder, error: fetchError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("folder_path", newFolderPath);
+
+      if (fetchError) throw fetchError;
+
+      if (mediaInFolder && mediaInFolder.length > 0) {
+        for (const item of mediaInFolder) {
+          const oldStoragePath = item.storage_path;
+          const newStoragePath = oldStoragePath.replace(oldFolderPath, newFolderPath);
+          
+          // Move file in storage
+          const { error: moveError } = await supabase.storage
+            .from('cms-media')
+            .move(oldStoragePath, newStoragePath);
+
+          if (moveError) {
+            console.warn(`Failed to move ${oldStoragePath} to ${newStoragePath}:`, moveError);
+            continue;
+          }
+
+          // Update storage path in database
+          const { data: publicUrlData } = supabase.storage
+            .from('cms-media')
+            .getPublicUrl(newStoragePath);
+
+          await supabase
+            .from("cms_media")
+            .update({ 
+              storage_path: newStoragePath,
+              public_url: publicUrlData.publicUrl
+            })
+            .eq("id", item.id);
+        }
+      }
+
+      toast({
+        title: "Success",
+        description: `Folder renamed from "${editingFolder.name}" to "${newFolderName}"`,
+      });
+
+      setShowEditFolderDialog(false);
+      setEditingFolder(null);
+      setNewFolderName("");
+      
+      // If we were viewing the renamed folder, update the current folder
+      if (currentFolder === oldFolderPath) {
+        setCurrentFolder(newFolderPath);
+      }
+      
+      loadMedia();
+
+    } catch (error: any) {
+      console.error('Error renaming folder:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to rename folder",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteFolder = (folder: MediaFolder) => {
+    if (folder.path === 'all') {
+      toast({
+        title: "Cannot Delete",
+        description: "The 'All Media' view cannot be deleted.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setEditingFolder(folder);
+    setShowDeleteFolderDialog(true);
+  };
+
+  const handleConfirmDeleteFolder = async () => {
+    if (!editingFolder) return;
+
+    setDeletingFolder(true);
+    try {
+      const folderPath = editingFolder.path;
+      
+      console.log(`Deleting folder: ${folderPath}`);
+
+      // Get all media items in this folder
+      const { data: mediaInFolder, error: fetchError } = await supabase
+        .from("cms_media")
+        .select("*")
+        .eq("folder_path", folderPath);
+
+      if (fetchError) throw fetchError;
+
+      if (mediaInFolder && mediaInFolder.length > 0) {
+        // Delete files from storage
+        const storagePaths = mediaInFolder.map(item => item.storage_path);
+        const { error: storageError } = await supabase.storage
+          .from('cms-media')
+          .remove(storagePaths);
+
+        if (storageError) {
+          console.warn('Some storage files could not be deleted:', storageError);
+        }
+
+        // Delete database records
+        const { error: dbError } = await supabase
+          .from("cms_media")
+          .delete()
+          .eq("folder_path", folderPath);
+
+        if (dbError) throw dbError;
+      }
+
+      toast({
+        title: "Success",
+        description: `Folder "${editingFolder.name}" and all its contents have been deleted.`,
+      });
+
+      setShowDeleteFolderDialog(false);
+      setEditingFolder(null);
+      
+      // If we were viewing the deleted folder, switch to all media
+      if (currentFolder === folderPath) {
+        setCurrentFolder('all');
+      }
+      
+      loadMedia();
+
+    } catch (error: any) {
+      console.error('Error deleting folder:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete folder",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingFolder(false);
+    }
+  };
+
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith('image/')) return <Image className="h-5 w-5" />;
     if (fileType.startsWith('video/')) return <Video className="h-5 w-5" />;
@@ -633,18 +809,49 @@ export function MediaLibrary() {
             <CardContent className="p-0">
               <div className="space-y-1">
                 {folders.map((folder) => (
-                  <Button
-                    key={folder.path}
-                    variant={currentFolder === folder.path ? 'secondary' : 'ghost'}
-                    className="w-full justify-start"
-                    onClick={() => setCurrentFolder(folder.path)}
-                  >
-                    <Folder className="h-4 w-4 mr-2" />
-                    {folder.name}
-                    <Badge variant="outline" className="ml-auto">
-                      {folder.count}
-                    </Badge>
-                  </Button>
+                  <div key={folder.path} className="group relative">
+                    <Button
+                      variant={currentFolder === folder.path ? 'secondary' : 'ghost'}
+                      className="w-full justify-start pr-20"
+                      onClick={() => setCurrentFolder(folder.path)}
+                    >
+                      <Folder className="h-4 w-4 mr-2" />
+                      {folder.name}
+                      <Badge variant="outline" className="ml-auto">
+                        {folder.count}
+                      </Badge>
+                    </Button>
+                    
+                    {/* Folder action buttons - only show for non-"all" folders */}
+                    {folder.path !== 'all' && (
+                      <div className="absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditFolder(folder);
+                          }}
+                          className="h-6 w-6 p-0"
+                          title="Rename folder"
+                        >
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteFolder(folder);
+                          }}
+                          className="h-6 w-6 p-0 text-destructive hover:text-destructive"
+                          title="Delete folder"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </CardContent>
@@ -873,6 +1080,72 @@ export function MediaLibrary() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Folder Dialog */}
+      <Dialog open={showEditFolderDialog} onOpenChange={setShowEditFolderDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rename Folder</DialogTitle>
+            <DialogDescription>
+              Change the name of this folder. All media files in this folder will be moved to the new folder path.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-2">
+            <Label htmlFor="edit-folder-name">New Folder Name</Label>
+            <Input
+              id="edit-folder-name"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+              placeholder="Enter new folder name"
+            />
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditFolderDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveEditFolder} disabled={!newFolderName.trim()}>
+              Rename Folder
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Folder Dialog */}
+      <AlertDialog open={showDeleteFolderDialog} onOpenChange={setShowDeleteFolderDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Folder</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete the folder "{editingFolder?.name}"? This will permanently delete the folder and ALL media files inside it. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <TrashIcon className="h-5 w-5 text-destructive mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-destructive">Warning: Permanent Deletion</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  This will delete {editingFolder?.count || 0} media files in the "{editingFolder?.name}" folder. All files and the folder structure will be permanently removed from both the database and storage.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleConfirmDeleteFolder}
+              disabled={deletingFolder}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {deletingFolder ? "Deleting..." : "Delete Folder"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
