@@ -292,6 +292,27 @@ const Dashboard = () => {
     setSelectedModule(moduleId);
   };
 
+  // Function to get course description based on course name
+  const getCourseDescription = (courseName: string) => {
+    const courseDescriptions = {
+      "SBA 7(a) Loans": "Government-backed lending with favorable terms and flexible qualification requirements",
+      "SBA Express Loans": "Fast-track SBA financing with streamlined processing and quick approvals",
+      "Commercial Real Estate Financing": "Property acquisition and development funding for commercial real estate",
+      "Equipment Financing": "Asset-based lending solutions for machinery, vehicles, and business equipment",
+      "Business Lines of Credit": "Flexible revolving credit facilities for working capital and cash flow management",
+      "Invoice Factoring": "Immediate cash flow solutions through accounts receivable financing",
+      "Term Loans": "Traditional fixed-rate financing for business expansion and capital investments",
+      "Construction Loans": "Specialized financing for building projects and property development",
+      "Bridge Loans": "Short-term financing solutions for transitional business needs",
+      "Merchant Cash Advances": "Quick funding based on future credit card sales and daily receipts",
+      "Asset-Based Lending": "Collateral-focused financing using business assets as security",
+      "Working Capital Loans": "Short-term funding for operational expenses and inventory management",
+      "Acquisition Financing": "Strategic funding for business purchases and mergers"
+    };
+    
+    return courseDescriptions[courseName] || "Comprehensive training program with practical applications";
+  };
+
   // Course image mapping function
   const getCourseImage = (index: number) => {
     const images = [
@@ -398,13 +419,13 @@ const Dashboard = () => {
                               </div>
                               <CardHeader className="pb-2">
                                 <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
-                                    <CardDescription className="line-clamp-2 mt-1 text-foreground">
-                                      Complete training program with 3 skill levels
-                                    </CardDescription>
-                                  </div>
-                                </div>
+                  <div className="flex-1">
+                    <CardTitle className="text-sm line-clamp-2">{courseName}</CardTitle>
+                    <CardDescription className="line-clamp-2 mt-1 text-foreground">
+                      {getCourseDescription(courseName)}
+                    </CardDescription>
+                  </div>
+                </div>
                 <div className="flex items-center gap-4 text-sm mt-2">
                   <div className="flex items-center gap-1 text-[hsl(var(--duke-blue))]">
                     <BookOpen className="h-4 w-4" />
