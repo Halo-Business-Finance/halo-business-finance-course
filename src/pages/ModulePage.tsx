@@ -20,6 +20,52 @@ const ModulePage = () => {
   const [module, setModule] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  // Define lessons array at the top level to avoid undefined errors
+  const lessons = [
+    {
+      title: "Introduction & Overview",
+      type: "video",
+      duration: "15 min",
+      completed: false // Will be updated when we have progress tracking
+    },
+    {
+      title: "Core Concepts",
+      type: "reading",
+      duration: "20 min", 
+      completed: false
+    },
+    {
+      title: "Interactive Calculator Exercise",
+      type: "interactive",
+      duration: "25 min",
+      completed: false
+    },
+    {
+      title: "Case Study Analysis",
+      type: "assignment",
+      duration: "30 min",
+      completed: false
+    },
+    {
+      title: "Hands-on Scenario Simulation",
+      type: "interactive",
+      duration: "35 min",
+      completed: false
+    },
+    {
+      title: "Interactive Quiz",
+      type: "quiz",
+      duration: "15 min",
+      completed: false
+    },
+    {
+      title: "Drag & Drop Activity",
+      type: "interactive", 
+      duration: "20 min",
+      completed: false
+    }
+  ];
+
   useEffect(() => {
     const fetchModule = async () => {
       if (!moduleId) return;
@@ -96,50 +142,6 @@ const ModulePage = () => {
     });
   };
 
-  const lessons = [
-    {
-      title: "Introduction & Overview",
-      type: "video",
-      duration: "15 min",
-      completed: false // Will be updated when we have progress tracking
-    },
-    {
-      title: "Core Concepts",
-      type: "reading",
-      duration: "20 min", 
-      completed: false
-    },
-    {
-      title: "Interactive Calculator Exercise",
-      type: "interactive",
-      duration: "25 min",
-      completed: false
-    },
-    {
-      title: "Case Study Analysis",
-      type: "assignment",
-      duration: "30 min",
-      completed: false
-    },
-    {
-      title: "Hands-on Scenario Simulation",
-      type: "interactive",
-      duration: "35 min",
-      completed: false
-    },
-    {
-      title: "Interactive Quiz",
-      type: "quiz",
-      duration: "15 min",
-      completed: false
-    },
-    {
-      title: "Drag & Drop Activity",
-      type: "interactive", 
-      duration: "20 min",
-      completed: false
-    }
-  ];
 
   const getTypeIcon = (type: string) => {
     switch (type) {
