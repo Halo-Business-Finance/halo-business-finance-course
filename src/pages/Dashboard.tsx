@@ -22,7 +22,7 @@ import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTool
 import { GamificationSystem } from "@/components/GamificationSystem";
 
 import { RealTimeMarketData } from "@/components/RealTimeMarketData";
-import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
+
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
@@ -603,9 +603,8 @@ const Dashboard = () => {
 
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
-          <Tabs defaultValue="progress" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8">
-              <TabsTrigger value="progress" className="text-xs">Progress</TabsTrigger>
+          <Tabs defaultValue="analytics" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 mb-8">
               <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
               <TabsTrigger value="social" className="text-xs">Social Hub</TabsTrigger>
               <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
@@ -614,22 +613,6 @@ const Dashboard = () => {
             </TabsList>
 
 
-            <TabsContent value="progress" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    Enhanced Progress Tracking
-                  </CardTitle>
-                  <CardDescription>
-                    Detailed insights into your learning journey and achievements
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <EnhancedProgressTracking />
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             <TabsContent value="analytics" className="mt-6">
               <Card>

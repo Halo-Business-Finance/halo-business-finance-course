@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import CourseHeader from "@/components/CourseHeader";
 import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
+import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -170,9 +171,12 @@ const ProgressPage = () => {
         </div>
 
         <Tabs defaultValue="progress" className="w-full space-y-8">
-          <TabsList className="grid w-full grid-cols-4 h-12 bg-background/50 backdrop-blur-sm border border-border/50">
+          <TabsList className="grid w-full grid-cols-5 h-12 bg-background/50 backdrop-blur-sm border border-border/50">
             <TabsTrigger value="progress" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Learning Progress
+            </TabsTrigger>
+            <TabsTrigger value="enhanced-tracking" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
+              Enhanced Tracking
             </TabsTrigger>
             <TabsTrigger value="ai-learning" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               AI Learning
@@ -305,6 +309,10 @@ const ProgressPage = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="enhanced-tracking" className="space-y-8 animate-fade-in">
+            <EnhancedProgressTracking />
           </TabsContent>
           
           <TabsContent value="ai-learning" className="space-y-8 animate-fade-in">
