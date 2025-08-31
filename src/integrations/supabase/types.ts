@@ -3811,6 +3811,15 @@ export type Database = {
         Args: { viewed_user_id: string }
         Returns: undefined
       }
+      log_admin_sensitive_access: {
+        Args: {
+          p_access_type: string
+          p_data_accessed?: Json
+          p_resource_id: string
+          p_resource_type: string
+        }
+        Returns: undefined
+      }
       log_auth_failure: {
         Args: { failure_reason: string; user_email?: string }
         Returns: undefined
@@ -3960,6 +3969,10 @@ export type Database = {
         Returns: undefined
       }
       monitor_role_access_patterns: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      monitor_security_policy_violations: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
