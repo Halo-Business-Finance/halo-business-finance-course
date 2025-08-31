@@ -154,14 +154,6 @@ const ProgressPage = () => {
         {/* Live Learning Stats Widget */}
         <LiveLearningStats />
 
-        {/* Course Header - Business Finance Mastery */}
-        <CourseHeader 
-          progress={75}
-          totalModules={8} // Total modules from moduleProgress array
-          completedModules={0} // Count completed modules from moduleProgress
-          onContinueLearning={() => {}}
-        />
-
         {/* Hero Section */}
         <div className="text-center space-y-4 py-8 animate-fade-in">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
