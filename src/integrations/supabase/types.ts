@@ -3586,8 +3586,22 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_secure_admin_leads: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          company: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          is_masked: boolean
+          last_name: string
+          phone: string
+          status: string
+        }[]
+      }
       get_secure_admin_profiles: {
-        Args: { requesting_user_role?: string }
+        Args: Record<PropertyKey, never> | { requesting_user_role?: string }
         Returns: {
           city: string
           company: string
@@ -3665,6 +3679,10 @@ export type Database = {
           status: string
           total_records: number
         }[]
+      }
+      get_security_dashboard_data: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_security_headers: {
         Args: Record<PropertyKey, never>

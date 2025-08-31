@@ -67,8 +67,7 @@ const loadTraineeProgress = async () => {
       setLoading(true);
       
       // Use enhanced secure function with strict PII masking and audit logging
-      // Use enhanced secure function with strict PII masking and audit logging
-      const { data, error } = await supabase.rpc('get_masked_user_profiles');
+      const { data, error } = await supabase.rpc('get_secure_admin_profiles');
       
       if (error) {
         throw error;

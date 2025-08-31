@@ -90,40 +90,20 @@ export const SecurityMonitoringWidget: React.FC = () => {
 
       setAlerts(alertsData || []);
 
-      // Fetch security statistics
-      const { data: eventsData, error: eventsError } = await supabase
-        .from('security_events')
-        .select('event_type, severity')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      // Use secure dashboard function for security statistics
+      const { data: dashboardData, error: dashboardError } = await supabase.rpc('get_security_dashboard_data');
 
-      if (eventsError) {
-        throw eventsError;
+      if (dashboardError) {
+        throw dashboardError;
       }
 
-      // Fetch admin audit log statistics
-      const { data: auditData, error: auditError } = await supabase
-        .from('admin_audit_log')
-        .select('action')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-
-      if (auditError) {
-        throw auditError;
-      }
-
-      const totalEvents = eventsData?.length || 0;
-      const criticalAlerts = (alertsData || []).filter(a => a.severity === 'critical').length;
-      const recentAccessAttempts = (eventsData || []).filter(e => 
-        e.event_type.includes('login') || e.event_type.includes('auth')
-      ).length;
-      const profileAccessCount = (auditData || []).filter(a => 
-        a.action.includes('profile') || a.action.includes('customer')
-      ).length;
-
+      // Extract statistics from secure dashboard data
+      const data = dashboardData as any;
       setStats({
-        totalEvents,
-        criticalAlerts,
-        recentAccessAttempts,
-        profileAccessCount
+        totalEvents: data?.recent_security_events || 0,
+        criticalAlerts: data?.high_severity_events || 0,
+        recentAccessAttempts: data?.failed_auth_attempts || 0,
+        profileAccessCount: data?.admin_actions_today || 0
       });
 
     } catch (error: any) {
