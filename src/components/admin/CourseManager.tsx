@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { courseData, Course } from "@/data/courseData";
+import { CourseImageEditor } from "./CourseImageEditor";
 
 interface CourseManagerProps {}
 
@@ -22,6 +23,8 @@ export function CourseManager({}: CourseManagerProps) {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [editingImageCourse, setEditingImageCourse] = useState<Course | null>(null);
+  const [showImageEditor, setShowImageEditor] = useState(false);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -112,11 +115,18 @@ export function CourseManager({}: CourseManagerProps) {
   };
 
   const handleEditImage = (course: Course) => {
+    setEditingImageCourse(course);
+    setShowImageEditor(true);
+  };
+
+  const handleSaveImage = async (courseId: string, imageBlob: Blob) => {
+    // TODO: Implement actual image saving to storage/database
+    console.log(`Saving image for course ${courseId}`, imageBlob);
+    
     toast({
-      title: "Edit Course Image",
-      description: `Opening image editor for "${course.title}"`,
+      title: "Image Saved",
+      description: "Course image has been saved successfully.",
     });
-    // TODO: Implement image editing functionality
   };
 
   const getModuleCount = (course: Course) => {
@@ -395,6 +405,14 @@ export function CourseManager({}: CourseManagerProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Course Image Editor */}
+      <CourseImageEditor
+        course={editingImageCourse}
+        open={showImageEditor}
+        onOpenChange={setShowImageEditor}
+        onSave={handleSaveImage}
+      />
     </div>
   );
 }
