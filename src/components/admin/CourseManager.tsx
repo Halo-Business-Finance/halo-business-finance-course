@@ -241,18 +241,20 @@ export function CourseManager({}: CourseManagerProps) {
                       return (
                         <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                           <div className="flex items-center gap-4">
-                            {/* Course Image */}
-                            <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                              <img 
-                                src={getCourseImage(course.title)} 
-                                alt={course.title}
-                                className="w-full h-full object-cover"
-                              />
+                            {/* Course Image and Skill Level */}
+                            <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                              <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                                <img 
+                                  src={getCourseImage(course.title)} 
+                                  alt={course.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="text-sm font-medium text-black">
+                                {course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
+                              </div>
                             </div>
                             
-                            <div className="text-sm font-medium text-black">
-                              {course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
-                            </div>
                             <div>
                               <div className="font-medium">{course.title}</div>
                               <div className="w-full h-px bg-border mt-1 mb-2"></div>
