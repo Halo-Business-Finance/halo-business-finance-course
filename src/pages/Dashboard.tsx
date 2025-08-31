@@ -661,7 +661,7 @@ const Dashboard = () => {
             key={module.id}
             module={{
               ...module,
-              module_id: module.id.replace(/-module-\d+-.*$/, ''), // Extract base course ID
+              module_id: module.id, // Use the full module ID as is from database
               lessons_count: parseInt(module.lessons.toString()) || 6,
               order_index: index,
               progress: moduleProgress,
