@@ -53,35 +53,35 @@ export function CourseManager({}: CourseManagerProps) {
   ];
 
   // Course image mapping function to match user dashboard
-  const getCourseImage = (courseId: string) => {
+  const getCourseImage = (courseTitle: string) => {
     const images = [
       financeExpert1, creditAnalyst2, commercialBanker3, riskSpecialist4, 
       sbaSpecialist5, complianceOfficer6, financialAdvisor7, investmentBanker8, 
       loanOfficer9, portfolioManager10
     ];
     
-    // Map course IDs to image indices based on course type
-    const courseImageMap: Record<string, number> = {
-      'sba-7a-loans': 0,
-      'equipment-financing': 1,
-      'commercial-real-estate': 2,
-      'working-capital-loans': 3,
-      'business-credit-lines': 4,
-      'asset-based-lending': 5,
-      'mezzanine-financing': 6,
-      'acquisition-financing': 7,
-      'export-import-financing': 8,
-      'specialty-lending': 9,
-      'credit-analysis': 1,
-      'risk-assessment': 3,
-      'loan-documentation': 7
-    };
-
-    // Extract base course type from ID
-    const baseCourseType = courseId.replace(/-(?:beginner|intermediate|expert)$/, '');
-    const imageIndex = courseImageMap[baseCourseType] || 0;
+    // Extract the base course type from title (remove skill level)
+    const baseTitle = courseTitle.replace(/ - (Beginner|Intermediate|Expert)$/, '');
     
-    return images[imageIndex % images.length];
+    // Get unique course types in order they appear in courseData
+    const uniqueCourseTypes = [
+      "SBA 7(a) Loans",
+      "SBA Express Loans", 
+      "Commercial Real Estate Financing",
+      "Equipment Financing",
+      "Business Lines of Credit",
+      "Invoice Factoring",
+      "Merchant Cash Advances",
+      "Asset-Based Lending",
+      "Construction Loans",
+      "Franchise Financing",
+      "Working Capital Loans",
+      "Healthcare Financing",
+      "Restaurant Financing"
+    ];
+
+    const index = uniqueCourseTypes.indexOf(baseTitle);
+    return images[index >= 0 ? index : 0];
   };
 
   const resetForm = () => {
@@ -244,7 +244,7 @@ export function CourseManager({}: CourseManagerProps) {
                             {/* Course Image */}
                             <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                               <img 
-                                src={getCourseImage(course.id)} 
+                                src={getCourseImage(course.title)} 
                                 alt={course.title}
                                 className="w-full h-full object-cover"
                               />
