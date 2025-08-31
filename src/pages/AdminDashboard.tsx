@@ -37,6 +37,7 @@ import { useAdminRole } from "@/hooks/useAdminRole";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { SecurityMonitoringDashboard } from "@/components/SecurityMonitoringDashboard";
 import { SecurityMonitoringWidget } from "@/components/SecurityMonitoringWidget";
+import { SecurityFixCenter } from "@/components/SecurityFixCenter";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
 import { ModuleEditor } from "@/components/admin/ModuleEditor";
@@ -1314,6 +1315,7 @@ const AdminDashboard = () => {
 
                 <TabsContent value="security" className="space-y-6">
                   <SecurityComplianceStatus />
+                  <SecurityFixCenter />
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <SecurityDashboard />
                     <SecurityMonitoringDashboard />
