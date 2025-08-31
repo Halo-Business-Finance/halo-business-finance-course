@@ -929,12 +929,12 @@ export function MediaLibrary() {
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
                 <TrashIcon className="h-4 w-4 mr-2" />
-                Clear Imported
+                Clear Images
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Clear Imported Media</DialogTitle>
+                <DialogTitle>Clear Images</DialogTitle>
                 <DialogDescription>
                   This will permanently delete ONLY files in the "/imported" folder. Regular uploaded media and other folders will remain completely untouched.
                 </DialogDescription>
