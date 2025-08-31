@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Upload, Check, AlertCircle, Image } from "lucide-react";
+import { Upload, Check, AlertCircle, Image, Trash2 } from "lucide-react";
 
 interface ExistingImage {
   filename: string;
@@ -14,6 +14,7 @@ interface ExistingImage {
 
 export const MediaImporter = () => {
   const [importing, setImporting] = useState(false);
+  const [clearing, setClearing] = useState(false);
   const [imported, setImported] = useState<string[]>([]);
   const { toast } = useToast();
 
@@ -395,6 +396,90 @@ export const MediaImporter = () => {
     }
   };
 
+  const clearImportedImages = async () => {
+    setClearing(true);
+    
+    try {
+      // Get all imported images from database
+      const { data: importedImages, error: fetchError } = await supabase
+        .from('cms_media')
+        .select('*')
+        .contains('tags', ['imported']);
+
+      if (fetchError) throw fetchError;
+
+      if (!importedImages || importedImages.length === 0) {
+        toast({
+          title: "No Images to Clear",
+          description: "No imported images found in the CMS Media Library",
+        });
+        return;
+      }
+
+      let successCount = 0;
+      let storageErrors = 0;
+
+      for (const image of importedImages) {
+        try {
+          // Delete from storage
+          const { error: storageError } = await supabase.storage
+            .from('cms-media')
+            .remove([image.storage_path]);
+
+          if (storageError) {
+            console.warn(`Failed to delete storage file: ${image.storage_path}`, storageError);
+            storageErrors++;
+          }
+
+          // Delete from database
+          const { error: dbError } = await supabase
+            .from('cms_media')
+            .delete()
+            .eq('id', image.id);
+
+          if (dbError) throw dbError;
+
+          successCount++;
+          console.log(`Successfully cleared: ${image.filename}`);
+          
+        } catch (error) {
+          console.error(`Error clearing ${image.filename}:`, error);
+        }
+      }
+
+      // Reset imported state
+      setImported([]);
+
+      if (successCount === importedImages.length && storageErrors === 0) {
+        toast({
+          title: "Success",
+          description: `Successfully cleared ${successCount} imported images from CMS Media Library`
+        });
+      } else if (successCount > 0) {
+        toast({
+          title: "Partial Success", 
+          description: `Cleared ${successCount}/${importedImages.length} images. ${storageErrors} storage files could not be deleted.`,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to clear imported images. Check console for details.",
+          variant: "destructive"
+        });
+      }
+      
+    } catch (error) {
+      console.error('Clear process failed:', error);
+      toast({
+        title: "Error",
+        description: "Failed to clear imported images. Check console for details.",
+        variant: "destructive"
+      });
+    } finally {
+      setClearing(false);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -439,12 +524,23 @@ export const MediaImporter = () => {
         <div className="flex gap-2">
           <Button 
             onClick={importAllImages} 
-            disabled={importing}
+            disabled={importing || clearing}
             className="flex items-center gap-2"
           >
             <Upload className="h-4 w-4" />
             {importing ? 'Importing...' : 'Import All Images'}
           </Button>
+          
+          <Button 
+            onClick={clearImportedImages} 
+            disabled={importing || clearing}
+            variant="destructive"
+            className="flex items-center gap-2"
+          >
+            <Trash2 className="h-4 w-4" />
+            {clearing ? 'Clearing...' : 'Clear Imported'}
+          </Button>
+          
           {imported.length > 0 && (
             <Badge variant="secondary">
               {imported.length}/{existingImages.length} imported
@@ -453,7 +549,8 @@ export const MediaImporter = () => {
         </div>
         
         <div className="text-sm text-muted-foreground">
-          <p><strong>Note:</strong> This will attempt to import all {existingImages.length} images from your application.</p>
+          <p><strong>Import:</strong> This will attempt to import all {existingImages.length} images from your application.</p>
+          <p><strong>Clear:</strong> This will remove ALL imported images from the CMS Media Library (tagged as 'imported').</p>
           <p><strong>Upload images:</strong> Direct import from /lovable-uploads/ (will work)</p>
           <p><strong>Asset images:</strong> From /src/assets/ (may need manual upload if fetch fails)</p>
           <p>If some images fail to import, you can upload them manually through the Media Library.</p>
