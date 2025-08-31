@@ -238,7 +238,7 @@ export const NotificationBell = () => {
           className="relative text-black hover:bg-black/10 p-1 h-10 w-10"
           title="Notifications"
         >
-          <Bell className="h-6 w-6 text-amber-500" />
+          <Bell className="h-6 w-6 text-amber-500" fill="currentColor" />
           {unreadCount > 0 && (
             <Badge 
               variant="destructive" 
