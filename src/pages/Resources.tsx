@@ -2,13 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play, Zap } from "lucide-react";
+import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play, Zap, TrendingUp } from "lucide-react";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ToolModal } from "@/components/tools/ToolModal";
 import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { RealTimeMarketData } from "@/components/RealTimeMarketData";
 
 const ResourcesPage = () => {
   const [documents, setDocuments] = useState<any[]>([]);
@@ -115,12 +116,13 @@ const ResourcesPage = () => {
       </div>
 
       <Tabs defaultValue="interactive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="interactive">Interactive</TabsTrigger>
           <TabsTrigger value="documents">Documents</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="tools">Tools</TabsTrigger>
           <TabsTrigger value="webinars">Webinars</TabsTrigger>
+          <TabsTrigger value="market-data">Market Data</TabsTrigger>
         </TabsList>
 
         <TabsContent value="interactive" className="space-y-4">
@@ -324,6 +326,23 @@ const ResourcesPage = () => {
                   ))
                 )}
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="market-data" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Real-Time Market Data
+              </CardTitle>
+              <CardDescription>
+                Stay updated with live financial market information and trends
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RealTimeMarketData />
             </CardContent>
           </Card>
         </TabsContent>

@@ -21,7 +21,7 @@ import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
 import { GamificationSystem } from "@/components/GamificationSystem";
 
-import { RealTimeMarketData } from "@/components/RealTimeMarketData";
+
 
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
@@ -604,10 +604,9 @@ const Dashboard = () => {
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
           <Tabs defaultValue="tools" className="w-full">
-            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-1 lg:grid-cols-2 mb-8">
               <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
               <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
-              <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
 
 
@@ -642,19 +641,6 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="market-data" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Real-Time Market Data</CardTitle>
-                  <CardDescription>
-                    Stay updated with live financial market information and trends
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RealTimeMarketData />
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
 
