@@ -167,7 +167,7 @@ export function AppSidebar() {
       <SidebarContent>
         {/* Welcome Message */}
         {user && !collapsed && (
-          <div className="px-4 py-4 border-b border-white/10 bg-black/20">
+          <div className="px-4 py-4 border-b border-white/10">
             <div className="text-white">
               <div className="text-xs font-medium text-white/80">Welcome back,</div>
               <div className="text-sm font-semibold text-halo-orange">
