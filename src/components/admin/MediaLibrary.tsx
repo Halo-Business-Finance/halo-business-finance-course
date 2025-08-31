@@ -397,8 +397,8 @@ export function MediaLibrary() {
 
     console.log('Creating folder with name:', newFolderName.trim());
     
-    // Create folder path - if current folder is "all", create at root level
-    const newFolderPath = currentFolder === 'all' ? '/' + newFolderName.trim() : currentFolder + (currentFolder.endsWith('/') ? '' : '/') + newFolderName.trim();
+    // Create folder path - always create at root level regardless of current view
+    const newFolderPath = '/' + newFolderName.trim();
     
     console.log('New folder path will be:', newFolderPath);
     
