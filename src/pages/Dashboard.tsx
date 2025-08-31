@@ -20,7 +20,7 @@ import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
 import { SocialLearningHub } from "@/components/SocialLearningHub";
 import { InteractiveFinancialTools } from "@/components/InteractiveFinancialTools";
 import { GamificationSystem } from "@/components/GamificationSystem";
-import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
+
 import { RealTimeMarketData } from "@/components/RealTimeMarketData";
 import { EnhancedProgressTracking } from "@/components/EnhancedProgressTracking";
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
@@ -603,9 +603,8 @@ const Dashboard = () => {
 
         {/* Feature Showcase Tabs */}
         <div className="mt-12">
-          <Tabs defaultValue="ai-learning" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8">
-              <TabsTrigger value="ai-learning" className="text-xs">AI Learning</TabsTrigger>
+          <Tabs defaultValue="interactive" className="w-full">
+            <TabsList className="grid w-full grid-cols-5 lg:grid-cols-7 mb-8">
               <TabsTrigger value="interactive" className="text-xs">Interactive</TabsTrigger>
               <TabsTrigger value="progress" className="text-xs">Progress</TabsTrigger>
               <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
@@ -614,10 +613,6 @@ const Dashboard = () => {
               <TabsTrigger value="gamification" className="text-xs">Gamification</TabsTrigger>
               <TabsTrigger value="market-data" className="text-xs">Market Data</TabsTrigger>
             </TabsList>
-
-            <TabsContent value="ai-learning" className="mt-6">
-              <AdaptiveLearningEngine />
-            </TabsContent>
 
             <TabsContent value="interactive" className="mt-6">
               <Card>

@@ -7,6 +7,7 @@ import { Trophy, Clock, CheckCircle, Target, Award, Lock, Star, BookOpen, Calend
 import { useNavigate } from "react-router-dom";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import CourseHeader from "@/components/CourseHeader";
+import { AdaptiveLearningEngine } from "@/components/AdaptiveLearningEngine";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -169,9 +170,12 @@ const ProgressPage = () => {
         </div>
 
         <Tabs defaultValue="progress" className="w-full space-y-8">
-          <TabsList className="grid w-full grid-cols-3 h-12 bg-background/50 backdrop-blur-sm border border-border/50">
+          <TabsList className="grid w-full grid-cols-4 h-12 bg-background/50 backdrop-blur-sm border border-border/50">
             <TabsTrigger value="progress" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Learning Progress
+            </TabsTrigger>
+            <TabsTrigger value="ai-learning" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
+              AI Learning
             </TabsTrigger>
             <TabsTrigger value="certificates" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black">
               Certificates
@@ -301,6 +305,10 @@ const ProgressPage = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="ai-learning" className="space-y-8 animate-fade-in">
+            <AdaptiveLearningEngine />
           </TabsContent>
           
           <TabsContent value="certificates" className="space-y-8 animate-fade-in">
