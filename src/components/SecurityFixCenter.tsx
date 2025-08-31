@@ -42,6 +42,7 @@ export const SecurityFixCenter = () => {
   const [scanning, setScanning] = useState(false);
   const [fixing, setFixing] = useState<string | null>(null);
   const [fixResults, setFixResults] = useState<FixResult[]>([]);
+  const [resolvedIssues, setResolvedIssues] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     scanSecurityIssues();
@@ -117,25 +118,29 @@ export const SecurityFixCenter = () => {
         }
       }
 
-      // Check for outdated sessions
-      issues.push({
-        id: 'session-cleanup',
-        type: 'low',
-        title: 'Session Cleanup Required',
-        description: 'Old user sessions should be cleaned up for security',
-        fixable: true,
-        autoFix: 'cleanup_old_sessions'
-      });
+      // Check for outdated sessions (only if not already resolved)
+      if (!resolvedIssues.has('session-cleanup')) {
+        issues.push({
+          id: 'session-cleanup',
+          type: 'low',
+          title: 'Session Cleanup Required',
+          description: 'Old user sessions should be cleaned up for security',
+          fixable: true,
+          autoFix: 'cleanup_old_sessions'
+        });
+      }
 
-      // Add some common security recommendations
-      issues.push({
-        id: 'security-headers',
-        type: 'medium',
-        title: 'Security Headers Optimization',
-        description: 'Enhance security headers for better protection',
-        fixable: true,
-        autoFix: 'update_security_headers'
-      });
+      // Add some common security recommendations (only if not already resolved)
+      if (!resolvedIssues.has('security-headers')) {
+        issues.push({
+          id: 'security-headers',
+          type: 'medium',
+          title: 'Security Headers Optimization',
+          description: 'Enhance security headers for better protection',
+          fixable: true,
+          autoFix: 'update_security_headers'
+        });
+      }
 
       setSecurityIssues(issues);
     } catch (error) {
@@ -195,8 +200,9 @@ export const SecurityFixCenter = () => {
       setFixResults(prev => [...prev, result]);
       
       if (result.success) {
-        // Remove the fixed issue
+        // Remove the fixed issue and mark as resolved
         setSecurityIssues(prev => prev.filter(i => i.id !== issue.id));
+        setResolvedIssues(prev => new Set([...prev, issue.id]));
         
         toast({
           title: "Security Issue Fixed",
