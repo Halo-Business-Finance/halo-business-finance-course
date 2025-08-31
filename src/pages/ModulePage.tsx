@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, Boo
 import { courseData } from "@/data/courseData";
 import { LessonModal } from "@/components/LessonModal";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ModulePage = () => {
   const { moduleId } = useParams();
@@ -16,8 +17,52 @@ const ModulePage = () => {
   const { toast } = useToast();
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
+  const [module, setModule] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const module = courseData.modules.find(m => m.id === moduleId);
+  useEffect(() => {
+    const fetchModule = async () => {
+      if (!moduleId) return;
+      
+      try {
+        // First try to get from database
+        const { data: dbModule, error } = await supabase
+          .from('course_modules')
+          .select('*')
+          .eq('module_id', moduleId)
+          .single();
+
+        if (dbModule) {
+          setModule(dbModule);
+        } else {
+          // Fallback to courseData for backwards compatibility
+          const fallbackModule = courseData.modules.find(m => m.id === moduleId);
+          setModule(fallbackModule);
+        }
+      } catch (error) {
+        console.error('Error fetching module:', error);
+        // Fallback to courseData
+        const fallbackModule = courseData.modules.find(m => m.id === moduleId);
+        setModule(fallbackModule);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchModule();
+  }, [moduleId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            <h2 className="text-xl font-semibold mb-2">Loading Module...</h2>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!module) {
     return (
@@ -56,43 +101,43 @@ const ModulePage = () => {
       title: "Introduction & Overview",
       type: "video",
       duration: "15 min",
-      completed: module.status === "completed" || module.progress > 0
+      completed: false // Will be updated when we have progress tracking
     },
     {
       title: "Core Concepts",
       type: "reading",
       duration: "20 min", 
-      completed: module.status === "completed" || module.progress > 15
+      completed: false
     },
     {
       title: "Interactive Calculator Exercise",
       type: "interactive",
       duration: "25 min",
-      completed: module.status === "completed" || module.progress > 30
+      completed: false
     },
     {
       title: "Case Study Analysis",
       type: "assignment",
       duration: "30 min",
-      completed: module.status === "completed" || module.progress > 45
+      completed: false
     },
     {
       title: "Hands-on Scenario Simulation",
       type: "interactive",
       duration: "35 min",
-      completed: module.status === "completed" || module.progress > 60
+      completed: false
     },
     {
       title: "Interactive Quiz",
       type: "quiz",
       duration: "15 min",
-      completed: module.status === "completed" || module.progress > 75
+      completed: false
     },
     {
       title: "Drag & Drop Activity",
       type: "interactive", 
       duration: "20 min",
-      completed: module.status === "completed" || module.progress > 85
+      completed: false
     }
   ];
 
@@ -124,7 +169,7 @@ const ModulePage = () => {
             <div className="h-6 w-px bg-border" />
             <div>
               <h1 className="text-xl font-semibold">{module.title}</h1>
-              <p className="text-sm text-muted-foreground">{module.duration} • {module.lessons} lessons</p>
+              <p className="text-sm text-muted-foreground">{module.duration || '45 minutes'} • {module.lessons_count || 6} lessons</p>
             </div>
           </div>
         </div>
@@ -141,11 +186,10 @@ const ModulePage = () => {
                     <CardDescription className="mt-2">{module.description}</CardDescription>
                   </div>
                   <Badge variant={
-                    module.status === "completed" ? "success" : 
-                    module.status === "in-progress" ? "default" : "outline"
+                    module.skill_level === "advanced" ? "success" : 
+                    module.skill_level === "intermediate" ? "default" : "outline"
                   }>
-                    {module.status === "completed" ? "Completed" : 
-                     module.status === "in-progress" ? "In Progress" : "Available"}
+                    {module.skill_level?.charAt(0).toUpperCase() + module.skill_level?.slice(1) || "Beginner"}
                   </Badge>
                 </div>
               </CardHeader>
@@ -154,16 +198,17 @@ const ModulePage = () => {
                   <div>
                     <div className="flex justify-between text-sm mb-2">
                       <span>Overall Progress</span>
-                      <span>{module.progress}%</span>
+                      <span>0%</span>
                     </div>
-                    <Progress value={module.progress} className="h-2" />
+                    <Progress value={0} className="h-2" />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {module.topics.map((topic, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {topic}
-                      </Badge>
-                    ))}
+                    <Badge variant="outline" className="text-xs">
+                      {module.skill_level || 'Beginner'}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {module.duration || '45 minutes'}
+                    </Badge>
                   </div>
                 </div>
               </CardContent>
@@ -342,24 +387,20 @@ const ModulePage = () => {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Duration</span>
-                  <span className="text-sm font-medium">{module.duration}</span>
+                  <span className="text-sm font-medium">{module.duration || '45 minutes'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Lessons</span>
-                  <span className="text-sm font-medium">{module.lessons}</span>
+                  <span className="text-sm font-medium">{module.lessons_count || 6}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Progress</span>
-                  <span className="text-sm font-medium">{module.progress}%</span>
+                  <span className="text-sm text-muted-foreground">Skill Level</span>
+                  <span className="text-sm font-medium">{module.skill_level || 'Beginner'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Status</span>
-                  <Badge variant={
-                    module.status === "completed" ? "success" : 
-                    module.status === "in-progress" ? "default" : "outline"
-                  } className="text-xs">
-                    {module.status === "completed" ? "Completed" : 
-                     module.status === "in-progress" ? "In Progress" : "Available"}
+                  <Badge variant="outline" className="text-xs">
+                    Available
                   </Badge>
                 </div>
               </CardContent>
