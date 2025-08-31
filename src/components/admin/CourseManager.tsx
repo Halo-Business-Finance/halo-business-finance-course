@@ -12,273 +12,237 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { courseData, Course, Module } from "@/data/courseData";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CourseModule {
+  id: string;
+  module_id: string;
+  title: string;
+  description?: string;
+  skill_level: string;
+  duration?: string;
+  lessons_count: number;
+  order_index: number;
+  prerequisites?: string[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 interface CourseManagerProps {}
 
 export function CourseManager({}: CourseManagerProps) {
-  const [courses, setCourses] = useState<Course[]>(courseData.allCourses);
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [showAddCourseDialog, setShowAddCourseDialog] = useState(false);
-  const [showAddModuleDialog, setShowAddModuleDialog] = useState(false);
-  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [editingModule, setEditingModule] = useState<Module | null>(null);
+  const [modules, setModules] = useState<CourseModule[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
   const { toast } = useToast();
 
-  const [courseFormData, setCourseFormData] = useState({
-    id: "",
+  const [formData, setFormData] = useState({
+    module_id: "",
     title: "",
     description: "",
-    level: "beginner" as "beginner" | "intermediate" | "expert",
+    skill_level: "beginner" as 'beginner' | 'intermediate' | 'expert',
+    duration: "",
+    lessons_count: 0,
+    order_index: 0,
+    prerequisites: "",
+    is_active: true,
   });
 
-  const [moduleFormData, setModuleFormData] = useState({
-    id: "",
-    title: "",
-    description: "",
-    duration: "4 hours",
-    lessons: 7,
-    status: "locked" as "locked" | "available" | "in-progress" | "completed",
-    topics: [] as string[],
-  });
+  const skillLevels = [
+    { value: "beginner", label: "Beginner", icon: "🌱", color: "bg-emerald-100 text-emerald-800" },
+    { value: "intermediate", label: "Intermediate", icon: "🌿", color: "bg-amber-100 text-amber-800" },
+    { value: "expert", label: "Expert", icon: "🌳", color: "bg-red-100 text-red-800" },
+  ];
 
-  const resetCourseForm = () => {
-    setCourseFormData({
-      id: "",
-      title: "",
-      description: "",
-      level: "beginner",
-    });
-  };
+  useEffect(() => {
+    loadModules();
+  }, []);
 
-  const resetModuleForm = () => {
-    setModuleFormData({
-      id: "",
-      title: "",
-      description: "",
-      duration: "4 hours", 
-      lessons: 7,
-      status: "locked",
-      topics: [],
-    });
-  };
+  const loadModules = async () => {
+    try {
+      setLoading(true);
+      
+      const { data: modulesData, error } = await supabase
+        .from("course_modules")
+        .select("*")
+        .order("order_index");
 
-  const handleCreateCourse = () => {
-    setEditingCourse(null);
-    resetCourseForm();
-    setShowAddCourseDialog(true);
-  };
+      if (error) throw error;
+      setModules(modulesData || []);
 
-  const handleEditCourse = (course: Course) => {
-    setEditingCourse(course);
-    setCourseFormData({
-      id: course.id,
-      title: course.title,
-      description: course.description,
-      level: course.level,
-    });
-    setShowAddCourseDialog(true);
-  };
-
-  const handleCreateModule = (courseId: string) => {
-    const course = courses.find(c => c.id === courseId);
-    if (!course) return;
-    
-    setSelectedCourse(course);
-    setEditingModule(null);
-    resetModuleForm();
-    setShowAddModuleDialog(true);
-  };
-
-  const handleEditModule = (courseId: string, module: Module) => {
-    const course = courses.find(c => c.id === courseId);
-    if (!course) return;
-    
-    setSelectedCourse(course);
-    setEditingModule(module);
-    setModuleFormData({
-      id: module.id,
-      title: module.title,
-      description: module.description,
-      duration: module.duration,
-      lessons: module.lessons,
-      status: module.status,
-      topics: module.topics,
-    });
-    setShowAddModuleDialog(true);
-  };
-
-  const saveCourse = () => {
-    if (!courseFormData.title.trim()) {
+    } catch (error) {
+      console.error("Error loading modules:", error);
       toast({
         title: "Error",
-        description: "Course title is required",
+        description: "Failed to load module data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      module_id: "",
+      title: "",
+      description: "",
+      skill_level: "beginner",
+      duration: "",
+      lessons_count: 0,
+      order_index: 0,
+      prerequisites: "",
+      is_active: true,
+    });
+  };
+
+  const handleCreate = () => {
+    setEditingModule(null);
+    resetForm();
+    setShowAddDialog(true);
+  };
+
+  const handleEdit = (module: CourseModule) => {
+    setEditingModule(module);
+    setFormData({
+      module_id: module.module_id,
+      title: module.title,
+      description: module.description || "",
+      skill_level: module.skill_level as 'beginner' | 'intermediate' | 'expert',
+      duration: module.duration || "",
+      lessons_count: module.lessons_count,
+      order_index: module.order_index,
+      prerequisites: Array.isArray(module.prerequisites) ? module.prerequisites.join(", ") : "",
+      is_active: module.is_active,
+    });
+    setShowAddDialog(true);
+  };
+
+  const handleSave = async () => {
+    if (!formData.title.trim() || !formData.module_id.trim()) {
+      toast({
+        title: "Error",
+        description: "Module ID and title are required",
         variant: "destructive",
       });
       return;
     }
 
-    const newCourse: Course = {
-      id: courseFormData.id || courseFormData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-      title: courseFormData.title,
-      description: courseFormData.description,
-      level: courseFormData.level,
-      modules: editingCourse ? editingCourse.modules : [],
-    };
+    try {
+      const moduleData = {
+        module_id: formData.module_id,
+        title: formData.title,
+        description: formData.description,
+        skill_level: formData.skill_level,
+        duration: formData.duration,
+        lessons_count: formData.lessons_count,
+        order_index: formData.order_index,
+        prerequisites: formData.prerequisites ? formData.prerequisites.split(",").map(p => p.trim()) : [],
+        is_active: formData.is_active,
+      };
 
-    if (editingCourse) {
-      // Update existing course
-      setCourses(prev => prev.map(course => 
-        course.id === editingCourse.id ? newCourse : course
-      ));
+      if (editingModule) {
+        // Update existing module
+        const { error } = await supabase
+          .from("course_modules")
+          .update(moduleData)
+          .eq("id", editingModule.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Module updated successfully",
+        });
+      } else {
+        // Create new module
+        const { error } = await supabase
+          .from("course_modules")
+          .insert([moduleData]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Module created successfully",
+        });
+      }
+
+      setShowAddDialog(false);
+      resetForm();
+      await loadModules();
+
+    } catch (error) {
+      console.error("Error saving module:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save module",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async (module: CourseModule) => {
+    try {
+      const { error } = await supabase
+        .from("course_modules")
+        .delete()
+        .eq("id", module.id);
+
+      if (error) throw error;
+
       toast({
         title: "Success",
-        description: "Course updated successfully",
+        description: "Module deleted successfully",
       });
-    } else {
-      // Add new course
-      setCourses(prev => [...prev, newCourse]);
-      toast({
-        title: "Success", 
-        description: "Course created successfully",
-      });
-    }
 
-    setShowAddCourseDialog(false);
-    resetCourseForm();
-  };
-
-  const saveModule = () => {
-    if (!selectedCourse || !moduleFormData.title.trim()) {
+      await loadModules();
+    } catch (error) {
+      console.error("Error deleting module:", error);
       toast({
         title: "Error",
-        description: "Module title is required",
+        description: "Failed to delete module",
         variant: "destructive",
       });
-      return;
     }
-
-    const sampleQuestions = [
-      {
-        id: "q1",
-        question: "Sample question for this module",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correctAnswer: 0,
-        explanation: "This is a sample question that would need to be customized."
-      }
-    ];
-
-    const newModule: Module = {
-      id: moduleFormData.id || moduleFormData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-      title: moduleFormData.title,
-      description: moduleFormData.description,
-      duration: moduleFormData.duration,
-      lessons: moduleFormData.lessons,
-      progress: 0,
-      status: moduleFormData.status,
-      topics: moduleFormData.topics,
-      loanExamples: [],
-      videos: [],
-      caseStudies: [],
-      scripts: [],
-      quiz: {
-        id: `${moduleFormData.id || 'new'}-quiz`,
-        moduleId: moduleFormData.id || 'new',
-        title: `${moduleFormData.title} Quiz`,
-        description: `Test your knowledge of ${moduleFormData.title}`,
-        questions: sampleQuestions,
-        passingScore: 80,
-        maxAttempts: 3,
-        timeLimit: 30,
-      }
-    };
-
-    setCourses(prev => prev.map(course => {
-      if (course.id === selectedCourse.id) {
-        if (editingModule) {
-          // Update existing module
-          return {
-            ...course,
-            modules: course.modules.map(module => 
-              module.id === editingModule.id ? newModule : module
-            )
-          };
-        } else {
-          // Add new module
-          return {
-            ...course,
-            modules: [...course.modules, newModule]
-          };
-        }
-      }
-      return course;
-    }));
-
-    toast({
-      title: "Success",
-      description: editingModule ? "Module updated successfully" : "Module created successfully",
-    });
-
-    setShowAddModuleDialog(false);
-    resetModuleForm();
   };
 
-  const deleteCourse = (courseId: string) => {
-    setCourses(prev => prev.filter(course => course.id !== courseId));
-    toast({
-      title: "Success",
-      description: "Course deleted successfully",
-    });
+  const toggleActive = async (module: CourseModule) => {
+    try {
+      const { error } = await supabase
+        .from("course_modules")
+        .update({ is_active: !module.is_active })
+        .eq("id", module.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Module ${!module.is_active ? 'activated' : 'deactivated'} successfully`,
+      });
+
+      await loadModules();
+    } catch (error) {
+      console.error("Error toggling module status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update module status",
+        variant: "destructive",
+      });
+    }
   };
 
-  const deleteModule = (courseId: string, moduleId: string) => {
-    setCourses(prev => prev.map(course => {
-      if (course.id === courseId) {
-        return {
-          ...course,
-          modules: course.modules.filter(module => module.id !== moduleId)
-        };
-      }
-      return course;
-    }));
-    toast({
-      title: "Success", 
-      description: "Module deleted successfully",
-    });
-  };
-
-  const exportCourses = () => {
-    const dataStr = JSON.stringify(courses, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = 'halo-courses.json';
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    toast({
-      title: "Success",
-      description: "Courses exported successfully",
-    });
-  };
-
-  const addTopicToModule = (topic: string) => {
-    if (!topic.trim()) return;
-    
-    setModuleFormData(prev => ({
-      ...prev,
-      topics: [...prev.topics, topic.trim()]
-    }));
-  };
-
-  const removeTopic = (index: number) => {
-    setModuleFormData(prev => ({
-      ...prev,
-      topics: prev.topics.filter((_, i) => i !== index)
-    }));
-  };
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-center">Loading modules...</div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -288,295 +252,228 @@ export function CourseManager({}: CourseManagerProps) {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <BookOpen className="h-5 w-5 text-primary" />
-                Course Management
+                Course Modules Management
               </CardTitle>
               <CardDescription>
-                Manage training courses, modules, and learning content
+                Manage course modules and their content
               </CardDescription>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={exportCourses}>
-                <Download className="h-4 w-4 mr-2" />
-                Export
-              </Button>
-              <Button onClick={handleCreateCourse}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Course
-              </Button>
-            </div>
+            <Button onClick={handleCreate}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Module
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {courses.map((course) => (
-              <Card key={course.id} className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{course.title}</CardTitle>
-                      <CardDescription className="line-clamp-2 mt-1">
-                        {course.description}
-                      </CardDescription>
-                    </div>
-                  </div>
-                   <div className="flex items-center gap-2 mt-2">
-                     <Badge variant="secondary">
-                       {course.modules.length} Modules
-                     </Badge>
-                     <Badge variant="outline">
-                       {course.modules.reduce((total, module) => total + module.lessons, 0)} Lessons
-                     </Badge>
-                     <Badge variant={course.level === "beginner" ? "default" : course.level === "intermediate" ? "secondary" : "destructive"}>
-                       {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
-                     </Badge>
-                   </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex justify-between gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleEditCourse(course)}
-                    >
-                      <Edit className="h-3 w-3 mr-1" />
-                      Edit
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleCreateModule(course.id)}
-                    >
-                      <Plus className="h-3 w-3 mr-1" />
-                      Module
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Course</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete "{course.title}"? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => deleteCourse(course.id)}
-                            className="bg-red-600 hover:bg-red-700"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                  
-                  {/* Module List */}
-                  <div className="mt-4 space-y-2">
-                    {course.modules.map((module) => (
-                      <div key={module.id} className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{module.title}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {module.lessons} lessons • {module.duration}
-                          </p>
-                        </div>
-                        <div className="flex gap-1">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleEditModule(course.id, module)}
-                          >
-                            <Edit className="h-3 w-3" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="sm" className="text-red-600">
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Module</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete "{module.title}"?
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => deleteModule(course.id, module.id)}
-                                  className="bg-red-600 hover:bg-red-700"
-                                >
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Module ID</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Skill Level</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead>Lessons</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {modules.map((module) => (
+                  <TableRow key={module.id}>
+                    <TableCell className="font-mono text-sm">{module.module_id}</TableCell>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">{module.title}</div>
+                        {module.description && (
+                          <div className="text-sm text-muted-foreground line-clamp-1">
+                            {module.description}
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        className={skillLevels.find(level => level.value === module.skill_level)?.color}
+                      >
+                        {skillLevels.find(level => level.value === module.skill_level)?.icon}{" "}
+                        {module.skill_level?.charAt(0).toUpperCase() + module.skill_level?.slice(1)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{module.duration || "Not set"}</TableCell>
+                    <TableCell>{module.lessons_count}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={module.is_active}
+                          onCheckedChange={() => toggleActive(module)}
+                        />
+                        <span className="text-sm">
+                          {module.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center gap-2 justify-end">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(module)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="outline" size="sm" className="text-red-600">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Module</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{module.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(module)}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
+
+          {modules.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              No modules found. Create your first module to get started.
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Add/Edit Course Dialog */}
-      <Dialog open={showAddCourseDialog} onOpenChange={setShowAddCourseDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {editingCourse ? 'Edit Course' : 'Add New Course'}
-            </DialogTitle>
-            <DialogDescription>
-              {editingCourse ? 'Update course information' : 'Create a new training course'}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="course-title">Course Title</Label>
-              <Input
-                id="course-title"
-                value={courseFormData.title}
-                onChange={(e) => setCourseFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="Enter course title"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="course-description">Description</Label>
-              <Textarea
-                id="course-description"
-                value={courseFormData.description}
-                onChange={(e) => setCourseFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Enter course description"
-                rows={3}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="course-level">Difficulty Level</Label>
-              <select
-                id="course-level"
-                value={courseFormData.level}
-                onChange={(e) => setCourseFormData(prev => ({ ...prev, level: e.target.value as "beginner" | "intermediate" | "expert" }))}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="expert">Expert</option>
-              </select>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddCourseDialog(false)}>
-              Cancel
-            </Button>
-            <Button onClick={saveCourse}>
-              {editingCourse ? 'Update Course' : 'Create Course'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       {/* Add/Edit Module Dialog */}
-      <Dialog open={showAddModuleDialog} onOpenChange={setShowAddModuleDialog}>
-        <DialogContent className="max-w-3xl">
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               {editingModule ? 'Edit Module' : 'Add New Module'}
             </DialogTitle>
             <DialogDescription>
-              {editingModule ? 'Update module information' : `Create a new module for ${selectedCourse?.title}`}
+              {editingModule ? 'Update module information' : 'Create a new course module'}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4 max-h-96 overflow-y-auto">
+          <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="module-title">Module Title</Label>
+              <Label htmlFor="module-id">Module ID</Label>
               <Input
-                id="module-title"
-                value={moduleFormData.title}
-                onChange={(e) => setModuleFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="Enter module title"
+                id="module-id"
+                value={formData.module_id}
+                onChange={(e) => setFormData(prev => ({ ...prev, module_id: e.target.value }))}
+                placeholder="e.g., sba-7a-loans"
+                disabled={!!editingModule}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="module-description">Description</Label>
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Module title"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
               <Textarea
-                id="module-description"
-                value={moduleFormData.description}
-                onChange={(e) => setModuleFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Enter module description"
-                rows={2}
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Module description"
+                rows={3}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="module-duration">Duration</Label>
+                <Label htmlFor="skill-level">Skill Level</Label>
+                <select
+                  id="skill-level"
+                  value={formData.skill_level}
+                  onChange={(e) => setFormData(prev => ({ ...prev, skill_level: e.target.value as any }))}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {skillLevels.map(level => (
+                    <option key={level.value} value={level.value}>
+                      {level.icon} {level.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="duration">Duration</Label>
                 <Input
-                  id="module-duration"
-                  value={moduleFormData.duration}
-                  onChange={(e) => setModuleFormData(prev => ({ ...prev, duration: e.target.value }))}
-                  placeholder="e.g., 4 hours"
+                  id="duration"
+                  value={formData.duration}
+                  onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+                  placeholder="e.g., 45 minutes"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="lessons-count">Lessons Count</Label>
+                <Input
+                  id="lessons-count"
+                  type="number"
+                  min="0"
+                  value={formData.lessons_count}
+                  onChange={(e) => setFormData(prev => ({ ...prev, lessons_count: parseInt(e.target.value) || 0 }))}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="module-lessons">Number of Lessons</Label>
+                <Label htmlFor="order-index">Order Index</Label>
                 <Input
-                  id="module-lessons"
+                  id="order-index"
                   type="number"
-                  min="1"
-                  value={moduleFormData.lessons}
-                  onChange={(e) => setModuleFormData(prev => ({ ...prev, lessons: parseInt(e.target.value) || 7 }))}
+                  min="0"
+                  value={formData.order_index}
+                  onChange={(e) => setFormData(prev => ({ ...prev, order_index: parseInt(e.target.value) || 0 }))}
                 />
               </div>
             </div>
             <div className="grid gap-2">
-              <Label>Lesson Topics</Label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Enter a lesson topic"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      addTopicToModule((e.target as HTMLInputElement).value);
-                      (e.target as HTMLInputElement).value = '';
-                    }
-                  }}
-                />
-                <Button 
-                  type="button"
-                  onClick={() => {
-                    const input = document.querySelector('input[placeholder="Enter a lesson topic"]') as HTMLInputElement;
-                    addTopicToModule(input.value);
-                    input.value = '';
-                  }}
-                >
-                  Add
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {moduleFormData.topics.map((topic, index) => (
-                  <Badge key={index} variant="secondary" className="cursor-pointer" onClick={() => removeTopic(index)}>
-                    {topic} ×
-                  </Badge>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Click on topics to remove them. Minimum 7 topics required.
-              </p>
+              <Label htmlFor="prerequisites">Prerequisites (comma-separated)</Label>
+              <Input
+                id="prerequisites"
+                value={formData.prerequisites}
+                onChange={(e) => setFormData(prev => ({ ...prev, prerequisites: e.target.value }))}
+                placeholder="e.g., basic-finance, accounting-101"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="is-active"
+                checked={formData.is_active}
+                onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
+              />
+              <Label htmlFor="is-active">Active</Label>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddModuleDialog(false)}>
+            <Button variant="outline" onClick={() => setShowAddDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={saveModule}>
+            <Button onClick={handleSave}>
               {editingModule ? 'Update Module' : 'Create Module'}
             </Button>
           </DialogFooter>
