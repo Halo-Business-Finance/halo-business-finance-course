@@ -792,10 +792,10 @@ const AdminDashboard = () => {
                   <Shield className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                  <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                     Admin Dashboard
                   </h1>
-                  <p className="text-muted-foreground text-base mt-1">
+                  <p className="text-muted-foreground text-sm mt-1">
                     Enterprise-grade system administration and monitoring
                   </p>
                 </div>
