@@ -425,9 +425,59 @@ export function CourseModuleManager() {
                     </div>
                   </div>
                 ) : (
-                  <Badge variant="outline" className="text-muted-foreground">
-                    Unassigned
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="destructive" className="text-xs">
+                      ⚠ Unassigned
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={async () => {
+                        // Try to auto-assign based on module_id pattern
+                        const moduleId = module.module_id.toLowerCase();
+                        let targetCourseId = null;
+                        
+                        // Use the same logic as the trigger function
+                        if (moduleId.includes('sba-7a')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'sba-7a-beginner' : 'sba-7a-expert';
+                        } else if (moduleId.includes('sba-express')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'sba-express-beginner' : 'sba-express-expert';
+                        } else if (moduleId.includes('commercial-real-estate')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'commercial-real-estate-beginner' : 'commercial-real-estate-expert';
+                        } else if (moduleId.includes('equipment-financing')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'equipment-financing-beginner' : 'equipment-financing-expert';
+                        } else if (moduleId.includes('business-lines-of-credit')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'business-lines-of-credit-beginner' : 'business-lines-of-credit-expert';
+                        } else if (moduleId.includes('invoice-factoring')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'invoice-factoring-beginner' : 'invoice-factoring-expert';
+                        } else if (moduleId.includes('business-acquisition')) {
+                          targetCourseId = moduleId.includes('beginner') ? 'business-acquisition-beginner' : 'business-acquisition-expert';
+                        }
+                        
+                        if (targetCourseId) {
+                          try {
+                            const { error } = await supabase
+                              .from('course_modules')
+                              .update({ course_id: targetCourseId })
+                              .eq('id', module.id);
+                            
+                            if (!error) {
+                              toast({
+                                title: "Success",
+                                description: `Module assigned to ${targetCourseId}`,
+                              });
+                              loadModules();
+                            }
+                          } catch (error) {
+                            console.error('Error assigning module:', error);
+                          }
+                        }
+                      }}
+                      className="text-xs text-blue-600 hover:text-blue-700"
+                    >
+                      Auto-assign
+                    </Button>
+                  </div>
                 )}
               </TableCell>
               <TableCell>

@@ -282,15 +282,21 @@ export function CourseManager({}: CourseManagerProps) {
                               {coursesInCategory.length} courses available
                             </CardDescription>
                           </div>
-                          <Badge variant="outline">
-                            {coursesInCategory.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
-                          </Badge>
+                          <div className="flex items-center gap-4">
+                            <Badge variant="outline">
+                              {coursesInCategory.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
+                            </Badge>
+                            <Badge variant="secondary" className="bg-primary/10 text-primary">
+                              Connected: {coursesInCategory.filter(course => getModuleCount(course) > 0).length}/{coursesInCategory.length}
+                            </Badge>
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="grid gap-3">
                           {coursesInCategory.map((course) => {
                           const stats = getCourseStats(course);
+                          const moduleCount = getModuleCount(course);
                           return (
                             <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                               <div className="flex items-center gap-4">
@@ -309,7 +315,19 @@ export function CourseManager({}: CourseManagerProps) {
                                 </div>
                                 
                                 <div className="flex-1">
-                                  <div className="font-medium text-left pl-2 w-full">{course.title}</div>
+                                  <div className="font-medium text-left pl-2 w-full flex items-center gap-2">
+                                    {course.title}
+                                    {moduleCount === 0 && (
+                                      <Badge variant="destructive" className="text-xs">
+                                        No Modules
+                                      </Badge>
+                                    )}
+                                    {moduleCount > 0 && (
+                                      <Badge variant="default" className="text-xs">
+                                        {moduleCount} modules
+                                      </Badge>
+                                    )}
+                                  </div>
                                   <div className="w-full h-px bg-border mt-1 mb-2 ml-2"></div>
                                   <div className="text-sm text-muted-foreground line-clamp-1 text-left pl-2 w-full">
                                     {course.description}
