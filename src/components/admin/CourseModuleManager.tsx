@@ -61,41 +61,22 @@ export function CourseModuleManager() {
     try {
       setLoading(true);
       
-      // Load modules from both tables to get complete dataset
-      const [courseModulesResponse, contentModulesResponse] = await Promise.all([
-        supabase
-          .from('course_modules')
-          .select('id, module_id, title, description, duration, lessons_count, order_index, is_active, course_id, created_at, updated_at, skill_level')
-          .order('order_index', { ascending: true }),
-        supabase
-          .from('course_content_modules')
-          .select('id, title, description, duration, lessons_count, order_index, is_active, course_id, topics, status, created_at, updated_at')
-          .order('order_index', { ascending: true })
-      ]);
+      // Load modules from course_content_modules table which contains the migrated static data
+      const { data: modules, error } = await supabase
+        .from('course_content_modules')
+        .select('id, title, description, duration, lessons_count, order_index, is_active, course_id, topics, status, created_at, updated_at')
+        .order('order_index', { ascending: true });
 
-      if (courseModulesResponse.error) throw courseModulesResponse.error;
-      if (contentModulesResponse.error) throw contentModulesResponse.error;
+      if (error) throw error;
       
-      // Combine and normalize data from both tables
-      const courseModulesData = (courseModulesResponse.data || []).map(module => ({
+      // Normalize the data
+      const normalizedModules = (modules || []).map(module => ({
         ...module,
-        topics: [] as string[],
-        status: 'locked',
-        table_source: 'course_modules'
-      }));
-      
-      const contentModulesData = (contentModulesResponse.data || []).map(module => ({
-        ...module,
-        module_id: module.id,
-        skill_level: 'beginner',
         topics: Array.isArray(module.topics) ? module.topics as string[] : [],
-        table_source: 'course_content_modules'
+        status: module.status || 'locked'
       }));
       
-      // Combine both datasets
-      const allModules = [...courseModulesData, ...contentModulesData];
-      
-      setModules(allModules);
+      setModules(normalizedModules);
     } catch (error: any) {
       console.error('Error loading modules:', error);
       toast({
