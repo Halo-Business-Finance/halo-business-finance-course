@@ -1,0 +1,13 @@
+-- Add USDA Loan Underwriting course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('usda-loan-underwriting', 'USDA Loan Underwriting', 'Comprehensive training on USDA loan underwriting including rural development programs, eligibility requirements, income limits, property requirements, and USDA-specific underwriting guidelines and documentation.', 'beginner', '/src/assets/business-meeting.jpg', true, 411);
+
+-- Add 7 course modules for USDA Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('usda-underwriting-module-1', 'usda-loan-underwriting', 'USDA Rural Development Overview', 'Introduction to USDA Rural Development programs, geographic eligibility requirements, population limits, and rural area definitions for USDA lending.', '45 minutes', 1, 5, true),
+('usda-underwriting-module-2', 'usda-loan-underwriting', 'Income Eligibility and Limits', 'USDA income requirements, area median income calculations, household composition analysis, and income documentation for USDA loans.', '55 minutes', 2, 7, true),
+('usda-underwriting-module-3', 'usda-loan-underwriting', 'Property Requirements and Standards', 'USDA property eligibility criteria, modest home standards, acreage limitations, and property inspection requirements for rural properties.', '50 minutes', 3, 6, true),
+('usda-underwriting-module-4', 'usda-loan-underwriting', 'USDA Underwriting Guidelines', 'USDA-specific underwriting criteria, debt-to-income ratios, credit requirements, and compensating factors for USDA loan approval.', '60 minutes', 4, 8, true),
+('usda-underwriting-module-5', 'usda-loan-underwriting', 'Guaranteed vs Direct Loans', 'Differences between USDA guaranteed and direct loan programs, lender participation requirements, and processing procedures for each program type.', '50 minutes', 5, 6, true),
+('usda-underwriting-module-6', 'usda-loan-underwriting', 'USDA Documentation and Processing', 'Required USDA forms, environmental assessments, conditional commitments, and loan processing timelines for rural development loans.', '55 minutes', 6, 7, true),
+('usda-underwriting-module-7', 'usda-loan-underwriting', 'USDA Servicing and Compliance', 'USDA loan servicing requirements, annual certification procedures, subsidy recapture, and ongoing compliance obligations for USDA lenders.', '50 minutes', 7, 6, true);
