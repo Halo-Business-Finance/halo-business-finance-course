@@ -1,0 +1,13 @@
+-- Add Apartment & Multi-Family Loan Processing course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('apartment-multifamily-loan-processing', 'Apartment & Multi-Family Loan Processing', 'Complete training on apartment and multi-family property lending including underwriting, cash flow analysis, property management evaluation, and specialized financing structures for rental properties.', 'beginner', '/src/assets/business-meeting.jpg', true, 408);
+
+-- Add 7 course modules for Apartment & Multi-Family Loan Processing
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('apartment-module-1', 'apartment-multifamily-loan-processing', 'Multi-Family Lending Overview', 'Introduction to apartment and multi-family lending, property types, market dynamics, and the role of rental income in loan qualification.', '45 minutes', 1, 5, true),
+('apartment-module-2', 'apartment-multifamily-loan-processing', 'Cash Flow Analysis and NOI', 'Net Operating Income (NOI) calculations, rent roll analysis, operating expense evaluation, and cash flow projection methodologies.', '60 minutes', 2, 8, true),
+('apartment-module-3', 'apartment-multifamily-loan-processing', 'Property Valuation and Appraisal', 'Multi-family property appraisal methods, capitalization rates, comparable sales analysis, and income approach valuation techniques.', '55 minutes', 3, 7, true),
+('apartment-module-4', 'apartment-multifamily-loan-processing', 'Underwriting and Risk Assessment', 'Multi-family underwriting criteria, debt service coverage ratios, loan-to-value requirements, and borrower qualification standards.', '60 minutes', 4, 8, true),
+('apartment-module-5', 'apartment-multifamily-loan-processing', 'Property Management Evaluation', 'Property management company assessment, lease analysis, tenant quality evaluation, and operational efficiency metrics.', '50 minutes', 5, 6, true),
+('apartment-module-6', 'apartment-multifamily-loan-processing', 'Financing Structures and Programs', 'Conventional multi-family loans, agency lending (Fannie Mae/Freddie Mac), FHA programs, and specialized apartment financing options.', '55 minutes', 6, 7, true),
+('apartment-module-7', 'apartment-multifamily-loan-processing', 'Portfolio Management and Asset Performance', 'Multi-family loan servicing, property performance monitoring, refinancing strategies, and portfolio risk management for apartment lenders.', '50 minutes', 7, 6, true);
