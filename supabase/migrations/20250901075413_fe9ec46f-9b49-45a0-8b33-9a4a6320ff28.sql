@@ -1,0 +1,13 @@
+-- Add Equipment Finance Loan Underwriting course with different ID
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('equipment-finance-loan-underwriting', 'Equipment Finance Loan Underwriting', 'Comprehensive training on equipment finance loan underwriting including collateral evaluation, cash flow analysis, vendor programs, lease structures, and specialized underwriting criteria for equipment financing.', 'beginner', '/src/assets/business-meeting.jpg', true, 412);
+
+-- Add 7 course modules for Equipment Finance Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('equip-finance-module-1', 'equipment-finance-loan-underwriting', 'Equipment Finance Market Overview', 'Introduction to equipment financing industry, market segments, competitive landscape, and the role of equipment finance in business capital solutions.', '45 minutes', 1, 5, true),
+('equip-finance-module-2', 'equipment-finance-loan-underwriting', 'Collateral Analysis and Valuation', 'Equipment appraisal methodologies, depreciation schedules, residual value analysis, and collateral evaluation techniques for various equipment types.', '60 minutes', 2, 8, true),
+('equip-finance-module-3', 'equipment-finance-loan-underwriting', 'Credit Analysis for Equipment Finance', 'Equipment-specific credit analysis, cash flow evaluation, business performance metrics, and industry-specific risk factors in equipment lending.', '55 minutes', 3, 7, true),
+('equip-finance-module-4', 'equipment-finance-loan-underwriting', 'Lease vs Purchase Analysis', 'Equipment lease structures, operating vs capital leases, tax implications, end-of-term options, and lease vs purchase decision analysis.', '60 minutes', 4, 8, true),
+('equip-finance-module-5', 'equipment-finance-loan-underwriting', 'Vendor Finance Programs', 'Manufacturer and dealer finance programs, vendor relationships, captive finance companies, and channel partner lending structures.', '50 minutes', 5, 6, true),
+('equip-finance-module-6', 'equipment-finance-loan-underwriting', 'Technology and Specialized Equipment', 'IT equipment financing, medical equipment loans, construction equipment finance, and specialized underwriting for high-tech and complex equipment.', '55 minutes', 6, 7, true),
+('equip-finance-module-7', 'equipment-finance-loan-underwriting', 'Portfolio Management and Collections', 'Equipment finance portfolio monitoring, repossession procedures, remarketing strategies, and collection techniques for equipment lenders.', '50 minutes', 7, 6, true);
