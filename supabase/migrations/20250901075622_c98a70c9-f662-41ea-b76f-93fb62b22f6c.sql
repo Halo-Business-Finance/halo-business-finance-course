@@ -1,0 +1,13 @@
+-- Add Commercial Loan Underwriting course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('commercial-loan-underwriting', 'Commercial Loan Underwriting', 'Comprehensive training on commercial loan underwriting including financial analysis, cash flow evaluation, collateral assessment, industry risk analysis, and commercial lending credit decisions.', 'beginner', '/src/assets/business-meeting.jpg', true, 414);
+
+-- Add 7 course modules for Commercial Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('commercial-underwriting-module-1', 'commercial-loan-underwriting', 'Commercial Underwriting Fundamentals', 'Introduction to commercial loan underwriting, business lending principles, regulatory requirements, and the commercial credit analysis framework.', '50 minutes', 1, 6, true),
+('commercial-underwriting-module-2', 'commercial-loan-underwriting', 'Financial Statement Analysis', 'In-depth analysis of business financial statements, ratio analysis, cash flow evaluation, and financial performance assessment for commercial borrowers.', '65 minutes', 2, 9, true),
+('commercial-underwriting-module-3', 'commercial-loan-underwriting', 'Cash Flow and Debt Service Analysis', 'Commercial cash flow analysis, debt service coverage calculations, working capital assessment, and repayment capacity evaluation.', '60 minutes', 3, 8, true),
+('commercial-underwriting-module-4', 'commercial-loan-underwriting', 'Collateral Evaluation and Security', 'Commercial collateral analysis, real estate appraisals, business asset valuation, personal guarantees, and security documentation requirements.', '55 minutes', 4, 7, true),
+('commercial-underwriting-module-5', 'commercial-loan-underwriting', 'Industry and Market Risk Analysis', 'Industry risk assessment, market conditions analysis, competitive positioning evaluation, and sector-specific lending considerations.', '60 minutes', 5, 8, true),
+('commercial-underwriting-module-6', 'commercial-loan-underwriting', 'Credit Risk Assessment and Pricing', 'Commercial credit risk evaluation, loan pricing strategies, risk-based pricing models, and credit enhancement structures.', '55 minutes', 6, 7, true),
+('commercial-underwriting-module-7', 'commercial-loan-underwriting', 'Loan Structuring and Documentation', 'Commercial loan structuring options, covenant requirements, documentation standards, and ongoing monitoring and compliance requirements.', '50 minutes', 7, 6, true);
