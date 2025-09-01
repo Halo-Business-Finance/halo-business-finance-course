@@ -173,36 +173,17 @@ export const useCourses = () => {
     }
   };
 
-  // Get courses grouped by category (Loan Originator, Loan Processing, Loan Underwriting, Other Financing Products)
+  // Get courses grouped by category (Loan Originator, Loan Processing, Loan Underwriting)
   const getCoursesByCategory = () => {
-    // Core loan originator course types
-    const coreLoanOriginatorTypes = [
-      'Commercial Real Estate Loan',
-      'SBA Loan',
-      'Equipment Financing Loan', 
-      'Working Capital Loan',
-      'Commercial Construction Loan',
-      'Asset-Based Lending Loan',
-      'Trade Finance Loan'
-    ];
-
     return courses.reduce((acc, course) => {
-      let category = 'Other Financing Products'; // Default category for other products
+      let category = 'Loan Originator'; // Default category
       
       if (course.title.toLowerCase().includes('processing')) {
         category = 'Loan Processing';
       } else if (course.title.toLowerCase().includes('underwriting')) {
         category = 'Loan Underwriting';
-      } else {
-        // Check if this is a core loan originator course
-        const baseTitle = course.title.replace(/ - (Beginner|Intermediate|Expert)$/, '');
-        const isCoreOriginator = coreLoanOriginatorTypes.some(type => 
-          baseTitle.toLowerCase().includes(type.toLowerCase())
-        );
-        
-        if (isCoreOriginator) {
-          category = 'Loan Originator';
-        }
+      } else if (course.title.toLowerCase().includes('originator') || course.title.toLowerCase().includes('origination')) {
+        category = 'Loan Originator';
       }
       
       if (!acc[category]) {
