@@ -19,19 +19,17 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface CourseModule {
   id: string;
-  module_id: string;
   title: string;
-  description?: string;
-  skill_level: 'beginner' | 'expert';
-  duration?: string;
+  description: string | null;
+  duration: string | null;
   lessons_count: number;
   order_index: number;
-  is_active: boolean;
-  public_preview: boolean;
-  prerequisites?: string[];
-  course_id?: string;
-  created_at: string;
-  updated_at: string;
+  is_active: boolean | null;
+  topics: string[] | null;
+  course_id: string;
+  status: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export function CourseModuleManager() {
@@ -44,17 +42,15 @@ export function CourseModuleManager() {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
-    module_id: "",
     title: "",
     description: "",
-    skill_level: "beginner" as "beginner" | "expert",
     duration: "",
     lessons_count: 0,
     order_index: 0,
     is_active: true,
-    public_preview: false,
-    prerequisites: [] as string[],
+    topics: [] as string[],
     course_id: "",
+    status: "locked",
   });
 
   useEffect(() => {
@@ -65,57 +61,19 @@ export function CourseModuleManager() {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('course_modules')
+        .from('course_content_modules')
         .select('*')
         .order('order_index', { ascending: true });
 
       if (error) throw error;
       
-      // Auto-assign modules to courses based on module_id patterns
-      // This helps with existing modules that weren't previously assigned
-      const modulesWithCourseAssignment = (data || []).map(module => {
-        // Ensure skill_level is only beginner or expert
-        let correctedSkillLevel: 'beginner' | 'expert' = module.skill_level === 'intermediate' ? 'expert' : module.skill_level as 'beginner' | 'expert';
-        
-        if (!module.course_id) {
-          // Try to match based on module_id patterns
-          const moduleId = module.module_id.toLowerCase();
-          let matchedCourse = null;
-          
-          if (moduleId.includes('sba-7a')) {
-            matchedCourse = courses.find(c => c.id.includes('sba-7a') && 
-              c.id.includes(correctedSkillLevel));
-          } else if (moduleId.includes('sba-express')) {
-            matchedCourse = courses.find(c => c.id.includes('sba-express') && 
-              c.id.includes(correctedSkillLevel));
-          } else if (moduleId.includes('commercial-real-estate')) {
-            matchedCourse = courses.find(c => c.id.includes('commercial-real-estate') && 
-              c.id.includes(correctedSkillLevel));
-          } else if (moduleId.includes('healthcare')) {
-            matchedCourse = courses.find(c => c.id.includes('healthcare-financing') && 
-              c.id.includes(correctedSkillLevel));
-          } else if (moduleId.includes('business-acquisition')) {
-            matchedCourse = courses.find(c => c.id.includes('business-acquisition') && 
-              c.id.includes(correctedSkillLevel));
-          }
-          
-          if (matchedCourse) {
-            // Auto-assign the module to the matched course
-            supabase
-              .from('course_modules')
-              .update({ course_id: matchedCourse.id })
-              .eq('id', module.id)
-              .then(() => {
-                console.log(`Auto-assigned module ${module.module_id} to course ${matchedCourse.id}`);
-              });
-            
-            return { ...module, course_id: matchedCourse.id, skill_level: correctedSkillLevel };
-          }
-        }
-        return { ...module, skill_level: correctedSkillLevel };
-      });
+      // Process the data to ensure proper format
+      const modulesData = (data || []).map(module => ({
+        ...module,
+        topics: Array.isArray(module.topics) ? module.topics as string[] : []
+      }));
       
-      setModules(modulesWithCourseAssignment);
+      setModules(modulesData);
     } catch (error: any) {
       console.error('Error loading modules:', error);
       toast({
@@ -130,17 +88,15 @@ export function CourseModuleManager() {
 
   const resetForm = () => {
     setFormData({
-      module_id: "",
       title: "",
       description: "",
-      skill_level: "beginner",
       duration: "",
       lessons_count: 0,
       order_index: 0,
       is_active: true,
-      public_preview: false,
-      prerequisites: [],
+      topics: [],
       course_id: "",
+      status: "locked",
     });
   };
 
@@ -153,26 +109,24 @@ export function CourseModuleManager() {
   const handleEdit = (module: CourseModule) => {
     setEditingModule(module);
     setFormData({
-      module_id: module.module_id,
       title: module.title,
       description: module.description || "",
-      skill_level: module.skill_level,
       duration: module.duration || "",
       lessons_count: module.lessons_count,
       order_index: module.order_index,
       is_active: module.is_active,
-      public_preview: module.public_preview,
-      prerequisites: module.prerequisites || [],
+      topics: module.topics || [],
       course_id: module.course_id || "",
+      status: module.status || "locked",
     });
     setShowAddDialog(true);
   };
 
   const handleSave = async () => {
-    if (!formData.module_id.trim() || !formData.title.trim()) {
+    if (!formData.title.trim() || !formData.course_id.trim()) {
       toast({
         title: "Error",
-        description: "Module ID and title are required",
+        description: "Title and course are required",
         variant: "destructive",
       });
       return;
@@ -182,18 +136,17 @@ export function CourseModuleManager() {
       if (editingModule) {
         // Update existing module
         const { error } = await supabase
-          .from('course_modules')
+          .from('course_content_modules')
           .update({
             title: formData.title,
             description: formData.description,
-            skill_level: formData.skill_level,
             duration: formData.duration,
             lessons_count: formData.lessons_count,
             order_index: formData.order_index,
             is_active: formData.is_active,
-            public_preview: formData.public_preview,
-            prerequisites: formData.prerequisites,
-            course_id: formData.course_id || null,
+            topics: formData.topics,
+            course_id: formData.course_id,
+            status: formData.status,
           })
           .eq('id', editingModule.id);
 
@@ -206,19 +159,18 @@ export function CourseModuleManager() {
       } else {
         // Create new module
         const { error } = await supabase
-          .from('course_modules')
+          .from('course_content_modules')
           .insert({
-            module_id: formData.module_id,
+            id: `${formData.course_id}-module-${Date.now()}`,
             title: formData.title,
             description: formData.description,
-            skill_level: formData.skill_level,
             duration: formData.duration,
             lessons_count: formData.lessons_count,
             order_index: formData.order_index,
             is_active: formData.is_active,
-            public_preview: formData.public_preview,
-            prerequisites: formData.prerequisites,
-            course_id: formData.course_id || null,
+            topics: formData.topics,
+            course_id: formData.course_id,
+            status: formData.status,
           });
 
         if (error) throw error;
@@ -245,7 +197,7 @@ export function CourseModuleManager() {
   const handleDelete = async (module: CourseModule) => {
     try {
       const { error } = await supabase
-        .from('course_modules')
+        .from('course_content_modules')
         .delete()
         .eq('id', module.id);
 
@@ -270,7 +222,7 @@ export function CourseModuleManager() {
   const toggleModuleStatus = async (module: CourseModule) => {
     try {
       const { error } = await supabase
-        .from('course_modules')
+        .from('course_content_modules')
         .update({ is_active: !module.is_active })
         .eq('id', module.id);
 
@@ -292,8 +244,8 @@ export function CourseModuleManager() {
     }
   };
 
-  const getModuleCategory = (moduleId: string) => {
-    const id = moduleId.toLowerCase();
+  const getModuleCategory = (courseId: string) => {
+    const id = courseId.toLowerCase();
     
     // Loan Originator - Front-end sales and client-facing activities
     if (id.includes('business-acquisition') || id.includes('client-relationship') || 
@@ -327,9 +279,9 @@ export function CourseModuleManager() {
 
   const getCategorizedModules = () => {
     return {
-      'loan-originator': modules.filter(m => getModuleCategory(m.module_id) === 'loan-originator'),
-      'loan-processing': modules.filter(m => getModuleCategory(m.module_id) === 'loan-processing'),
-      'loan-underwriting': modules.filter(m => getModuleCategory(m.module_id) === 'loan-underwriting')
+      'loan-originator': modules.filter(m => getModuleCategory(m.course_id) === 'loan-originator'),
+      'loan-processing': modules.filter(m => getModuleCategory(m.course_id) === 'loan-processing'),
+      'loan-underwriting': modules.filter(m => getModuleCategory(m.course_id) === 'loan-underwriting')
     };
   };
 
@@ -388,11 +340,10 @@ export function CourseModuleManager() {
           <TableRow>
             <TableHead>Module</TableHead>
             <TableHead>Course Program</TableHead>
-            <TableHead>Skill Level</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Duration</TableHead>
             <TableHead>Lessons</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Preview</TableHead>
+            <TableHead>Active</TableHead>
             <TableHead>Order</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -403,7 +354,7 @@ export function CourseModuleManager() {
               <TableCell>
                 <div>
                   <div className="font-medium">{module.title}</div>
-                  <div className="text-sm text-muted-foreground">{module.module_id}</div>
+                  <div className="text-sm text-muted-foreground">{module.id}</div>
                   {module.description && (
                     <div className="text-sm text-muted-foreground mt-1 line-clamp-2">
                       {module.description}
@@ -429,59 +380,11 @@ export function CourseModuleManager() {
                     <Badge variant="destructive" className="text-xs">
                       ⚠ Unassigned
                     </Badge>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={async () => {
-                        // Try to auto-assign based on module_id pattern
-                        const moduleId = module.module_id.toLowerCase();
-                        let targetCourseId = null;
-                        
-                        // Use the same logic as the trigger function
-                        if (moduleId.includes('sba-7a')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'sba-7a-beginner' : 'sba-7a-expert';
-                        } else if (moduleId.includes('sba-express')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'sba-express-beginner' : 'sba-express-expert';
-                        } else if (moduleId.includes('commercial-real-estate')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'commercial-real-estate-beginner' : 'commercial-real-estate-expert';
-                        } else if (moduleId.includes('equipment-financing')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'equipment-financing-beginner' : 'equipment-financing-expert';
-                        } else if (moduleId.includes('business-lines-of-credit')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'business-lines-of-credit-beginner' : 'business-lines-of-credit-expert';
-                        } else if (moduleId.includes('invoice-factoring')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'invoice-factoring-beginner' : 'invoice-factoring-expert';
-                        } else if (moduleId.includes('business-acquisition')) {
-                          targetCourseId = moduleId.includes('beginner') ? 'business-acquisition-beginner' : 'business-acquisition-expert';
-                        }
-                        
-                        if (targetCourseId) {
-                          try {
-                            const { error } = await supabase
-                              .from('course_modules')
-                              .update({ course_id: targetCourseId })
-                              .eq('id', module.id);
-                            
-                            if (!error) {
-                              toast({
-                                title: "Success",
-                                description: `Module assigned to ${targetCourseId}`,
-                              });
-                              loadModules();
-                            }
-                          } catch (error) {
-                            console.error('Error assigning module:', error);
-                          }
-                        }
-                      }}
-                      className="text-xs text-blue-600 hover:text-blue-700"
-                    >
-                      Auto-assign
-                    </Button>
                   </div>
                 )}
               </TableCell>
               <TableCell>
-                {getSkillLevelBadge(module.skill_level)}
+                <Badge variant="outline">{module.status || 'locked'}</Badge>
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
@@ -489,40 +392,35 @@ export function CourseModuleManager() {
                   {module.duration || 'N/A'}
                 </div>
               </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-1">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  {module.lessons_count}
-                </div>
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => toggleModuleStatus(module)}
-                  className="p-0 h-auto"
-                >
-                  {module.is_active ? (
-                    <Badge variant="default" className="cursor-pointer">
-                      <Unlock className="h-3 w-3 mr-1" />
-                      Active
-                    </Badge>
-                  ) : (
-                    <Badge variant="secondary" className="cursor-pointer">
-                      <Lock className="h-3 w-3 mr-1" />
-                      Inactive
-                    </Badge>
-                  )}
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Badge variant={module.public_preview ? "default" : "outline"}>
-                  {module.public_preview ? "Public" : "Private"}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Badge variant="outline">{module.order_index}</Badge>
-              </TableCell>
+               <TableCell>
+                 <div className="flex items-center gap-1">
+                   <Users className="h-4 w-4 text-muted-foreground" />
+                   {module.lessons_count}
+                 </div>
+               </TableCell>
+               <TableCell>
+                 <Button
+                   variant="ghost"
+                   size="sm"
+                   onClick={() => toggleModuleStatus(module)}
+                   className="p-0 h-auto"
+                 >
+                   {module.is_active ? (
+                     <Badge variant="default" className="cursor-pointer">
+                       <Unlock className="h-3 w-3 mr-1" />
+                       Active
+                     </Badge>
+                   ) : (
+                     <Badge variant="secondary" className="cursor-pointer">
+                       <Lock className="h-3 w-3 mr-1" />
+                       Inactive
+                     </Badge>
+                   )}
+                 </Button>
+               </TableCell>
+               <TableCell>
+                 <Badge variant="outline">{module.order_index}</Badge>
+               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Button
@@ -694,16 +592,6 @@ export function CourseModuleManager() {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="module-id">Module ID</Label>
-              <Input
-                id="module-id"
-                value={formData.module_id}
-                onChange={(e) => setFormData(prev => ({ ...prev, module_id: e.target.value }))}
-                placeholder="e.g., intro-to-loans"
-                disabled={!!editingModule}
-              />
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
@@ -724,19 +612,21 @@ export function CourseModuleManager() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="skill-level">Skill Level</Label>
+                <Label htmlFor="status">Status</Label>
                 <Select
-                  value={formData.skill_level}
-                  onValueChange={(value: "beginner" | "expert") =>
-                    setFormData(prev => ({ ...prev, skill_level: value }))
+                  value={formData.status}
+                  onValueChange={(value) =>
+                    setFormData(prev => ({ ...prev, status: value }))
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select skill level" />
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="expert">Expert</SelectItem>
+                    <SelectItem value="locked">Locked</SelectItem>
+                    <SelectItem value="available">Available</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -749,10 +639,9 @@ export function CourseModuleManager() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select course program (optional)" />
+                    <SelectValue placeholder="Select course program" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Course Program</SelectItem>
                     {courses.map((course) => (
                       <SelectItem key={course.id} value={course.id}>
                         {course.title}
@@ -795,23 +684,13 @@ export function CourseModuleManager() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="is-active"
-                  checked={formData.is_active}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
-                />
-                <Label htmlFor="is-active">Active</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="public-preview"
-                  checked={formData.public_preview}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, public_preview: checked }))}
-                />
-                <Label htmlFor="public-preview">Public Preview</Label>
-              </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="is-active"
+                checked={formData.is_active}
+                onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
+              />
+              <Label htmlFor="is-active">Active</Label>
             </div>
           </div>
           <DialogFooter>
