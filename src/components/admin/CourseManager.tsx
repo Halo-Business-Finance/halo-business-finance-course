@@ -46,13 +46,21 @@ export function CourseManager({}: CourseManagerProps) {
     id: "",
     title: "",
     description: "",
-    level: "beginner" as "beginner" | "intermediate" | "expert",
+    level: "beginner" as "beginner" | "intermediate" | "expert" | "none",
+    courseType: "loan-originator" as "loan-originator" | "loan-processing" | "loan-underwriting",
   });
 
   const skillLevels = [
+    { value: "none", label: "No Skill Level", icon: "📋", color: "bg-gray-100 text-gray-800" },
     { value: "beginner", label: "Beginner", icon: "🌱", color: "bg-emerald-100 text-emerald-800" },
     { value: "intermediate", label: "Intermediate", icon: "🌿", color: "bg-amber-100 text-amber-800" },
     { value: "expert", label: "Expert", icon: "🌳", color: "bg-red-100 text-red-800" },
+  ];
+
+  const courseTypes = [
+    { value: "loan-originator", label: "Loan Originator" },
+    { value: "loan-processing", label: "Loan Processing" },
+    { value: "loan-underwriting", label: "Loan Underwriting" },
   ];
 
   // Course image mapping function to match user dashboard
@@ -96,6 +104,7 @@ export function CourseManager({}: CourseManagerProps) {
       title: "",
       description: "",
       level: "beginner",
+      courseType: "loan-originator",
     });
   };
 
@@ -106,12 +115,21 @@ export function CourseManager({}: CourseManagerProps) {
   };
 
   const handleEdit = (course: Course) => {
+    // Determine course type from existing course title
+    let courseType: "loan-originator" | "loan-processing" | "loan-underwriting" = "loan-originator";
+    if (course.title.toLowerCase().includes('processing')) {
+      courseType = 'loan-processing';
+    } else if (course.title.toLowerCase().includes('underwriting')) {
+      courseType = 'loan-underwriting';
+    }
+
     setEditingCourse(course);
     setFormData({
       id: course.id,
       title: course.title,
       description: course.description,
       level: course.level,
+      courseType: courseType,
     });
     setShowAddDialog(true);
   };
@@ -243,9 +261,9 @@ export function CourseManager({}: CourseManagerProps) {
                                   className="w-full h-full object-cover"
                                 />
                               </div>
-                              <div className="text-sm font-medium text-black text-left">
-                                {course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
-                              </div>
+                               <div className="text-sm font-medium text-black text-left">
+                                 {course.level === 'none' ? 'No Skill Level' : course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
+                               </div>
                             </div>
                             
                             <div className="flex-1">
@@ -401,6 +419,21 @@ export function CourseManager({}: CourseManagerProps) {
                 placeholder="Course description"
                 rows={3}
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="course-type">Course Type</Label>
+              <select
+                id="course-type"
+                value={formData.courseType}
+                onChange={(e) => setFormData(prev => ({ ...prev, courseType: e.target.value as any }))}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                {courseTypes.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="skill-level">Skill Level</Label>

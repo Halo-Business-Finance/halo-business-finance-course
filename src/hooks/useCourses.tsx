@@ -6,7 +6,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  level: 'beginner' | 'intermediate' | 'expert';
+  level: 'beginner' | 'intermediate' | 'expert' | 'none';
   image_url?: string | null;
   is_active: boolean;
   order_index: number;
@@ -18,7 +18,7 @@ export interface CreateCourseData {
   id: string;
   title: string;
   description: string;
-  level: 'beginner' | 'intermediate' | 'expert';
+  level: 'beginner' | 'intermediate' | 'expert' | 'none';
   image_url?: string;
   order_index?: number;
 }
@@ -49,7 +49,7 @@ export const useCourses = () => {
       // Type assertion to ensure data matches our Course interface
       const typedCourses = (data || []).map(course => ({
         ...course,
-        level: course.level as 'beginner' | 'intermediate' | 'expert'
+        level: course.level as 'beginner' | 'intermediate' | 'expert' | 'none'
       }));
 
       setCourses(typedCourses);
@@ -79,7 +79,7 @@ export const useCourses = () => {
 
       const typedCourse = {
         ...data,
-        level: data.level as 'beginner' | 'intermediate' | 'expert'
+        level: data.level as 'beginner' | 'intermediate' | 'expert' | 'none'
       };
 
       setCourses(prev => [...prev, typedCourse].sort((a, b) => a.order_index - b.order_index));
@@ -116,7 +116,7 @@ export const useCourses = () => {
 
       const typedCourse = {
         ...data,
-        level: data.level as 'beginner' | 'intermediate' | 'expert'
+        level: data.level as 'beginner' | 'intermediate' | 'expert' | 'none'
       };
 
       setCourses(prev => 
