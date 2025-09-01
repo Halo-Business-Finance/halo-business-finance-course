@@ -443,12 +443,26 @@ export function CourseManager({}: CourseManagerProps) {
                 onChange={(e) => setFormData(prev => ({ ...prev, level: e.target.value as any }))}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                {skillLevels.map(level => (
-                  <option key={level.value} value={level.value}>
-                    {level.icon} {level.label}
-                  </option>
-                ))}
+                {skillLevels
+                  .filter(level => {
+                    // For Loan Originator courses, only show none, beginner, and expert
+                    if (formData.courseType === 'loan-originator') {
+                      return level.value !== 'intermediate';
+                    }
+                    // For other course types, show all levels
+                    return true;
+                  })
+                  .map(level => (
+                    <option key={level.value} value={level.value}>
+                      {level.icon} {level.label}
+                    </option>
+                  ))}
               </select>
+              {formData.courseType === 'loan-originator' && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Loan Originator courses only support Beginner and Expert skill levels.
+                </p>
+              )}
             </div>
           </div>
           <DialogFooter>
