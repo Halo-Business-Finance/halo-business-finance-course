@@ -12,18 +12,39 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Filter, Search, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { courseData, Module, Course } from "@/data/courseData";
+import { useCourses } from "@/hooks/useCourses";
+import { useModules } from "@/hooks/useModules";
 
 interface ModuleEditorProps {}
 
+interface DbModule {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  lessons_count: number;
+  is_active: boolean;
+  order_index: number;
+  module_id: string;
+  skill_level: string;
+  courseTitle?: string;
+  courseId?: string;
+  skillLevel?: string;
+  lessons?: number;
+  progress?: number;
+  status?: "locked" | "available" | "in-progress" | "completed";
+  topics?: string[];
+}
+
 export function ModuleEditor({}: ModuleEditorProps) {
-  const [allModules, setAllModules] = useState<Module[]>([]);
-  const [filteredModules, setFilteredModules] = useState<Module[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [allModules, setAllModules] = useState<DbModule[]>([]);
+  const [filteredModules, setFilteredModules] = useState<DbModule[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [editingModule, setEditingModule] = useState<Module | null>(null);
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [editingModule, setEditingModule] = useState<DbModule | null>(null);
+  const [selectedModule, setSelectedModule] = useState<DbModule | null>(null);
   const { toast } = useToast();
+  const { courses, loading: coursesLoading } = useCourses();
+  const { modules, loading: modulesLoading } = useModules();
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,28 +72,35 @@ export function ModuleEditor({}: ModuleEditorProps) {
 
   useEffect(() => {
     loadModules();
-  }, []);
+  }, [courses, modules]);
 
   useEffect(() => {
     applyFilters();
   }, [allModules, searchTerm, selectedCourse, selectedSkillLevel, selectedStatus]);
 
   const loadModules = () => {
+    if (!courses.length || !modules.length) return;
+    
     try {
-      setLoading(true);
+      // Get all modules from database with course context
+      const modulesWithCourse: DbModule[] = [];
       
-      // Get all modules from courseData with course context
-      const modulesWithCourse: Module[] = [];
-      
-      courseData.allCourses.forEach((course) => {
-        course.modules.forEach((module) => {
+      modules.forEach((module) => {
+        const course = courses.find(c => c.id === module.course_id);
+        if (course) {
           modulesWithCourse.push({
             ...module,
+            module_id: module.id,
+            skill_level: course.level,
             courseTitle: course.title,
             courseId: course.id,
             skillLevel: course.level,
-          } as Module);
-        });
+            lessons: module.lessons_count,
+            progress: 0, // This would come from user progress data
+            status: module.is_active ? "available" : "locked",
+            topics: module.topics || [] // Use the topics from the database
+          });
+        }
       });
 
       setAllModules(modulesWithCourse);
@@ -84,8 +112,6 @@ export function ModuleEditor({}: ModuleEditorProps) {
         description: "Failed to load module data",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -97,18 +123,18 @@ export function ModuleEditor({}: ModuleEditorProps) {
       filtered = filtered.filter(module =>
         module.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         module.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (module as any).courseTitle?.toLowerCase().includes(searchTerm.toLowerCase())
+        module.courseTitle?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Course filter
     if (selectedCourse !== "all") {
-      filtered = filtered.filter(module => (module as any).courseId === selectedCourse);
+      filtered = filtered.filter(module => module.courseId === selectedCourse);
     }
 
     // Skill level filter
     if (selectedSkillLevel !== "all") {
-      filtered = filtered.filter(module => (module as any).skillLevel === selectedSkillLevel);
+      filtered = filtered.filter(module => module.skillLevel === selectedSkillLevel);
     }
 
     // Status filter
@@ -132,16 +158,16 @@ export function ModuleEditor({}: ModuleEditorProps) {
     });
   };
 
-  const handleEdit = (module: Module) => {
+  const handleEdit = (module: DbModule) => {
     setEditingModule(module);
     setFormData({
       id: module.id,
       title: module.title,
-      description: module.description,
-      duration: module.duration,
-      lessons: module.lessons,
-      status: module.status,
-      progress: module.progress,
+      description: module.description || "",
+      duration: module.duration || "",
+      lessons: module.lessons || 7,
+      status: module.status || "locked",
+      progress: module.progress || 0,
       topics: module.topics || [],
     });
     setShowAddDialog(true);
@@ -159,15 +185,15 @@ export function ModuleEditor({}: ModuleEditorProps) {
   };
 
   const getUniqueCourseTitles = () => {
-    return Array.from(new Set(allModules.map(m => (m as any).courseTitle))).sort();
+    return Array.from(new Set(allModules.map(m => m.courseTitle).filter(Boolean))).sort();
   };
 
   const getUniqueSkillLevels = () => {
-    return Array.from(new Set(allModules.map(m => (m as any).skillLevel))).sort();
+    return Array.from(new Set(allModules.map(m => m.skillLevel).filter(Boolean))).sort();
   };
 
   const getCourseTypeName = (courseTitle: string) => {
-    return courseTitle.replace(/ - (Beginner|Intermediate|Expert)$/, '');
+    return courseTitle?.replace(/ - (Beginner|Intermediate|Expert)$/, '') || courseTitle || '';
   };
 
   const getSkillLevelBadge = (level: string) => {
@@ -175,6 +201,7 @@ export function ModuleEditor({}: ModuleEditorProps) {
       beginner: { icon: "🌱", color: "bg-emerald-100 text-emerald-800" },
       intermediate: { icon: "🌿", color: "bg-amber-100 text-amber-800" },
       expert: { icon: "🌳", color: "bg-red-100 text-red-800" },
+      none: { icon: "📋", color: "bg-gray-100 text-gray-800" }
     };
     const config = levelConfig[level as keyof typeof levelConfig] || levelConfig.beginner;
     return (
@@ -184,7 +211,7 @@ export function ModuleEditor({}: ModuleEditorProps) {
     );
   };
 
-  if (loading) {
+  if (coursesLoading || modulesLoading) {
     return (
       <Card>
         <CardContent className="p-6">
@@ -236,7 +263,7 @@ export function ModuleEditor({}: ModuleEditorProps) {
                 <SelectContent>
                   <SelectItem value="all">All Courses</SelectItem>
                   {getUniqueCourseTitles().map((title) => (
-                    <SelectItem key={title} value={courseData.allCourses.find(c => c.title === title)?.id || title}>
+                    <SelectItem key={title} value={courses.find(c => c.title === title)?.id || title}>
                       {getCourseTypeName(title)}
                     </SelectItem>
                   ))}
@@ -302,19 +329,19 @@ export function ModuleEditor({}: ModuleEditorProps) {
                     </TableCell>
                     <TableCell>
                       <div className="text-sm">
-                        {getCourseTypeName((module as any).courseTitle || '')}
+                        {getCourseTypeName(module.courseTitle || '')}
                       </div>
                     </TableCell>
                     <TableCell>
-                      {getSkillLevelBadge((module as any).skillLevel)}
+                      {getSkillLevelBadge(module.skillLevel || 'beginner')}
                     </TableCell>
-                    <TableCell>{module.duration}</TableCell>
-                    <TableCell>{module.lessons}</TableCell>
+                    <TableCell>{module.duration || 'N/A'}</TableCell>
+                    <TableCell>{module.lessons || module.lessons_count || 0}</TableCell>
                     <TableCell>
                       <Badge 
-                        className={statusOptions.find(s => s.value === module.status)?.color}
+                        className={statusOptions.find(s => s.value === (module.status || 'locked'))?.color}
                       >
-                        {statusOptions.find(s => s.value === module.status)?.label}
+                        {statusOptions.find(s => s.value === (module.status || 'locked'))?.label}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -322,10 +349,10 @@ export function ModuleEditor({}: ModuleEditorProps) {
                         <div className="w-20 bg-muted rounded-full h-2">
                           <div 
                             className="bg-primary h-2 rounded-full" 
-                            style={{ width: `${module.progress}%` }}
+                            style={{ width: `${module.progress || 0}%` }}
                           />
                         </div>
-                        <span className="text-sm text-muted-foreground">{module.progress}%</span>
+                        <span className="text-sm text-muted-foreground">{module.progress || 0}%</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
@@ -369,27 +396,27 @@ export function ModuleEditor({}: ModuleEditorProps) {
             <DialogHeader>
               <DialogTitle>{selectedModule.title}</DialogTitle>
               <DialogDescription>
-                {getCourseTypeName((selectedModule as any).courseTitle || '')} • {getSkillLevelBadge((selectedModule as any).skillLevel)}
+                {getCourseTypeName(selectedModule.courseTitle || '')} • {getSkillLevelBadge(selectedModule.skillLevel || 'beginner')}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="grid grid-cols-4 gap-4 text-center">
                 <div className="p-4 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{selectedModule.lessons}</div>
+                  <div className="text-2xl font-bold">{selectedModule.lessons || selectedModule.lessons_count || 0}</div>
                   <div className="text-sm text-muted-foreground">Lessons</div>
                 </div>
                 <div className="p-4 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{selectedModule.duration}</div>
+                  <div className="text-2xl font-bold">{selectedModule.duration || 'N/A'}</div>
                   <div className="text-sm text-muted-foreground">Duration</div>
                 </div>
                 <div className="p-4 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{selectedModule.progress}%</div>
+                  <div className="text-2xl font-bold">{selectedModule.progress || 0}%</div>
                   <div className="text-sm text-muted-foreground">Progress</div>
                 </div>
                 <div className="p-4 rounded-lg bg-muted">
                   <div className="text-lg font-bold">
-                    <Badge className={statusOptions.find(s => s.value === selectedModule.status)?.color}>
-                      {statusOptions.find(s => s.value === selectedModule.status)?.label}
+                    <Badge className={statusOptions.find(s => s.value === (selectedModule.status || 'locked'))?.color}>
+                      {statusOptions.find(s => s.value === (selectedModule.status || 'locked'))?.label}
                     </Badge>
                   </div>
                   <div className="text-sm text-muted-foreground">Status</div>
