@@ -248,47 +248,19 @@ export const SecurityMonitoringWidget: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent Alerts */}
+        {/* Security Status Summary */}
         <div>
           <h4 className="font-medium mb-3 flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Recent Security Alerts
+            <Shield className="h-4 w-4" />
+            Security Status
           </h4>
           
-          {alerts.length === 0 ? (
-            <Alert>
-              <CheckCircle className="h-4 w-4" />
-              <AlertDescription>
-                No recent security alerts. System is operating normally.
-              </AlertDescription>
-            </Alert>
-          ) : (
-            <div className="space-y-3">
-              {alerts.map((alert) => (
-                <div 
-                  key={alert.id} 
-                  className="flex items-start justify-between p-3 border rounded-lg hover:bg-muted/50"
-                >
-                  <div className="flex items-start gap-3 flex-1">
-                    {getSeverityIcon(alert.severity)}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-sm">{alert.title}</span>
-                        {getSeverityBadge(alert.severity)}
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {alert.description}
-                      </p>
-                      <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        {format(new Date(alert.created_at), 'MMM dd, HH:mm')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <Alert>
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>
+              Security monitoring is active. Volume-based threat detection enabled for 24/7 operations.
+            </AlertDescription>
+          </Alert>
         </div>
 
         {/* Security Status Indicator */}
