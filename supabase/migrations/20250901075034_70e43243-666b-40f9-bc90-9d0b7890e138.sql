@@ -1,0 +1,13 @@
+-- Add SBA Loan Underwriting course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('sba-loan-underwriting', 'SBA Loan Underwriting', 'Comprehensive training on SBA loan underwriting including program requirements, eligibility criteria, financial analysis, collateral evaluation, and SBA-specific documentation and processes.', 'beginner', '/src/assets/business-meeting.jpg', true, 409);
+
+-- Add 7 course modules for SBA Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('sba-underwriting-module-1', 'sba-loan-underwriting', 'SBA Program Overview and Eligibility', 'Introduction to SBA lending programs, borrower eligibility requirements, business size standards, and prohibited businesses and industries.', '50 minutes', 1, 6, true),
+('sba-underwriting-module-2', 'sba-loan-underwriting', 'SBA 7(a) Program Underwriting', 'SBA 7(a) loan program specifics, guarantee percentages, loan limits, terms and conditions, and underwriting criteria for general business purposes.', '60 minutes', 2, 8, true),
+('sba-underwriting-module-3', 'sba-loan-underwriting', 'SBA 504 Program Analysis', 'SBA 504 loan program for real estate and equipment, CDC participation, owner equity requirements, and job creation/retention criteria.', '55 minutes', 3, 7, true),
+('sba-underwriting-module-4', 'sba-loan-underwriting', 'Financial Analysis and Cash Flow', 'SBA-specific financial analysis, debt service coverage requirements, working capital calculations, and projections for startup and existing businesses.', '65 minutes', 4, 9, true),
+('sba-underwriting-module-5', 'sba-loan-underwriting', 'Collateral and Personal Guarantees', 'SBA collateral requirements, personal guarantee standards, life insurance requirements, and standby agreements for SBA loans.', '50 minutes', 5, 6, true),
+('sba-underwriting-module-6', 'sba-loan-underwriting', 'SBA Documentation and Compliance', 'Required SBA forms, environmental assessments, authorization and agreement requirements, and regulatory compliance for SBA lending.', '55 minutes', 6, 7, true),
+('sba-underwriting-module-7', 'sba-loan-underwriting', 'SBA Servicing and Guaranty Claims', 'SBA loan servicing requirements, default procedures, guaranty purchase process, and liquidation procedures for SBA lenders.', '50 minutes', 7, 6, true);
