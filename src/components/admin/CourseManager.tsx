@@ -10,12 +10,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye, ImageIcon } from "lucide-react";
+import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye, ImageIcon, Layers } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCourses, Course } from "@/hooks/useCourses";
 import { useModules } from "@/hooks/useModules";
 import { CourseImageEditor } from "./CourseImageEditor";
 import { CourseInstructorManager } from "./CourseInstructorManager";
+import { CourseModuleManager } from "./CourseModuleManager";
 import { runMigration } from "@/utils/migrateCourseData";
 
 // Import course images to match the user dashboard
@@ -204,143 +205,172 @@ export function CourseManager({}: CourseManagerProps) {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <GraduationCap className="h-5 w-5 text-primary" />
-                Course Programs Management
+                Course Management
               </CardTitle>
               <CardDescription>
-                Manage course programs organized by Loan Originator, Loan Processing, and Loan Underwriting categories
+                Manage course programs and individual modules with comprehensive controls
               </CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                onClick={runMigration}
-                disabled={loading}
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Migrate Static Data
-              </Button>
-              <Button onClick={handleCreate}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Course
-              </Button>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {Object.entries(courseCategories).map(([categoryType, categoryData]) => {
-              const coursesInCategory = categoryData as Course[];
-              return (
-                <Card key={categoryType} className="border-l-4 border-l-primary">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{categoryType}</CardTitle>
-                        <CardDescription>
-                          {coursesInCategory.length} courses available
-                        </CardDescription>
-                      </div>
-                      <Badge variant="outline">
-                        {coursesInCategory.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="grid gap-3">
-                      {coursesInCategory.map((course) => {
-                      const stats = getCourseStats(course);
-                      return (
-                        <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
-                          <div className="flex items-center gap-4">
-                            {/* Course Image and Skill Level */}
-                            <div className="flex flex-col items-start gap-2 flex-shrink-0">
-                              <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
-                                <img
-                                  src={getCourseImage(course.title)} 
-                                  alt={course.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                               <div className="text-sm font-medium text-black text-left">
-                                 {course.level === 'none' ? 'No Skill Level' : course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
-                               </div>
-                            </div>
-                            
-                            <div className="flex-1">
-                              <div className="font-medium text-left pl-2 w-full">{course.title}</div>
-                              <div className="w-full h-px bg-border mt-1 mb-2 ml-2"></div>
-                              <div className="text-sm text-muted-foreground line-clamp-1 text-left pl-2 w-full">
-                                {course.description}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setSelectedCourse(course)}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEditImage(course)}
-                              title="Edit Course Image"
-                            >
-                              <ImageIcon className="h-4 w-4" />
-                            </Button>
-                            <CourseInstructorManager 
-                              courseId={course.id} 
-                              courseTitle={course.title}
-                            />
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEdit(course)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button variant="outline" size="sm" className="text-red-600">
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Course</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to delete "{course.title}"? This action cannot be undone and will affect all associated modules.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => handleDelete(course)}
-                                    className="bg-red-600 hover:bg-red-700"
-                                  >
-                                    Delete
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-            })}
-          </div>
+          <Tabs defaultValue="programs" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="programs" className="flex items-center gap-2">
+                <GraduationCap className="h-4 w-4" />
+                Course Programs
+              </TabsTrigger>
+              <TabsTrigger value="modules" className="flex items-center gap-2">
+                <Layers className="h-4 w-4" />
+                Course Modules
+              </TabsTrigger>
+            </TabsList>
 
-          {Object.keys(courseCategories).length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              No courses found. Create your first course to get started.
-            </div>
-          )}
+            <TabsContent value="programs" className="space-y-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold">Course Programs Management</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Manage course programs organized by Loan Originator, Loan Processing, and Loan Underwriting categories
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={runMigration}
+                    disabled={loading}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Migrate Static Data
+                  </Button>
+                  <Button onClick={handleCreate}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Course
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                {Object.entries(courseCategories).map(([categoryType, categoryData]) => {
+                  const coursesInCategory = categoryData as Course[];
+                  return (
+                    <Card key={categoryType} className="border-l-4 border-l-primary">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg">{categoryType}</CardTitle>
+                            <CardDescription>
+                              {coursesInCategory.length} courses available
+                            </CardDescription>
+                          </div>
+                          <Badge variant="outline">
+                            {coursesInCategory.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="grid gap-3">
+                          {coursesInCategory.map((course) => {
+                          const stats = getCourseStats(course);
+                          return (
+                            <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
+                              <div className="flex items-center gap-4">
+                                {/* Course Image and Skill Level */}
+                                <div className="flex flex-col items-start gap-2 flex-shrink-0">
+                                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                                    <img
+                                      src={getCourseImage(course.title)} 
+                                      alt={course.title}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                   <div className="text-sm font-medium text-black text-left">
+                                     {course.level === 'none' ? 'No Skill Level' : course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
+                                   </div>
+                                </div>
+                                
+                                <div className="flex-1">
+                                  <div className="font-medium text-left pl-2 w-full">{course.title}</div>
+                                  <div className="w-full h-px bg-border mt-1 mb-2 ml-2"></div>
+                                  <div className="text-sm text-muted-foreground line-clamp-1 text-left pl-2 w-full">
+                                    {course.description}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setSelectedCourse(course)}
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleEditImage(course)}
+                                  title="Edit Course Image"
+                                >
+                                  <ImageIcon className="h-4 w-4" />
+                                </Button>
+                                <CourseInstructorManager 
+                                  courseId={course.id} 
+                                  courseTitle={course.title}
+                                />
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleEdit(course)}
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <Button variant="outline" size="sm" className="text-red-600">
+                                      <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Delete Course</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        Are you sure you want to delete "{course.title}"? This action cannot be undone and will affect all associated modules.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                      <AlertDialogAction
+                                        onClick={() => handleDelete(course)}
+                                        className="bg-red-600 hover:bg-red-700"
+                                      >
+                                        Delete
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+                })}
+              </div>
+
+              {Object.keys(courseCategories).length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  No courses found. Create your first course to get started.
+                </div>
+              )}
+              
+            </TabsContent>
+
+            <TabsContent value="modules" className="space-y-6">
+              <CourseModuleManager />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
 
