@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Canvas as FabricCanvas, Rect, Circle, Image as FabricImage, IText } from "fabric";
 import { Upload, Download, RotateCw, Crop, Palette, Type, Save, X, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Course } from "@/data/courseData";
+import { Course } from "@/hooks/useCourses";
 import { MediaSelector } from "./MediaSelector";
 
 interface CourseImageEditorProps {

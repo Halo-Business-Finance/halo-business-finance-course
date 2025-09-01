@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
+import { useCourses } from '@/hooks/useCourses';
 
-interface Course {
+interface SimpleCourse {
   id: string;
   title: string;
   description?: string;
 }
 
 interface CourseSelectionContextType {
-  selectedCourse: Course | null;
-  setSelectedCourse: (course: Course | null) => void;
-  availableCourses: Course[];
+  selectedCourse: SimpleCourse | null;
+  setSelectedCourse: (course: SimpleCourse | null) => void;
+  availableCourses: SimpleCourse[];
   loadingCourses: boolean;
 }
 
@@ -26,65 +27,23 @@ export const useCourseSelection = () => {
 };
 
 export const CourseSelectionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [availableCourses, setAvailableCourses] = useState<Course[]>([]);
-  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [selectedCourse, setSelectedCourse] = useState<SimpleCourse | null>(null);
   const { user } = useAuth();
+  const { courses, loading: loadingCourses } = useCourses();
+
+  // Convert courses to the simplified format expected by the context
+  const availableCourses: SimpleCourse[] = courses.map(course => ({
+    id: course.id,
+    title: course.title,
+    description: course.description
+  }));
 
   useEffect(() => {
-    if (user) {
-      fetchAvailableCourses();
+    // Auto-select first course if none selected and courses are available
+    if (!selectedCourse && availableCourses.length > 0) {
+      setSelectedCourse(availableCourses[0]);
     }
-  }, [user]);
-
-  const fetchAvailableCourses = async () => {
-    try {
-      setLoadingCourses(true);
-      
-      // Get unique course IDs from course_modules table
-      const { data: modules, error } = await supabase
-        .from('course_modules')
-        .select('module_id')
-        .eq('is_active', true);
-
-      if (error) throw error;
-
-      // Extract unique course identifiers from module_ids
-      // Assuming module_id format is like "course-name-module-1"
-      const courseIds = new Set<string>();
-      modules?.forEach(module => {
-        // Extract course part from module_id (everything before the last hyphen and number)
-        const parts = module.module_id.split('-');
-        if (parts.length > 2) {
-          // Reconstruct course name from parts, excluding the last part if it's a number
-          const lastPart = parts[parts.length - 1];
-          const isLastPartNumber = /^\d+$/.test(lastPart);
-          const courseParts = isLastPartNumber ? parts.slice(0, -1) : parts;
-          const courseId = courseParts.join('-');
-          courseIds.add(courseId);
-        }
-      });
-
-      // Create course objects
-      const courses: Course[] = Array.from(courseIds).map(courseId => ({
-        id: courseId,
-        title: courseId.split('-').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ')
-      }));
-
-      setAvailableCourses(courses);
-      
-      // Auto-select first course if none selected
-      if (!selectedCourse && courses.length > 0) {
-        setSelectedCourse(courses[0]);
-      }
-    } catch (error) {
-      console.error('Error fetching courses:', error);
-    } finally {
-      setLoadingCourses(false);
-    }
-  };
+  }, [availableCourses, selectedCourse]);
 
   return (
     <CourseSelectionContext.Provider

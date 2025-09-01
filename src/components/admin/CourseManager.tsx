@@ -12,9 +12,11 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Plus, Edit, Trash2, Settings, GraduationCap, Users, BarChart3, Download, Upload, Eye, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { courseData, Course } from "@/data/courseData";
+import { useCourses, Course } from "@/hooks/useCourses";
+import { useModules } from "@/hooks/useModules";
 import { CourseImageEditor } from "./CourseImageEditor";
 import { CourseInstructorManager } from "./CourseInstructorManager";
+import { runMigration } from "@/utils/migrateCourseData";
 
 // Import course images to match the user dashboard
 import financeExpert1 from "@/assets/finance-expert-1.jpg";
@@ -31,8 +33,8 @@ import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 interface CourseManagerProps {}
 
 export function CourseManager({}: CourseManagerProps) {
-  const [courses, setCourses] = useState<Course[]>(courseData.allCourses);
-  const [loading, setLoading] = useState(false);
+  const { courses, loading, createCourse, updateCourse, deleteCourse, getCoursesByType } = useCourses();
+  const { getModuleStats } = useModules();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -111,7 +113,7 @@ export function CourseManager({}: CourseManagerProps) {
     setShowAddDialog(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.title.trim() || !formData.id.trim()) {
       toast({
         title: "Error",
@@ -121,29 +123,20 @@ export function CourseManager({}: CourseManagerProps) {
       return;
     }
 
-    const newCourse: Course = {
-      id: formData.id,
-      title: formData.title,
-      description: formData.description,
-      level: formData.level,
-      modules: [] // Will be populated with modules later
-    };
-
     if (editingCourse) {
       // Update existing course
-      setCourses(prev => prev.map(course => 
-        course.id === editingCourse.id ? { ...newCourse, modules: course.modules } : course
-      ));
-      toast({
-        title: "Success",
-        description: "Course updated successfully",
+      await updateCourse(editingCourse.id, {
+        title: formData.title,
+        description: formData.description,
+        level: formData.level,
       });
     } else {
       // Create new course
-      setCourses(prev => [...prev, newCourse]);
-      toast({
-        title: "Success",
-        description: "Course created successfully",
+      await createCourse({
+        id: formData.id,
+        title: formData.title,
+        description: formData.description,
+        level: formData.level,
       });
     }
 
@@ -151,12 +144,8 @@ export function CourseManager({}: CourseManagerProps) {
     resetForm();
   };
 
-  const handleDelete = (course: Course) => {
-    setCourses(prev => prev.filter(c => c.id !== course.id));
-    toast({
-      title: "Success",
-      description: "Course deleted successfully",
-    });
+  const handleDelete = async (course: Course) => {
+    await deleteCourse(course.id);
   };
 
   const handleEditImage = (course: Course) => {
@@ -175,28 +164,16 @@ export function CourseManager({}: CourseManagerProps) {
   };
 
   const getModuleCount = (course: Course) => {
-    return course.modules?.length || 0;
+    const stats = getModuleStats(course.id);
+    return stats.total;
   };
 
   const getCourseStats = (course: Course) => {
-    const totalModules = getModuleCount(course);
-    const completedModules = course.modules?.filter(m => m.status === 'completed').length || 0;
-    return {
-      total: totalModules,
-      completed: completedModules,
-      progress: totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0
-    };
+    return getModuleStats(course.id);
   };
 
   // Group courses by type (remove skill level from title)
-  const courseTypes = courses.reduce((acc, course) => {
-    const baseTitle = course.title.replace(/ - (Beginner|Intermediate|Expert)$/, '');
-    if (!acc[baseTitle]) {
-      acc[baseTitle] = [];
-    }
-    acc[baseTitle].push(course);
-    return acc;
-  }, {} as Record<string, Course[]>);
+  const courseTypes = getCoursesByType();
 
   return (
     <div className="space-y-6">
@@ -212,10 +189,20 @@ export function CourseManager({}: CourseManagerProps) {
                 Manage the 13 core course programs - each available in Beginner, Intermediate, and Expert levels
               </CardDescription>
             </div>
-            <Button onClick={handleCreate}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Course
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={runMigration}
+                disabled={loading}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Migrate Static Data
+              </Button>
+              <Button onClick={handleCreate}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Course
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -357,32 +344,12 @@ export function CourseManager({}: CourseManagerProps) {
                 </div>
               </div>
               
-              {selectedCourse.modules && selectedCourse.modules.length > 0 && (
-                <div>
-                  <h4 className="font-semibold mb-3">Course Modules</h4>
-                  <div className="space-y-2 max-h-60 overflow-y-auto">
-                    {selectedCourse.modules.map((module, index) => (
-                      <div key={module.id} className="flex items-center justify-between p-3 rounded border">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                            {index + 1}
-                          </div>
-                          <div>
-                            <div className="font-medium">{module.title}</div>
-                            <div className="text-sm text-muted-foreground">{module.duration} • {module.lessons} lessons</div>
-                          </div>
-                        </div>
-                        <Badge variant={
-                          module.status === "completed" ? "success" : 
-                          module.status === "in-progress" ? "default" : "outline"
-                        }>
-                          {module.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
+              <div>
+                <h4 className="font-semibold mb-3">Course Modules</h4>
+                <div className="text-center py-4 text-muted-foreground">
+                  Module details will be displayed here when modules are loaded from the database.
                 </div>
-              )}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
@@ -457,12 +424,14 @@ export function CourseManager({}: CourseManagerProps) {
       </Dialog>
 
       {/* Course Image Editor */}
-      <CourseImageEditor
-        course={editingImageCourse}
-        open={showImageEditor}
-        onOpenChange={setShowImageEditor}
-        onSave={handleSaveImage}
-      />
+      {editingImageCourse && (
+        <CourseImageEditor
+          course={editingImageCourse}
+          open={showImageEditor}
+          onOpenChange={setShowImageEditor}
+          onSave={handleSaveImage}
+        />
+      )}
     </div>
   );
 }
