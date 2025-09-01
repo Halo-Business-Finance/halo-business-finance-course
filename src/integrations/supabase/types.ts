@@ -3639,6 +3639,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_time_based_alerts: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_comprehensive_audit_entry: {
         Args: {
           p_action: string
@@ -3705,6 +3709,10 @@ export type Database = {
         Returns: undefined
       }
       detect_unusual_profile_access: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      detect_volume_based_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -4481,6 +4489,10 @@ export type Database = {
           p_target_user_id: string
         }
         Returns: boolean
+      }
+      run_24_7_security_monitoring: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       run_automated_security_maintenance: {
         Args: Record<PropertyKey, never>
