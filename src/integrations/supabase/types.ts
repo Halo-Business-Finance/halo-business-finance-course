@@ -235,6 +235,56 @@ export type Database = {
           },
         ]
       }
+      case_studies: {
+        Row: {
+          challenge: string
+          company: string
+          created_at: string | null
+          id: string
+          lessons_learned: Json | null
+          module_id: string
+          order_index: number | null
+          outcome: string
+          situation: string
+          solution: string
+          title: string
+        }
+        Insert: {
+          challenge: string
+          company: string
+          created_at?: string | null
+          id?: string
+          lessons_learned?: Json | null
+          module_id: string
+          order_index?: number | null
+          outcome: string
+          situation: string
+          solution: string
+          title: string
+        }
+        Update: {
+          challenge?: string
+          company?: string
+          created_at?: string | null
+          id?: string
+          lessons_learned?: Json | null
+          module_id?: string
+          order_index?: number | null
+          outcome?: string
+          situation?: string
+          solution?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_studies_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cms_categories: {
         Row: {
           created_at: string
@@ -872,6 +922,59 @@ export type Database = {
           },
         ]
       }
+      course_content_modules: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          description: string
+          duration: string
+          id: string
+          is_active: boolean | null
+          lessons_count: number
+          order_index: number
+          status: string | null
+          title: string
+          topics: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          description: string
+          duration: string
+          id: string
+          is_active?: boolean | null
+          lessons_count?: number
+          order_index?: number
+          status?: string | null
+          title: string
+          topics?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          description?: string
+          duration?: string
+          id?: string
+          is_active?: boolean | null
+          lessons_count?: number
+          order_index?: number
+          status?: string | null
+          title?: string
+          topics?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_content_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_documents: {
         Row: {
           category: string | null
@@ -1115,6 +1218,42 @@ export type Database = {
             referencedColumns: ["module_id"]
           },
         ]
+      }
+      courses: {
+        Row: {
+          created_at: string | null
+          description: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          level: string
+          order_index: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          id: string
+          image_url?: string | null
+          is_active?: boolean | null
+          level: string
+          order_index?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          level?: string
+          order_index?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       daily_learning_activity: {
         Row: {
@@ -1863,6 +2002,53 @@ export type Database = {
         }
         Relationships: []
       }
+      loan_examples: {
+        Row: {
+          borrower_profile: string
+          created_at: string | null
+          id: string
+          key_learning_points: Json | null
+          loan_amount: string
+          loan_type: string
+          module_id: string
+          order_index: number | null
+          scenario: string
+          title: string
+        }
+        Insert: {
+          borrower_profile: string
+          created_at?: string | null
+          id?: string
+          key_learning_points?: Json | null
+          loan_amount: string
+          loan_type: string
+          module_id: string
+          order_index?: number | null
+          scenario: string
+          title: string
+        }
+        Update: {
+          borrower_profile?: string
+          created_at?: string | null
+          id?: string
+          key_learning_points?: Json | null
+          loan_amount?: string
+          loan_type?: string
+          module_id?: string
+          order_index?: number | null
+          scenario?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loan_examples_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       module_completions: {
         Row: {
           completed_at: string
@@ -1889,6 +2075,91 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      module_quiz_questions: {
+        Row: {
+          correct_answer: number
+          created_at: string | null
+          explanation: string
+          id: string
+          options: Json
+          order_index: number | null
+          question: string
+          quiz_id: string
+        }
+        Insert: {
+          correct_answer: number
+          created_at?: string | null
+          explanation: string
+          id: string
+          options?: Json
+          order_index?: number | null
+          question: string
+          quiz_id: string
+        }
+        Update: {
+          correct_answer?: number
+          created_at?: string | null
+          explanation?: string
+          id?: string
+          options?: Json
+          order_index?: number | null
+          question?: string
+          quiz_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_quiz_questions_quiz"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "module_quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      module_quizzes: {
+        Row: {
+          created_at: string | null
+          description: string
+          id: string
+          max_attempts: number | null
+          module_id: string
+          passing_score: number
+          quiz_type: string | null
+          time_limit_minutes: number | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          id: string
+          max_attempts?: number | null
+          module_id: string
+          passing_score?: number
+          quiz_type?: string | null
+          time_limit_minutes?: number | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          id?: string
+          max_attempts?: number | null
+          module_id?: string
+          passing_score?: number
+          quiz_type?: string | null
+          time_limit_minutes?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       network_security_events: {
         Row: {
@@ -2171,6 +2442,47 @@ export type Database = {
           window_start?: string
         }
         Relationships: []
+      }
+      scripts: {
+        Row: {
+          created_at: string | null
+          dialogues: Json
+          id: string
+          key_points: Json | null
+          module_id: string
+          order_index: number | null
+          scenario: string
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          dialogues?: Json
+          id?: string
+          key_points?: Json | null
+          module_id: string
+          order_index?: number | null
+          scenario: string
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          dialogues?: Json
+          id?: string
+          key_points?: Json | null
+          module_id?: string
+          order_index?: number | null
+          scenario?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scripts_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       security_alerts: {
         Row: {
