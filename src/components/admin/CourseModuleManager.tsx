@@ -64,17 +64,53 @@ export function CourseModuleManager() {
       setLoading(true);
       const { data, error } = await supabase
         .from('course_modules')
-        .select(`
-          *,
-          courses:course_id (
-            id,
-            title
-          )
-        `)
+        .select('*')
         .order('order_index', { ascending: true });
 
       if (error) throw error;
-      setModules(data || []);
+      
+      // Auto-assign modules to courses based on module_id patterns
+      // This helps with existing modules that weren't previously assigned
+      const modulesWithCourseAssignment = (data || []).map(module => {
+        if (!module.course_id) {
+          // Try to match based on module_id patterns
+          const moduleId = module.module_id.toLowerCase();
+          let matchedCourse = null;
+          
+          if (moduleId.includes('sba-7a')) {
+            matchedCourse = courses.find(c => c.id.includes('sba-7a') && 
+              c.id.includes(module.skill_level));
+          } else if (moduleId.includes('sba-express')) {
+            matchedCourse = courses.find(c => c.id.includes('sba-express') && 
+              c.id.includes(module.skill_level));
+          } else if (moduleId.includes('commercial-real-estate')) {
+            matchedCourse = courses.find(c => c.id.includes('commercial-real-estate') && 
+              c.id.includes(module.skill_level));
+          } else if (moduleId.includes('healthcare')) {
+            matchedCourse = courses.find(c => c.id.includes('healthcare-financing') && 
+              c.id.includes(module.skill_level));
+          } else if (moduleId.includes('business-acquisition')) {
+            matchedCourse = courses.find(c => c.id.includes('business-acquisition') && 
+              c.id.includes(module.skill_level));
+          }
+          
+          if (matchedCourse) {
+            // Auto-assign the module to the matched course
+            supabase
+              .from('course_modules')
+              .update({ course_id: matchedCourse.id })
+              .eq('id', module.id)
+              .then(() => {
+                console.log(`Auto-assigned module ${module.module_id} to course ${matchedCourse.id}`);
+              });
+            
+            return { ...module, course_id: matchedCourse.id };
+          }
+        }
+        return module;
+      });
+      
+      setModules(modulesWithCourseAssignment);
     } catch (error: any) {
       console.error('Error loading modules:', error);
       toast({
