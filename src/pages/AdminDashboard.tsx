@@ -793,16 +793,18 @@ const AdminDashboard = () => {
                   <p className="text-muted-foreground text-sm mt-1">
                     Enterprise-grade system administration and monitoring
                   </p>
+                  <div className="mt-3">
+                    <Badge variant="outline" className="flex items-center gap-3 px-6 py-3 bg-card/50 backdrop-blur-sm border-primary/20 text-base">
+                      <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+                      <Activity className="h-5 w-5" />
+                      Live Monitoring
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-6">
               <SecurityStatusIndicator />
-              <Badge variant="outline" className="flex items-center gap-3 px-6 py-3 bg-card/50 backdrop-blur-sm border-primary/20 text-base">
-                <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
-                <Activity className="h-5 w-5" />
-                Live Monitoring
-              </Badge>
             </div>
           </div>
         </div>
