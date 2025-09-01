@@ -54,13 +54,10 @@ const FilterContent = ({
   ];
 
   const courses = [
-    { id: 'all', label: 'All Courses', count: counts.all },
-    { id: 'commercial-lending', label: 'Commercial Lending', count: Math.floor(counts.all * 0.25) },
-    { id: 'credit-analysis', label: 'Credit Analysis', count: Math.floor(counts.all * 0.2) },
-    { id: 'sba-loans', label: 'SBA Loans', count: Math.floor(counts.all * 0.2) },
-    { id: 'risk-management', label: 'Risk Management', count: Math.floor(counts.all * 0.15) },
-    { id: 'capital-markets', label: 'Capital Markets', count: Math.floor(counts.all * 0.1) },
-    { id: 'compliance', label: 'Compliance', count: Math.floor(counts.all * 0.1) }
+    { id: 'all', label: 'All Course Types', count: counts.all },
+    { id: 'loan-originator', label: 'Loan Originator', count: Math.floor(counts.all * 0.35) },
+    { id: 'loan-processing', label: 'Loan Processing', count: Math.floor(counts.all * 0.33) },
+    { id: 'loan-underwriting', label: 'Loan Underwriting', count: Math.floor(counts.all * 0.32) }
   ];
 
   const clearAllFilters = () => {
@@ -220,7 +217,7 @@ const FilterContent = ({
           <div className="space-y-3">
             <Label className="text-sm font-medium flex items-center gap-2">
               <Tag className="h-4 w-4" />
-              Course Category
+              Course Type
             </Label>
             <div className="space-y-2">
               {courses.map(course => (

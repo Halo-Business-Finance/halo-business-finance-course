@@ -39,7 +39,7 @@ export function CourseModuleManager() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("government");
+  const [activeTab, setActiveTab] = useState("loan-originator");
   const { courses } = useCourses();
   const { toast } = useToast();
 
@@ -294,48 +294,68 @@ export function CourseModuleManager() {
 
   const getModuleCategory = (moduleId: string) => {
     const id = moduleId.toLowerCase();
-    if (id.includes('sba') || id.includes('usda')) {
-      return 'government';
-    } else if (id.includes('commercial') || id.includes('equipment') || id.includes('construction') || 
-               id.includes('bridge') || id.includes('term') || id.includes('working-capital') || 
-               id.includes('lines-of-credit')) {
-      return 'commercial';
-    } else {
-      return 'specialty';
+    
+    // Loan Originator - Front-end sales and client-facing activities
+    if (id.includes('business-acquisition') || id.includes('client-relationship') || 
+        id.includes('sales') || id.includes('lead-generation') || 
+        id.includes('prospecting') || id.includes('marketing') ||
+        id.includes('presentation') || id.includes('networking')) {
+      return 'loan-originator';
+    } 
+    
+    // Loan Processing - Middle operations and documentation
+    else if (id.includes('application-processing') || id.includes('documentation') || 
+             id.includes('verification') || id.includes('compliance') ||
+             id.includes('workflow') || id.includes('administration') ||
+             id.includes('processing') || id.includes('closing')) {
+      return 'loan-processing';
+    } 
+    
+    // Loan Underwriting - Risk assessment and decision making  
+    else if (id.includes('risk') || id.includes('credit') || id.includes('analysis') ||
+             id.includes('underwriting') || id.includes('assessment') ||
+             id.includes('evaluation') || id.includes('financial-analysis') ||
+             id.includes('due-diligence') || id.includes('portfolio')) {
+      return 'loan-underwriting';
+    } 
+    
+    // Default to loan-originator for modules that don't clearly fit other categories
+    else {
+      return 'loan-originator';
     }
   };
 
   const getCategorizedModules = () => {
     return {
-      government: modules.filter(m => getModuleCategory(m.module_id) === 'government'),
-      commercial: modules.filter(m => getModuleCategory(m.module_id) === 'commercial'),
-      specialty: modules.filter(m => getModuleCategory(m.module_id) === 'specialty')
+      'loan-originator': modules.filter(m => getModuleCategory(m.module_id) === 'loan-originator'),
+      'loan-processing': modules.filter(m => getModuleCategory(m.module_id) === 'loan-processing'),
+      'loan-underwriting': modules.filter(m => getModuleCategory(m.module_id) === 'loan-underwriting')
     };
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'government': return <Landmark className="h-4 w-4" />;
-      case 'commercial': return <Building className="h-4 w-4" />;
-      case 'specialty': return <TrendingUp className="h-4 w-4" />;
+      case 'loan-originator': return <Users className="h-4 w-4" />;
+      case 'loan-processing': return <BookOpen className="h-4 w-4" />;
+      case 'loan-underwriting': return <GraduationCap className="h-4 w-4" />;
       default: return <BookOpen className="h-4 w-4" />;
     }
   };
 
   const getCategoryTitle = (category: string) => {
     switch (category) {
-      case 'government': return 'Government Programs';
-      case 'commercial': return 'Commercial Products';
-      case 'specialty': return 'Specialty Financing';
+      case 'loan-originator': return 'Loan Originator';
+      case 'loan-processing': return 'Loan Processing';
+      case 'loan-underwriting': return 'Loan Underwriting';
       default: return 'Other';
     }
   };
 
   const getCategoryDescription = (category: string) => {
     switch (category) {
-      case 'government': return 'SBA, USDA, and other government-backed loan programs';
-      case 'commercial': return 'Traditional commercial lending products and services';
-      case 'specialty': return 'Healthcare, franchise, asset-based, and alternative financing';
+      case 'loan-originator': return 'Client acquisition, relationship building, and sales-focused modules';
+      case 'loan-processing': return 'Documentation, compliance, workflow, and administrative modules';
+      case 'loan-underwriting': return 'Risk assessment, credit analysis, and decision-making modules';
       default: return 'Additional course modules';
     }
   };
@@ -526,73 +546,88 @@ export function CourseModuleManager() {
           </div>
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="government" className="flex items-center gap-2">
-                {getCategoryIcon('government')}
-                <span className="hidden sm:inline">Government Programs</span>
-                <span className="sm:hidden">Govt</span>
-                <Badge variant="secondary" className="ml-1">
-                  {categorizedModules.government.length}
-                </Badge>
-              </TabsTrigger>
-              <TabsTrigger value="commercial" className="flex items-center gap-2">
-                {getCategoryIcon('commercial')}
-                <span className="hidden sm:inline">Commercial Products</span>
-                <span className="sm:hidden">Commercial</span>
-                <Badge variant="secondary" className="ml-1">
-                  {categorizedModules.commercial.length}
-                </Badge>
-              </TabsTrigger>
-              <TabsTrigger value="specialty" className="flex items-center gap-2">
-                {getCategoryIcon('specialty')}
-                <span className="hidden sm:inline">Specialty Financing</span>
-                <span className="sm:hidden">Specialty</span>
-                <Badge variant="secondary" className="ml-1">
-                  {categorizedModules.specialty.length}
-                </Badge>
-              </TabsTrigger>
-            </TabsList>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger 
+                  value="loan-originator" 
+                  className="flex items-center gap-2 text-sm font-medium"
+                >
+                  {getCategoryIcon('loan-originator')}
+                  {getCategoryTitle('loan-originator')}
+                  <Badge variant="secondary" className="ml-auto text-xs">
+                    {categorizedModules['loan-originator'].length}
+                  </Badge>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="loan-processing" 
+                  className="flex items-center gap-2 text-sm font-medium"
+                >
+                  {getCategoryIcon('loan-processing')}
+                  {getCategoryTitle('loan-processing')}
+                  <Badge variant="secondary" className="ml-auto text-xs">
+                    {categorizedModules['loan-processing'].length}
+                  </Badge>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="loan-underwriting" 
+                  className="flex items-center gap-2 text-sm font-medium"
+                >
+                  {getCategoryIcon('loan-underwriting')}
+                  {getCategoryTitle('loan-underwriting')}
+                  <Badge variant="secondary" className="ml-auto text-xs">
+                    {categorizedModules['loan-underwriting'].length}
+                  </Badge>
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="government" className="mt-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                  {getCategoryIcon('government')}
-                  {getCategoryTitle('government')}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {getCategoryDescription('government')}
-                </p>
-              </div>
-              {renderModuleTable(categorizedModules.government)}
-            </TabsContent>
+              {/* Loan Originator Tab */}
+              <TabsContent value="loan-originator" className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">{getCategoryTitle('loan-originator')}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {getCategoryDescription('loan-originator')}
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="text-sm">
+                    {categorizedModules['loan-originator'].length} modules
+                  </Badge>
+                </div>
+                {renderModuleTable(categorizedModules['loan-originator'])}
+              </TabsContent>
 
-            <TabsContent value="commercial" className="mt-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                  {getCategoryIcon('commercial')}
-                  {getCategoryTitle('commercial')}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {getCategoryDescription('commercial')}
-                </p>
-              </div>
-              {renderModuleTable(categorizedModules.commercial)}
-            </TabsContent>
+              {/* Loan Processing Tab */}
+              <TabsContent value="loan-processing" className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">{getCategoryTitle('loan-processing')}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {getCategoryDescription('loan-processing')}
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="text-sm">
+                    {categorizedModules['loan-processing'].length} modules
+                  </Badge>
+                </div>
+                {renderModuleTable(categorizedModules['loan-processing'])}
+              </TabsContent>
 
-            <TabsContent value="specialty" className="mt-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                  {getCategoryIcon('specialty')}
-                  {getCategoryTitle('specialty')}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {getCategoryDescription('specialty')}
-                </p>
-              </div>
-              {renderModuleTable(categorizedModules.specialty)}
-            </TabsContent>
-          </Tabs>
+              {/* Loan Underwriting Tab */}
+              <TabsContent value="loan-underwriting" className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">{getCategoryTitle('loan-underwriting')}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {getCategoryDescription('loan-underwriting')}
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="text-sm">
+                    {categorizedModules['loan-underwriting'].length} modules
+                  </Badge>
+                </div>
+                {renderModuleTable(categorizedModules['loan-underwriting'])}
+              </TabsContent>
+            </Tabs>
         </CardContent>
       </Card>
 
