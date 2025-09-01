@@ -10,7 +10,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users, GraduationCap } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users, GraduationCap, Building, Landmark, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useModules } from "@/hooks/useModules";
 import { useCourses } from "@/hooks/useCourses";
@@ -38,6 +39,7 @@ export function CourseModuleManager() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("government");
   const { courses } = useCourses();
   const { toast } = useToast();
 
@@ -290,6 +292,54 @@ export function CourseModuleManager() {
     }
   };
 
+  const getModuleCategory = (moduleId: string) => {
+    const id = moduleId.toLowerCase();
+    if (id.includes('sba') || id.includes('usda')) {
+      return 'government';
+    } else if (id.includes('commercial') || id.includes('equipment') || id.includes('construction') || 
+               id.includes('bridge') || id.includes('term') || id.includes('working-capital') || 
+               id.includes('lines-of-credit')) {
+      return 'commercial';
+    } else {
+      return 'specialty';
+    }
+  };
+
+  const getCategorizedModules = () => {
+    return {
+      government: modules.filter(m => getModuleCategory(m.module_id) === 'government'),
+      commercial: modules.filter(m => getModuleCategory(m.module_id) === 'commercial'),
+      specialty: modules.filter(m => getModuleCategory(m.module_id) === 'specialty')
+    };
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'government': return <Landmark className="h-4 w-4" />;
+      case 'commercial': return <Building className="h-4 w-4" />;
+      case 'specialty': return <TrendingUp className="h-4 w-4" />;
+      default: return <BookOpen className="h-4 w-4" />;
+    }
+  };
+
+  const getCategoryTitle = (category: string) => {
+    switch (category) {
+      case 'government': return 'Government Programs';
+      case 'commercial': return 'Commercial Products';
+      case 'specialty': return 'Specialty Financing';
+      default: return 'Other';
+    }
+  };
+
+  const getCategoryDescription = (category: string) => {
+    switch (category) {
+      case 'government': return 'SBA, USDA, and other government-backed loan programs';
+      case 'commercial': return 'Traditional commercial lending products and services';
+      case 'specialty': return 'Healthcare, franchise, asset-based, and alternative financing';
+      default: return 'Additional course modules';
+    }
+  };
+
   const getSkillLevelBadge = (level: string) => {
     const variants = {
       beginner: "bg-emerald-100 text-emerald-800",
@@ -303,6 +353,148 @@ export function CourseModuleManager() {
     );
   };
 
+  const renderModuleTable = (categoryModules: CourseModule[]) => {
+    if (categoryModules.length === 0) {
+      return (
+        <div className="text-center py-8 text-muted-foreground">
+          No modules found in this category.
+        </div>
+      );
+    }
+
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Module</TableHead>
+            <TableHead>Course Program</TableHead>
+            <TableHead>Skill Level</TableHead>
+            <TableHead>Duration</TableHead>
+            <TableHead>Lessons</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Preview</TableHead>
+            <TableHead>Order</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {categoryModules.map((module) => (
+            <TableRow key={module.id}>
+              <TableCell>
+                <div>
+                  <div className="font-medium">{module.title}</div>
+                  <div className="text-sm text-muted-foreground">{module.module_id}</div>
+                  {module.description && (
+                    <div className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                      {module.description}
+                    </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                {module.course_id ? (
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    <div>
+                      <div className="font-medium text-sm">
+                        {courses.find(c => c.id === module.course_id)?.title || module.course_id}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {module.course_id}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <Badge variant="outline" className="text-muted-foreground">
+                    Unassigned
+                  </Badge>
+                )}
+              </TableCell>
+              <TableCell>
+                {getSkillLevelBadge(module.skill_level)}
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  {module.duration || 'N/A'}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-1">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  {module.lessons_count}
+                </div>
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => toggleModuleStatus(module)}
+                  className="p-0 h-auto"
+                >
+                  {module.is_active ? (
+                    <Badge variant="default" className="cursor-pointer">
+                      <Unlock className="h-3 w-3 mr-1" />
+                      Active
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="cursor-pointer">
+                      <Lock className="h-3 w-3 mr-1" />
+                      Inactive
+                    </Badge>
+                  )}
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Badge variant={module.public_preview ? "default" : "outline"}>
+                  {module.public_preview ? "Public" : "Private"}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Badge variant="outline">{module.order_index}</Badge>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(module)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="text-red-600">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Module</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete "{module.title}"? This action cannot be undone and will affect all associated content.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(module)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -310,6 +502,8 @@ export function CourseModuleManager() {
       </div>
     );
   }
+
+  const categorizedModules = getCategorizedModules();
 
   return (
     <div className="space-y-6">
@@ -322,7 +516,7 @@ export function CourseModuleManager() {
                 Course Modules Management
               </CardTitle>
               <CardDescription>
-                Manage individual course modules, lessons, and learning content
+                Manage individual course modules organized by lending categories
               </CardDescription>
             </div>
             <Button onClick={handleCreate}>
@@ -332,141 +526,73 @@ export function CourseModuleManager() {
           </div>
         </CardHeader>
         <CardContent>
-          {modules.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No course modules found. Create your first module to get started.
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Module</TableHead>
-                  <TableHead>Course Program</TableHead>
-                  <TableHead>Skill Level</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Lessons</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Preview</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {modules.map((module) => (
-                  <TableRow key={module.id}>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium">{module.title}</div>
-                        <div className="text-sm text-muted-foreground">{module.module_id}</div>
-                        {module.description && (
-                          <div className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                            {module.description}
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {module.course_id ? (
-                        <div className="flex items-center gap-2">
-                          <GraduationCap className="h-4 w-4 text-primary" />
-                          <div>
-                            <div className="font-medium text-sm">
-                              {courses.find(c => c.id === module.course_id)?.title || module.course_id}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {module.course_id}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <Badge variant="outline" className="text-muted-foreground">
-                          Unassigned
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {getSkillLevelBadge(module.skill_level)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        {module.duration || 'N/A'}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        {module.lessons_count}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleModuleStatus(module)}
-                        className="p-0 h-auto"
-                      >
-                        {module.is_active ? (
-                          <Badge variant="default" className="cursor-pointer">
-                            <Unlock className="h-3 w-3 mr-1" />
-                            Active
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="cursor-pointer">
-                            <Lock className="h-3 w-3 mr-1" />
-                            Inactive
-                          </Badge>
-                        )}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={module.public_preview ? "default" : "outline"}>
-                        {module.public_preview ? "Public" : "Private"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{module.order_index}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEdit(module)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="text-red-600">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Module</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete "{module.title}"? This action cannot be undone and will affect all associated content.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDelete(module)}
-                                className="bg-red-600 hover:bg-red-700"
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="government" className="flex items-center gap-2">
+                {getCategoryIcon('government')}
+                <span className="hidden sm:inline">Government Programs</span>
+                <span className="sm:hidden">Govt</span>
+                <Badge variant="secondary" className="ml-1">
+                  {categorizedModules.government.length}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="commercial" className="flex items-center gap-2">
+                {getCategoryIcon('commercial')}
+                <span className="hidden sm:inline">Commercial Products</span>
+                <span className="sm:hidden">Commercial</span>
+                <Badge variant="secondary" className="ml-1">
+                  {categorizedModules.commercial.length}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="specialty" className="flex items-center gap-2">
+                {getCategoryIcon('specialty')}
+                <span className="hidden sm:inline">Specialty Financing</span>
+                <span className="sm:hidden">Specialty</span>
+                <Badge variant="secondary" className="ml-1">
+                  {categorizedModules.specialty.length}
+                </Badge>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="government" className="mt-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  {getCategoryIcon('government')}
+                  {getCategoryTitle('government')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {getCategoryDescription('government')}
+                </p>
+              </div>
+              {renderModuleTable(categorizedModules.government)}
+            </TabsContent>
+
+            <TabsContent value="commercial" className="mt-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  {getCategoryIcon('commercial')}
+                  {getCategoryTitle('commercial')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {getCategoryDescription('commercial')}
+                </p>
+              </div>
+              {renderModuleTable(categorizedModules.commercial)}
+            </TabsContent>
+
+            <TabsContent value="specialty" className="mt-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  {getCategoryIcon('specialty')}
+                  {getCategoryTitle('specialty')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {getCategoryDescription('specialty')}
+                </p>
+              </div>
+              {renderModuleTable(categorizedModules.specialty)}
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
 
@@ -514,7 +640,7 @@ export function CourseModuleManager() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="skill-level">Skill Level</Label>
-                 <Select
+                <Select
                   value={formData.skill_level}
                   onValueChange={(value: "beginner" | "expert") =>
                     setFormData(prev => ({ ...prev, skill_level: value }))
