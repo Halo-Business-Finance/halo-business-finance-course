@@ -880,7 +880,7 @@ const AdminDashboard = () => {
         {/* Modern Tabs Interface */}
         <Tabs defaultValue="overview" className="space-y-8">
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-3 border border-border/20 shadow-sm">
-            <TabsList className="grid w-full grid-cols-8 bg-transparent gap-2">
+            <TabsList className="grid w-full grid-cols-7 bg-transparent gap-2">
               <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
                 <Activity className="h-4 w-4" />
                 <span className="hidden sm:inline">Overview</span>
@@ -908,10 +908,6 @@ const AdminDashboard = () => {
               <TabsTrigger value="cms" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
                 <FileText className="h-4 w-4" />
                 <span className="hidden sm:inline">CMS</span>
-              </TabsTrigger>
-              <TabsTrigger value="security-events" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Database className="h-4 w-4" />
-                <span className="hidden sm:inline">Events</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -1326,10 +1322,6 @@ const AdminDashboard = () => {
                     <SecurityMonitoringDashboard />
                   </div>
                   <SecurityMonitoringWidget />
-                </TabsContent>
-
-                <TabsContent value="security-events" className="space-y-6">
-                  <SecurityEventManager />
                 </TabsContent>
 
           <TabsContent value="trainee-progress" className="space-y-4">
