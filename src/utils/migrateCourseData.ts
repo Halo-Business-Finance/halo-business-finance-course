@@ -83,10 +83,10 @@ export async function migrateCourseDataToSupabase() {
             quiz_type: 'module',
           });
 
-          // Quiz questions
+          // Quiz questions - generate unique IDs to avoid conflicts
           module.quiz.questions.forEach((question, qIndex) => {
             questionsToInsert.push({
-              id: question.id,
+              id: `${module.quiz.id}-q${qIndex + 1}`, // Generate unique ID
               quiz_id: module.quiz.id,
               question: question.question,
               options: question.options,
@@ -110,10 +110,10 @@ export async function migrateCourseDataToSupabase() {
             quiz_type: 'final',
           });
 
-          // Final test questions
+          // Final test questions - generate unique IDs to avoid conflicts
           module.finalTest.questions.forEach((question, qIndex) => {
             questionsToInsert.push({
-              id: question.id,
+              id: `${module.finalTest.id}-q${qIndex + 1}`, // Generate unique ID
               quiz_id: module.finalTest.id,
               question: question.question,
               options: question.options,
