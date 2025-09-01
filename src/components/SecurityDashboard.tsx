@@ -42,6 +42,7 @@ export const SecurityDashboard = () => {
 
   useEffect(() => {
     loadSecurityData();
+    loadMonitoringState();
     
     // Auto-refresh every 30 seconds
     const interval = setInterval(loadSecurityData, 30000);
@@ -71,10 +72,69 @@ export const SecurityDashboard = () => {
     }
   };
 
-  const toggleRealTimeMonitoring = () => {
-    setIsMonitoring(!isMonitoring);
+  const loadMonitoringState = async () => {
+    try {
+      // Check localStorage first for immediate response
+      const localState = localStorage.getItem('military-monitoring-active');
+      if (localState !== null) {
+        setIsMonitoring(localState === 'true');
+      }
+
+      // Then check database for authoritative state
+      const { data, error } = await supabase
+        .from('cms_settings')
+        .select('value')
+        .eq('key', 'military_monitoring_active')
+        .maybeSingle();
+
+      if (!error && data) {
+        const dbState = data.value === 'true';
+        setIsMonitoring(dbState);
+        localStorage.setItem('military-monitoring-active', dbState.toString());
+      }
+    } catch (error) {
+      console.error('Failed to load monitoring state:', error);
+    }
+  };
+
+  const saveMonitoringState = async (newState: boolean) => {
+    try {
+      // Save to localStorage immediately
+      localStorage.setItem('military-monitoring-active', newState.toString());
+      
+      // Save to database
+      const { error } = await supabase
+        .from('cms_settings')
+        .upsert({
+          key: 'military_monitoring_active',
+          value: newState.toString(),
+          category: 'security',
+          description: 'Military-grade security monitoring status'
+        }, {
+          onConflict: 'key'
+        });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.error('Failed to save monitoring state:', error);
+      toast({
+        title: "Warning",
+        description: "Monitoring state may not persist across sessions",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const toggleRealTimeMonitoring = async () => {
+    const newState = !isMonitoring;
+    setIsMonitoring(newState);
     
-    if (!isMonitoring) {
+    // Save the state
+    await saveMonitoringState(newState);
+    
+    if (newState) {
       toast({
         title: "Real-time Monitoring Activated",
         description: "Military-grade threat detection is now active",
