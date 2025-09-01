@@ -21,7 +21,7 @@ interface CourseModule {
   module_id: string;
   title: string;
   description?: string;
-  skill_level: 'beginner' | 'intermediate' | 'expert';
+  skill_level: 'beginner' | 'expert';
   duration?: string;
   lessons_count: number;
   order_index: number;
@@ -45,7 +45,7 @@ export function CourseModuleManager() {
     module_id: "",
     title: "",
     description: "",
-    skill_level: "beginner" as "beginner" | "intermediate" | "expert",
+    skill_level: "beginner" as "beginner" | "expert",
     duration: "",
     lessons_count: 0,
     order_index: 0,
@@ -72,6 +72,9 @@ export function CourseModuleManager() {
       // Auto-assign modules to courses based on module_id patterns
       // This helps with existing modules that weren't previously assigned
       const modulesWithCourseAssignment = (data || []).map(module => {
+        // Ensure skill_level is only beginner or expert
+        let correctedSkillLevel: 'beginner' | 'expert' = module.skill_level === 'intermediate' ? 'expert' : module.skill_level as 'beginner' | 'expert';
+        
         if (!module.course_id) {
           // Try to match based on module_id patterns
           const moduleId = module.module_id.toLowerCase();
@@ -79,19 +82,19 @@ export function CourseModuleManager() {
           
           if (moduleId.includes('sba-7a')) {
             matchedCourse = courses.find(c => c.id.includes('sba-7a') && 
-              c.id.includes(module.skill_level));
+              c.id.includes(correctedSkillLevel));
           } else if (moduleId.includes('sba-express')) {
             matchedCourse = courses.find(c => c.id.includes('sba-express') && 
-              c.id.includes(module.skill_level));
+              c.id.includes(correctedSkillLevel));
           } else if (moduleId.includes('commercial-real-estate')) {
             matchedCourse = courses.find(c => c.id.includes('commercial-real-estate') && 
-              c.id.includes(module.skill_level));
+              c.id.includes(correctedSkillLevel));
           } else if (moduleId.includes('healthcare')) {
             matchedCourse = courses.find(c => c.id.includes('healthcare-financing') && 
-              c.id.includes(module.skill_level));
+              c.id.includes(correctedSkillLevel));
           } else if (moduleId.includes('business-acquisition')) {
             matchedCourse = courses.find(c => c.id.includes('business-acquisition') && 
-              c.id.includes(module.skill_level));
+              c.id.includes(correctedSkillLevel));
           }
           
           if (matchedCourse) {
@@ -104,10 +107,10 @@ export function CourseModuleManager() {
                 console.log(`Auto-assigned module ${module.module_id} to course ${matchedCourse.id}`);
               });
             
-            return { ...module, course_id: matchedCourse.id };
+            return { ...module, course_id: matchedCourse.id, skill_level: correctedSkillLevel };
           }
         }
-        return module;
+        return { ...module, skill_level: correctedSkillLevel };
       });
       
       setModules(modulesWithCourseAssignment);
@@ -290,7 +293,6 @@ export function CourseModuleManager() {
   const getSkillLevelBadge = (level: string) => {
     const variants = {
       beginner: "bg-emerald-100 text-emerald-800",
-      intermediate: "bg-amber-100 text-amber-800", 
       expert: "bg-red-100 text-red-800"
     };
     
@@ -512,9 +514,9 @@ export function CourseModuleManager() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="skill-level">Skill Level</Label>
-                <Select
+                 <Select
                   value={formData.skill_level}
-                  onValueChange={(value: "beginner" | "intermediate" | "expert") =>
+                  onValueChange={(value: "beginner" | "expert") =>
                     setFormData(prev => ({ ...prev, skill_level: value }))
                   }
                 >
@@ -523,7 +525,6 @@ export function CourseModuleManager() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
                     <SelectItem value="expert">Expert</SelectItem>
                   </SelectContent>
                 </Select>
