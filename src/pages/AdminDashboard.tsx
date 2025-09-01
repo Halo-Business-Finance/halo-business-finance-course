@@ -37,6 +37,7 @@ import { useAdminRole } from "@/hooks/useAdminRole";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { SecurityMonitoringDashboard } from "@/components/SecurityMonitoringDashboard";
 import { SecurityMonitoringWidget } from "@/components/SecurityMonitoringWidget";
+import { SecurityEventManager } from "@/components/SecurityEventManager";
 import { SecurityFixCenter } from "@/components/SecurityFixCenter";
 import { VideoManager } from "@/components/admin/VideoManager";
 import { ArticleManager } from "@/components/admin/ArticleManager";
@@ -908,6 +909,10 @@ const AdminDashboard = () => {
                 <FileText className="h-4 w-4" />
                 <span className="hidden sm:inline">CMS</span>
               </TabsTrigger>
+              <TabsTrigger value="security-events" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <Database className="h-4 w-4" />
+                <span className="hidden sm:inline">Events</span>
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -1321,6 +1326,10 @@ const AdminDashboard = () => {
                     <SecurityMonitoringDashboard />
                   </div>
                   <SecurityMonitoringWidget />
+                </TabsContent>
+
+                <TabsContent value="security-events" className="space-y-6">
+                  <SecurityEventManager />
                 </TabsContent>
 
           <TabsContent value="trainee-progress" className="space-y-4">
