@@ -60,20 +60,42 @@ export function CourseModuleManager() {
   const loadModules = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('course_content_modules')
-        .select('*')
-        .order('order_index', { ascending: true });
-
-      if (error) throw error;
       
-      // Process the data to ensure proper format
-      const modulesData = (data || []).map(module => ({
+      // Load modules from both tables to get complete dataset
+      const [courseModulesResponse, contentModulesResponse] = await Promise.all([
+        supabase
+          .from('course_modules')
+          .select('id, module_id, title, description, duration, lessons_count, order_index, is_active, course_id, created_at, updated_at, skill_level')
+          .order('order_index', { ascending: true }),
+        supabase
+          .from('course_content_modules')
+          .select('id, title, description, duration, lessons_count, order_index, is_active, course_id, topics, status, created_at, updated_at')
+          .order('order_index', { ascending: true })
+      ]);
+
+      if (courseModulesResponse.error) throw courseModulesResponse.error;
+      if (contentModulesResponse.error) throw contentModulesResponse.error;
+      
+      // Combine and normalize data from both tables
+      const courseModulesData = (courseModulesResponse.data || []).map(module => ({
         ...module,
-        topics: Array.isArray(module.topics) ? module.topics as string[] : []
+        topics: [] as string[],
+        status: 'locked',
+        table_source: 'course_modules'
       }));
       
-      setModules(modulesData);
+      const contentModulesData = (contentModulesResponse.data || []).map(module => ({
+        ...module,
+        module_id: module.id,
+        skill_level: 'beginner',
+        topics: Array.isArray(module.topics) ? module.topics as string[] : [],
+        table_source: 'course_content_modules'
+      }));
+      
+      // Combine both datasets
+      const allModules = [...courseModulesData, ...contentModulesData];
+      
+      setModules(allModules);
     } catch (error: any) {
       console.error('Error loading modules:', error);
       toast({
