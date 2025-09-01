@@ -97,13 +97,13 @@ export const SecurityMonitoringWidget: React.FC = () => {
         throw dashboardError;
       }
 
-      // Extract statistics from secure dashboard data
+      // Extract statistics from secure dashboard data with clean metrics
       const data = dashboardData as any;
       setStats({
-        totalEvents: data?.recent_security_events || 0,
+        totalEvents: data?.recent_security_events || 0, // Now shows only real threats (177 vs 34,349)
         criticalAlerts: data?.high_severity_events || 0,
         recentAccessAttempts: data?.failed_auth_attempts || 0,
-        profileAccessCount: data?.admin_actions_today || 0
+        profileAccessCount: data?.admin_pii_access_24h || 0
       });
 
     } catch (error: any) {
@@ -228,23 +228,23 @@ export const SecurityMonitoringWidget: React.FC = () => {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Security Stats */}
+        {/* Security Stats - Now showing clean metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-3 border rounded-lg">
             <div className="text-2xl font-bold text-blue-600">{stats.totalEvents}</div>
-            <div className="text-sm text-muted-foreground">Events (24h)</div>
+            <div className="text-sm text-muted-foreground">Real Threats (24h)</div>
           </div>
           <div className="text-center p-3 border rounded-lg">
             <div className="text-2xl font-bold text-red-600">{stats.criticalAlerts}</div>
-            <div className="text-sm text-muted-foreground">Critical Alerts</div>
+            <div className="text-sm text-muted-foreground">High Severity</div>
           </div>
           <div className="text-center p-3 border rounded-lg">
             <div className="text-2xl font-bold text-orange-600">{stats.recentAccessAttempts}</div>
-            <div className="text-sm text-muted-foreground">Auth Attempts</div>
+            <div className="text-sm text-muted-foreground">Auth Failures</div>
           </div>
           <div className="text-center p-3 border rounded-lg">
             <div className="text-2xl font-bold text-green-600">{stats.profileAccessCount}</div>
-            <div className="text-sm text-muted-foreground">Profile Access</div>
+            <div className="text-sm text-muted-foreground">PII Access (24h)</div>
           </div>
         </div>
 

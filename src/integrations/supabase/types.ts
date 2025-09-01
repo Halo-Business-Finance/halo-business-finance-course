@@ -3635,6 +3635,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_routine_security_events: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_comprehensive_audit_entry: {
         Args: {
           p_action: string
@@ -3892,6 +3896,10 @@ export type Database = {
           updated_at: string
           user_id: string
         }[]
+      }
+      get_clean_security_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_course_modules_with_security_metadata: {
         Args: Record<PropertyKey, never>
@@ -4322,6 +4330,15 @@ export type Database = {
           event_details?: Json
           event_name: string
           severity_level?: string
+        }
+        Returns: undefined
+      }
+      log_filtered_security_event: {
+        Args: {
+          p_details?: Json
+          p_event_type: string
+          p_severity: string
+          p_user_id?: string
         }
         Returns: undefined
       }
