@@ -66,11 +66,11 @@ export function CourseManager({}: CourseManagerProps) {
     // Extract the base course type from title (remove skill level)
     const baseTitle = courseTitle.replace(/ - (Beginner|Intermediate|Expert)$/, '');
     
-    // Get unique course types in order they appear in courseData
+    // Get unique course types in order they appear in database
     const uniqueCourseTypes = [
-      "SBA 7(a) Loans",
-      "SBA Express Loans", 
-      "Commercial Real Estate Financing",
+      "SBA 7(a)",
+      "SBA Express", 
+      "Commercial Real Estate",
       "Equipment Financing",
       "Business Lines of Credit",
       "Invoice Factoring",
@@ -78,13 +78,16 @@ export function CourseManager({}: CourseManagerProps) {
       "Asset-Based Lending",
       "Construction Loans",
       "Franchise Financing",
-      "Working Capital Loans",
+      "Working Capital",
       "Healthcare Financing",
-      "Restaurant Financing"
+      "Restaurant Financing",
+      "Bridge Loans",
+      "Term Loans",
+      "Business Acquisition"
     ];
 
     const index = uniqueCourseTypes.indexOf(baseTitle);
-    return images[index >= 0 ? index : 0];
+    return images[index >= 0 ? index % images.length : 0];
   };
 
   const resetForm = () => {
