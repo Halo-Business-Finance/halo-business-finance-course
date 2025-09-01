@@ -1,0 +1,13 @@
+-- Add Construction Loan Underwriting course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('construction-loan-underwriting', 'Construction Loan Underwriting', 'Comprehensive training on construction loan underwriting including project analysis, draw schedules, contractor evaluation, cost overrun management, and construction-to-permanent financing structures.', 'beginner', '/src/assets/business-meeting.jpg', true, 410);
+
+-- Add 7 course modules for Construction Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('construction-underwriting-module-1', 'construction-loan-underwriting', 'Construction Lending Fundamentals', 'Introduction to construction lending, project phases, loan types (spec vs. custom), and the unique risks associated with construction financing.', '45 minutes', 1, 5, true),
+('construction-underwriting-module-2', 'construction-loan-underwriting', 'Project Analysis and Feasibility', 'Construction project evaluation, cost estimates analysis, market studies, and feasibility assessments for residential and commercial construction.', '60 minutes', 2, 8, true),
+('construction-underwriting-module-3', 'construction-loan-underwriting', 'Contractor and Builder Evaluation', 'Contractor qualification criteria, experience assessment, financial capacity analysis, and bonding requirements for construction projects.', '55 minutes', 3, 7, true),
+('construction-underwriting-module-4', 'construction-loan-underwriting', 'Draw Schedules and Fund Control', 'Construction draw schedules, inspection procedures, lien waiver requirements, and fund disbursement controls throughout the construction process.', '60 minutes', 4, 8, true),
+('construction-underwriting-module-5', 'construction-loan-underwriting', 'Risk Management and Insurance', 'Construction insurance requirements, builders risk policies, performance bonds, completion guarantees, and risk mitigation strategies.', '50 minutes', 5, 6, true),
+('construction-underwriting-module-6', 'construction-loan-underwriting', 'Construction-to-Permanent Financing', 'Single-close construction loans, two-time close structures, permanent financing conversion, and end loan qualification requirements.', '55 minutes', 6, 7, true),
+('construction-underwriting-module-7', 'construction-loan-underwriting', 'Problem Loan Management', 'Construction loan monitoring, cost overrun management, completion issues, foreclosure procedures, and workout strategies for troubled construction projects.', '50 minutes', 7, 6, true);
