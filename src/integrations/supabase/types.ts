@@ -283,6 +283,13 @@ export type Database = {
             referencedRelation: "course_content_modules"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_case_studies_module"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
         ]
       }
       cms_categories: {
@@ -968,6 +975,13 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "course_content_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_course_content_modules_course"
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
@@ -2041,6 +2055,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_loan_examples_module"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "loan_examples_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
@@ -2115,6 +2136,13 @@ export type Database = {
             referencedRelation: "module_quizzes"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_quiz_questions_quiz_new"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "module_quizzes"
+            referencedColumns: ["id"]
+          },
         ]
       }
       module_quizzes: {
@@ -2152,6 +2180,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_module_quizzes_module"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "module_quizzes_module_id_fkey"
             columns: ["module_id"]
