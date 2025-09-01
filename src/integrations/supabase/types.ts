@@ -1550,10 +1550,13 @@ export type Database = {
           admin_notes: string | null
           assigned_to: string | null
           budget: string | null
+          business_sensitivity: string | null
           company: string
           company_size: string | null
           created_at: string
+          data_classification: string | null
           email: string
+          encryption_status: string | null
           first_name: string
           follow_up_date: string | null
           form_load_time: number | null
@@ -1575,10 +1578,13 @@ export type Database = {
           admin_notes?: string | null
           assigned_to?: string | null
           budget?: string | null
+          business_sensitivity?: string | null
           company: string
           company_size?: string | null
           created_at?: string
+          data_classification?: string | null
           email: string
+          encryption_status?: string | null
           first_name: string
           follow_up_date?: string | null
           form_load_time?: number | null
@@ -1600,10 +1606,13 @@ export type Database = {
           admin_notes?: string | null
           assigned_to?: string | null
           budget?: string | null
+          business_sensitivity?: string | null
           company?: string
           company_size?: string | null
           created_at?: string
+          data_classification?: string | null
           email?: string
+          encryption_status?: string | null
           first_name?: string
           follow_up_date?: string | null
           form_load_time?: number | null
@@ -2022,12 +2031,14 @@ export type Database = {
           id: string
           join_date: string
           language: string | null
+          last_security_audit: string | null
           location: string | null
           marketing_communications: boolean | null
           marketing_emails: boolean | null
           name: string
           new_courses: boolean | null
           phone: string | null
+          pii_access_level: string | null
           push_notifications: boolean | null
           reduced_motion: boolean | null
           state: string | null
@@ -2059,12 +2070,14 @@ export type Database = {
           id?: string
           join_date?: string
           language?: string | null
+          last_security_audit?: string | null
           location?: string | null
           marketing_communications?: boolean | null
           marketing_emails?: boolean | null
           name: string
           new_courses?: boolean | null
           phone?: string | null
+          pii_access_level?: string | null
           push_notifications?: boolean | null
           reduced_motion?: boolean | null
           state?: string | null
@@ -2096,12 +2109,14 @@ export type Database = {
           id?: string
           join_date?: string
           language?: string | null
+          last_security_audit?: string | null
           location?: string | null
           marketing_communications?: boolean | null
           marketing_emails?: boolean | null
           name?: string
           new_courses?: boolean | null
           phone?: string | null
+          pii_access_level?: string | null
           push_notifications?: boolean | null
           reduced_motion?: boolean | null
           state?: string | null
@@ -4115,6 +4130,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      run_enhanced_security_monitoring: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       run_periodic_security_monitoring: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -4175,6 +4194,10 @@ export type Database = {
         }
         Returns: Json
       }
+      validate_business_leads_access: {
+        Args: { action_type: string; justification?: string }
+        Returns: boolean
+      }
       validate_course_content_access: {
         Args: { module_id: string; requested_fields?: string[] }
         Returns: boolean
@@ -4215,12 +4238,20 @@ export type Database = {
         Args: { p_method_type: string; p_user_id: string }
         Returns: Json
       }
+      validate_mfa_secrets_access: {
+        Args: { access_reason?: string; target_user_id: string }
+        Returns: boolean
+      }
       validate_mfa_token: {
         Args: {
           p_backup_code?: boolean
           p_method_type: string
           p_token: string
         }
+        Returns: boolean
+      }
+      validate_profile_pii_access: {
+        Args: { requested_fields?: string[]; target_user_id: string }
         Returns: boolean
       }
       validate_secure_profile_access: {
@@ -4252,6 +4283,10 @@ export type Database = {
       validate_user_session: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      verify_audit_integrity: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       verify_complete_audit_chain: {
         Args: Record<PropertyKey, never>
