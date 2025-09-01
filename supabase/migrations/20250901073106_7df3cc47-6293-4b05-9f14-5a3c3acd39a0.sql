@@ -1,0 +1,5 @@
+-- Add missing Restaurant Financing courses
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('restaurant-financing-beginner', 'Restaurant Financing - Beginner', 'Introduction to restaurant and food service financing, including equipment loans, working capital, and industry-specific lending requirements for hospitality businesses.', 'beginner', '/src/assets/business-meeting.jpg', true, 400),
+('restaurant-financing-intermediate', 'Restaurant Financing - Intermediate', 'Advanced restaurant financing strategies, cash flow analysis, and specialized loan products for established food service operations and restaurant chains.', 'intermediate', '/src/assets/business-meeting.jpg', true, 401),
+('restaurant-financing-expert', 'Restaurant Financing - Expert', 'Expert-level restaurant financing, complex deal structuring, franchise financing, and strategic portfolio management for hospitality lending specialists.', 'expert', '/src/assets/business-meeting.jpg', true, 402);
