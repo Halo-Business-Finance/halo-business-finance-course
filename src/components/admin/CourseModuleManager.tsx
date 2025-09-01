@@ -25,11 +25,14 @@ interface CourseModule {
   lessons_count: number;
   order_index: number;
   is_active: boolean | null;
-  topics: string[] | null;
+  topics?: string[] | null;
   course_id: string;
-  status: string | null;
+  status?: string | null;
   created_at: string | null;
   updated_at: string | null;
+  module_id?: string;
+  skill_level?: string;
+  table_source?: string;
 }
 
 export function CourseModuleManager() {
@@ -269,31 +272,23 @@ export function CourseModuleManager() {
   const getModuleCategory = (courseId: string) => {
     const id = courseId.toLowerCase();
     
-    // Loan Originator - Front-end sales and client-facing activities
-    if (id.includes('business-acquisition') || id.includes('client-relationship') || 
-        id.includes('sales') || id.includes('lead-generation') || 
-        id.includes('prospecting') || id.includes('marketing') ||
-        id.includes('presentation') || id.includes('networking')) {
-      return 'loan-originator';
-    } 
-    
-    // Loan Processing - Middle operations and documentation
-    else if (id.includes('application-processing') || id.includes('documentation') || 
-             id.includes('verification') || id.includes('compliance') ||
-             id.includes('workflow') || id.includes('administration') ||
-             id.includes('processing') || id.includes('closing')) {
-      return 'loan-processing';
-    } 
-    
-    // Loan Underwriting - Risk assessment and decision making  
-    else if (id.includes('risk') || id.includes('credit') || id.includes('analysis') ||
-             id.includes('underwriting') || id.includes('assessment') ||
-             id.includes('evaluation') || id.includes('financial-analysis') ||
-             id.includes('due-diligence') || id.includes('portfolio')) {
+    // Loan Underwriting - Risk assessment and decision making (most specific first)
+    if (id.includes('underwriting') || id.includes('credit-analysis') || 
+        id.includes('risk-assessment') || id.includes('financial-analysis') ||
+        id.includes('due-diligence')) {
       return 'loan-underwriting';
     } 
     
-    // Default to loan-originator for modules that don't clearly fit other categories
+    // Loan Processing - Middle operations and documentation  
+    else if (id.includes('loan-processing') || id.includes('application-processing') || 
+             id.includes('documentation') || id.includes('verification') || 
+             id.includes('workflow') || id.includes('administration') ||
+             id.includes('closing')) {
+      return 'loan-processing';
+    } 
+    
+    // Default everything else to loan-originator (including most processing/underwriting modules)
+    // This includes modules with names like "sba-loan-processing" which are loan originator focused
     else {
       return 'loan-originator';
     }
