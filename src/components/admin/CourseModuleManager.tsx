@@ -11,11 +11,12 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users, GraduationCap, Building, Landmark, TrendingUp } from "lucide-react";
+import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users, GraduationCap, Building, Landmark, TrendingUp, Database } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useModules } from "@/hooks/useModules";
 import { useCourses } from "@/hooks/useCourses";
 import { supabase } from "@/integrations/supabase/client";
+import { migrateCourseDataToSupabase } from "@/utils/migrateCourseData";
 
 interface CourseModule {
   id: string;
@@ -37,6 +38,7 @@ export function CourseModuleManager() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
   const [loading, setLoading] = useState(true);
+  const [migrating, setMigrating] = useState(false);
   const [activeTab, setActiveTab] = useState("loan-originator");
   const { courses } = useCourses();
   const { toast } = useToast();
@@ -86,6 +88,34 @@ export function CourseModuleManager() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMigration = async () => {
+    if (!confirm('This will import all 273 course modules from the static courseData. Continue?')) {
+      return;
+    }
+
+    try {
+      setMigrating(true);
+      await migrateCourseDataToSupabase();
+      
+      toast({
+        title: "Success",
+        description: "Course data migration completed successfully",
+      });
+      
+      // Reload modules after migration
+      loadModules();
+    } catch (error: any) {
+      console.error('Migration failed:', error);
+      toast({
+        title: "Migration Failed",
+        description: error?.message || "Failed to migrate course data",
+        variant: "destructive",
+      });
+    } finally {
+      setMigrating(false);
     }
   };
 
@@ -490,10 +520,30 @@ export function CourseModuleManager() {
                 Manage individual course modules organized by lending categories
               </CardDescription>
             </div>
-            <Button onClick={handleCreate}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Module
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleCreate}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Module
+              </Button>
+              <Button 
+                onClick={handleMigration} 
+                disabled={migrating}
+                variant="outline"
+                className="text-blue-600 border-blue-200"
+              >
+                {migrating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                    Migrating...
+                  </>
+                ) : (
+                  <>
+                    <Database className="h-4 w-4 mr-2" />
+                    Import Course Data (273 modules)
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
