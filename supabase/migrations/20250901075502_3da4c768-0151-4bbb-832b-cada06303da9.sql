@@ -1,0 +1,13 @@
+-- Add Bridge Loan Underwriting course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('bridge-loan-underwriting', 'Bridge Loan Underwriting', 'Specialized training on bridge loan underwriting including exit strategy analysis, property evaluation, borrower qualification, risk assessment, and underwriting criteria specific to transitional financing.', 'beginner', '/src/assets/business-meeting.jpg', true, 413);
+
+-- Add 7 course modules for Bridge Loan Underwriting
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('bridge-underwriting-module-1', 'bridge-loan-underwriting', 'Bridge Loan Underwriting Fundamentals', 'Introduction to bridge loan underwriting principles, risk assessment frameworks, and the unique underwriting challenges of short-term transitional financing.', '45 minutes', 1, 5, true),
+('bridge-underwriting-module-2', 'bridge-loan-underwriting', 'Exit Strategy Analysis', 'Critical evaluation of borrower exit strategies, refinancing feasibility, sale probability analysis, and timeline risk assessment for bridge loans.', '60 minutes', 2, 8, true),
+('bridge-underwriting-module-3', 'bridge-loan-underwriting', 'Property Evaluation and As-Is Value', 'Bridge loan property analysis, as-is valuation methods, improvement cost assessment, and after-repair value (ARV) calculations for transitional properties.', '55 minutes', 3, 7, true),
+('bridge-underwriting-module-4', 'bridge-loan-underwriting', 'Borrower Qualification and Experience', 'Bridge loan borrower evaluation criteria, experience requirements, liquidity analysis, and personal guarantee assessment for short-term lending.', '50 minutes', 4, 6, true),
+('bridge-underwriting-module-5', 'bridge-loan-underwriting', 'Cash Flow and Debt Service Analysis', 'Bridge loan cash flow underwriting, interest reserve calculations, debt service coverage during transition periods, and carrying cost analysis.', '60 minutes', 5, 8, true),
+('bridge-underwriting-module-6', 'bridge-loan-underwriting', 'Construction and Renovation Underwriting', 'Underwriting bridge loans with construction components, contractor evaluation, draw schedule analysis, and completion risk assessment.', '55 minutes', 6, 7, true),
+('bridge-underwriting-module-7', 'bridge-loan-underwriting', 'Risk Mitigation and Loan Structures', 'Bridge loan risk mitigation strategies, personal guarantees, cross-collateralization, and loan structure optimization for transitional financing.', '50 minutes', 7, 6, true);
