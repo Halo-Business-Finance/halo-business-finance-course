@@ -17,7 +17,9 @@ import { useModules } from "@/hooks/useModules";
 import { CourseImageEditor } from "./CourseImageEditor";
 import { CourseInstructorManager } from "./CourseInstructorManager";
 import { CourseModuleManager } from "./CourseModuleManager";
+import { AssociatedModulesView } from "./AssociatedModulesView";
 import { runMigration } from "@/utils/migrateCourseData";
+import { supabase } from "@/integrations/supabase/client";
 
 // Import course images to match the user dashboard
 import financeExpert1 from "@/assets/finance-expert-1.jpg";
@@ -192,6 +194,23 @@ export function CourseManager({}: CourseManagerProps) {
 
   const getCourseStats = (course: Course) => {
     return getModuleStats(course.id);
+  };
+
+  const getAssociatedModules = async (courseId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('course_modules')
+        .select('*')
+        .eq('course_id', courseId)
+        .eq('is_active', true)
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error loading associated modules:', error);
+      return [];
+    }
   };
 
   // Group courses by category (Loan Originator, Loan Processing, Loan Underwriting)
@@ -374,19 +393,22 @@ export function CourseManager({}: CourseManagerProps) {
         </CardContent>
       </Card>
 
-      {/* Course Details Modal */}
+      {/* Course Details Modal with Associated Modules */}
       {selectedCourse && (
         <Dialog open={!!selectedCourse} onOpenChange={() => setSelectedCourse(null)}>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{selectedCourse.title}</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                <GraduationCap className="h-5 w-5 text-primary" />
+                {selectedCourse.title}
+              </DialogTitle>
               <DialogDescription>{selectedCourse.description}</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div className="p-4 rounded-lg bg-muted">
                   <div className="text-2xl font-bold">{getModuleCount(selectedCourse)}</div>
-                  <div className="text-sm text-muted-foreground">Total Modules</div>
+                  <div className="text-sm text-muted-foreground">Legacy Modules</div>
                 </div>
                 <div className="p-4 rounded-lg bg-muted">
                   <div className="text-2xl font-bold">{getCourseStats(selectedCourse).completed}</div>
@@ -399,10 +421,11 @@ export function CourseManager({}: CourseManagerProps) {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">Course Modules</h4>
-                <div className="text-center py-4 text-muted-foreground">
-                  Module details will be displayed here when modules are loaded from the database.
-                </div>
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Layers className="h-4 w-4" />
+                  Associated Course Modules
+                </h4>
+                <AssociatedModulesView courseId={selectedCourse.id} />
               </div>
             </div>
           </DialogContent>

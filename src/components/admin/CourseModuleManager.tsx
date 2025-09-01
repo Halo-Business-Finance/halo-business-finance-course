@@ -10,9 +10,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users } from "lucide-react";
+import { BookOpen, Plus, Edit, Trash2, Play, Lock, Unlock, Clock, Users, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useModules } from "@/hooks/useModules";
+import { useCourses } from "@/hooks/useCourses";
 import { supabase } from "@/integrations/supabase/client";
 
 interface CourseModule {
@@ -27,6 +28,7 @@ interface CourseModule {
   is_active: boolean;
   public_preview: boolean;
   prerequisites?: string[];
+  course_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -36,6 +38,7 @@ export function CourseModuleManager() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
   const [loading, setLoading] = useState(true);
+  const { courses } = useCourses();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -49,6 +52,7 @@ export function CourseModuleManager() {
     is_active: true,
     public_preview: false,
     prerequisites: [] as string[],
+    course_id: "",
   });
 
   useEffect(() => {
@@ -60,7 +64,13 @@ export function CourseModuleManager() {
       setLoading(true);
       const { data, error } = await supabase
         .from('course_modules')
-        .select('*')
+        .select(`
+          *,
+          courses:course_id (
+            id,
+            title
+          )
+        `)
         .order('order_index', { ascending: true });
 
       if (error) throw error;
@@ -89,6 +99,7 @@ export function CourseModuleManager() {
       is_active: true,
       public_preview: false,
       prerequisites: [],
+      course_id: "",
     });
   };
 
@@ -111,6 +122,7 @@ export function CourseModuleManager() {
       is_active: module.is_active,
       public_preview: module.public_preview,
       prerequisites: module.prerequisites || [],
+      course_id: module.course_id || "",
     });
     setShowAddDialog(true);
   };
@@ -140,6 +152,7 @@ export function CourseModuleManager() {
             is_active: formData.is_active,
             public_preview: formData.public_preview,
             prerequisites: formData.prerequisites,
+            course_id: formData.course_id || null,
           })
           .eq('id', editingModule.id);
 
@@ -164,6 +177,7 @@ export function CourseModuleManager() {
             is_active: formData.is_active,
             public_preview: formData.public_preview,
             prerequisites: formData.prerequisites,
+            course_id: formData.course_id || null,
           });
 
         if (error) throw error;
@@ -289,6 +303,7 @@ export function CourseModuleManager() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Module</TableHead>
+                  <TableHead>Course Program</TableHead>
                   <TableHead>Skill Level</TableHead>
                   <TableHead>Duration</TableHead>
                   <TableHead>Lessons</TableHead>
@@ -311,6 +326,25 @@ export function CourseModuleManager() {
                           </div>
                         )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {module.course_id ? (
+                        <div className="flex items-center gap-2">
+                          <GraduationCap className="h-4 w-4 text-primary" />
+                          <div>
+                            <div className="font-medium text-sm">
+                              {courses.find(c => c.id === module.course_id)?.title || module.course_id}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {module.course_id}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <Badge variant="outline" className="text-muted-foreground">
+                          Unassigned
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell>
                       {getSkillLevelBadge(module.skill_level)}
@@ -458,6 +492,29 @@ export function CourseModuleManager() {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="grid gap-2">
+                <Label htmlFor="course-program">Course Program</Label>
+                <Select
+                  value={formData.course_id}
+                  onValueChange={(value) =>
+                    setFormData(prev => ({ ...prev, course_id: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select course program (optional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">No Course Program</SelectItem>
+                    {courses.map((course) => (
+                      <SelectItem key={course.id} value={course.id}>
+                        {course.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="duration">Duration</Label>
                 <Input
