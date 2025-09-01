@@ -14,6 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
+      adaptive_module_instances: {
+        Row: {
+          adaptive_module_id: string | null
+          adaptive_path: Json
+          completed_at: string | null
+          completion_status: string
+          course_id: string
+          created_at: string | null
+          current_difficulty_level: string
+          id: string
+          last_accessed_at: string | null
+          performance_metrics: Json
+          personalized_content: Json
+          progress_percentage: number | null
+          time_spent_minutes: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          adaptive_module_id?: string | null
+          adaptive_path?: Json
+          completed_at?: string | null
+          completion_status?: string
+          course_id: string
+          created_at?: string | null
+          current_difficulty_level?: string
+          id?: string
+          last_accessed_at?: string | null
+          performance_metrics?: Json
+          personalized_content?: Json
+          progress_percentage?: number | null
+          time_spent_minutes?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          adaptive_module_id?: string | null
+          adaptive_path?: Json
+          completed_at?: string | null
+          completion_status?: string
+          course_id?: string
+          created_at?: string | null
+          current_difficulty_level?: string
+          id?: string
+          last_accessed_at?: string | null
+          performance_metrics?: Json
+          personalized_content?: Json
+          progress_percentage?: number | null
+          time_spent_minutes?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adaptive_module_instances_adaptive_module_id_fkey"
+            columns: ["adaptive_module_id"]
+            isOneToOne: false
+            referencedRelation: "adaptive_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      adaptive_modules: {
+        Row: {
+          adaptive_content: Json
+          assessment_criteria: Json
+          base_duration: string
+          created_at: string | null
+          description: string
+          difficulty_level: string
+          id: string
+          is_active: boolean | null
+          learning_objectives: Json
+          module_key: string
+          module_type: string
+          order_index: number
+          prerequisites: Json
+          skills_taught: Json
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          adaptive_content?: Json
+          assessment_criteria?: Json
+          base_duration?: string
+          created_at?: string | null
+          description: string
+          difficulty_level?: string
+          id?: string
+          is_active?: boolean | null
+          learning_objectives?: Json
+          module_key: string
+          module_type?: string
+          order_index: number
+          prerequisites?: Json
+          skills_taught?: Json
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          adaptive_content?: Json
+          assessment_criteria?: Json
+          base_duration?: string
+          created_at?: string | null
+          description?: string
+          difficulty_level?: string
+          id?: string
+          is_active?: boolean | null
+          learning_objectives?: Json
+          module_key?: string
+          module_type?: string
+          order_index?: number
+          prerequisites?: Json
+          skills_taught?: Json
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       admin_audit_log: {
         Row: {
           action: string
@@ -4253,6 +4372,10 @@ export type Database = {
       has_any_role: {
         Args: { roles: string[] }
         Returns: boolean
+      }
+      initialize_adaptive_modules_for_user: {
+        Args: { p_course_id: string; p_user_id: string }
+        Returns: undefined
       }
       is_admin: {
         Args: { check_user_id?: string }
