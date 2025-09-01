@@ -1,0 +1,13 @@
+-- Add Agriculture Loan Processing course (using 'beginner' as level since it's a single course)
+INSERT INTO courses (id, title, description, level, image_url, is_active, order_index) VALUES
+('agriculture-loan-processing', 'Agriculture Loan Processing', 'Comprehensive training on agricultural lending including farm operations financing, crop loans, livestock financing, equipment loans, and government-backed agricultural lending programs.', 'beginner', '/src/assets/business-meeting.jpg', true, 407);
+
+-- Add 7 course modules for Agriculture Loan Processing
+INSERT INTO course_content_modules (id, course_id, title, description, duration, order_index, lessons_count, is_active) VALUES
+('agriculture-module-1', 'agriculture-loan-processing', 'Agricultural Lending Fundamentals', 'Introduction to agricultural lending, farm credit systems, seasonal lending cycles, and the unique characteristics of agricultural borrowers.', '45 minutes', 1, 5, true),
+('agriculture-module-2', 'agriculture-loan-processing', 'Farm Financial Analysis', 'Farm financial statement analysis, cash flow projections, enterprise budgeting, and agricultural accounting principles for lending decisions.', '60 minutes', 2, 8, true),
+('agriculture-module-3', 'agriculture-loan-processing', 'Crop and Livestock Financing', 'Operating loans for crop production, livestock financing, seasonal credit lines, and commodity-based lending structures.', '55 minutes', 3, 7, true),
+('agriculture-module-4', 'agriculture-loan-processing', 'Equipment and Real Estate Financing', 'Farm equipment loans, land acquisition financing, farm real estate appraisals, and collateral evaluation for agricultural properties.', '50 minutes', 4, 6, true),
+('agriculture-module-5', 'agriculture-loan-processing', 'Government Programs and FSA Lending', 'USDA programs, Farm Service Agency (FSA) guaranteed loans, conservation programs, and government-backed agricultural lending options.', '55 minutes', 5, 7, true),
+('agriculture-module-6', 'agriculture-loan-processing', 'Risk Management and Insurance', 'Agricultural risk assessment, crop insurance programs, weather-related risks, commodity price volatility, and risk mitigation strategies.', '50 minutes', 6, 6, true),
+('agriculture-module-7', 'agriculture-loan-processing', 'Portfolio Management and Collections', 'Agricultural loan servicing, seasonal payment structures, farm succession planning, and specialized collection procedures for agricultural loans.', '50 minutes', 7, 6, true);
