@@ -20,136 +20,36 @@ interface MultiLevelCourseFilterProps {
   totalCount: number;
 }
 
-// Three-level hierarchy: Course Programs → User Levels → Individual Modules
+// Three-level hierarchy: Course Categories → Course Types → Individual Modules
 const coursePrograms: CategoryLevel[] = [
   {
-    id: "sba-7a-loans",
-    name: "SBA 7(a) Loans",
-    count: 21,
+    id: "loan-originator",
+    name: "Loan Originator",
+    count: 0, // Will be populated dynamically based on actual courses
+    subcategories: []
+  },
+  {
+    id: "loan-processing",
+    name: "Loan Processing",
+    count: 4, // Current count based on existing courses
     subcategories: [
-      { id: "sba-7a-loans-beginner", name: "Beginner Level", count: 7 },
-      { id: "sba-7a-loans-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "sba-7a-loans-expert", name: "Expert Level", count: 7 }
+      { id: "equipment-loan-processing", name: "Equipment Loan Processing", count: 7 },
+      { id: "bridge-loan-processing", name: "Bridge Loan Processing", count: 7 },
+      { id: "agriculture-loan-processing", name: "Agriculture Loan Processing", count: 7 },
+      { id: "apartment-multifamily-processing", name: "Apartment & Multi-Family Loan Processing", count: 7 }
     ]
   },
   {
-    id: "sba-express",
-    name: "SBA Express Loans", 
-    count: 21,
+    id: "loan-underwriting",
+    name: "Loan Underwriting",
+    count: 6, // Current count based on existing courses
     subcategories: [
-      { id: "sba-express-beginner", name: "Beginner Level", count: 7 },
-      { id: "sba-express-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "sba-express-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "commercial-real-estate",
-    name: "Commercial Real Estate Financing",
-    count: 21,
-    subcategories: [
-      { id: "commercial-real-estate-beginner", name: "Beginner Level", count: 7 },
-      { id: "commercial-real-estate-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "commercial-real-estate-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "equipment-financing",
-    name: "Equipment Financing",
-    count: 21,
-    subcategories: [
-      { id: "equipment-financing-beginner", name: "Beginner Level", count: 7 },
-      { id: "equipment-financing-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "equipment-financing-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "business-lines-credit",
-    name: "Business Lines of Credit",
-    count: 21,
-    subcategories: [
-      { id: "business-lines-credit-beginner", name: "Beginner Level", count: 7 },
-      { id: "business-lines-credit-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "business-lines-credit-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "invoice-factoring",
-    name: "Invoice Factoring",
-    count: 21,
-    subcategories: [
-      { id: "invoice-factoring-beginner", name: "Beginner Level", count: 7 },
-      { id: "invoice-factoring-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "invoice-factoring-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "merchant-cash-advances",
-    name: "Merchant Cash Advances",
-    count: 21,
-    subcategories: [
-      { id: "merchant-cash-advances-beginner", name: "Beginner Level", count: 7 },
-      { id: "merchant-cash-advances-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "merchant-cash-advances-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "asset-based-lending",
-    name: "Asset-Based Lending",
-    count: 21,
-    subcategories: [
-      { id: "asset-based-lending-beginner", name: "Beginner Level", count: 7 },
-      { id: "asset-based-lending-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "asset-based-lending-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "construction-loans",
-    name: "Construction Loans",
-    count: 21,
-    subcategories: [
-      { id: "construction-loans-beginner", name: "Beginner Level", count: 7 },
-      { id: "construction-loans-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "construction-loans-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "franchise-financing",
-    name: "Franchise Financing",
-    count: 21,
-    subcategories: [
-      { id: "franchise-financing-beginner", name: "Beginner Level", count: 7 },
-      { id: "franchise-financing-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "franchise-financing-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "working-capital",
-    name: "Working Capital Loans",
-    count: 21,
-    subcategories: [
-      { id: "working-capital-beginner", name: "Beginner Level", count: 7 },
-      { id: "working-capital-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "working-capital-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "healthcare-financing",
-    name: "Healthcare Financing",
-    count: 21,
-    subcategories: [
-      { id: "healthcare-financing-beginner", name: "Beginner Level", count: 7 },
-      { id: "healthcare-financing-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "healthcare-financing-expert", name: "Expert Level", count: 7 }
-    ]
-  },
-  {
-    id: "restaurant-financing",
-    name: "Restaurant Financing",
-    count: 21,
-    subcategories: [
-      { id: "restaurant-financing-beginner", name: "Beginner Level", count: 7 },
-      { id: "restaurant-financing-intermediate", name: "Intermediate Level", count: 7 },
-      { id: "restaurant-financing-expert", name: "Expert Level", count: 7 }
+      { id: "sba-loan-underwriting", name: "SBA Loan Underwriting", count: 7 },
+      { id: "construction-loan-underwriting", name: "Construction Loan Underwriting", count: 7 },
+      { id: "usda-loan-underwriting", name: "USDA Loan Underwriting", count: 7 },
+      { id: "equipment-finance-loan-underwriting", name: "Equipment Finance Loan Underwriting", count: 7 },
+      { id: "bridge-loan-underwriting", name: "Bridge Loan Underwriting", count: 7 },
+      { id: "commercial-loan-underwriting", name: "Commercial Loan Underwriting", count: 7 }
     ]
   }
 ];
@@ -209,9 +109,9 @@ const FilterContent = ({
 
   const getCurrentTitle = () => {
     if (currentLevel === 0) {
-      return "Loan Program Categories";
+      return "Course Categories";
     } else if (currentLevel === 1) {
-      return `${navigationPath[0]?.name} - User Levels`;
+      return `${navigationPath[0]?.name} - Course Types`;
     } else {
       return `${navigationPath[0]?.name} - ${navigationPath[1]?.name} - Modules`;
     }
@@ -225,7 +125,7 @@ const FilterContent = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Layers className="h-4 w-4 text-primary" />
-          <h3 className="font-semibold text-base">Loan Program Filter</h3>
+          <h3 className="font-semibold text-base">Course Filter</h3>
         </div>
         <Button 
           variant="ghost" 
@@ -269,12 +169,12 @@ const FilterContent = ({
       <div className="space-y-2">
         <Label htmlFor="search" className="text-xs font-medium flex items-center gap-2">
           <Search className="h-3 w-3" />
-          Search Loan Programs
+          Search Courses
         </Label>
         <Input
           id="search"
           type="text"
-          placeholder="Search loan programs..."
+          placeholder="Search courses..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full"
@@ -333,7 +233,7 @@ const FilterContent = ({
       {selectedCategories.length > 0 && (
         <div className="pt-4 border-t">
           <div className="text-xs text-muted-foreground mb-2">
-            Selected Programs ({selectedCategories.length}):
+            Selected Courses ({selectedCategories.length}):
           </div>
           <div className="flex flex-wrap gap-1">
             {selectedCategories.map(categoryId => {
@@ -391,12 +291,12 @@ export function MultiLevelCourseFilter(props: MultiLevelCourseFilterProps) {
           <SheetTrigger asChild>
             <Button variant="outline" className="w-full">
               <SlidersHorizontal className="h-3 w-3 mr-2" />
-              <span className="text-xs">Loan Program Filter</span>
+              <span className="text-xs">Course Filter</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full sm:w-80 p-6 overflow-y-auto max-h-screen">
             <SheetHeader>
-              <SheetTitle>Loan Program Course Filter</SheetTitle>
+              <SheetTitle>Course Filter</SheetTitle>
             </SheetHeader>
             <div className="mt-6">
               <FilterContent {...props} onCloseSheet={() => setIsSheetOpen(false)} />

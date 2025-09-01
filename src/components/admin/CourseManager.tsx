@@ -33,7 +33,7 @@ import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
 interface CourseManagerProps {}
 
 export function CourseManager({}: CourseManagerProps) {
-  const { courses, loading, createCourse, updateCourse, deleteCourse, getCoursesByType } = useCourses();
+  const { courses, loading, createCourse, updateCourse, deleteCourse, getCoursesByCategory } = useCourses();
   const { getModuleStats } = useModules();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
@@ -175,8 +175,8 @@ export function CourseManager({}: CourseManagerProps) {
     return getModuleStats(course.id);
   };
 
-  // Group courses by type (remove skill level from title)
-  const courseTypes = getCoursesByType();
+  // Group courses by category (Loan Originator, Loan Processing, Loan Underwriting)
+  const courseCategories = getCoursesByCategory();
 
   return (
     <div className="space-y-6">
@@ -189,7 +189,7 @@ export function CourseManager({}: CourseManagerProps) {
                 Course Programs Management
               </CardTitle>
               <CardDescription>
-                Manage the 13 core course programs - each available in Beginner, Intermediate, and Expert levels
+                Manage course programs organized by Loan Originator, Loan Processing, and Loan Underwriting categories
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -210,24 +210,26 @@ export function CourseManager({}: CourseManagerProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {Object.entries(courseTypes).map(([courseType, courseLevels]) => (
-              <Card key={courseType} className="border-l-4 border-l-primary">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{courseType}</CardTitle>
-                      <CardDescription>
-                        {courseLevels.length} skill levels available
-                      </CardDescription>
+            {Object.entries(courseCategories).map(([categoryType, categoryData]) => {
+              const coursesInCategory = categoryData as Course[];
+              return (
+                <Card key={categoryType} className="border-l-4 border-l-primary">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{categoryType}</CardTitle>
+                        <CardDescription>
+                          {coursesInCategory.length} courses available
+                        </CardDescription>
+                      </div>
+                      <Badge variant="outline">
+                        {coursesInCategory.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
+                      </Badge>
                     </div>
-                    <Badge variant="outline">
-                      {courseLevels.reduce((sum, course) => sum + getModuleCount(course), 0)} modules total
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="grid gap-3">
-                    {courseLevels.map((course) => {
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="grid gap-3">
+                      {coursesInCategory.map((course) => {
                       const stats = getCourseStats(course);
                       return (
                         <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
@@ -312,10 +314,11 @@ export function CourseManager({}: CourseManagerProps) {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            );
+            })}
           </div>
 
-          {Object.keys(courseTypes).length === 0 && (
+          {Object.keys(courseCategories).length === 0 && (
             <div className="text-center py-8 text-muted-foreground">
               No courses found. Create your first course to get started.
             </div>

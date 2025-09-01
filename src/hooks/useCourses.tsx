@@ -173,7 +173,28 @@ export const useCourses = () => {
     }
   };
 
-  // Get courses grouped by type (removing skill level from title)
+  // Get courses grouped by category (Loan Originator, Loan Processing, Loan Underwriting)
+  const getCoursesByCategory = () => {
+    return courses.reduce((acc, course) => {
+      let category = 'Loan Originator'; // Default category
+      
+      if (course.title.toLowerCase().includes('processing')) {
+        category = 'Loan Processing';
+      } else if (course.title.toLowerCase().includes('underwriting')) {
+        category = 'Loan Underwriting';
+      } else if (course.title.toLowerCase().includes('originator') || course.title.toLowerCase().includes('origination')) {
+        category = 'Loan Originator';
+      }
+      
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(course);
+      return acc;
+    }, {} as Record<string, Course[]>);
+  };
+
+  // Get courses grouped by type (removing skill level from title) - kept for backward compatibility
   const getCoursesByType = () => {
     return courses.reduce((acc, course) => {
       const baseTitle = course.title.replace(/ - (Beginner|Intermediate|Expert)$/, '');
@@ -208,6 +229,7 @@ export const useCourses = () => {
     updateCourse,
     deleteCourse,
     getCoursesByType,
+    getCoursesByCategory,
     getCourseTypes,
   };
 };
