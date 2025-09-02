@@ -26,7 +26,8 @@ import { useLearningStats } from "@/hooks/useLearningStats";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft, Sparkles } from "lucide-react";
+import { generateAllCourseImages } from "@/utils/generateCourseImages";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -320,6 +321,17 @@ const Dashboard = () => {
                 {currentFilterLevel === 1 && "2 Skill Levels Available"}
                 {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
               </h3>
+              {currentFilterLevel === 0 && (
+                <Button
+                  onClick={generateAllCourseImages}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Regenerate Images
+                </Button>
+              )}
             </div>
 
             {loading ? (
