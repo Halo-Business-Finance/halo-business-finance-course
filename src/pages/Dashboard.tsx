@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSecureAuth } from '@/hooks/useSecureAuth';
-import ModuleCard from "@/components/ModuleCard"; // Default export
+import ModuleCard from "@/components/ModuleCard";
 import PublicModuleCard from "@/components/PublicModuleCard";
 import { EnhancedModuleCard } from "@/components/EnhancedModuleCard";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
@@ -15,21 +15,15 @@ import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
 import InstructorInfo from "@/components/InstructorInfo";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
-
 import { InteractiveLearningPath } from "@/components/InteractiveLearningPath";
-
-
-
-
-
-
 import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
-
 import { LiveLearningStats } from "@/components/LiveLearningStats";
-import { courseData, statsData } from "@/data/courseData";
 import { useCourses } from "@/hooks/useCourses";
+import { useModules } from "@/hooks/useModules";
+import { useLearningStats } from "@/hooks/useLearningStats";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
@@ -50,87 +44,55 @@ const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
   const { setSelectedCourse } = useCourseSelection();
   const { courses: databaseCourses, loading: coursesLoading } = useCourses();
+  const { modules: databaseModules, loading: modulesLoading } = useModules();
+  const { dashboardStats, loading: statsLoading } = useLearningStats(user?.id);
+  const { 
+    moduleProgress, 
+    loading: progressLoading,
+    startModule,
+    completeModule,
+    isModuleUnlocked,
+    getOverallProgress,
+    getCompletedModulesCount
+  } = useCourseProgress(user?.id);
   const { toast } = useToast();
-  const [modules, setModules] = useState(courseData.allCourses.flatMap(course => course.modules));
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
-  const [allCourses, setAllCourses] = useState(courseData.allCourses);
-  const [userProgress, setUserProgress] = useState({});
-  const [moduleProgress, setModuleProgress] = useState<Record<string, {completed: boolean, current: boolean}>>({});
-  const [loading, setLoading] = useState(false);
   const [currentFilterLevel, setCurrentFilterLevel] = useState(0);
   const [filterNavigationPath, setFilterNavigationPath] = useState<any[]>([]);
   const [selectedCourseProgram, setSelectedCourseProgram] = useState<string | null>(null);
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
   const [renderKey, setRenderKey] = useState(0);
 
-  useEffect(() => {
-    if (user) {
-      fetchUserProgress();
-    }
-  }, [user]);
+  // Combine courses with their modules from database
+  const coursesWithModules = databaseCourses.map(course => {
+    const courseModules = databaseModules.filter(module => 
+      module.course_id === course.id && module.is_active
+    );
+    return {
+      ...course,
+      modules: courseModules
+    };
+  });
 
-  // Update courses when database courses are loaded
-  useEffect(() => {
-    if (databaseCourses && databaseCourses.length > 0) {
-      // Convert database courses to the expected format
-      const convertedCourses = databaseCourses.map(dbCourse => ({
-        id: dbCourse.id,
-        title: dbCourse.title,
-        description: dbCourse.description,
-        level: dbCourse.level as "beginner" | "expert",
-        modules: [], // We'll populate modules from course_modules table later
-        imageUrl: dbCourse.image_url || undefined
-      }));
-      setAllCourses(convertedCourses);
-      
-      // Also update the flattened modules
-      const flatModules = convertedCourses.flatMap(course => course.modules);
-      setModules(flatModules);
-    } else {
-      // Fallback to static data if no database courses
-      setAllCourses(courseData.allCourses);
-      setModules(courseData.allCourses.flatMap(course => course.modules));
-    }
-  }, [databaseCourses]);
-
-  // Convert courses to module format for display
-  const flattenedModules = allCourses.flatMap(course => 
+  // Create flattened modules for filtering and display
+  const flattenedModules = coursesWithModules.flatMap(course => 
     course.modules.map(module => ({
       ...module,
       course_title: course.title,
       course_level: course.level,
-      skill_level: course.level
+      skill_level: course.level,
+      // Map database fields to expected format
+      id: module.id,
+      title: module.title,
+      description: module.description,
+      duration: module.duration,
+      lessons: module.lessons_count,
+      order: module.order_index
     }))
   );
 
-  const fetchUserProgress = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("course_progress")
-        .select("*")
-        .eq("user_id", user.id);
-
-      if (error) throw error;
-      
-      const progressMap = {};
-      const moduleProgressMap = {};
-      
-      data?.forEach(progress => {
-        progressMap[progress.module_id] = progress.progress_percentage;
-        moduleProgressMap[progress.module_id] = {
-          completed: progress.progress_percentage === 100,
-          current: progress.progress_percentage > 0 && progress.progress_percentage < 100
-        };
-      });
-      
-      setUserProgress(progressMap);
-      setModuleProgress(moduleProgressMap);
-    } catch (error) {
-      console.error("Error fetching progress:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Get loading state
+  const loading = coursesLoading || modulesLoading || progressLoading;
 
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
@@ -199,20 +161,11 @@ const Dashboard = () => {
     }
   };
 
-  // Function to determine if a module is unlocked
-  const isModuleUnlocked = (moduleIndex: number, modules: any[]) => {
-    if (moduleIndex === 0) return true; // First module is always unlocked
-    
-    const previousModule = modules[moduleIndex - 1];
-    return moduleProgress[previousModule.id]?.completed || false;
-  };
+  // Module unlocked check is now handled by the hook
 
   // Function to start a course module
   const handleStartCourseModule = async (moduleId: string) => {
-    console.log('handleStartCourseModule called with:', moduleId);
-    
     if (!user?.id) {
-      console.error('User not authenticated or user.id missing');
       toast({
         title: "Authentication Error",
         description: "Please refresh the page and try again.",
@@ -220,87 +173,26 @@ const Dashboard = () => {
       });
       return;
     }
-    
-    try {
-      console.log('Updating database for user:', user.id, 'module:', moduleId);
-      
-      // Update progress in database
-      const { error } = await supabase
-        .from("course_progress")
-        .upsert({
-          user_id: user.id,
-          module_id: moduleId,
-          progress_percentage: 10, // Mark as started
-          course_id: 'halo-launch-pad-learn'
-        });
 
-      if (error) {
-        console.error('Database error:', error);
-        throw error;
-      }
-
-      console.log('Database updated successfully');
-
-      // Update local state
-      setModuleProgress(prev => ({
-        ...prev,
-        [moduleId]: { completed: false, current: true }
-      }));
-
-      console.log('Local state updated');
-
+    const success = await startModule(moduleId);
+    if (success) {
       toast({
         title: "Module Started",
         description: "You've started this learning module!",
       });
-
-      // Navigate to module details
       handleModuleStart(moduleId);
-    } catch (error) {
-      console.error("Error starting module:", error);
-      toast({
-        title: "Error",
-        description: "Failed to start module. Please try again.",
-        variant: "destructive"
-      });
     }
   };
 
   // Function to complete a module and unlock the next one
   const handleCompleteModule = async (moduleId: string, moduleIndex: number, totalModules: number) => {
-    try {
-      // Update progress in database
-      const { error } = await supabase
-        .from("course_progress")
-        .upsert({
-          user_id: user.id,
-          module_id: moduleId,
-          progress_percentage: 100,
-          completed_at: new Date().toISOString(),
-          course_id: 'halo-launch-pad-learn'
-        });
-
-      if (error) throw error;
-
-      // Update local state
-      setModuleProgress(prev => ({
-        ...prev,
-        [moduleId]: { completed: true, current: false }
-      }));
-
+    const success = await completeModule(moduleId);
+    if (success) {
       toast({
         title: "Module Completed!",
         description: moduleIndex < totalModules - 1 
           ? "Next module unlocked!"
           : "Course completed! Congratulations!",
-      });
-
-    } catch (error) {
-      console.error("Error completing module:", error);
-      toast({
-        title: "Error",
-        description: "Failed to complete module. Please try again.",
-        variant: "destructive"
       });
     }
   };
@@ -331,59 +223,14 @@ const Dashboard = () => {
     window.location.href = `/module/${moduleId}`;
   };
 
-  // Function to get comprehensive course details
-  const getCourseDetails = (courseName: string) => {
-    const courseDetailsMap = {
-      "SBA 7(a) Loans": {
-        description: "Government-backed lending with favorable terms and flexible qualification requirements",
-        duration: "8-12 weeks",
-        difficulty: "Intermediate",
-        topics: ["Loan Eligibility", "Underwriting Process", "SBA Guidelines", "Risk Assessment", "Documentation", "Portfolio Management"],
-        outcome: "Master SBA 7(a) loan processing from application to closing"
-      },
-      "SBA Express Loans": {
-        description: "Fast-track SBA financing with streamlined processing and quick approvals",
-        duration: "6-8 weeks", 
-        difficulty: "Beginner to Intermediate",
-        topics: ["Express Processing", "Quick Approvals", "Risk Assessment", "Compliance", "Portfolio Optimization"],
-        outcome: "Efficiently process SBA Express loans with speed and accuracy"
-      },
-      "Commercial Real Estate Financing": {
-        description: "Property acquisition and development funding for commercial real estate",
-        duration: "10-14 weeks",
-        difficulty: "Advanced",
-        topics: ["Property Analysis", "Market Valuation", "Construction Loans", "Investment Analysis", "Risk Mitigation"],
-        outcome: "Structure complex commercial real estate financing deals"
-      },
-      "Equipment Financing": {
-        description: "Asset-based lending solutions for machinery, vehicles, and business equipment",
-        duration: "6-8 weeks",
-        difficulty: "Intermediate", 
-        topics: ["Asset Valuation", "Depreciation Analysis", "Lease vs Buy", "Security Interests", "Collection Strategies"],
-        outcome: "Evaluate and finance equipment purchases effectively"
-      },
-      "Business Lines of Credit": {
-        description: "Flexible revolving credit facilities for working capital and cash flow management",
-        duration: "8-10 weeks",
-        difficulty: "Intermediate",
-        topics: ["Credit Analysis", "Borrowing Base", "Covenant Structure", "Monitoring", "Risk Management"],
-        outcome: "Structure and manage revolving credit facilities"
-      },
-      "Invoice Factoring": {
-        description: "Immediate cash flow solutions through accounts receivable financing",
-        duration: "4-6 weeks",
-        difficulty: "Beginner",
-        topics: ["A/R Analysis", "Credit Risk", "Factor Agreements", "Collection Process", "Client Relations"],
-        outcome: "Implement factoring solutions for immediate cash flow"
-      }
-    };
-    
-    return courseDetailsMap[courseName] || {
-      description: "Comprehensive training program with practical applications",
-      duration: "6-8 weeks",
-      difficulty: "Intermediate", 
-      topics: ["Core Concepts", "Practical Applications", "Risk Management", "Best Practices"],
-      outcome: "Master essential skills for professional success"
+  // Get course details from database or fallback
+  const getCourseDetails = (course: any) => {
+    return {
+      description: course.description || "Comprehensive training program with practical applications",
+      duration: "6-8 weeks", // Could be added to database later
+      difficulty: course.level === 'beginner' ? 'Beginner' : 'Expert',
+      topics: course.modules?.flatMap(m => m.topics || []).slice(0, 6) || ["Core Concepts", "Practical Applications"],
+      outcome: `Master ${course.title} with professional expertise`
     };
   };
 
@@ -430,9 +277,9 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader 
-        progress={75}
+        progress={getOverallProgress()}
         totalModules={flattenedModules.length}
-        completedModules={Math.floor(flattenedModules.length * 0.75)}
+        completedModules={getCompletedModulesCount()}
         onContinueLearning={() => setCurrentFilterLevel(0)}
       />
 
@@ -444,11 +291,11 @@ const Dashboard = () => {
           <div className="flex-1 min-w-0">
             {/* Results Summary */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-                               <h3 className="text-xl font-semibold">
-                 {currentFilterLevel === 0 && `${allCourses.length > 0 ? Math.ceil(allCourses.length / 2) : 0} Course Programs Available`}
-                 {currentFilterLevel === 1 && "2 Skill Levels Available"}
-                 {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
-               </h3>
+              <h3 className="text-xl font-semibold">
+                {currentFilterLevel === 0 && `${coursesWithModules.length > 0 ? Math.ceil(coursesWithModules.length / 2) : 0} Course Programs Available`}
+                {currentFilterLevel === 1 && "2 Skill Levels Available"}
+                {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
+              </h3>
             </div>
 
             {loading ? (
@@ -471,8 +318,8 @@ const Dashboard = () => {
                           <div className="bg-muted rounded-lg h-64" />
                         </div>
                       ))
-                    ) : allCourses.length > 0 ? (
-                      allCourses
+                    ) : coursesWithModules.length > 0 ? (
+                      coursesWithModules
                         .filter((course, index, self) => 
                           index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
                         )
@@ -692,25 +539,27 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                       {filteredModules.map((module, index) => {
                         const isUnlocked = isModuleUnlocked(index, filteredModules);
-                        const moduleProgress = userProgress[module.id] || 0;
+                        const currentProgress = moduleProgress[module.id];
+                        const progressPercentage = currentProgress?.progress_percentage || 0;
                         
                         return (
-          <EnhancedModuleCard
-            key={module.id}
-            module={{
-              ...module,
-              module_id: module.id, // Use the full module ID as is from database
-              lessons_count: parseInt(module.lessons.toString()) || 6,
-              order_index: index,
-              progress: moduleProgress,
-              is_completed: moduleProgress >= 100,
-              is_locked: !isUnlocked,
-              prerequisites: index > 0 ? [filteredModules[index - 1].title] : []
-            }}
+                          <EnhancedModuleCard
+                            key={module.id}
+                            module={{
+                              ...module,
+                              module_id: module.id,
+                              lessons_count: module.lessons_count,
+                              order_index: index,
+                              progress: progressPercentage,
+                              is_completed: currentProgress?.completed || false,
+                              is_locked: !isUnlocked,
+                              prerequisites: index > 0 ? [filteredModules[index - 1].title] : [],
+                              skill_level: (module.skill_level === 'none' ? 'beginner' : module.skill_level) as 'beginner' | 'expert'
+                            }}
                             userProgress={{
-                              completion_percentage: moduleProgress,
-                              is_completed: moduleProgress >= 100,
-                              time_spent_minutes: Math.floor(moduleProgress * 30 / 100) // Estimate based on progress
+                              completion_percentage: progressPercentage,
+                              is_completed: currentProgress?.completed || false,
+                              time_spent_minutes: Math.floor(progressPercentage * 30 / 100)
                             }}
                           />
                         );
@@ -737,9 +586,27 @@ const Dashboard = () => {
         </div>
 
         {/* Module Detail Modal */}
-        {selectedModule && (
+        {selectedModule && flattenedModules.find(m => m.id === selectedModule) && (
           <ModuleDetail
-            module={flattenedModules.find(m => m.id === selectedModule) || flattenedModules[0]}
+            module={{
+              ...flattenedModules.find(m => m.id === selectedModule)!,
+              // Add required properties for Module type
+              progress: moduleProgress[selectedModule]?.progress_percentage || 0,
+              loanExamples: [],
+              videos: [],
+              caseStudies: [],
+              scripts: [],
+              quiz: {
+                id: `quiz-${selectedModule}`,
+                moduleId: selectedModule,
+                title: `${flattenedModules.find(m => m.id === selectedModule)?.title} Assessment`,
+                description: "Complete this assessment to test your understanding",
+                questions: [],
+                passingScore: 80,
+                maxAttempts: 3,
+                timeLimit: 30
+              }
+            }}
             onClose={() => setSelectedModule(null)}
           />
         )}
