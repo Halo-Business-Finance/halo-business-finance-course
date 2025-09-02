@@ -45,7 +45,7 @@ All colors MUST be HSL.
     --navy-blue: 220 100% 20%;
     
     /* Course card theme */
-    --course-card-bg: 240 100% 25%; /* #000080 */
+    --course-card-bg: 221 100% 3%; /* #000510 */
     --course-card-foreground: 0 0% 100%;
     
     /* Navy blue shades for sidebar */
