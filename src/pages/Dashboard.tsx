@@ -369,13 +369,6 @@ const Dashboard = () => {
                               key={courseName} 
                               className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
                             >
-                              <div className="relative overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={getCourseImage(courseName)} 
-                                  alt={courseName}
-                                  className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
                               <CardHeader className="pb-2">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">

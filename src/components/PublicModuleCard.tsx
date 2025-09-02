@@ -77,16 +77,6 @@ const PublicModuleCard = ({
 
   return (
     <Card className="group hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-      {image && (
-        <div className="h-48 overflow-hidden">
-          <img 
-            src={image} 
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-      )}
-      
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between">
           <Badge 

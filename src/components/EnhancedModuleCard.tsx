@@ -51,16 +51,6 @@ export function EnhancedModuleCard({ module, userProgress, image }: EnhancedModu
     <Card className={`group transition-all duration-300 hover:shadow-lg overflow-hidden ${
       isLocked ? 'opacity-60 bg-muted/30' : 'hover:-translate-y-1'
     }`}>
-      {image && (
-        <div className="h-48 overflow-hidden">
-          <img 
-            src={image} 
-            alt={module.title}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-      )}
-      
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-2">

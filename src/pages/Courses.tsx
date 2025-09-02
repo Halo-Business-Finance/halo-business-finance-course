@@ -381,18 +381,6 @@ const Courses = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
                 {filteredCourses.map((course, index) => (
                   <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={getCourseImage(index)} 
-                        alt={course.title}
-                        className="w-full h-full object-cover object-center"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <Badge className={getLevelColor(course.level)}>
-                          {course.level}
-                        </Badge>
-                      </div>
-                    </div>
                     <CardContent className="p-6">
                       <CardTitle className="text-lg mb-2 line-clamp-2">{course.title}</CardTitle>
                       <CardDescription className="text-sm text-gray-900 mb-4 line-clamp-3">
