@@ -373,8 +373,7 @@ const Dashboard = () => {
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{courseName}</CardTitle>
-                                    <Badge variant="secondary" className="mt-2 mb-2 bg-accent text-accent-foreground">Course Program</Badge>
-                                    <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground">
+                                    <CardDescription className="line-clamp-3 mt-3 text-course-card-foreground">
                                       {getCourseDetails(courseName).description}
                                     </CardDescription>
                                   </div>
@@ -382,15 +381,12 @@ const Dashboard = () => {
                                 
                                 {/* Course Details Section - Exactly 3 Rows */}
                                 <div className="space-y-2 mt-4">
-                                  {/* Row 1: Duration and Difficulty */}
+                                  {/* Row 1: Duration */}
                                   <div className="flex items-center justify-between text-xs h-6">
                                     <div className="flex items-center gap-2">
                                       <Clock className="h-3 w-3 text-accent" />
                                       <span className="text-accent">{getCourseDetails(courseName).duration}</span>
                                     </div>
-                                    <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
-                                      {getCourseDetails(courseName).difficulty}
-                                    </Badge>
                                   </div>
                                   
                                   {/* Row 2: Key Topics */}
@@ -404,13 +400,8 @@ const Dashboard = () => {
                                     </div>
                                   </div>
                                   
-                                  {/* Row 3: Learning Outcome */}
-                                  <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
-                                     <div className="line-clamp-2">
-                                       <span className="font-medium text-course-card-foreground">Outcome: </span>
-                                       <span className="text-course-card-foreground">{getCourseDetails(courseName).outcome}</span>
-                                     </div>
-                                  </div>
+                                  {/* Row 3: Empty space */}
+                                  <div className="h-6"></div>
                                 </div>
 
                                 <div className="flex items-center gap-4 text-sm mt-3">
