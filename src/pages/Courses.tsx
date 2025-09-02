@@ -380,19 +380,19 @@ const Courses = () => {
               {/* Course Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
                 {filteredCourses.map((course, index) => (
-                  <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
+                  <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors bg-course-card text-course-card-foreground">
                     <CardContent className="p-6">
-                      <CardTitle className="text-lg mb-2 line-clamp-2">{course.title}</CardTitle>
-                      <CardDescription className="text-sm text-gray-900 mb-4 line-clamp-3">
+                      <CardTitle className="text-lg mb-2 line-clamp-2 text-course-card-foreground">{course.title}</CardTitle>
+                      <CardDescription className="text-sm text-course-card-foreground/90 mb-4 line-clamp-3">
                         {course.description}
                       </CardDescription>
                       
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center gap-4 text-sm text-course-card-foreground/70 mb-4">
                         <div className="flex items-center gap-1">
                           <BookOpen className="h-4 w-4" />
                           <span>{course.modules.length} modules</span>
                         </div>
-                         <Badge className={getLevelColor(course.level)}>
+                         <Badge className={`${getLevelColor(course.level)} bg-course-card-foreground text-course-card`}>
                            {course.level}
                          </Badge>
                       </div>

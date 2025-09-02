@@ -112,6 +112,10 @@ export default {
 					'900': 'hsl(var(--navy-900))',
 					'800': 'hsl(var(--navy-800))',
 					'700': 'hsl(var(--navy-700))'
+				},
+				'course-card': {
+					DEFAULT: 'hsl(var(--course-card-bg))',
+					foreground: 'hsl(var(--course-card-foreground))'
 				}
 			},
 			borderRadius: {
