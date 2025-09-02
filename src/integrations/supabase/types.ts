@@ -4400,6 +4400,10 @@ export type Database = {
         Args: { roles: string[] }
         Returns: boolean
       }
+      has_role_secure: {
+        Args: { check_role: string; check_user_id: string }
+        Returns: boolean
+      }
       initialize_adaptive_modules_for_user: {
         Args: { p_course_id: string; p_user_id: string }
         Returns: undefined
