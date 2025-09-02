@@ -4052,6 +4052,10 @@ export type Database = {
           title: string
         }[]
       }
+      get_current_user_role_safe: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_leads_secure: {
         Args: { access_justification?: string; include_full_pii?: boolean }
         Returns: {
@@ -4085,6 +4089,18 @@ export type Database = {
       get_profile_encryption_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      get_profile_safe: {
+        Args: { target_user_id: string }
+        Returns: {
+          company: string
+          created_at: string
+          email: string
+          location: string
+          name: string
+          phone: string
+          user_id: string
+        }[]
       }
       get_profiles_secure: {
         Args: {
@@ -4393,6 +4409,10 @@ export type Database = {
         Returns: boolean
       }
       is_authenticated: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_current_user_admin_safe: {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
