@@ -354,85 +354,92 @@ const Dashboard = () => {
                           <div className="bg-muted rounded-lg h-64" />
                         </div>
                       ))
-                    ) : coursesWithModules.length > 0 ? (
-                      coursesWithModules
-                        .filter((course, index, self) => 
-                          index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
-                        )
-                        .map((course, index) => {
-                          const courseName = course.title.split(' - ')[0];
-                          const courseModules = flattenedModules.filter(m => 
-                            m.course_title.toLowerCase().includes(courseName.toLowerCase())
-                          );
-                          return (
-                            <Card 
-                              key={courseName} 
-                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 bg-course-card text-course-card-foreground"
-                            >
-                              <CardHeader className="pb-2">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{courseName}</CardTitle>
-                                    <CardDescription className="line-clamp-3 mt-3 text-course-card-foreground">
-                                      {getCourseDetails(courseName).description}
-                                    </CardDescription>
-                                  </div>
-                                </div>
-                                
-                                {/* Course Details Section - Exactly 3 Rows */}
-                                <div className="space-y-2 mt-4">
-                                  {/* Row 1: Duration */}
-                                  <div className="flex items-center justify-between text-xs h-6">
-                                    <div className="flex items-center gap-2">
-                                      <Clock className="h-3 w-3 text-accent" />
-                                      <span className="text-accent">{getCourseDetails(courseName).duration}</span>
-                                    </div>
-                                  </div>
-                                  
-                                  {/* Row 2: Key Topics */}
-                                  <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
-                                    <div className="flex flex-wrap gap-1">
-                                       {getCourseDetails(courseName).topics.slice(0, 2).map((topic, topicIndex) => (
-                                         <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap border-course-card-foreground text-course-card-foreground">
-                                           {topic}
-                                         </Badge>
-                                       ))}
-                                    </div>
-                                  </div>
-                                  
-                                  {/* Row 3: Empty space */}
-                                  <div className="h-6"></div>
-                                </div>
-
-                                <div className="flex items-center gap-4 text-sm mt-3">
-                                   <div className="flex items-center gap-1 text-course-card-foreground">
-                                     <BookOpen className="h-4 w-4 text-course-card-foreground" />
-                                     <span>{courseModules.length} modules</span>
+                     ) : coursesWithModules.length > 0 ? (
+                       coursesWithModules
+                         .map((course, index) => {
+                           const courseModules = flattenedModules.filter(m => 
+                             m.course_title.toLowerCase().includes(course.title.toLowerCase())
+                           );
+                           return (
+                             <Card 
+                               key={course.id} 
+                               className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 bg-course-card text-course-card-foreground"
+                             >
+                               <CardHeader className="pb-2">
+                                 <div className="flex items-start justify-between">
+                                   <div className="flex-1">
+                                     <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{course.title}</CardTitle>
+                                     <Badge variant="secondary" className="mt-2 mb-2 bg-accent text-accent-foreground">
+                                       {course.level === 'beginner' ? 'Beginner Course' : 'Expert Course'}
+                                     </Badge>
+                                     <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground">
+                                       {course.description}
+                                     </CardDescription>
                                    </div>
+                                 </div>
+                                 
+                                 {/* Course Details Section - Exactly 3 Rows */}
+                                 <div className="space-y-2 mt-4">
+                                   {/* Row 1: Duration and Difficulty */}
+                                   <div className="flex items-center justify-between text-xs h-6">
+                                     <div className="flex items-center gap-2">
+                                       <Clock className="h-3 w-3 text-accent" />
+                                       <span className="text-accent">6-8 weeks</span>
+                                     </div>
+                                     <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
+                                       {course.level === 'beginner' ? 'Beginner' : 'Expert'}
+                                     </Badge>
+                                   </div>
+                                   
+                                   {/* Row 2: Key Topics */}
+                                   <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
+                                     <div className="flex flex-wrap gap-1">
+                                        {["Core Concepts", "Practical Applications"].map((topic, topicIndex) => (
+                                          <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap border-course-card-foreground text-course-card-foreground">
+                                            {topic}
+                                          </Badge>
+                                        ))}
+                                     </div>
+                                   </div>
+                                   
+                                   {/* Row 3: Learning Outcome */}
+                                   <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
+                                      <div className="line-clamp-2">
+                                        <span className="font-medium text-course-card-foreground">Outcome: </span>
+                                        <span className="text-course-card-foreground">Master {course.title.split(' - ')[0]} with professional expertise</span>
+                                      </div>
+                                   </div>
+                                 </div>
+
+                                 <div className="flex items-center gap-4 text-sm mt-3">
                                     <div className="flex items-center gap-1 text-course-card-foreground">
-                                      <Target className="h-4 w-4 text-course-card-foreground" />
-                                      <span>2 levels</span>
+                                      <BookOpen className="h-4 w-4 text-course-card-foreground" />
+                                      <span>{courseModules.length} modules</span>
                                     </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0">
-                                <Button 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Start Course button clicked for:', courseName);
-                                    handleStartCourse(courseName);
-                                  }}
-                                  className="w-full touch-manipulation"
-                                  variant="default"
-                                >
-                                  Start Course
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          );
-                        })
+                                     <div className="flex items-center gap-1 text-course-card-foreground">
+                                       <Target className="h-4 w-4 text-course-card-foreground" />
+                                       <span>{course.level} level</span>
+                                     </div>
+                                 </div>
+                               </CardHeader>
+                               <CardContent className="pt-0">
+                                 <Button 
+                                   type="button"
+                                   onClick={(e) => {
+                                     e.preventDefault();
+                                     e.stopPropagation();
+                                     console.log('Start Course button clicked for:', course.title);
+                                     handleStartCourseModule(course.modules[0]?.id);
+                                   }}
+                                   className="w-full touch-manipulation"
+                                   variant="default"
+                                 >
+                                   Start Learning
+                                 </Button>
+                               </CardContent>
+                             </Card>
+                           );
+                         })
                     ) : (
                       <div className="col-span-full text-center py-8">
                         <p className="text-muted-foreground">No courses available. Contact your administrator to add courses.</p>
