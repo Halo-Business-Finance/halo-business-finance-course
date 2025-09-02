@@ -24,6 +24,7 @@ import { supabase } from "@/integrations/supabase/client";
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
 import courseSbaExpress from "@/assets/course-sba-express.jpg";
+import courseSba504 from "@/assets/course-sba-504.jpg";
 import courseCommercialRealEstate from "@/assets/course-commercial-real-estate.jpg";
 import courseEquipmentFinancing from "@/assets/course-equipment-financing.jpg";
 import courseLinesOfCredit from "@/assets/course-lines-of-credit.jpg";
@@ -82,6 +83,8 @@ export function CourseManager({}: CourseManagerProps) {
       "SBA 7(a) Loans - Expert": courseSba7a,
       "SBA Express Loans - Beginner": courseSbaExpress,
       "SBA Express Loans - Expert": courseSbaExpress,
+      "SBA 504 Loans - Beginner": courseSba504,
+      "SBA 504 Loans - Expert": courseSba504,
       "SBA Loan Processing": courseSba7a,
       "SBA Loan Underwriting": courseSbaExpress,
       

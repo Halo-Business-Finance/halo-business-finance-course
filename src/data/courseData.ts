@@ -212,7 +212,7 @@ const createModules = (courseType: string, level: "beginner" | "expert"): Module
 export const courseData: CourseData = {
   totalProgress: 0,
   completedModules: 0,
-  totalModules: 182, // 13 course types x 2 levels x 7 modules each = 182 modules
+  totalModules: 196, // 14 course types x 2 levels x 7 modules each = 196 modules
   modules: [], // Will be populated below
   allCourses: [
     // SBA 7(a) Loans - Beginner and Expert only
@@ -245,6 +245,22 @@ export const courseData: CourseData = {
       description: "Expert SBA Express loan optimization and strategic portfolio management.",
       level: "expert",
       modules: createModules("SBA Express", "expert")
+    },
+
+    // SBA 504 Loans - Beginner and Expert only
+    {
+      id: "sba-504-loans-beginner",
+      title: "SBA 504 Loans - Beginner",
+      description: "Introduction to SBA 504 commercial real estate and equipment financing programs.",
+      level: "beginner",
+      modules: createModules("SBA 504", "beginner")
+    },
+    {
+      id: "sba-504-loans-expert",
+      title: "SBA 504 Loans - Expert",
+      description: "Expert-level SBA 504 loan structuring, project management, and portfolio optimization.",
+      level: "expert",
+      modules: createModules("SBA 504", "expert")
     },
 
     // Commercial Real Estate - Beginner and Expert only
@@ -433,7 +449,7 @@ export const statsData = [
     icon: "CheckCircle",
     title: "Modules Completed", 
     value: "0",
-    subtitle: "of 182 modules",
+    subtitle: "of 196 modules",
     trend: "Start learning today"
   },
   {
