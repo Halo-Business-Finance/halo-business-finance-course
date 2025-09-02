@@ -352,36 +352,25 @@ export function CourseManager({}: CourseManagerProps) {
                           return (
                             <div key={course.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
                               <div className="flex items-center gap-4">
-                                {/* Course Image and Skill Level */}
-                                <div className="flex flex-col items-start gap-2 flex-shrink-0">
-                                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
-                                    <img
-                                      src={getCourseImage(course.title)} 
-                                      alt={course.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                   <div className="text-sm font-medium text-black text-left">
-                                     {course.level === 'none' ? 'No Skill Level' : course.level?.charAt(0).toUpperCase() + course.level?.slice(1)}
-                                   </div>
-                                </div>
-                                
                                 <div className="flex-1">
-                                  <div className="font-medium text-left pl-2 w-full flex items-center gap-2">
+                                  <div className="font-medium text-left w-full flex items-center gap-2">
                                     {course.title}
+                                    <div className="text-sm font-medium text-muted-foreground">
+                                      ({course.level === 'none' ? 'No Skill Level' : course.level?.charAt(0).toUpperCase() + course.level?.slice(1)})
+                                    </div>
                                     {moduleCount === 0 && (
-                                      <Badge variant="destructive" className="text-xs">
+                                      <Badge variant="destructive" className="text-xs ml-auto">
                                         No Modules
                                       </Badge>
                                     )}
                                     {moduleCount > 0 && (
-                                      <Badge variant="default" className="text-xs">
+                                      <Badge variant="default" className="text-xs ml-auto">
                                         {moduleCount} modules
                                       </Badge>
                                     )}
                                   </div>
-                                  <div className="w-full h-px bg-border mt-1 mb-2 ml-2"></div>
-                                  <div className="text-sm text-muted-foreground line-clamp-1 text-left pl-2 w-full">
+                                  <div className="w-full h-px bg-border mt-1 mb-2"></div>
+                                  <div className="text-sm text-muted-foreground line-clamp-1 text-left w-full">
                                     {course.description}
                                   </div>
                                 </div>
@@ -393,14 +382,6 @@ export function CourseManager({}: CourseManagerProps) {
                                   onClick={() => setSelectedCourse(course)}
                                 >
                                   <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleEditImage(course)}
-                                  title="Edit Course Image"
-                                >
-                                  <ImageIcon className="h-4 w-4" />
                                 </Button>
                                 <CourseInstructorManager 
                                   courseId={course.id} 
