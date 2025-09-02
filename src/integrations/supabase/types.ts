@@ -4437,6 +4437,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_admin_profile_access: {
+        Args: { target_profile_id: string }
+        Returns: undefined
+      }
       log_admin_profile_access_detailed: {
         Args: {
           access_type: string
