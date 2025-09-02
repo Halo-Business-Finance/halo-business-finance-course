@@ -11,7 +11,7 @@ interface CourseModule {
   module_id: string;
   title: string;
   description?: string;
-  skill_level: 'beginner' | 'intermediate' | 'expert';
+  skill_level: 'beginner' | 'expert';
   duration?: string;
   lessons_count: number;
   order_index: number;
@@ -58,7 +58,7 @@ export function AssociatedModulesView({ courseId }: AssociatedModulesViewProps) 
   const getSkillLevelBadge = (level: string) => {
     const variants = {
       beginner: "bg-emerald-100 text-emerald-800",
-      intermediate: "bg-amber-100 text-amber-800", 
+       
       expert: "bg-red-100 text-red-800"
     };
     

@@ -76,7 +76,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  level: "beginner" | "intermediate" | "expert";
+  level: "beginner" | "expert";
   modules: Module[];
   imageUrl?: string;
 }
@@ -111,10 +111,10 @@ const sampleFinalTestQuestions: QuizQuestion[] = [
 ];
 
 // Helper function to create modules for each course with real content
-const createModules = (courseType: string, level: "beginner" | "intermediate" | "expert"): Module[] => {
-  const baseDuration = level === "beginner" ? "3 hours" : level === "intermediate" ? "4 hours" : "5 hours";
-  const baseLessons = level === "beginner" ? 7 : level === "intermediate" ? 8 : 10;
-  const passingScore = level === "beginner" ? 75 : level === "intermediate" ? 80 : 85;
+const createModules = (courseType: string, level: "beginner" | "expert"): Module[] => {
+  const baseDuration = level === "beginner" ? "3 hours" : "5 hours";
+  const baseLessons = level === "beginner" ? 7 : 10;
+  const passingScore = level === "beginner" ? 75 : 85;
 
   // Create detailed lessons and content based on course type and level
   const getDetailedContent = (moduleIndex: number) => {
@@ -193,7 +193,7 @@ const createModules = (courseType: string, level: "beginner" | "intermediate" | 
         questions: sampleQuizQuestions,
         passingScore,
         maxAttempts: 3,
-        timeLimit: level === "beginner" ? 20 : level === "intermediate" ? 30 : 45
+        timeLimit: level === "beginner" ? 20 : 45
       },
       finalTest: (i === 6 && level === "expert") ? {
         id: `${courseType.toLowerCase().replace(/\s+/g, '-')}-final-${level}`,
@@ -212,23 +212,16 @@ const createModules = (courseType: string, level: "beginner" | "intermediate" | 
 export const courseData: CourseData = {
   totalProgress: 0,
   completedModules: 0,
-  totalModules: 273, // 13 course types x 3 levels x 7 modules each = 273 modules
+  totalModules: 182, // 13 course types x 2 levels x 7 modules each = 182 modules
   modules: [], // Will be populated below
   allCourses: [
-    // SBA 7(a) Loans - All Levels
+    // SBA 7(a) Loans - Beginner and Expert only
     {
       id: "sba-7a-loans-beginner",
       title: "SBA 7(a) Loans - Beginner",
       description: "Introduction to SBA 7(a) loan programs, basic eligibility, and fundamental concepts.",
       level: "beginner",
       modules: createModules("SBA 7(a)", "beginner")
-    },
-    {
-      id: "sba-7a-loans-intermediate",
-      title: "SBA 7(a) Loans - Intermediate", 
-      description: "Advanced SBA 7(a) loan underwriting, complex eligibility scenarios, and risk assessment.",
-      level: "intermediate",
-      modules: createModules("SBA 7(a)", "intermediate")
     },
     {
       id: "sba-7a-loans-expert",
@@ -238,20 +231,13 @@ export const courseData: CourseData = {
       modules: createModules("SBA 7(a)", "expert")
     },
 
-    // SBA Express Loans - All Levels
+    // SBA Express Loans - Beginner and Expert only
     {
       id: "sba-express-beginner",
       title: "SBA Express Loans - Beginner",
       description: "Introduction to fast-track SBA financing with basic processing knowledge.",
       level: "beginner",
       modules: createModules("SBA Express", "beginner")
-    },
-    {
-      id: "sba-express-intermediate",
-      title: "SBA Express Loans - Intermediate",
-      description: "Advanced SBA Express processing, risk assessment, and portfolio management.",
-      level: "intermediate", 
-      modules: createModules("SBA Express", "intermediate")
     },
     {
       id: "sba-express-expert",
@@ -261,20 +247,13 @@ export const courseData: CourseData = {
       modules: createModules("SBA Express", "expert")
     },
 
-    // Commercial Real Estate - All Levels
+    // Commercial Real Estate - Beginner and Expert only
     {
       id: "commercial-real-estate-beginner",
       title: "Commercial Real Estate Financing - Beginner",
       description: "Introduction to commercial real estate loans and basic property analysis.",
       level: "beginner",
       modules: createModules("Commercial Real Estate", "beginner")
-    },
-    {
-      id: "commercial-real-estate-intermediate", 
-      title: "Commercial Real Estate Financing - Intermediate",
-      description: "Advanced property analysis, market evaluation, and complex CRE transactions.",
-      level: "intermediate",
-      modules: createModules("Commercial Real Estate", "intermediate")
     },
     {
       id: "commercial-real-estate-expert",
@@ -284,20 +263,13 @@ export const courseData: CourseData = {
       modules: createModules("Commercial Real Estate", "expert")
     },
 
-    // Equipment Financing - All Levels
+    // Equipment Financing - Beginner and Expert only
     {
       id: "equipment-financing-beginner",
       title: "Equipment Financing - Beginner",
       description: "Basic equipment financing structures and simple equipment valuation.",
       level: "beginner",
       modules: createModules("Equipment Financing", "beginner")
-    },
-    {
-      id: "equipment-financing-intermediate",
-      title: "Equipment Financing - Intermediate", 
-      description: "Advanced equipment financing and complex asset evaluation strategies.",
-      level: "intermediate",
-      modules: createModules("Equipment Financing", "intermediate")
     },
     {
       id: "equipment-financing-expert",
@@ -307,20 +279,13 @@ export const courseData: CourseData = {
       modules: createModules("Equipment Financing", "expert")
     },
 
-    // Business Lines of Credit - All Levels  
+    // Business Lines of Credit - Beginner and Expert only
     {
       id: "business-lines-credit-beginner",
       title: "Business Lines of Credit - Beginner",
       description: "Introduction to revolving credit facilities and basic credit management.",
       level: "beginner", 
       modules: createModules("Business Lines of Credit", "beginner")
-    },
-    {
-      id: "business-lines-credit-intermediate",
-      title: "Business Lines of Credit - Intermediate",
-      description: "Advanced credit line management and complex borrowing base analysis.",
-      level: "intermediate",
-      modules: createModules("Business Lines of Credit", "intermediate")
     },
     {
       id: "business-lines-credit-expert", 
@@ -330,20 +295,13 @@ export const courseData: CourseData = {
       modules: createModules("Business Lines of Credit", "expert")
     },
 
-    // Invoice Factoring - All Levels
+    // Invoice Factoring - Beginner and Expert only
     {
       id: "invoice-factoring-beginner",
       title: "Invoice Factoring - Beginner",
       description: "Introduction to accounts receivable financing and basic factoring concepts.",
       level: "beginner",
       modules: createModules("Invoice Factoring", "beginner")
-    },
-    {
-      id: "invoice-factoring-intermediate",
-      title: "Invoice Factoring - Intermediate",
-      description: "Advanced factoring strategies and complex receivables analysis.", 
-      level: "intermediate",
-      modules: createModules("Invoice Factoring", "intermediate")
     },
     {
       id: "invoice-factoring-expert",
@@ -353,20 +311,13 @@ export const courseData: CourseData = {
       modules: createModules("Invoice Factoring", "expert")
     },
 
-    // Merchant Cash Advances - All Levels
+    // Merchant Cash Advances - Beginner and Expert only
     {
       id: "merchant-cash-advances-beginner", 
       title: "Merchant Cash Advances - Beginner",
       description: "Basic merchant cash advance structures and simple revenue analysis.",
       level: "beginner",
       modules: createModules("Merchant Cash Advances", "beginner")
-    },
-    {
-      id: "merchant-cash-advances-intermediate",
-      title: "Merchant Cash Advances - Intermediate",
-      description: "Advanced MCA underwriting and complex revenue-based financing.",
-      level: "intermediate",
-      modules: createModules("Merchant Cash Advances", "intermediate")
     },
     {
       id: "merchant-cash-advances-expert",
@@ -376,20 +327,13 @@ export const courseData: CourseData = {
       modules: createModules("Merchant Cash Advances", "expert")
     },
 
-    // Asset-Based Lending - All Levels
+    // Asset-Based Lending - Beginner and Expert only
     {
       id: "asset-based-lending-beginner",
       title: "Asset-Based Lending - Beginner", 
       description: "Introduction to asset-based financing and basic collateral analysis.",
       level: "beginner",
       modules: createModules("Asset-Based Lending", "beginner")
-    },
-    {
-      id: "asset-based-lending-intermediate",
-      title: "Asset-Based Lending - Intermediate",
-      description: "Advanced asset valuation and complex borrowing base structures.",
-      level: "intermediate",
-      modules: createModules("Asset-Based Lending", "intermediate")
     },
     {
       id: "asset-based-lending-expert",
@@ -399,20 +343,13 @@ export const courseData: CourseData = {
       modules: createModules("Asset-Based Lending", "expert")
     },
 
-    // Construction Loans - All Levels
+    // Construction Loans - Beginner and Expert only
     {
       id: "construction-loans-beginner",
       title: "Construction Loans - Beginner",
       description: "Basic construction financing and simple project evaluation.",
       level: "beginner",
       modules: createModules("Construction Loans", "beginner")
-    },
-    {
-      id: "construction-loans-intermediate", 
-      title: "Construction Loans - Intermediate",
-      description: "Advanced construction financing and complex project management.",
-      level: "intermediate",
-      modules: createModules("Construction Loans", "intermediate")
     },
     {
       id: "construction-loans-expert",
@@ -422,20 +359,13 @@ export const courseData: CourseData = {
       modules: createModules("Construction Loans", "expert")
     },
 
-    // Franchise Financing - All Levels  
+    // Franchise Financing - Beginner and Expert only
     {
       id: "franchise-financing-beginner",
       title: "Franchise Financing - Beginner",
       description: "Introduction to franchise funding and basic franchise evaluation.",
       level: "beginner",
       modules: createModules("Franchise Financing", "beginner")
-    },
-    {
-      id: "franchise-financing-intermediate",
-      title: "Franchise Financing - Intermediate", 
-      description: "Advanced franchise financing and complex franchise system analysis.",
-      level: "intermediate",
-      modules: createModules("Franchise Financing", "intermediate")
     },
     {
       id: "franchise-financing-expert",
@@ -445,20 +375,13 @@ export const courseData: CourseData = {
       modules: createModules("Franchise Financing", "expert")
     },
 
-    // Working Capital Loans - All Levels
+    // Working Capital Loans - Beginner and Expert only
     {
       id: "working-capital-beginner",
       title: "Working Capital Loans - Beginner",
       description: "Basic working capital financing and simple cash flow analysis.",
       level: "beginner",
       modules: createModules("Working Capital", "beginner")
-    },
-    {
-      id: "working-capital-intermediate",
-      title: "Working Capital Loans - Intermediate",
-      description: "Advanced working capital management and complex cash flow modeling.",
-      level: "intermediate", 
-      modules: createModules("Working Capital", "intermediate")
     },
     {
       id: "working-capital-expert",
@@ -468,20 +391,13 @@ export const courseData: CourseData = {
       modules: createModules("Working Capital", "expert")
     },
 
-    // Healthcare Financing - All Levels
+    // Healthcare Financing - Beginner and Expert only
     {
       id: "healthcare-financing-beginner",
       title: "Healthcare Financing - Beginner", 
       description: "Basic healthcare financing and simple medical practice analysis.",
       level: "beginner",
       modules: createModules("Healthcare Financing", "beginner")
-    },
-    {
-      id: "healthcare-financing-intermediate",
-      title: "Healthcare Financing - Intermediate",
-      description: "Advanced healthcare financing and complex medical practice evaluation.",
-      level: "intermediate",
-      modules: createModules("Healthcare Financing", "intermediate")
     },
     {
       id: "healthcare-financing-expert",
@@ -491,20 +407,13 @@ export const courseData: CourseData = {
       modules: createModules("Healthcare Financing", "expert")
     },
 
-    // Restaurant Financing - All Levels
+    // Restaurant Financing - Beginner and Expert only
     {
       id: "restaurant-financing-beginner", 
       title: "Restaurant Financing - Beginner",
       description: "Basic restaurant financing and simple food service evaluation.",
       level: "beginner",
       modules: createModules("Restaurant Financing", "beginner")
-    },
-    {
-      id: "restaurant-financing-intermediate",
-      title: "Restaurant Financing - Intermediate",
-      description: "Advanced restaurant financing and complex food service analysis.",
-      level: "intermediate",
-      modules: createModules("Restaurant Financing", "intermediate")
     },
     {
       id: "restaurant-financing-expert",
@@ -524,7 +433,7 @@ export const statsData = [
     icon: "CheckCircle",
     title: "Modules Completed", 
     value: "0",
-    subtitle: "of 273 modules",
+    subtitle: "of 182 modules",
     trend: "Start learning today"
   },
   {

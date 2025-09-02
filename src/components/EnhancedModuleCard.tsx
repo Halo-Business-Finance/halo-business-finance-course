@@ -10,7 +10,7 @@ interface EnhancedModule {
   module_id: string;
   title: string;
   description: string;
-  skill_level: 'beginner' | 'intermediate' | 'expert';
+  skill_level: 'beginner' | 'expert';
   duration: string;
   lessons_count: number;
   order_index: number;
@@ -36,8 +36,6 @@ export function EnhancedModuleCard({ module, userProgress, image }: EnhancedModu
     switch (level) {
       case 'beginner':
         return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'intermediate':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'expert':
         return 'bg-red-100 text-red-800 border-red-200';
       default:

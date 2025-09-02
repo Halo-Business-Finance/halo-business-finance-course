@@ -4841,7 +4841,7 @@ export type Database = {
     }
     Enums: {
       data_classification: "public" | "internal" | "confidential" | "restricted"
-      skill_level: "beginner" | "intermediate" | "expert"
+      skill_level: "beginner" | "expert"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -4970,7 +4970,7 @@ export const Constants = {
   public: {
     Enums: {
       data_classification: ["public", "internal", "confidential", "restricted"],
-      skill_level: ["beginner", "intermediate", "expert"],
+      skill_level: ["beginner", "expert"],
     },
   },
 } as const

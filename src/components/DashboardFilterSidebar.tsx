@@ -20,7 +20,7 @@ interface DashboardFilterSidebarProps {
   counts: {
     all: number;
     beginner: number;
-    intermediate: number;
+    
     expert: number;
   };
 }
@@ -42,7 +42,7 @@ const FilterContent = ({
   const skillLevels = [
     { id: 'all', label: 'All Levels', count: counts.all },
     { id: 'beginner', label: 'Beginner', count: counts.beginner },
-    { id: 'intermediate', label: 'Intermediate', count: counts.intermediate },
+    
     { id: 'expert', label: 'Expert', count: counts.expert }
   ];
 

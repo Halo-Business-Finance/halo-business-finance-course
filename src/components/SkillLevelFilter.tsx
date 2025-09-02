@@ -11,7 +11,6 @@ interface SkillLevelFilterProps {
   counts?: {
     all: number;
     beginner: number;
-    intermediate: number;
     expert: number;
   };
 }
@@ -20,7 +19,6 @@ export function SkillLevelFilter({ selectedLevel, onLevelChange, titleFilter, on
   const levels = [
     { id: 'all', label: 'All Levels' },
     { id: 'beginner', label: 'Beginner' },
-    { id: 'intermediate', label: 'Intermediate' },
     { id: 'expert', label: 'Expert' }
   ];
 
@@ -28,8 +26,6 @@ export function SkillLevelFilter({ selectedLevel, onLevelChange, titleFilter, on
     switch (level) {
       case 'beginner':
         return 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200';
-      case 'intermediate':
-        return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
       case 'expert':
         return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200';
       default:

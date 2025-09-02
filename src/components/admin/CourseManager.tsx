@@ -49,14 +49,13 @@ export function CourseManager({}: CourseManagerProps) {
     id: "",
     title: "",
     description: "",
-    level: "beginner" as "beginner" | "intermediate" | "expert" | "none",
+    level: "beginner" as "beginner" | "expert" | "none",
     courseType: "loan-originator" as "loan-originator" | "loan-processing" | "loan-underwriting",
   });
 
   const skillLevels = [
     { value: "none", label: "No Skill Level", icon: "📋", color: "bg-gray-100 text-gray-800" },
     { value: "beginner", label: "Beginner", icon: "🌱", color: "bg-emerald-100 text-emerald-800" },
-    { value: "intermediate", label: "Intermediate", icon: "🌿", color: "bg-amber-100 text-amber-800" },
     { value: "expert", label: "Expert", icon: "🌳", color: "bg-red-100 text-red-800" },
   ];
 
@@ -75,7 +74,7 @@ export function CourseManager({}: CourseManagerProps) {
     ];
     
     // Extract the base course type from title (remove skill level)
-    const baseTitle = courseTitle.replace(/ - (Beginner|Intermediate|Expert)$/, '');
+    const baseTitle = courseTitle.replace(/ - (Beginner|Expert)$/, '');
     
     // Get unique course types in order they appear in database
     const uniqueCourseTypes = [
@@ -518,7 +517,7 @@ export function CourseManager({}: CourseManagerProps) {
                   .filter(level => {
                     // For Loan Originator courses, only show none, beginner, and expert
                     if (formData.courseType === 'loan-originator') {
-                      return level.value !== 'intermediate';
+                      return true; // Show all remaining levels
                     }
                     // For other course types, show all levels
                     return true;

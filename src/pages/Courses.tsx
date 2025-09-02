@@ -31,7 +31,7 @@ interface Course {
   id: string;
   title: string;
   description: string;
-  level: 'beginner' | 'intermediate' | 'expert';
+  level: 'beginner' | 'expert';
   modules: any[];
 }
 
@@ -188,7 +188,7 @@ const Courses = () => {
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'beginner': return 'bg-green-100 text-green-800';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800';
+      
       case 'advanced': return 'bg-red-100 text-red-800';
       case 'expert': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -222,7 +222,7 @@ const Courses = () => {
   const skillLevelCounts = {
     all: allCourses.length,
     beginner: allCourses.filter(c => c.level === 'beginner').length,
-    intermediate: allCourses.filter(c => c.level === 'intermediate').length,
+    
     expert: allCourses.filter(c => c.level === 'expert').length,
   };
 

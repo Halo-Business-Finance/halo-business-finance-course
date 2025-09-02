@@ -6,7 +6,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  level: 'beginner' | 'intermediate' | 'expert' | 'none';
+  level: 'beginner' | 'expert' | 'none';
   image_url?: string | null;
   is_active: boolean;
   order_index: number;
@@ -18,7 +18,7 @@ export interface CreateCourseData {
   id: string;
   title: string;
   description: string;
-  level: 'beginner' | 'intermediate' | 'expert' | 'none';
+  level: 'beginner' | 'expert' | 'none';
   image_url?: string;
   order_index?: number;
 }
@@ -49,7 +49,7 @@ export const useCourses = () => {
       // Type assertion to ensure data matches our Course interface
       const typedCourses = (data || []).map(course => ({
         ...course,
-        level: course.level as 'beginner' | 'intermediate' | 'expert' | 'none'
+        level: course.level as 'beginner' | 'expert' | 'none'
       }));
 
       setCourses(typedCourses);
@@ -79,7 +79,7 @@ export const useCourses = () => {
 
       const typedCourse = {
         ...data,
-        level: data.level as 'beginner' | 'intermediate' | 'expert' | 'none'
+        level: data.level as 'beginner' | 'expert' | 'none'
       };
 
       setCourses(prev => [...prev, typedCourse].sort((a, b) => a.order_index - b.order_index));
@@ -116,7 +116,7 @@ export const useCourses = () => {
 
       const typedCourse = {
         ...data,
-        level: data.level as 'beginner' | 'intermediate' | 'expert' | 'none'
+        level: data.level as 'beginner' | 'expert' | 'none'
       };
 
       setCourses(prev => 
@@ -197,7 +197,7 @@ export const useCourses = () => {
   // Get courses grouped by type (removing skill level from title) - kept for backward compatibility
   const getCoursesByType = () => {
     return courses.reduce((acc, course) => {
-      const baseTitle = course.title.replace(/ - (Beginner|Intermediate|Expert)$/, '');
+      const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
       if (!acc[baseTitle]) {
         acc[baseTitle] = [];
       }
@@ -210,7 +210,7 @@ export const useCourses = () => {
   const getCourseTypes = () => {
     const types = new Set<string>();
     courses.forEach(course => {
-      const baseTitle = course.title.replace(/ - (Beginner|Intermediate|Expert)$/, '');
+      const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
       types.add(baseTitle);
     });
     return Array.from(types);

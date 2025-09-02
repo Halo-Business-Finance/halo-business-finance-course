@@ -193,13 +193,13 @@ export function ModuleEditor({}: ModuleEditorProps) {
   };
 
   const getCourseTypeName = (courseTitle: string) => {
-    return courseTitle?.replace(/ - (Beginner|Intermediate|Expert)$/, '') || courseTitle || '';
+    return courseTitle?.replace(/ - (Beginner|Expert)$/, '') || courseTitle || '';
   };
 
   const getSkillLevelBadge = (level: string) => {
     const levelConfig = {
       beginner: { icon: "🌱", color: "bg-emerald-100 text-emerald-800" },
-      intermediate: { icon: "🌿", color: "bg-amber-100 text-amber-800" },
+      
       expert: { icon: "🌳", color: "bg-red-100 text-red-800" },
       none: { icon: "📋", color: "bg-gray-100 text-gray-800" }
     };

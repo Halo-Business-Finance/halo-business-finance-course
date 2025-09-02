@@ -16,7 +16,6 @@ interface CourseFilterSidebarProps {
   counts: {
     all: number;
     beginner: number;
-    intermediate: number;
     expert: number;
   };
 }
@@ -36,7 +35,6 @@ const FilterContent = ({
   const skillLevels = [
     { id: 'all', label: 'All Levels', count: counts.all },
     { id: 'beginner', label: 'Beginner', count: counts.beginner },
-    { id: 'intermediate', label: 'Intermediate', count: counts.intermediate },
     { id: 'expert', label: 'Expert', count: counts.expert }
   ];
 
@@ -60,8 +58,6 @@ const FilterContent = ({
     switch (level) {
       case 'beginner':
         return 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200';
-      case 'intermediate':
-        return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
       case 'expert':
         return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200';
       default:
