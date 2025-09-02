@@ -389,7 +389,7 @@ const Courses = () => {
                       
                       <div className="flex items-center gap-4 text-sm text-course-card-foreground mb-4">
                         <div className="flex items-center gap-1">
-                          <BookOpen className="h-4 w-4" />
+                          <BookOpen className="h-4 w-4 text-course-card-foreground" />
                           <span>{course.modules.length} modules</span>
                         </div>
                          <Badge className={`${getLevelColor(course.level)} bg-course-card-foreground text-course-card`}>
