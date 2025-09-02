@@ -404,13 +404,6 @@ const Dashboard = () => {
                                     </div>
                                   </div>
                                   
-                                  {/* Row 3: Learning Outcome */}
-                                  <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
-                                     <div className="line-clamp-2">
-                                       <span className="font-medium text-course-card-foreground">Outcome: </span>
-                                       <span className="text-course-card-foreground">{getCourseDetails(courseName).outcome}</span>
-                                     </div>
-                                  </div>
                                 </div>
 
                                 <div className="flex items-center gap-4 text-sm mt-3">
