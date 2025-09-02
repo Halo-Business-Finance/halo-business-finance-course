@@ -373,7 +373,7 @@ const Dashboard = () => {
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{courseName}</CardTitle>
-                                    <Badge variant="secondary" className="mt-2 mb-2 bg-course-card-foreground text-course-card">Course Program</Badge>
+                                    <Badge variant="secondary" className="mt-2 mb-2 bg-accent text-accent-foreground">Course Program</Badge>
                                     <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground">
                                       {getCourseDetails(courseName).description}
                                     </CardDescription>
