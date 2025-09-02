@@ -73,30 +73,81 @@ export function CourseManager({}: CourseManagerProps) {
 
   // Course image mapping function to match user dashboard
   const getCourseImage = (courseTitle: string) => {
-    // Extract the base course type from title (remove skill level)
-    const baseTitle = courseTitle.replace(/ - (Beginner|Expert)$/, '');
+    console.log('CourseManager - Getting image for courseTitle:', courseTitle);
     
-    // Map course titles to specific images (no people)
+    // Create comprehensive mapping for all course title variations
     const imageMap: { [key: string]: string } = {
-      "SBA 7(a)": courseSba7a,
-      "SBA Express": courseSbaExpress,
-      "Commercial Real Estate": courseCommercialRealEstate,
-      "Equipment Financing": courseEquipmentFinancing,
-      "Business Lines of Credit": courseLinesOfCredit,
-      "Invoice Factoring": courseInvoiceFactoring,
-      "Merchant Cash Advances": courseMerchantCashAdvances,
-      "Asset-Based Lending": courseAssetBasedLending,
-      "Construction Loans": courseConstructionLoans,
-      "Franchise Financing": courseFranchiseFinancing,
-      "Working Capital": courseWorkingCapital,
-      "Healthcare Financing": courseHealthcareFinancing,
-      "Restaurant Financing": courseRestaurantFinancing,
-      "Bridge Loans": courseBridgeLoans,
-      "Term Loans": courseTermLoans,
-      "Business Acquisition": courseBusinessAcquisition,
+      // SBA courses
+      "SBA 7(a) Loans - Beginner": courseSba7a,
+      "SBA 7(a) Loans - Expert": courseSba7a,
+      "SBA Express Loans - Beginner": courseSbaExpress,
+      "SBA Express Loans - Expert": courseSbaExpress,
+      "SBA Loan Processing": courseSba7a,
+      "SBA Loan Underwriting": courseSbaExpress,
+      
+      // Real Estate courses
+      "Commercial Real Estate Financing - Beginner": courseCommercialRealEstate,
+      "Commercial Real Estate Financing - Expert": courseCommercialRealEstate,
+      "Commercial Loan Underwriting": courseCommercialRealEstate,
+      "Apartment & Multi-Family Loan Processing": courseCommercialRealEstate,
+      
+      // Equipment courses
+      "Equipment Financing - Beginner": courseEquipmentFinancing,
+      "Equipment Financing - Expert": courseEquipmentFinancing,
+      "Equipment Finance Loan Underwriting": courseEquipmentFinancing,
+      "Equipment Loan Processing": courseEquipmentFinancing,
+      
+      // Credit lines
+      "Business Lines of Credit - Beginner": courseLinesOfCredit,
+      "Business Lines of Credit - Expert": courseLinesOfCredit,
+      
+      // Invoice & factoring
+      "Invoice Factoring - Beginner": courseInvoiceFactoring,
+      "Invoice Factoring - Expert": courseInvoiceFactoring,
+      
+      // Merchant cash
+      "Merchant Cash Advances - Beginner": courseMerchantCashAdvances,
+      "Merchant Cash Advances - Expert": courseMerchantCashAdvances,
+      
+      // Asset-based lending
+      "Asset-Based Lending - Beginner": courseAssetBasedLending,
+      "Asset-Based Lending - Expert": courseAssetBasedLending,
+      
+      // Construction
+      "Construction Loans - Beginner": courseConstructionLoans,
+      "Construction Loans - Expert": courseConstructionLoans,
+      "Construction Loan Underwriting": courseConstructionLoans,
+      
+      // Franchise
+      "Franchise Financing - Beginner": courseFranchiseFinancing,
+      "Franchise Financing - Expert": courseFranchiseFinancing,
+      
+      // Working capital
+      "Working Capital Loans - Beginner": courseWorkingCapital,
+      "Working Capital Loans - Expert": courseWorkingCapital,
+      
+      // Healthcare
+      "Healthcare Financing - Beginner": courseHealthcareFinancing,
+      "Healthcare Financing - Expert": courseHealthcareFinancing,
+      
+      // Restaurant
+      "Restaurant Financing - Beginner": courseRestaurantFinancing,
+      "Restaurant Financing - Expert": courseRestaurantFinancing,
+      
+      // Bridge loans
+      "Bridge Loan Processing": courseBridgeLoans,
+      "Bridge Loan Underwriting": courseBridgeLoans,
+      
+      // Agriculture & USDA
+      "Agriculture Loan Processing": courseTermLoans,
+      "USDA Loan Processing": courseTermLoans,
+      "USDA Loan Underwriting": courseBusinessAcquisition,
     };
 
-    return imageMap[baseTitle] || courseSba7a; // Default to SBA 7(a) image
+    const selectedImage = imageMap[courseTitle] || courseSba7a;
+    console.log('CourseManager - Selected image for', courseTitle, ':', selectedImage);
+    
+    return selectedImage;
   };
 
   const resetForm = () => {
