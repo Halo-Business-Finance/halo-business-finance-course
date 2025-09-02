@@ -385,8 +385,8 @@ const Dashboard = () => {
                                   {/* Row 1: Duration and Difficulty */}
                                   <div className="flex items-center justify-between text-xs h-6">
                                     <div className="flex items-center gap-2">
-                                      <Clock className="h-3 w-3 text-course-card-foreground" />
-                                      <span className="text-course-card-foreground">{getCourseDetails(courseName).duration}</span>
+                                      <Clock className="h-3 w-3 text-accent" />
+                                      <span className="text-accent">{getCourseDetails(courseName).duration}</span>
                                     </div>
                                     <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
                                       {getCourseDetails(courseName).difficulty}
