@@ -21,17 +21,23 @@ import { AssociatedModulesView } from "./AssociatedModulesView";
 import { runMigration } from "@/utils/migrateCourseData";
 import { supabase } from "@/integrations/supabase/client";
 
-// Import course images to match the user dashboard
-import financeExpert1 from "@/assets/finance-expert-1.jpg";
-import creditAnalyst2 from "@/assets/credit-analyst-2.jpg";
-import commercialBanker3 from "@/assets/commercial-banker-3.jpg";
-import riskSpecialist4 from "@/assets/risk-specialist-4.jpg";
-import sbaSpecialist5 from "@/assets/sba-specialist-5.jpg";
-import complianceOfficer6 from "@/assets/compliance-officer-6.jpg";
-import financialAdvisor7 from "@/assets/financial-advisor-7.jpg";
-import investmentBanker8 from "@/assets/investment-banker-8.jpg";
-import loanOfficer9 from "@/assets/loan-officer-9.jpg";
-import portfolioManager10 from "@/assets/portfolio-manager-10.jpg";
+// Import new course-specific images (no people)
+import courseSba7a from "@/assets/course-sba-7a.jpg";
+import courseSbaExpress from "@/assets/course-sba-express.jpg";
+import courseCommercialRealEstate from "@/assets/course-commercial-real-estate.jpg";
+import courseEquipmentFinancing from "@/assets/course-equipment-financing.jpg";
+import courseLinesOfCredit from "@/assets/course-lines-of-credit.jpg";
+import courseInvoiceFactoring from "@/assets/course-invoice-factoring.jpg";
+import courseMerchantCashAdvances from "@/assets/course-merchant-cash-advances.jpg";
+import courseAssetBasedLending from "@/assets/course-asset-based-lending.jpg";
+import courseConstructionLoans from "@/assets/course-construction-loans.jpg";
+import courseFranchiseFinancing from "@/assets/course-franchise-financing.jpg";
+import courseWorkingCapital from "@/assets/course-working-capital.jpg";
+import courseHealthcareFinancing from "@/assets/course-healthcare-financing.jpg";
+import courseRestaurantFinancing from "@/assets/course-restaurant-financing.jpg";
+import courseBridgeLoans from "@/assets/course-bridge-loans.jpg";
+import courseTermLoans from "@/assets/course-term-loans.jpg";
+import courseBusinessAcquisition from "@/assets/course-business-acquisition.jpg";
 
 interface CourseManagerProps {}
 
@@ -67,37 +73,30 @@ export function CourseManager({}: CourseManagerProps) {
 
   // Course image mapping function to match user dashboard
   const getCourseImage = (courseTitle: string) => {
-    const images = [
-      financeExpert1, creditAnalyst2, commercialBanker3, riskSpecialist4, 
-      sbaSpecialist5, complianceOfficer6, financialAdvisor7, investmentBanker8, 
-      loanOfficer9, portfolioManager10
-    ];
-    
     // Extract the base course type from title (remove skill level)
     const baseTitle = courseTitle.replace(/ - (Beginner|Expert)$/, '');
     
-    // Get unique course types in order they appear in database
-    const uniqueCourseTypes = [
-      "SBA 7(a)",
-      "SBA Express", 
-      "Commercial Real Estate",
-      "Equipment Financing",
-      "Business Lines of Credit",
-      "Invoice Factoring",
-      "Merchant Cash Advances",
-      "Asset-Based Lending",
-      "Construction Loans",
-      "Franchise Financing",
-      "Working Capital",
-      "Healthcare Financing",
-      "Restaurant Financing",
-      "Bridge Loans",
-      "Term Loans",
-      "Business Acquisition"
-    ];
+    // Map course titles to specific images (no people)
+    const imageMap: { [key: string]: string } = {
+      "SBA 7(a)": courseSba7a,
+      "SBA Express": courseSbaExpress,
+      "Commercial Real Estate": courseCommercialRealEstate,
+      "Equipment Financing": courseEquipmentFinancing,
+      "Business Lines of Credit": courseLinesOfCredit,
+      "Invoice Factoring": courseInvoiceFactoring,
+      "Merchant Cash Advances": courseMerchantCashAdvances,
+      "Asset-Based Lending": courseAssetBasedLending,
+      "Construction Loans": courseConstructionLoans,
+      "Franchise Financing": courseFranchiseFinancing,
+      "Working Capital": courseWorkingCapital,
+      "Healthcare Financing": courseHealthcareFinancing,
+      "Restaurant Financing": courseRestaurantFinancing,
+      "Bridge Loans": courseBridgeLoans,
+      "Term Loans": courseTermLoans,
+      "Business Acquisition": courseBusinessAcquisition,
+    };
 
-    const index = uniqueCourseTypes.indexOf(baseTitle);
-    return images[index >= 0 ? index % images.length : 0];
+    return imageMap[baseTitle] || courseSba7a; // Default to SBA 7(a) image
   };
 
   const resetForm = () => {
