@@ -234,14 +234,39 @@ const Dashboard = () => {
     };
   };
 
-  // Course image mapping function
-  const getCourseImage = (index: number) => {
+  // Course image mapping function to match admin course management
+  const getCourseImage = (courseTitle: string) => {
     const images = [
       financeExpert1, creditAnalyst2, commercialBanker3, riskSpecialist4, 
       sbaSpecialist5, complianceOfficer6, financialAdvisor7, investmentBanker8, 
       loanOfficer9, portfolioManager10
     ];
-    return images[index % images.length];
+    
+    // Extract the base course type from title (remove skill level)
+    const baseTitle = courseTitle.replace(/ - (Beginner|Expert)$/, '');
+    
+    // Get unique course types in order they appear in database
+    const uniqueCourseTypes = [
+      "SBA 7(a)",
+      "SBA Express", 
+      "Commercial Real Estate",
+      "Equipment Financing",
+      "Business Lines of Credit",
+      "Invoice Factoring",
+      "Merchant Cash Advances",
+      "Asset-Based Lending",
+      "Construction Loans",
+      "Franchise Financing",
+      "Working Capital",
+      "Healthcare Financing",
+      "Restaurant Financing",
+      "Bridge Loans",
+      "Term Loans",
+      "Business Acquisition"
+    ];
+
+    const index = uniqueCourseTypes.indexOf(baseTitle);
+    return images[index >= 0 ? index % images.length : 0];
   };
 
   if (authLoading) {
@@ -335,7 +360,7 @@ const Dashboard = () => {
                             >
                               <div className="relative overflow-hidden rounded-t-lg">
                                 <img 
-                                  src={getCourseImage(index)} 
+                                  src={getCourseImage(courseName)} 
                                   alt={courseName}
                                   className="w-full h-64 object-cover object-top group-hover:scale-105 transition-transform duration-300"
                                 />
@@ -457,7 +482,7 @@ const Dashboard = () => {
                           >
                             <div className="relative overflow-hidden rounded-t-lg">
                               <img 
-                                src={getCourseImage(index)} 
+                                src={getCourseImage(selectedCourse.name)} 
                                 alt={`${selectedCourse.name} - ${level}`}
                                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                               />
