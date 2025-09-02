@@ -374,7 +374,7 @@ const Dashboard = () => {
                                   <div className="flex-1">
                                     <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{courseName}</CardTitle>
                                     <Badge variant="secondary" className="mt-2 mb-2 bg-course-card-foreground text-course-card">Course Program</Badge>
-                                    <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground/90">
+                                    <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground">
                                       {getCourseDetails(courseName).description}
                                     </CardDescription>
                                   </div>
@@ -386,7 +386,7 @@ const Dashboard = () => {
                                   <div className="flex items-center justify-between text-xs h-6">
                                     <div className="flex items-center gap-2">
                                       <Clock className="h-3 w-3 text-muted-foreground" />
-                                      <span className="text-course-card-foreground/70">{getCourseDetails(courseName).duration}</span>
+                                      <span className="text-course-card-foreground">{getCourseDetails(courseName).duration}</span>
                                     </div>
                                     <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
                                       {getCourseDetails(courseName).difficulty}
@@ -408,17 +408,17 @@ const Dashboard = () => {
                                   <div className="bg-muted/50 p-2 rounded text-xs h-12 flex items-center">
                                      <div className="line-clamp-2">
                                        <span className="font-medium text-course-card-foreground">Outcome: </span>
-                                       <span className="text-course-card-foreground/70">{getCourseDetails(courseName).outcome}</span>
+                                       <span className="text-course-card-foreground">{getCourseDetails(courseName).outcome}</span>
                                      </div>
                                   </div>
                                 </div>
 
                                 <div className="flex items-center gap-4 text-sm mt-3">
-                                   <div className="flex items-center gap-1 text-course-card-foreground/70">
+                                   <div className="flex items-center gap-1 text-course-card-foreground">
                                      <BookOpen className="h-4 w-4" />
                                      <span>{courseModules.length} modules</span>
                                    </div>
-                                    <div className="flex items-center gap-1 text-course-card-foreground/70">
+                                    <div className="flex items-center gap-1 text-course-card-foreground">
                                       <Target className="h-4 w-4" />
                                       <span>2 levels</span>
                                     </div>
