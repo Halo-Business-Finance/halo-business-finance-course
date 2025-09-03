@@ -93,11 +93,18 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
   };
 
   const generateIntelligentResponse = (userMessage: string, conversationHistory: Message[]): string => {
-    const message = userMessage.toLowerCase();
-    const recentMessages = conversationHistory.slice(-4); // Look at last 4 messages for context
-    const hasAskedForHelp = recentMessages.some(msg => 
-      msg.sender === 'support' && msg.content.includes("What can I help you with")
-    );
+    const message = userMessage.toLowerCase().trim();
+    const lastSupportMessage = conversationHistory
+      .filter(msg => msg.sender === 'support')
+      .slice(-1)[0]?.content || '';
+    
+    // Avoid repeating the same response
+    const getUniqueResponse = (responses: string[]) => {
+      const availableResponses = responses.filter(r => r !== lastSupportMessage);
+      return availableResponses.length > 0 ? 
+        availableResponses[Math.floor(Math.random() * availableResponses.length)] : 
+        responses[0];
+    };
     
     // Course-related questions
     if (message.includes('course') || message.includes('lesson') || message.includes('module') || message.includes('study')) {
@@ -113,7 +120,11 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
       if (message.includes('which') || message.includes('recommend') || message.includes('best')) {
         return "Our most popular courses are SBA Lending Professional and Commercial Real Estate Financing. The best course depends on your role - are you a loan officer, credit analyst, or business owner looking to understand lending?";
       }
-      return "I can help you with course selection, navigation, and progress tracking. Are you looking to start a new course or having issues with your current one?";
+      return getUniqueResponse([
+        "I can help you with course selection and navigation. Are you looking to start a new course or having issues with your current one?",
+        "What specific course question do you have? I can help with enrollment, access, or finding the right program for you.",
+        "Are you having trouble accessing a particular course or need recommendations for your role?"
+      ]);
     }
     
     // Login/Account issues
@@ -146,24 +157,34 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
       return "For enrollment and business inquiries, I can connect you with our sales team. We offer enterprise solutions for commercial lending and finance training. Would you like me to schedule a demo?";
     }
     
+    // Handle questions that might be unclear
+    if (message.includes('?') || message.includes('how') || message.includes('what') || message.includes('why') || message.includes('when') || message.includes('where')) {
+      if (message.length < 10) {
+        return getUniqueResponse([
+          "I'd like to help with your question. Could you provide a bit more detail about what you're trying to do?",
+          "Can you tell me more about what specific issue you're facing?",
+          "What particular aspect of FinPilot are you asking about?"
+        ]);
+      }
+      
+      return getUniqueResponse([
+        "I understand you have a question. Based on what you're asking, could you be more specific about whether this relates to course access, technical issues, or account problems?",
+        "Let me help you with that. Are you experiencing a specific problem with the platform or looking for information about our training programs?",
+        "I want to give you the best answer. Could you clarify if this is about course navigation, technical difficulties, or something else?"
+      ]);
+    }
+    
     // Greetings and general help
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
       return "Hello! I'm here to help you with the FinPilot learning platform. I can assist with course navigation, technical issues, account problems, and questions about our commercial lending and finance courses. What brings you here today?";
     }
     
-    if (message.includes('help') && !hasAskedForHelp) {
-      return "I'm here to help! I can assist with:\n• Course access and navigation\n• Technical issues with videos or audio\n• Account and login problems\n• Questions about our finance and lending training\n\nWhat specific issue are you facing?";
-    }
-    
-    // Follow-up responses based on context
-    if (hasAskedForHelp) {
-      const contextualResponses = [
-        "Could you be more specific about the issue you're experiencing? For example, are you having trouble with a particular course or feature?",
-        "I'd like to help you better. Are you experiencing a technical problem, need help with course content, or have questions about your account?",
-        "Let me know what specific problem you're facing - whether it's accessing courses, technical issues, or questions about our lending and finance training programs.",
-        "I'm here to provide specific help. What exactly are you trying to do or what problem are you encountering?"
-      ];
-      return contextualResponses[Math.floor(Math.random() * contextualResponses.length)];
+    if (message.includes('help')) {
+      return getUniqueResponse([
+        "I'm here to help! I can assist with course access, technical issues, account problems, and questions about our finance training. What do you need help with?",
+        "Happy to help! Are you having trouble with courses, experiencing technical issues, or have questions about your account?",
+        "I can help you with FinPilot. What specific issue or question can I assist you with today?"
+      ]);
     }
     
     // More specific responses for common phrases
@@ -175,8 +196,21 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
       return "Great! Feel free to reach out if you need any assistance with your courses or have questions about FinPilot. Have a great day!";
     }
     
-    // Default response with more specific guidance
-    return "I'd be happy to help you with FinPilot! Could you tell me specifically what you need assistance with? For example:\n• Starting or accessing a course\n• Technical issues with the platform\n• Account or login problems\n• Questions about our training programs";
+    // Vague or unclear messages
+    if (message.length < 5 || message.match(/^[a-z\s]*$/)) {
+      return getUniqueResponse([
+        "I'm here to help! What specific question or issue can I assist you with regarding FinPilot?",
+        "How can I help you today? I can assist with courses, technical issues, or account questions.",
+        "What would you like help with? I'm here to assist with any FinPilot related questions or issues."
+      ]);
+    }
+    
+    // Default response - try to understand what they're asking about
+    return getUniqueResponse([
+      "I'd like to help you with that. Can you tell me if this relates to course access, technical issues, account problems, or something else?",
+      "Let me assist you. Are you having trouble with a specific feature, course, or technical issue?",
+      "I'm here to help! Could you clarify what specific aspect of FinPilot you need assistance with?"
+    ]);
   };
 
   const handleSendMessage = async () => {
