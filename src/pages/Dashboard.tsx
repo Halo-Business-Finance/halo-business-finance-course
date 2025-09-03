@@ -360,7 +360,7 @@ const Dashboard = () => {
               </div>
               
               {/* Course Instructors Widget - Reduced width */}
-              <div className="lg:w-[36rem] flex-shrink-0">
+              <div className="lg:w-[40rem] flex-shrink-0">
                 <InstructorInfo />
               </div>
             </div>
