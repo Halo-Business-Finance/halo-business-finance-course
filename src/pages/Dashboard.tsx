@@ -131,6 +131,15 @@ const Dashboard = () => {
       console.log('Course modules found:', courseModules.length);
       console.log('Sample module course_title:', courseModules[0]?.course_title);
       
+      // Immediately set the course in context for sidebar - using base course name
+      const courseForSidebar = {
+        id: courseName.toLowerCase().replace(/\s+/g, '-'),
+        title: courseName,
+        description: `Professional training program for ${courseName}`
+      };
+      console.log('Setting course in context immediately:', courseForSidebar);
+      setSelectedCourse(courseForSidebar);
+      
       // Reset state for clean transition
       setSelectedCourseProgram(courseName);
       
