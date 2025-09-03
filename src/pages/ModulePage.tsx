@@ -10,6 +10,7 @@ import { LessonModal } from "@/components/LessonModal";
 import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Lesson {
@@ -28,6 +29,7 @@ const ModulePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { setSelectedCourse } = useCourseSelection();
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
   const [module, setModule] = useState<any>(null);
@@ -59,6 +61,27 @@ const ModulePage = () => {
         }
         
         setModule(dbModule);
+
+        // **FIX**: Update the CourseSelectionContext with the correct course
+        // Fetch the course data and set it as selected so the sidebar shows the right modules
+        if (dbModule.course_id) {
+          console.log('Setting selected course to:', dbModule.course_id);
+          
+          const { data: courseData, error: courseError } = await supabase
+            .from('courses')
+            .select('id, title, description')
+            .eq('id', dbModule.course_id)
+            .maybeSingle();
+
+          if (courseData && !courseError) {
+            setSelectedCourse({
+              id: courseData.id,
+              title: courseData.title,
+              description: courseData.description
+            });
+            console.log('Selected course set to:', courseData);
+          }
+        }
 
         // Use the course_id from the module to fetch content
         const moduleForContent = dbModule.id;
@@ -191,7 +214,7 @@ const ModulePage = () => {
     };
 
     fetchModuleAndContent();
-  }, [moduleId]);
+  }, [moduleId, setSelectedCourse]);
 
   if (loading) {
     return (
