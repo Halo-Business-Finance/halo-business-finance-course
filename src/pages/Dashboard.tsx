@@ -359,8 +359,8 @@ const Dashboard = () => {
                 />
               </div>
               
-              {/* Course Instructors Widget */}
-              <div className="flex-1">
+              {/* Course Instructors Widget - Reduced width */}
+              <div className="lg:w-96 flex-shrink-0">
                 <InstructorInfo />
               </div>
             </div>
