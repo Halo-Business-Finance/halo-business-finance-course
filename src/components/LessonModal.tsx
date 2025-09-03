@@ -56,16 +56,32 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
       case "video":
         return (
           <div className="space-y-4">
-            <VideoPlayer
-              videoType="file"
-              videoUrl="https://example.com/sample-video.mp4"
-              title={lesson.title}
-              onProgress={(progressPercent) => setProgress(progressPercent)}
-              onComplete={handleComplete}
-            />
-            <div className="text-sm text-muted-foreground">
-              <p>Watch this video to learn about the key concepts in {moduleTitle.toLowerCase()}.</p>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Video Lesson: {lesson.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="prose prose-sm max-w-none">
+                  <p>This lesson covers important concepts about {lesson.title.toLowerCase()}.</p>
+                  <h3>Learning Objectives:</h3>
+                  <ul>
+                    <li>Understand the key principles and concepts</li>
+                    <li>Learn practical applications and techniques</li>
+                    <li>Explore real-world examples and case studies</li>
+                    <li>Practice with guided exercises</li>
+                  </ul>
+                  <h3>Lesson Content:</h3>
+                  <p>This comprehensive lesson will guide you through the essential aspects of {lesson.title.toLowerCase()}. You'll learn step-by-step processes, best practices, and industry standards.</p>
+                  <div className="bg-blue-50 p-4 rounded-lg mt-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">💡 Key Takeaways</h4>
+                    <p className="text-blue-700 text-sm">Take notes as you progress through this lesson. Key concepts will be tested in upcoming assessments.</p>
+                  </div>
+                </div>
+                <Button onClick={handleComplete} className="w-full">
+                  Complete Lesson
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         );
       
