@@ -121,6 +121,18 @@ export default {
 					'800': 'hsl(var(--navy-800))',
 					'700': 'hsl(var(--navy-700))'
 				},
+				'carbon': {
+					'dashboard': 'hsl(var(--carbon-dashboard-bg))',
+					'widget': 'hsl(var(--carbon-widget-bg))',
+					'border': 'hsl(var(--carbon-widget-border))',
+					'hover': 'hsl(var(--carbon-widget-hover))',
+					'text': 'hsl(var(--carbon-text-primary))',
+					'text-secondary': 'hsl(var(--carbon-text-secondary))',
+					'accent': 'hsl(var(--carbon-accent-blue))',
+					'success': 'hsl(var(--carbon-success))',
+					'warning': 'hsl(var(--carbon-warning))',
+					'danger': 'hsl(var(--carbon-danger))'
+				},
 				'course-card': {
 					DEFAULT: 'hsl(var(--course-card-bg))',
 					foreground: 'hsl(var(--course-card-foreground))'

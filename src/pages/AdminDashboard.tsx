@@ -46,6 +46,7 @@ import { ResourceManager } from "@/components/admin/ResourceManager";
 import CMSManager from "@/components/admin/CMSManager";
 import { TraineeProgressView } from "@/components/admin/TraineeProgressView";
 import { CourseManager } from "@/components/admin/CourseManager";
+import { CarbonDashboard } from "@/components/admin/CarbonDashboard";
 import { validateEmail, validatePassword, validateName, sanitizeInput } from "@/utils/validation";
 import { authRateLimiter } from "@/utils/validation";
 import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";

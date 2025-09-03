@@ -68,6 +68,18 @@
     --navy-800: 220 90% 18%;
     --navy-700: 220 80% 22%;
 
+    /* Carbon Dashboard colors */
+    --carbon-dashboard-bg: 220 98% 8%;
+    --carbon-widget-bg: 220 98% 12%;
+    --carbon-widget-border: 220 85% 20%;
+    --carbon-widget-hover: 220 95% 15%;
+    --carbon-text-primary: 0 0% 98%;
+    --carbon-text-secondary: 0 0% 75%;
+    --carbon-accent-blue: 220 98% 55%;
+    --carbon-success: 125 63% 45%;
+    --carbon-warning: 35 85% 55%;
+    --carbon-danger: 2 79% 55%;
+
     /* Card backgrounds using Carbon layers */
     --card: 0 0% 100%;           /* White */
     --card-foreground: 0 0% 8%;  /* Gray-100 */
