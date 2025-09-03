@@ -1173,7 +1173,10 @@ export type Database = {
           created_at: string | null
           enrolled_at: string | null
           id: string
+          is_active_study: boolean | null
+          started_module_id: string | null
           status: string | null
+          study_started_at: string | null
           updated_at: string | null
           user_id: string
         }
@@ -1182,7 +1185,10 @@ export type Database = {
           created_at?: string | null
           enrolled_at?: string | null
           id?: string
+          is_active_study?: boolean | null
+          started_module_id?: string | null
           status?: string | null
+          study_started_at?: string | null
           updated_at?: string | null
           user_id: string
         }
@@ -1191,7 +1197,10 @@ export type Database = {
           created_at?: string | null
           enrolled_at?: string | null
           id?: string
+          is_active_study?: boolean | null
+          started_module_id?: string | null
           status?: string | null
+          study_started_at?: string | null
           updated_at?: string | null
           user_id?: string
         }
@@ -3741,6 +3750,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      can_access_course: {
+        Args: { p_course_id: string; p_user_id?: string }
+        Returns: boolean
+      }
       can_access_lead_data: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -4769,6 +4782,10 @@ export type Database = {
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
         Returns: Json
+      }
+      unlock_courses_on_completion: {
+        Args: { p_course_id: string; p_user_id: string }
+        Returns: undefined
       }
       validate_and_sanitize_input: {
         Args: { input_text: string; max_length?: number }
