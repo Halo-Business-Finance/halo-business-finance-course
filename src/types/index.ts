@@ -143,6 +143,14 @@ export interface UserPreferences {
   dateFormat: string;
   fontSize: 'small' | 'medium' | 'large';
   reducedMotion: boolean;
+  emailNotifications?: boolean;
+  pushNotifications?: boolean;
+  marketingEmails?: boolean;
+  courseProgress?: boolean;
+  newCourses?: boolean;
+  webinarReminders?: boolean;
+  weeklyProgress?: boolean;
+  marketingCommunications?: boolean;
 }
 
 export interface ApiError {

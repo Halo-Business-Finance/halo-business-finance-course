@@ -8,7 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy, X, Save } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { SEOHead } from "@/components/SEOHead";
@@ -17,7 +20,9 @@ import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import type { UserPreferences, NotificationPreferences } from "@/types";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import type { UserPreferences, NotificationPreferences, UserProfile } from "@/types";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
@@ -30,6 +35,11 @@ const formatPhoneNumber = (phone: string): string => {
   }
   
   return phone;
+};
+
+// Phone input handler
+const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>): string => {
+  return formatPhoneNumber(e.target.value);
 };
 
 const AccountPage = (): JSX.Element => {
@@ -47,6 +57,11 @@ const AccountPage = (): JSX.Element => {
   } = useUserProfile();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [userInfo, setUserInfo] = useState<any>({});
+  const [editForm, setEditForm] = useState<any>({});
+  
   const [preferences, setPreferences] = useState<UserPreferences>({
     theme: 'light',
     language: 'en',
@@ -162,16 +177,19 @@ const AccountPage = (): JSX.Element => {
           avatar: profile.avatar_url || "/placeholder.svg"
         };
         
-        const preferencesData = {
-          theme: profile.theme || 'light',
+        const preferencesData: UserPreferences = {
+          theme: (profile.theme as 'light' | 'dark') || 'light',
           language: profile.language || 'en',
           timezone: profile.timezone || 'est',
           dateFormat: profile.date_format || 'mdy',
-          fontSize: profile.font_size || 'medium',
+          fontSize: (profile.font_size as 'small' | 'medium' | 'large') || 'medium',
+          reducedMotion: profile.reduced_motion ?? false
+        };
+
+        const notificationData: NotificationPreferences = {
           emailNotifications: profile.email_notifications ?? true,
           pushNotifications: profile.push_notifications ?? false,
           marketingEmails: profile.marketing_emails ?? false,
-          reducedMotion: profile.reduced_motion ?? false,
           courseProgress: profile.course_progress ?? true,
           newCourses: profile.new_courses ?? true,
           webinarReminders: profile.webinar_reminders ?? true,
@@ -182,6 +200,7 @@ const AccountPage = (): JSX.Element => {
         setUserInfo(profileData);
         setEditForm(profileData);
         setPreferences(preferencesData);
+        setNotificationSettings(notificationData);
       } else {
         // Create a new profile with default values
         const defaultProfile = {
@@ -375,14 +394,14 @@ const AccountPage = (): JSX.Element => {
       const { error } = await supabase
         .from('profiles')
         .update({
-          email_notifications: preferences.emailNotifications,
-          push_notifications: preferences.pushNotifications,
-          marketing_emails: preferences.marketingEmails,
-          course_progress: preferences.courseProgress,
-          new_courses: preferences.newCourses,
-          webinar_reminders: preferences.webinarReminders,
-          weekly_progress: preferences.weeklyProgress,
-          marketing_communications: preferences.marketingCommunications
+          email_notifications: notificationSettings.emailNotifications,
+          push_notifications: notificationSettings.pushNotifications,
+          marketing_emails: notificationSettings.marketingEmails,
+          course_progress: notificationSettings.courseProgress,
+          new_courses: notificationSettings.newCourses,
+          webinar_reminders: notificationSettings.webinarReminders,
+          weekly_progress: notificationSettings.weeklyProgress,
+          marketing_communications: notificationSettings.marketingCommunications
         })
         .eq('user_id', user.id);
 
@@ -515,7 +534,7 @@ const AccountPage = (): JSX.Element => {
                         <Input
                           id="phone"
                           value={editForm.phone}
-                          onChange={(e) => handleInputChange('phone', handlePhoneInput(e.target.value))}
+                          onChange={(e) => handleInputChange('phone', formatPhoneNumber(e.target.value))}
                           placeholder="(555) 123-4567"
                           className="border-gray-800/20"
                         />
@@ -757,8 +776,8 @@ const AccountPage = (): JSX.Element => {
                       </p>
                     </div>
                     <Switch 
-                      checked={preferences.courseProgress}
-                      onCheckedChange={(checked) => handlePreferenceChange('courseProgress', checked)}
+                      checked={notificationSettings.courseProgress}
+                      onCheckedChange={(checked) => setNotificationSettings(prev => ({ ...prev, courseProgress: checked }))}
                     />
                   </div>
                   <Separator />
@@ -770,8 +789,8 @@ const AccountPage = (): JSX.Element => {
                       </p>
                     </div>
                     <Switch 
-                      checked={preferences.newCourses}
-                      onCheckedChange={(checked) => handlePreferenceChange('newCourses', checked)}
+                      checked={notificationSettings.newCourses}
+                      onCheckedChange={(checked) => setNotificationSettings(prev => ({ ...prev, newCourses: checked }))}
                     />
                   </div>
                   <Separator />
@@ -783,8 +802,8 @@ const AccountPage = (): JSX.Element => {
                       </p>
                     </div>
                     <Switch 
-                      checked={preferences.webinarReminders}
-                      onCheckedChange={(checked) => handlePreferenceChange('webinarReminders', checked)}
+                      checked={notificationSettings.webinarReminders}
+                      onCheckedChange={(checked) => setNotificationSettings(prev => ({ ...prev, webinarReminders: checked }))}
                     />
                   </div>
                   <Separator />
@@ -796,8 +815,8 @@ const AccountPage = (): JSX.Element => {
                       </p>
                     </div>
                     <Switch 
-                      checked={preferences.weeklyProgress}
-                      onCheckedChange={(checked) => handlePreferenceChange('weeklyProgress', checked)}
+                      checked={notificationSettings.weeklyProgress}
+                      onCheckedChange={(checked) => setNotificationSettings(prev => ({ ...prev, weeklyProgress: checked }))}
                     />
                   </div>
                   <Separator />
@@ -809,8 +828,8 @@ const AccountPage = (): JSX.Element => {
                       </p>
                     </div>
                     <Switch 
-                      checked={preferences.marketingCommunications}
-                      onCheckedChange={(checked) => handlePreferenceChange('marketingCommunications', checked)}
+                      checked={notificationSettings.marketingCommunications}
+                      onCheckedChange={(checked) => setNotificationSettings(prev => ({ ...prev, marketingCommunications: checked }))}
                     />
                   </div>
                 </div>
