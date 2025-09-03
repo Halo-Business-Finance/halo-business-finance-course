@@ -2,145 +2,151 @@
 @tailwind components;
 @tailwind utilities;
 
-/* JP Morgan-inspired professional design system for Halo Business Finance LMS
-All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* IBM Carbon Design System inspired foundation */
 
 @layer base {
   :root {
+    /* Carbon Base Grid - 16px foundation */
+    --base-grid: 16px;
+    --spacing-01: 0.125rem;   /* 2px */
+    --spacing-02: 0.25rem;    /* 4px */
+    --spacing-03: 0.5rem;     /* 8px */
+    --spacing-04: 0.75rem;    /* 12px */
+    --spacing-05: 1rem;       /* 16px */
+    --spacing-06: 1.5rem;     /* 24px */
+    --spacing-07: 2rem;       /* 32px */
+    --spacing-08: 2.5rem;     /* 40px */
+    --spacing-09: 3rem;       /* 48px */
+    --spacing-10: 4rem;       /* 64px */
+    --spacing-11: 5rem;       /* 80px */
+    --spacing-12: 6rem;       /* 96px */
+
+    /* Carbon Color Tokens */
     --background: 0 0% 100%;
-    --foreground: 213 45% 15%;
+    --foreground: 0 0% 8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 213 45% 15%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 213 45% 15%;
-
-    /* Professional blue tones inspired by JP Morgan */
-    --primary: 213 85% 25%;        /* Deep professional blue */
+    /* Carbon Blue palette */
+    --primary: 220 98% 61%;      /* Blue-60 */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 213 85% 30%;   /* Lighter on hover */
-    --primary-muted: 213 30% 95%;   /* Very light blue background */
+    --primary-hover: 220 98% 55%; /* Blue-70 */
+    --primary-muted: 220 98% 85%;
 
-    --secondary: 213 15% 92%;       /* Light gray-blue */
-    --secondary-foreground: 213 45% 15%;
-    --secondary-hover: 213 15% 88%; 
+    /* Carbon Gray palette */
+    --secondary: 0 0% 97%;       /* Gray-10 */
+    --secondary-foreground: 0 0% 8%;  /* Gray-100 */
+    --secondary-hover: 0 0% 93%; /* Gray-20 */
 
-    --muted: 213 15% 96%;           /* Subtle background */
-    --muted-foreground: 213 15% 45%;
+    /* Muted colors using Carbon grays */
+    --muted: 0 0% 95%;           /* Gray-20 */
+    --muted-foreground: 0 0% 38%; /* Gray-70 */
 
-    --accent: 25 95% 53%;           /* Keeping Halo orange for brand consistency */
+    /* Carbon support colors */
+    --accent: 220 98% 61%;       /* Blue-60 for consistency */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Destructive using Carbon red */
+    --destructive: 2 79% 53%;    /* Red-60 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 213 15% 90%;          /* Subtle borders */
-    --input: 213 15% 94%;
-    --ring: 213 85% 25%;
+    /* Border and input using Carbon grays */
+    --border: 0 0% 88%;          /* Gray-30 */
+    --input: 0 0% 95%;           /* Gray-20 */
+    --ring: 220 98% 61%;         /* Blue-60 */
 
-    /* Success and warning colors */
-    --success: 142 71% 45%;         /* Professional green */
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;          /* Professional amber */
-    --warning-foreground: 213 45% 15%;
+    /* Support colors */
+    --success: 125 63% 41%;      /* Green-60 */
+    --warning: 35 100% 52%;      /* Yellow-30 */
 
-    /* Halo Business Finance brand colors - updated for consistency */
-    --halo-navy: 213 45% 15%;       /* Updated to match foreground */
-    --halo-orange: 25 95% 53%;      /* Keeping brand orange */
-    --halo-light-blue: 213 85% 95%;
-    --duke-blue: 213 85% 25%;       /* Aligned with primary */
-    --enterprise-blue: 213 85% 25%;
-    --navy-blue: 213 45% 15%;
-    
-    /* Course card theme - JP Morgan inspired */
+    /* IBM inspired brand colors */
+    --halo-navy: 220 98% 15%;
+    --halo-orange: 25 95% 53%;
+    --halo-light-blue: 197 71% 73%;
+    --duke-blue: 220 98% 61%;
+    --enterprise-blue: 220 98% 15%;
+    --navy-blue: 220 91% 13%;
+    --navy-900: 220 98% 15%;
+    --navy-800: 220 90% 18%;
+    --navy-700: 220 80% 22%;
+
+    /* Card backgrounds using Carbon layers */
+    --card: 0 0% 100%;           /* White */
+    --card-foreground: 0 0% 8%;  /* Gray-100 */
     --course-card-bg: 0 0% 100%;
-    --course-card-foreground: 213 45% 15%;
-    
-    /* Professional navy blue shades */
-    --navy-900: 213 45% 8%;
-    --navy-800: 213 45% 12%;
-    --navy-700: 213 45% 16%;
-    
-    /* JP Morgan-inspired gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--halo-navy)), hsl(var(--primary)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 71% 50%));
-    --gradient-duke: linear-gradient(135deg, hsl(var(--duke-blue)), hsl(var(--primary-hover)));
-    --gradient-enterprise: linear-gradient(135deg, hsl(var(--enterprise-blue)), hsl(var(--primary-hover)));
-    
-    /* Professional shadows - JP Morgan style */
-    --shadow-sm: 0 1px 2px 0 hsl(var(--primary) / 0.05);
-    --shadow: 0 1px 3px 0 hsl(var(--primary) / 0.1), 0 1px 2px -1px hsl(var(--primary) / 0.1);
-    --shadow-md: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -2px hsl(var(--primary) / 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(var(--primary) / 0.1), 0 4px 6px -4px hsl(var(--primary) / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(var(--primary) / 0.1), 0 8px 10px -6px hsl(var(--primary) / 0.1);
-    --shadow-card: 0 2px 8px -1px hsl(var(--primary) / 0.06);
-    --shadow-elegant: 0 4px 20px -2px hsl(var(--primary) / 0.08);
-    --shadow-elevated: 0 8px 30px -4px hsl(var(--primary) / 0.12);
-    --shadow-hero: 0 25px 50px -12px hsl(var(--primary) / 0.16);
-    
-    /* Professional transitions */
-    --transition-fast: 150ms ease-out;
-    --transition-smooth: 250ms ease-out;
-    --transition-slow: 350ms ease-out;
-    --transition-spring: 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --course-card-foreground: 0 0% 8%;
 
-    --radius: 0.5rem;               /* Subtle rounded corners */
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Sidebar colors */
-    --sidebar-background: var(--halo-navy);
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: var(--halo-orange);
-    --sidebar-primary-foreground: var(--halo-navy);
-    --sidebar-accent: 213 80% 25%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: var(--halo-navy);
-    --sidebar-ring: var(--halo-orange);
+    /* Sidebar using Carbon layer tokens */
+    --sidebar-background: 0 0% 98%;      /* Gray-10 */
+    --sidebar-foreground: 0 0% 8%;       /* Gray-100 */
+    --sidebar-primary: 0 0% 8%;          /* Gray-100 */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 95%;          /* Gray-20 */
+    --sidebar-accent-foreground: 0 0% 8%;
+    --sidebar-border: 0 0% 88%;          /* Gray-30 */
+    --sidebar-ring: 220 98% 61%;         /* Blue-60 */
+
+    /* Carbon inspired gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220, 98%, 61%) 0%, hsl(220, 98%, 55%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(125, 63%, 41%) 0%, hsl(125, 63%, 35%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220, 98%, 15%) 0%, hsl(220, 98%, 61%) 100%);
+    --gradient-duke: linear-gradient(135deg, hsl(220, 98%, 61%) 0%, hsl(220, 98%, 65%) 100%);
+    --gradient-enterprise: linear-gradient(135deg, hsl(220, 98%, 15%) 0%, hsl(220, 90%, 20%) 100%);
+
+    /* Carbon elevation shadows */
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-elevated: 0 2px 6px rgba(0, 0, 0, 0.2);
+    --shadow-hero: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+    /* Carbon motion curves */
+    --transition-smooth: all 240ms cubic-bezier(0.2, 0, 0.38, 0.9);
+    --transition-spring: all 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
+
+    /* Border radius following Carbon */
+    --radius: 0rem;  /* Carbon uses sharp corners by default */
   }
 
   .dark {
-    --background: 213 45% 8%;
-    --foreground: 213 15% 95%;
+    /* Carbon Dark theme using Gray-90 background */
+    --background: 0 0% 8%;       /* Gray-100 */
+    --foreground: 0 0% 95%;      /* Gray-20 */
 
-    --card: 213 45% 10%;
-    --card-foreground: 213 15% 95%;
+    --card: 0 0% 8%;             /* Gray-100 */
+    --card-foreground: 0 0% 95%;
 
-    --popover: 213 45% 10%;
-    --popover-foreground: 213 15% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 213 85% 65%;
-    --primary-foreground: 213 45% 8%;
-    --primary-hover: 213 85% 70%;
+    --primary: 220 98% 65%;      /* Blue-50 for dark theme */
+    --primary-foreground: 0 0% 8%;
 
-    --secondary: 213 30% 15%;
-    --secondary-foreground: 213 15% 85%;
+    --secondary: 0 0% 15%;       /* Gray-90 */
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 213 30% 12%;
-    --muted-foreground: 213 15% 65%;
+    --muted: 0 0% 15%;           /* Gray-90 */
+    --muted-foreground: 0 0% 62%; /* Gray-50 */
 
-    --accent: 25 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 15%;          /* Gray-90 */
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 213 15% 95%;
+    --destructive: 2 79% 45%;    /* Red-50 for dark */
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 213 30% 18%;
-    --input: 213 30% 18%;
-    --ring: 213 85% 65%;
-    
-    --sidebar-background: var(--halo-navy);
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: var(--halo-orange);
-    --sidebar-primary-foreground: var(--halo-navy);
-    --sidebar-accent: 213 80% 25%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: var(--halo-navy);
-    --sidebar-ring: var(--halo-orange);
+    --border: 0 0% 22%;          /* Gray-80 */
+    --input: 0 0% 15%;           /* Gray-90 */
+    --ring: 220 98% 65%;         /* Blue-50 */
+
+    /* Sidebar dark theme */
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 95%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 0 0% 22%;
   }
 }
 
@@ -150,7 +156,10 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    @apply bg-background text-foreground;
+    line-height: 1.5;  /* Carbon uses 1.5 line height */
+    font-size: 14px;   /* Carbon base font size */
     overflow-y: auto;
     scroll-behavior: smooth;
   }

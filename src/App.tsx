@@ -92,10 +92,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
   };
 
   return (
-    <header className="sticky top-0 h-[84px] flex flex-col border-b bg-white z-50 px-2 md:px-4">
+    <header className="sticky top-0 h-[48px] flex flex-col border-b bg-background z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-black hover:bg-black/10 hover:text-black h-[84px] w-16 flex-shrink-0" />}
+          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[48px] w-12 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -103,7 +103,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
                 variant="ghost" 
                 size="sm" 
                 onClick={goBack}
-                className="h-8 w-8 p-0 text-black hover:bg-black/10"
+                className="h-8 w-8 p-0 text-foreground hover:bg-muted"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -111,7 +111,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
                 variant="ghost" 
                 size="sm" 
                 onClick={goForward}
-                className="h-8 w-8 p-0 text-black hover:bg-black/10"
+                className="h-8 w-8 p-0 text-foreground hover:bg-muted"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -122,10 +122,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         {user && (
           <div className="flex-1 flex items-center justify-center">
             <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 min-w-0">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-sm flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-sm md:text-base">FP</span>
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary flex items-center justify-center flex-shrink-0">
+                <span className="text-primary-foreground font-bold text-sm md:text-base">FP</span>
               </div>
-              <span className="text-lg md:text-xl font-bold text-gray-900 truncate">FinPilot</span>
+              <span className="text-lg md:text-xl font-bold text-foreground truncate">FinPilot</span>
             </NavLink>
           </div>
         )}
@@ -142,7 +142,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         )}
         
         {user && (
-          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-black text-right flex-shrink-0 pt-1 pr-1">
+          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-foreground text-right flex-shrink-0 pt-1 pr-1">
             <NotificationBell />
             <div className="text-xs min-w-0 flex-shrink-0">
               <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
@@ -178,7 +178,7 @@ const AppContent = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
 
-        <main className="flex-1 relative z-10 bg-white">
+        <main className="flex-1 relative z-10 bg-background">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={

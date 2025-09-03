@@ -181,16 +181,16 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
     <Sidebar
       collapsible="icon"
       variant="inset"
-      className="bg-white border-gray-200 border-r-2 border-gray-300"
+      className="bg-sidebar border-sidebar-border border-r"
     >
-      <SidebarContent className="bg-white">
+      <SidebarContent className="bg-sidebar">
         {/* Welcome Message */}
         {user && !collapsed && (
-          <div className="px-4 py-4 border-b border-gray-200">
-            <div className="text-black">
-              <div className="text-sm font-medium text-black">Welcome back,</div>
+          <div className="px-4 py-3 border-b border-sidebar-border">
+            <div className="text-sidebar-foreground">
+              <div className="text-sm font-medium text-sidebar-foreground">Welcome back,</div>
               <div className="flex items-center justify-between">
-                <div className="text-base font-semibold text-black">
+                <div className="text-base font-semibold text-sidebar-foreground">
                   {user.user_metadata?.full_name?.split(' ')[0] || 
                    user.user_metadata?.name?.split(' ')[0] || 
                    user.email?.split('@')[0] || 'User'}!
@@ -198,11 +198,11 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                 <button 
                   onClick={handleSignOut}
                   disabled={isLoading}
-                  className="flex items-center gap-1 text-black hover:bg-gray-100 px-2 py-1 rounded-md disabled:opacity-50 transition-all duration-200"
+                  className="flex items-center gap-1 text-sidebar-foreground hover:bg-sidebar-accent px-2 py-1 disabled:opacity-50 transition-all duration-240"
                   title="Sign Out"
                 >
-                  <LogOut className="h-4 w-4 text-halo-orange" />
-                  {!collapsed && <span className="text-xs text-black">{isLoading ? "..." : "Sign Out"}</span>}
+                  <LogOut className="h-4 w-4 text-primary" />
+                  {!collapsed && <span className="text-xs text-sidebar-foreground">{isLoading ? "..." : "Sign Out"}</span>}
                 </button>
               </div>
             </div>

@@ -20,6 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: [
+					'"IBM Plex Sans"',
 					'"Inter"',
 					'system-ui',
 					'-apple-system',
@@ -29,11 +30,17 @@ export default {
 					'"Helvetica Neue"',
 					'Arial',
 					'"Noto Sans"',
-					'sans-serif',
-					'"Apple Color Emoji"',
-					'"Segoe UI Emoji"',
-					'"Segoe UI Symbol"',
-					'"Noto Color Emoji"'
+					'sans-serif'
+				],
+				mono: [
+					'"IBM Plex Mono"',
+					'"Fira Code"',
+					'Consolas',
+					'"Liberation Mono"',
+					'Menlo',
+					'Monaco',
+					'"Courier New"',
+					'monospace'
 				],
 				inter: [
 					'"Inter"',
@@ -49,12 +56,10 @@ export default {
 					'Georgia',
 					'serif'
 				],
-				aptos: [
-					'"Aptos"',
-					'"Segoe UI"',
-					'system-ui',
-					'-apple-system',
-					'BlinkMacSystemFont',
+				carbon: [
+					'"IBM Plex Sans"',
+					'"Helvetica Neue"',
+					'Arial',
 					'sans-serif'
 				],
 			},
