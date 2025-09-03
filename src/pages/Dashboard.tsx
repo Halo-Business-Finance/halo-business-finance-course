@@ -383,11 +383,11 @@ const Dashboard = () => {
                                 {/* Course Details Section - Exactly 3 Rows */}
                                 <div className="space-y-2 mt-4">
                                   {/* Row 1: Duration and Difficulty */}
-                                  <div className="flex items-center justify-between text-xs h-6">
-                                    <div className="flex items-center gap-2">
-                                      <Clock className="h-3 w-3 text-accent" />
-                                      <span className="text-accent">{getCourseDetails(courseName).duration}</span>
-                                    </div>
+                                   <div className="flex items-center justify-between text-sm h-6">
+                                     <div className="flex items-center gap-2">
+                                       <Clock className="h-4 w-4 text-accent" />
+                                       <span className="text-accent font-medium">{getCourseDetails(courseName).duration}</span>
+                                     </div>
                                     <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
                                       {getCourseDetails(courseName).difficulty}
                                     </Badge>
@@ -508,16 +508,16 @@ const Dashboard = () => {
                                    </CardDescription>
                                 </div>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                                <div className="flex items-center gap-1">
-                                  <BookOpen className="h-4 w-4" />
-                                  <span>{levelModules.length} modules</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Clock className="h-4 w-4" />
-                                  <span>{levelModules.length * 30} min</span>
-                                </div>
-                              </div>
+                               <div className="flex items-center gap-4 text-base text-muted-foreground mt-2">
+                                 <div className="flex items-center gap-1">
+                                   <BookOpen className="h-5 w-5" />
+                                   <span>{levelModules.length} modules</span>
+                                 </div>
+                                 <div className="flex items-center gap-1">
+                                   <Clock className="h-5 w-5" />
+                                   <span className="font-medium">{levelModules.length * 30} min</span>
+                                 </div>
+                               </div>
                             </CardHeader>
                             <CardContent className="pt-0">
                               <Button 
