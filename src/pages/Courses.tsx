@@ -10,9 +10,9 @@ import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
-import { CourseFilterSidebar } from "@/components/CourseFilterSidebar";
+import { DashboardCourseFilter } from "@/components/DashboardCourseFilter";
 import PublicModuleCard from "@/components/PublicModuleCard";
-import { useCourses } from "@/hooks/useCourses";
+import { useCourses, Course } from "@/hooks/useCourses";
 import { useModules } from "@/hooks/useModules";
 import coursesHero from "@/assets/courses-hero.jpg";
 import financeCourseBg from "@/assets/finance-course-bg.jpg";
@@ -46,27 +46,22 @@ import courseBridgeLoans from "@/assets/course-bridge-loans.jpg";
 import courseTermLoans from "@/assets/course-term-loans.jpg";
 import courseBusinessAcquisition from "@/assets/course-business-acquisition.jpg";
 
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  level: 'beginner' | 'expert';
+interface CourseWithModules extends Course {
   modules: any[];
 }
 
 const Courses = () => {
   const [loading, setLoading] = useState(false);
   const [enrollmentStatus, setEnrollmentStatus] = useState<Record<string, boolean>>({});
-  const [selectedLevel, setSelectedLevel] = useState<string>('all');
-  const [titleFilter, setTitleFilter] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { user } = useAuth();
   
   // Use database-driven courses instead of static data
-  const { courses: databaseCourses, loading: coursesLoading } = useCourses();
+  const { courses: databaseCourses, loading: coursesLoading, getCoursesByCategory } = useCourses();
   const { modules: databaseModules, loading: modulesLoading } = useModules();
 
   // Combine courses with their modules from database
-  const coursesWithModules = databaseCourses.map(course => {
+  const coursesWithModules: CourseWithModules[] = databaseCourses.map(course => {
     const courseModules = databaseModules.filter(module => 
       module.course_id === course.id && module.is_active
     );
@@ -258,12 +253,28 @@ const Courses = () => {
   };
 
 
-  // Filter courses based on selected level and title
-  const filteredCourses = allCourses.filter(course => {
-    const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
-    const matchesTitle = titleFilter === '' || course.title.toLowerCase().includes(titleFilter.toLowerCase());
-    return matchesLevel && matchesTitle;
-  });
+  // Filter courses based on selected category  
+  const filteredCourses: CourseWithModules[] = selectedCategory 
+    ? allCourses.filter(course => {
+        // Filter based on course title patterns that match categories
+        if (selectedCategory === 'Loan Originator') {
+          return course.title.toLowerCase().includes('originator') || 
+                 course.title.toLowerCase().includes('sales') ||
+                 course.title.toLowerCase().includes('sba');
+        }
+        if (selectedCategory === 'Loan Processing') {
+          return course.title.toLowerCase().includes('processing') ||
+                 course.title.toLowerCase().includes('equipment') ||
+                 course.title.toLowerCase().includes('working capital');
+        }
+        if (selectedCategory === 'Loan Underwriting') {
+          return course.title.toLowerCase().includes('underwriting') ||
+                 course.title.toLowerCase().includes('credit') ||
+                 course.title.toLowerCase().includes('analysis');
+        }
+        return false;
+      })
+    : allCourses;
 
   // Calculate counts for each skill level
   const skillLevelCounts = {
@@ -406,12 +417,9 @@ const Courses = () => {
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Filters - Mobile sheet, Desktop sidebar */}
             <div className="lg:w-80 flex-shrink-0">
-              <CourseFilterSidebar
-                selectedLevel={selectedLevel}
-                onLevelChange={setSelectedLevel}
-                titleFilter={titleFilter}
-                onTitleFilterChange={setTitleFilter}
-                counts={skillLevelCounts}
+              <DashboardCourseFilter
+                selectedCategory={selectedCategory}
+                onCategorySelect={setSelectedCategory}
               />
             </div>
 
@@ -420,9 +428,9 @@ const Courses = () => {
               {/* Results Header */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
                 <h2 className="text-xl sm:text-2xl font-bold">
-                  {selectedLevel === 'all' 
-                    ? `Available Courses (${filteredCourses.length})` 
-                    : `${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Courses (${filteredCourses.length})`
+                  {selectedCategory 
+                    ? `${selectedCategory} Courses (${filteredCourses.length})` 
+                    : `All Courses (${filteredCourses.length})`
                   }
                 </h2>
               </div>
