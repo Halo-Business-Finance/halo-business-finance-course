@@ -37,105 +37,53 @@ const ModulePage = () => {
       
       console.log('Raw moduleId from URL:', moduleId);
       
-      // Decode URL encoding first
-      const decodedModuleId = decodeURIComponent(moduleId);
-      console.log('Decoded moduleId:', decodedModuleId);
-      
-      // Create a mapping from URL patterns to actual database module_ids
-      const moduleIdMappings: { [key: string]: string } = {
-        'sba-7(a)': 'sba-7a-loans',
-        'sba-7(a)-loans': 'sba-7a-loans',
-        'sba-7(a)-module-1': 'sba-7a-loans',
-        'sba-504': 'sba-504-loans',
-        'business-line-of-credit': 'business-line-of-credit',
-        'capital-markets': 'capital-markets',
-        'lending-process': 'lending-process',
-        'term-loans': 'term-loans',
-        'usda-bi': 'usda-bi-loans',
-        'working-capital': 'working-capital'
-      };
-      
-      // Extract the base module name from the URL parameter
-      let cleanModuleId = decodedModuleId
-        .replace(/-beginner$|-expert$/, '') // Remove skill level suffix
-        .replace(/-module-\d+$/, ''); // Remove module number suffix
-      
-      // Check if we have a direct mapping
-      if (moduleIdMappings[cleanModuleId]) {
-        cleanModuleId = moduleIdMappings[cleanModuleId];
-      }
-      
-      console.log('Cleaned moduleId for database query:', cleanModuleId);
+      // Use the moduleId directly as it should match the database ID
+      const dbModuleId = decodeURIComponent(moduleId);
+      console.log('Using direct moduleId for database query:', dbModuleId);
       
       try {
-        // Fetch module data using the cleaned module ID
+        // Fetch module data using the direct module ID
         const { data: dbModule, error: moduleError } = await supabase
           .from('course_content_modules')
           .select('*')
-          .eq('id', moduleId)
+          .eq('id', dbModuleId)
           .single();
 
         if (moduleError) {
           console.error('Error fetching module:', moduleError);
-          
-          // Try alternative formats if the first attempt fails
-          const alternativeIds = [
-            moduleId, // Try original URL as-is
-            moduleId.replace(/\([^)]*\)/g, ''), // Just remove parentheses
-            cleanModuleId.replace(/-/g, ''), // Remove all dashes
-            cleanModuleId.replace('7a', '7-a'), // Try with dash between 7 and a
-          ];
-          
-          for (const altId of alternativeIds) {
-            console.log('Trying alternative module ID:', altId);
-            const { data: altModule, error: altError } = await supabase
-              .from('course_content_modules')
-              .select('*')
-              .eq('id', altId)
-              .single();
-              
-            if (altModule) {
-              console.log('Found module with alternative ID:', altId);
-              setModule(altModule);
-              cleanModuleId = altId;
-              break;
-            }
-          }
-          
-          if (!module) {
-            setLoading(false);
-            return;
-          }
+          setLoading(false);
+          return;
         } else {
           setModule(dbModule);
         }
 
-        // Fetch all content types for this module using the correct module ID
+        // Use the course_id from the module to fetch content
+        const moduleForContent = dbModule.id;
         const [videosResponse, articlesResponse, assessmentsResponse, documentsResponse] = await Promise.all([
           supabase
             .from('course_videos')
             .select('*')
-            .eq('module_id', cleanModuleId)
+            .eq('module_id', moduleForContent)
             .eq('is_active', true)
             .order('order_index'),
           
           supabase
             .from('course_articles')
             .select('*')
-            .eq('module_id', cleanModuleId)
+            .eq('module_id', moduleForContent)
             .eq('is_published', true)
             .order('order_index'),
           
           supabase
             .from('course_assessments')
             .select('*')
-            .eq('module_id', cleanModuleId)
+            .eq('module_id', moduleForContent)
             .order('order_index'),
           
           supabase
             .from('course_documents')
             .select('*')
-            .eq('module_id', cleanModuleId)
+            .eq('module_id', moduleForContent)
             .order('title')
         ]);
 
