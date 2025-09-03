@@ -413,7 +413,14 @@ const Dashboard = () => {
                                    </div>
                                     <div className="flex items-center gap-1 text-course-card-foreground">
                                       <Target className="h-4 w-4 text-course-card-foreground" />
-                                      <span>2 levels</span>
+                                      <span>
+                                        {(() => {
+                                          const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level))].filter(Boolean);
+                                          return uniqueLevels.length > 0 
+                                            ? uniqueLevels.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')
+                                            : 'Multiple levels';
+                                        })()}
+                                      </span>
                                     </div>
                                 </div>
                               </CardHeader>
