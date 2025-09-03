@@ -67,13 +67,13 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
     console.log('Fetching modules for course:', selectedCourse);
     try {
       // Extract the base course name without skill level suffix
-      const baseCourseId = selectedCourse.id.replace(/-(beginner|expert)$/, '');
-      console.log('Base course ID:', baseCourseId);
+      // Use the full course ID (including level) to match course_content_modules
+      console.log('Looking for modules with course_id:', selectedCourse.id);
       
       const { data, error } = await supabase
-        .from("course_modules")
+        .from("course_content_modules")
         .select("*")
-        .eq("module_id", baseCourseId)
+        .eq("course_id", selectedCourse.id)
         .eq("is_active", true)
         .order("order_index");
 
