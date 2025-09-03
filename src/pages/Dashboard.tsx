@@ -401,13 +401,12 @@ const Dashboard = () => {
                                    </div>
                                       <div className="flex gap-1">
                                         {(() => {
-                                          const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level).filter(Boolean))].sort();
-                                          console.log('Course modules skill levels:', courseModules.map(m => ({ title: m.title, skill_level: m.skill_level })));
-                                          console.log('Unique levels after dedup:', uniqueLevels);
+                                          const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
+                                          const uniqueLevels = Array.from(new Set(skillLevels)).sort();
                                           return uniqueLevels.length > 0 
-                                            ? uniqueLevels.map((level, index) => (
+                                            ? uniqueLevels.map(level => (
                                                 <Badge 
-                                                  key={`${level}-${index}`} 
+                                                  key={level} 
                                                   variant="outline" 
                                                   className="text-xs bg-white text-black border-gray-300 hover:bg-gray-50"
                                                 >
