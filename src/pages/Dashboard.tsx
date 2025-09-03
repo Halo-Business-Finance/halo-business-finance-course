@@ -348,25 +348,26 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-6 lg:py-8">
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
-          {/* Sidebar Filter - Only show on level 0 and hide when full width needed */}
+          {/* Course Categories and Instructors side by side - Only show on level 0 */}
           {currentFilterLevel === 0 && (
-            <div className="mb-6">
-              <DashboardCourseFilter
-                selectedCategory={selectedCategory}
-                onCategorySelect={setSelectedCategory}
-              />
+            <div className="flex flex-col lg:flex-row gap-6 mb-8">
+              {/* Course Categories Filter */}
+              <div className="lg:w-80 flex-shrink-0">
+                <DashboardCourseFilter
+                  selectedCategory={selectedCategory}
+                  onCategorySelect={setSelectedCategory}
+                />
+              </div>
+              
+              {/* Course Instructors Widget */}
+              <div className="flex-1">
+                <InstructorInfo />
+              </div>
             </div>
           )}
           
           {/* Main Content */}
           <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex-1 min-w-0'}`}>
-            {/* Course Instructors Widget - Only show on level 0 */}
-            {currentFilterLevel === 0 && (
-              <div className="mb-8">
-                <InstructorInfo />
-              </div>
-            )}
-            
             {/* Section Divider - Only show on level 0 */}
             {currentFilterLevel === 0 && (
               <Separator className="mb-4" />
