@@ -92,6 +92,62 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
     return 'there';
   };
 
+  const generateIntelligentResponse = (userMessage: string): string => {
+    const message = userMessage.toLowerCase();
+    
+    // Course-related questions
+    if (message.includes('course') || message.includes('lesson') || message.includes('module')) {
+      if (message.includes('start') || message.includes('begin')) {
+        return "To start a course, go to your Dashboard and click on any available course card. Your progress will be automatically saved as you complete modules.";
+      }
+      if (message.includes('locked') || message.includes('can\'t access')) {
+        return "If a course is locked, it means you're currently studying another course. You can only study one course at a time. Complete your current course or contact support to unlock other courses.";
+      }
+      if (message.includes('progress') || message.includes('certificate')) {
+        return "You can track your progress on the Dashboard. Certificates are automatically generated when you complete all modules in a course with passing grades.";
+      }
+      return "I can help you with course navigation, progress tracking, and accessing modules. What specific course question do you have?";
+    }
+    
+    // Login/Account issues
+    if (message.includes('login') || message.includes('password') || message.includes('account')) {
+      if (message.includes('forgot') || message.includes('reset')) {
+        return "To reset your password, click 'Forgot Password' on the login page. You'll receive an email with reset instructions within a few minutes.";
+      }
+      if (message.includes('can\'t login') || message.includes('access')) {
+        return "If you're having trouble logging in, please check your email and password. If the issue persists, try clearing your browser cache or contact your administrator.";
+      }
+      return "I can help you with account access issues. Are you having trouble logging in or need to reset your password?";
+    }
+    
+    // Technical issues
+    if (message.includes('video') || message.includes('audio') || message.includes('play')) {
+      return "For video playback issues, try refreshing the page or checking your internet connection. Make sure your browser allows autoplay for this site. If problems persist, try a different browser.";
+    }
+    
+    if (message.includes('error') || message.includes('bug') || message.includes('broken')) {
+      return "I'm sorry you're experiencing technical issues. Please try refreshing the page first. If the problem continues, could you tell me what specific error you're seeing?";
+    }
+    
+    // Navigation help
+    if (message.includes('find') || message.includes('where') || message.includes('navigate')) {
+      return "You can navigate using the sidebar menu. Your main areas are: Dashboard (course overview), Courses (browse all courses), Progress (detailed tracking), and Account (profile settings).";
+    }
+    
+    // Enrollment/Business questions
+    if (message.includes('enroll') || message.includes('pricing') || message.includes('business')) {
+      return "For enrollment and business inquiries, I can connect you with our sales team. We offer enterprise solutions for commercial lending and finance training. Would you like me to schedule a demo?";
+    }
+    
+    // Greetings
+    if (message.includes('hello') || message.includes('hi') || message.includes('help')) {
+      return "Hello! I'm here to help you with the FinPilot learning platform. I can assist with course navigation, technical issues, account problems, and general questions about our commercial lending and finance courses. What can I help you with today?";
+    }
+    
+    // Default helpful response
+    return "I'm here to help! I can assist with course access, technical issues, account problems, navigation, and questions about our commercial lending and finance training. Could you tell me more about what you need help with?";
+  };
+
   const handleSendMessage = async () => {
     if (!newMessage.trim() || connectionStatus !== 'connected') return;
 
@@ -104,24 +160,17 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const messageContent = newMessage.trim();
     setNewMessage('');
     setIsTyping(true);
 
-    // Simulate support response
+    // Generate intelligent response based on user message
     setTimeout(() => {
-      const supportResponses = [
-        "Thank you for your message! I'm looking into that for you right away.",
-        "I understand your concern. Let me help you with that.",
-        "Great question! Here's what I can help you with...",
-        "I see what you're asking about. Let me provide you with some information.",
-        "Thanks for reaching out! I'm here to help you resolve this issue."
-      ];
-
-      const randomResponse = supportResponses[Math.floor(Math.random() * supportResponses.length)];
+      const intelligentResponse = generateIntelligentResponse(messageContent);
       
       const supportMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: randomResponse,
+        content: intelligentResponse,
         sender: 'support',
         timestamp: new Date(),
         senderName: 'Sarah from Support'
@@ -129,7 +178,7 @@ export const LiveChatSupport = ({ isOpen, onOpenChange }: LiveChatSupportProps) 
 
       setMessages(prev => [...prev, supportMessage]);
       setIsTyping(false);
-    }, 2000 + Math.random() * 2000);
+    }, 1500 + Math.random() * 1000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
