@@ -92,10 +92,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
   };
 
   return (
-    <header className="sticky top-0 h-[64px] flex flex-col border-b bg-background z-50 px-2 md:px-4">
+    <header className="sticky top-0 h-[80px] flex flex-col border-b bg-background z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[64px] w-12 flex-shrink-0" />}
+          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[80px] w-12 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
