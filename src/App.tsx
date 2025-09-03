@@ -178,7 +178,7 @@ const AppContent = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
 
-        <main className="flex-1 relative z-10 bg-background">
+        <main className="flex-1 relative z-0 bg-background">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={

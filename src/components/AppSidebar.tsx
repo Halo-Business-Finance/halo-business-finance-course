@@ -181,7 +181,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
     <Sidebar
       collapsible="icon"
       variant="inset"
-      className="bg-sidebar border-sidebar-border border-r w-80 data-[state=collapsed]:w-16"
+      className="bg-sidebar border-sidebar-border border-r w-80 data-[state=collapsed]:w-16 z-20 relative"
     >
       <SidebarContent className="bg-sidebar">
         {/* Welcome Message */}
@@ -198,7 +198,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                 <button 
                   onClick={handleSignOut}
                   disabled={isLoading}
-                  className="flex items-center gap-1 text-sidebar-foreground hover:bg-sidebar-accent px-2 py-1 disabled:opacity-50 transition-all duration-240"
+                  className="flex items-center gap-1 text-sidebar-foreground hover:bg-sidebar-accent px-2 py-1 disabled:opacity-50 transition-all duration-240 relative z-30"
                   title="Sign Out"
                 >
                   <LogOut className="h-4 w-4 text-primary" />
