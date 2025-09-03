@@ -411,24 +411,21 @@ const Dashboard = () => {
                                      <BookOpen className="h-4 w-4 text-course-card-foreground" />
                                      <span>{courseModules.length} modules</span>
                                    </div>
-                                     <div className="flex items-center gap-2 text-course-card-foreground">
-                                       <Target className="h-4 w-4 text-course-card-foreground" />
-                                       <div className="flex gap-1">
-                                         {(() => {
-                                           const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level))].filter(Boolean).sort();
-                                           return uniqueLevels.length > 0 
-                                             ? uniqueLevels.map(level => (
-                                                 <Badge 
-                                                   key={level} 
-                                                   variant="outline" 
-                                                   className="text-xs bg-white text-black border-gray-300 hover:bg-gray-50"
-                                                 >
-                                                   {level.charAt(0).toUpperCase() + level.slice(1)}
-                                                 </Badge>
-                                               ))
-                                             : <Badge variant="outline" className="text-xs bg-white text-black border-gray-300">Multiple levels</Badge>;
-                                         })()}
-                                       </div>
+                                     <div className="flex gap-1">
+                                       {(() => {
+                                         const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level))].filter(Boolean).sort();
+                                         return uniqueLevels.length > 0 
+                                           ? uniqueLevels.map(level => (
+                                               <Badge 
+                                                 key={level} 
+                                                 variant="outline" 
+                                                 className="text-xs bg-white text-black border-gray-300 hover:bg-gray-50"
+                                               >
+                                                 {level.charAt(0).toUpperCase() + level.slice(1)}
+                                               </Badge>
+                                             ))
+                                           : <Badge variant="outline" className="text-xs bg-white text-black border-gray-300">Multiple levels</Badge>;
+                                       })()}
                                      </div>
                                 </div>
                               </CardHeader>
