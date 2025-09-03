@@ -20,6 +20,7 @@ import { AccessibilityEnhancer } from "@/components/AccessibilityEnhancer";
 import { AdvancedAssessmentSystem } from "@/components/AdvancedAssessmentSystem";
 import { CourseSelector } from "@/components/CourseSelector";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
+import { DashboardCourseFilter } from "@/components/DashboardCourseFilter";
 import { useCourses } from "@/hooks/useCourses";
 import { useModules } from "@/hooks/useModules";
 import { useLearningStats } from "@/hooks/useLearningStats";
@@ -49,7 +50,7 @@ import courseBusinessAcquisition from "@/assets/course-business-acquisition.jpg"
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
   const { setSelectedCourse } = useCourseSelection();
-  const { courses: databaseCourses, loading: coursesLoading } = useCourses();
+  const { courses: databaseCourses, loading: coursesLoading, getCoursesByCategory } = useCourses();
   const { modules: databaseModules, loading: modulesLoading } = useModules();
   const { dashboardStats, loading: statsLoading } = useLearningStats(user?.id);
   const { 
@@ -68,6 +69,7 @@ const Dashboard = () => {
   const [selectedCourseProgram, setSelectedCourseProgram] = useState<string | null>(null);
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
   const [renderKey, setRenderKey] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Combine courses with their modules from database
   const coursesWithModules = databaseCourses.map(course => {
@@ -80,8 +82,19 @@ const Dashboard = () => {
     };
   });
 
+  // Filter courses based on selected category
+  const filteredCoursesWithModules = selectedCategory 
+    ? (() => {
+        const categorizedCourses = getCoursesByCategory();
+        const categoryCourseTitles = categorizedCourses[selectedCategory]?.map(course => course.title) || [];
+        return coursesWithModules.filter(course => 
+          categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0]))
+        );
+      })()
+    : coursesWithModules;
+
   // Create flattened modules for filtering and display
-  const flattenedModules = coursesWithModules.flatMap(course => 
+  const flattenedModules = filteredCoursesWithModules.flatMap(course => 
     course.modules.map(module => ({
       ...module,
       course_title: course.title,
@@ -333,7 +346,17 @@ const Dashboard = () => {
       {/* Main Dashboard Content */}
       <div className="container mx-auto px-4 py-6 lg:py-8">
         {/* Learning Dashboard */}
-        <div className="flex flex-col gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Sidebar Filter - Only show on level 0 */}
+          {currentFilterLevel === 0 && (
+            <div className="lg:w-80 flex-shrink-0">
+              <DashboardCourseFilter
+                selectedCategory={selectedCategory}
+                onCategorySelect={setSelectedCategory}
+              />
+            </div>
+          )}
+          
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             {/* Results Summary */}
