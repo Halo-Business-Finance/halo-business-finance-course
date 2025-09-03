@@ -4144,10 +4144,8 @@ export type Database = {
           created_at: string
           email: string
           is_masked: boolean
-          location: string
           name: string
           phone: string
-          title: string
           user_id: string
         }[]
       }
