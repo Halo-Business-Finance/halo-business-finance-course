@@ -397,15 +397,12 @@ const Dashboard = () => {
                                 {/* Course Details Section - Exactly 3 Rows */}
                                 <div className="space-y-2 mt-4">
                                   {/* Row 1: Duration and Difficulty */}
-                                   <div className="flex items-center justify-between text-sm h-6">
-                                     <div className="flex items-center gap-2">
-                                       <Clock className="h-4 w-4 text-accent" />
-                                       <span className="text-accent font-medium">{getCourseDetails(courseName).duration}</span>
-                                     </div>
-                                    <Badge variant="secondary" className="text-xs bg-course-card-foreground text-course-card">
-                                      {getCourseDetails(courseName).difficulty}
-                                    </Badge>
-                                  </div>
+                                    <div className="flex items-center justify-between text-sm h-6">
+                                      <div className="flex items-center gap-2">
+                                        <Clock className="h-4 w-4 text-accent" />
+                                        <span className="text-accent font-medium">{getCourseDetails(courseName).duration}</span>
+                                      </div>
+                                   </div>
                                   
                                   {/* Row 2: Key Topics */}
                                   <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
