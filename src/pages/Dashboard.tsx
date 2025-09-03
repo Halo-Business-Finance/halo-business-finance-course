@@ -424,15 +424,27 @@ const Dashboard = () => {
                                         </span>
                                       </div>
                                    </div>
-                                   {/* Beginner Badge */}
-                                   {(() => {
-                                     const hasBeginnerLevel = courseModules.some(m => m.skill_level === 'beginner');
-                                     return hasBeginnerLevel ? (
-                                       <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">
-                                         Beginner Friendly
-                                       </Badge>
-                                     ) : null;
-                                   })()}
+                                   {/* Skill Level Badges */}
+                                   <div className="flex gap-2">
+                                     {(() => {
+                                       const hasBeginnerLevel = courseModules.some(m => m.skill_level === 'beginner');
+                                       const hasExpertLevel = courseModules.some(m => m.skill_level === 'expert');
+                                       return (
+                                         <>
+                                           {hasBeginnerLevel && (
+                                             <Badge variant="default">
+                                               Beginner
+                                             </Badge>
+                                           )}
+                                           {hasExpertLevel && (
+                                             <Badge variant="secondary">
+                                               Expert
+                                             </Badge>
+                                           )}
+                                         </>
+                                       );
+                                     })()}
+                                   </div>
                                 </div>
                               </CardHeader>
                               <CardContent className="pt-0">
