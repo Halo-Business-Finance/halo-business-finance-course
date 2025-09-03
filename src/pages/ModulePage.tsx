@@ -74,7 +74,7 @@ const ModulePage = () => {
             .maybeSingle();
 
           if (courseData && !courseError) {
-            setSelectedCourse({
+            setSelectedCourseForNavigation({
               id: courseData.id,
               title: courseData.title,
               description: courseData.description

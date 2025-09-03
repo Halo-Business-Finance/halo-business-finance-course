@@ -15,6 +15,7 @@ interface SimpleCourse {
 interface CourseSelectionContextType {
   selectedCourse: SimpleCourse | null;
   setSelectedCourse: (course: SimpleCourse | null) => void;
+  setSelectedCourseForNavigation: (course: SimpleCourse | null) => void;
   availableCourses: SimpleCourse[];
   loadingCourses: boolean;
   canSelectCourse: (courseId: string) => boolean;
@@ -161,6 +162,7 @@ export const CourseSelectionProvider: React.FC<{ children: React.ReactNode }> = 
       value={{
         selectedCourse,
         setSelectedCourse: handleCourseSelection,
+        setSelectedCourseForNavigation: handleCourseSelectionForNavigation,
         availableCourses,
         loadingCourses,
         canSelectCourse,
