@@ -3809,6 +3809,10 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
+      check_user_has_role_safe: {
+        Args: { check_role: string; check_user_id?: string }
+        Returns: boolean
+      }
       check_user_has_role_secure: {
         Args: { check_role: string }
         Returns: boolean
@@ -4201,6 +4205,16 @@ export type Database = {
           role_is_active: boolean
           role_updated_at: string
           user_id: string
+        }[]
+      }
+      get_public_course_catalog: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          course_id: string
+          description: string
+          level: string
+          module_count: number
+          title: string
         }[]
       }
       get_public_course_previews: {
