@@ -344,7 +344,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader 
         progress={getOverallProgress()}
@@ -354,7 +354,7 @@ const Dashboard = () => {
       />
 
       {/* Main Dashboard Content */}
-      <div className="container mx-auto px-4 py-6 lg:py-8">
+      <div className="container mx-auto px-6 py-8 lg:py-12">
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Categories and Instructors side by side - Only show on level 0 */}
@@ -427,67 +427,87 @@ const Dashboard = () => {
                           return (
                             <Card 
                               key={courseName} 
-                              className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20 bg-course-card text-course-card-foreground"
+                              className="group relative overflow-hidden hover:shadow-xl transition-all duration-500 border hover:border-primary/30 bg-gradient-to-br from-card via-card to-secondary/5 hover:to-primary/5"
                             >
-                              <CardHeader className="pb-2">
+                              {/* Modern gradient overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                              
+                              <CardHeader className="pb-4 relative z-10 space-y-4">
                                 <div className="flex items-start justify-between">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-sm line-clamp-2 text-course-card-foreground">{courseName}</CardTitle>
-                                    <Badge variant="secondary" className="mt-2 mb-2 bg-accent text-accent-foreground">Course Program</Badge>
-                                    <CardDescription className="line-clamp-3 mt-1 text-course-card-foreground">
+                                  <div className="flex-1 space-y-3">
+                                    <div className="flex items-center gap-3">
+                                      <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                                        <BookOpen className="h-5 w-5 text-primary" />
+                                      </div>
+                                      <Badge variant="secondary" className="px-3 py-1 bg-accent/10 text-accent-foreground border-accent/20">
+                                        Course Program
+                                      </Badge>
+                                    </div>
+                                    
+                                    <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
+                                      {courseName}
+                                    </CardTitle>
+                                    
+                                    <CardDescription className="line-clamp-3 text-muted-foreground text-sm leading-relaxed">
                                       {getCourseDetails(courseName).description}
                                     </CardDescription>
                                   </div>
                                 </div>
                                 
-                                {/* Course Details Section - Exactly 3 Rows */}
-                                <div className="space-y-2 mt-4">
-                                  {/* Row 1: Duration and Difficulty */}
-                                    <div className="flex items-center justify-between text-sm h-6">
-                                      <div className="flex items-center gap-2">
-                                        <Clock className="h-4 w-4 text-accent" />
-                                        <span className="text-accent font-medium">{getCourseDetails(courseName).duration}</span>
-                                      </div>
-                                   </div>
+                                {/* Enhanced Course Details */}
+                                <div className="space-y-4 pt-2">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Clock className="h-4 w-4 text-primary" />
+                                      <span className="text-primary font-medium">{getCourseDetails(courseName).duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                      <Target className="h-4 w-4" />
+                                      <span>{courseModules.length} modules</span>
+                                    </div>
+                                  </div>
                                   
-                                  {/* Row 2: Key Topics */}
-                                  <div className="min-h-[2rem] max-h-[3rem] overflow-hidden">
-                                    <div className="flex flex-wrap gap-1">
-                                       {getCourseDetails(courseName).topics.slice(0, 2).map((topic, topicIndex) => (
-                                         <Badge key={topicIndex} variant="outline" className="text-xs px-2 py-0.5 whitespace-nowrap border-course-card-foreground text-course-card-foreground">
+                                  {/* Key Topics with enhanced styling */}
+                                  <div className="space-y-2">
+                                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
+                                    <div className="flex flex-wrap gap-2">
+                                       {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => (
+                                         <Badge 
+                                           key={topicIndex} 
+                                           variant="outline" 
+                                           className="text-xs px-3 py-1 bg-secondary/50 text-secondary-foreground border-secondary/30 hover:bg-secondary/70 transition-colors"
+                                         >
                                            {topic}
                                          </Badge>
                                        ))}
                                     </div>
                                   </div>
                                   
-                                </div>
-
-                                <div className="flex items-center gap-4 text-sm mt-3">
-                                   <div className="flex items-center gap-1 text-course-card-foreground">
-                                     <BookOpen className="h-4 w-4 text-course-card-foreground" />
-                                     <span>{courseModules.length} modules</span>
-                                   </div>
-                                      <div className="flex gap-1">
-                                        {(() => {
-                                          const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
-                                          const uniqueLevels = Array.from(new Set(skillLevels)).sort();
-                                          return uniqueLevels.length > 0 
-                                            ? uniqueLevels.map(level => (
-                                                <Badge 
-                                                  key={level} 
-                                                  variant="outline" 
-                                                  className="text-xs bg-white text-black border-gray-300 hover:bg-gray-50"
-                                                >
-                                                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                                                </Badge>
-                                              ))
-                                            : <Badge variant="outline" className="text-xs bg-white text-black border-gray-300">Multiple levels</Badge>;
-                                        })()}
-                                      </div>
+                                  {/* Skill Levels with semantic styling */}
+                                  <div className="space-y-2">
+                                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Available Levels</span>
+                                    <div className="flex gap-2">
+                                      {(() => {
+                                        const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
+                                        const uniqueLevels = Array.from(new Set(skillLevels)).sort();
+                                        return uniqueLevels.length > 0 
+                                          ? uniqueLevels.map(level => (
+                                              <Badge 
+                                                key={level} 
+                                                variant={level === 'expert' ? 'default' : 'secondary'} 
+                                                className="text-xs px-3 py-1"
+                                              >
+                                                {level.charAt(0).toUpperCase() + level.slice(1)}
+                                              </Badge>
+                                            ))
+                                          : <Badge variant="outline" className="text-xs px-3 py-1">Multiple levels</Badge>;
+                                      })()}
+                                    </div>
+                                  </div>
                                 </div>
                               </CardHeader>
-                              <CardContent className="pt-0">
+                              
+                              <CardContent className="pt-0 pb-6 relative z-10">
                                 <Button 
                                   type="button"
                                   onClick={(e) => {
@@ -496,10 +516,13 @@ const Dashboard = () => {
                                     console.log('Start Course button clicked for:', courseName);
                                     handleStartCourse(courseName);
                                   }}
-                                  className="w-full touch-manipulation"
+                                  className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300"
                                   variant="default"
                                 >
-                                  Start Course
+                                  <span className="flex items-center gap-2">
+                                    Start Course
+                                    <Target className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                                  </span>
                                 </Button>
                               </CardContent>
                             </Card>
@@ -545,44 +568,61 @@ const Dashboard = () => {
                         return (
                           <Card 
                             key={level} 
-                            className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+                            className="group relative overflow-hidden hover:shadow-xl transition-all duration-500 border hover:border-primary/30 bg-gradient-to-br from-card via-card to-secondary/5 hover:to-primary/5"
                           >
+                            {/* Modern gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            
                             <div className="relative overflow-hidden rounded-t-lg">
                               <img 
                                 src={getCourseImage(selectedCourse.name)} 
                                 alt={`${selectedCourse.name} - ${level}`}
-                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                               />
+                              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
                               <div className="absolute top-4 left-4">
-                                <Badge variant={level === "beginner" ? "default" : "secondary"}>
-                                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                                <Badge 
+                                  variant={level === "beginner" ? "secondary" : "default"}
+                                  className="px-3 py-1 backdrop-blur-sm bg-background/80 border-primary/20"
+                                >
+                                  {level.charAt(0).toUpperCase() + level.slice(1)} Level
                                 </Badge>
                               </div>
-                            </div>
-                            <CardHeader className="pb-2">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <CardTitle className="text-lg line-clamp-2">
-                                    {selectedCourse.name} - {level.charAt(0).toUpperCase() + level.slice(1)}
-                                  </CardTitle>
-                                   <CardDescription className="line-clamp-2 mt-1">
-                                     {level === 'beginner' && 'Introduction and fundamental concepts for new learners'}
-                                     {level === 'expert' && 'Advanced mastery and expert-level techniques'}
-                                   </CardDescription>
+                              <div className="absolute bottom-4 right-4">
+                                <div className="p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
+                                  <Zap className="h-5 w-5 text-primary" />
                                 </div>
                               </div>
-                               <div className="flex items-center gap-4 text-base text-muted-foreground mt-2">
-                                 <div className="flex items-center gap-1">
-                                   <BookOpen className="h-5 w-5" />
-                                   <span>{levelModules.length} modules</span>
-                                 </div>
-                                 <div className="flex items-center gap-1">
-                                   <Clock className="h-5 w-5" />
-                                   <span className="font-medium">{levelModules.length * 30} min</span>
-                                 </div>
-                               </div>
+                            </div>
+                            
+                            <CardHeader className="pb-4 relative z-10 space-y-4">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1 space-y-3">
+                                  <CardTitle className="text-xl font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
+                                    {selectedCourse.name}
+                                  </CardTitle>
+                                  <CardDescription className="line-clamp-2 text-muted-foreground leading-relaxed">
+                                    {level === 'beginner' && 'Introduction and fundamental concepts for new learners'}
+                                    {level === 'expert' && 'Advanced mastery and expert-level techniques'}
+                                  </CardDescription>
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center justify-between pt-2">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <div className="p-1.5 rounded-md bg-primary/10">
+                                    <BookOpen className="h-4 w-4 text-primary" />
+                                  </div>
+                                  <span className="text-primary font-medium">{levelModules.length} modules</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                  <Clock className="h-4 w-4" />
+                                  <span className="font-medium">{levelModules.length * 30} min</span>
+                                </div>
+                              </div>
                             </CardHeader>
-                            <CardContent className="pt-0">
+                            
+                            <CardContent className="pt-0 pb-6 relative z-10">
                               <Button 
                                 type="button"
                                 onClick={(e) => {
@@ -591,10 +631,13 @@ const Dashboard = () => {
                                   console.log('Proceed to Modules button clicked for level:', level);
                                   handleProceedToModules(level);
                                 }}
-                                className="w-full touch-manipulation"
+                                className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300"
                                 variant="default"
                               >
-                                Proceed to Modules
+                                <span className="flex items-center gap-2">
+                                  Proceed to Modules
+                                  <Brain className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                                </span>
                               </Button>
                             </CardContent>
                           </Card>
