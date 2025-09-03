@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Users, MapPin, Award } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Instructor {
@@ -45,12 +44,6 @@ const InstructorInfo = () => {
   if (loading) {
     return (
       <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Course Instructors
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-32">
             <div className="w-6 h-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -63,12 +56,6 @@ const InstructorInfo = () => {
   if (instructors.length === 0) {
     return (
       <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Course Instructors
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">No instructors available at this time.</p>
         </CardContent>
@@ -78,12 +65,6 @@ const InstructorInfo = () => {
 
   return (
     <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-primary" />
-          Course Instructors
-        </CardTitle>
-      </CardHeader>
       <CardContent className="space-y-6">
         {instructors.map((instructor) => (
           <div key={instructor.id} className="flex items-start gap-4">
