@@ -406,22 +406,33 @@ const Dashboard = () => {
                                   
                                 </div>
 
-                                <div className="flex items-center gap-4 text-sm mt-3">
-                                   <div className="flex items-center gap-1 text-course-card-foreground">
-                                     <BookOpen className="h-4 w-4 text-course-card-foreground" />
-                                     <span>{courseModules.length} modules</span>
+                                 <div className="flex items-center justify-between mt-3">
+                                   <div className="flex items-center gap-4 text-sm">
+                                     <div className="flex items-center gap-1 text-course-card-foreground">
+                                       <BookOpen className="h-4 w-4 text-course-card-foreground" />
+                                       <span>{courseModules.length} modules</span>
+                                     </div>
+                                      <div className="flex items-center gap-1 text-course-card-foreground">
+                                        <Target className="h-4 w-4 text-course-card-foreground" />
+                                        <span>
+                                          {(() => {
+                                            const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level))].filter(Boolean);
+                                            return uniqueLevels.length > 0 
+                                              ? uniqueLevels.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')
+                                              : 'Multiple levels';
+                                          })()}
+                                        </span>
+                                      </div>
                                    </div>
-                                    <div className="flex items-center gap-1 text-course-card-foreground">
-                                      <Target className="h-4 w-4 text-course-card-foreground" />
-                                      <span>
-                                        {(() => {
-                                          const uniqueLevels = [...new Set(courseModules.map(m => m.skill_level))].filter(Boolean);
-                                          return uniqueLevels.length > 0 
-                                            ? uniqueLevels.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')
-                                            : 'Multiple levels';
-                                        })()}
-                                      </span>
-                                    </div>
+                                   {/* Beginner Badge */}
+                                   {(() => {
+                                     const hasBeginnerLevel = courseModules.some(m => m.skill_level === 'beginner');
+                                     return hasBeginnerLevel ? (
+                                       <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">
+                                         Beginner Friendly
+                                       </Badge>
+                                     ) : null;
+                                   })()}
                                 </div>
                               </CardHeader>
                               <CardContent className="pt-0">
