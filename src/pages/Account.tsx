@@ -3,93 +3,63 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Save, X, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { SEOHead } from "@/components/SEOHead";
 import { SecurityPrivacyManager } from "@/components/SecurityPrivacyManager";
+import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import type { UserPreferences, NotificationPreferences } from "@/types";
 
 // Phone number formatting utility
 const formatPhoneNumber = (phone: string): string => {
   if (!phone) return "";
   
-  // Remove all non-digits
   const digits = phone.replace(/\D/g, "");
   
-  // Format as (xxx) XXX-XXXX
   if (digits.length === 10) {
     return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
   }
   
-  // Return original if not 10 digits
   return phone;
 };
 
-// Phone input handler that formats as user types
-const handlePhoneInput = (value: string): string => {
-  // Remove all non-digits
-  const digits = value.replace(/\D/g, "");
-  
-  // Limit to 10 digits
-  const limitedDigits = digits.slice(0, 10);
-  
-  // Format progressively
-  if (limitedDigits.length >= 6) {
-    return `(${limitedDigits.slice(0, 3)}) ${limitedDigits.slice(3, 6)}-${limitedDigits.slice(6)}`;
-  } else if (limitedDigits.length >= 3) {
-    return `(${limitedDigits.slice(0, 3)}) ${limitedDigits.slice(3)}`;
-  } else if (limitedDigits.length > 0) {
-    return `(${limitedDigits}`;
-  }
-  
-  return "";
-};
-import { supabase } from "@/integrations/supabase/client";
-
-const AccountPage = () => {
+const AccountPage = (): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
   const activeTab = new URLSearchParams(location.search).get('tab') || 'account';
   
-  const handleTabChange = (tab: string) => {
-    navigate(`/my-account?tab=${tab}`);
-  };
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    location: "",
-    city: "",
-    state: "",
-    joinDate: "",
-    title: "",
-    company: "",
-    avatar: "/placeholder.svg"
-  });
+  const {
+    profile,
+    loading: profileLoading,
+    error: profileError,
+    updateProfile,
+    updatePreferences,
+    updateNotificationSettings
+  } = useUserProfile();
 
-  const [preferences, setPreferences] = useState({
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [preferences, setPreferences] = useState<UserPreferences>({
     theme: 'light',
     language: 'en',
     timezone: 'est',
     dateFormat: 'mdy',
     fontSize: 'medium',
+    reducedMotion: false
+  });
+  
+  const [notificationSettings, setNotificationSettings] = useState<NotificationPreferences>({
     emailNotifications: true,
     pushNotifications: false,
     marketingEmails: false,
-    reducedMotion: false,
     courseProgress: true,
     newCourses: true,
     webinarReminders: true,
@@ -97,8 +67,10 @@ const AccountPage = () => {
     marketingCommunications: false
   });
 
-  const [editForm, setEditForm] = useState(userInfo);
 
+  const handleTabChange = (tab: string): void => {
+    navigate(`/my-account?tab=${tab}`);
+  };
 
   const learningStats = {
     totalHours: "7.5",
@@ -107,12 +79,32 @@ const AccountPage = () => {
     averageScore: 94
   };
 
-  // Load profile data on component mount
+  // Sync local state with profile data
   useEffect(() => {
-    loadProfile();
-  }, []);
+    if (profile) {
+      setPreferences({
+        theme: (profile.theme as 'light' | 'dark') || 'light',
+        language: profile.language || 'en',
+        timezone: profile.timezone || 'est',
+        dateFormat: profile.date_format || 'mdy',
+        fontSize: (profile.font_size as 'small' | 'medium' | 'large') || 'medium',
+        reducedMotion: profile.reduced_motion || false
+      });
 
-  // Apply font size using CSS custom properties instead of body classes
+      setNotificationSettings({
+        emailNotifications: profile.email_notifications ?? true,
+        pushNotifications: profile.push_notifications ?? false,
+        marketingEmails: profile.marketing_emails ?? false,
+        courseProgress: profile.course_progress ?? true,
+        newCourses: profile.new_courses ?? true,
+        webinarReminders: profile.webinar_reminders ?? true,
+        weeklyProgress: profile.weekly_progress ?? false,
+        marketingCommunications: profile.marketing_communications ?? false
+      });
+    }
+  }, [profile]);
+
+  // Apply font size using CSS custom properties
   useEffect(() => {
     const root = document.documentElement;
     const fontSizeMap = {
@@ -120,7 +112,7 @@ const AccountPage = () => {
       medium: '16px',
       large: '18px'
     };
-    root.style.setProperty('--user-font-size', fontSizeMap[preferences.fontSize as keyof typeof fontSizeMap] || '16px');
+    root.style.setProperty('--user-font-size', fontSizeMap[preferences.fontSize] || '16px');
   }, [preferences.fontSize]);
 
   const loadProfile = async () => {
