@@ -362,14 +362,14 @@ const Dashboard = () => {
           <div className="flex-1 min-w-0">
             {/* Course Instructors Widget - Only show on level 0 */}
             {currentFilterLevel === 0 && (
-              <div className="mb-6">
+              <div className="mb-8">
                 <InstructorInfo />
               </div>
             )}
             
             {/* Section Divider - Only show on level 0 */}
             {currentFilterLevel === 0 && (
-              <Separator className="mb-6" />
+              <Separator className="mb-4" />
             )}
             
             {/* Results Summary */}
