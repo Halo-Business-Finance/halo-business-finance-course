@@ -294,12 +294,15 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                                       </div>
                                    </div>
                                    
-                                   {/* Subtle description for available modules */}
-                                   {!isModuleLocked && (
-                                      <p className="text-xs text-black mt-1 transition-opacity duration-300">
-                                        Ready to start
-                                      </p>
-                                   )}
+                                    {/* Subtle description for available modules */}
+                                    {!isModuleLocked && (
+                                       <p className="text-xs text-black mt-1 transition-opacity duration-300">
+                                         {index === 0 || (index > 0 && selectedCourseModules[index - 1]?.is_locked) 
+                                           ? "Ready to start" 
+                                           : "Available"
+                                         }
+                                       </p>
+                                    )}
                                </div>
                              )}
                            </div>
