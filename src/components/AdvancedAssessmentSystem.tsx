@@ -55,7 +55,7 @@ interface AssessmentSession {
   startTime: Date;
   timeRemaining: number;
   isAdaptive: boolean;
-  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
+  difficultyLevel: 'beginner' | 'expert';
   topic: string;
   hintsUsed: Record<string, number>;
   confidence: Record<string, number>;

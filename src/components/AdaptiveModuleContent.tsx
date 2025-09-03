@@ -119,15 +119,15 @@ export const AdaptiveModuleContent = ({ moduleInstanceId, onComplete }: Adaptive
       });
     }
 
-    if (moduleInstance.current_difficulty_level === 'advanced') {
+    if (moduleInstance.current_difficulty_level === 'expert') {
       baseSteps.push({
-        id: 'advanced_topics',
-        title: 'Advanced Applications',
+        id: 'expert_topics',
+        title: 'Expert Applications',
         type: 'scenarios',
         content: {
           title: 'Expert-Level Challenges',
           description: 'Tackle complex scenarios and innovative solutions.',
-          scenarios: generateAdvancedChallenges(module.module_key)
+          scenarios: generateExpertChallenges(module.module_key)
         }
       });
     }
@@ -192,7 +192,7 @@ export const AdaptiveModuleContent = ({ moduleInstanceId, onComplete }: Adaptive
     return scenarios[moduleKey] || [];
   };
 
-  const generateAdvancedChallenges = (moduleKey: string) => {
+  const generateExpertChallenges = (moduleKey: string) => {
     return [
       {
         title: 'Complex Deal Structuring',

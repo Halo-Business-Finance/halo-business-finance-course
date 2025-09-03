@@ -149,7 +149,7 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
           id: 'fa_2',
           question: 'Which ratio best measures a company\'s ability to pay short-term obligations?',
           type: 'multiple_choice',
-          difficulty: 'intermediate',
+          difficulty: 'expert',
           options: [
             'Debt-to-equity ratio',
             'Current ratio',
@@ -165,7 +165,7 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
           id: 'cc_1',
           question: 'Explain the key differences between secured and unsecured lending.',
           type: 'essay',
-          difficulty: 'intermediate',
+          difficulty: 'expert',
           rubric: ['Understanding of collateral', 'Risk assessment explanation', 'Examples provided'],
           maxScore: 100
         }
@@ -175,7 +175,7 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
           id: 'pa_1',
           question: 'Case Study: Analyze this loan scenario and provide your recommendation.',
           type: 'case_study',
-          difficulty: 'advanced',
+          difficulty: 'expert',
           scenario: 'Manufacturing company seeking $500K working capital loan...',
           evaluationCriteria: ['Risk analysis', 'Financial assessment', 'Recommendation quality']
         }
@@ -187,7 +187,7 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
     // Filter questions by difficulty level and adaptive logic
     return moduleQuestions.filter(q => 
       q.difficulty === difficultyLevel || 
-      (difficultyLevel === 'adaptive' && ['beginner', 'intermediate'].includes(q.difficulty))
+      (difficultyLevel === 'adaptive' && ['beginner', 'expert'].includes(q.difficulty))
     );
   };
 
@@ -261,15 +261,15 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
     if (accuracy >= 90 && speed <= 1.2 && confidence >= 80) {
       // High performance - increase difficulty
       switch (currentLevel) {
-        case 'beginner': return 'intermediate';
-        case 'intermediate': return 'advanced';
+        case 'beginner': return 'expert';
+        case 'expert': return 'expert';
         default: return currentLevel;
       }
     } else if (accuracy < 70 || attempts > 2) {
       // Lower performance - decrease difficulty or provide more support
       switch (currentLevel) {
-        case 'advanced': return 'intermediate';
-        case 'intermediate': return 'beginner';
+        case 'expert': return 'beginner';
+        case 'beginner': return 'beginner';
         default: return currentLevel;
       }
     }
@@ -305,7 +305,7 @@ export const useAdaptiveLearning = (courseId: string = 'halo-launch-pad-learn') 
       recommendations.push({
         type: 'advance',
         title: 'Ready for Next Level',
-        description: 'Your performance indicates readiness for intermediate content',
+        description: 'Your performance indicates readiness for expert content',
         priority: 'high'
       });
     }

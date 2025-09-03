@@ -54,8 +54,7 @@ export const AdaptiveLearningModules = ({ courseId = 'halo-launch-pad-learn' }: 
   const getDifficultyColor = (level: string) => {
     switch (level) {
       case 'beginner': return 'bg-green-100 text-green-800 border-green-200';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'advanced': return 'bg-red-100 text-red-800 border-red-200';
+      case 'expert': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'adaptive': return 'bg-blue-100 text-blue-800 border-blue-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
@@ -267,9 +266,9 @@ export const AdaptiveLearningModules = ({ courseId = 'halo-launch-pad-learn' }: 
               <CardContent className="p-6 text-center">
                 <Brain className="h-8 w-8 text-purple-500 mx-auto mb-2" />
                 <div className="text-2xl font-bold">
-                  {adaptiveModules.filter(m => m.current_difficulty_level === 'advanced').length}
+                  {adaptiveModules.filter(m => m.current_difficulty_level === 'expert').length}
                 </div>
-                <div className="text-sm text-muted-foreground">Advanced Level</div>
+                <div className="text-sm text-muted-foreground">Expert Level</div>
               </CardContent>
             </Card>
           </div>

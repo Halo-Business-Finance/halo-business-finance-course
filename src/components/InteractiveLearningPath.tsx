@@ -29,7 +29,7 @@ interface LearningPathModule {
   title: string;
   description: string;
   duration: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'beginner' | 'expert';
   prerequisites: string[];
   estimatedTime: number;
   topics: string[];
@@ -49,7 +49,7 @@ interface LearningPath {
   description: string;
   modules: LearningPathModule[];
   totalDuration: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'beginner' | 'expert';
   completionRate: number;
   estimatedCompletion: string;
 }
@@ -108,7 +108,7 @@ export const InteractiveLearningPath = () => {
             title: 'Capital Markets & Lending Systems',
             description: 'Explore capital markets and institutional funding mechanisms',
             duration: '3 hours',
-            difficulty: 'intermediate',
+            difficulty: 'expert',
             prerequisites: ['foundations'],
             estimatedTime: 180,
             topics: ['Capital Markets', 'Institutional Lending', 'Market Analysis'],
@@ -130,7 +130,7 @@ export const InteractiveLearningPath = () => {
             title: 'Advanced Credit Analysis',
             description: 'Master sophisticated credit analysis techniques and risk management',
             duration: '4 hours',
-            difficulty: 'advanced',
+            difficulty: 'expert',
             prerequisites: ['foundations', 'capital-markets'],
             estimatedTime: 240,
             topics: ['Credit Analysis', 'Risk Management', 'Portfolio Analysis'],
@@ -153,7 +153,7 @@ export const InteractiveLearningPath = () => {
         id: 'specialized-lending',
         name: 'Specialized Lending',
         description: 'Deep dive into specialized lending products and niche markets',
-        difficulty: 'intermediate',
+        difficulty: 'expert',
         totalDuration: '8-10 hours',
         completionRate: 0,
         estimatedCompletion: '1-2 weeks',
@@ -163,7 +163,7 @@ export const InteractiveLearningPath = () => {
             title: 'SBA Lending Mastery',
             description: 'Complete guide to SBA loan programs and application processes',
             duration: '3 hours',
-            difficulty: 'intermediate',
+            difficulty: 'expert',
             prerequisites: ['foundations'],
             estimatedTime: 180,
             topics: ['SBA Programs', 'Application Process', 'Compliance'],
@@ -239,8 +239,7 @@ export const InteractiveLearningPath = () => {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'beginner': return 'bg-green-100 text-green-800 border-green-200';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'advanced': return 'bg-red-100 text-red-800 border-red-200';
+      case 'expert': return 'bg-blue-100 text-blue-800 border-blue-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };

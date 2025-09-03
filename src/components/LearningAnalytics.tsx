@@ -181,11 +181,11 @@ export const LearningAnalytics = () => {
     }
 
     // Difficulty progression insight
-    const hasAdvancedModules = analytics.some(item => item.difficulty_level === 'advanced');
-    if (!hasAdvancedModules && completionRate > 60) {
+    const hasExpertModules = analytics.some(item => item.difficulty_level === 'expert');
+    if (!hasExpertModules && completionRate > 60) {
       insights.push({
         type: 'recommendation',
-        title: 'Ready for Advanced Content',
+        title: 'Ready for Expert Content',
         description: 'Your progress suggests you\'re ready to tackle more challenging modules.',
         action: 'Explore advanced finance topics'
       });

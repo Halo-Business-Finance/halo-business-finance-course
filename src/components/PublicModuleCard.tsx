@@ -11,7 +11,7 @@ interface PublicModuleCardProps {
   description: string;
   duration: string;
   lessons: number;
-  skillLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  skillLevel: 'beginner' | 'expert';
   moduleId: string;
   image?: string;
   isAuthenticated: boolean;
@@ -36,11 +36,8 @@ const PublicModuleCard = ({
     switch (level) {
       case 'beginner':
         return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'intermediate':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
-      case 'advanced':
       case 'expert':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-blue-100 text-blue-800 border-blue-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }

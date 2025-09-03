@@ -491,7 +491,7 @@ const Dashboard = () => {
                                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                               />
                               <div className="absolute top-4 left-4">
-                                <Badge variant={level === "beginner" ? "default" : level === "intermediate" ? "secondary" : "destructive"}>
+                                <Badge variant={level === "beginner" ? "default" : "secondary"}>
                                   {level.charAt(0).toUpperCase() + level.slice(1)}
                                 </Badge>
                               </div>

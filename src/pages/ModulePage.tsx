@@ -57,7 +57,7 @@ const ModulePage = () => {
       
       // Extract the base module name from the URL parameter
       let cleanModuleId = decodedModuleId
-        .replace(/-beginner$|-intermediate$|-advanced$/, '') // Remove skill level suffix
+        .replace(/-beginner$|-expert$/, '') // Remove skill level suffix
         .replace(/-module-\d+$/, ''); // Remove module number suffix
       
       // Check if we have a direct mapping
@@ -308,8 +308,7 @@ const ModulePage = () => {
                     <CardDescription className="mt-2">{module.description}</CardDescription>
                   </div>
                   <Badge variant={
-                    module.skill_level === "advanced" ? "success" : 
-                    module.skill_level === "intermediate" ? "default" : "outline"
+                    module.skill_level === "expert" ? "success" : "outline"
                   }>
                     {module.skill_level?.charAt(0).toUpperCase() + module.skill_level?.slice(1) || "Beginner"}
                   </Badge>
