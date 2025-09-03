@@ -70,9 +70,9 @@ const ModulePage = () => {
       try {
         // Fetch module data using the cleaned module ID
         const { data: dbModule, error: moduleError } = await supabase
-          .from('course_modules')
+          .from('course_content_modules')
           .select('*')
-          .eq('module_id', cleanModuleId)
+          .eq('id', moduleId)
           .single();
 
         if (moduleError) {
@@ -89,9 +89,9 @@ const ModulePage = () => {
           for (const altId of alternativeIds) {
             console.log('Trying alternative module ID:', altId);
             const { data: altModule, error: altError } = await supabase
-              .from('course_modules')
+              .from('course_content_modules')
               .select('*')
-              .eq('module_id', altId)
+              .eq('id', altId)
               .single();
               
             if (altModule) {
