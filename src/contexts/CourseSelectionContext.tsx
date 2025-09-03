@@ -143,6 +143,11 @@ export const CourseSelectionProvider: React.FC<{ children: React.ReactNode }> = 
     setSelectedCourse(course);
   };
 
+  const handleCourseSelectionForNavigation = (course: SimpleCourse | null) => {
+    // Set course for navigation context without validation
+    setSelectedCourse(course);
+  };
+
   const refreshCourses = async () => {
     await fetchCourses();
   };

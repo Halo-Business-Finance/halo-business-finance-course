@@ -29,7 +29,7 @@ const ModulePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
-  const { setSelectedCourse } = useCourseSelection();
+  const { setSelectedCourse, setSelectedCourseForNavigation } = useCourseSelection();
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
   const [module, setModule] = useState<any>(null);
