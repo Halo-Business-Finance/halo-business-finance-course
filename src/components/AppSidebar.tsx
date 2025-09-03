@@ -181,7 +181,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
     <Sidebar
       collapsible="icon"
       variant="inset"
-      className="bg-sidebar border-sidebar-border border-r"
+      className="bg-sidebar border-sidebar-border border-r w-80 data-[state=collapsed]:w-16"
     >
       <SidebarContent className="bg-sidebar">
         {/* Welcome Message */}
