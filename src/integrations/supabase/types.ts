@@ -1830,6 +1830,7 @@ export type Database = {
       }
       leads: {
         Row: {
+          access_restricted_to: Json | null
           admin_notes: string | null
           assigned_to: string | null
           budget: string | null
@@ -1858,6 +1859,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          access_restricted_to?: Json | null
           admin_notes?: string | null
           assigned_to?: string | null
           budget?: string | null
@@ -1886,6 +1888,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          access_restricted_to?: Json | null
           admin_notes?: string | null
           assigned_to?: string | null
           budget?: string | null
@@ -3702,6 +3705,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      can_access_lead_data: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       can_assign_role: {
         Args: { requesting_user_id: string; target_role: string }
         Returns: Json
@@ -4077,12 +4084,13 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: {
           company: string
+          created_at: string
           email: string
           is_masked: boolean
           location: string
           name: string
           phone: string
-          role: string
+          title: string
           user_id: string
         }[]
       }
@@ -4446,12 +4454,19 @@ export type Database = {
         Returns: undefined
       }
       log_admin_profile_access_detailed: {
-        Args: {
-          access_type: string
-          fields_accessed: string[]
-          reason?: string
-          target_user_id: string
-        }
+        Args:
+          | {
+              access_metadata: Json
+              access_type: string
+              accessing_admin_id: string
+              admin_role: string
+            }
+          | {
+              access_type: string
+              fields_accessed: string[]
+              reason?: string
+              target_user_id: string
+            }
         Returns: undefined
       }
       log_admin_profile_view: {
@@ -4593,11 +4608,7 @@ export type Database = {
         Returns: Json
       }
       mask_sensitive_data: {
-        Args: {
-          p_data: string
-          p_field_type: string
-          p_requesting_user_role?: string
-        }
+        Args: { data_value: string; field_type: string; user_role?: string }
         Returns: string
       }
       mask_sensitive_profile_data: {
