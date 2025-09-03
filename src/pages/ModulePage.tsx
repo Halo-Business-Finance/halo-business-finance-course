@@ -7,7 +7,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download } from "lucide-react";
 import { LessonModal } from "@/components/LessonModal";
+import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Lesson {
@@ -25,6 +27,7 @@ const ModulePage = () => {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
   const [module, setModule] = useState<any>(null);
@@ -307,16 +310,25 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-            <Tabs defaultValue="lessons" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="lessons">Lessons</TabsTrigger>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="resources">Resources</TabsTrigger>
-                <TabsTrigger value="assessment">Assessment</TabsTrigger>
-                <TabsTrigger value="discussion">Discussion</TabsTrigger>
-              </TabsList>
+        <Tabs defaultValue="adaptive" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="adaptive">Adaptive Learning</TabsTrigger>
+            <TabsTrigger value="lessons">Lessons</TabsTrigger>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="assessment">Assessment</TabsTrigger>
+            <TabsTrigger value="discussion">Discussion</TabsTrigger>
+          </TabsList>
 
-              <TabsContent value="lessons" className="space-y-4">
+          <TabsContent value="adaptive" className="space-y-6">
+            <AdaptiveLessonEngine
+              moduleId={module.id}
+              userId={user?.id || ''}
+              courseId={module.course_id}
+            />
+          </TabsContent>
+
+          <TabsContent value="lessons" className="space-y-4">
                 {lessons.length > 0 ? (
                   <div className="grid gap-4">
                     {lessons.map((lesson, index) => (
