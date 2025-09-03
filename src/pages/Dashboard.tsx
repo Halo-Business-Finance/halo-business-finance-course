@@ -347,10 +347,10 @@ const Dashboard = () => {
       {/* Main Dashboard Content */}
       <div className="container mx-auto px-4 py-6 lg:py-8">
         {/* Learning Dashboard */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Sidebar Filter - Only show on level 0 */}
+        <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
+          {/* Sidebar Filter - Only show on level 0 and hide when full width needed */}
           {currentFilterLevel === 0 && (
-            <div className="lg:w-80 flex-shrink-0">
+            <div className="mb-6">
               <DashboardCourseFilter
                 selectedCategory={selectedCategory}
                 onCategorySelect={setSelectedCategory}
@@ -359,7 +359,7 @@ const Dashboard = () => {
           )}
           
           {/* Main Content */}
-          <div className="flex-1 min-w-0">
+          <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex-1 min-w-0'}`}>
             {/* Course Instructors Widget - Only show on level 0 */}
             {currentFilterLevel === 0 && (
               <div className="mb-8">
