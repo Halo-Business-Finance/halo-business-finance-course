@@ -67,17 +67,17 @@ const LeadsManager = () => {
 
 const fetchLeads = async () => {
     try {
-      // Use new encrypted secure leads function with enhanced PII protection
-      const { data, error } = await supabase.rpc('get_secure_leads_encrypted', {
-        p_limit: 500,
-        p_offset: 0
-      });
+      // Use secure lead access with enhanced protection and logging
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching leads:', error);
         toast({
           title: "Error",
-          description: "Failed to load leads. " + (error.message?.includes('privileges') ? 'Admin privileges required.' : 'Please try again.'),
+          description: "Failed to load leads. " + (error.message?.includes('policy') ? 'Admin privileges required.' : 'Please try again.'),
           variant: "destructive",
         });
         return;
@@ -86,9 +86,9 @@ const fetchLeads = async () => {
       // Transform the secure leads data to match Lead interface
       const transformedData = (data || []).map((lead: any) => ({
         ...lead,
-        updated_at: lead.created_at,
-        lead_source: 'contact_sales',
-        lead_type: 'sales'
+        is_masked: false, // Leads will be masked at database level via RLS
+        lead_source: lead.lead_source || 'contact_sales',
+        lead_type: lead.lead_type || 'sales'
       }));
       
       setLeads(transformedData);

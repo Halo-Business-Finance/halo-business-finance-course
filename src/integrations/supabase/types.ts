@@ -2449,6 +2449,42 @@ export type Database = {
         }
         Relationships: []
       }
+      privacy_consents: {
+        Row: {
+          consent_given: boolean
+          consent_timestamp: string
+          consent_type: string
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          consent_given?: boolean
+          consent_timestamp?: string
+          consent_type: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          consent_given?: boolean
+          consent_timestamp?: string
+          consent_type?: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -3825,6 +3861,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_bulk_profile_access: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_potential_data_breach: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -4698,6 +4738,10 @@ export type Database = {
       sanitize_error_response: {
         Args: { p_error_message: string; p_user_context?: Json }
         Returns: Json
+      }
+      schedule_data_deletion: {
+        Args: { retention_days?: number; user_id_to_delete: string }
+        Returns: undefined
       }
       secure_profile_access: {
         Args: { target_user_id: string }

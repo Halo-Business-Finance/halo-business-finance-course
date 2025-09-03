@@ -66,8 +66,8 @@ const loadTraineeProgress = async () => {
     try {
       setLoading(true);
       
-      // Use enhanced secure function with strict PII masking and audit logging
-      const { data, error } = await supabase.rpc('get_secure_admin_profiles');
+      // Use new secure masked profile access function with enhanced PII protection
+      const { data, error } = await supabase.rpc('get_masked_user_profiles');
       
       if (error) {
         throw error;
@@ -80,10 +80,10 @@ const loadTraineeProgress = async () => {
         trainee_email: profile.email,
         trainee_phone: profile.phone,
         trainee_company: profile.company,
-        join_date: new Date().toISOString(), // Mock join date
+        join_date: profile.created_at,
         last_activity: new Date().toISOString(), // Mock last activity  
         is_masked: profile.is_masked,
-        role: profile.role,
+        role: 'user', // Default role
         // Mock progress data - in production, this would come from learning analytics
         total_courses: 1,
         completed_courses: 0,
