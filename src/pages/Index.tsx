@@ -122,49 +122,49 @@ const Index = () => {
         structuredData={structuredData}
         canonicalUrl="https://finpilot.com"
       />
-      <div className="min-h-screen bg-background jp-fade-in">
+      <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden jp-gradient-hero pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16" role="banner">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10" />
-        <div className="jp-container relative z-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16" role="banner">
+        <div className="absolute inset-0" />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
-              <div className="space-y-4 md:space-y-6 lg:space-y-8 jp-fade-in text-center lg:text-left">
+              <div className="space-y-4 md:space-y-6 lg:space-y-8 animate-fade-in text-center lg:text-left">
                 
                 <div className="space-y-3 md:space-y-4 lg:space-y-6">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight jp-heading text-primary">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
                     Master Business Finance
-                    <span className="block text-primary">
+                    <span className="block text-navy-blue">
                       & Commercial Lending
                     </span>
                   </h1>
                   
-                  <Badge className="inline-flex items-center gap-1 md:gap-2 bg-accent/10 text-accent text-base md:text-lg px-2 md:px-3 py-1 border border-accent/20">
+                  <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
                     <Star className="h-4 w-4" />
                     <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
                     <span className="sm:hidden">Top Industry Course</span>
                   </Badge>
                   
-                  <div className="jp-body max-w-2xl mx-auto lg:mx-0">
-                    <span className="block font-medium jp-heading text-xs sm:text-sm md:text-base lg:text-lg">Your Pathway to Lending Excellence.</span>
-                    <span className="hidden md:block mt-1 md:mt-2 jp-subheading text-xs sm:text-xs md:text-sm lg:text-base">Developed by industry experts and delivered through Stanford-level curriculum.</span>
+                  <div className="leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
+                    <span className="block font-medium text-black text-xs sm:text-sm md:text-base lg:text-lg">Your Pathway to Lending Excellence.</span>
+                    <span className="hidden md:block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Developed by industry experts and delivered through Stanford-level curriculum.</span>
                     <span className="block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Transform your career with our comprehensive business finance and commercial lending program.</span>
                   </div>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                   <Link to="/signup" className="w-full sm:w-auto">
-                    <Button variant="elegant" size="lg" className="w-full h-11 text-xs md:text-sm lg:text-base px-8 py-2 group jp-hover-lift">
+                    <Button size="lg" className="w-full h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
                       <span className="sm:hidden">Start Learning Today</span>
                       <span className="hidden sm:inline">Start Learning Today</span>
                       <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
                   <Button 
-                    variant="secondary" 
+                    variant="outline" 
                     size="lg" 
-                    className="w-full sm:w-auto h-11 text-xs md:text-sm lg:text-base px-8 py-2 group jp-hover-lift"
+                    className="w-full sm:w-auto h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy group"
                     onClick={() => setIsDemoModalOpen(true)}
                   >
                     <Play className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
@@ -179,9 +179,9 @@ const Index = () => {
                 <img 
                   src={heroBusinessTraining} 
                   alt="Commercial lending training classroom with professionals learning loan underwriting" 
-                  className="w-full h-48 sm:h-64 md:h-80 lg:h-auto object-cover rounded-lg md:rounded-xl lg:rounded-2xl shadow-hero mx-auto lg:mx-0 jp-hover-lift"
+                  className="w-full h-48 sm:h-64 md:h-80 lg:h-auto object-cover rounded-lg md:rounded-xl lg:rounded-2xl shadow-hero mx-auto lg:mx-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent rounded-lg md:rounded-xl lg:rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg md:rounded-xl lg:rounded-2xl" />
               </div>
             </div>
           </div>

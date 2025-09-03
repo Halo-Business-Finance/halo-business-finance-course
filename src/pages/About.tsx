@@ -143,19 +143,19 @@ const About = () => {
         keywords="Halo Business Finance, commercial lending training company, FinPilot program, business finance education, lending professionals"
         canonicalUrl="https://finpilot.com/about"
       />
-      <div className="min-h-screen jp-gradient-subtle jp-fade-in">
+      <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[32rem] overflow-hidden">
         <img 
           src={aboutHero} 
           alt="Professional team collaboration" 
-          className="w-full h-full object-cover jp-hover-scale"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 jp-gradient-hero opacity-80 flex items-center justify-center">
-          <div className="text-center text-white px-4 jp-fade-in">
+        <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+          <div className="text-center text-white px-4">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">About Us</Badge>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight jp-heading">About FinPilot</h1>
-            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed jp-body">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">About FinPilot</h1>
+            <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
               FinPilot is a comprehensive training platform designed to advance careers in commercial lending and business finance. 
               We provide world-class education and certification programs for finance professionals seeking to excel in today's competitive market.
             </p>
@@ -163,13 +163,13 @@ const About = () => {
         </div>
       </div>
       
-      <div className="jp-container jp-section">
+      <div className="container mx-auto px-4 py-8 md:py-12">
 
-      <div className="jp-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-12 md:mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
         {companyInfo.map((info, index) => {
           const Icon = info.icon;
           return (
-            <Card key={index} className="jp-card-hover p-6">
+            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Icon className="h-6 w-6 text-halo-navy" />
