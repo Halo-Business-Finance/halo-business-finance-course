@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -435,54 +435,120 @@ const Courses = () => {
                 </h2>
               </div>
 
-              {/* Course Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-12">
+              {/* Course Grid - JP Morgan Style */}
+              <div className="jp-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-12">
                 {filteredCourses.map((course, index) => (
-                  <Card key={course.id} className="overflow-hidden border-2 hover:border-primary/50 transition-colors bg-course-card text-course-card-foreground">
-                    <CardContent className="p-6">
-                      <CardTitle className="text-lg mb-2 line-clamp-2 text-course-card-foreground">{course.title}</CardTitle>
-                      <CardDescription className="text-sm text-course-card-foreground mb-4 line-clamp-3">
-                        {course.description}
-                      </CardDescription>
-                      
-                      <div className="flex items-center gap-4 text-sm text-course-card-foreground mb-4">
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="h-4 w-4 text-course-card-foreground" />
-                          <span>{course.modules.length} modules</span>
+                  <div
+                    key={course.id}
+                    className="jp-card-hover jp-fade-in group"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {/* Course Image with Professional Overlay */}
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img
+                        src={getCourseImage(course.title)}
+                        alt={course.title}
+                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 jp-gradient-hero opacity-60" />
+                      <div className="absolute top-4 left-4 flex gap-2">
+                        <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
+                          {course.level === 'beginner' ? 'Beginner' : 'Expert'}
+                        </Badge>
+                        <Badge variant="secondary" className="bg-white/90 text-success font-medium">
+                          {course.modules.length} Modules
+                        </Badge>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                          <BookOpen className="h-5 w-5 text-white" />
                         </div>
-                         <Badge className={`${getLevelColor(course.level)} bg-course-card-foreground text-course-card`}>
-                           {course.level}
-                         </Badge>
+                      </div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-6 space-y-4">
+                      {/* Header */}
+                      <div className="space-y-2">
+                        <h3 className="jp-heading text-xl leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                          {course.title}
+                        </h3>
+                        <p className="jp-body text-sm text-muted-foreground line-clamp-3">
+                          {course.description}
+                        </p>
                       </div>
 
-                      <div className="flex items-center justify-between">
+                      {/* Course Stats */}
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <BookOpen className="h-4 w-4" />
+                          <span>{course.modules.length} modules</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          <span>4-6 Hours</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Award className="h-4 w-4" />
+                          <span>Certificate</span>
+                        </div>
+                      </div>
+
+                      {/* Course Modules Preview */}
+                      {course.modules.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="jp-caption font-medium">Key Topics:</p>
+                          <div className="space-y-1">
+                            {course.modules.slice(0, 2).map((module, idx) => (
+                              <div key={module.id} className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                                <span className="line-clamp-1">{module.title}</span>
+                              </div>
+                            ))}
+                            {course.modules.length > 2 && (
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full" />
+                                <span>+{course.modules.length - 2} more modules</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 pt-4 border-t border-border">
                         {user ? (
                           enrollmentStatus[course.id] ? (
-                            <Link to={`/module/${course.modules[0]?.id}`} className="w-full">
-                              <Button className="w-full gap-2">
-                                <Check className="h-4 w-4" />
+                            <Link to={`/module/${course.modules[0]?.id}`} className="flex-1">
+                              <Button className="w-full jp-button-primary">
+                                <Check className="h-4 w-4 mr-2" />
                                 Continue Learning
                               </Button>
                             </Link>
                           ) : (
-                            <Button 
+                            <Button
                               onClick={() => handleEnroll(course.id)}
-                              className="w-full"
+                              className="flex-1 jp-button-elegant"
+                              disabled={loading}
                             >
+                              <BookOpen className="h-4 w-4 mr-2" />
                               Enroll Now
                             </Button>
                           )
                         ) : (
-                          <Link to="/auth" className="w-full">
-                            <Button className="w-full gap-2 bg-halo-navy text-white hover:bg-halo-navy/90">
-                              <Lock className="h-4 w-4" />
+                          <Link to="/auth" className="flex-1">
+                            <Button className="w-full jp-button-primary">
+                              <Lock className="h-4 w-4 mr-2" />
                               Sign In to Enroll
                             </Button>
                           </Link>
                         )}
+                        <Button variant="outline" size="sm" className="jp-border-elegant jp-focus">
+                          <Star className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 ))}
               </div>
               

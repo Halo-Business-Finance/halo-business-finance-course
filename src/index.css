@@ -2,123 +2,142 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* JP Morgan-inspired professional design system for Halo Business Finance LMS
+All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+    --foreground: 213 45% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 213 45% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 213 45% 15%;
 
-    --primary: 208 100% 30%;
+    /* Professional blue tones inspired by JP Morgan */
+    --primary: 213 85% 25%;        /* Deep professional blue */
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 213 85% 30%;   /* Lighter on hover */
+    --primary-muted: 213 30% 95%;   /* Very light blue background */
 
-    --secondary: 208 50% 85%;
-    --secondary-foreground: 208 100% 20%;
+    --secondary: 213 15% 92%;       /* Light gray-blue */
+    --secondary-foreground: 213 45% 15%;
+    --secondary-hover: 213 15% 88%; 
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 213 15% 96%;           /* Subtle background */
+    --muted-foreground: 213 15% 45%;
 
-    --accent: 25 95% 53%;
+    --accent: 25 95% 53%;           /* Keeping Halo orange for brand consistency */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 96%;
-    --ring: 0 0% 9%;
+    --border: 213 15% 90%;          /* Subtle borders */
+    --input: 213 15% 94%;
+    --ring: 213 85% 25%;
 
-    /* Halo Business Finance brand colors */
-    --halo-navy: 210 100% 15%;
-    --halo-orange: 25 95% 53%;
-    --halo-light-blue: 208 60% 85%;
-    --duke-blue: 208 100% 30%;
-    --enterprise-blue: 208 100% 30%;
-    --navy-blue: 220 100% 20%;
-    
-    /* Course card theme */
-    --course-card-bg: 221 100% 3%; /* #000510 */
-    --course-card-foreground: 0 0% 100%;
-    
-    /* Navy blue shades for sidebar */
-    --navy-900: 213 100% 8%;
-    --navy-800: 213 100% 12%;
-    --navy-700: 213 100% 16%;
-    
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(208 90% 40%));
-    --gradient-success: linear-gradient(135deg, hsl(var(--accent)), hsl(25 90% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(208 70% 60%) 0%, hsl(208 60% 70%) 50%, hsl(var(--accent)) 100%);
-    --gradient-duke: linear-gradient(135deg, hsl(var(--duke-blue)), hsl(208 90% 40%));
-    --gradient-enterprise: linear-gradient(135deg, hsl(var(--enterprise-blue)), hsl(208 80% 50%));
-    
-    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-hero: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Success and warning colors */
+    --success: 142 71% 45%;         /* Professional green */
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;          /* Professional amber */
+    --warning-foreground: 213 45% 15%;
 
-    --radius: 0.5rem;
+    /* Halo Business Finance brand colors - updated for consistency */
+    --halo-navy: 213 45% 15%;       /* Updated to match foreground */
+    --halo-orange: 25 95% 53%;      /* Keeping brand orange */
+    --halo-light-blue: 213 85% 95%;
+    --duke-blue: 213 85% 25%;       /* Aligned with primary */
+    --enterprise-blue: 213 85% 25%;
+    --navy-blue: 213 45% 15%;
+    
+    /* Course card theme - JP Morgan inspired */
+    --course-card-bg: 0 0% 100%;
+    --course-card-foreground: 213 45% 15%;
+    
+    /* Professional navy blue shades */
+    --navy-900: 213 45% 8%;
+    --navy-800: 213 45% 12%;
+    --navy-700: 213 45% 16%;
+    
+    /* JP Morgan-inspired gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--halo-navy)), hsl(var(--primary)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 71% 50%));
+    --gradient-duke: linear-gradient(135deg, hsl(var(--duke-blue)), hsl(var(--primary-hover)));
+    --gradient-enterprise: linear-gradient(135deg, hsl(var(--enterprise-blue)), hsl(var(--primary-hover)));
+    
+    /* Professional shadows - JP Morgan style */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--primary) / 0.05);
+    --shadow: 0 1px 3px 0 hsl(var(--primary) / 0.1), 0 1px 2px -1px hsl(var(--primary) / 0.1);
+    --shadow-md: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -2px hsl(var(--primary) / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--primary) / 0.1), 0 4px 6px -4px hsl(var(--primary) / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(var(--primary) / 0.1), 0 8px 10px -6px hsl(var(--primary) / 0.1);
+    --shadow-card: 0 2px 8px -1px hsl(var(--primary) / 0.06);
+    --shadow-elegant: 0 4px 20px -2px hsl(var(--primary) / 0.08);
+    --shadow-elevated: 0 8px 30px -4px hsl(var(--primary) / 0.12);
+    --shadow-hero: 0 25px 50px -12px hsl(var(--primary) / 0.16);
+    
+    /* Professional transitions */
+    --transition-fast: 150ms ease-out;
+    --transition-smooth: 250ms ease-out;
+    --transition-slow: 350ms ease-out;
+    --transition-spring: 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
+    --radius: 0.5rem;               /* Subtle rounded corners */
+
+    /* Sidebar colors */
     --sidebar-background: var(--halo-navy);
-
     --sidebar-foreground: 0 0% 100%;
-
     --sidebar-primary: var(--halo-orange);
-
     --sidebar-primary-foreground: var(--halo-navy);
-
-    --sidebar-accent: 210 80% 25%;
-
+    --sidebar-accent: 213 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-
     --sidebar-border: var(--halo-navy);
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: var(--halo-orange);
   }
 
   .dark {
-    --background: 210 50% 8%;
-    --foreground: 0 0% 98%;
+    --background: 213 45% 8%;
+    --foreground: 213 15% 95%;
 
-    --card: 210 50% 10%;
-    --card-foreground: 0 0% 98%;
+    --card: 213 45% 10%;
+    --card-foreground: 213 15% 95%;
 
-    --popover: 210 50% 10%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 213 45% 10%;
+    --popover-foreground: 213 15% 95%;
 
-    --primary: 210 90% 65%;
-    --primary-foreground: 210 50% 15%;
+    --primary: 213 85% 65%;
+    --primary-foreground: 213 45% 8%;
+    --primary-hover: 213 85% 70%;
 
-    --secondary: 210 30% 15%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 213 30% 15%;
+    --secondary-foreground: 213 15% 85%;
 
-    --muted: 210 30% 12%;
-    --muted-foreground: 210 70% 75%;
+    --muted: 213 30% 12%;
+    --muted-foreground: 213 15% 65%;
 
     --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 213 15% 95%;
 
-    --border: 210 30% 15%;
-    --input: 210 30% 15%;
-    --ring: 210 90% 65%;
+    --border: 213 30% 18%;
+    --input: 213 30% 18%;
+    --ring: 213 85% 65%;
     
     --sidebar-background: var(--halo-navy);
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: var(--halo-orange);
     --sidebar-primary-foreground: var(--halo-navy);
-    --sidebar-accent: 210 80% 25%;
+    --sidebar-accent: 213 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: var(--halo-navy);
     --sidebar-ring: var(--halo-orange);
@@ -168,4 +187,185 @@ All colors MUST be HSL.
   body.font-large h1 { font-size: 2.75rem !important; }
   body.font-large h2 { font-size: 2.25rem !important; }
   body.font-large h3 { font-size: 1.875rem !important; }
+}
+
+/* JP Morgan-inspired component utilities */
+@layer components {
+  /* Professional Card Styles */
+  .jp-card {
+    @apply bg-card border border-border rounded-lg shadow-card backdrop-blur-sm;
+    background: var(--gradient-card);
+    transition: var(--transition-smooth);
+  }
+  
+  .jp-card-hover {
+    @apply jp-card hover:shadow-elevated hover:-translate-y-1;
+    transition: var(--transition-smooth);
+  }
+  
+  .jp-card-interactive {
+    @apply jp-card-hover cursor-pointer;
+  }
+  
+  .jp-card-elegant {
+    @apply bg-card border-0 rounded-xl shadow-elegant;
+    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+  }
+  
+  /* Professional Button Variants */
+  .jp-button-primary {
+    @apply bg-primary hover:bg-primary-hover text-primary-foreground;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-smooth);
+  }
+  
+  .jp-button-secondary {
+    @apply bg-secondary hover:bg-secondary-hover text-secondary-foreground border border-border;
+    transition: var(--transition-smooth);
+  }
+  
+  .jp-button-elegant {
+    @apply bg-gradient-to-r from-primary to-primary-hover text-primary-foreground;
+    box-shadow: var(--shadow-elegant);
+    transition: var(--transition-smooth);
+  }
+  
+  /* Professional Typography */
+  .jp-heading {
+    @apply font-semibold text-foreground;
+    letter-spacing: -0.025em;
+  }
+  
+  .jp-subheading {
+    @apply text-muted-foreground font-medium;
+  }
+  
+  .jp-body {
+    @apply text-foreground leading-relaxed;
+  }
+  
+  .jp-caption {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  /* Professional Layout Utilities */
+  .jp-container {
+    @apply max-w-7xl mx-auto px-4 lg:px-8;
+  }
+  
+  .jp-section {
+    @apply py-12 lg:py-16;
+  }
+  
+  .jp-grid {
+    @apply grid gap-6 lg:gap-8;
+  }
+  
+  /* Professional Hover Effects */
+  .jp-hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated;
+  }
+  
+  .jp-hover-glow {
+    @apply transition-all duration-300 hover:shadow-elegant;
+  }
+  
+  .jp-hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  /* Professional Focus States */
+  .jp-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+  
+  /* Professional Gradients */
+  .jp-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .jp-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .jp-gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+  
+  /* Professional Animations */
+  .jp-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .jp-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  .jp-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+  
+  /* Professional Border Styles */
+  .jp-border-subtle {
+    @apply border border-border;
+  }
+  
+  .jp-border-elegant {
+    border: 1px solid hsl(var(--border) / 0.6);
+    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted) / 0.3) 100%);
+  }
+}
+
+/* Professional Animations */
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Interactive Elements */
+  .story-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+  
+  .elegant-underline {
+    @apply relative after:content-[''] after:absolute after:w-0 after:h-px after:bottom-0 after:left-0 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full;
+  }
+  
+  /* Professional Spacing */
+  .jp-space-y-professional > * + * {
+    margin-top: var(--spacing-lg);
+  }
+  
+  .jp-space-x-professional > * + * {
+    margin-left: var(--spacing-lg);
+  }
 }
