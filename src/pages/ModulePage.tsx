@@ -47,15 +47,15 @@ const ModulePage = () => {
           .from('course_content_modules')
           .select('*')
           .eq('id', dbModuleId)
-          .single();
+          .maybeSingle();
 
-        if (moduleError) {
+        if (moduleError || !dbModule) {
           console.error('Error fetching module:', moduleError);
           setLoading(false);
           return;
-        } else {
-          setModule(dbModule);
         }
+        
+        setModule(dbModule);
 
         // Use the course_id from the module to fetch content
         const moduleForContent = dbModule.id;
@@ -90,8 +90,15 @@ const ModulePage = () => {
         // Combine all content into lessons array
         const allLessons: Lesson[] = [];
 
+        console.log('Content fetched:', {
+          videos: videosResponse.data?.length || 0,
+          articles: articlesResponse.data?.length || 0,
+          assessments: assessmentsResponse.data?.length || 0,
+          documents: documentsResponse.data?.length || 0
+        });
+
         // Add videos
-        if (videosResponse.data) {
+        if (videosResponse.data && videosResponse.data.length > 0) {
           videosResponse.data.forEach(video => {
             allLessons.push({
               id: video.id,
@@ -107,7 +114,7 @@ const ModulePage = () => {
         }
 
         // Add articles
-        if (articlesResponse.data) {
+        if (articlesResponse.data && articlesResponse.data.length > 0) {
           articlesResponse.data.forEach(article => {
             allLessons.push({
               id: article.id,
@@ -122,7 +129,7 @@ const ModulePage = () => {
         }
 
         // Add assessments
-        if (assessmentsResponse.data) {
+        if (assessmentsResponse.data && assessmentsResponse.data.length > 0) {
           assessmentsResponse.data.forEach(assessment => {
             allLessons.push({
               id: assessment.id,
@@ -137,7 +144,7 @@ const ModulePage = () => {
         }
 
         // Add documents
-        if (documentsResponse.data) {
+        if (documentsResponse.data && documentsResponse.data.length > 0) {
           documentsResponse.data.forEach(document => {
             allLessons.push({
               id: document.id,
@@ -152,8 +159,25 @@ const ModulePage = () => {
           });
         }
 
+        // If no content found, create demo lessons based on module topics
+        if (allLessons.length === 0 && dbModule.topics && Array.isArray(dbModule.topics)) {
+          console.log('No content found, creating demo lessons from topics');
+          (dbModule.topics as string[]).forEach((topic: string, index: number) => {
+            allLessons.push({
+              id: `demo-${index}`,
+              title: topic,
+              type: index % 3 === 0 ? 'video' : index % 3 === 1 ? 'reading' : 'quiz',
+              duration: '15 min',
+              completed: false,
+              content: { title: topic, description: `Learn about ${topic}` },
+              order_index: index
+            });
+          });
+        }
+
         // Sort by order_index
         allLessons.sort((a, b) => a.order_index - b.order_index);
+        console.log('Final lessons array:', allLessons);
         setLessons(allLessons);
 
       } catch (error) {
@@ -293,55 +317,71 @@ const ModulePage = () => {
               </TabsList>
 
               <TabsContent value="lessons" className="space-y-4">
-                <div className="grid gap-4">
-                  {lessons.map((lesson, index) => (
-                    <Card key={index} className="group hover:shadow-md transition-all duration-200">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className={`p-2 rounded-lg ${
-                              lesson.completed ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
-                            }`}>
-                              {lesson.completed ? (
-                                <CheckCircle className="h-5 w-5" />
-                              ) : (
-                                getTypeIcon(lesson.type)
-                              )}
-                            </div>
-                            <div>
-                              <h3 className="font-semibold">{lesson.title}</h3>
-                              <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-                                <div className="flex items-center gap-1">
-                                  <Clock className="h-3 w-3" />
-                                  {lesson.duration}
+                {lessons.length > 0 ? (
+                  <div className="grid gap-4">
+                    {lessons.map((lesson, index) => (
+                      <Card key={index} className="group hover:shadow-md transition-all duration-200">
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className={`p-2 rounded-lg ${
+                                lesson.completed ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
+                              }`}>
+                                {lesson.completed ? (
+                                  <CheckCircle className="h-5 w-5" />
+                                ) : (
+                                  getTypeIcon(lesson.type)
+                                )}
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">{lesson.title}</h3>
+                                <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-3 w-3" />
+                                    {lesson.duration}
+                                  </div>
+                                  <Badge variant="outline" className="text-xs">
+                                    {lesson.type}
+                                  </Badge>
                                 </div>
-                                <Badge variant="outline" className="text-xs">
-                                  {lesson.type}
-                                </Badge>
                               </div>
                             </div>
+                            <div className="flex items-center gap-2">
+                              {lesson.completed && (
+                                <Badge variant="success" className="text-xs">
+                                  <CheckCircle className="h-3 w-3 mr-1" />
+                                  Completed
+                                </Badge>
+                              )}
+                              <Button
+                                size="sm"
+                                className="h-8 px-4"
+                                onClick={() => handleLessonStart(lesson)}
+                              >
+                                <Play className="h-3 w-3 mr-1" />
+                                {lesson.completed ? "Review" : "Start"}
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            {lesson.completed && (
-                              <Badge variant="success" className="text-xs">
-                                <CheckCircle className="h-3 w-3 mr-1" />
-                                Completed
-                              </Badge>
-                            )}
-                            <Button
-                              size="sm"
-                              className="h-8 px-4"
-                              onClick={() => handleLessonStart(lesson)}
-                            >
-                              <Play className="h-3 w-3 mr-1" />
-                              {lesson.completed ? "Review" : "Start"}
-                            </Button>
-                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <div className="space-y-4">
+                        <BookOpen className="h-12 w-12 text-muted-foreground mx-auto" />
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">No Lessons Available</h3>
+                          <p className="text-muted-foreground">
+                            This module doesn't have any lessons yet. Content will be added soon.
+                          </p>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
 
               <TabsContent value="overview" className="space-y-6">
