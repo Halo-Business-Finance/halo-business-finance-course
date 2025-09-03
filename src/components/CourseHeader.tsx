@@ -59,9 +59,12 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <Badge variant="success" className="text-sm font-medium">
-                Halo Business Finance Certification Program
-              </Badge>
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                <span className="text-sm font-medium text-white tracking-wide">CERTIFICATION PROGRAM</span>
+                <div className="w-px h-4 bg-white/20"></div>
+                <span className="text-xs text-white/80 font-mono">v2.0</span>
+              </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
                 Business Finance Mastery
               </h1>
