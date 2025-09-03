@@ -75,6 +75,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
         .select("*")
         .eq("course_id", selectedCourse.id)
         .eq("is_active", true)
+        .lte("order_index", 6) // Limit to first 7 modules (0-6)
         .order("order_index");
 
       console.log('Course modules data:', data);
@@ -252,7 +253,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                 {selectedCourseModules.map((module: any, index) => {
                   const isModuleLocked = module.is_locked;
                   const canAccess = !isModuleLocked || isAdmin;
-                  const moduleUrl = `/module/${module.module_id}`;
+                  const moduleUrl = `/module/${module.id}`;
                   
                   return (
                     <SidebarMenuItem key={module.id}>
