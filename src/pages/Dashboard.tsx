@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import CourseHeader from "@/components/CourseHeader";
 import ModuleDetail from "@/components/ModuleDetail";
 import LearningObjectives from "@/components/LearningObjectives";
@@ -364,6 +365,11 @@ const Dashboard = () => {
               <div className="mb-6">
                 <InstructorInfo />
               </div>
+            )}
+            
+            {/* Section Divider - Only show on level 0 */}
+            {currentFilterLevel === 0 && (
+              <Separator className="mb-6" />
             )}
             
             {/* Results Summary */}
