@@ -359,6 +359,13 @@ const Dashboard = () => {
           
           {/* Main Content */}
           <div className="flex-1 min-w-0">
+            {/* Course Instructors Widget - Only show on level 0 */}
+            {currentFilterLevel === 0 && (
+              <div className="mb-6">
+                <InstructorInfo />
+              </div>
+            )}
+            
             {/* Results Summary */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
               <h3 className="text-xl font-semibold">
