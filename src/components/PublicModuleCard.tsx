@@ -1,3 +1,14 @@
+/**
+ * PublicModuleCard - Public-facing module card for unauthenticated users
+ * 
+ * Features:
+ * - Marketing-focused design with enrollment prompts
+ * - Social proof indicators (ratings, enrollment count)
+ * - Authentication flow handling
+ * - Security logging for access attempts
+ * - Responsive CTA buttons based on auth state
+ */
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,17 +17,67 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
+type SkillLevel = 'beginner' | 'expert';
+
 interface PublicModuleCardProps {
   title: string;
   description: string;
   duration: string;
   lessons: number;
-  skillLevel: 'beginner' | 'expert';
+  skillLevel: SkillLevel;
   moduleId: string;
   image?: string;
   isAuthenticated: boolean;
   onEnrollClick?: () => void;
 }
+
+/**
+ * Skill level color mapping for consistent styling
+ */
+const SKILL_LEVEL_COLORS: Record<SkillLevel, string> = {
+  beginner: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  expert: 'bg-blue-100 text-blue-800 border-blue-200'
+};
+
+/**
+ * Default rating for modules (could be made dynamic)
+ */
+const DEFAULT_RATING = 4.8;
+
+/**
+ * Default enrollment count (could be made dynamic)
+ */
+const DEFAULT_ENROLLMENT_COUNT = '1.2k+';
+
+/**
+ * Gets skill level styling classes
+ */
+const getSkillLevelStyling = (level: SkillLevel): string => {
+  return SKILL_LEVEL_COLORS[level] || 'bg-gray-100 text-gray-800 border-gray-200';
+};
+
+/**
+ * Formats skill level for display
+ */
+const formatSkillLevel = (level: SkillLevel): string => {
+  return level.charAt(0).toUpperCase() + level.slice(1);
+};
+
+/**
+ * Logs course access attempts for security monitoring
+ */
+const logAccessAttempt = async (moduleId: string, user: any): Promise<void> => {
+  try {
+    await supabase.rpc('log_course_access_attempt', {
+      p_module_id: moduleId,
+      p_access_type: user ? 'module_access_enrolled' : 'module_access_signup_redirect',
+      p_success: true
+    });
+  } catch (error) {
+    // Silent fail for logging - don't block user experience
+    console.warn('Failed to log access attempt:', error);
+  }
+};
 
 const PublicModuleCard = ({ 
   title, 
@@ -32,24 +93,12 @@ const PublicModuleCard = ({
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const getSkillLevelColor = (level: string) => {
-    switch (level) {
-      case 'beginner':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'expert':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const handleEnrollClick = async () => {
+  /**
+   * Handles enrollment click with proper authentication flow
+   */
+  const handleEnrollClick = async (): Promise<void> => {
     // Log access attempt for security monitoring
-    await supabase.rpc('log_course_access_attempt', {
-      p_module_id: moduleId,
-      p_access_type: user ? 'module_access_enrolled' : 'module_access_signup_redirect',
-      p_success: true
-    });
+    await logAccessAttempt(moduleId, user);
 
     if (user) {
       navigate(`/module/${moduleId}`);
@@ -60,31 +109,28 @@ const PublicModuleCard = ({
     }
   };
 
-  const handleAction = () => {
-    if (isAuthenticated) {
-      // Navigate to course or trigger enrollment
-      if (onEnrollClick) {
-        onEnrollClick();
-      }
-    } else {
-      // Redirect to signup/signin
-      window.location.href = '/auth?mode=signup';
-    }
+  /**
+   * Gets appropriate button text based on authentication state
+   */
+  const getButtonText = (): string => {
+    return isAuthenticated ? "Enroll Now" : "Sign Up to Start Learning";
   };
 
   return (
     <Card className="group hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      {/* Module Header */}
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between">
           <Badge 
             variant="outline" 
-            className={`text-xs font-medium ${getSkillLevelColor(skillLevel)}`}
+            className={`text-xs font-medium ${getSkillLevelStyling(skillLevel)}`}
           >
-            {skillLevel.charAt(0).toUpperCase() + skillLevel.slice(1)}
+            {formatSkillLevel(skillLevel)}
           </Badge>
+          {/* Social Proof - Rating */}
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Star className="h-4 w-4 fill-current text-yellow-400" />
-            <span>4.8</span>
+            <span>{DEFAULT_RATING}</span>
           </div>
         </div>
         
@@ -97,7 +143,9 @@ const PublicModuleCard = ({
         </CardDescription>
       </CardHeader>
 
+      {/* Module Content */}
       <CardContent className="space-y-4">
+        {/* Module Metadata */}
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
@@ -109,12 +157,14 @@ const PublicModuleCard = ({
               <span>{lessons} lessons</span>
             </div>
           </div>
+          {/* Social Proof - Enrollment Count */}
           <div className="flex items-center gap-1">
             <Users className="h-4 w-4" />
-            <span>1.2k+ enrolled</span>
+            <span>{DEFAULT_ENROLLMENT_COUNT} enrolled</span>
           </div>
         </div>
 
+        {/* Marketing Banner for Unauthenticated Users */}
         {!isAuthenticated && (
           <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-3 text-center">
             <p className="text-sm font-medium text-foreground mb-1">
@@ -126,14 +176,16 @@ const PublicModuleCard = ({
           </div>
         )}
 
+        {/* Primary Action Button */}
         <Button 
           onClick={handleEnrollClick}
           className="w-full"
-          variant={isAuthenticated ? "default" : "default"}
+          variant="default"
         >
-          {isAuthenticated ? "Enroll Now" : "Sign Up to Start Learning"}
+          {getButtonText()}
         </Button>
 
+        {/* Sign In Prompt for Unauthenticated Users */}
         {!isAuthenticated && (
           <p className="text-xs text-center text-muted-foreground">
             Already have an account?{" "}
