@@ -369,7 +369,7 @@ const Dashboard = () => {
             {/* Results Summary */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
               <h3 className="text-xl underline">
-                {currentFilterLevel === 0 && `${coursesWithModules.length > 0 ? Math.ceil(coursesWithModules.length / 2) : 0} Course Programs Available`}
+                {currentFilterLevel === 0 && "Course Programs Available"}
                 {currentFilterLevel === 1 && "2 Skill Levels Available"}
                 {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
               </h3>
