@@ -335,7 +335,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
+    <div className="min-h-screen jp-gradient-subtle jp-fade-in">
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader 
         progress={getOverallProgress()}
@@ -345,7 +345,7 @@ const Dashboard = () => {
       />
 
       {/* Main Dashboard Content */}
-      <div className="container mx-auto px-4 py-6 lg:py-8">
+      <div className="jp-container jp-section">
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Categories and Instructors side by side - Only show on level 0 */}

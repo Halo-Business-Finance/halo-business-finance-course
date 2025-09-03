@@ -132,34 +132,35 @@ const Business = () => {
         keywords="enterprise training solutions, business learning platform, corporate finance training, team development, LMS for business, enterprise education"
         canonicalUrl="https://finpilot.com/enterprise"
       />
-      <div className="bg-white min-h-screen">
+      <div className="min-h-screen jp-gradient-subtle jp-fade-in">
       {/* Hero Section */}
       <div className="relative h-96 sm:h-[28rem] md:h-[32rem] lg:h-[32rem] overflow-hidden">
         <img 
           src={businessHero} 
           alt="Professional corporate training environment" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover jp-hover-scale"
         />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <div className="text-center text-white max-w-4xl mx-auto px-4">
+        <div className="absolute inset-0 jp-gradient-hero opacity-80 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl mx-auto px-4 jp-fade-in">
             <Badge className="mb-3 md:mb-4 bg-white/20 text-white border-white/30 text-sm">Enterprise</Badge>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight">Transform Your Team's Skills</h1>
-            <p className="text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto mb-6 md:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 leading-tight jp-heading">Transform Your Team's Skills</h1>
+            <p className="text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl mx-auto mb-6 md:mb-8 jp-body">
               Empower your organization with our comprehensive learning platform. Scale your team's expertise 
               with industry-leading courses and enterprise features.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Button 
+                variant="elegant"
                 size="lg" 
-                className="bg-halo-navy hover:bg-halo-navy/90 text-white px-6 py-3"
+                className="px-6 py-3 jp-hover-lift"
                 onClick={() => setIsLeadModalOpen(true)}
               >
                 Contact Sales
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-white bg-transparent text-white hover:bg-white hover:text-halo-navy px-6 py-3"
+                variant="hero" 
+                className="px-6 py-3 jp-hover-lift"
                 onClick={() => setIsDemoModalOpen(true)}
               >
                 Schedule Demo
@@ -170,7 +171,7 @@ const Business = () => {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="jp-container jp-section">
         <div className="text-center mb-12">
           <Badge className="mb-4">Enterprise Features</Badge>
           <h2 className="text-3xl font-bold mb-4">Everything Your Organization Needs</h2>
