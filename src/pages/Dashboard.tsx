@@ -108,9 +108,12 @@ const Dashboard = () => {
     console.log('Current filterNavigationPath:', filterNavigationPath);
     
     try {
-      const courseModules = flattenedModules.filter(m => 
-        m.course_title.toLowerCase().includes(courseName.toLowerCase())
-      );
+      const courseModules = flattenedModules.filter(m => {
+        if (!m.course_title) return false;
+        // Extract base course name from the module's course title (remove skill level suffix)
+        const moduleBaseName = m.course_title.replace(/\s*-\s*(Beginner|Expert)$/i, '').trim();
+        return moduleBaseName.toLowerCase() === courseName.toLowerCase();
+      });
       console.log('Course modules found:', courseModules.length);
       console.log('Sample module course_title:', courseModules[0]?.course_title);
       
@@ -349,9 +352,12 @@ const Dashboard = () => {
                         )
                         .map((course, index) => {
                           const courseName = course.title.split(' - ')[0];
-                          const courseModules = flattenedModules.filter(m => 
-                            m.course_title.toLowerCase().includes(courseName.toLowerCase())
-                          );
+                          const courseModules = flattenedModules.filter(m => {
+                            if (!m.course_title) return false;
+                            // Extract base course name from the module's course title (remove skill level suffix)
+                            const moduleBaseName = m.course_title.replace(/\s*-\s*(Beginner|Expert)$/i, '').trim();
+                            return moduleBaseName.toLowerCase() === courseName.toLowerCase();
+                          });
                           return (
                             <Card 
                               key={courseName} 
