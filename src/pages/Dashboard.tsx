@@ -233,13 +233,33 @@ const Dashboard = () => {
   };
 
   // Get course details from database or fallback
-  const getCourseDetails = (course: any) => {
+  const getCourseDetails = (courseName: string) => {
+    // Find all courses that match this base name to determine available levels
+    const matchingCourses = coursesWithModules.filter(course => {
+      const baseName = course.title.split(' - ')[0];
+      return baseName.toLowerCase() === courseName.toLowerCase();
+    });
+    
+    // Determine difficulty based on available courses
+    const hasExpert = matchingCourses.some(c => c.level === 'expert');
+    const hasBeginner = matchingCourses.some(c => c.level === 'beginner');
+    
+    let difficulty = 'Multiple Levels';
+    if (hasExpert && hasBeginner) {
+      difficulty = 'Multiple Levels';
+    } else if (hasExpert) {
+      difficulty = 'Expert';
+    } else if (hasBeginner) {
+      difficulty = 'Beginner';
+    }
+    
+    const sampleCourse = matchingCourses[0];
     return {
-      description: course.description || "Comprehensive training program with practical applications",
-      duration: "6-8 weeks", // Could be added to database later
-      difficulty: course.level === 'beginner' ? 'Beginner' : 'Expert',
-      topics: course.modules?.flatMap(m => m.topics || []).slice(0, 6) || ["Core Concepts", "Practical Applications"],
-      outcome: `Master ${course.title} with professional expertise`
+      description: sampleCourse?.description || "Comprehensive training program with practical applications",
+      duration: "6-8 weeks",
+      difficulty,
+      topics: sampleCourse?.modules?.flatMap(m => m.topics || []).slice(0, 6) || ["Core Concepts", "Practical Applications"],
+      outcome: `Master ${courseName} with professional expertise`
     };
   };
 
