@@ -142,7 +142,23 @@ export const useCourseProgress = (userId?: string, courseId?: string) => {
   };
 
   const completeModule = async (moduleId: string, courseIdOverride?: string): Promise<boolean> => {
-    return await updateProgress(moduleId, 100, courseIdOverride);
+    const result = await updateProgress(moduleId, 100, courseIdOverride);
+    
+    if (result && userId) {
+      // Check if this completes the entire course and unlock other courses
+      try {
+        const targetCourseId = courseIdOverride || courseId || 'halo-launch-pad-learn';
+        await supabase.rpc('unlock_courses_on_completion', {
+          p_user_id: userId,
+          p_course_id: targetCourseId
+        });
+      } catch (error) {
+        console.warn('Error checking course completion for unlock:', error);
+        // Don't fail the module completion if unlock check fails
+      }
+    }
+    
+    return result;
   };
 
   const getOverallProgress = () => {

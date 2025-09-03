@@ -28,7 +28,7 @@ import { useLearningStats } from "@/hooks/useLearningStats";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft, Lock } from "lucide-react";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -50,7 +50,7 @@ import courseBusinessAcquisition from "@/assets/course-business-acquisition.jpg"
 
 const Dashboard = () => {
   const { user, hasEnrollment, enrollmentVerified, isLoading: authLoading } = useSecureAuth();
-  const { setSelectedCourse } = useCourseSelection();
+  const { availableCourses, canSelectCourse, getActiveStudyCourse, refreshCourses } = useCourseSelection();
   const { courses: databaseCourses, loading: coursesLoading, getCoursesByCategory } = useCourses();
   const { modules: databaseModules, loading: modulesLoading } = useModules();
   const { dashboardStats, loading: statsLoading } = useLearningStats(user?.id);
@@ -71,6 +71,9 @@ const Dashboard = () => {
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
   const [renderKey, setRenderKey] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Get the active study course to show locked status
+  const activeStudyCourse = getActiveStudyCourse();
 
   // Combine courses with their modules from database
   const coursesWithModules = databaseCourses.map(course => {
@@ -118,8 +121,22 @@ const Dashboard = () => {
   const handleStartCourse = (courseName: string) => {
     console.log('=== handleStartCourse START ===');
     console.log('handleStartCourse called with:', courseName);
-    console.log('Current currentFilterLevel:', currentFilterLevel);
-    console.log('Current filterNavigationPath:', filterNavigationPath);
+    
+    // Find the course in available courses to check if it can be selected
+    const targetCourse = availableCourses.find(course => {
+      const baseName = course.title.split(' - ')[0];
+      return baseName.toLowerCase() === courseName.toLowerCase();
+    });
+
+    // Check if user can select this course (not locked)
+    if (targetCourse && !canSelectCourse(targetCourse.id)) {
+      toast({
+        title: "Course Locked",
+        description: `Complete your current course (${activeStudyCourse?.title}) before starting a new one.`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     try {
       const courseModules = flattenedModules.filter(m => {
@@ -128,20 +145,18 @@ const Dashboard = () => {
         const moduleBaseName = m.course_title.replace(/\s*-\s*(Beginner|Expert)$/i, '').trim();
         return moduleBaseName.toLowerCase() === courseName.toLowerCase();
       });
-      console.log('Course modules found:', courseModules.length);
-      console.log('Sample module course_title:', courseModules[0]?.course_title);
       
-      // Immediately set the course in context for sidebar - using base course name
-      const courseForSidebar = {
-        id: courseName.toLowerCase().replace(/\s+/g, '-'),
-        title: courseName,
-        description: `Professional training program for ${courseName}`
-      };
-      console.log('Setting course in context immediately:', courseForSidebar);
-      setSelectedCourse(courseForSidebar);
+      console.log('Found course modules:', courseModules.length);
       
-      // Reset state for clean transition
-      setSelectedCourseProgram(courseName);
+      if (courseModules.length === 0) {
+        console.log('No modules found for course:', courseName);
+        toast({
+          title: "No modules found",
+          description: `No modules found for ${courseName}. Please contact support.`,
+          variant: "destructive"
+        });
+        return;
+      }
       
       const navigationPath = [{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }];
       console.log('Setting navigationPath:', navigationPath);
@@ -177,16 +192,6 @@ const Dashboard = () => {
       setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
       
       // Set the selected course in the context for the sidebar
-      const courseForSidebar = {
-        id: courseSkillId,
-        title: `${selectedCourse.name} - ${level.charAt(0).toUpperCase() + level.slice(1)}`,
-        description: `${level.charAt(0).toUpperCase() + level.slice(1)} level modules for ${selectedCourse.name}`
-      };
-      console.log('Setting course in context:', courseForSidebar);
-      setSelectedCourse(courseForSidebar);
-      
-      // Force re-render on mobile/tablet
-      setRenderKey(prev => prev + 1);
       console.log('Proceed to modules completed successfully');
     } catch (error) {
       console.error('Error in handleProceedToModules:', error);
