@@ -105,7 +105,7 @@ const Index = () => {
         }} />
         <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl text-left px-0 mx-[250px] mt-16 sm:mt-20 md:mt-24 lg:mt-32 py-0">
+          <div className="w-full text-left mt-16 sm:mt-20 md:mt-24 lg:mt-32">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-white">
               Master Business Finance & Commercial Lending
             </h1>
