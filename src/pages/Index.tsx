@@ -177,8 +177,8 @@ const Index = () => {
 
               <div className="relative order-first lg:order-last">
                 <img 
-                  src={heroBusinessTraining} 
-                  alt="Commercial lending training classroom with professionals learning loan underwriting" 
+                  src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" 
+                  alt="Professional conference room meeting discussing business finance and commercial lending strategies" 
                   className="w-full h-48 sm:h-64 md:h-80 lg:h-auto object-cover rounded-lg md:rounded-xl lg:rounded-2xl shadow-hero mx-auto lg:mx-0"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg md:rounded-xl lg:rounded-2xl" />
