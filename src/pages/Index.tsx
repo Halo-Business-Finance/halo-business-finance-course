@@ -180,15 +180,6 @@ const Index = () => {
                 </CardContent>
               </Card>)}
           </div>
-          <div className="text-center mt-8 md:mt-12">
-            <Link to="/signup">
-               <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
-                <Key className="mr-2 h-4 w-4 text-yellow-500" />
-                Start Free Trial
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
