@@ -10,7 +10,7 @@ import { CurriculumModal } from "@/components/CurriculumModal";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
-const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
+import learningPathsImage from "@/assets/new-learning-paths-dashboard.jpg";
 const softwareTrainingImage = "/lovable-uploads/78cb3c25-cbc5-4554-bba1-11cf532ee81d.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
