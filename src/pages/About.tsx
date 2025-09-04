@@ -192,7 +192,6 @@ const About = () => {
         <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
           <Link to="/signup" className="flex items-center gap-2">
             <Key className="h-4 w-4 text-yellow-500" />
-            <Play className="h-4 w-4" />
             Start Free Trial
             <ArrowRight className="h-4 w-4" />
           </Link>
@@ -222,7 +221,6 @@ const About = () => {
                   <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                     <Link to="/signup" className="flex items-center gap-2">
                       <Key className="h-4 w-4 text-yellow-500" />
-                      <Play className="h-4 w-4" />
                       Start Free Trial
                       <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -285,7 +283,6 @@ const About = () => {
               <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                 <Link to="/signup" className="flex items-center gap-2">
                   <Key className="h-4 w-4 text-yellow-500" />
-                  <Play className="h-4 w-4" />
                   Start Free Trial
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -339,7 +336,6 @@ const About = () => {
               <Button size="lg" asChild className="bg-white text-halo-navy hover:bg-gray-100">
                 <Link to="/signup" className="flex items-center gap-2">
                   <Key className="h-4 w-4 text-yellow-500" />
-                  <Play className="h-4 w-4" />
                   Start Free Trial
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -412,7 +408,6 @@ const About = () => {
           <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
             <Link to="/signup" className="flex items-center gap-2">
               <Key className="h-4 w-4 text-yellow-500" />
-              <Play className="h-4 w-4" />
               Start Free Trial
               <ArrowRight className="h-4 w-4" />
             </Link>

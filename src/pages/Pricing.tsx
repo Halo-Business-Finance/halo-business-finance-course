@@ -232,7 +232,6 @@ const Pricing = () => {
                 >
                   <Link to="/signup">
                     <Key className="h-4 w-4 text-yellow-500" />
-                    <Play className="h-4 w-4" />
                     {plan.name === "Professional" ? "Start Free Trial" : "Get Started"}
                   </Link>
                 </Button>
