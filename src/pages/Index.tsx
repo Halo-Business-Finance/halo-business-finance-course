@@ -26,13 +26,6 @@ const Index = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const stats = [
-    { label: "Industry Professionals Trained", value: "10,000+", icon: Users },
-    { label: "Certification Success Rate", value: "96%", icon: Award },
-    { label: "Course Completion Rate", value: "94%", icon: Target },
-    { label: "Career Advancement Rate", value: "87%", icon: TrendingUp }
-  ];
-
   const testimonials = [
     {
       name: "Sarah Johnson",
@@ -154,27 +147,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      {/* Stats Section */}
-      <section className="py-12 md:py-16 bg-halo-navy" aria-labelledby="stats-heading">
-        <h2 id="stats-heading" className="sr-only">Training Statistics and Success Metrics</h2>
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={index} className="text-center text-white animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-halo-orange/20 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                    <Icon className="h-6 w-6 md:h-8 md:w-8 text-halo-orange" />
-                  </div>
-                  <div className="text-xl md:text-3xl font-bold font-playfair mb-1 md:mb-2">{stat.value}</div>
-                  <div className="text-white/80 text-xs md:text-sm leading-tight">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Learning Paths Section */}
       <section className="py-16 md:py-20 bg-background" aria-labelledby="learning-paths-heading">
