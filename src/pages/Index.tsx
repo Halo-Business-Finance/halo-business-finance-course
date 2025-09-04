@@ -121,8 +121,8 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative py-32 sm:py-40 md:py-36 lg:py-44">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${businessTeam})`, backgroundSize: '80%', backgroundPosition: 'center center' }}
+          className="absolute inset-0 bg-cover"
+          style={{ backgroundImage: `url(${businessTeam})`, backgroundPosition: 'center 20%' }}
         />
         <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
