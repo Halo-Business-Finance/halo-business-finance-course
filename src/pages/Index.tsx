@@ -15,7 +15,9 @@ const softwareTrainingImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3
 import careerSuccessImage from "@/assets/career-success.jpg";
 
 const Index = () => {
+  console.log("Index component is loading...");
   const { user } = useAuth();
+  console.log("User status:", user ? "logged in" : "not logged in");
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
   const [selectedLearningPath, setSelectedLearningPath] = useState<any>(null);
