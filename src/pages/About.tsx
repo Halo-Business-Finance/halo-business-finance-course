@@ -188,16 +188,6 @@ const About = () => {
         })}
       </div>
 
-      <div className="text-center mb-12 md:mb-16">
-        <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
-          <Link to="/signup" className="flex items-center gap-2">
-            <Key className="h-4 w-4 text-yellow-500" />
-            Start Free Trial
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
-
       <div className="mb-12 md:mb-16">
         <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Our Story</h2>
