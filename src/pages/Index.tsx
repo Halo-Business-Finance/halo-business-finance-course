@@ -126,7 +126,7 @@ const Index = () => {
       <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
-      <div className="relative py-16 sm:py-20 md:py-16 lg:py-20">
+      <div className="relative py-24 sm:py-32 md:py-28 lg:py-36">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${businessTeam})` }}
