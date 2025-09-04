@@ -150,15 +150,6 @@ const Index = () => {
                   Start Free Trial
                 </Button>
               </Link>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                onClick={() => setIsDemoModalOpen(true)}
-                className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-halo-navy font-semibold px-6 sm:px-8 py-3"
-              >
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
-              </Button>
             </div>
           </div>
         </div>
