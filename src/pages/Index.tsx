@@ -215,8 +215,8 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="order-2 lg:order-1">
               <img 
-                src={learningPathsImage} 
-                alt="FinPilot dashboard showing course progress and modules"
+                src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" 
+                alt="Professional conference room meeting discussing real estate properties and commercial lending"
                 className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
               />
             </div>
