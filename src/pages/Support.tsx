@@ -224,7 +224,10 @@ const Support = () => {
               <Badge className="mb-4 bg-white/20 text-white border-white/30">Support Center</Badge>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">We're here to help</h1>
               <p className="text-xl text-white/90 leading-relaxed">
-                Get the support you need to succeed. Our dedicated team is ready to assist you every step of the way.
+                Get the support you need to succeed.
+              </p>
+              <p className="text-xl text-white/90 leading-relaxed">
+                Our dedicated team is ready to assist you every step of the way.
               </p>
             </div>
           </div>
