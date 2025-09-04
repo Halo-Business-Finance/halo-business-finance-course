@@ -386,7 +386,16 @@ const Courses = () => {
         </Alert>
       )}
 
-      {allCourses.length === 0 ? (
+      {coursesLoading || modulesLoading ? (
+          <Card className="text-center py-12">
+            <CardContent>
+              <div className="flex items-center justify-center space-x-2">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <span className="text-lg">Loading courses...</span>
+              </div>
+            </CardContent>
+          </Card>
+        ) : allCourses.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
