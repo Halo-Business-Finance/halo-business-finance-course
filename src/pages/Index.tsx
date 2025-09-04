@@ -133,9 +133,7 @@ const Index = () => {
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
               Professional Training Platform for Finance Excellence
             </p>
-            <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl">
-              Transform your career with our comprehensive business finance and commercial lending program. Experience Stanford-level curriculum designed by industry experts.
-            </p>
+            <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl">Transform your career with our comprehensive business finance and commercial lending program. Experience Stanford-level curriculum designed by industry experts.</p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start">
               <Link to="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
