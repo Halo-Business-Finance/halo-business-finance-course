@@ -187,8 +187,8 @@ const About = () => {
                   </p>
                   <Button size="lg" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white">
                     <Link to="/signup" className="flex items-center gap-2">
-                      <Lock className="h-4 w-4 text-yellow-500" />
-                      Request Demo
+                      <Key className="h-4 w-4 text-yellow-500" />
+                      Start Free Trial
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
