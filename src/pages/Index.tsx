@@ -10,7 +10,7 @@ import { CurriculumModal } from "@/components/CurriculumModal";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
-import adaptiveLearningProfessional from "@/assets/adaptive-learning-professional.jpg";
+import businessTeam from "@/assets/business-team.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 const softwareTrainingImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
@@ -129,7 +129,7 @@ const Index = () => {
       <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-16 lg:py-20">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-60"
-          style={{ backgroundImage: `url(${adaptiveLearningProfessional})` }}
+          style={{ backgroundImage: `url(${businessTeam})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
         <div className="container mx-auto px-4 relative z-10">
