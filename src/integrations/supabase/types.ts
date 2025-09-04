@@ -4673,7 +4673,7 @@ export type Database = {
         Returns: Json
       }
       mask_sensitive_data: {
-        Args: { data_value: string; field_type: string; user_role?: string }
+        Args: { data_text: string; data_type: string; user_role?: string }
         Returns: string
       }
       mask_sensitive_profile_data: {
