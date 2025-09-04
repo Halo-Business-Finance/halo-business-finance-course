@@ -14,9 +14,10 @@ import businessTeam from "@/assets/business-team.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 const softwareTrainingImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
-
 const Index = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
   const [selectedLearningPath, setSelectedLearningPath] = useState<any>(null);
@@ -25,55 +26,44 @@ const Index = () => {
   if (user) {
     return <Navigate to="/dashboard" replace />;
   }
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Senior Loan Officer",
-      company: "First National Bank",
-      content: "The FinPilot program transformed my understanding of commercial lending. I received a promotion within 6 months of completion.",
-      rating: 5
-    },
-    {
-      name: "Michael Chen",
-      role: "Business Development Manager",
-      company: "Capital Solutions Group",
-      content: "Exceptional curriculum and real-world case studies. This program gave me the confidence to handle complex deals.",
-      rating: 5
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Credit Analyst",
-      company: "Metro Commercial Finance",
-      content: "The interactive tools and expert instructors made complex concepts easy to understand and apply immediately.",
-      rating: 5
-    }
-  ];
-
-  const learningPaths = [
-    {
-      title: "Business Finance Foundations",
-      duration: "4 weeks",
-      modules: 8,
-      description: "Master the fundamentals of business finance, financial analysis, and lending principles.",
-      features: ["Financial Statement Analysis", "Cash Flow Management", "Risk Assessment", "Industry Best Practices"]
-    },
-    {
-      title: "Commercial Lending Mastery",
-      duration: "6 weeks", 
-      modules: 12,
-      description: "Advanced commercial lending strategies, underwriting, and portfolio management.",
-      features: ["Advanced Underwriting", "Deal Structuring", "Portfolio Management", "Regulatory Compliance"]
-    },
-    {
-      title: "SBA Loan Specialist",
-      duration: "3 weeks",
-      modules: 6,
-      description: "Comprehensive training on SBA loan programs, application processes, and compliance.",
-      features: ["SBA Program Guide", "Application Process", "Documentation", "Compliance Requirements"]
-    }
-  ];
-
+  const testimonials = [{
+    name: "Sarah Johnson",
+    role: "Senior Loan Officer",
+    company: "First National Bank",
+    content: "The FinPilot program transformed my understanding of commercial lending. I received a promotion within 6 months of completion.",
+    rating: 5
+  }, {
+    name: "Michael Chen",
+    role: "Business Development Manager",
+    company: "Capital Solutions Group",
+    content: "Exceptional curriculum and real-world case studies. This program gave me the confidence to handle complex deals.",
+    rating: 5
+  }, {
+    name: "Emily Rodriguez",
+    role: "Credit Analyst",
+    company: "Metro Commercial Finance",
+    content: "The interactive tools and expert instructors made complex concepts easy to understand and apply immediately.",
+    rating: 5
+  }];
+  const learningPaths = [{
+    title: "Business Finance Foundations",
+    duration: "4 weeks",
+    modules: 8,
+    description: "Master the fundamentals of business finance, financial analysis, and lending principles.",
+    features: ["Financial Statement Analysis", "Cash Flow Management", "Risk Assessment", "Industry Best Practices"]
+  }, {
+    title: "Commercial Lending Mastery",
+    duration: "6 weeks",
+    modules: 12,
+    description: "Advanced commercial lending strategies, underwriting, and portfolio management.",
+    features: ["Advanced Underwriting", "Deal Structuring", "Portfolio Management", "Regulatory Compliance"]
+  }, {
+    title: "SBA Loan Specialist",
+    duration: "3 weeks",
+    modules: 6,
+    description: "Comprehensive training on SBA loan programs, application processes, and compliance.",
+    features: ["SBA Program Guide", "Application Process", "Documentation", "Compliance Requirements"]
+  }];
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
@@ -85,55 +75,44 @@ const Index = () => {
       "@type": "PostalAddress",
       "addressCountry": "US"
     },
-    "offers": [
-      {
-        "@type": "Course",
-        "name": "Business Finance Foundations",
-        "description": "Master the fundamentals of business finance, financial analysis, and lending principles",
-        "provider": {
-          "@type": "Organization",
-          "name": "FinPilot"
-        }
-      },
-      {
-        "@type": "Course", 
-        "name": "Commercial Lending Mastery",
-        "description": "Advanced commercial lending strategies, underwriting, and portfolio management",
-        "provider": {
-          "@type": "Organization",
-          "name": "FinPilot"
-        }
+    "offers": [{
+      "@type": "Course",
+      "name": "Business Finance Foundations",
+      "description": "Master the fundamentals of business finance, financial analysis, and lending principles",
+      "provider": {
+        "@type": "Organization",
+        "name": "FinPilot"
       }
-    ]
+    }, {
+      "@type": "Course",
+      "name": "Commercial Lending Mastery",
+      "description": "Advanced commercial lending strategies, underwriting, and portfolio management",
+      "provider": {
+        "@type": "Organization",
+        "name": "FinPilot"
+      }
+    }]
   };
-
-  return (
-    <>
-      <SEOHead 
-        title="FinPilot - Master Business Finance & Commercial Lending | Professional Training"
-        description="Transform your career with FinPilot's comprehensive business finance and commercial lending program. 96% certification success rate. Join 10,000+ professionals who've advanced their careers."
-        keywords="business finance training, commercial lending certification, SBA loans, credit analysis, financial training, lending education, finance courses"
-        structuredData={structuredData}
-        canonicalUrl="https://finpilot.com"
-      />
+  return <>
+      <SEOHead title="FinPilot - Master Business Finance & Commercial Lending | Professional Training" description="Transform your career with FinPilot's comprehensive business finance and commercial lending program. 96% certification success rate. Join 10,000+ professionals who've advanced their careers." keywords="business finance training, commercial lending certification, SBA loans, credit analysis, financial training, lending education, finance courses" structuredData={structuredData} canonicalUrl="https://finpilot.com" />
       <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
       <div className="relative py-32 sm:py-40 md:py-36 lg:py-44">
-        <div 
-          className="absolute inset-0 bg-cover"
-          style={{ backgroundImage: `url(${businessTeam})`, backgroundPosition: 'center 20%' }}
-        />
+        <div className="absolute inset-0 bg-cover" style={{
+          backgroundImage: `url(${businessTeam})`,
+          backgroundPosition: 'center 20%'
+        }} />
         <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl text-left">
+          <div className="max-w-4xl text-left px-0 mx-[250px] my-0 py-0">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-white">
               Master Business Finance & Commercial Lending
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
               Professional Training Platform for Finance Excellence
             </p>
-            <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl">Transform your career with our comprehensive business finance and commercial lending program. Experience Stanford-level curriculum designed by industry experts.</p>
+            <p className="text-sm sm:text-base mb-6 sm:mb-8 text-white max-w-2xl py-[10px] my-[10px] md:text-xl">Transform your career with our comprehensive business finance and commercial lending program. Experience Stanford-level curriculum designed by industry experts.</p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start">
               <Link to="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
@@ -151,11 +130,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="order-2 lg:order-1">
-              <img 
-                src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" 
-                alt="Professional conference room meeting discussing real estate properties and commercial lending"
-                className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
-              />
+              <img src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" alt="Professional conference room meeting discussing real estate properties and commercial lending" className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated" />
             </div>
             <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
               <h2 id="learning-paths-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
@@ -172,8 +147,7 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {learningPaths.map((path, index) => (
-              <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
+            {learningPaths.map((path, index) => <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
                 <CardHeader className="space-y-4 p-4 md:p-6">
                   <div className="flex items-center justify-end">
                     <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
@@ -192,25 +166,19 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="space-y-6 p-4 md:p-6 pt-0">
                   <div className="space-y-3">
-                    {path.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
+                    {path.features.map((feature, idx) => <div key={idx} className="flex items-center gap-3">
                         <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                         <span className="text-sm text-black">{feature}</span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
-                  <Button 
-                    className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white group-hover:shadow-md transition-all text-sm md:text-base"
-                    onClick={() => {
-                      setSelectedLearningPath(path);
-                      setIsCurriculumModalOpen(true);
-                    }}
-                  >
+                  <Button className="w-full bg-halo-navy hover:bg-halo-navy/90 text-white group-hover:shadow-md transition-all text-sm md:text-base" onClick={() => {
+                  setSelectedLearningPath(path);
+                  setIsCurriculumModalOpen(true);
+                }}>
                     View Curriculum
                   </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
@@ -242,42 +210,34 @@ const Index = () => {
               </p>
             </div>
             <div>
-              <img 
-                src={softwareTrainingImage} 
-                alt="Professional conference room meeting discussing commercial lending and financial services" 
-                className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
-              />
+              <img src={softwareTrainingImage} alt="Professional conference room meeting discussing commercial lending and financial services" className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {[
-              {
-                icon: BookOpen,
-                title: "Expert Curriculum",
-                description: "Master Lending Software. Minimize Complications. 8 comprehensive modules covering everything from credit analysis to portfolio management.",
-                color: "primary"
-              },
-              {
-                icon: Users,
-                title: "Industry Experts", 
-                description: "Knowledge is Power. We Teach You How to Use It. Learn from seasoned professionals with decades of experience in business lending.",
-                color: "accent"
-              },
-              {
-                icon: Award,
-                title: "Certification",
-                description: "Confidence in Every Commercial Lending Deal. Earn recognized certificates that validate your expertise in business finance.",
-                color: "primary"
-              },
-              {
-                icon: TrendingUp,
-                title: "Career Growth",
-                description: "Level Up Your Lending Career. Advance your career with in-demand skills that employers are actively seeking.",
-                color: "accent"
-              }
-            ].map((feature, index) => (
-              <Card key={index} className="text-center border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+            {[{
+              icon: BookOpen,
+              title: "Expert Curriculum",
+              description: "Master Lending Software. Minimize Complications. 8 comprehensive modules covering everything from credit analysis to portfolio management.",
+              color: "primary"
+            }, {
+              icon: Users,
+              title: "Industry Experts",
+              description: "Knowledge is Power. We Teach You How to Use It. Learn from seasoned professionals with decades of experience in business lending.",
+              color: "accent"
+            }, {
+              icon: Award,
+              title: "Certification",
+              description: "Confidence in Every Commercial Lending Deal. Earn recognized certificates that validate your expertise in business finance.",
+              color: "primary"
+            }, {
+              icon: TrendingUp,
+              title: "Career Growth",
+              description: "Level Up Your Lending Career. Advance your career with in-demand skills that employers are actively seeking.",
+              color: "accent"
+            }].map((feature, index) => <Card key={index} className="text-center border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group animate-fade-in" style={{
+              animationDelay: `${index * 0.1}s`
+            }}>
                 <CardHeader>
                   <div className="w-16 h-16 bg-halo-navy rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <feature.icon className="h-8 w-8 text-halo-orange" />
@@ -291,8 +251,7 @@ const Index = () => {
                     {feature.description}
                   </CardDescription>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
@@ -320,13 +279,10 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated">
+            {testimonials.map((testimonial, index) => <Card key={index} className="border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex gap-1">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-                    ))}
+                    {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="h-4 w-4 fill-accent text-accent" />)}
                   </div>
                   <p className="text-foreground leading-relaxed italic">
                     "{testimonial.content}"
@@ -338,8 +294,7 @@ const Index = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -351,11 +306,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Image - shows first on mobile/tablet */}
             <div className="order-1 lg:order-2">
-              <img 
-                src={careerSuccessImage} 
-                alt="Professional career success and advancement" 
-                className="w-full h-auto rounded-2xl shadow-hero"
-              />
+              <img src={careerSuccessImage} alt="Professional career success and advancement" className="w-full h-auto rounded-2xl shadow-hero" />
             </div>
             
             {/* Content - shows second on mobile/tablet */}
@@ -414,22 +365,11 @@ const Index = () => {
       <FinPilotBrandFooter />
       
       {/* Demo Video Modal */}
-      <DemoVideoModal 
-        isOpen={isDemoModalOpen} 
-        onClose={() => setIsDemoModalOpen(false)} 
-      />
+      <DemoVideoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
       
       {/* Curriculum Modal */}
-      {selectedLearningPath && (
-        <CurriculumModal
-          open={isCurriculumModalOpen}
-          onOpenChange={setIsCurriculumModalOpen}
-          learningPath={selectedLearningPath}
-        />
-      )}
+      {selectedLearningPath && <CurriculumModal open={isCurriculumModalOpen} onOpenChange={setIsCurriculumModalOpen} learningPath={selectedLearningPath} />}
     </div>
-    </>
-  );
+    </>;
 };
-
 export default Index;
