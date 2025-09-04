@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, X, MessageCircle, Lock, ArrowRight } from "lucide-react";
+import { Menu, X, MessageCircle, Lock, ArrowRight, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
@@ -40,6 +40,7 @@ export const MobileNav = () => {
             </Button>
             <Button size="sm" asChild className="bg-halo-navy hover:bg-halo-navy/90 text-white text-xs px-2 py-1">
               <NavLink to="/signup" className="flex items-center gap-1">
+                <Key className="h-3 w-3 text-yellow-500" />
                 Start Free Trial
                 <ArrowRight className="h-3 w-3" />
               </NavLink>
@@ -101,6 +102,7 @@ export const MobileNav = () => {
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors bg-halo-navy text-white hover:bg-halo-navy/90"
                   >
+                    <Key className="h-4 w-4 text-yellow-500" />
                     <span className="font-medium">Start Free Trial</span>
                     <ArrowRight className="h-4 w-4" />
                   </NavLink>

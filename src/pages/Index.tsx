@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield, Check } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Award, TrendingUp, Play, CheckCircle, Star, Zap, Target, Building, DollarSign, BarChart3, Shield, Check, Key } from "lucide-react";
 import { Link, Navigate } from "react-router-dom";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { DemoVideoModal } from "@/components/DemoVideoModal";
@@ -140,6 +140,7 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Link to="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
+                  <Key className="mr-2 h-5 w-5 text-yellow-500" />
                   Start Free Trial
                 </Button>
               </Link>
@@ -217,6 +218,7 @@ const Index = () => {
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
                <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
+                <Key className="mr-2 h-4 w-4 text-yellow-500" />
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -298,6 +300,7 @@ const Index = () => {
           <div className="text-center mt-8 md:mt-12">
             <Link to="/signup">
                <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white shadow-elevated hover:shadow-hero px-8 py-3">
+                <Key className="mr-2 h-4 w-4 text-yellow-500" />
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -399,6 +402,7 @@ const Index = () => {
                 </div>
                 <Link to="/signup" className="mt-2">
                   <Button className="text-sm px-4 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white border border-white shadow-hero group">
+                    <Key className="mr-2 h-3 w-3 text-yellow-500" />
                     <ArrowRight className="mr-2 h-3 w-3 text-white group-hover:scale-110 transition-transform" />
                     Start Free Trial Now
                   </Button>

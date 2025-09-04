@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award, Key } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -554,6 +554,7 @@ const Courses = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link to="/signup">
                       <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white">
+                        <Key className="mr-2 h-4 w-4 text-yellow-500" />
                         Start Free Trial
                       </Button>
                     </Link>
