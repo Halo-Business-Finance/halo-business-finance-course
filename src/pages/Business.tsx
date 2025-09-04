@@ -502,7 +502,7 @@ const Business = () => {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative p-12 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Organization?</h2>
-          <p className="mb-8 max-w-2xl mx-auto text-lg text-white">
+          <p className="mb-8 max-w-4xl mx-auto text-lg text-white">
             Join thousands of organizations that trust our platform to develop their teams. 
             Schedule a personalized demo and see how FinPilot can drive results for your business.
           </p>
