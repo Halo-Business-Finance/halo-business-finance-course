@@ -386,24 +386,7 @@ const Courses = () => {
         </Alert>
       )}
 
-      {allCourses.length === 0 && !user ? (
-        <div className="text-center py-12 space-y-6">
-          <Shield className="h-24 w-24 text-muted-foreground mx-auto" />
-          <div>
-            <h3 className="text-2xl font-bold mb-2">Secure Course Access</h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Our military-grade security system protects all educational content. 
-              Enroll now to access our comprehensive training programs.
-            </p>
-            <Link to="/auth">
-              <Button size="lg" className="gap-2">
-                <Shield className="h-5 w-5" />
-                Get Secure Access
-              </Button>
-            </Link>
-          </div>
-        </div>
-      ) : allCourses.length === 0 ? (
+      {allCourses.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
