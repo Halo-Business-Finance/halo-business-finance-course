@@ -250,9 +250,9 @@ const loadTraineeProgress = async () => {
               </CardDescription>
             </div>
             <SecurityStatusIndicator 
-              isDataMasked={trainees.length > 0 ? trainees[0].is_masked : false}
-              userRole={trainees.length > 0 ? trainees[0].role : 'user'}
-              showDetails={false}
+              level={trainees.length > 0 && trainees[0].is_masked ? 'masked' : 'secure'}
+              message={trainees.length > 0 && trainees[0].is_masked ? 'Data Masked' : 'Full Access'}
+              size="sm"
             />
           </div>
         </CardHeader>

@@ -1,92 +1,74 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Eye, Lock, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Shield, AlertTriangle, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface SecurityStatusIndicatorProps {
-  isDataMasked?: boolean;
-  userRole?: string;
-  showDetails?: boolean;
-  level?: 'secure' | 'protected' | 'masked' | 'warning';
-  label?: string;
+  level: 'secure' | 'masked' | 'protected' | 'warning';
+  message?: string;
+  showIcon?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
 
 export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({ 
-  isDataMasked = false, 
-  userRole = 'user',
-  showDetails = true 
+  level, 
+  message,
+  showIcon = true,
+  size = 'md'
 }) => {
-  const getSecurityLevel = () => {
-    if (userRole === 'super_admin') {
-      return {
-        level: 'Full Access',
-        color: 'destructive',
-        icon: AlertTriangle,
-        description: 'Viewing unmasked customer data'
-      };
-    } else if (userRole === 'admin') {
-      return {
-        level: 'Protected Access',
-        color: 'secondary',
-        icon: Eye,
-        description: 'Customer data is masked for protection'
-      };
-    } else {
-      return {
-        level: 'Standard Access',
-        color: 'default',
-        icon: Lock,
-        description: 'Limited data access'
-      };
+  const getStatusConfig = () => {
+    switch (level) {
+      case 'secure':
+        return {
+          icon: Shield,
+          variant: 'default' as const,
+          className: 'bg-green-100 text-green-800 border-green-200',
+          defaultMessage: 'Secure Access'
+        };
+      case 'masked':
+        return {
+          icon: EyeOff,
+          variant: 'secondary' as const,
+          className: 'bg-blue-100 text-blue-800 border-blue-200',
+          defaultMessage: 'Data Masked'
+        };
+      case 'protected':
+        return {
+          icon: Lock,
+          variant: 'outline' as const,
+          className: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+          defaultMessage: 'Protected Access'
+        };
+      case 'warning':
+        return {
+          icon: AlertTriangle,
+          variant: 'destructive' as const,
+          className: 'bg-red-100 text-red-800 border-red-200',
+          defaultMessage: 'Security Alert'
+        };
+      default:
+        return {
+          icon: Shield,
+          variant: 'default' as const,
+          className: '',
+          defaultMessage: 'Unknown Status'
+        };
     }
   };
 
-  const security = getSecurityLevel();
-  const IconComponent = security.icon;
-
-  if (!showDetails) {
-    return (
-      <Badge variant={security.color as any} className="flex items-center gap-1">
-        <Shield className="h-3 w-3" />
-        {security.level}
-      </Badge>
-    );
-  }
+  const config = getStatusConfig();
+  const Icon = config.icon;
+  const displayMessage = message || config.defaultMessage;
+  
+  const iconSize = size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4';
+  const textSize = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs';
 
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-border/50 shadow-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-          <IconComponent className="h-4 w-4 text-primary" />
-          Security Status
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3 pt-0">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground min-w-[80px]">Access Level:</span>
-            <Badge variant={security.color as any} className="text-xs">
-              {security.level}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground min-w-[80px]">Data Protection:</span>
-            <Badge variant={isDataMasked ? "default" : "secondary"} className="text-xs">
-              {isDataMasked ? "Masked" : "Unmasked"}
-            </Badge>
-          </div>
-        </div>
-        <div className="pt-1 border-t border-border/30">
-          <p className="text-xs text-muted-foreground">{security.description}</p>
-          {userRole === 'super_admin' && (
-            <div className="flex items-center gap-1 text-xs text-orange-600 dark:text-orange-400 mt-1">
-              <AlertTriangle className="h-3 w-3" />
-              Enhanced security logging active
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+    <Badge 
+      variant={config.variant}
+      className={`flex items-center gap-1 ${textSize} ${config.className}`}
+    >
+      {showIcon && <Icon className={iconSize} />}
+      {displayMessage}
+    </Badge>
   );
 };

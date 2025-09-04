@@ -390,8 +390,9 @@ const fetchLeads = async () => {
               </CardDescription>
             </div>
             <SecurityStatusIndicator 
-              isDataMasked={leads.length > 0 ? leads[0].is_masked : false}
-              showDetails={false}
+              level={leads.length > 0 && leads[0].is_masked ? 'masked' : 'secure'}
+              message={leads.length > 0 && leads[0].is_masked ? 'Data Masked' : 'Full Access'}
+              size="sm"
             />
           </div>
         </CardHeader>
