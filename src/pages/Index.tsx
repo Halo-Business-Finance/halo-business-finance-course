@@ -126,12 +126,12 @@ const Index = () => {
       <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-16 lg:py-20">
+      <div className="relative py-16 sm:py-20 md:py-16 lg:py-20">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-60"
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${businessTeam})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
+        <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
