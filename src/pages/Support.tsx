@@ -266,7 +266,7 @@ const Support = () => {
               return (
                 <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
                   <div className="text-center">
-                    <div className="w-12 h-12 rounded-lg bg-halo-navy flex items-center justify-center mx-auto mb-4">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
                       <Icon className="h-6 w-6 text-halo-orange" />
                     </div>
                     <h3 className="text-lg font-bold text-black mb-2">{option.title}</h3>
