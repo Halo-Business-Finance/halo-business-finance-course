@@ -127,7 +127,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-white">
               Master Business Finance & Commercial Lending
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
