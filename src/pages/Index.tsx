@@ -11,7 +11,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
-const softwareTrainingImage = "/lovable-uploads/78cb3c25-cbc5-4554-bba1-11cf532ee81d.png";
+const softwareTrainingImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
 const Index = () => {
@@ -306,7 +306,7 @@ const Index = () => {
             <div>
               <img 
                 src={softwareTrainingImage} 
-                alt="Learning platform showing SBA loan courses and skill-based modules" 
+                alt="Professional conference room meeting discussing commercial lending and financial services" 
                 className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated"
               />
             </div>
