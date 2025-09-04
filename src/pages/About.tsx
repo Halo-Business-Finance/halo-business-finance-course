@@ -165,29 +165,6 @@ const About = () => {
       
       <div className="container mx-auto px-4 py-8 md:py-12">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
-        {companyInfo.map((info, index) => {
-          const Icon = info.icon;
-          return (
-            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon className="h-6 w-6 text-halo-navy" />
-                </div>
-                <div className="flex-1">
-                  {info.label === "Industry Focus" && (
-                    <div className="text-2xl font-bold text-foreground mb-1">Business Finance</div>
-                  )}
-                  <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
-                  <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
-                  <div className="text-xs text-black leading-relaxed">{info.description}</div>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-
       <div className="mb-12 md:mb-16">
         <div className="text-center mb-6 md:mb-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Our Story</h2>
@@ -227,6 +204,29 @@ const About = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
+        {companyInfo.map((info, index) => {
+          const Icon = info.icon;
+          return (
+            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-6 w-6 text-halo-navy" />
+                </div>
+                <div className="flex-1">
+                  {info.label === "Industry Focus" && (
+                    <div className="text-2xl font-bold text-foreground mb-1">Business Finance</div>
+                  )}
+                  <div className="text-2xl font-bold text-foreground mb-1">{info.value}</div>
+                  <div className="text-sm font-medium text-primary mb-2">{info.label}</div>
+                  <div className="text-xs text-black leading-relaxed">{info.description}</div>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Learning Platform Features */}
