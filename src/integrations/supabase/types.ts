@@ -4527,6 +4527,11 @@ export type Database = {
               admin_role: string
             }
           | {
+              access_reason?: string
+              data_fields?: string[]
+              target_user_id: string
+            }
+          | {
               access_type: string
               fields_accessed: string[]
               reason?: string
@@ -4767,6 +4772,14 @@ export type Database = {
       schedule_data_deletion: {
         Args: { retention_days?: number; user_id_to_delete: string }
         Returns: undefined
+      }
+      secure_biometric_access_log: {
+        Args: {
+          access_type: string
+          biometric_operation: string
+          target_user_id: string
+        }
+        Returns: boolean
       }
       secure_profile_access: {
         Args: { target_user_id: string }
