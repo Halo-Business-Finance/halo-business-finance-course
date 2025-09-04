@@ -122,7 +122,7 @@ const Index = () => {
       <div className="relative py-32 sm:py-40 md:py-36 lg:py-44">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${businessTeam})`, backgroundSize: '120%', backgroundPosition: 'center top' }}
+          style={{ backgroundImage: `url(${businessTeam})`, backgroundSize: '160%', backgroundPosition: 'center center' }}
         />
         <div className="absolute inset-0 bg-black/20" />
         <div className="container mx-auto px-4 relative z-10">
