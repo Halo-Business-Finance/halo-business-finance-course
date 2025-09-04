@@ -314,7 +314,7 @@ const Business = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 md:mb-16">
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-6">Trusted by Leading Organizations</h2>
-            <p className="text-white max-w-2xl mx-auto text-sm md:text-base lg:text-lg">
+            <p className="text-white max-w-4xl mx-auto text-sm md:text-base lg:text-lg">
               Join hundreds of companies that have transformed their workforce with our enterprise learning platform.
             </p>
           </div>

@@ -220,7 +220,7 @@ const Support = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-slate-900/40">
           <div className="container mx-auto px-4 h-full flex items-center">
-            <div className="max-w-2xl text-white">
+            <div className="max-w-4xl text-white">
               <Badge className="mb-4 bg-white/20 text-white border-white/30">Support Center</Badge>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">We're here to help</h1>
               <p className="text-xl text-white/90 leading-relaxed">
