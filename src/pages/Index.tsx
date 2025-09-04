@@ -133,7 +133,7 @@ const Index = () => {
               <img src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" alt="Professional conference room meeting discussing real estate properties and commercial lending" className="w-full h-auto rounded-xl md:rounded-2xl shadow-elevated" />
             </div>
             <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
-              <h2 id="learning-paths-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 id="learning-paths-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-halo-navy">
                 Choose Your Path to Success
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
@@ -154,7 +154,7 @@ const Index = () => {
                       <BookOpen className="h-3 w-3 md:h-4 md:w-4 text-halo-orange" />
                     </div>
                   </div>
-                  <CardTitle className="text-lg md:text-xl font-playfair group-hover:text-primary transition-colors">
+                  <CardTitle className="text-lg md:text-xl group-hover:text-primary transition-colors">
                     {path.title}
                   </CardTitle>
                   <Badge className="text-xs text-halo-orange bg-white border-0 w-fit">
@@ -197,7 +197,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
             <div className="text-center lg:text-left space-y-4">
-              <h2 id="features-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold text-halo-navy">
+              <h2 id="features-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-halo-navy">
                 The #1 Course for Tomorrow's Lending Leaders
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-base md:text-lg px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
@@ -242,7 +242,7 @@ const Index = () => {
                   <div className="w-16 h-16 bg-halo-navy rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <feature.icon className="h-8 w-8 text-halo-orange" />
                   </div>
-                  <CardTitle className="text-xl font-playfair group-hover:text-primary transition-colors">
+                  <CardTitle className="text-xl group-hover:text-primary transition-colors">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
@@ -269,7 +269,7 @@ const Index = () => {
       <section className="py-20 bg-background" aria-labelledby="testimonials-heading">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <h2 id="testimonials-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-halo-navy">
+            <h2 id="testimonials-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-halo-navy">
               What Our Graduates Say
             </h2>
             <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange border-0">
@@ -312,7 +312,7 @@ const Index = () => {
             {/* Content - shows second on mobile/tablet */}
             <div className="space-y-8 order-2 lg:order-1">
               <div className="space-y-4">
-                <h2 className="text-xl lg:text-2xl font-playfair font-bold">
+                <h2 className="text-xl lg:text-2xl font-bold">
                   Transform Your Skills. Transform Your Career.
                 </h2>
                 <p className="text-base opacity-90 leading-relaxed">
