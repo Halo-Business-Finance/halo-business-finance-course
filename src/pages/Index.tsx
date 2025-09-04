@@ -10,14 +10,13 @@ import { CurriculumModal } from "@/components/CurriculumModal";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
 import heroBusinessTraining from "@/assets/commercial-lending-hero.jpg";
+import adaptiveLearningProfessional from "@/assets/adaptive-learning-professional.jpg";
 const learningPathsImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 const softwareTrainingImage = "/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png";
 import careerSuccessImage from "@/assets/career-success.jpg";
 
 const Index = () => {
-  console.log("Index component is loading...");
   const { user } = useAuth();
-  console.log("User status:", user ? "logged in" : "not logged in");
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
   const [selectedLearningPath, setSelectedLearningPath] = useState<any>(null);
@@ -127,68 +126,43 @@ const Index = () => {
       <div className="min-h-screen bg-background">
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background to-background pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16" role="banner">
-        <div className="absolute inset-0" />
+      <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-16 lg:py-20">
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60"
+          style={{ backgroundImage: `url(${adaptiveLearningProfessional})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
-              <div className="space-y-4 md:space-y-6 lg:space-y-8 animate-fade-in text-center lg:text-left">
-                
-                <div className="space-y-3 md:space-y-4 lg:space-y-6">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-playfair font-bold leading-tight text-navy-blue">
-                    Master Business Finance
-                    <span className="block text-navy-blue">
-                      & Commercial Lending
-                    </span>
-                  </h1>
-                  
-                  <Badge className="inline-flex items-center gap-1 md:gap-2 bg-white text-halo-orange text-base md:text-lg px-2 md:px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
-                    <Star className="h-4 w-4" />
-                    <span className="hidden sm:inline">Accelerate Your Career with the Industry's Top Course</span>
-                    <span className="sm:hidden">Top Industry Course</span>
-                  </Badge>
-                  
-                  <div className="leading-relaxed text-black max-w-2xl mx-auto lg:mx-0">
-                    <span className="block font-medium text-black text-xs sm:text-sm md:text-base lg:text-lg">Your Pathway to Lending Excellence.</span>
-                    <span className="hidden md:block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Developed by industry experts and delivered through Stanford-level curriculum.</span>
-                    <span className="block mt-1 md:mt-2 text-xs sm:text-xs md:text-sm lg:text-base">Transform your career with our comprehensive business finance and commercial lending program.</span>
-                  </div>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
-                  <Link to="/signup" className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white shadow-hero hover:shadow-elevated transition-all duration-300 group">
-                      <span className="sm:hidden">Start Learning Today</span>
-                      <span className="hidden sm:inline">Start Learning Today</span>
-                      <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full sm:w-auto h-11 text-xs md:text-sm lg:text-base px-8 py-2 bg-halo-navy hover:bg-halo-navy/90 text-white border-halo-navy group"
-                    onClick={() => setIsDemoModalOpen(true)}
-                  >
-                    <Play className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
-                    <span className="hidden sm:inline">Request Watch Demo</span>
-                    <span className="sm:hidden">Request Demo</span>
-                  </Button>
-                </div>
-
-              </div>
-
-              <div className="relative order-first lg:order-last">
-                <img 
-                  src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" 
-                  alt="Professional conference room meeting discussing business finance and commercial lending strategies" 
-                  className="w-full h-48 sm:h-64 md:h-80 lg:h-auto object-cover rounded-lg md:rounded-xl lg:rounded-2xl shadow-hero mx-auto lg:mx-0"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg md:rounded-xl lg:rounded-2xl" />
-              </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
+              Master Business Finance & Commercial Lending
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
+              Professional Training Platform for Finance Excellence
+            </p>
+            <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
+              Transform your career with our comprehensive business finance and commercial lending program. 
+              Experience Stanford-level curriculum designed by industry experts.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Link to="/signup">
+                <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
+                  Start Free Trial
+                </Button>
+              </Link>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                onClick={() => setIsDemoModalOpen(true)}
+                className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-halo-navy font-semibold px-6 sm:px-8 py-3"
+              >
+                <Play className="mr-2 h-5 w-5" />
+                Watch Demo
+              </Button>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Stats Section */}
       <section className="py-12 md:py-16 bg-halo-navy" aria-labelledby="stats-heading">
