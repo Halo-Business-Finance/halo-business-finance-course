@@ -134,7 +134,7 @@ const Index = () => {
               Professional Training Platform for Finance Excellence
             </p>
             <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl">
-              Transform your career with our comprehensive business finance and commercial lending program. 
+              Transform your career with our comprehensive business finance and commercial lending program.<br />
               Experience Stanford-level curriculum designed by industry experts.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start">
