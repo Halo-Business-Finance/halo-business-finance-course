@@ -66,14 +66,29 @@ const loadTraineeProgress = async () => {
     try {
       setLoading(true);
       
-      // Use new secure masked profile access function with enhanced PII protection
-      const { data, error } = await supabase.rpc('get_masked_user_profiles');
+      // Get only trainees by joining profiles with user_roles and filtering for trainee role
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(`
+          user_id,
+          name,
+          email,
+          phone,
+          company,
+          created_at,
+          user_roles!inner(role, is_active)
+        `)
+        .eq('user_roles.role', 'trainee')
+        .eq('user_roles.is_active', true);
       
       if (error) {
+        console.error('Error fetching trainees:', error);
         throw error;
       }
 
-      // Transform secured profile data to trainee progress format
+      console.log('Trainees loaded:', data?.length || 0, 'trainees found');
+
+      // Transform profile data to trainee progress format - only actual trainees
       const transformedData = (data || []).map((profile: any) => ({
         user_id: profile.user_id,
         trainee_name: profile.name,
@@ -82,8 +97,8 @@ const loadTraineeProgress = async () => {
         trainee_company: profile.company,
         join_date: profile.created_at,
         last_activity: new Date().toISOString(), // Mock last activity  
-        is_masked: profile.is_masked,
-        role: 'user', // Default role
+        is_masked: false, // Direct query, not masked
+        role: 'trainee', // These are confirmed trainees only
         // Mock progress data - in production, this would come from learning analytics
         total_courses: 1,
         completed_courses: 0,
