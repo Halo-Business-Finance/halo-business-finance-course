@@ -304,6 +304,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_threat_analyses: {
+        Row: {
+          analysis_data: Json | null
+          analysis_type: string
+          confidence_score: number | null
+          created_at: string | null
+          detected_patterns: Json | null
+          events_analyzed: number | null
+          id: string
+          reasoning: string | null
+          recommended_actions: Json | null
+          risk_score: number | null
+          threat_level: string
+          threat_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_data?: Json | null
+          analysis_type?: string
+          confidence_score?: number | null
+          created_at?: string | null
+          detected_patterns?: Json | null
+          events_analyzed?: number | null
+          id?: string
+          reasoning?: string | null
+          recommended_actions?: Json | null
+          risk_score?: number | null
+          threat_level: string
+          threat_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_data?: Json | null
+          analysis_type?: string
+          confidence_score?: number | null
+          created_at?: string | null
+          detected_patterns?: Json | null
+          events_analyzed?: number | null
+          id?: string
+          reasoning?: string | null
+          recommended_actions?: Json | null
+          risk_score?: number | null
+          threat_level?: string
+          threat_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       assessment_attempts: {
         Row: {
           answers: Json
