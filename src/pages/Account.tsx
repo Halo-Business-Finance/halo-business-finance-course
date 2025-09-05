@@ -540,7 +540,7 @@ const AccountPage = (): JSX.Element => {
               </Dialog>
               <AvatarUpload
                 currentAvatar={userInfo.avatar}
-                userInitials={userInfo.name.split(' ').map(n => n[0]).join('')}
+                userInitials={userInfo.name ? userInfo.name.split(' ').map(n => n[0]).join('') : ''}
                 onAvatarUpdate={handleAvatarUpdate}
               />
               <div className="text-center">
