@@ -81,6 +81,13 @@ export const useAdminRole = () => {
           
           setIsAdmin(isAdminUser);
           setUserRole(primaryRole);
+          
+          console.log('useAdminRole - Status check results:', {
+            isAdminUser,
+            primaryRole,
+            roles,
+            activeRoles: roles.filter((r: any) => r.is_active)
+          });
         }
       } catch (error) {
         console.error('Error in checkAdminRole:', error);

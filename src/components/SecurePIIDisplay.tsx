@@ -20,6 +20,9 @@ export const SecurePIIDisplay: React.FC<SecurePIIDisplayProps> = ({
   accessLevel = 'full',
   userRole = 'user'
 }) => {
+  // Debug logging to see what userRole is being passed
+  console.log(`SecurePIIDisplay - userRole: "${userRole}", type: "${type}", value: "${value}"`);
+  
   if (!value) {
     return (
       <div className="flex items-center gap-2">
@@ -47,10 +50,15 @@ export const SecurePIIDisplay: React.FC<SecurePIIDisplayProps> = ({
   };
 
   const getSecurityMessage = () => {
-    if (value.includes('RESTRICTED')) return 'Access Denied';
-    if (isMaskedData) return 'Data Masked';
-    if (['super_admin', 'admin', 'tech_support_admin'].includes(userRole)) return 'Full Access';
-    return 'Unprotected';
+    const message = (() => {
+      if (value.includes('RESTRICTED')) return 'Access Denied';
+      if (isMaskedData) return 'Data Masked';
+      if (['super_admin', 'admin', 'tech_support_admin'].includes(userRole)) return 'Full Access';
+      return 'Unprotected';
+    })();
+    
+    console.log(`SecurePIIDisplay - userRole: "${userRole}", message: "${message}", isAdmin: ${['super_admin', 'admin', 'tech_support_admin'].includes(userRole)}`);
+    return message;
   };
 
   return (
