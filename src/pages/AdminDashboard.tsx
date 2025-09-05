@@ -405,8 +405,8 @@ const AdminDashboard = () => {
     };
 
     try {
-      // Test database connectivity
-      const { error: dbTest } = await supabase.from('profiles').select('count').limit(1);
+      // Test database connectivity using a simpler query that doesn't trigger RLS
+      const { error: dbTest } = await supabase.rpc('check_current_user_admin_status');
       if (dbTest) {
         console.error('Database connectivity test failed:', dbTest);
         newStatus.database = 'offline';
