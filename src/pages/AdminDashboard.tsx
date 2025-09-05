@@ -231,10 +231,20 @@ const AdminDashboard = () => {
               console.log('Reconnecting after channel close...');
               setupRealtimeSubscriptions();
             }, 3000);
-          } else {
-            // Any other status means connecting/reconnecting
+          } else if (status === 'TIMED_OUT') {
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+            console.error('⏱️ Realtime connection timed out');
+            // Retry connection after 5 seconds
+            setTimeout(() => {
+              console.log('Retrying after timeout...');
+              setupRealtimeSubscriptions();
+            }, 5000);
+          } else if (status === 'JOINING') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log(`🔄 Realtime status: ${status}`);
+            console.log('🔄 Joining realtime channel...');
+          } else {
+            // Unknown status - log it but don't change state unnecessarily
+            console.log(`🔄 Unknown realtime status: ${status}`);
           }
         });
         
