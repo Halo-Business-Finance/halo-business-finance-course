@@ -137,20 +137,24 @@ const AdminDashboard = () => {
   useEffect(() => {
     loadDashboardData();
     
-    // Set up real-time subscriptions for live admin dashboard with retry logic
+    // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
       // Remove any existing channel first
       if (realtimeChannel) {
         console.log('Removing existing realtime channel');
-        supabase.removeChannel(realtimeChannel);
+        try {
+          supabase.removeChannel(realtimeChannel);
+        } catch (error) {
+          console.warn('Error removing existing channel:', error);
+        }
         setRealtimeChannel(null);
       }
       
       console.log('Setting up realtime subscriptions...');
       
-      // Use a unique channel name to avoid conflicts with NotificationBell
+      // Use a simple channel name
       const channel = supabase
-        .channel(`admin-dashboard-${user?.id}-${Date.now()}`)
+        .channel('admin-dashboard')
         .on(
           'postgres_changes',
           {
@@ -165,7 +169,7 @@ const AdminDashboard = () => {
               description: `New ${payload.new.severity} security event detected`,
               variant: payload.new.severity === 'critical' ? 'destructive' : 'default'
             });
-            loadDashboardData(); // Refresh data
+            loadDashboardData();
           }
         )
         .on(
@@ -181,7 +185,7 @@ const AdminDashboard = () => {
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
             });
-            loadDashboardData(); // Refresh data
+            loadDashboardData();
           }
         )
         .on(
@@ -199,61 +203,41 @@ const AdminDashboard = () => {
                 description: `New ${payload.new.role} role assigned`,
               });
             }
-            loadDashboardData(); // Refresh data
+            loadDashboardData();
           }
         )
         .subscribe((status) => {
           console.log('Admin dashboard realtime subscription status:', status);
+          
           if (status === 'SUBSCRIBED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
-            console.log('✅ Admin dashboard realtime connection established successfully');
+            console.log('✅ Admin dashboard realtime connection established');
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
             });
           } else if (status === 'CHANNEL_ERROR') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.error('❌ Admin dashboard realtime channel error');
-            toast({
-              title: "Connection Error",
-              description: "Real-time updates disconnected",
-              variant: "destructive"
-            });
-            // Retry connection after 5 seconds
-            setTimeout(() => {
-              console.log('Retrying admin dashboard realtime connection...');
-              setupRealtimeSubscriptions();
-            }, 5000);
+            console.warn(`⚠️ Admin dashboard realtime error`);
           } else if (status === 'CLOSED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.warn('⚠️ Admin dashboard realtime channel closed');
-            // Retry connection after 3 seconds
-            setTimeout(() => {
-              console.log('Reconnecting admin dashboard after channel close...');
-              setupRealtimeSubscriptions();
-            }, 3000);
+            console.warn(`⚠️ Admin dashboard realtime closed`);
           } else if (status === 'TIMED_OUT') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.error('⏱️ Admin dashboard realtime connection timed out');
-            // Retry connection after 5 seconds
-            setTimeout(() => {
-              console.log('Retrying admin dashboard after timeout...');
-              setupRealtimeSubscriptions();
-            }, 5000);
-          } else if (status === 'JOINING') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log('🔄 Joining admin dashboard realtime channel...');
+            console.warn(`⚠️ Admin dashboard realtime timed out`);
           } else {
-            // Handle any other status including 'partial'
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log(`🔄 Admin dashboard realtime status: ${status} - treating as reconnecting`);
+            console.log(`🔄 Admin dashboard realtime status: ${status}`);
           }
         });
         
       setRealtimeChannel(channel);
     };
 
-    setupRealtimeSubscriptions();
+    // Only setup realtime if user is authenticated and has admin role
+    if (user && isAdmin && !roleLoading) {
+      setupRealtimeSubscriptions();
+    }
     
     // Cleanup function
     return () => {
@@ -267,7 +251,7 @@ const AdminDashboard = () => {
         setRealtimeChannel(null);
       }
     };
-  }, []);
+  }, [user, isAdmin, roleLoading]);
 
   const loadDashboardData = async () => {
     try {
