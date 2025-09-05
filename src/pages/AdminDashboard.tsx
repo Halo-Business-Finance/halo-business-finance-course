@@ -401,17 +401,34 @@ const AdminDashboard = () => {
       database: 'online',
       authentication: 'active', 
       securityMonitoring: 'enabled',
-      realTimeUpdates: realtimeChannel?.state === 'joined' ? 'connected' : 'disconnected'
+      realTimeUpdates: realtimeChannel ? 'connected' : 'disconnected'
     };
 
     try {
       // Test database connectivity
       const { error: dbTest } = await supabase.from('profiles').select('count').limit(1);
-      newStatus.database = dbTest ? 'degraded' : 'online';
+      if (dbTest) {
+        console.error('Database connectivity test failed:', dbTest);
+        newStatus.database = 'offline';
+      }
 
-      // Test authentication status
-      const { data: { user }, error: authTest } = await supabase.auth.getUser();
-      newStatus.authentication = authTest || !user ? 'error' : 'active';
+      // Test authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        newStatus.authentication = 'inactive';
+      }
+
+      // Test real-time status more accurately
+      if (realtimeChannel) {
+        const channelState = realtimeChannel.state;
+        if (channelState === 'joined') {
+          newStatus.realTimeUpdates = 'connected';
+        } else if (channelState === 'joining') {
+          newStatus.realTimeUpdates = 'reconnecting';
+        } else {
+          newStatus.realTimeUpdates = 'disconnected';
+        }
+      }
 
       // Check security monitoring by testing access to security events
       try {
@@ -422,8 +439,9 @@ const AdminDashboard = () => {
       }
 
     } catch (error) {
-      console.warn('System status check failed:', error);
+      console.error('System status check failed:', error);
       newStatus.database = 'offline';
+      newStatus.authentication = 'error';
     }
 
     setSystemStatus(newStatus);
