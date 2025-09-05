@@ -1242,24 +1242,24 @@ const AdminDashboard = () => {
                         <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
                            <TableCell className="py-4">
                              <div className="flex flex-col">
-                                <SecurePIIDisplay 
-                                  value={userRoleItem.profiles?.name || null} 
-                                  type="name" 
-                                  showMaskingIndicator={true}
-                                  userRole={userRole || 'trainee'}
-                                />
+                                 <SecurePIIDisplay 
+                                   value={userRoleItem.profiles?.name || null} 
+                                   type="name" 
+                                   showMaskingIndicator={true}
+                                   userRole={userRole || 'user'}
+                                 />
                                <span className="font-mono text-xs text-muted-foreground">
                                  {userRoleItem.user_id.slice(0, 8)}...
                                </span>
                              </div>
                            </TableCell>
                            <TableCell className="py-4">
-                             <SecurePIIDisplay 
-                               value={userRoleItem.profiles?.email || null} 
-                               type="email" 
-                               showMaskingIndicator={true}
-                               userRole={userRole || 'trainee'}
-                             />
+                              <SecurePIIDisplay 
+                                value={userRoleItem.profiles?.email || null} 
+                                type="email" 
+                                showMaskingIndicator={true}
+                                userRole={userRole || 'user'}
+                              />
                            </TableCell>
                           <TableCell className="py-4">
                             <Badge variant={getRoleBadgeVariant(userRoleItem.role)} className="shadow-sm">

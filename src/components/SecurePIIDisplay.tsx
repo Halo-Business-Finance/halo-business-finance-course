@@ -42,14 +42,14 @@ export const SecurePIIDisplay: React.FC<SecurePIIDisplayProps> = ({
   const getSecurityLevel = () => {
     if (value.includes('RESTRICTED')) return 'protected';
     if (isMaskedData) return 'masked';
-    if (userRole === 'super_admin') return 'secure';
+    if (['super_admin', 'admin', 'tech_support_admin'].includes(userRole)) return 'secure';
     return 'warning';
   };
 
   const getSecurityMessage = () => {
     if (value.includes('RESTRICTED')) return 'Access Denied';
     if (isMaskedData) return 'Data Masked';
-    if (userRole === 'super_admin') return 'Full Access';
+    if (['super_admin', 'admin', 'tech_support_admin'].includes(userRole)) return 'Full Access';
     return 'Unprotected';
   };
 
