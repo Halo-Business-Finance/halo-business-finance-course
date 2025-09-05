@@ -407,12 +407,12 @@ const AccountPage = (): JSX.Element => {
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-1 sm:gap-0">
-            <TabsTrigger value="account" className="text-xs sm:text-sm">My Account</TabsTrigger>
-            <TabsTrigger value="notifications" className="text-xs sm:text-sm">Notifications</TabsTrigger>
-            <TabsTrigger value="privacy" className="text-xs sm:text-sm">Privacy</TabsTrigger>
-            <TabsTrigger value="preferences" className="text-xs sm:text-sm">Preferences</TabsTrigger>
-            <TabsTrigger value="billing" className="text-xs sm:text-sm">Billing</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-1 h-auto p-1">
+            <TabsTrigger value="account" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">My Account</TabsTrigger>
+            <TabsTrigger value="notifications" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Notifications</TabsTrigger>
+            <TabsTrigger value="privacy" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Privacy</TabsTrigger>
+            <TabsTrigger value="preferences" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Preferences</TabsTrigger>
+            <TabsTrigger value="billing" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap col-span-2 md:col-span-1">Billing</TabsTrigger>
           </TabsList>
 
           <TabsContent value="account" className="space-y-6">
