@@ -451,28 +451,9 @@ const AdminDashboard = () => {
         newStatus.authentication = 'inactive';
       }
 
-      // Test real-time status more accurately - don't override working connections
-      if (realtimeChannel) {
-        const channelState = realtimeChannel.state;
-        console.log('Channel state during status check:', channelState);
-        console.log('Current realtime status:', systemStatus.realTimeUpdates);
-        
-        // If we already have a connected status and channel exists, keep it connected
-        if (systemStatus.realTimeUpdates === 'connected' && channelState !== 'closed' && channelState !== 'errored') {
-          newStatus.realTimeUpdates = 'connected';
-        } else if (channelState === 'joined') {
-          newStatus.realTimeUpdates = 'connected';
-        } else if (channelState === 'joining') {
-          newStatus.realTimeUpdates = 'reconnecting';
-        } else if (channelState === 'closed' || channelState === 'errored') {
-          newStatus.realTimeUpdates = 'disconnected';
-        } else {
-          // Don't override if we have a working connection
-          newStatus.realTimeUpdates = systemStatus.realTimeUpdates || 'reconnecting';
-        }
-      } else {
-        newStatus.realTimeUpdates = 'disconnected';
-      }
+      // Don't override realtime status - let the subscription callback handle it
+      // The realtime subscription callback is the authoritative source for connection status
+      newStatus.realTimeUpdates = systemStatus.realTimeUpdates;
 
       // Check security monitoring by testing admin access
       try {
