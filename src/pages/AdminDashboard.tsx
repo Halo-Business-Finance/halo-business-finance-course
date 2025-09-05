@@ -195,6 +195,7 @@ const AdminDashboard = () => {
           }
         )
         .subscribe((status) => {
+          console.log('Realtime subscription status:', status);
           if (status === 'SUBSCRIBED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
             toast({
@@ -202,6 +203,13 @@ const AdminDashboard = () => {
               description: "Real-time monitoring is now active",
             });
           } else if (status === 'CHANNEL_ERROR') {
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+            toast({
+              title: "Connection Error",
+              description: "Real-time updates disconnected",
+              variant: "destructive"
+            });
+          } else if (status === 'CLOSED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
           }
         });
@@ -401,7 +409,7 @@ const AdminDashboard = () => {
       database: 'online',
       authentication: 'active', 
       securityMonitoring: 'enabled',
-      realTimeUpdates: realtimeChannel ? 'connected' : 'disconnected'
+      realTimeUpdates: 'disconnected'
     };
 
     try {
@@ -421,13 +429,19 @@ const AdminDashboard = () => {
       // Test real-time status more accurately
       if (realtimeChannel) {
         const channelState = realtimeChannel.state;
+        console.log('Channel state during status check:', channelState);
         if (channelState === 'joined') {
           newStatus.realTimeUpdates = 'connected';
         } else if (channelState === 'joining') {
           newStatus.realTimeUpdates = 'reconnecting';
-        } else {
+        } else if (channelState === 'closed') {
           newStatus.realTimeUpdates = 'disconnected';
+        } else {
+          // If channel exists but not in a known state, assume connecting
+          newStatus.realTimeUpdates = 'reconnecting';
         }
+      } else {
+        newStatus.realTimeUpdates = 'disconnected';
       }
 
       // Check security monitoring by testing access to security events
