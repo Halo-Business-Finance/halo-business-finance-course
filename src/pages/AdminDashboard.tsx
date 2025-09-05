@@ -118,7 +118,7 @@ const AdminDashboard = () => {
     database: 'online',
     authentication: 'active',
     securityMonitoring: 'enabled',
-    realTimeUpdates: 'disconnected'
+    realTimeUpdates: 'reconnecting' // Start with reconnecting, let subscription set to connected
   });
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [securityEvents, setSecurityEvents] = useState<SecurityEvent[]>([]);
@@ -146,7 +146,7 @@ const AdminDashboard = () => {
       }
       
       console.log('Setting up realtime subscriptions...');
-      setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
+      // Don't set reconnecting here - let the subscription callback handle all status changes
       
       const channel = supabase
         .channel('admin-dashboard-updates')
