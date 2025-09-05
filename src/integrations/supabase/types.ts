@@ -1410,7 +1410,15 @@ export type Database = {
           view_count?: number | null
           youtube_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "course_videos_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_content_modules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       courses: {
         Row: {
