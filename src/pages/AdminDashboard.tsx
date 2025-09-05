@@ -261,8 +261,14 @@ const AdminDashboard = () => {
               break;
               
             default:
-              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-              console.log(`🔄 Admin dashboard realtime status: ${status}`);
+              // For unknown statuses, assume connected if successfully subscribed and no error
+              if (!err && status !== 'CHANNEL_ERROR' && status !== 'CLOSED') {
+                setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
+                console.log(`✅ Admin dashboard realtime status: ${status} (connected)`);
+              } else {
+                setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+                console.warn(`⚠️ Admin dashboard realtime error:`, status, err);
+              }
           }
         });
          
