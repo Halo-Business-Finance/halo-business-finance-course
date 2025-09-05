@@ -66,20 +66,8 @@ const loadTraineeProgress = async () => {
     try {
       setLoading(true);
       
-      // Get only trainees by joining profiles with user_roles and filtering for trainee role
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(`
-          user_id,
-          name,
-          email,
-          phone,
-          company,
-          created_at,
-          user_roles!inner(role, is_active)
-        `)
-        .eq('user_roles.role', 'trainee')
-        .eq('user_roles.is_active', true);
+      // Use secure function to get trainee profiles with proper admin access control
+      const { data, error } = await supabase.rpc('get_trainee_profiles_secure');
       
       if (error) {
         console.error('Error fetching trainees:', error);
@@ -97,8 +85,8 @@ const loadTraineeProgress = async () => {
         trainee_company: profile.company,
         join_date: profile.created_at,
         last_activity: new Date().toISOString(), // Mock last activity  
-        is_masked: false, // Direct query, not masked
-        role: 'trainee', // These are confirmed trainees only
+        is_masked: false, // Secure function, admin has direct access
+        role: profile.role, // Confirmed trainees only from function
         // Mock progress data - in production, this would come from learning analytics
         total_courses: 1,
         completed_courses: 0,

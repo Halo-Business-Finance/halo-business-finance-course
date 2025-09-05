@@ -4426,6 +4426,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      get_trainee_profiles_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          company: string
+          created_at: string
+          email: string
+          is_active: boolean
+          name: string
+          phone: string
+          role: string
+          user_id: string
+        }[]
+      }
       get_trainee_progress_data: {
         Args: Record<PropertyKey, never>
         Returns: {
