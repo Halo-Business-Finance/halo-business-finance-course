@@ -140,6 +140,10 @@ const AdminDashboard = () => {
     
     // Set up real-time subscriptions for live admin dashboard
     const setupRealtimeSubscriptions = () => {
+      // Remove any existing channel first
+      if (realtimeChannel) {
+        supabase.removeChannel(realtimeChannel);
+      }
       
       const channel = supabase
         .channel('admin-dashboard-updates')
@@ -151,7 +155,7 @@ const AdminDashboard = () => {
             table: 'security_events'
           },
           (payload) => {
-            
+            console.log('Security event received:', payload);
             toast({
               title: "Security Alert",
               description: `New ${payload.new.severity} security event detected`,
@@ -168,7 +172,7 @@ const AdminDashboard = () => {
             table: 'profiles'
           },
           (payload) => {
-            
+            console.log('Profile event received:', payload);
             toast({
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
@@ -184,7 +188,7 @@ const AdminDashboard = () => {
             table: 'user_roles'
           },
           (payload) => {
-            
+            console.log('User role event received:', payload);
             if (payload.eventType === 'INSERT') {
               toast({
                 title: "Role Assigned",
@@ -211,6 +215,9 @@ const AdminDashboard = () => {
             });
           } else if (status === 'CLOSED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+          } else {
+            // Any other status means connecting/reconnecting
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
           }
         });
         
@@ -222,6 +229,7 @@ const AdminDashboard = () => {
     // Cleanup function
     return () => {
       if (realtimeChannel) {
+        console.log('Cleaning up realtime channel');
         supabase.removeChannel(realtimeChannel);
       }
     };
