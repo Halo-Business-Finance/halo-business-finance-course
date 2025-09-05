@@ -94,7 +94,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
     <header className="sticky top-0 h-[80px] flex flex-col border-b bg-background z-50 px-2 md:px-4">
       <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[80px] w-12 flex-shrink-0" />}
+          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[80px] w-16 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -141,9 +141,9 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         )}
         
         {user && (
-          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-foreground text-right flex-shrink-0 pt-1 pr-1">
+          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-foreground text-right min-w-0 pt-1 pr-2">
             <NotificationBell />
-            <div className="text-xs min-w-0 flex-shrink-0">
+            <div className="text-xs min-w-max">
               <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
