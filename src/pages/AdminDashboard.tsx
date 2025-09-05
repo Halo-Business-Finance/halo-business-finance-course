@@ -242,9 +242,14 @@ const AdminDashboard = () => {
           } else if (status === 'JOINING') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
             console.log('🔄 Joining realtime channel...');
+          } else if (status === 'partial' || status === 'PARTIAL') {
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
+            console.log('🔄 Partial realtime connection, attempting to reconnect...');
           } else {
             // Unknown status - log it but don't change state unnecessarily
             console.log(`🔄 Unknown realtime status: ${status}`);
+            // For any other unknown status, treat as reconnecting
+            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
           }
         });
         
@@ -1235,24 +1240,24 @@ const AdminDashboard = () => {
                         <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
                            <TableCell className="py-4">
                              <div className="flex flex-col">
-                               <SecurePIIDisplay 
-                                 value={userRoleItem.profiles?.name || null} 
-                                 type="name" 
-                                 showMaskingIndicator={true}
-                                 userRole={userRole}
-                               />
+                                <SecurePIIDisplay 
+                                  value={userRoleItem.profiles?.name || null} 
+                                  type="name" 
+                                  showMaskingIndicator={true}
+                                  userRole={userRole || 'user'}
+                                />
                                <span className="font-mono text-xs text-muted-foreground">
                                  {userRoleItem.user_id.slice(0, 8)}...
                                </span>
                              </div>
                            </TableCell>
                            <TableCell className="py-4">
-                            <SecurePIIDisplay 
-                              value={userRoleItem.profiles?.email || null} 
-                              type="email" 
-                              showMaskingIndicator={true}
-                              userRole={userRole}
-                            />
+                             <SecurePIIDisplay 
+                               value={userRoleItem.profiles?.email || null} 
+                               type="email" 
+                               showMaskingIndicator={true}
+                               userRole={userRole || 'user'}
+                             />
                            </TableCell>
                           <TableCell className="py-4">
                             <Badge variant={getRoleBadgeVariant(userRoleItem.role)} className="shadow-sm">
