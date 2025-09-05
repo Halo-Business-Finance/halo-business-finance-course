@@ -434,7 +434,7 @@ const AdminDashboard = () => {
       database: 'online',
       authentication: 'active', 
       securityMonitoring: 'enabled',
-      realTimeUpdates: 'disconnected'
+      realTimeUpdates: systemStatus.realTimeUpdates || 'disconnected' // Use current status as default
     };
 
     try {
