@@ -44,8 +44,8 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
     complianceLevel: 'gdpr_compliant',
     lastSecurityScan: new Date().toISOString(),
     criticalAlerts: 0,
-    mediumAlerts: 2,
-    lowAlerts: 1,
+    mediumAlerts: 0,
+    lowAlerts: 0,
     dataRetentionCompliant: true,
     privacyConsentTracking: true,
     adminActivityMonitored: true
@@ -56,19 +56,30 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
   const refreshSecurityMetrics = async () => {
     setLoading(true);
     try {
-      // Simulate checking various security metrics
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Query real security events from the database
+      const { data: securityEvents, error } = await supabase
+        .from('security_events')
+        .select('severity')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      if (error) {
+        console.error('Error fetching security events:', error);
+      }
+
+      // Count real security events by severity
+      const criticalCount = securityEvents?.filter(e => e.severity === 'critical').length || 0;
+      const mediumCount = securityEvents?.filter(e => e.severity === 'medium').length || 0;
+      const lowCount = securityEvents?.filter(e => e.severity === 'low').length || 0;
       
-      // In a real implementation, this would query the security monitoring systems
       const updatedMetrics: SecurityMetrics = {
         dataEncryption: 'active',
         auditLogging: 'comprehensive',
         accessControls: 'strict',
         complianceLevel: 'gdpr_compliant',
         lastSecurityScan: new Date().toISOString(),
-        criticalAlerts: 0,
-        mediumAlerts: Math.floor(Math.random() * 3),
-        lowAlerts: Math.floor(Math.random() * 5),
+        criticalAlerts: criticalCount,
+        mediumAlerts: mediumCount,
+        lowAlerts: lowCount,
         dataRetentionCompliant: true,
         privacyConsentTracking: true,
         adminActivityMonitored: true
