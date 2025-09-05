@@ -108,6 +108,7 @@ interface ActiveAdminWithActivity {
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { userRole, isAdmin, isLoading: roleLoading } = useAdminRole();
+  console.log(`User role in AdminDashboard: ${userRole}, IsAdmin: ${isAdmin}, RoleLoading: ${roleLoading}`);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -142,14 +143,16 @@ const AdminDashboard = () => {
     const setupRealtimeSubscriptions = () => {
       // Remove any existing channel first
       if (realtimeChannel) {
+        console.log('Removing existing realtime channel');
         supabase.removeChannel(realtimeChannel);
+        setRealtimeChannel(null);
       }
       
       console.log('Setting up realtime subscriptions...');
-      // Don't set reconnecting here - let the subscription callback handle all status changes
       
+      // Use a unique channel name to avoid conflicts with NotificationBell
       const channel = supabase
-        .channel('admin-dashboard-updates')
+        .channel(`admin-dashboard-${user?.id}-${Date.now()}`)
         .on(
           'postgres_changes',
           {
@@ -202,17 +205,17 @@ const AdminDashboard = () => {
           }
         )
         .subscribe((status) => {
-          console.log('Realtime subscription status:', status);
+          console.log('Admin dashboard realtime subscription status:', status);
           if (status === 'SUBSCRIBED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
-            console.log('✅ Realtime connection established successfully');
+            console.log('✅ Admin dashboard realtime connection established successfully');
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
             });
           } else if (status === 'CHANNEL_ERROR') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.error('❌ Realtime channel error');
+            console.error('❌ Admin dashboard realtime channel error');
             toast({
               title: "Connection Error",
               description: "Real-time updates disconnected",
@@ -220,36 +223,32 @@ const AdminDashboard = () => {
             });
             // Retry connection after 5 seconds
             setTimeout(() => {
-              console.log('Retrying realtime connection...');
+              console.log('Retrying admin dashboard realtime connection...');
               setupRealtimeSubscriptions();
             }, 5000);
           } else if (status === 'CLOSED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.warn('⚠️ Realtime channel closed');
+            console.warn('⚠️ Admin dashboard realtime channel closed');
             // Retry connection after 3 seconds
             setTimeout(() => {
-              console.log('Reconnecting after channel close...');
+              console.log('Reconnecting admin dashboard after channel close...');
               setupRealtimeSubscriptions();
             }, 3000);
           } else if (status === 'TIMED_OUT') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.error('⏱️ Realtime connection timed out');
+            console.error('⏱️ Admin dashboard realtime connection timed out');
             // Retry connection after 5 seconds
             setTimeout(() => {
-              console.log('Retrying after timeout...');
+              console.log('Retrying admin dashboard after timeout...');
               setupRealtimeSubscriptions();
             }, 5000);
           } else if (status === 'JOINING') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log('🔄 Joining realtime channel...');
-          } else if (status === 'partial' || status === 'PARTIAL') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log('🔄 Partial realtime connection, attempting to reconnect...');
+            console.log('🔄 Joining admin dashboard realtime channel...');
           } else {
-            // Unknown status - log it but don't change state unnecessarily
-            console.log(`🔄 Unknown realtime status: ${status}`);
-            // For any other unknown status, treat as reconnecting
+            // Handle any other status including 'partial'
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
+            console.log(`🔄 Admin dashboard realtime status: ${status} - treating as reconnecting`);
           }
         });
         
@@ -261,8 +260,13 @@ const AdminDashboard = () => {
     // Cleanup function
     return () => {
       if (realtimeChannel) {
-        console.log('Cleaning up realtime channel');
-        supabase.removeChannel(realtimeChannel);
+        console.log('Cleaning up admin dashboard realtime channel');
+        try {
+          supabase.removeChannel(realtimeChannel);
+        } catch (error) {
+          console.warn('Error cleaning up admin dashboard realtime channel:', error);
+        }
+        setRealtimeChannel(null);
       }
     };
   }, []);
@@ -1244,7 +1248,7 @@ const AdminDashboard = () => {
                                   value={userRoleItem.profiles?.name || null} 
                                   type="name" 
                                   showMaskingIndicator={true}
-                                  userRole={userRole || 'user'}
+                                  userRole={userRole || 'trainee'}
                                 />
                                <span className="font-mono text-xs text-muted-foreground">
                                  {userRoleItem.user_id.slice(0, 8)}...
@@ -1256,7 +1260,7 @@ const AdminDashboard = () => {
                                value={userRoleItem.profiles?.email || null} 
                                type="email" 
                                showMaskingIndicator={true}
-                               userRole={userRole || 'user'}
+                               userRole={userRole || 'trainee'}
                              />
                            </TableCell>
                           <TableCell className="py-4">
