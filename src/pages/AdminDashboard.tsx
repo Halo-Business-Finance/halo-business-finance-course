@@ -106,13 +106,7 @@ interface ActiveAdminWithActivity {
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { userRole, isAdmin, isLoading: roleLoading } = useAdminRole();
-  
   console.log(`User role in AdminDashboard: ${userRole}, IsAdmin: ${isAdmin}, RoleLoading: ${roleLoading}`);
-  console.log(`Actual userRole type:`, typeof userRole, `Value:`, userRole);
-  
-  // Temporary debug: Force userRole to super_admin if user is Varda for testing
-  const debugUserRole = user?.email === 'Varda@halobusinessfinance.com' ? 'super_admin' : userRole;
-  console.log(`Debug userRole for ${user?.email}: ${debugUserRole}`);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -1252,7 +1246,7 @@ const AdminDashboard = () => {
                                    value={userRoleItem.profiles?.name || null} 
                                    type="name" 
                                    showMaskingIndicator={true}
-                                   userRole={debugUserRole || 'user'}
+                                   userRole={userRole || 'user'}
                                  />
                                <span className="font-mono text-xs text-muted-foreground">
                                  {userRoleItem.user_id.slice(0, 8)}...
@@ -1264,7 +1258,7 @@ const AdminDashboard = () => {
                                 value={userRoleItem.profiles?.email || null} 
                                 type="email" 
                                 showMaskingIndicator={true}
-                                userRole={debugUserRole || 'user'}
+                                userRole={userRole || 'user'}
                               />
                            </TableCell>
                           <TableCell className="py-4">

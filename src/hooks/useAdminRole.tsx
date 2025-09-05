@@ -56,28 +56,16 @@ export const useAdminRole = () => {
             setUserRole(null);
           }
         } else {
-          // Type the response properly
+          // Type the response properly - the function now returns a simpler structure
           const status = statusData as {
             is_admin: boolean;
+            role: string;
+            user_id: string;
             roles: Array<{ role: string; is_active: boolean }>;
           };
           
           const isAdminUser = status?.is_admin || false;
-          const roles = status?.roles || [];
-          
-          // Get the highest priority role
-          let primaryRole = null;
-          if (roles.length > 0) {
-            // Find active roles and prioritize them
-            const activeRoles = roles.filter((r: any) => r.is_active);
-            if (activeRoles.length > 0) {
-              const priority = { 'super_admin': 1, 'admin': 2, 'tech_support_admin': 3, 'instructor': 4, 'trainee': 5 };
-              const sortedRoles = activeRoles.sort((a: any, b: any) => 
-                (priority[a.role as keyof typeof priority] || 999) - (priority[b.role as keyof typeof priority] || 999)
-              );
-              primaryRole = sortedRoles[0].role;
-            }
-          }
+          const primaryRole = status?.role || null;
           
           setIsAdmin(isAdminUser);
           setUserRole(primaryRole);
@@ -85,8 +73,7 @@ export const useAdminRole = () => {
           console.log('useAdminRole - Status check results:', {
             isAdminUser,
             primaryRole,
-            roles,
-            activeRoles: roles.filter((r: any) => r.is_active)
+            rawStatus: status
           });
         }
       } catch (error) {
