@@ -31,7 +31,7 @@ interface VideoData {
 }
 
 interface Module {
-  module_id: string;
+  id: string;
   title: string;
 }
 
@@ -73,10 +73,10 @@ export function VideoManager() {
         video_type: video.video_type as 'youtube' | 'url' | 'upload'
       })));
 
-      // Load modules
+      // Load modules from course_content_modules
       const { data: modulesData, error: modulesError } = await supabase
-        .from("course_modules")
-        .select("module_id, title")
+        .from("course_content_modules")
+        .select("id, title")
         .eq("is_active", true)
         .order("order_index");
 
@@ -302,7 +302,7 @@ export function VideoManager() {
                     </SelectTrigger>
                     <SelectContent>
                       {modules.map(module => (
-                        <SelectItem key={module.module_id} value={module.module_id}>
+                        <SelectItem key={module.id} value={module.id}>
                           {module.title}
                         </SelectItem>
                       ))}
@@ -465,7 +465,7 @@ export function VideoManager() {
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      {modules.find(m => m.module_id === video.module_id)?.title || video.module_id}
+                      {modules.find(m => m.id === video.module_id)?.title || video.module_id}
                     </div>
                   </TableCell>
                   <TableCell>
