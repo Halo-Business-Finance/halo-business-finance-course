@@ -444,11 +444,17 @@ const AdminDashboard = () => {
         newStatus.realTimeUpdates = 'disconnected';
       }
 
-      // Check security monitoring by testing access to security events
+      // Check security monitoring by testing admin access
       try {
-        const { error: securityTest } = await supabase.from('security_events').select('count').limit(1);
-        newStatus.securityMonitoring = securityTest ? 'partial' : 'enabled';
-      } catch {
+        // Use the admin status check and properly type the response
+        const { data: adminCheck } = await supabase.rpc('check_current_user_admin_status');
+        if (adminCheck && typeof adminCheck === 'object' && 'is_admin' in adminCheck && adminCheck.is_admin) {
+          newStatus.securityMonitoring = 'enabled';
+        } else {
+          newStatus.securityMonitoring = 'partial';
+        }
+      } catch (securityError) {
+        console.warn('Security monitoring check failed:', securityError);
         newStatus.securityMonitoring = 'disabled';
       }
 
