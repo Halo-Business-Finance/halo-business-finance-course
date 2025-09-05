@@ -12,7 +12,6 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { CourseSelectionProvider } from "@/contexts/CourseSelectionContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
-import { SecurityMonitor } from "@/components/SecurityMonitor";
 import { NotificationBell } from "@/components/NotificationBell";
 import { LiveChatSupport } from "@/components/LiveChatSupport";
 import { createTestNotifications } from "@/utils/createTestNotifications";
@@ -256,7 +255,6 @@ const App = () => (
         <AuthProvider>
           <CourseSelectionProvider>
             <SidebarProvider defaultOpen={true} open={undefined}>
-              <SecurityMonitor />
               <AppContent />
             </SidebarProvider>
           </CourseSelectionProvider>

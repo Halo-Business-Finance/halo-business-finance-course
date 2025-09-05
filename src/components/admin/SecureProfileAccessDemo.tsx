@@ -7,7 +7,6 @@ import { Shield, Users, AlertTriangle, CheckCircle, RefreshCw } from 'lucide-rea
 import { useSecureProfileAccess } from '@/hooks/useSecureProfileAccess';
 import { SecurePIIDisplay } from '@/components/SecurePIIDisplay';
 import { SecurityStatusIndicator } from '@/components/SecurityStatusIndicator';
-import { EnhancedSecurityMonitor } from '@/components/EnhancedSecurityMonitor';
 
 export const SecureProfileAccessDemo: React.FC = () => {
   const { 
@@ -18,8 +17,6 @@ export const SecureProfileAccessDemo: React.FC = () => {
     accessLevel, 
     userRole 
   } = useSecureProfileAccess();
-
-  const [showSecurityMonitor, setShowSecurityMonitor] = useState(false);
 
   const getAccessLevelInfo = () => {
     switch (accessLevel) {
@@ -65,13 +62,6 @@ export const SecureProfileAccessDemo: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               {accessInfo.badge}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowSecurityMonitor(!showSecurityMonitor)}
-              >
-                {showSecurityMonitor ? 'Hide' : 'Show'} Security Monitor
-              </Button>
             </div>
           </div>
         </CardHeader>
@@ -130,11 +120,6 @@ export const SecureProfileAccessDemo: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Security Monitor */}
-      {showSecurityMonitor && (
-        <EnhancedSecurityMonitor />
-      )}
 
       {/* Customer Profiles Table */}
       <Card>

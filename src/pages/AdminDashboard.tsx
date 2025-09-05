@@ -35,8 +35,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 
 import { SecurityDashboard } from "@/components/SecurityDashboard";
-import { SecurityMonitoringDashboard } from "@/components/SecurityMonitoringDashboard";
-import { SecurityMonitoringWidget } from "@/components/SecurityMonitoringWidget";
 import { SecurityEventManager } from "@/components/SecurityEventManager";
 import { SecurityFixCenter } from "@/components/SecurityFixCenter";
 import { VideoManager } from "@/components/admin/VideoManager";
@@ -1389,11 +1387,7 @@ const AdminDashboard = () => {
                 <TabsContent value="security" className="space-y-6">
                   <SecurityComplianceStatus />
                   <SecurityFixCenter />
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <SecurityDashboard />
-                    <SecurityMonitoringDashboard />
-                  </div>
-                  <SecurityMonitoringWidget />
+                  <SecurityDashboard />
                 </TabsContent>
 
           <TabsContent value="trainee-progress" className="space-y-4">
