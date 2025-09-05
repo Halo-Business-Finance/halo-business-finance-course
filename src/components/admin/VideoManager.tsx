@@ -181,7 +181,7 @@ export function VideoManager() {
       description: video.description || "",
       video_type: video.video_type,
       video_url: video.video_url,
-      tags: video.tags.join(", "),
+      tags: video.tags?.join(", ") || "",
       order_index: video.order_index,
     });
     setEditingVideo(video);
@@ -446,7 +446,7 @@ export function VideoManager() {
                         <p className="text-xs text-muted-foreground truncate">
                           {video.description}
                         </p>
-                        {video.tags.length > 0 && (
+                        {video.tags && video.tags.length > 0 && (
                           <div className="flex gap-1 mt-1">
                             {video.tags.slice(0, 2).map(tag => (
                               <Badge key={tag} variant="outline" className="text-xs">
