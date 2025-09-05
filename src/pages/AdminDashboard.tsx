@@ -152,15 +152,31 @@ const AdminDashboard = () => {
       
       console.log('Setting up realtime subscriptions...');
       
-      // Use a simple channel name
+      // Debounce dashboard data loading to prevent overwhelming the system
+      let loadTimeout: NodeJS.Timeout;
+      const debouncedLoadData = () => {
+        clearTimeout(loadTimeout);
+        loadTimeout = setTimeout(() => {
+          loadDashboardData();
+        }, 1000); // Wait 1 second before loading data
+      };
+      
+      // Use a simple channel name with better error handling
       const channel = supabase
-        .channel('admin-dashboard')
+        .channel('admin-dashboard', {
+          config: {
+            presence: {
+              key: `admin-${user?.id}`,
+            },
+          },
+        })
         .on(
           'postgres_changes',
           {
             event: 'INSERT',
             schema: 'public',
-            table: 'security_events'
+            table: 'security_events',
+            filter: 'severity=in.(critical,high)' // Only listen to critical/high events
           },
           (payload) => {
             console.log('Security event received:', payload);
@@ -169,7 +185,7 @@ const AdminDashboard = () => {
               description: `New ${payload.new.severity} security event detected`,
               variant: payload.new.severity === 'critical' ? 'destructive' : 'default'
             });
-            loadDashboardData();
+            debouncedLoadData();
           }
         )
         .on(
@@ -185,7 +201,7 @@ const AdminDashboard = () => {
               title: "New User",
               description: `${payload.new.name} has joined Business Finance Mastery`,
             });
-            loadDashboardData();
+            debouncedLoadData();
           }
         )
         .on(
@@ -203,35 +219,59 @@ const AdminDashboard = () => {
                 description: `New ${payload.new.role} role assigned`,
               });
             }
-            loadDashboardData();
+            debouncedLoadData();
           }
         )
-        .subscribe((status) => {
-          console.log('Admin dashboard realtime subscription status:', status);
+        .subscribe((status, err) => {
+          console.log('Admin dashboard realtime subscription status:', status, err);
           
-          if (status === 'SUBSCRIBED') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
-            console.log('✅ Admin dashboard realtime connection established');
-            toast({
-              title: "Live Dashboard",
-              description: "Real-time monitoring is now active",
-            });
-          } else if (status === 'CHANNEL_ERROR') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.warn(`⚠️ Admin dashboard realtime error`);
-          } else if (status === 'CLOSED') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.warn(`⚠️ Admin dashboard realtime closed`);
-          } else if (status === 'TIMED_OUT') {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-            console.warn(`⚠️ Admin dashboard realtime timed out`);
-          } else {
-            setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
-            console.log(`🔄 Admin dashboard realtime status: ${status}`);
+          switch (status) {
+            case 'SUBSCRIBED':
+              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
+              console.log('✅ Admin dashboard realtime connection established');
+              toast({
+                title: "Live Dashboard",
+                description: "Real-time monitoring is now active",
+              });
+              break;
+              
+            case 'CHANNEL_ERROR':
+            case 'CLOSED':
+              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+              console.warn(`⚠️ Admin dashboard realtime ${status.toLowerCase()}`);
+              // Attempt to reconnect after 5 seconds
+              setTimeout(() => {
+                if (user && isAdmin && !roleLoading) {
+                  console.log('🔄 Attempting to reconnect realtime...');
+                  setupRealtimeSubscriptions();
+                }
+              }, 5000);
+              break;
+              
+            case 'TIMED_OUT':
+              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+              console.warn(`⚠️ Admin dashboard realtime timed out`);
+              // Immediate reconnect for timeouts
+              setTimeout(() => {
+                if (user && isAdmin && !roleLoading) {
+                  console.log('🔄 Reconnecting after timeout...');
+                  setupRealtimeSubscriptions();
+                }
+              }, 1000);
+              break;
+              
+            default:
+              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
+              console.log(`🔄 Admin dashboard realtime status: ${status}`);
           }
         });
-        
+         
       setRealtimeChannel(channel);
+      
+      // Cleanup timeout on unmount
+      return () => {
+        clearTimeout(loadTimeout);
+      };
     };
 
     // Only setup realtime if user is authenticated and has admin role
