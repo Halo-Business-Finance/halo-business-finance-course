@@ -1221,47 +1221,49 @@ const AdminDashboard = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                     {userRoles.map((userRole) => (
-                       <TableRow key={userRole.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
-                          <TableCell className="py-4">
-                            <div className="flex flex-col">
-                              <SecurePIIDisplay 
-                                value={userRole.profiles?.name || null} 
-                                type="name" 
-                                showMaskingIndicator={true}
-                              />
-                              <span className="font-mono text-xs text-muted-foreground">
-                                {userRole.user_id.slice(0, 8)}...
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-4">
+                     {userRoles.map((userRoleItem) => (
+                        <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
+                           <TableCell className="py-4">
+                             <div className="flex flex-col">
+                               <SecurePIIDisplay 
+                                 value={userRoleItem.profiles?.name || null} 
+                                 type="name" 
+                                 showMaskingIndicator={true}
+                                 userRole={userRole}
+                               />
+                               <span className="font-mono text-xs text-muted-foreground">
+                                 {userRoleItem.user_id.slice(0, 8)}...
+                               </span>
+                             </div>
+                           </TableCell>
+                           <TableCell className="py-4">
                             <SecurePIIDisplay 
-                              value={userRole.profiles?.email || null} 
+                              value={userRoleItem.profiles?.email || null} 
                               type="email" 
                               showMaskingIndicator={true}
+                              userRole={userRole}
                             />
+                           </TableCell>
+                          <TableCell className="py-4">
+                            <Badge variant={getRoleBadgeVariant(userRoleItem.role)} className="shadow-sm">
+                              {userRoleItem.role}
+                           </Badge>
+                         </TableCell>
+                         <TableCell className="py-4">
+                            <Badge variant={userRoleItem.is_active ? "default" : "secondary"} className="shadow-sm">
+                              {userRoleItem.is_active ? "Active" : "Inactive"}
+                            </Badge>
                           </TableCell>
-                         <TableCell className="py-4">
-                           <Badge variant={getRoleBadgeVariant(userRole.role)} className="shadow-sm">
-                             {userRole.role}
-                           </Badge>
-                         </TableCell>
-                         <TableCell className="py-4">
-                           <Badge variant={userRole.is_active ? "default" : "secondary"} className="shadow-sm">
-                             {userRole.is_active ? "Active" : "Inactive"}
-                           </Badge>
-                         </TableCell>
-                         <TableCell className="py-4">
-                           {new Date(userRole.created_at).toLocaleDateString()}
+                          <TableCell className="py-4">
+                            {new Date(userRoleItem.created_at).toLocaleDateString()}
                          </TableCell>
                          <TableCell className="min-w-[300px] py-4">
                            <div className="flex flex-wrap items-center gap-2">
                              <Button
                                size="sm"
                                variant="outline"
-                               onClick={() => assignRole(userRole.user_id, 'trainee')}
-                               disabled={userRole.role === 'trainee'}
+                                onClick={() => assignRole(userRoleItem.user_id, 'trainee')}
+                                disabled={userRoleItem.role === 'trainee'}
                                title="Assign Trainee Role"
                                className="min-w-[36px] hover:shadow-sm transition-all duration-200"
                              >
@@ -1270,8 +1272,8 @@ const AdminDashboard = () => {
                              <Button
                                size="sm"
                                variant="outline"
-                               onClick={() => assignRole(userRole.user_id, 'tech_support_admin')}
-                               disabled={userRole.role === 'tech_support_admin'}
+                                onClick={() => assignRole(userRoleItem.user_id, 'tech_support_admin')}
+                                disabled={userRoleItem.role === 'tech_support_admin'}
                                title="Assign Tech Support Admin Role"
                                className="min-w-[36px] hover:shadow-sm transition-all duration-200"
                              >
@@ -1280,8 +1282,8 @@ const AdminDashboard = () => {
                              <Button
                                size="sm"
                                variant="outline"
-                               onClick={() => assignRole(userRole.user_id, 'admin')}
-                               disabled={userRole.role === 'admin'}
+                                onClick={() => assignRole(userRoleItem.user_id, 'admin')}
+                                disabled={userRoleItem.role === 'admin'}
                                title="Assign Admin Role"
                                className="min-w-[36px] hover:shadow-sm transition-all duration-200"
                              >
@@ -1290,8 +1292,8 @@ const AdminDashboard = () => {
                              <Button
                                size="sm"
                                variant="outline"
-                               onClick={() => assignRole(userRole.user_id, 'super_admin')}
-                               disabled={userRole.role === 'super_admin'}
+                                onClick={() => assignRole(userRoleItem.user_id, 'super_admin')}
+                                disabled={userRoleItem.role === 'super_admin'}
                                title="Assign Super Admin Role"
                                className="min-w-[36px] hover:shadow-sm transition-all duration-200"
                              >
@@ -1300,8 +1302,8 @@ const AdminDashboard = () => {
                              <Button
                                size="sm"
                                variant="outline"
-                               onClick={() => revokeRole(userRole.user_id)}
-                               disabled={!userRole.is_active}
+                                onClick={() => revokeRole(userRoleItem.user_id)}
+                                disabled={!userRoleItem.is_active}
                                title="Revoke Role"
                                className="min-w-[36px] hover:shadow-sm transition-all duration-200"
                              >
@@ -1312,11 +1314,11 @@ const AdminDashboard = () => {
                                  <Button
                                    size="sm"
                                    variant="outline"
-                                   disabled={userRole.user_id === user?.id || deletingUser === userRole.user_id}
-                                   title={userRole.user_id === user?.id ? "Cannot delete your own account" : "Delete User"}
+                                    disabled={userRoleItem.user_id === user?.id || deletingUser === userRoleItem.user_id}
+                                    title={userRoleItem.user_id === user?.id ? "Cannot delete your own account" : "Delete User"}
                                    className="hover:bg-destructive hover:text-destructive-foreground min-w-[36px] hover:shadow-sm transition-all duration-200"
                                  >
-                                   {deletingUser === userRole.user_id ? (
+                                   {deletingUser === userRoleItem.user_id ? (
                                      <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" />
                                    ) : (
                                      <Trash2 className="h-3 w-3" />
@@ -1330,15 +1332,15 @@ const AdminDashboard = () => {
                                     Are you sure you want to permanently delete this user? This action cannot be undone.
                                     The user will be completely removed from the system including all their data.
                                     <br /><br />
-                                    <strong>User ID:</strong> {userRole.user_id}
-                                    <br />
-                                    <strong>Role:</strong> {userRole.role}
+                                     <strong>User ID:</strong> {userRoleItem.user_id}
+                                     <br />
+                                     <strong>Role:</strong> {userRoleItem.role}
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => deleteUser(userRole.user_id)}
+                                    onClick={() => deleteUser(userRoleItem.user_id)}
                                     className="bg-destructive hover:bg-destructive/90"
                                   >
                                     Delete Permanently
