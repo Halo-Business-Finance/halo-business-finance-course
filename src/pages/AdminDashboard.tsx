@@ -138,12 +138,15 @@ const AdminDashboard = () => {
   useEffect(() => {
     loadDashboardData();
     
-    // Set up real-time subscriptions for live admin dashboard
+    // Set up real-time subscriptions for live admin dashboard with retry logic
     const setupRealtimeSubscriptions = () => {
       // Remove any existing channel first
       if (realtimeChannel) {
         supabase.removeChannel(realtimeChannel);
       }
+      
+      console.log('Setting up realtime subscriptions...');
+      setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
       
       const channel = supabase
         .channel('admin-dashboard-updates')
@@ -202,22 +205,36 @@ const AdminDashboard = () => {
           console.log('Realtime subscription status:', status);
           if (status === 'SUBSCRIBED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
+            console.log('✅ Realtime connection established successfully');
             toast({
               title: "Live Dashboard",
               description: "Real-time monitoring is now active",
             });
           } else if (status === 'CHANNEL_ERROR') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+            console.error('❌ Realtime channel error');
             toast({
               title: "Connection Error",
               description: "Real-time updates disconnected",
               variant: "destructive"
             });
+            // Retry connection after 5 seconds
+            setTimeout(() => {
+              console.log('Retrying realtime connection...');
+              setupRealtimeSubscriptions();
+            }, 5000);
           } else if (status === 'CLOSED') {
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
+            console.warn('⚠️ Realtime channel closed');
+            // Retry connection after 3 seconds
+            setTimeout(() => {
+              console.log('Reconnecting after channel close...');
+              setupRealtimeSubscriptions();
+            }, 3000);
           } else {
             // Any other status means connecting/reconnecting
             setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'reconnecting' }));
+            console.log(`🔄 Realtime status: ${status}`);
           }
         });
         
