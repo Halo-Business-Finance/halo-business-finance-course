@@ -173,7 +173,14 @@ const About = () => {
           <Card>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                <div className="p-8">
+                <div className="h-64 lg:h-auto order-first lg:order-last">
+                  <img 
+                    src={companStory} 
+                    alt="Halo Business Finance team collaboration" 
+                    className="w-full h-full object-cover rounded-lg lg:rounded-r-lg lg:rounded-l-none"
+                  />
+                </div>
+                <div className="p-8 order-last lg:order-first">
                   <p className="text-black leading-relaxed mb-6">
                     With over 15 years of experience in capital markets, SBA, and commercial lending, Halo Business Finance 
                     created the FinPilot course to address the growing need for specialized training in commercial lending. 
@@ -192,13 +199,6 @@ const About = () => {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
-                </div>
-                <div className="h-64 lg:h-auto">
-                  <img 
-                    src={companStory} 
-                    alt="Halo Business Finance team collaboration" 
-                    className="w-full h-full object-cover rounded-r-lg"
-                  />
                 </div>
               </div>
             </CardContent>
