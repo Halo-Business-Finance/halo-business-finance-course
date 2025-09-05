@@ -455,15 +455,17 @@ const AdminDashboard = () => {
       if (realtimeChannel) {
         const channelState = realtimeChannel.state;
         console.log('Channel state during status check:', channelState);
-        if (channelState === 'joined') {
+        // Supabase channel states: 'closed', 'errored', 'joined', 'joining', 'leaving'
+        // But we should also check if we have an active subscription
+        if (channelState === 'joined' || systemStatus.realTimeUpdates === 'connected') {
           newStatus.realTimeUpdates = 'connected';
         } else if (channelState === 'joining') {
           newStatus.realTimeUpdates = 'reconnecting';
-        } else if (channelState === 'closed') {
+        } else if (channelState === 'closed' || channelState === 'errored') {
           newStatus.realTimeUpdates = 'disconnected';
         } else {
-          // If channel exists but not in a known state, assume connecting
-          newStatus.realTimeUpdates = 'reconnecting';
+          // Preserve current status if channel exists and we're not sure
+          newStatus.realTimeUpdates = systemStatus.realTimeUpdates || 'reconnecting';
         }
       } else {
         newStatus.realTimeUpdates = 'disconnected';
