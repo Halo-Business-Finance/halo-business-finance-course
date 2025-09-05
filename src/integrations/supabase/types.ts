@@ -4553,6 +4553,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      is_user_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_user_super_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       log_admin_action: {
         Args: {
           p_action: string
