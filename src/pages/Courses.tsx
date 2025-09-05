@@ -344,27 +344,27 @@ const Courses = () => {
       <div className="bg-white min-h-screen">
         
         {/* Header Section */}
-        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-16 sm:py-20 md:py-16 lg:py-20">
+        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-12 sm:py-16 md:py-20">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-60"
             style={{ backgroundImage: `url(${coursesHero})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="mobile-container relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-bold mb-4 sm:mb-6 text-white">
+              <h1 className="text-responsive-3xl font-playfair font-bold mb-4 sm:mb-6 text-white">
                 Adaptive Interactive Learning Platform
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white">
+              <p className="text-responsive-xl mb-3 sm:mb-4 text-white">
                 {user ? "AI-Powered Personalized Finance Training" : "Revolutionary Adaptive Learning for Finance Professionals"}
               </p>
-              <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
+              <p className="text-responsive-sm mb-6 sm:mb-8 text-white max-w-2xl mx-auto">
                 Experience personalized learning paths with AI-driven content adaptation, interactive simulations, 
                 and real-time progress tracking. Master finance through gamified, adaptive experiences.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link to="/signup">
-                  <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold px-6 sm:px-8 py-3">
+                  <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold">
                     Start Adaptive Learning
                   </Button>
                 </Link>
@@ -374,7 +374,7 @@ const Courses = () => {
         </div>
       
       {/* Content Section with Sidebar Layout */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="mobile-container mobile-section">
       {!user && (
         <Alert className="mb-6 border-primary bg-primary/5">
           <Shield className="h-4 w-4" />

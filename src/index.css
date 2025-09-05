@@ -117,7 +117,18 @@
     --transition-spring: all 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
 
     /* Border radius following Carbon */
-    --radius: 0rem;  /* Carbon uses sharp corners by default */
+    --radius: 0.5rem;  /* Slightly rounded for better mobile UX */
+    
+    /* Mobile-optimized spacing */
+    --mobile-padding: 1rem;
+    --tablet-padding: 1.5rem;
+    --desktop-padding: 2rem;
+    
+    /* Touch-friendly sizing */
+    --touch-target-min: 44px;
+    --button-height-sm: 2.5rem;
+    --button-height-md: 3rem;
+    --button-height-lg: 3.5rem;
   }
 
   .dark {
@@ -171,9 +182,16 @@
     font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     @apply bg-background text-foreground;
     line-height: 1.5;  /* Carbon uses 1.5 line height */
-    font-size: 14px;   /* Carbon base font size */
+    font-size: 16px;   /* Better base font size for mobile */
     overflow-y: auto;
     scroll-behavior: smooth;
+  }
+  
+  /* Mobile-first responsive typography */
+  @media (max-width: 640px) {
+    body {
+      font-size: 14px;
+    }
   }
   
   
@@ -388,5 +406,68 @@
   
   .jp-space-x-professional > * + * {
     margin-left: var(--spacing-lg);
+  }
+  
+  /* Mobile-optimized utilities */
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .mobile-section {
+    @apply py-8 sm:py-12 lg:py-16;
+  }
+  
+  .mobile-grid {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  .mobile-card {
+    @apply p-4 sm:p-6;
+  }
+  
+  .mobile-button {
+    @apply px-4 py-3 text-sm font-medium;
+    min-height: var(--touch-target-min);
+  }
+  
+  .mobile-input {
+    @apply px-3 py-2 text-base;
+    min-height: var(--touch-target-min);
+  }
+  
+  /* Touch-friendly interactive elements */
+  .touch-target {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    @apply flex items-center justify-center;
+  }
+  
+  /* Responsive text sizing */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+  
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+  
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+  
+  .text-responsive-3xl {
+    @apply text-3xl sm:text-4xl lg:text-5xl;
   }
 }

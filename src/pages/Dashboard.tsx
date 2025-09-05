@@ -359,22 +359,22 @@ const Dashboard = () => {
       />
 
       {/* Main Dashboard Content */}
-      <div className="container mx-auto px-6 py-8 lg:py-12">
+      <div className="mobile-container mobile-section">
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Categories and Instructors side by side - Only show on level 0 */}
           {currentFilterLevel === 0 && (
             <div className="flex flex-col lg:flex-row gap-6 mb-8">
               {/* Course Categories Filter */}
-              <div className="lg:w-80 flex-shrink-0">
+              <div className="w-full lg:w-80 flex-shrink-0">
                 <DashboardCourseFilter
                   selectedCategory={selectedCategory}
                   onCategorySelect={setSelectedCategory}
                 />
               </div>
               
-              {/* Course Instructors Widget - Reduced width */}
-              <div className="lg:w-[40rem] flex-shrink-0">
+              {/* Course Instructors Widget - Responsive width */}
+              <div className="w-full lg:w-[40rem] flex-shrink-0">
                 <InstructorInfo />
               </div>
             </div>
@@ -389,7 +389,7 @@ const Dashboard = () => {
             
             {/* Results Summary */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-              <h3 className="text-xl underline">
+              <h3 className="text-responsive-lg underline">
                 {currentFilterLevel === 0 && "Available Course Programs"}
                 {currentFilterLevel === 1 && "2 Skill Levels Available"}
                 {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
@@ -397,7 +397,7 @@ const Dashboard = () => {
             </div>
 
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+              <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
                   <div key={i} className="animate-pulse">
                     <div className="bg-muted rounded-lg h-64" />
@@ -408,7 +408,7 @@ const Dashboard = () => {
               <>
                 {/* Level 0: Course Program Cards */}
                 {currentFilterLevel === 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {(coursesLoading && (!databaseCourses || databaseCourses.length === 0)) ? (
                       // Show loading skeletons
                       Array.from({ length: 6 }).map((_, index) => (

@@ -400,21 +400,19 @@ const AccountPage = (): JSX.Element => {
         keywords="account management, user settings, learning preferences, privacy, billing"
       />
       
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold">My Account</h1>
-            <p className="text-muted-foreground mt-1">Manage your profile and account settings</p>
-          </div>
+      <div className="mobile-container">
+        <div className="mobile-section">
+          <h1 className="text-responsive-3xl font-bold">My Account</h1>
+          <p className="text-muted-foreground mt-1 text-responsive-sm">Manage your profile and account settings</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
-            <TabsTrigger value="account">My Account</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="privacy">Privacy</TabsTrigger>
-            <TabsTrigger value="preferences">Preferences</TabsTrigger>
-            <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-1 sm:gap-0">
+            <TabsTrigger value="account" className="text-xs sm:text-sm">My Account</TabsTrigger>
+            <TabsTrigger value="notifications" className="text-xs sm:text-sm">Notifications</TabsTrigger>
+            <TabsTrigger value="privacy" className="text-xs sm:text-sm">Privacy</TabsTrigger>
+            <TabsTrigger value="preferences" className="text-xs sm:text-sm">Preferences</TabsTrigger>
+            <TabsTrigger value="billing" className="text-xs sm:text-sm">Billing</TabsTrigger>
           </TabsList>
 
           <TabsContent value="account" className="space-y-6">
