@@ -57,7 +57,6 @@ const AccountPage = (): JSX.Element => {
   } = useUserProfile();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
   const [editForm, setEditForm] = useState<any>({});
@@ -97,6 +96,27 @@ const AccountPage = (): JSX.Element => {
   // Sync local state with profile data
   useEffect(() => {
     if (profile) {
+      // Set user info for display
+      const profileData = {
+        name: profile.name || "",
+        email: profile.email || "",
+        phone: profile.phone || "",
+        location: profile.location || "",
+        city: profile.city || "",
+        state: profile.state || "",
+        joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }) : "",
+        title: profile.title || "",
+        company: profile.company || "",
+        avatar: profile.avatar_url || "/placeholder.svg"
+      };
+      
+      setUserInfo(profileData);
+      setEditForm(profileData);
+
       setPreferences({
         theme: (profile.theme as 'light' | 'dark') || 'light',
         language: profile.language || 'en',
@@ -129,110 +149,6 @@ const AccountPage = (): JSX.Element => {
     };
     root.style.setProperty('--user-font-size', fontSizeMap[preferences.fontSize] || '16px');
   }, [preferences.fontSize]);
-
-  const loadProfile = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please log in to view your profile.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // Use the new secure function instead of direct table access
-      const { data: profiles, error } = await supabase.rpc('get_user_profile');
-
-      if (error) {
-        console.error('Error loading profile:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load profile data.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // The function returns an array, get the first profile
-      const profile = profiles && profiles.length > 0 ? profiles[0] : null;
-
-      if (profile) {
-        const profileData = {
-          name: profile.name || "",
-          email: profile.email || "",
-          phone: profile.phone || "",
-          location: profile.location || "",
-          city: profile.city || "",
-          state: profile.state || "",
-          joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          }) : "",
-          title: profile.title || "",
-          company: profile.company || "",
-          avatar: profile.avatar_url || "/placeholder.svg"
-        };
-        
-        const preferencesData: UserPreferences = {
-          theme: (profile.theme as 'light' | 'dark') || 'light',
-          language: profile.language || 'en',
-          timezone: profile.timezone || 'est',
-          dateFormat: profile.date_format || 'mdy',
-          fontSize: (profile.font_size as 'small' | 'medium' | 'large') || 'medium',
-          reducedMotion: profile.reduced_motion ?? false
-        };
-
-        const notificationData: NotificationPreferences = {
-          emailNotifications: profile.email_notifications ?? true,
-          pushNotifications: profile.push_notifications ?? false,
-          marketingEmails: profile.marketing_emails ?? false,
-          courseProgress: profile.course_progress ?? true,
-          newCourses: profile.new_courses ?? true,
-          webinarReminders: profile.webinar_reminders ?? true,
-          weeklyProgress: profile.weekly_progress ?? false,
-          marketingCommunications: profile.marketing_communications ?? false
-        };
-        
-        setUserInfo(profileData);
-        setEditForm(profileData);
-        setPreferences(preferencesData);
-        setNotificationSettings(notificationData);
-      } else {
-        // Create a new profile with default values
-        const defaultProfile = {
-          name: user.user_metadata?.full_name || "",
-          email: user.email || "",
-          phone: "",
-          location: "",
-          city: "",
-          state: "",
-          joinDate: new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          }),
-          title: "",
-          company: "",
-          avatar: "/placeholder.svg"
-        };
-        setUserInfo(defaultProfile);
-        setEditForm(defaultProfile);
-      }
-    } catch (error) {
-      console.error('Error in loadProfile:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load profile data.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,7 +202,7 @@ const AccountPage = (): JSX.Element => {
       });
       
       // Reload the profile data to ensure UI consistency
-      await loadProfile();
+      // Use the hook's refetch instead of loadProfile
       
     } catch (error) {
       console.error('Error in handleEditSubmit:', error);
@@ -444,12 +360,32 @@ const AccountPage = (): JSX.Element => {
     });
   };
 
-  if (isLoading) {
+  if (profileLoading) {
     return (
       <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="text-lg">Loading profile...</div>
+            <LoadingSpinner />
+            <div className="text-lg mt-2">Loading profile...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (profileError) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="text-lg text-destructive">Failed to load profile</div>
+            <Button 
+              onClick={() => window.location.reload()} 
+              variant="outline" 
+              className="mt-4"
+            >
+              Retry
+            </Button>
           </div>
         </div>
       </div>
