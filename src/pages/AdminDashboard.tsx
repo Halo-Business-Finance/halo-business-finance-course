@@ -451,20 +451,23 @@ const AdminDashboard = () => {
         newStatus.authentication = 'inactive';
       }
 
-      // Test real-time status more accurately
+      // Test real-time status more accurately - don't override working connections
       if (realtimeChannel) {
         const channelState = realtimeChannel.state;
         console.log('Channel state during status check:', channelState);
-        // Supabase channel states: 'closed', 'errored', 'joined', 'joining', 'leaving'
-        // But we should also check if we have an active subscription
-        if (channelState === 'joined' || systemStatus.realTimeUpdates === 'connected') {
+        console.log('Current realtime status:', systemStatus.realTimeUpdates);
+        
+        // If we already have a connected status and channel exists, keep it connected
+        if (systemStatus.realTimeUpdates === 'connected' && channelState !== 'closed' && channelState !== 'errored') {
+          newStatus.realTimeUpdates = 'connected';
+        } else if (channelState === 'joined') {
           newStatus.realTimeUpdates = 'connected';
         } else if (channelState === 'joining') {
           newStatus.realTimeUpdates = 'reconnecting';
         } else if (channelState === 'closed' || channelState === 'errored') {
           newStatus.realTimeUpdates = 'disconnected';
         } else {
-          // Preserve current status if channel exists and we're not sure
+          // Don't override if we have a working connection
           newStatus.realTimeUpdates = systemStatus.realTimeUpdates || 'reconnecting';
         }
       } else {
