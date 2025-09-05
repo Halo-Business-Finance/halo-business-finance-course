@@ -58,20 +58,34 @@ export function VideoManager() {
   }, []);
 
   const loadData = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      
       // Load videos
       const { data: videosData, error: videosError } = await supabase
         .from("course_videos")
         .select("*")
-        .order("order_index");
+        .order("created_at", { ascending: false });
 
-      if (videosError) throw videosError;
-      setVideos((videosData || []).map(video => ({
-        ...video,
-        video_type: video.video_type as 'youtube' | 'url' | 'upload'
-      })));
+      if (videosError) {
+        console.error("Error loading videos:", videosError);
+        toast({
+          title: "Error",
+          description: "Failed to load videos",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log("Raw videos data:", videosData);
+
+      setVideos(videosData?.map(video => {
+        console.log("Processing video:", video.title, "tags:", video.tags, "type:", typeof video.tags);
+        return {
+          ...video,
+          video_type: video.video_type as 'youtube' | 'url' | 'upload',
+          tags: Array.isArray(video.tags) ? video.tags : (video.tags ? [video.tags] : [])
+        };
+      }) || []);
 
       // Load modules from course_content_modules
       const { data: modulesData, error: modulesError } = await supabase
@@ -80,16 +94,19 @@ export function VideoManager() {
         .eq("is_active", true)
         .order("order_index");
 
-      if (modulesError) throw modulesError;
-      setModules(modulesData || []);
+      if (modulesError) {
+        console.error("Error loading modules:", modulesError);
+        toast({
+          title: "Error",
+          description: "Failed to load modules",
+          variant: "destructive",
+        });
+        return;
+      }
 
+      setModules(modulesData || []);
     } catch (error) {
-      console.error("Error loading data:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load video data",
-        variant: "destructive",
-      });
+      console.error("Error in loadData:", error);
     } finally {
       setLoading(false);
     }
@@ -446,14 +463,14 @@ export function VideoManager() {
                         <p className="text-xs text-muted-foreground truncate">
                           {video.description}
                         </p>
-                        {video.tags && video.tags.length > 0 && (
+                        {video.tags?.length > 0 && (
                           <div className="flex gap-1 mt-1">
                             {video.tags.slice(0, 2).map(tag => (
                               <Badge key={tag} variant="outline" className="text-xs">
                                 {tag}
                               </Badge>
                             ))}
-                            {video.tags.length > 2 && (
+                            {video.tags?.length > 2 && (
                               <Badge variant="outline" className="text-xs">
                                 +{video.tags.length - 2}
                               </Badge>
