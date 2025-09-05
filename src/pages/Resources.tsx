@@ -117,13 +117,13 @@ const ResourcesPage = () => {
       </div>
 
       <Tabs defaultValue="interactive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="interactive">Interactive</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="tools">Tools</TabsTrigger>
-          <TabsTrigger value="webinars">Webinars</TabsTrigger>
-          <TabsTrigger value="market-data">Market Data</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-1 h-auto p-1">
+          <TabsTrigger value="interactive" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Interactive</TabsTrigger>
+          <TabsTrigger value="documents" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Documents</TabsTrigger>
+          <TabsTrigger value="videos" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Videos</TabsTrigger>
+          <TabsTrigger value="tools" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Tools</TabsTrigger>
+          <TabsTrigger value="webinars" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Webinars</TabsTrigger>
+          <TabsTrigger value="market-data" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Market Data</TabsTrigger>
         </TabsList>
 
         <TabsContent value="interactive" className="space-y-4">
