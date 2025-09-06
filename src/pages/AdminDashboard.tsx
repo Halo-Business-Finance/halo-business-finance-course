@@ -477,52 +477,48 @@ const AdminDashboard = () => {
   };
 
   const checkSystemStatus = async () => {
-    const newStatus: SystemStatus = {
-      database: 'online',
-      authentication: 'active', 
-      securityMonitoring: 'enabled',
-      realTimeUpdates: 'connected' // Default to connected since realtime is working
-    };
-
     try {
       // Test database connectivity using a simpler query that doesn't trigger RLS
       const { error: dbTest } = await supabase.rpc('check_current_user_admin_status');
       if (dbTest) {
         console.error('Database connectivity test failed:', dbTest);
-        newStatus.database = 'offline';
+        setSystemStatus(prev => ({ ...prev, database: 'offline' }));
+      } else {
+        setSystemStatus(prev => ({ ...prev, database: 'online' }));
       }
 
       // Test authentication
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        newStatus.authentication = 'inactive';
+        setSystemStatus(prev => ({ ...prev, authentication: 'inactive' }));
+      } else {
+        setSystemStatus(prev => ({ ...prev, authentication: 'active' }));
       }
-
-      // Don't override realtime status - let the subscription callback handle it
-      // The realtime subscription callback is the authoritative source for connection status
-      newStatus.realTimeUpdates = systemStatus.realTimeUpdates;
 
       // Check security monitoring by testing admin access
       try {
         // Use the admin status check and properly type the response
         const { data: adminCheck } = await supabase.rpc('check_current_user_admin_status');
         if (adminCheck && typeof adminCheck === 'object' && 'is_admin' in adminCheck && adminCheck.is_admin) {
-          newStatus.securityMonitoring = 'enabled';
+          setSystemStatus(prev => ({ ...prev, securityMonitoring: 'enabled' }));
         } else {
-          newStatus.securityMonitoring = 'partial';
+          setSystemStatus(prev => ({ ...prev, securityMonitoring: 'partial' }));
         }
       } catch (securityError) {
         console.warn('Security monitoring check failed:', securityError);
-        newStatus.securityMonitoring = 'disabled';
+        setSystemStatus(prev => ({ ...prev, securityMonitoring: 'disabled' }));
       }
 
     } catch (error) {
       console.error('System status check failed:', error);
-      newStatus.database = 'offline';
-      newStatus.authentication = 'error';
+      setSystemStatus(prev => ({ 
+        ...prev, 
+        database: 'offline',
+        authentication: 'error'
+      }));
     }
 
-    setSystemStatus(newStatus);
+    // Note: We don't touch realTimeUpdates here - let the subscription callback manage it
   };
 
   const assignRole = async (userId: string, role: 'admin' | 'super_admin' | 'manager' | 'agent' | 'trainee' | 'tech_support_admin' | 'loan_processor' | 'underwriter' | 'funder' | 'closer' | 'tech' | 'loan_originator') => {
