@@ -50,8 +50,8 @@ export const UserManagementWidget3D: React.FC<UserManagementWidget3DProps> = ({
       <Card className="h-full border-border/50 shadow-lg bg-gradient-to-br from-indigo-50 to-indigo-100">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg font-semibold flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-lg flex items-center justify-center">
-              <Users className="h-5 w-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Users className="h-5 w-5 text-primary" />
             </div>
             User Management
           </CardTitle>

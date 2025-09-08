@@ -63,8 +63,8 @@ export const SecurityWidget3D: React.FC<SecurityWidget3DProps> = ({ securityEven
       <Card className="h-full border-border/50 shadow-lg bg-gradient-to-br from-red-50 to-orange-50">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg font-semibold flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-lg flex items-center justify-center">
-              <Shield className="h-5 w-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Shield className="h-5 w-5 text-primary" />
             </div>
             Security Monitor
           </CardTitle>
@@ -98,8 +98,8 @@ export const SecurityWidget3D: React.FC<SecurityWidget3DProps> = ({ securityEven
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <div className={`w-8 h-8 ${getSeverityColor(event.severity)} rounded-lg flex items-center justify-center`}>
-                          <EventIcon className="h-4 w-4 text-white" />
+                        <div className="w-8 h-8 flex items-center justify-center">
+                          <EventIcon className="h-4 w-4 text-primary" />
                         </div>
                         <div className="flex flex-col">
                           <span className="text-sm font-medium">

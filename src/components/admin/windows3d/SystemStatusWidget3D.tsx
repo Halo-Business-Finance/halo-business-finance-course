@@ -83,8 +83,8 @@ export const SystemStatusWidget3D: React.FC<SystemStatusWidget3DProps> = ({ syst
       <Card className="h-full border-border/50 shadow-lg bg-gradient-to-br from-slate-50 to-slate-100">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg font-semibold flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-lg flex items-center justify-center">
-              <Activity className="h-5 w-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Activity className="h-5 w-5 text-primary" />
             </div>
             System Status
           </CardTitle>
@@ -96,8 +96,8 @@ export const SystemStatusWidget3D: React.FC<SystemStatusWidget3DProps> = ({ syst
               className="flex items-center justify-between p-3 bg-white/70 rounded-lg border border-border/30 hover:bg-white/90 transition-all duration-200 hover:scale-102"
             >
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 bg-${item.color}-500 rounded-lg flex items-center justify-center`}>
-                  <item.icon className="h-4 w-4 text-white" />
+                <div className="w-8 h-8 flex items-center justify-center">
+                  <item.icon className="h-4 w-4 text-primary" />
                 </div>
                 <span className="text-sm font-medium">{item.label}</span>
               </div>

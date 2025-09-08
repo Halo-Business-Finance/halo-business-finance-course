@@ -40,8 +40,8 @@ export const StatsWidget3D: React.FC<StatsWidget3DProps> = ({ stats }) => {
         <Card className="border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 hover:scale-105">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                <Users className="h-4 w-4 text-white" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <Users className="h-4 w-4 text-primary" />
               </div>
               Total Users
             </CardTitle>
@@ -60,8 +60,8 @@ export const StatsWidget3D: React.FC<StatsWidget3DProps> = ({ stats }) => {
         <Card className="border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100 hover:scale-105">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                <Shield className="h-4 w-4 text-white" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-primary" />
               </div>
               Active Admins
             </CardTitle>
@@ -80,8 +80,8 @@ export const StatsWidget3D: React.FC<StatsWidget3DProps> = ({ stats }) => {
         <Card className="border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-orange-50 to-orange-100 hover:scale-105">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="h-4 w-4 text-white" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <AlertTriangle className="h-4 w-4 text-primary" />
               </div>
               Security Events
             </CardTitle>
@@ -100,8 +100,8 @@ export const StatsWidget3D: React.FC<StatsWidget3DProps> = ({ stats }) => {
         <Card className="border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100 hover:scale-105">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <div className={`w-8 h-8 ${getHealthColor(stats.systemHealth)} rounded-lg flex items-center justify-center`}>
-                <Activity className="h-4 w-4 text-white" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <Activity className="h-4 w-4 text-primary" />
               </div>
               System Health
             </CardTitle>
