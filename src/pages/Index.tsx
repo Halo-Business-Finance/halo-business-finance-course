@@ -238,8 +238,8 @@ const Index = () => {
                   animationDelay: `${index * 0.1}s`
                 }}>
                   <CardHeader>
-                    <div className="w-16 h-16 bg-halo-navy rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                      <feature.icon className="h-8 w-8 text-halo-orange" />
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                      <feature.icon className="h-8 w-8 text-primary" />
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors">
                       {feature.title}
