@@ -106,7 +106,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-black/20" />
           <div className="mobile-container relative z-10">
             <div className="max-w-4xl mx-auto text-left">
-              <h1 className="text-responsive-3xl font-bold mb-4 sm:mb-6 text-white">
+              <h1 className="text-responsive-2xl font-bold mb-4 sm:mb-6 text-white">
                 Master Business Finance & Commercial Lending
               </h1>
               <p className="text-responsive-xl mb-3 sm:mb-4 text-white">
@@ -133,7 +133,7 @@ const Index = () => {
                 <img src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" alt="Professional conference room meeting discussing real estate properties and commercial lending" className="w-full h-auto rounded-xl shadow-elevated" />
               </div>
               <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
-                <h2 id="learning-paths-heading" className="text-responsive-3xl font-bold text-halo-navy">
+                <h2 id="learning-paths-heading" className="text-responsive-2xl font-bold text-halo-navy">
                   Choose Your Path to Success
                 </h2>
                 <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-sm md:text-base px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
@@ -195,7 +195,7 @@ const Index = () => {
           <div className="mobile-container">
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-8 md:mb-12">
               <div className="text-center lg:text-left space-y-4">
-                <h2 id="features-heading" className="text-responsive-3xl font-bold text-halo-navy">
+                <h2 id="features-heading" className="text-responsive-2xl font-bold text-halo-navy">
                   The #1 Course for Tomorrow's Lending Leaders
                 </h2>
                 <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange text-sm md:text-base px-3 py-1 border-0 transition-none hover:bg-white hover:text-halo-orange">
@@ -269,7 +269,7 @@ const Index = () => {
         <section className="mobile-section bg-background" aria-labelledby="testimonials-heading">
           <div className="mobile-container">
             <div className="text-center space-y-4 mb-12 md:mb-16">
-              <h2 id="testimonials-heading" className="text-responsive-3xl font-bold text-halo-navy">
+              <h2 id="testimonials-heading" className="text-responsive-2xl font-bold text-halo-navy">
                 What Our Graduates Say
               </h2>
               <Badge className="inline-flex items-center gap-2 bg-white text-halo-orange border-0">
@@ -316,7 +316,7 @@ const Index = () => {
             {/* Content - shows second on mobile/tablet */}
             <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
               <div className="space-y-4">
-                <h2 className="text-responsive-xl font-bold">
+                <h2 className="text-responsive-lg font-bold">
                   Transform Your Skills. Transform Your Career.
                 </h2>
                 <p className="text-responsive-sm opacity-90 leading-relaxed">
