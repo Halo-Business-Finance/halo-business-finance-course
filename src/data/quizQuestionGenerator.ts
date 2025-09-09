@@ -6,8 +6,6 @@ export const generateQuizQuestions = (
   moduleIndex: number,
   level: "beginner" | "expert"
 ): QuizQuestion[] => {
-  const questions: QuizQuestion[] = [];
-  
   // Create course-specific question templates
   const getQuestionsForCourse = (): QuizQuestion[] => {
     const baseQuestions: QuizQuestion[] = [];
@@ -695,10 +693,10 @@ export const generateFinalTestQuestions = (
   courseType: string,
   level: "beginner" | "expert"
 ): QuizQuestion[] => {
-  const questions = generateQuizQuestions(courseType, 99, level); // Use module 99 for unique IDs
+  const finalQuestions = generateQuizQuestions(courseType, 99, level); // Use module 99 for unique IDs
   
   // Modify questions to be more comprehensive for final test
-  return questions.map((q, index) => ({
+  return finalQuestions.map((q, index) => ({
     ...q,
     id: `final-q${index + 1}`,
     question: `[Final Test] ${q.question}`,
