@@ -176,7 +176,40 @@ export const useCourseProgress = (userId?: string, courseId?: string) => {
     if (moduleIndex === 0) return true; // First module is always unlocked
     
     const previousModule = modules[moduleIndex - 1];
-    return moduleProgress[previousModule?.id]?.completed || false;
+    
+    // Check if previous module is completed AND quiz is passed
+    const previousCompleted = moduleProgress[previousModule?.id]?.completed || false;
+    
+    return previousCompleted;
+  };
+
+  const isQuizRequired = (moduleId: string) => {
+    return true; // All modules require quiz completion
+  };
+
+  const getQuizStatus = async (moduleId: string) => {
+    if (!userId) return { completed: false, passed: false, score: 0, attempts: 0 };
+
+    try {
+      const { data, error } = await supabase
+        .from('course_progress')
+        .select('quiz_completed, quiz_score, quiz_attempts')
+        .eq('user_id', userId)
+        .eq('module_id', moduleId)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      return {
+        completed: data?.quiz_completed || false,
+        passed: (data?.quiz_score || 0) >= 70,
+        score: data?.quiz_score || 0,
+        attempts: data?.quiz_attempts || 0
+      };
+    } catch (error) {
+      console.error('Error fetching quiz status:', error);
+      return { completed: false, passed: false, score: 0, attempts: 0 };
+    }
   };
 
   useEffect(() => {
@@ -195,5 +228,7 @@ export const useCourseProgress = (userId?: string, courseId?: string) => {
     getOverallProgress,
     getCompletedModulesCount,
     isModuleUnlocked,
+    isQuizRequired,
+    getQuizStatus,
   };
 };

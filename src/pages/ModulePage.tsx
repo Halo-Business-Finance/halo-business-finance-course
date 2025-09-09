@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download } from "lucide-react";
 import { LessonModal } from "@/components/LessonModal";
 import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
+import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
@@ -478,31 +479,19 @@ const ModulePage = () => {
               </TabsContent>
 
               <TabsContent value="assessment" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Assessment Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-2">Assessment Criteria</h4>
-                      <ul className="space-y-1 text-sm text-muted-foreground">
-                        <li>• Quiz completion with 80% or higher score</li>
-                        <li>• Case study analysis submission</li>
-                        <li>• Participation in discussions</li>
-                        <li>• Completion of all lesson materials</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">Grading Scale</h4>
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        <div>90-100%: Excellent</div>
-                        <div>80-89%: Good</div>
-                        <div>70-79%: Satisfactory</div>
-                        <div>Below 70%: Needs Improvement</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ModuleQuiz
+                  moduleId={module.id}
+                  moduleTitle={module.title}
+                  courseId={module.course_id}
+                  onQuizComplete={(passed) => {
+                    if (passed) {
+                      toast({
+                        title: "🎉 Module Quiz Passed!",
+                        description: "You can now proceed to the next module in your learning path.",
+                      });
+                    }
+                  }}
+                />
               </TabsContent>
 
               <TabsContent value="discussion" className="space-y-6">

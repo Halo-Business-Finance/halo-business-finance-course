@@ -1328,6 +1328,9 @@ export type Database = {
           lesson_id: string | null
           module_id: string | null
           progress_percentage: number | null
+          quiz_attempts: number | null
+          quiz_completed: boolean | null
+          quiz_score: number | null
           updated_at: string
           user_id: string
         }
@@ -1339,6 +1342,9 @@ export type Database = {
           lesson_id?: string | null
           module_id?: string | null
           progress_percentage?: number | null
+          quiz_attempts?: number | null
+          quiz_completed?: boolean | null
+          quiz_score?: number | null
           updated_at?: string
           user_id: string
         }
@@ -1350,6 +1356,9 @@ export type Database = {
           lesson_id?: string | null
           module_id?: string | null
           progress_percentage?: number | null
+          quiz_attempts?: number | null
+          quiz_completed?: boolean | null
+          quiz_score?: number | null
           updated_at?: string
           user_id?: string
         }

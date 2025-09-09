@@ -12,10 +12,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Clock, CheckCircle, PlayCircle, Lock } from "lucide-react";
+import { Clock, CheckCircle, PlayCircle, Lock, Trophy, AlertCircle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 import type { ReactElement } from "react";
 
-type ModuleStatus = "locked" | "available" | "in-progress" | "completed";
+type ModuleStatus = "locked" | "available" | "in-progress" | "completed" | "quiz-required";
+
+interface QuizStatus {
+  completed: boolean;
+  passed: boolean;
+  score: number;
+  attempts: number;
+}
 
 interface ModuleCardProps {
   title: string;
@@ -25,6 +35,8 @@ interface ModuleCardProps {
   progress: number;
   status: ModuleStatus;
   topics?: string[];
+  moduleId?: string;
+  courseId?: string;
   onStart: () => void;
 }
 
@@ -35,7 +47,8 @@ const STATUS_ICONS: Record<ModuleStatus, ReactElement> = {
   completed: <CheckCircle className="h-5 w-5 text-accent" />,
   "in-progress": <PlayCircle className="h-5 w-5 text-primary" />,
   locked: <Lock className="h-5 w-5 text-muted-foreground" />,
-  available: <PlayCircle className="h-5 w-5 text-primary" />
+  available: <PlayCircle className="h-5 w-5 text-primary" />,
+  "quiz-required": <AlertCircle className="h-5 w-5 text-orange-600" />
 };
 
 /**
@@ -45,7 +58,8 @@ const STATUS_BADGES: Record<ModuleStatus, ReactElement> = {
   completed: <Badge variant="completed">Completed</Badge>,
   "in-progress": <Badge variant="progress">In Progress</Badge>,
   locked: <Badge variant="outline">Locked</Badge>,
-  available: <Badge variant="success">Available</Badge>
+  available: <Badge variant="success">Available</Badge>,
+  "quiz-required": <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">Quiz Required</Badge>
 };
 
 /**
@@ -55,7 +69,8 @@ const STATUS_BUTTON_TEXT: Record<ModuleStatus, string> = {
   completed: "Review Module",
   "in-progress": "Continue Learning", 
   locked: "Start Module",
-  available: "Start Module"
+  available: "Start Module",
+  "quiz-required": "Complete Quiz"
 };
 
 const ModuleCard = ({ 
@@ -66,8 +81,49 @@ const ModuleCard = ({
   progress, 
   status, 
   topics,
+  moduleId,
+  courseId,
   onStart 
 }: ModuleCardProps) => {
+  const { user } = useAuth();
+  const [quizStatus, setQuizStatus] = useState<QuizStatus>({
+    completed: false,
+    passed: false,
+    score: 0,
+    attempts: 0
+  });
+
+  useEffect(() => {
+    if (user?.id && moduleId) {
+      loadQuizStatus();
+    }
+  }, [user?.id, moduleId]);
+
+  const loadQuizStatus = async () => {
+    if (!user?.id || !moduleId) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('course_progress')
+        .select('quiz_completed, quiz_score, quiz_attempts')
+        .eq('user_id', user.id)
+        .eq('module_id', moduleId)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        setQuizStatus({
+          completed: data.quiz_completed || false,
+          passed: (data.quiz_score || 0) >= 70,
+          score: data.quiz_score || 0,
+          attempts: data.quiz_attempts || 0
+        });
+      }
+    } catch (error) {
+      console.error('Error loading quiz status:', error);
+    }
+  };
   /**
    * Gets the appropriate icon for current module status
    */
@@ -76,12 +132,42 @@ const ModuleCard = ({
   /**
    * Gets the appropriate badge for current module status
    */
-  const getStatusBadge = (): ReactElement => STATUS_BADGES[status];
+  const getStatusBadge = (): ReactElement => {
+    // Show quiz-specific badge if quiz is required but not passed
+    if (quizStatus.attempts > 0 && !quizStatus.passed) {
+      return (
+        <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300 flex items-center gap-1">
+          <AlertCircle className="h-3 w-3" />
+          Quiz: {quizStatus.score}% (Need 70%)
+        </Badge>
+      );
+    }
+    
+    // Show trophy if quiz is passed
+    if (quizStatus.passed) {
+      return (
+        <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 flex items-center gap-1">
+          <Trophy className="h-3 w-3" />
+          Quiz Passed ({quizStatus.score}%)
+        </Badge>
+      );
+    }
+    
+    return STATUS_BADGES[status];
+  };
 
   /**
    * Gets the appropriate button text for current module status
    */
-  const getButtonText = (): string => STATUS_BUTTON_TEXT[status];
+  const getButtonText = (): string => {
+    if (quizStatus.attempts > 0 && !quizStatus.passed) {
+      return "Continue Quiz";
+    }
+    if (quizStatus.passed) {
+      return "Review Module";
+    }
+    return STATUS_BUTTON_TEXT[status];
+  };
 
   /**
    * Gets the button variant based on status
@@ -148,6 +234,21 @@ const ModuleCard = ({
               <span>{progress}%</span>
             </div>
             <Progress value={progress} className="h-2" />
+          </div>
+        )}
+
+        {/* Quiz status indicator */}
+        {quizStatus.attempts > 0 && !quizStatus.passed && (
+          <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+            <div className="flex items-center gap-2 text-sm">
+              <AlertCircle className="h-4 w-4 text-orange-600" />
+              <span className="text-orange-700 font-medium">
+                Quiz Score: {quizStatus.score}% (Attempts: {quizStatus.attempts}/3)
+              </span>
+            </div>
+            <p className="text-xs text-orange-600 mt-1">
+              Complete the module quiz with 70% or higher to proceed
+            </p>
           </div>
         )}
 
