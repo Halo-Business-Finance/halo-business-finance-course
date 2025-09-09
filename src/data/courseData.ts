@@ -1,3 +1,5 @@
+import { generateQuizQuestions, generateFinalTestQuestions } from './quizQuestionGenerator';
+
 export interface LoanExample {
   title: string;
   scenario: string;
@@ -190,7 +192,7 @@ const createModules = (courseType: string, level: "beginner" | "expert"): Module
         moduleId: `${courseType.toLowerCase().replace(/\s+/g, '-')}-module-${i + 1}-${level}`,
         title: `${courseType} Module ${i + 1} Quiz`,
         description: `Test your knowledge of ${courseType} concepts`,
-        questions: sampleQuizQuestions,
+        questions: generateQuizQuestions(courseType, i + 1, level),
         passingScore,
         maxAttempts: 3,
         timeLimit: level === "beginner" ? 20 : 45
@@ -200,7 +202,7 @@ const createModules = (courseType: string, level: "beginner" | "expert"): Module
         moduleId: `${courseType.toLowerCase().replace(/\s+/g, '-')}-module-${i + 1}-${level}`,
         title: `${courseType} Final Test`,
         description: `Comprehensive ${courseType} assessment`,
-        questions: sampleFinalTestQuestions,
+        questions: generateFinalTestQuestions(courseType, level),
         passingScore,
         maxAttempts: 2,
         timeLimit: 90
