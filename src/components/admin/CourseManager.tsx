@@ -314,6 +314,39 @@ export function CourseManager({}: CourseManagerProps) {
                     <Download className="h-4 w-4 mr-2" />
                     Migrate Static Data
                   </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={async () => {
+                      const confirmUpdate = confirm("This will update all quiz questions to have 7 questions per module. Continue?");
+                      if (!confirmUpdate) return;
+                      
+                      try {
+                        toast({
+                          title: "Updating Quiz Questions",
+                          description: "Updating all quizzes to have 7 questions per module...",
+                        });
+                        
+                        // Update all quizzes with new 7-question format
+                        await runMigration();
+                        
+                        toast({
+                          title: "Success",
+                          description: "All quizzes now have 7 questions per module!",
+                        });
+                      } catch (error) {
+                        console.error('Error updating quizzes:', error);
+                        toast({
+                          title: "Error",
+                          description: "Failed to update quiz questions. Check console for details.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    disabled={loading}
+                  >
+                    <BarChart3 className="h-4 w-4 mr-2" />
+                    Update Quiz Questions (7 per module)
+                  </Button>
                   <Button onClick={handleCreate}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Course
