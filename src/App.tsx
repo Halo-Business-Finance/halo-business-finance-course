@@ -94,7 +94,7 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
     <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-background z-50 px-2 sm:px-4">
       <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
-          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[60px] sm:h-[80px] w-10 sm:w-16 flex-shrink-0" />}
+          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[60px] sm:h-[80px] w-14 sm:w-20 flex-shrink-0 text-lg" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -120,11 +120,11 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
 
         {user && (
           <div className="flex-1 flex items-center justify-center min-w-0">
-            <NavLink to="/" className="flex items-center gap-1 sm:gap-2 flex-shrink-0 min-w-0">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-primary flex items-center justify-center flex-shrink-0">
-                <span className="text-primary-foreground font-bold text-xs sm:text-sm md:text-base">FP</span>
+            <NavLink to="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-primary flex items-center justify-center flex-shrink-0">
+                <span className="text-primary-foreground font-bold text-sm sm:text-base md:text-lg">FP</span>
               </div>
-              <span className="text-sm sm:text-lg md:text-xl font-bold text-foreground truncate">FinPilot</span>
+              <span className="text-base sm:text-xl md:text-2xl font-bold text-foreground truncate">FinPilot</span>
             </NavLink>
           </div>
         )}
