@@ -219,10 +219,10 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                    <SidebarMenuButton asChild>
                      <button 
                        onClick={() => handleNavigation(item.url, true, (item as any).action)}
-                       className={`w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200`}
+                       className={`w-full flex items-center gap-4 text-black hover:bg-gray-100 hover:text-black py-4 px-4 rounded-lg transition-all duration-200 min-h-[3.5rem]`}
                      >
-                        <item.icon className="h-5 w-5 text-halo-orange" />
-                        {!collapsed && <span className="text-black text-xs font-medium">{item.title}</span>}
+                        <item.icon className="h-6 w-6 text-halo-orange flex-shrink-0" />
+                        {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
                 </SidebarMenuItem>
