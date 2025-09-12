@@ -91,10 +91,10 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
   };
 
   return (
-    <header className="sticky top-0 h-[80px] flex flex-col border-b bg-background z-50 px-2 md:px-4">
-      <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 min-h-0">
-        <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
-          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[80px] w-16 flex-shrink-0" />}
+    <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-background z-50 px-2 sm:px-4">
+      <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
+          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[60px] sm:h-[80px] w-10 sm:w-16 flex-shrink-0" />}
           
           {user && (
             <div className="hidden md:flex items-center gap-2">
@@ -119,38 +119,38 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
         </div>
 
         {user && (
-          <div className="flex-1 flex items-center justify-center">
-            <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 min-w-0">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary flex items-center justify-center flex-shrink-0">
-                <span className="text-primary-foreground font-bold text-sm md:text-base">FP</span>
+          <div className="flex-1 flex items-center justify-center min-w-0">
+            <NavLink to="/" className="flex items-center gap-1 sm:gap-2 flex-shrink-0 min-w-0">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-primary flex items-center justify-center flex-shrink-0">
+                <span className="text-primary-foreground font-bold text-xs sm:text-sm md:text-base">FP</span>
               </div>
-              <span className="text-lg md:text-xl font-bold text-foreground truncate">FinPilot</span>
+              <span className="text-sm sm:text-lg md:text-xl font-bold text-foreground truncate">FinPilot</span>
             </NavLink>
           </div>
         )}
 
         {!user && (
-          <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto">
+          <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto min-w-0">
             <div className="hidden lg:block w-full">
               <HorizontalNav />
             </div>
-            <div className="lg:hidden">
+            <div className="lg:hidden w-full">
               <MobileNav />
             </div>
           </div>
         )}
         
         {user && (
-          <div className="flex items-start gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm text-foreground text-right min-w-0 pt-1 pr-2">
+          <div className="flex items-start gap-1 sm:gap-2 text-xs text-foreground text-right flex-shrink-0 pt-1">
             <NotificationBell />
-            <div className="text-xs min-w-max">
-              <div className="hidden sm:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
+            <div className="text-xs min-w-max hidden sm:block">
+              <div className="hidden md:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 weekday: 'short', 
                 year: 'numeric', 
                 month: 'short', 
                 day: 'numeric' 
               })}</div>
-              <div className="sm:hidden whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
+              <div className="md:hidden whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
                 month: 'short', 
                 day: 'numeric' 
               })}</div>

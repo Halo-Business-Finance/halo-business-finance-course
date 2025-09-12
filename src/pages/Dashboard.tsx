@@ -364,7 +364,7 @@ const Dashboard = () => {
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Categories and Instructors side by side - Only show on level 0 */}
           {currentFilterLevel === 0 && (
-            <div className="flex flex-col lg:flex-row gap-6 mb-8">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-6 sm:mb-8">
               {/* Course Categories Filter */}
               <div className="w-full lg:w-80 flex-shrink-0">
                 <DashboardCourseFilter
@@ -388,11 +388,19 @@ const Dashboard = () => {
             )}
             
             {/* Results Summary */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-              <h3 className="text-responsive-lg underline">
-                {currentFilterLevel === 0 && "Available Course Programs"}
-                {currentFilterLevel === 1 && "2 Skill Levels Available"}
-                {currentFilterLevel === 2 && `${filteredModules.length} ${filteredModules.length === 1 ? 'Module' : 'Modules'} Found`}
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-4">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
+                {currentFilterLevel === 0 && (
+                  <span className="block sm:inline">Available Course Programs</span>
+                )}
+                {currentFilterLevel === 1 && (
+                  <span className="block sm:inline">2 Skill Levels Available</span>
+                )}
+                {currentFilterLevel === 2 && (
+                  <span className="block sm:inline">
+                    {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Found
+                  </span>
+                )}
               </h3>
             </div>
 
@@ -408,7 +416,7 @@ const Dashboard = () => {
               <>
                 {/* Level 0: Course Program Cards */}
                 {currentFilterLevel === 0 && (
-                  <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {(coursesLoading && (!databaseCourses || databaseCourses.length === 0)) ? (
                       // Show loading skeletons
                       Array.from({ length: 6 }).map((_, index) => (
@@ -551,19 +559,19 @@ const Dashboard = () => {
                   console.log('Should render Level 1:', shouldRender);
                   return shouldRender;
                 })() && (
-                  <div className="space-y-4">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Back button */}
                     <Button 
                       variant="ghost" 
                       size="sm"
                       onClick={handleReturnToDashboard}
-                      className="mb-4"
+                      className="mb-3 sm:mb-4"
                     >
                       <ArrowLeft className="h-4 w-4 mr-2" />
                       Back to Courses
                     </Button>
                     
-                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                        {['beginner', 'expert'].map((level, index) => {
                         const selectedCourse = filterNavigationPath[0];
                         const levelModules = flattenedModules.filter(m => 

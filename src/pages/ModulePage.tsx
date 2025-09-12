@@ -296,9 +296,9 @@ const ModulePage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card>
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -334,15 +334,17 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-        <Tabs defaultValue="adaptive" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="adaptive">Adaptive Learning</TabsTrigger>
-            <TabsTrigger value="lessons">Lessons</TabsTrigger>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="assessment">Assessment</TabsTrigger>
-            <TabsTrigger value="discussion">Discussion</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="adaptive" className="space-y-4 sm:space-y-6">
+          <div className="overflow-x-auto pb-2">
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-6 gap-1">
+              <TabsTrigger value="adaptive" className="text-xs sm:text-sm whitespace-nowrap">Adaptive</TabsTrigger>
+              <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
+              <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Overview</TabsTrigger>
+              <TabsTrigger value="resources" className="text-xs sm:text-sm whitespace-nowrap">Resources</TabsTrigger>
+              <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
+              <TabsTrigger value="discussion" className="text-xs sm:text-sm whitespace-nowrap">Discussion</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="adaptive" className="space-y-6">
             <AdaptiveLessonEngine
@@ -357,9 +359,9 @@ const ModulePage = () => {
                   <div className="grid gap-4">
                     {lessons.map((lesson, index) => (
                       <Card key={index} className="group hover:shadow-md transition-all duration-200">
-                        <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                               <div className={`p-2 rounded-lg ${
                                 lesson.completed ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
                               }`}>
@@ -382,16 +384,17 @@ const ModulePage = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 flex-shrink-0">
                               {lesson.completed && (
-                                <Badge variant="success" className="text-xs">
+                                <Badge variant="success" className="text-xs whitespace-nowrap">
                                   <CheckCircle className="h-3 w-3 mr-1" />
-                                  Completed
+                                  <span className="hidden sm:inline">Completed</span>
+                                  <span className="sm:hidden">Done</span>
                                 </Badge>
                               )}
                               <Button
                                 size="sm"
-                                className="h-8 px-4"
+                                className="h-8 px-3 sm:px-4 text-xs sm:text-sm whitespace-nowrap"
                                 onClick={() => handleLessonStart(lesson)}
                               >
                                 <Play className="h-3 w-3 mr-1" />
@@ -512,26 +515,26 @@ const ModulePage = () => {
             </Tabs>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Module Stats</CardTitle>
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="text-base sm:text-lg">Module Stats</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Duration</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Duration</span>
                   <span className="text-sm font-medium">{module.duration || '45 minutes'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Lessons</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Lessons</span>
                   <span className="text-sm font-medium">{module.lessons_count || 6}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Skill Level</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Skill Level</span>
                   <span className="text-sm font-medium">{module.skill_level || 'Beginner'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Status</span>
                   <Badge variant="outline" className="text-xs">
                     Available
                   </Badge>

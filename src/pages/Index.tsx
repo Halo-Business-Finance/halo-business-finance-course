@@ -146,7 +146,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="mobile-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {learningPaths.map((path, index) => (
                 <Card key={index} className="relative border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated group">
                   <CardHeader className="space-y-4">
@@ -212,7 +212,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {[{
                 icon: BookOpen,
                 title: "Expert Curriculum",
@@ -278,7 +278,7 @@ const Index = () => {
               </Badge>
             </div>
 
-            <div className="mobile-grid grid-cols-1 lg:grid-cols-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {testimonials.map((testimonial, index) => (
                 <Card key={index} className="border-2 hover:border-primary/20 transition-all duration-300 hover:shadow-elevated">
                   <CardContent className="space-y-4">
