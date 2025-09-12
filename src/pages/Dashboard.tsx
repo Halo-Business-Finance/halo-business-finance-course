@@ -450,7 +450,7 @@ const Dashboard = () => {
                                   <div className="flex-1 space-y-3">
                                     <div className="flex items-center gap-3">
                                       <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                                        <BookOpen className="h-5 w-5 text-primary" />
+                                        <BookOpen className="h-5 w-5 text-navy-900" />
                                       </div>
                                       <Badge variant="secondary" className="px-3 py-1 bg-accent/10 text-accent-foreground border-accent/20">
                                         Course Program
@@ -471,11 +471,11 @@ const Dashboard = () => {
                                 <div className="space-y-4 pt-2">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 text-sm">
-                                      <Clock className="h-4 w-4 text-primary" />
+                                      <Clock className="h-4 w-4 text-navy-900" />
                                       <span className="text-primary font-medium">{getCourseDetails(courseName).duration}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      <Target className="h-4 w-4" />
+                                      <Target className="h-4 w-4 text-navy-900" />
                                       <span>{courseModules.length} modules</span>
                                     </div>
                                   </div>
@@ -534,7 +534,7 @@ const Dashboard = () => {
                                 >
                                   <span className="flex items-center gap-2">
                                     Start Course
-                                    <Target className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                                    <Target className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
                                   </span>
                                 </Button>
                               </CardContent>
@@ -567,7 +567,7 @@ const Dashboard = () => {
                       onClick={handleReturnToDashboard}
                       className="mb-3 sm:mb-4"
                     >
-                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      <ArrowLeft className="h-4 w-4 mr-2 text-navy-900" />
                       Back to Courses
                     </Button>
                     
@@ -603,7 +603,7 @@ const Dashboard = () => {
                               </div>
                               <div className="absolute bottom-4 right-4">
                                 <div className="p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
-                                  <Zap className="h-5 w-5 text-primary" />
+                                  <Zap className="h-5 w-5 text-navy-900" />
                                 </div>
                               </div>
                             </div>
@@ -624,12 +624,12 @@ const Dashboard = () => {
                               <div className="flex items-center justify-between pt-2">
                                 <div className="flex items-center gap-2 text-sm">
                                   <div className="p-1.5 rounded-md bg-primary/10">
-                                    <BookOpen className="h-4 w-4 text-primary" />
+                                    <BookOpen className="h-4 w-4 text-navy-900" />
                                   </div>
                                   <span className="text-primary font-medium">{levelModules.length} modules</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                  <Clock className="h-4 w-4" />
+                                  <Clock className="h-4 w-4 text-navy-900" />
                                   <span className="font-medium">{levelModules.length * 30} min</span>
                                 </div>
                               </div>
@@ -649,7 +649,7 @@ const Dashboard = () => {
                               >
                                 <span className="flex items-center gap-2">
                                   Proceed to Modules
-                                  <Brain className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                                  <Brain className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
                                 </span>
                               </Button>
                             </CardContent>

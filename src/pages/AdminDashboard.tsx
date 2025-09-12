@@ -803,7 +803,7 @@ const AdminDashboard = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center animate-pulse">
-            <Shield className="h-6 w-6 text-white" />
+            <Shield className="h-6 w-6 text-navy-900" />
           </div>
           <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
           <p className="text-muted-foreground">Loading admin dashboard...</p>
@@ -819,7 +819,7 @@ const AdminDashboard = () => {
         <Card className="max-w-md shadow-elegant border-border/50">
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-destructive" />
+              <Shield className="h-8 w-8 text-navy-900" />
             </div>
             <CardTitle className="text-destructive">Access Denied</CardTitle>
             <CardDescription>
@@ -843,7 +843,7 @@ const AdminDashboard = () => {
         <Card className="max-w-md shadow-elegant border-border/50">
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-              <AlertTriangle className="h-8 w-8 text-destructive" />
+              <AlertTriangle className="h-8 w-8 text-navy-900" />
             </div>
             <CardTitle className="text-destructive">Database Access Issue</CardTitle>
             <CardDescription>
@@ -876,7 +876,7 @@ const AdminDashboard = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-glow">
-                  <Shield className="h-8 w-8 text-white" />
+                  <Shield className="h-8 w-8 text-navy-900" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
@@ -888,7 +888,7 @@ const AdminDashboard = () => {
                   <div className="mt-3">
                     <Badge variant="outline" className="flex items-center gap-3 px-6 py-3 bg-card/50 backdrop-blur-sm border-primary/20 text-base">
                       <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
-                      <Activity className="h-5 w-5" />
+                      <Activity className="h-5 w-5 text-navy-900" />
                       Live Monitoring
                     </Badge>
                   </div>
@@ -909,13 +909,13 @@ const AdminDashboard = () => {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Total Users</CardTitle>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Users className="h-6 w-6 text-primary" />
+                  <Users className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground mb-2">{stats.totalUsers}</div>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-accent" />
+                  <TrendingUp className="h-4 w-4 text-navy-900" />
                   <p className="text-sm text-accent font-semibold">+12% from last month</p>
                 </div>
               </CardContent>
@@ -926,7 +926,7 @@ const AdminDashboard = () => {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Active Admins</CardTitle>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Shield className="h-6 w-6 text-primary" />
+                  <Shield className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
@@ -940,7 +940,7 @@ const AdminDashboard = () => {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Security Events</CardTitle>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <AlertTriangle className="h-6 w-6 text-primary" />
+                  <AlertTriangle className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
@@ -954,7 +954,7 @@ const AdminDashboard = () => {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">System Health</CardTitle>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Activity className="h-6 w-6 text-primary" />
+                  <Activity className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
@@ -976,31 +976,31 @@ const AdminDashboard = () => {
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-3 border border-border/20 shadow-sm">
             <TabsList className="grid w-full grid-cols-7 bg-transparent gap-2">
               <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Activity className="h-4 w-4" />
+                <Activity className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Overview</span>
               </TabsTrigger>
               <TabsTrigger value="users" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Users className="h-4 w-4" />
+                <Users className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Users</span>
               </TabsTrigger>
               <TabsTrigger value="security" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Shield className="h-4 w-4" />
+                <Shield className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Security</span>
               </TabsTrigger>
               <TabsTrigger value="trainee-progress" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <TrendingUp className="h-4 w-4" />
+                <TrendingUp className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Progress</span>
               </TabsTrigger>
               <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <BookOpen className="h-4 w-4" />
+                <BookOpen className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Courses</span>
               </TabsTrigger>
               <TabsTrigger value="videos" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Video className="h-4 w-4" />
+                <Video className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Videos</span>
               </TabsTrigger>
               <TabsTrigger value="cms" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <FileText className="h-4 w-4" />
+                <FileText className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">CMS</span>
               </TabsTrigger>
             </TabsList>
@@ -1024,7 +1024,7 @@ const AdminDashboard = () => {
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-lg">
                       <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Database className="h-5 w-5 text-white" />
+                        <Database className="h-5 w-5 text-navy-900" />
                       </div>
                       Recent Activity
                     </CardTitle>
@@ -1042,7 +1042,7 @@ const AdminDashboard = () => {
                       {securityEvents.length === 0 && (
                         <div className="text-center py-6">
                           <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-2">
-                            <Activity className="h-6 w-6 text-muted-foreground" />
+                            <Activity className="h-6 w-6 text-navy-900" />
                           </div>
                           <p className="text-sm text-muted-foreground">No recent security events</p>
                         </div>
@@ -1055,7 +1055,7 @@ const AdminDashboard = () => {
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-lg">
                       <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Users className="h-5 w-5 text-white" />
+                        <Users className="h-5 w-5 text-navy-900" />
                       </div>
                       User Distribution
                     </CardTitle>
@@ -1081,7 +1081,7 @@ const AdminDashboard = () => {
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-lg">
                       <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Settings className="h-5 w-5 text-white" />
+                        <Settings className="h-5 w-5 text-navy-900" />
                       </div>
                       System Status
                     </CardTitle>
@@ -1150,7 +1150,7 @@ const AdminDashboard = () => {
                   <div>
                     <CardTitle className="flex items-center gap-3 text-xl">
                       <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Users className="h-5 w-5 text-white" />
+                        <Users className="h-5 w-5 text-navy-900" />
                       </div>
                       User Management
                     </CardTitle>
