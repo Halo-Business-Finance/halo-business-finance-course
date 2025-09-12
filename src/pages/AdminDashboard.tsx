@@ -135,10 +135,27 @@ const AdminDashboard = () => {
   const [hasAccessError, setHasAccessError] = useState(false);
 
   useEffect(() => {
-    loadDashboardData();
+    // Prevent loading if role is still loading or if user doesn't have admin access
+    if (roleLoading || !user) {
+      return;
+    }
+
+    // Only load dashboard data if user is confirmed admin
+    if (isAdmin) {
+      loadDashboardData();
+    } else {
+      // If not admin, set loading to false and don't attempt to load admin data
+      setLoading(false);
+      setHasAccessError(true);
+      return;
+    }
     
-    // Set up real-time subscriptions for live admin dashboard
+    // Set up real-time subscriptions for live admin dashboard (only for confirmed admins)
     const setupRealtimeSubscriptions = () => {
+      if (!isAdmin || roleLoading) {
+        return;
+      }
+
       // Remove any existing channel first
       if (realtimeChannel) {
         console.log('Removing existing realtime channel');
@@ -157,8 +174,10 @@ const AdminDashboard = () => {
       const debouncedLoadData = () => {
         clearTimeout(loadTimeout);
         loadTimeout = setTimeout(() => {
-          loadDashboardData();
-        }, 1000); // Wait 1 second before loading data
+          if (isAdmin && !roleLoading) {
+            loadDashboardData();
+          }
+        }, 2000); // Wait 2 seconds before loading data
       };
       
       // Use a simple channel name with better error handling
@@ -188,40 +207,6 @@ const AdminDashboard = () => {
             debouncedLoadData();
           }
         )
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'profiles'
-          },
-          (payload) => {
-            console.log('Profile event received:', payload);
-            toast({
-              title: "New User",
-              description: `${payload.new.name} has joined Business Finance Mastery`,
-            });
-            debouncedLoadData();
-          }
-        )
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'user_roles'
-          },
-          (payload) => {
-            console.log('User role event received:', payload);
-            if (payload.eventType === 'INSERT') {
-              toast({
-                title: "Role Assigned",
-                description: `New ${payload.new.role} role assigned`,
-              });
-            }
-            debouncedLoadData();
-          }
-        )
         .subscribe((status, err) => {
           console.log('Admin dashboard realtime subscription status:', status, err);
           
@@ -229,45 +214,19 @@ const AdminDashboard = () => {
             case 'SUBSCRIBED':
               setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
               console.log('✅ Admin dashboard realtime connection established');
-              toast({
-                title: "Live Dashboard",
-                description: "Real-time monitoring is now active",
-              });
               break;
               
             case 'CHANNEL_ERROR':
             case 'CLOSED':
               setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
               console.warn(`⚠️ Admin dashboard realtime ${status.toLowerCase()}`);
-              // Attempt to reconnect after 5 seconds
-              setTimeout(() => {
-                if (user && isAdmin && !roleLoading) {
-                  console.log('🔄 Attempting to reconnect realtime...');
-                  setupRealtimeSubscriptions();
-                }
-              }, 5000);
-              break;
-              
-            case 'TIMED_OUT':
-              setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-              console.warn(`⚠️ Admin dashboard realtime timed out`);
-              // Immediate reconnect for timeouts
-              setTimeout(() => {
-                if (user && isAdmin && !roleLoading) {
-                  console.log('🔄 Reconnecting after timeout...');
-                  setupRealtimeSubscriptions();
-                }
-              }, 1000);
               break;
               
             default:
-              // For unknown statuses, assume connected if successfully subscribed and no error
               if (!err && status !== 'CHANNEL_ERROR' && status !== 'CLOSED') {
                 setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'connected' }));
-                console.log(`✅ Admin dashboard realtime status: ${status} (connected)`);
               } else {
                 setSystemStatus(prev => ({ ...prev, realTimeUpdates: 'disconnected' }));
-                console.warn(`⚠️ Admin dashboard realtime error:`, status, err);
               }
           }
         });
@@ -280,8 +239,8 @@ const AdminDashboard = () => {
       };
     };
 
-    // Only setup realtime if user is authenticated and has admin role
-    if (user && isAdmin && !roleLoading) {
+    // Only setup realtime if user is confirmed admin
+    if (isAdmin) {
       setupRealtimeSubscriptions();
     }
     

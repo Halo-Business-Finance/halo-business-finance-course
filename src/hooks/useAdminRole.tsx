@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -7,6 +7,13 @@ export const useAdminRole = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
+  
+  // Circuit breaker to prevent infinite loops
+  const failureCount = useRef(0);
+  const lastFailureTime = useRef(0);
+  const isChecking = useRef(false);
+  const MAX_FAILURES = 3;
+  const FAILURE_TIMEOUT = 60000; // 1 minute
 
   useEffect(() => {
     const checkAdminRole = async () => {
@@ -17,46 +24,54 @@ export const useAdminRole = () => {
         return;
       }
 
+      // Prevent concurrent checks
+      if (isChecking.current) {
+        return;
+      }
+
+      // Circuit breaker: if too many failures, wait before retrying
+      const now = Date.now();
+      if (failureCount.current >= MAX_FAILURES && now - lastFailureTime.current < FAILURE_TIMEOUT) {
+        console.warn('Circuit breaker active - too many admin role check failures, waiting...');
+        setIsAdmin(false);
+        setUserRole(null);
+        setIsLoading(false);
+        return;
+      }
+
+      // Reset failure count if timeout has passed
+      if (now - lastFailureTime.current >= FAILURE_TIMEOUT) {
+        failureCount.current = 0;
+      }
+
+      isChecking.current = true;
+
       try {
-        // Use the secure function to check admin status
-        const { data: statusData, error } = await supabase.rpc('check_current_user_admin_status');
+        // Use a simple timeout to prevent hanging calls
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Admin role check timeout')), 5000)
+        );
+
+        const adminCheckPromise = supabase.rpc('check_current_user_admin_status');
+        
+        const { data: statusData, error } = await Promise.race([
+          adminCheckPromise,
+          timeoutPromise
+        ]) as any;
 
         if (error) {
           console.error('Error checking role status:', error);
+          failureCount.current++;
+          lastFailureTime.current = now;
           
-          // Log security event for failed admin status check
-          try {
-            await supabase.rpc('log_client_security_event', {
-              event_type: 'admin_status_check_failed',
-              event_severity: 'medium',
-              event_details: {
-                error_message: error.message,
-                error_code: error.code,
-                user_id: user.id
-              }
-            });
-          } catch (logError) {
-            console.error('Failed to log security event:', logError);
-          }
-
-          // Fallback to basic role check
-          try {
-            const { data: fallbackData, error: fallbackError } = await supabase.rpc('get_user_role');
-            if (!fallbackError && fallbackData) {
-              const isAdminRole = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
-              setIsAdmin(isAdminRole);
-              setUserRole(isAdminRole ? fallbackData : null);
-            } else {
-              setIsAdmin(false);
-              setUserRole(null);
-            }
-          } catch (fallbackError) {
-            console.error('Fallback role check failed:', fallbackError);
-            setIsAdmin(false);
-            setUserRole(null);
-          }
+          // Set default non-admin state to prevent redirect loops
+          setIsAdmin(false);
+          setUserRole('trainee');
         } else {
-          // Type the response properly - the function now returns a simpler structure
+          // Reset failure count on success
+          failureCount.current = 0;
+          
+          // Type the response properly
           const status = statusData as {
             is_admin: boolean;
             role: string;
@@ -65,43 +80,33 @@ export const useAdminRole = () => {
           };
           
           const isAdminUser = status?.is_admin || false;
-          const primaryRole = status?.role || null;
+          const primaryRole = status?.role || 'trainee';
           
           setIsAdmin(isAdminUser);
           setUserRole(primaryRole);
           
           console.log('useAdminRole - Status check results:', {
             isAdminUser,
-            primaryRole,
-            rawStatus: status
+            primaryRole
           });
         }
       } catch (error) {
         console.error('Error in checkAdminRole:', error);
+        failureCount.current++;
+        lastFailureTime.current = now;
         
-        // Log critical security event for unexpected errors
-        try {
-          await supabase.rpc('log_client_security_event', {
-            event_type: 'admin_role_check_critical_error',
-            event_severity: 'high',
-            event_details: {
-              error_message: error instanceof Error ? error.message : 'Unknown error',
-              user_id: user.id,
-              stack_trace: error instanceof Error ? error.stack : undefined
-            }
-          });
-        } catch (logError) {
-          console.error('Failed to log critical security event:', logError);
-        }
-
+        // Set safe defaults to prevent infinite loops
         setIsAdmin(false);
-        setUserRole(null);
+        setUserRole('trainee');
       } finally {
         setIsLoading(false);
+        isChecking.current = false;
       }
     };
 
-    checkAdminRole();
+    // Debounce the check to prevent rapid successive calls
+    const timeoutId = setTimeout(checkAdminRole, 100);
+    return () => clearTimeout(timeoutId);
   }, [user]);
 
   return { 
