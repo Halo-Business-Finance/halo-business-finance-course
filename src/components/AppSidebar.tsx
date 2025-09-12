@@ -165,9 +165,9 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
         );
       case "locked":
         return (
-          <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1 hover:opacity-80 transition-opacity">
-            <Lock size={12} className="text-halo-orange animate-pulse" />
-          </Badge>
+                          <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1 hover:opacity-80 transition-opacity">
+                            <Lock size={12} className="text-navy-900 animate-pulse" />
+                          </Badge>
         );
       default:
         return (
@@ -202,7 +202,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                   className="flex items-center gap-1 text-sidebar-foreground hover:bg-sidebar-accent px-2 py-1 disabled:opacity-50 transition-all duration-240"
                   title="Sign Out"
                 >
-                  <LogOut className="h-4 w-4 text-primary" />
+                  <LogOut className="h-4 w-4 text-navy-900" />
                   {!collapsed && <span className="text-xs text-sidebar-foreground">{isLoading ? "..." : "Sign Out"}</span>}
                 </button>
               </div>
@@ -219,9 +219,9 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                    <SidebarMenuButton asChild>
                      <button 
                        onClick={() => handleNavigation(item.url, true, (item as any).action)}
-                       className={`w-full flex items-center gap-4 text-black hover:bg-gray-100 hover:text-black py-2 px-4 rounded-lg transition-all duration-200 min-h-[2.75rem]`}
+                       className={`w-full flex items-center gap-4 text-black hover:text-black py-2 px-4 rounded-lg transition-all duration-200 min-h-[2.75rem]`}
                      >
-                        <item.icon className={`${item.title === 'Dashboard' ? 'h-9 w-9' : 'h-8 w-8'} text-halo-orange flex-shrink-0`} />
+                        <item.icon className={`${item.title === 'Dashboard' ? 'h-9 w-9' : 'h-8 w-8'} text-navy-900 flex-shrink-0`} />
                         {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
@@ -271,7 +271,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                            <div className="relative z-10 flex items-center w-full gap-4">
                               {/* Status Indicator */}
                               <div className="relative flex-shrink-0">
-                                  <div className="w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold bg-halo-orange text-white shadow-md transition-all duration-300 ease-out">
+                                  <div className="w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold bg-navy-900 text-white shadow-md transition-all duration-300 ease-out">
                                    {isModuleLocked ? (
                                      <Lock size={12} className="text-white" />
                                    ) : (
@@ -346,9 +346,9 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                     <SidebarMenuButton asChild>
                        <button 
                          onClick={handleSignIn}
-                         className="w-full flex items-center gap-3 text-black hover:bg-gray-100 hover:text-black p-3 rounded-lg transition-all duration-200"
+                         className="w-full flex items-center gap-3 text-black hover:text-black py-2 px-4 rounded-lg transition-all duration-200"
                        >
-                          <LogIn className="h-5 w-5 text-halo-orange" />
+                          <LogIn className="h-5 w-5 text-navy-900" />
                           {!collapsed && <span className="text-black text-xs font-medium">Sign In</span>}
                        </button>
                      </SidebarMenuButton>
