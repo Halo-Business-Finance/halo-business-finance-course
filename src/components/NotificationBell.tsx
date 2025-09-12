@@ -235,14 +235,14 @@ export const NotificationBell = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="relative text-black hover:bg-black/10 p-2 h-12 w-12"
+          className="relative text-black hover:bg-black/10 p-2 h-14 w-14"
           title="Notifications"
         >
-          <Bell className="h-7 w-7 text-amber-500" fill="currentColor" />
+          <Bell className="h-8 w-8 text-amber-500" fill="currentColor" />
           {unreadCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute -top-1 -right-1 h-6 w-6 p-0 flex items-center justify-center text-xs min-w-[22px]"
+              className="absolute -top-1 -right-1 h-7 w-7 p-0 flex items-center justify-center text-sm min-w-[24px]"
             >
               {unreadCount > 99 ? '99+' : unreadCount}
             </Badge>
