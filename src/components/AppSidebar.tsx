@@ -221,7 +221,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
                        onClick={() => handleNavigation(item.url, true, (item as any).action)}
                        className={`w-full flex items-center gap-4 text-black hover:bg-gray-100 hover:text-black py-4 px-4 rounded-lg transition-all duration-200 min-h-[3.5rem]`}
                      >
-                        <item.icon className="h-8 w-8 text-halo-orange flex-shrink-0" />
+                        <item.icon className={`${item.title === 'Dashboard' ? 'h-9 w-9' : 'h-8 w-8'} text-halo-orange flex-shrink-0`} />
                         {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
