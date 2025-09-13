@@ -1,16 +1,18 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { VideoPlayer } from "@/components/VideoPlayer";
-import { EnhancedQuiz } from "@/components/EnhancedQuiz";
-import { InteractiveCalculator, InteractiveDragDrop, InteractiveScenario, InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
-import { CheckCircle, Play, FileText, BookOpen, Users2, X, Zap, StickyNote } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckCircle, X, StickyNote, ArrowLeft, ArrowRight } from "lucide-react";
 import { useNotes } from "@/contexts/NotesContext";
 import { useToast } from "@/hooks/use-toast";
+import { useLessonProgress } from "@/hooks/useLessonProgress";
+import { LessonOverview } from "@/components/lessons/LessonOverview";
+import { EnhancedVideoSection } from "@/components/lessons/EnhancedVideoSection";
+import { CorporateContentDisplay } from "@/components/lessons/CorporateContentDisplay";
+import { ProfessionalAssessment } from "@/components/lessons/ProfessionalAssessment";
 
 interface LessonModalProps {
   isOpen: boolean;
@@ -27,13 +29,31 @@ interface LessonModalProps {
 }
 
 export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle, moduleId }: LessonModalProps) => {
-  const [progress, setProgress] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
   const { toast } = useToast();
   const { setIsNotesModalOpen, setCurrentContext, getNotesByLesson } = useNotes();
+  const { 
+    currentStep, 
+    steps, 
+    loading, 
+    completeStep, 
+    goToStep, 
+    completeLesson,
+    getProgressStats 
+  } = useLessonProgress(lesson.id, moduleId || 'default');
+  
+  const [activeTab, setActiveTab] = useState("overview");
 
   // Get lesson-specific notes count
   const lessonNotesCount = moduleId ? getNotesByLesson(moduleId, lesson.id).length : 0;
+  const progressStats = getProgressStats();
+
+  // Set tab based on current step
+  useEffect(() => {
+    const stepNames = ['overview', 'video', 'content', 'assessment', 'summary'];
+    if (currentStep < stepNames.length) {
+      setActiveTab(stepNames[currentStep]);
+    }
+  }, [currentStep]);
 
   const handleTakeNotes = () => {
     if (moduleId) {
@@ -42,27 +62,28 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle, moduleId }: 
     }
   };
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "video": return <Play className="h-4 w-4" />;
-      case "reading": return <FileText className="h-4 w-4" />;
-      case "assignment": return <BookOpen className="h-4 w-4" />;
-      case "quiz": return <Users2 className="h-4 w-4" />;
-      case "interactive": return <Zap className="h-4 w-4" />;
-      default: return <Play className="h-4 w-4" />;
+  const handleComplete = async () => {
+    const success = await completeLesson();
+    if (success) {
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     }
   };
 
-  const handleComplete = () => {
-    setProgress(100);
-    toast({
-      title: "🎉 Lesson Completed!",
-      description: `You've completed "${lesson.title}"`,
-      variant: "default",
-    });
-    setTimeout(() => {
-      onClose();
-    }, 2000);
+  const handleStepComplete = (stepName: string) => {
+    const stepIndex = steps.findIndex(step => step.type === stepName);
+    if (stepIndex !== -1) {
+      completeStep(stepIndex);
+    }
+  };
+
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue);
+    const stepIndex = steps.findIndex(step => step.type === tabValue);
+    if (stepIndex !== -1) {
+      goToStep(stepIndex);
+    }
   };
 
   const getTopicSpecificContent = (title: string, type: string) => {
@@ -154,383 +175,193 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle, moduleId }: 
     };
   };
 
-  const renderLessonContent = () => {
-    const content = getTopicSpecificContent(lesson.title, lesson.type);
-    
-    switch (lesson.type) {
-      case "video":
-        return (
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Play className="h-5 w-5 text-primary" />
-                  {lesson.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="prose prose-sm max-w-none">
-                  <p className="text-base leading-relaxed">{content.description}</p>
-                  
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-                    <h3 className="text-lg font-semibold text-blue-800 mb-3">📚 Learning Objectives</h3>
-                    <ul className="space-y-2">
-                      {content.objectives.map((objective, index) => (
-                        <li key={index} className="flex items-start gap-2 text-blue-700">
-                          <CheckCircle className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
-                          {objective}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
-                    <h3 className="text-lg font-semibold text-green-800 mb-3">🎯 Key Learning Points</h3>
-                    <ul className="space-y-2">
-                      {content.keyPoints.map((point, index) => (
-                        <li key={index} className="flex items-start gap-2 text-green-700">
-                          <Badge variant="outline" className="text-xs px-2 py-1 border-green-300 bg-green-100 text-green-800">
-                            {index + 1}
-                          </Badge>
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  {content.scenario && (
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
-                      <h3 className="text-lg font-semibold text-purple-800 mb-3">💼 Case Study: {content.scenario.title}</h3>
-                      <p className="text-purple-700 mb-3">{content.scenario.description}</p>
-                      <ul className="space-y-1">
-                        {content.scenario.details.map((detail, index) => (
-                          <li key={index} className="text-sm text-purple-600 flex items-center gap-2">
-                            <div className="w-1 h-1 bg-purple-400 rounded-full" />
-                            {detail}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200">
-                    <h4 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
-                      💡 Key Takeaways
-                    </h4>
-                    <p className="text-amber-700 text-sm">
-                      Take detailed notes as you progress through this lesson. The concepts covered here will be essential for your practical application and upcoming assessments.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button onClick={handleComplete} className="flex-1">
-                    Complete Lesson
-                  </Button>
-                  <Button variant="outline" onClick={handleTakeNotes} className="px-6 flex items-center gap-2">
-                    <StickyNote className="h-4 w-4" />
-                    Notes {lessonNotesCount > 0 && `(${lessonNotesCount})`}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+  if (loading) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto">
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
-        );
-      
-      case "reading":
-        return (
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  Reading: {lesson.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="prose prose-sm max-w-none">
-                  <div className="bg-gradient-to-r from-slate-50 to-gray-50 p-4 rounded-lg border border-slate-200 mb-6">
-                    <p className="text-base leading-relaxed text-slate-700">{content.description}</p>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                      <h3 className="text-lg font-semibold text-blue-800 mb-3">📖 What You'll Learn</h3>
-                      <ul className="space-y-2">
-                        {content.objectives.slice(0, 2).map((objective, index) => (
-                          <li key={index} className="text-sm text-blue-700 flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
-                            {objective}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
-                      <h3 className="text-lg font-semibold text-emerald-800 mb-3">🎯 Key Concepts</h3>
-                      <ul className="space-y-2">
-                        {content.keyPoints.slice(0, 2).map((point, index) => (
-                          <li key={index} className="text-sm text-emerald-700 flex items-start gap-2">
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0" />
-                            {point}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg border border-indigo-200">
-                    <h3 className="text-lg font-semibold text-indigo-800 mb-4">📚 Detailed Reading Content</h3>
-                    <div className="space-y-4 text-indigo-700">
-                      <p>This comprehensive reading material provides in-depth coverage of {lesson.title.toLowerCase()}. The content is structured to build your understanding progressively, starting with fundamental concepts and advancing to practical applications.</p>
-                      
-                      <div className="grid gap-3">
-                        <div className="flex items-start gap-3">
-                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300">Section 1</Badge>
-                          <span className="text-sm">Introduction and Core Principles</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300">Section 2</Badge>
-                          <span className="text-sm">Practical Applications and Examples</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300">Section 3</Badge>
-                          <span className="text-sm">Industry Best Practices and Compliance</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300">Section 4</Badge>
-                          <span className="text-sm">Case Studies and Real-World Scenarios</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                    <h4 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
-                      ⏱️ Study Tip
-                    </h4>
-                    <p className="text-amber-700 text-sm">
-                      Take your time to review this material thoroughly. Consider taking notes on key concepts as you read, and don't hesitate to revisit sections that seem challenging.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button onClick={handleComplete} className="flex-1">
-                    Mark as Read
-                  </Button>
-                  <Button variant="outline" onClick={handleTakeNotes} className="px-6 flex items-center gap-2">
-                    <StickyNote className="h-4 w-4" />
-                    Notes {lessonNotesCount > 0 && `(${lessonNotesCount})`}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      
-      case "assignment":
-        return (
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  Assignment: {lesson.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="prose prose-sm max-w-none">
-                  <div className="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg border border-orange-200 mb-6">
-                    <h3 className="text-lg font-semibold text-orange-800 mb-2">📋 Assignment Overview</h3>
-                    <p className="text-orange-700">
-                      Apply your knowledge of {lesson.title.toLowerCase()} by analyzing a real-world scenario and providing professional recommendations.
-                    </p>
-                  </div>
-                  
-                  {content.scenario ? (
-                    <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                      <h4 className="text-lg font-semibold text-slate-800 mb-4">🏢 Client Scenario: {content.scenario.title}</h4>
-                      <p className="text-slate-700 mb-4">{content.scenario.description}</p>
-                      
-                      <div className="bg-white p-4 rounded-lg border border-slate-300">
-                        <h5 className="font-semibold text-slate-800 mb-3">Client Details:</h5>
-                        <div className="grid md:grid-cols-2 gap-3">
-                          {content.scenario.details.map((detail, index) => (
-                            <div key={index} className="flex items-start gap-2 text-sm text-slate-600">
-                              <Badge variant="outline" className="text-xs px-2 py-1">
-                                {index + 1}
-                              </Badge>
-                              {detail}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                      <h4 className="text-lg font-semibold text-slate-800 mb-4">🏢 Case Study Scenario</h4>
-                      <p className="text-slate-700 mb-4">
-                        You are working with a client who needs assistance with {lesson.title.toLowerCase()}. Review the following case and provide your professional analysis.
-                      </p>
-                      
-                      <div className="bg-white p-4 rounded-lg border border-slate-300">
-                        <h5 className="font-semibold text-slate-800 mb-3">Client Profile:</h5>
-                        <ul className="space-y-2 text-sm text-slate-600">
-                          <li>• Established business, 5+ years of operation</li>
-                          <li>• Strong financial performance and growth trajectory</li>
-                          <li>• Seeking financing solution for business expansion</li>
-                          <li>• Current debt structure and cash flow position stable</li>
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-                    <h4 className="text-lg font-semibold text-blue-800 mb-3">✅ Your Assignment Tasks</h4>
-                    <ol className="space-y-2 text-blue-700">
-                      <li className="flex items-start gap-2">
-                        <Badge className="bg-blue-100 text-blue-800 border-blue-300 text-xs px-2 py-1">1</Badge>
-                        Analyze the client's current financial position and needs
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Badge className="bg-blue-100 text-blue-800 border-blue-300 text-xs px-2 py-1">2</Badge>
-                        Identify the most appropriate financing options
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Badge className="bg-blue-100 text-blue-800 border-blue-300 text-xs px-2 py-1">3</Badge>
-                        Provide specific recommendations with rationale
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Badge className="bg-blue-100 text-blue-800 border-blue-300 text-xs px-2 py-1">4</Badge>
-                        Address potential risks and mitigation strategies
-                      </li>
-                    </ol>
-                  </div>
-                  
-                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <h4 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                      🎯 Success Criteria
-                    </h4>
-                    <p className="text-green-700 text-sm">
-                      Your assignment will be evaluated on analytical depth, practical recommendations, and demonstration of course concepts. Aim for a comprehensive yet concise analysis.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button onClick={handleComplete} className="flex-1">
-                    Submit Analysis
-                  </Button>
-                  <Button variant="outline" onClick={() => setProgress(25)} className="px-6">
-                    Save Draft
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      
-      case "quiz":
-        return (
-          <EnhancedQuiz
-            moduleId="equipment-financing"
-            questions={[
-              {
-                id: "1",
-                type: "multiple-choice" as const,
-                question: "What is the typical loan-to-value ratio for equipment financing?",
-                options: ["60-70%", "70-80%", "80-90%", "90-100%"],
-                correctAnswers: ["80-90%"],
-                explanation: "Equipment financing typically offers 80-90% LTV because the equipment serves as collateral.",
-                points: 10,
-                difficulty: "medium" as const
-              },
-              {
-                id: "2",
-                type: "multiple-choice" as const,
-                question: "Which factor is most important when evaluating equipment financing applications?",
-                options: ["Personal credit score", "Equipment value", "Business cash flow", "Down payment amount"],
-                correctAnswers: ["Business cash flow"],
-                explanation: "Cash flow is critical as it demonstrates the business's ability to service the debt.",
-                points: 10,
-                difficulty: "medium" as const
-              }
-            ]}
-            onComplete={(passed, score) => {
-              toast({
-                title: score >= 80 ? "🎉 Quiz Passed!" : "📚 Review Needed",
-                description: `You scored ${score}%${score >= 80 ? " - Great job!" : " - Please review the material"}`,
-                variant: score >= 80 ? "default" : "destructive",
-              });
-              if (score >= 80) {
-                handleComplete();
-              }
-            }}
-            moduleTitle={moduleTitle}
-            passingScore={80}
-          />
-        );
-      
-      case "interactive":
-        return (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-4">
-              <h3 className="font-semibold text-blue-800 mb-2">🤖 Adaptive Interactive Learning</h3>
-              <p className="text-sm text-blue-700">
-                This lesson features AI-powered adaptive content that adjusts to your learning pace and style.
-              </p>
-            </div>
-            <InteractiveLessonComponents />
-          </div>
-        );
-      
-      default:
-        return (
-          <div className="text-center py-8">
-            <p>Lesson content will be available soon.</p>
-            <Button onClick={handleComplete} className="mt-4">
-              Mark as Complete
-            </Button>
-          </div>
-        );
-    }
-  };
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  const content = getTopicSpecificContent(lesson.title, lesson.type);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-3">
-            {getTypeIcon(lesson.type)}
-            <div>
-              <DialogTitle className="text-lg">{lesson.title}</DialogTitle>
-              <p className="text-sm text-muted-foreground">{moduleTitle} • {lesson.duration}</p>
+      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto jp-card-elegant">
+        {/* Professional Header */}
+        <DialogHeader className="pb-0">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <DialogTitle className="jp-heading text-2xl text-navy-900">
+                {lesson.title}
+              </DialogTitle>
+              <p className="jp-subheading">{moduleTitle} • {lesson.duration}</p>
             </div>
+            <Button variant="ghost" size="icon" onClick={onClose} className="jp-hover-scale">
+              <X className="h-5 w-5" />
+            </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
 
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <div className="flex justify-between text-sm mb-2">
-                <span>Progress</span>
-                <span>{Math.round(progress)}%</span>
+        {/* Enhanced Progress Section */}
+        <div className="space-y-4 py-4 border-b">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="jp-subheading">Learning Progress</span>
+                <span className="jp-body font-semibold text-primary">{progressStats.completionPercentage}%</span>
               </div>
-              <Progress value={progress} className="h-2" />
+              <Progress value={progressStats.completionPercentage} className="h-3" />
             </div>
-            {lesson.completed && (
-              <Badge variant="success" className="flex items-center gap-1">
-                <CheckCircle className="h-3 w-3" />
-                Completed
-              </Badge>
-            )}
+            
+            <div className="flex items-center gap-2 ml-4">
+              {progressStats.isCompleted ? (
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  Completed
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="border-primary text-primary">
+                  In Progress
+                </Badge>
+              )}
+            </div>
           </div>
 
-          {renderLessonContent()}
+          {/* Step Progress Indicators */}
+          <div className="flex items-center justify-center gap-2">
+            {steps.map((step, index) => (
+              <div key={step.id} className="flex items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all cursor-pointer ${
+                    step.completed
+                      ? "bg-primary text-primary-foreground"
+                      : index === currentStep
+                      ? "bg-primary/20 text-primary border-2 border-primary"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                  onClick={() => goToStep(index)}
+                >
+                  {step.completed ? <CheckCircle className="h-4 w-4" /> : index + 1}
+                </div>
+                {index < steps.length - 1 && (
+                  <div className={`h-px w-8 mx-1 ${
+                    step.completed ? "bg-primary" : "bg-muted"
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Corporate Lesson Content */}
+        <div className="space-y-6">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <TabsList className="grid w-full grid-cols-5 jp-card">
+              <TabsTrigger value="overview" className="jp-body text-sm">Overview</TabsTrigger>
+              <TabsTrigger value="video" className="jp-body text-sm">Video</TabsTrigger>
+              <TabsTrigger value="content" className="jp-body text-sm">Content</TabsTrigger>
+              <TabsTrigger value="assessment" className="jp-body text-sm">Assessment</TabsTrigger>
+              <TabsTrigger value="summary" className="jp-body text-sm">Summary</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="space-y-4">
+              <LessonOverview lesson={lesson} moduleTitle={moduleTitle} content={content} />
+              <div className="flex justify-end">
+                <Button onClick={() => handleStepComplete('overview')} className="jp-button-primary">
+                  Continue to Video
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="video" className="space-y-4">
+              <EnhancedVideoSection 
+                lesson={lesson} 
+                moduleTitle={moduleTitle}
+                onNotesTake={handleTakeNotes}
+                notesCount={lessonNotesCount}
+              />
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab('overview')} className="jp-button-secondary">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Overview
+                </Button>
+                <Button onClick={() => handleStepComplete('video')} className="jp-button-primary">
+                  Continue to Content
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="content" className="space-y-4">
+              <CorporateContentDisplay lesson={lesson} content={content} />
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab('video')} className="jp-button-secondary">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Video
+                </Button>
+                <Button onClick={() => handleStepComplete('content')} className="jp-button-primary">
+                  Take Assessment
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="assessment" className="space-y-4">
+              <ProfessionalAssessment
+                lesson={lesson}
+                onComplete={(passed, score) => {
+                  if (passed) {
+                    handleStepComplete('assessment');
+                    setActiveTab('summary');
+                  }
+                }}
+                passingScore={80}
+              />
+            </TabsContent>
+
+            <TabsContent value="summary" className="space-y-4">
+              <div className="jp-card-elegant p-6 text-center space-y-4">
+                <CheckCircle className="h-16 w-16 text-primary mx-auto" />
+                <div>
+                  <h3 className="jp-heading text-2xl text-navy-900">Lesson Complete!</h3>
+                  <p className="jp-subheading mt-2">
+                    You've successfully completed all components of this professional learning module.
+                  </p>
+                </div>
+                
+                <div className="grid md:grid-cols-3 gap-4 mt-6">
+                  <div className="jp-card p-4">
+                    <p className="jp-caption">Time Invested</p>
+                    <p className="jp-heading text-primary">{Math.round(progressStats.totalTimeSpent / 60)} min</p>
+                  </div>
+                  <div className="jp-card p-4">
+                    <p className="jp-caption">Steps Completed</p>
+                    <p className="jp-heading text-primary">{progressStats.completedSteps}/{progressStats.totalSteps}</p>
+                  </div>
+                  <div className="jp-card p-4">
+                    <p className="jp-caption">Notes Taken</p>
+                    <p className="jp-heading text-primary">{lessonNotesCount}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 justify-center mt-6">
+                  <Button onClick={handleTakeNotes} variant="outline" className="jp-button-secondary">
+                    <StickyNote className="h-4 w-4 mr-2" />
+                    Review Notes {lessonNotesCount > 0 && `(${lessonNotesCount})`}
+                  </Button>
+                  <Button onClick={handleComplete} className="jp-button-primary px-8">
+                    Complete Lesson
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </DialogContent>
     </Dialog>
