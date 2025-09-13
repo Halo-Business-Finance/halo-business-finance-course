@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/secureLogging";
 import { 
   Brain, 
   Target, 
@@ -86,7 +87,7 @@ export const AdaptiveLearningEngine = () => {
         generateAdaptivePaths()
       ]);
     } catch (error) {
-      console.error('Error loading personalization data:', error);
+      logger.error('Error loading personalization data', error, { userId: user?.id });
     } finally {
       setLoading(false);
     }

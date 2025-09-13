@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Share2, Bookmark } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
-import { sanitizeHtml } from "@/utils/htmlSanitizer";
+import { SecureHtmlRenderer } from "@/utils/secureHtmlRenderer";
+import { logger } from "@/utils/secureLogging";
 import fintechProfessional from "@/assets/fintech-professional.jpg";
 import creditAnalystProfessional from "@/assets/credit-analyst-professional.jpg";
 import riskManagementProfessional from "@/assets/risk-management-professional.jpg";
@@ -313,13 +314,16 @@ const Article = () => {
           {/* Article Content */}
           <Card>
             <CardContent className="p-6 md:p-8">
-              <div 
+              <SecureHtmlRenderer
+                content={article.content}
                 className="prose prose-lg max-w-none text-black"
-                style={{
-                  lineHeight: '1.7',
-                  fontSize: '16px'
+                maxLength={100000}
+                onSecurityViolation={(violation) => {
+                  logger.security('ARTICLE_CONTENT_VIOLATION', { 
+                    articleTitle: article.title,
+                    violation 
+                  });
                 }}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
               />
             </CardContent>
           </Card>

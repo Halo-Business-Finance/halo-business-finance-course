@@ -9,6 +9,7 @@ import { InteractiveLessonPlayer } from './InteractiveLessonPlayer';
 import { LearningPathVisualizer } from './LearningPathVisualizer';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/secureLogging';
 
 interface AdaptiveLessonEngineProps {
   moduleId: string;
@@ -71,7 +72,7 @@ export const AdaptiveLessonEngine = ({ moduleId, userId, courseId }: AdaptiveLes
       }
 
     } catch (error) {
-      console.error('Error initializing adaptive learning:', error);
+      logger.error('Error initializing adaptive learning', error, { userId });
       toast({
         title: "Error",
         description: "Failed to initialize adaptive learning system",
@@ -291,7 +292,7 @@ export const AdaptiveLessonEngine = ({ moduleId, userId, courseId }: AdaptiveLes
       }
       
     } catch (error) {
-      console.error('Error completing lesson:', error);
+      logger.error('Error completing lesson', error, { userId, lessonId });
       toast({
         title: "Error",
         description: "Failed to save lesson progress",

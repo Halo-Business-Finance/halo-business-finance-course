@@ -18,6 +18,7 @@ import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/secureLogging";
 
 import {
   Sidebar,
@@ -64,11 +65,11 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
   const fetchSelectedCourseModules = async () => {
     if (!selectedCourse) return;
 
-    console.log('Fetching modules for course:', selectedCourse);
+    logger.debug('Fetching modules for course', { courseId: selectedCourse?.id });
     try {
       // Extract the base course name without skill level suffix
       // Use the full course ID (including level) to match course_content_modules
-      console.log('Looking for modules with course_id:', selectedCourse.id);
+      logger.debug('Looking for modules with course_id', { courseId: selectedCourse.id });
       
       const { data, error } = await supabase
         .from("course_content_modules")
@@ -78,12 +79,12 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
         .lte("order_index", 6) // Limit to first 7 modules (0-6)
         .order("order_index");
 
-      console.log('Course modules data:', data);
-      console.log('Course modules error:', error);
+      logger.debug('Course modules data loaded', { dataCount: data?.length || 0 });
+      if (error) logger.error('Course modules query error', error);
       if (error) throw error;
       setSelectedCourseModules(data || []);
     } catch (error) {
-      console.error('Error fetching selected course modules:', error);
+      logger.error('Error fetching selected course modules', error, { courseId: selectedCourse?.id });
       setSelectedCourseModules([]);
     }
   };
@@ -126,7 +127,7 @@ export function AppSidebar({ onOpenSupport }: { onOpenSupport?: () => void }) {
       // The signOut function now handles the redirect automatically
       await signOut();
     } catch (error) {
-      console.error('Sign out error:', error);
+      logger.error('Sign out error', error, { userId: user?.id });
     } finally {
       setIsLoading(false);
     }

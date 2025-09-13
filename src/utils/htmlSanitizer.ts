@@ -1,4 +1,6 @@
-// Enhanced HTML sanitization utility for user-generated content
+import { logger } from './secureLogging';
+
+// Enhanced HTML sanitization utility for user-generated content with DOMPurify-like protection
 export const sanitizeHtml = (html: string): string => {
   if (!html || typeof html !== 'string') return '';
   
@@ -16,13 +18,20 @@ export const sanitizeHtml = (html: string): string => {
     /<input/gi,
     /<link/gi,
     /<meta/gi,
-    /<style/gi
+    /<style/gi,
+    /expression\s*\(/gi,
+    /url\s*\(/gi,
+    /@import/gi
   ];
   
   // Check for dangerous patterns and reject if found
   for (const pattern of dangerousPatterns) {
     if (pattern.test(html)) {
-      console.warn('Dangerous pattern detected in HTML content, sanitizing aggressively');
+      logger.security('HTML_XSS_ATTEMPT', { 
+        pattern: pattern.toString(),
+        htmlLength: html.length,
+        timestamp: new Date().toISOString()
+      });
       return html.replace(/<[^>]*>/g, ''); // Strip all HTML if dangerous patterns found
     }
   }
