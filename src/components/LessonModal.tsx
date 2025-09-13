@@ -8,25 +8,39 @@ import { Badge } from "@/components/ui/badge";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { EnhancedQuiz } from "@/components/EnhancedQuiz";
 import { InteractiveCalculator, InteractiveDragDrop, InteractiveScenario, InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
-import { CheckCircle, Play, FileText, BookOpen, Users2, X, Zap } from "lucide-react";
+import { CheckCircle, Play, FileText, BookOpen, Users2, X, Zap, StickyNote } from "lucide-react";
+import { useNotes } from "@/contexts/NotesContext";
 import { useToast } from "@/hooks/use-toast";
 
 interface LessonModalProps {
   isOpen: boolean;
   onClose: () => void;
   lesson: {
+    id: string;
     title: string;
     type: string;
     duration: string;
     completed: boolean;
   };
   moduleTitle: string;
+  moduleId?: string;
 }
 
-export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModalProps) => {
+export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle, moduleId }: LessonModalProps) => {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const { toast } = useToast();
+  const { setIsNotesModalOpen, setCurrentContext, getNotesByLesson } = useNotes();
+
+  // Get lesson-specific notes count
+  const lessonNotesCount = moduleId ? getNotesByLesson(moduleId, lesson.id).length : 0;
+
+  const handleTakeNotes = () => {
+    if (moduleId) {
+      setCurrentContext(moduleId, lesson.id);
+      setIsNotesModalOpen(true);
+    }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -213,8 +227,9 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
                   <Button onClick={handleComplete} className="flex-1">
                     Complete Lesson
                   </Button>
-                  <Button variant="outline" onClick={() => setProgress(50)} className="px-6">
-                    Take Notes
+                  <Button variant="outline" onClick={handleTakeNotes} className="px-6 flex items-center gap-2">
+                    <StickyNote className="h-4 w-4" />
+                    Notes {lessonNotesCount > 0 && `(${lessonNotesCount})`}
                   </Button>
                 </div>
               </CardContent>
@@ -304,8 +319,9 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle }: LessonModa
                   <Button onClick={handleComplete} className="flex-1">
                     Mark as Read
                   </Button>
-                  <Button variant="outline" onClick={() => setProgress(75)} className="px-6">
-                    Bookmark
+                  <Button variant="outline" onClick={handleTakeNotes} className="px-6 flex items-center gap-2">
+                    <StickyNote className="h-4 w-4" />
+                    Notes {lessonNotesCount > 0 && `(${lessonNotesCount})`}
                   </Button>
                 </div>
               </CardContent>

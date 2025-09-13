@@ -3476,6 +3476,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_notes: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_private: boolean
+          lesson_id: string | null
+          module_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_private?: boolean
+          lesson_id?: string | null
+          module_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_private?: boolean
+          lesson_id?: string | null
+          module_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_privacy_consents: {
         Row: {
           consent_given: boolean

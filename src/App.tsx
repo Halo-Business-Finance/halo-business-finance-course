@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { CourseSelectionProvider } from "@/contexts/CourseSelectionContext";
+import { NotesProvider } from "@/contexts/NotesContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -254,11 +255,13 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AuthProvider>
-          <CourseSelectionProvider>
-            <SidebarProvider defaultOpen={true} open={undefined}>
-              <AppContent />
-            </SidebarProvider>
-          </CourseSelectionProvider>
+          <NotesProvider>
+            <CourseSelectionProvider>
+              <SidebarProvider defaultOpen={true} open={undefined}>
+                <AppContent />
+              </SidebarProvider>
+            </CourseSelectionProvider>
+          </NotesProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

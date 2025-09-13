@@ -9,6 +9,9 @@ import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, Boo
 import { LessonModal } from "@/components/LessonModal";
 import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
+import { FloatingNotesButton } from "@/components/notes/FloatingNotesButton";
+import { NotesModal } from "@/components/notes/NotesModal";
+import { useNotes } from "@/contexts/NotesContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
@@ -33,6 +36,17 @@ const ModulePage = () => {
   const { setSelectedCourse, setSelectedCourseForNavigation } = useCourseSelection();
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
+  
+  // Notes context
+  const { 
+    isNotesModalOpen, 
+    setIsNotesModalOpen, 
+    setCurrentContext,
+    getNotesByModule 
+  } = useNotes();
+  
+  // Get notes count for this module
+  const moduleNotesCount = moduleId ? getNotesByModule(moduleId).length : 0;
   const [module, setModule] = useState<any>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -283,24 +297,8 @@ const ModulePage = () => {
   };
 
   const handleTakeNotes = () => {
-    // Open notes in a new tab/window or show a modal
-    toast({
-      title: "Notes Feature",
-      description: "Opening note-taking interface...",
-      variant: "default"
-    });
-    
-    // For now, open a simple prompt - in production this could be a proper notes modal
-    const note = prompt(`Add a note for: ${module.title}\n\nWhat would you like to remember about this module?`);
-    if (note && note.trim()) {
-      // Here you would typically save to a database
-      localStorage.setItem(`module-note-${moduleId}`, note);
-      toast({
-        title: "Note Saved",
-        description: "Your note has been saved locally.",
-        variant: "default"
-      });
-    }
+    setCurrentContext(moduleId!, selectedLesson?.id);
+    setIsNotesModalOpen(true);
   };
 
   const handleAskQuestion = () => {
@@ -641,12 +639,26 @@ const ModulePage = () => {
         </div>
       </div>
 
+      {/* Floating Notes Button - always visible during module viewing */}
+      <FloatingNotesButton moduleId={moduleId} />
+      
+      {/* Notes Modal */}
+      <NotesModal 
+        isOpen={isNotesModalOpen} 
+        onClose={() => setIsNotesModalOpen(false)}
+        moduleTitle={module.title}
+      />
+
       {selectedLesson && (
         <LessonModal
           isOpen={isLessonModalOpen}
-          onClose={() => setIsLessonModalOpen(false)}
+          onClose={() => {
+            setIsLessonModalOpen(false);
+            setSelectedLesson(null);
+          }}
           lesson={selectedLesson}
           moduleTitle={module.title}
+          moduleId={moduleId}
         />
       )}
     </div>
