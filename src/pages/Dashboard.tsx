@@ -479,7 +479,7 @@ const Dashboard = () => {
                                   <div className="flex-1 space-y-3">
                                     <div className="flex items-center gap-3">
                                       <BookOpen className="h-5 w-5 text-navy-900" />
-                                      <Badge variant="secondary" className="px-3 py-1 bg-accent/10 text-accent-foreground border-accent/20">
+                                      <Badge variant="outline" className="px-3 py-1 bg-white text-black border-gray-300">
                                         Course Program
                                       </Badge>
                                     </div>
