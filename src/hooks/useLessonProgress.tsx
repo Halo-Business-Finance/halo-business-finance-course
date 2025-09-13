@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,24 +30,7 @@ export const useLessonProgress = (lessonId: string, moduleId: string) => {
     setSteps(defaultSteps);
   }, []);
 
-  // Load existing progress from database
-  useEffect(() => {
-    loadProgress();
-  }, [lessonId, moduleId]);
-
-  // Start tracking session time
-  useEffect(() => {
-    setSessionStartTime(new Date());
-    
-    return () => {
-      // Save progress when component unmounts
-      if (sessionStartTime) {
-        saveCurrentProgress();
-      }
-    };
-  }, [currentStep]);
-
-  const loadProgress = async () => {
+  const loadProgress = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -84,9 +67,9 @@ export const useLessonProgress = (lessonId: string, moduleId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [lessonId, moduleId, steps, toast]);
 
-  const saveCurrentProgress = async () => {
+  const saveCurrentProgress = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user || !sessionStartTime) return;
@@ -119,9 +102,30 @@ export const useLessonProgress = (lessonId: string, moduleId: string) => {
     } catch (error) {
       console.error('Error saving lesson progress:', error);
     }
-  };
+  }, [sessionStartTime, steps, moduleId, lessonId]);
 
-  const completeStep = async (stepIndex: number) => {
+  // Load existing progress from database
+  useEffect(() => {
+    loadProgress();
+  }, [loadProgress]);
+
+  // Start tracking session time
+  useEffect(() => {
+    setSessionStartTime(new Date());
+  }, [currentStep]);
+
+  // Separate effect for cleanup to avoid stale closure issues
+  useEffect(() => {
+    return () => {
+      // Save progress when component unmounts
+      if (sessionStartTime) {
+        saveCurrentProgress();
+      }
+    };
+  }, [sessionStartTime, saveCurrentProgress]);
+
+
+  const completeStep = useCallback(async (stepIndex: number) => {
     const updatedSteps = steps.map((step, index) => 
       index === stepIndex ? { ...step, completed: true } : step
     );
@@ -139,16 +143,16 @@ export const useLessonProgress = (lessonId: string, moduleId: string) => {
       title: "Step Completed!",
       description: `${steps[stepIndex].name} has been marked as complete.`,
     });
-  };
+  }, [steps, saveCurrentProgress, toast]);
 
-  const goToStep = async (stepIndex: number) => {
+  const goToStep = useCallback(async (stepIndex: number) => {
     if (stepIndex >= 0 && stepIndex < steps.length) {
       setCurrentStep(stepIndex);
       setSessionStartTime(new Date());
     }
-  };
+  }, [steps.length]);
 
-  const completeLesson = async () => {
+  const completeLesson = useCallback(async () => {
     try {
       // Mark all steps as completed
       const completedSteps = steps.map(step => ({ ...step, completed: true }));
@@ -171,7 +175,7 @@ export const useLessonProgress = (lessonId: string, moduleId: string) => {
       });
       return false;
     }
-  };
+  }, [steps, saveCurrentProgress, toast]);
 
   const getProgressStats = () => {
     const completedSteps = steps.filter(step => step.completed).length;

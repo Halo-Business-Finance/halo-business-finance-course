@@ -65,7 +65,7 @@ export const EnhancedVideoSection = ({
               <VideoPlayer 
                 title={lesson.title}
                 videoType="youtube"
-                videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                videoUrl={`https://www.youtube.com/embed/${lesson.id}`}
               />
             
             {/* Custom Video Overlay Controls */}
