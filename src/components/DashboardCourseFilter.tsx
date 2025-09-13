@@ -34,21 +34,21 @@ export function DashboardCourseFilter({
       label: "Loan Originator",
       icon: GraduationCap,
       description: "Sales and client relationship courses",
-      color: "bg-primary/10 text-primary border-primary/20"
+      color: "bg-navy-900/10 text-navy-900 border-navy-900/20"
     },
     {
       key: "Loan Processing", 
       label: "Loan Processor",
       icon: Building2,
       description: "Documentation and workflow courses",
-      color: "bg-accent/10 text-accent border-accent/20"
+      color: "bg-navy-800/10 text-navy-800 border-navy-800/20"
     },
     {
       key: "Loan Underwriting",
       label: "Loan Underwriter", 
       icon: FileCheck,
       description: "Risk assessment and analysis courses",
-      color: "bg-secondary/10 text-secondary border-secondary/20"
+      color: "bg-navy-700/10 text-navy-700 border-navy-700/20"
     }
   ];
 
@@ -65,7 +65,7 @@ export function DashboardCourseFilter({
       <CardHeader className="pb-2 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <Filter className="h-4 w-4 text-primary" />
+            <Filter className="h-4 w-4 text-navy-900" />
             <CardTitle className="text-base">Categories</CardTitle>
           </div>
           {selectedCategory && (

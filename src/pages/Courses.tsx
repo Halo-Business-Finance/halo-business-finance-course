@@ -493,7 +493,7 @@ const Courses = () => {
                           <div className="space-y-1">
                             {course.modules.slice(0, 2).map((module, idx) => (
                               <div key={module.id} className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                                <div className="w-1.5 h-1.5 bg-navy-900 rounded-full" />
                                 <span className="line-clamp-1">{module.title}</span>
                               </div>
                             ))}
@@ -512,7 +512,7 @@ const Courses = () => {
                         {user ? (
                           enrollmentStatus[course.id] ? (
                             <Link to={`/module/${course.modules[0]?.id}`} className="flex-1">
-                              <Button className="w-full jp-button-primary">
+                              <Button className="w-full bg-navy-900 hover:bg-navy-800 text-white">
                                 <Check className="h-4 w-4 mr-2" />
                                 Continue Learning
                               </Button>
@@ -520,7 +520,7 @@ const Courses = () => {
                           ) : (
                             <Button
                               onClick={() => handleEnroll(course.id)}
-                              className="flex-1 jp-button-elegant"
+                              className="flex-1 bg-navy-900 hover:bg-navy-800 text-white"
                               disabled={loading}
                             >
                               <BookOpen className="h-4 w-4 mr-2" />
@@ -529,13 +529,13 @@ const Courses = () => {
                           )
                         ) : (
                           <Link to="/auth" className="flex-1">
-                            <Button className="w-full jp-button-primary">
+                            <Button className="w-full bg-navy-900 hover:bg-navy-800 text-white">
                               <Lock className="h-4 w-4 mr-2" />
                               Sign In to Enroll
                             </Button>
                           </Link>
                         )}
-                        <Button variant="outline" size="sm" className="jp-border-elegant jp-focus">
+                        <Button variant="outline" size="sm" className="border-navy-900 hover:bg-navy-900 hover:text-white">
                           <Star className="h-4 w-4" />
                         </Button>
                       </div>
@@ -545,7 +545,7 @@ const Courses = () => {
               </div>
               
               {/* Call to Action */}
-              <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+              <Card className="bg-gradient-to-r from-navy-900/10 to-navy-800/10 border-navy-900/20">
                 <CardContent className="text-center p-8">
                   <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
                   <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
@@ -553,7 +553,7 @@ const Courses = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link to="/signup">
-                      <Button size="lg" className="bg-halo-navy hover:bg-halo-navy/90 text-white">
+                      <Button size="lg" className="bg-navy-900 hover:bg-navy-800 text-white">
                         <Key className="mr-2 h-4 w-4 text-yellow-500" />
                         Start Free Trial
                       </Button>
