@@ -12,6 +12,9 @@ interface ThreatStats {
   critical_threats: number;
   auto_blocked: number;
   unique_ips: number;
+  total_anomalies?: number;
+  critical_anomalies?: number;
+  recent_anomalies?: number;
 }
 
 interface SecurityEvent {
@@ -60,6 +63,27 @@ export const SecurityDashboard = () => {
       setThreatStats(data?.threat_stats || null);
       setRecentThreats(data?.recent_threats || []);
       setRecentEvents(data?.recent_security_events || []);
+
+      // Also load anomaly statistics
+      try {
+        const { data: anomalyData } = await supabase.functions.invoke('anomaly-detector', {
+          body: { action: 'get_anomaly_stats' }
+        });
+        
+        const anomalyResult = await anomalyData;
+        if (anomalyResult.success) {
+          // Merge anomaly stats with threat stats
+          setThreatStats(prev => ({
+            ...prev,
+            total_anomalies: anomalyResult.stats.total_anomalies,
+            critical_anomalies: anomalyResult.stats.critical_anomalies,
+            recent_anomalies: anomalyResult.stats.recent_anomalies_24h
+          }));
+        }
+      } catch (anomalyError) {
+        console.error('Failed to load anomaly data:', anomalyError);
+        // Don't fail the whole dashboard for anomaly data
+      }
     } catch (error) {
       console.error('Failed to load security data:', error);
       toast({
@@ -269,7 +293,7 @@ export const SecurityDashboard = () => {
       </div>
 
       {/* Security Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Threats (24h)</CardTitle>
@@ -288,6 +312,18 @@ export const SecurityDashboard = () => {
           <CardContent>
             <div className="text-2xl font-bold text-destructive">
               {threatStats?.critical_threats || 0}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Access Anomalies</CardTitle>
+            <Eye className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-500">
+              {threatStats?.total_anomalies || 0}
             </div>
           </CardContent>
         </Card>

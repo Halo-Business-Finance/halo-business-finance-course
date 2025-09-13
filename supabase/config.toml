@@ -15,3 +15,9 @@ verify_jwt = false
 
 [functions.security-monitor]
 verify_jwt = true
+
+[functions.geographic-location-tracker]
+verify_jwt = false
+
+[functions.anomaly-detector]
+verify_jwt = true

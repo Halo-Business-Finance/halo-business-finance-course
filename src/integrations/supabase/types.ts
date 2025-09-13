@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_anomalies: {
+        Row: {
+          anomaly_type: string
+          behavioral_data: Json | null
+          confidence_score: number
+          created_at: string
+          detection_method: string
+          device_data: Json | null
+          id: string
+          is_resolved: boolean | null
+          location_data: Json | null
+          pattern_data: Json
+          resolved_at: string | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          anomaly_type: string
+          behavioral_data?: Json | null
+          confidence_score?: number
+          created_at?: string
+          detection_method: string
+          device_data?: Json | null
+          id?: string
+          is_resolved?: boolean | null
+          location_data?: Json | null
+          pattern_data?: Json
+          resolved_at?: string | null
+          severity?: string
+          user_id: string
+        }
+        Update: {
+          anomaly_type?: string
+          behavioral_data?: Json | null
+          confidence_score?: number
+          created_at?: string
+          detection_method?: string
+          device_data?: Json | null
+          id?: string
+          is_resolved?: boolean | null
+          location_data?: Json | null
+          pattern_data?: Json
+          resolved_at?: string | null
+          severity?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       adaptive_module_instances: {
         Row: {
           adaptive_module_id: string | null
@@ -2269,6 +2317,54 @@ export type Database = {
           },
         ]
       }
+      login_locations: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          id: string
+          ip_address: unknown
+          is_known_location: boolean | null
+          is_vpn: boolean | null
+          isp: string | null
+          latitude: number | null
+          longitude: number | null
+          region: string | null
+          timezone: string | null
+          user_id: string
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_address: unknown
+          is_known_location?: boolean | null
+          is_vpn?: boolean | null
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          region?: string | null
+          timezone?: string | null
+          user_id: string
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          is_known_location?: boolean | null
+          is_vpn?: boolean | null
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          region?: string | null
+          timezone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       module_completions: {
         Row: {
           completed_at: string
@@ -3141,6 +3237,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_behavior_baselines: {
+        Row: {
+          average_session_duration: number | null
+          created_at: string
+          id: string
+          last_updated: string
+          typical_access_patterns: Json
+          typical_devices: Json
+          typical_locations: Json
+          typical_login_hours: Json
+          user_id: string
+        }
+        Insert: {
+          average_session_duration?: number | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          typical_access_patterns?: Json
+          typical_devices?: Json
+          typical_locations?: Json
+          typical_login_hours?: Json
+          user_id: string
+        }
+        Update: {
+          average_session_duration?: number | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          typical_access_patterns?: Json
+          typical_devices?: Json
+          typical_locations?: Json
+          typical_login_hours?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_behavior_patterns: {
         Row: {
           anomaly_score: number | null
@@ -3796,6 +3928,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      analyze_access_patterns: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       analyze_security_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -3971,6 +4107,15 @@ export type Database = {
       detect_bulk_profile_access: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      detect_login_anomaly: {
+        Args: {
+          p_device_data: Json
+          p_ip_address: unknown
+          p_location_data: Json
+          p_user_id: string
+        }
+        Returns: Json
       }
       detect_potential_data_breach: {
         Args: Record<PropertyKey, never>
@@ -4921,6 +5066,15 @@ export type Database = {
       }
       unlock_courses_on_completion: {
         Args: { p_course_id: string; p_user_id: string }
+        Returns: undefined
+      }
+      update_user_baseline: {
+        Args: {
+          p_device_data: Json
+          p_location_data: Json
+          p_session_duration?: number
+          p_user_id: string
+        }
         Returns: undefined
       }
       validate_and_sanitize_input: {

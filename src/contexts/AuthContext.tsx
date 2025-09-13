@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean;
   signOut: (redirectPath?: string) => Promise<void>;
   updateLastActivity: () => void;
+  signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -109,6 +110,68 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       window.location.href = '/admin/login';
     } else {
       window.location.href = '/auth';
+    }
+  };
+
+  // Helper function to get client IP (best effort)
+  const getClientIP = async (): Promise<string> => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    } catch {
+      return '0.0.0.0'; // Fallback
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) throw error;
+      
+      if (data.user) {
+        // Track geographic location and run anomaly detection
+        try {
+          const response = await supabase.functions.invoke('geographic-location-tracker', {
+            body: {
+              user_id: data.user.id,
+              ip_address: await getClientIP(),
+              user_agent: navigator.userAgent
+            }
+          });
+          
+          const result = response.data;
+          if (result?.success && result.anomaly_detection?.is_anomaly) {
+            toast({
+              title: "Security Notice",
+              description: `Login from ${result.anomaly_detection.severity} risk location detected. Please verify your identity if this wasn't you.`,
+              variant: result.anomaly_detection.severity === 'critical' ? 'destructive' : 'default',
+            });
+          }
+        } catch (locationError) {
+          console.error('Location tracking error:', locationError);
+          // Don't block login for location tracking failures
+        }
+        
+        toast({
+          title: "Welcome back!",
+          description: "You have been signed in successfully.",
+        });
+      }
+      
+      return { data, error: null };
+    } catch (error: any) {
+      console.error('Sign in error:', error);
+      toast({
+        title: "Sign In Failed",
+        description: error.message || "An error occurred during sign in.",
+        variant: "destructive",
+      });
+      return { data: null, error };
     }
   };
 
@@ -237,6 +300,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loading,
     signOut,
     updateLastActivity,
+    signIn,
   };
 
   return (
