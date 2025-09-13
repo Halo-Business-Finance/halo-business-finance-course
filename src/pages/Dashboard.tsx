@@ -512,11 +512,11 @@ const Dashboard = () => {
                                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
                                     <div className="flex flex-wrap gap-2">
                                        {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => (
-                                         <Badge 
-                                           key={topicIndex} 
-                                           variant="outline" 
-                                           className="text-xs px-3 py-1 bg-secondary/50 text-secondary-foreground border-secondary/30 hover:bg-secondary/70 transition-colors"
-                                         >
+                                          <Badge 
+                                            key={topicIndex} 
+                                            variant="outline" 
+                                            className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30"
+                                          >
                                            {topic}
                                          </Badge>
                                        ))}
