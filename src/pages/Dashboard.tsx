@@ -136,9 +136,13 @@ const Dashboard = () => {
 
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
-    // Save current scroll position before state changes
+    // Save current scroll position before state changes and reset to top immediately
     if (containerRef.current) {
       savedScrollPosition.current = containerRef.current.scrollTop || window.scrollY;
+      containerRef.current.scrollTo({ top: 0, behavior: 'auto' });
+    } else {
+      savedScrollPosition.current = window.scrollY;
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }
     
     // Find the course in available courses to check if it can be selected
@@ -205,9 +209,13 @@ const Dashboard = () => {
 
   // Function to handle skill level selection and proceed to modules
   const handleProceedToModules = (level: string) => {
-    // Save current scroll position before state changes
+    // Save current scroll position before state changes and reset to top immediately
     if (containerRef.current) {
       savedScrollPosition.current = containerRef.current.scrollTop || window.scrollY;
+      containerRef.current.scrollTo({ top: 0, behavior: 'auto' });
+    } else {
+      savedScrollPosition.current = window.scrollY;
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }
     
     try {
