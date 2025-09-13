@@ -168,18 +168,12 @@ const Dashboard = () => {
       setCurrentFilterLevel(1);
       setRenderKey(prev => prev + 1);
       
-      // Restore scroll position after state update
+      // Scroll to top of new content after state update
       requestAnimationFrame(() => {
         if (containerRef.current) {
-          containerRef.current.scrollTo({
-            top: savedScrollPosition.current,
-            behavior: 'instant'
-          });
+          containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          window.scrollTo({
-            top: savedScrollPosition.current,
-            behavior: 'instant'
-          });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
       
@@ -206,18 +200,12 @@ const Dashboard = () => {
       );
       setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
       
-      // Restore scroll position after state update
+      // Scroll to top of new content after state update
       requestAnimationFrame(() => {
         if (containerRef.current) {
-          containerRef.current.scrollTo({
-            top: savedScrollPosition.current,
-            behavior: 'instant'
-          });
+          containerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          window.scrollTo({
-            top: savedScrollPosition.current,
-            behavior: 'instant'
-          });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
       
