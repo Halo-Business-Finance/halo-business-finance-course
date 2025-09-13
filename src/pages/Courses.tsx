@@ -512,7 +512,7 @@ const Courses = () => {
                         {user ? (
                           enrollmentStatus[course.id] ? (
                             <Link to={`/module/${course.modules[0]?.id}`} className="flex-1">
-                              <Button className="w-full bg-navy-900 hover:bg-navy-800 text-white">
+                              <Button className="w-full !bg-navy-900 hover:!bg-navy-800 !text-white">
                                 <Check className="h-4 w-4 mr-2" />
                                 Continue Learning
                               </Button>
@@ -520,7 +520,7 @@ const Courses = () => {
                           ) : (
                             <Button
                               onClick={() => handleEnroll(course.id)}
-                              className="flex-1 bg-navy-900 hover:bg-navy-800 text-white"
+                              className="flex-1 !bg-navy-900 hover:!bg-navy-800 !text-white"
                               disabled={loading}
                             >
                               <BookOpen className="h-4 w-4 mr-2" />
@@ -529,13 +529,13 @@ const Courses = () => {
                           )
                         ) : (
                           <Link to="/auth" className="flex-1">
-                            <Button className="w-full bg-navy-900 hover:bg-navy-800 text-white">
+                            <Button className="w-full !bg-navy-900 hover:!bg-navy-800 !text-white">
                               <Lock className="h-4 w-4 mr-2" />
                               Sign In to Enroll
                             </Button>
                           </Link>
                         )}
-                        <Button variant="outline" size="sm" className="border-navy-900 hover:bg-navy-900 hover:text-white">
+                        <Button variant="outline" size="sm" className="!border-navy-900 hover:!bg-navy-900 hover:!text-white">
                           <Star className="h-4 w-4" />
                         </Button>
                       </div>
@@ -553,7 +553,7 @@ const Courses = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link to="/signup">
-                      <Button size="lg" className="bg-navy-900 hover:bg-navy-800 text-white">
+                      <Button size="lg" className="!bg-navy-900 hover:!bg-navy-800 !text-white">
                         <Key className="mr-2 h-4 w-4 text-yellow-500" />
                         Start Free Trial
                       </Button>
