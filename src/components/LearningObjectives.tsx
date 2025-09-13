@@ -17,7 +17,7 @@ const LearningObjectives = ({ objectives }: LearningObjectivesProps) => {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
-          Upon completion of this certification program, you will be able to:
+          Upon completion of this training program, you will be able to:
         </p>
         <ul className="space-y-3">
           {objectives.map((objective, index) => (

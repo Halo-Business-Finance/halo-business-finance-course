@@ -497,7 +497,7 @@ export const InteractiveLearningPath = () => {
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                          <span>Industry-recognized certification</span>
+                          <span>Industry-recognized completion</span>
                         </li>
                       </ul>
                     </CardContent>

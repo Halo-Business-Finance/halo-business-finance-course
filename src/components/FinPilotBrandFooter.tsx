@@ -15,7 +15,7 @@ export const FinPilotBrandFooter = () => {
               </div>
               <p className="text-black text-sm leading-relaxed mb-6 max-w-md">
                 Navigate your financial future with expert guidance through comprehensive 
-                professional development and certification programs.
+                professional development and training programs.
               </p>
               
               {/* Social Media Links */}
@@ -63,7 +63,7 @@ export const FinPilotBrandFooter = () => {
               <h4 className="text-sm font-semibold text-black mb-4 uppercase tracking-wider">Programs</h4>
               <div className="space-y-2">
                 <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
-                  Professional Certification
+                  Professional Training
                 </a>
                 <a href="/course-catalog" className="block text-sm text-black hover:text-primary transition-colors">
                   Commercial Lending Excellence

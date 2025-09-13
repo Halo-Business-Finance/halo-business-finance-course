@@ -61,7 +61,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
             <div className="space-y-4">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15 transition-all duration-300">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                <span className="text-sm font-medium text-white tracking-wide">CERTIFICATION PROGRAM</span>
+                <span className="text-sm font-medium text-white tracking-wide">TRAINING PROGRAM</span>
                 <div className="w-px h-4 bg-white/20"></div>
                 <span className="text-xs text-white/80 font-mono">v2.0</span>
               </div>
@@ -89,7 +89,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
               </div>
               <div className="flex items-center gap-2">
                 <Award className="h-5 w-5 text-white" />
-                <span className="text-sm">Certificate</span>
+                <span className="text-sm">Completion</span>
               </div>
             </div>
 
