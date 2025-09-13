@@ -21,7 +21,8 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline focus:ring-primary",
         hero: "bg-gradient-primary text-white hover:opacity-90 focus:ring-primary",
         success: "bg-gradient-success text-white hover:opacity-90 focus:ring-success",
-        course: "bg-gradient-primary text-white hover:opacity-90 focus:ring-primary"
+        course: "bg-gradient-primary text-white hover:opacity-90 focus:ring-primary",
+        navy: "bg-navy-900 text-white hover:bg-navy-800 focus:ring-navy-900"
       },
       size: {
         default: "h-11 px-4 py-2.5 text-sm sm:text-base",
