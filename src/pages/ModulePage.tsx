@@ -265,36 +265,6 @@ const ModulePage = () => {
     setIsLessonModalOpen(true);
   };
 
-  const handleDownloadMaterials = () => {
-    // Find all document-type lessons and download them
-    const documents = lessons.filter(lesson => lesson.type === 'document' && lesson.url);
-    if (documents.length === 0) {
-      toast({
-        title: "No Materials Available", 
-        description: "There are no downloadable materials for this module.",
-        variant: "default"
-      });
-      return;
-    }
-    
-    documents.forEach(doc => {
-      if (doc.url) {
-        const link = document.createElement('a');
-        link.href = doc.url;
-        link.download = doc.title;
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    });
-    
-    toast({
-      title: "Materials Downloaded",
-      description: `${documents.length} document(s) downloaded successfully.`,
-      variant: "default"
-    });
-  };
 
   const handleTakeNotes = () => {
     setCurrentContext(moduleId!, selectedLesson?.id);
@@ -609,14 +579,6 @@ const ModulePage = () => {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={handleDownloadMaterials}
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  Download Materials
-                </Button>
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
