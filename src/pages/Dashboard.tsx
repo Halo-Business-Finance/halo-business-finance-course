@@ -121,6 +121,19 @@ const Dashboard = () => {
   // Get loading state
   const loading = coursesLoading || modulesLoading || progressLoading;
 
+  // Force scroll to top on view changes to prevent bottom jumps
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTo({ top: 0, behavior: 'auto' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+      });
+    });
+  }, [currentFilterLevel, filterNavigationPath.length]);
+
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
     // Save current scroll position before state changes
@@ -365,7 +378,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
+    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5" style={{ overflowAnchor: 'none' }}>
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader 
         progress={getOverallProgress()}
