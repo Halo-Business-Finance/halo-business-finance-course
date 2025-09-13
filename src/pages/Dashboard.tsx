@@ -478,9 +478,7 @@ const Dashboard = () => {
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1 space-y-3">
                                     <div className="flex items-center gap-3">
-                                      <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                                        <BookOpen className="h-5 w-5 text-navy-900" />
-                                      </div>
+                                      <BookOpen className="h-5 w-5 text-navy-900" />
                                       <Badge variant="secondary" className="px-3 py-1 bg-accent/10 text-accent-foreground border-accent/20">
                                         Course Program
                                       </Badge>
@@ -631,9 +629,7 @@ const Dashboard = () => {
                                 </Badge>
                               </div>
                               <div className="absolute bottom-4 right-4">
-                                <div className="p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
-                                  <Zap className="h-5 w-5 text-navy-900" />
-                                </div>
+                                <Zap className="h-5 w-5 text-navy-900" />
                               </div>
                             </div>
                             
@@ -652,9 +648,7 @@ const Dashboard = () => {
                               
                               <div className="flex items-center justify-between pt-2">
                                 <div className="flex items-center gap-2 text-sm">
-                                  <div className="p-1.5 rounded-md bg-primary/10">
-                                    <BookOpen className="h-4 w-4 text-navy-900" />
-                                  </div>
+                                  <BookOpen className="h-4 w-4 text-navy-900" />
                                   <span className="text-primary font-medium">{levelModules.length} modules</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
