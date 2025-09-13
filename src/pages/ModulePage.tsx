@@ -251,14 +251,78 @@ const ModulePage = () => {
     setIsLessonModalOpen(true);
   };
 
-  const handleLessonComplete = () => {
-    setIsLessonModalOpen(false);
-    setSelectedLesson(null);
-    toast({
-      title: "🎉 Lesson Completed!",
-      description: "Great job! You can now move on to the next lesson.",
-      variant: "default",
+  const handleDownloadMaterials = () => {
+    // Find all document-type lessons and download them
+    const documents = lessons.filter(lesson => lesson.type === 'document' && lesson.url);
+    if (documents.length === 0) {
+      toast({
+        title: "No Materials Available", 
+        description: "There are no downloadable materials for this module.",
+        variant: "default"
+      });
+      return;
+    }
+    
+    documents.forEach(doc => {
+      if (doc.url) {
+        const link = document.createElement('a');
+        link.href = doc.url;
+        link.download = doc.title;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     });
+    
+    toast({
+      title: "Materials Downloaded",
+      description: `${documents.length} document(s) downloaded successfully.`,
+      variant: "default"
+    });
+  };
+
+  const handleTakeNotes = () => {
+    // Open notes in a new tab/window or show a modal
+    toast({
+      title: "Notes Feature",
+      description: "Opening note-taking interface...",
+      variant: "default"
+    });
+    
+    // For now, open a simple prompt - in production this could be a proper notes modal
+    const note = prompt(`Add a note for: ${module.title}\n\nWhat would you like to remember about this module?`);
+    if (note && note.trim()) {
+      // Here you would typically save to a database
+      localStorage.setItem(`module-note-${moduleId}`, note);
+      toast({
+        title: "Note Saved",
+        description: "Your note has been saved locally.",
+        variant: "default"
+      });
+    }
+  };
+
+  const handleAskQuestion = () => {
+    // Open support chat or question interface
+    toast({
+      title: "Support Contact",
+      description: "Opening support interface...",
+      variant: "default"
+    });
+    
+    // For now, show a simple prompt - in production this could integrate with support system
+    const question = prompt(`Ask a question about: ${module.title}\n\nWhat would you like to know?`);
+    if (question && question.trim()) {
+      toast({
+        title: "Question Submitted",
+        description: "Your question has been submitted to our support team.",
+        variant: "default"
+      });
+      
+      // Here you would typically send to support system
+      console.log(`Question submitted for module ${moduleId}: ${question}`);
+    }
   };
 
 
@@ -547,15 +611,27 @@ const ModulePage = () => {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleDownloadMaterials}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   Download Materials
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleTakeNotes}
+                >
                   <Book className="h-4 w-4 mr-2" />
                   Take Notes
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={handleAskQuestion}
+                >
                   <Users2 className="h-4 w-4 mr-2" />
                   Ask Question
                 </Button>
