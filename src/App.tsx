@@ -98,22 +98,24 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
           {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 text-xl" />}
           
           {user && (
-            <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={goBack}
                 className="h-8 w-8 p-0 text-foreground hover:bg-muted"
+                title="Go back"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={goForward}
                 className="h-8 w-8 p-0 text-foreground hover:bg-muted"
+                title="Go forward"
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </div>
           )}
