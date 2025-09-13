@@ -344,12 +344,12 @@ const Courses = () => {
       <div className="bg-white min-h-screen">
         
         {/* Header Section */}
-        <div className="relative bg-gradient-to-r from-halo-navy to-halo-navy/90 text-white py-12 sm:py-16 md:py-20">
+        <div className="relative bg-gradient-to-r from-navy-900 to-navy-800 text-white py-12 sm:py-16 md:py-20">
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-60"
             style={{ backgroundImage: `url(${coursesHero})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-halo-navy/50 to-halo-navy/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-900/50 to-navy-800/30" />
           <div className="mobile-container relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-responsive-3xl font-playfair font-bold mb-4 sm:mb-6 text-white">
@@ -364,7 +364,7 @@ const Courses = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link to="/signup">
-                  <Button size="lg" className="w-full sm:w-auto bg-white text-halo-navy hover:bg-white/90 font-semibold">
+                  <Button size="lg" className="w-full sm:w-auto bg-white text-navy-900 hover:bg-white/90 font-semibold">
                     Start Adaptive Learning
                   </Button>
                 </Link>
