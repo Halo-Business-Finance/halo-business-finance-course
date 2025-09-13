@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSecureAuth } from '@/hooks/useSecureAuth';
 import ModuleCard from "@/components/ModuleCard";
@@ -71,6 +71,10 @@ const Dashboard = () => {
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
   const [renderKey, setRenderKey] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  // Scroll position management refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const savedScrollPosition = useRef<number>(0);
 
   // Get the active study course to show locked status
   const activeStudyCourse = getActiveStudyCourse();
@@ -119,8 +123,10 @@ const Dashboard = () => {
 
   // Function to handle course program selection
   const handleStartCourse = (courseName: string) => {
-    console.log('=== handleStartCourse START ===');
-    console.log('handleStartCourse called with:', courseName);
+    // Save current scroll position before state changes
+    if (containerRef.current) {
+      savedScrollPosition.current = containerRef.current.scrollTop || window.scrollY;
+    }
     
     // Find the course in available courses to check if it can be selected
     const targetCourse = availableCourses.find(course => {
@@ -146,10 +152,7 @@ const Dashboard = () => {
         return moduleBaseName.toLowerCase() === courseName.toLowerCase();
       });
       
-      console.log('Found course modules:', courseModules.length);
-      
       if (courseModules.length === 0) {
-        console.log('No modules found for course:', courseName);
         toast({
           title: "No modules found",
           description: `No modules found for ${courseName}. Please contact support.`,
@@ -159,16 +162,26 @@ const Dashboard = () => {
       }
       
       const navigationPath = [{ id: courseName.toLowerCase().replace(/\s+/g, '-'), name: courseName, count: courseModules.length }];
-      console.log('Setting navigationPath:', navigationPath);
       setFilterNavigationPath(navigationPath);
       
-      // Use setTimeout to ensure state updates are processed
-      setTimeout(() => {
-        console.log('About to set currentFilterLevel to 1');
-        setCurrentFilterLevel(1);
-        setRenderKey(prev => prev + 1);
-        console.log('=== handleStartCourse END - Level set to 1 ===');
-      }, 0);
+      // Update state and maintain scroll position
+      setCurrentFilterLevel(1);
+      setRenderKey(prev => prev + 1);
+      
+      // Restore scroll position after state update
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTo({
+            top: savedScrollPosition.current,
+            behavior: 'instant'
+          });
+        } else {
+          window.scrollTo({
+            top: savedScrollPosition.current,
+            behavior: 'instant'
+          });
+        }
+      });
       
     } catch (error) {
       console.error('Error in handleStartCourse:', error);
@@ -177,10 +190,13 @@ const Dashboard = () => {
 
   // Function to handle skill level selection and proceed to modules
   const handleProceedToModules = (level: string) => {
-    console.log('handleProceedToModules called with level:', level);
+    // Save current scroll position before state changes
+    if (containerRef.current) {
+      savedScrollPosition.current = containerRef.current.scrollTop || window.scrollY;
+    }
+    
     try {
       const selectedCourse = filterNavigationPath[0];
-      console.log('Selected course:', selectedCourse);
       const courseSkillId = `${selectedCourse.id}-${level}`;
       setSelectedSkillLevelForCourse(level);
       setCurrentFilterLevel(2);
@@ -188,11 +204,23 @@ const Dashboard = () => {
         m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) &&
         m.skill_level === level
       );
-      console.log('Level modules found:', levelModules.length);
       setFilterNavigationPath([selectedCourse, { id: courseSkillId, name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`, count: levelModules.length }]);
       
-      // Set the selected course in the context for the sidebar
-      console.log('Proceed to modules completed successfully');
+      // Restore scroll position after state update
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTo({
+            top: savedScrollPosition.current,
+            behavior: 'instant'
+          });
+        } else {
+          window.scrollTo({
+            top: savedScrollPosition.current,
+            behavior: 'instant'
+          });
+        }
+      });
+      
     } catch (error) {
       console.error('Error in handleProceedToModules:', error);
     }
@@ -349,7 +377,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
+    <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader 
         progress={getOverallProgress()}
