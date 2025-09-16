@@ -368,12 +368,11 @@ const ModulePage = () => {
 
         <Tabs defaultValue="adaptive" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-5 gap-1">
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-4 gap-1">
               <TabsTrigger value="adaptive" className="text-xs sm:text-sm whitespace-nowrap">Adaptive</TabsTrigger>
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Overview</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
-              <TabsTrigger value="discussion" className="text-xs sm:text-sm whitespace-nowrap">Discussion</TabsTrigger>
             </TabsList>
           </div>
 
@@ -493,22 +492,6 @@ const ModulePage = () => {
                     }
                   }}
                 />
-              </TabsContent>
-
-              <TabsContent value="discussion" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Discussion Forum</CardTitle>
-                    <CardDescription>Connect with other learners and instructors</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Users2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>Discussion forum coming soon!</p>
-                      <p className="text-sm">Connect with fellow learners and share insights.</p>
-                    </div>
-                  </CardContent>
-                </Card>
               </TabsContent>
             </Tabs>
           </div>
