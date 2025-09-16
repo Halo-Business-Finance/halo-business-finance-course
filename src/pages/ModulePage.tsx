@@ -368,11 +368,10 @@ const ModulePage = () => {
 
         <Tabs defaultValue="adaptive" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-6 gap-1">
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-5 gap-1">
               <TabsTrigger value="adaptive" className="text-xs sm:text-sm whitespace-nowrap">Adaptive</TabsTrigger>
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Overview</TabsTrigger>
-              <TabsTrigger value="resources" className="text-xs sm:text-sm whitespace-nowrap">Resources</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
               <TabsTrigger value="discussion" className="text-xs sm:text-sm whitespace-nowrap">Discussion</TabsTrigger>
             </TabsList>
@@ -475,39 +474,6 @@ const ModulePage = () => {
                       <p className="text-sm text-muted-foreground">
                         Basic understanding of business concepts and financial principles.
                       </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="resources" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Additional Resources</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 border rounded-lg">
-                        <FileText className="h-5 w-5 text-primary" />
-                        <div>
-                          <h4 className="font-medium">Module Handbook</h4>
-                          <p className="text-sm text-muted-foreground">Comprehensive guide and reference material</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 border rounded-lg">
-                        <Video className="h-5 w-5 text-primary" />
-                        <div>
-                          <h4 className="font-medium">Supplementary Videos</h4>
-                          <p className="text-sm text-muted-foreground">Additional video content and tutorials</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 border rounded-lg">
-                        <Book className="h-5 w-5 text-primary" />
-                        <div>
-                          <h4 className="font-medium">Reading List</h4>
-                          <p className="text-sm text-muted-foreground">Recommended books and articles</p>
-                        </div>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
