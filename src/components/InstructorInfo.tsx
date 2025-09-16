@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-
 interface Instructor {
   id: string;
   name: string;
@@ -16,23 +15,20 @@ interface Instructor {
   display_order: number;
   is_active: boolean;
 }
-
 const InstructorInfo = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     loadInstructors();
   }, []);
-
   const loadInstructors = async () => {
     try {
-      const { data, error } = await supabase
-        .from('instructors')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true });
-
+      const {
+        data,
+        error
+      } = await supabase.from('instructors').select('*').eq('is_active', true).order('display_order', {
+        ascending: true
+      });
       if (error) throw error;
       setInstructors(data || []);
     } catch (error) {
@@ -41,10 +37,8 @@ const InstructorInfo = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <Card className="mb-8">
+    return <Card className="mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-primary" />
@@ -56,13 +50,10 @@ const InstructorInfo = () => {
             <div className="w-6 h-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
-
   if (instructors.length === 0) {
-    return (
-      <Card className="mb-8">
+    return <Card className="mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-primary" />
@@ -72,12 +63,9 @@ const InstructorInfo = () => {
         <CardContent>
           <p className="text-muted-foreground">No instructors available at this time.</p>
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
-
-  return (
-    <Card className="mb-8">
+  return <Card className="mb-8">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="h-5 w-5 text-primary" />
@@ -85,11 +73,8 @@ const InstructorInfo = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {instructors.map((instructor) => (
-          <div key={instructor.id} className="flex items-start gap-4">
-            <div className={`w-16 h-16 bg-gradient-${instructor.avatar_color} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
-              {instructor.avatar_initials}
-            </div>
+        {instructors.map(instructor => <div key={instructor.id} className="flex items-start gap-4">
+            
             <div className="flex-1">
               <h4 className="font-semibold">{instructor.name}</h4>
               <p className="text-sm text-muted-foreground">{instructor.title}</p>
@@ -105,11 +90,8 @@ const InstructorInfo = () => {
               </div>
               <p className="text-sm mt-2">{instructor.bio}</p>
             </div>
-          </div>
-        ))}
+          </div>)}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default InstructorInfo;
