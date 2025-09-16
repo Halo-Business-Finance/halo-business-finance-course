@@ -14,6 +14,7 @@ import { useNotes } from "@/contexts/NotesContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
+import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Lesson {
@@ -33,6 +34,7 @@ const ModulePage = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const { setSelectedCourse, setSelectedCourseForNavigation } = useCourseSelection();
+  const { moduleProgress } = useCourseProgress(user?.id);
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
   
@@ -351,9 +353,9 @@ const ModulePage = () => {
                   <div>
                     <div className="flex justify-between text-sm mb-2">
                       <span>Overall Progress</span>
-                      <span>0%</span>
+                      <span>{moduleProgress[moduleId!]?.progress_percentage || 0}%</span>
                     </div>
-                    <Progress value={0} className="h-2" />
+                    <Progress value={moduleProgress[moduleId!]?.progress_percentage || 0} className="h-2" />
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="text-xs">
@@ -502,7 +504,12 @@ const ModulePage = () => {
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Status</span>
                   <Badge variant="outline" className="text-xs">
-                    Available
+                    {(() => {
+                      const progress = moduleProgress[moduleId!]?.progress_percentage || 0;
+                      if (progress === 100) return "Completed";
+                      if (progress > 0) return "In Progress";
+                      return "Available";
+                    })()}
                   </Badge>
                 </div>
               </CardContent>
