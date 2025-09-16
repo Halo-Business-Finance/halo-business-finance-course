@@ -233,7 +233,7 @@
 @layer components {
   /* Container Override */
   .container {
-    width: 90% !important;
+    width: 80% !important;
   }
 
   /* Professional Card Styles */
