@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Play, Mail, Star, Key } from "lucide-react";
+import { Check, Play, Mail, Star } from "lucide-react";
 import { FinPilotBrandFooter } from "@/components/FinPilotBrandFooter";
 import { SEOHead } from "@/components/SEOHead";
 import { useState } from "react";
@@ -231,7 +231,6 @@ const Pricing = () => {
                   asChild
                 >
                   <Link to="/signup">
-                    <Key className="h-4 w-4 text-yellow-500" />
                     {plan.name === "Professional" ? "Start Free Trial" : "Get Started"}
                   </Link>
                 </Button>
