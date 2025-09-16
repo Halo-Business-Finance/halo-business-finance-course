@@ -533,8 +533,8 @@ const Dashboard = () => {
                                       <span className="text-primary font-medium">{getCourseDetails(courseName).duration}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      <Target className="h-4 w-4 text-navy-900" />
-                                      <span>{courseModules.length} modules</span>
+                                      
+                                      <span className="text-black">{courseModules.length} modules</span>
                                     </div>
                                   </div>
                                   
@@ -555,7 +555,7 @@ const Dashboard = () => {
                                       {(() => {
                             const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
                             const uniqueLevels = Array.from(new Set(skillLevels)).sort();
-                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <Badge key={level} variant={level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1">
+                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <Badge key={level} variant={level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900">
                                                 {level.charAt(0).toUpperCase() + level.slice(1)}
                                               </Badge>) : <Badge variant="outline" className="text-xs px-3 py-1">Multiple levels</Badge>;
                           })()}

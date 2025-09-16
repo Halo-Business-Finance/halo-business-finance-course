@@ -68,7 +68,7 @@ const InstructorInfo = () => {
   return <Card className="mb-8">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-primary" />
+          
           Course Instructors
         </CardTitle>
       </CardHeader>
@@ -77,15 +77,15 @@ const InstructorInfo = () => {
             
             <div className="flex-1">
               <h4 className="font-semibold">{instructor.name}</h4>
-              <p className="text-sm text-muted-foreground">{instructor.title}</p>
+              <p className="text-sm text-black">{instructor.title}</p>
               <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Award className="h-3 w-3" />
-                  <span>{instructor.years_experience}</span>
+                  <span className="text-black">{instructor.years_experience}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
-                  <span>{instructor.company}</span>
+                  <span className="text-black">{instructor.company}</span>
                 </div>
               </div>
               <p className="text-sm mt-2">{instructor.bio}</p>
