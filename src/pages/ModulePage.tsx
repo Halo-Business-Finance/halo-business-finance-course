@@ -282,12 +282,12 @@ const ModulePage = () => {
         <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-            <Card>
+            <Card className="bg-blue-900">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-2xl">{module.title}</CardTitle>
-                    <CardDescription className="mt-2 text-black">{module.description}</CardDescription>
+                    <CardTitle className="text-2xl text-white">{module.title}</CardTitle>
+                    <CardDescription className="mt-2 text-white">{module.description}</CardDescription>
                   </div>
                   {module.skill_level && module.skill_level.toLowerCase() !== "beginner" && <Badge variant={module.skill_level.toLowerCase() === "expert" ? "success" : "outline"}>
                       {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
@@ -298,13 +298,13 @@ const ModulePage = () => {
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Overall Progress</span>
-                      <span>{moduleProgress[moduleId!]?.progress_percentage || 0}%</span>
+                      <span className="text-white">Overall Progress</span>
+                      <span className="text-white">{moduleProgress[moduleId!]?.progress_percentage || 0}%</span>
                     </div>
                     <Progress value={moduleProgress[moduleId!]?.progress_percentage || 0} className="h-2" />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs bg-white">
                       {module.duration || '45 minutes'}
                     </Badge>
                   </div>
@@ -314,7 +314,7 @@ const ModulePage = () => {
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1">
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1 bg-blue-900">
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Module Overview</TabsTrigger>
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Module Lessons</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Module Assessment</TabsTrigger>
@@ -322,13 +322,13 @@ const ModulePage = () => {
           </div>
 
           <TabsContent value="overview" className="space-y-6">
-            <Card>
+            <Card className="bg-blue-900">
               <CardHeader>
-                <CardTitle>Module Overview</CardTitle>
+                <CardTitle className="text-white">Module Overview</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Learning Objectives</h4>
+                  <h4 className="font-semibold mb-2 text-white">Learning Objectives</h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     <li>• Understand the core concepts and principles</li>
                     <li>• Apply knowledge through practical exercises</li>
@@ -337,8 +337,8 @@ const ModulePage = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Prerequisites</h4>
-                  <p className="text-sm text-black">
+                  <h4 className="font-semibold mb-2 text-white">Prerequisites</h4>
+                  <p className="text-sm text-white">
                     Basic understanding of business concepts and financial principles.
                   </p>
                 </div>
@@ -348,7 +348,7 @@ const ModulePage = () => {
 
           <TabsContent value="lessons" className="space-y-4">
                 {lessons.length > 0 ? <div className="grid gap-4">
-                    {lessons.map((lesson, index) => <Card key={index} className="group hover:shadow-md transition-all duration-200">
+                    {lessons.map((lesson, index) => <Card key={index} className="group hover:shadow-md transition-all duration-200 bg-blue-900">
                         <CardContent className="p-4 sm:p-6">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
@@ -356,13 +356,13 @@ const ModulePage = () => {
                                 {lesson.completed ? <CheckCircle className="h-5 w-5" /> : getTypeIcon(lesson.type)}
                               </div>
                               <div>
-                                <h3 className="font-semibold">{lesson.title}</h3>
+                                <h3 className="font-semibold text-white">{lesson.title}</h3>
                                 <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center gap-1 bg-white">
                                     <Clock className="h-3 w-3" />
                                     {lesson.duration}
                                   </div>
-                                  <Badge variant="outline" className="text-xs">
+                                  <Badge variant="outline" className="text-xs bg-white">
                                     {lesson.type}
                                   </Badge>
                                 </div>
@@ -411,22 +411,22 @@ const ModulePage = () => {
           </div>
 
           <div className="space-y-4 sm:space-y-6">
-            <Card>
+            <Card className="bg-blue-900">
               <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="text-base sm:text-lg">Module Stats</CardTitle>
+                <CardTitle className="text-base sm:text-lg text-white">Module Stats</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-black">Duration</span>
-                  <span className="text-sm font-medium">{module.duration || '45 minutes'}</span>
+                  <span className="text-xs sm:text-sm text-white">Duration</span>
+                  <span className="text-sm font-medium text-white">{module.duration || '45 minutes'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-black">Lessons</span>
-                  <span className="text-sm font-medium">{module.lessons_count || 6}</span>
+                  <span className="text-xs sm:text-sm text-white">Lessons</span>
+                  <span className="text-sm font-medium text-white">{module.lessons_count || 6}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-black">Status</span>
-                  <Badge variant="outline" className="text-xs">
+                  <span className="text-xs sm:text-sm text-white">Status</span>
+                  <Badge variant="outline" className="text-xs bg-white">
                     {(() => {
                     const progress = moduleProgress[moduleId!]?.progress_percentage || 0;
                     if (progress === 100) return "Completed";
@@ -438,9 +438,9 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-blue-900">
               <CardHeader>
-                <CardTitle className="text-lg">Quick Actions</CardTitle>
+                <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button variant="outline" className="w-full justify-start" onClick={handleTakeNotes}>
