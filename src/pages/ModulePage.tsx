@@ -512,7 +512,7 @@ const ModulePage = () => {
                   onClick={handleTakeNotes}
                 >
                   <Book className="h-4 w-4 mr-2" />
-                  Take Notes
+                  My Notes
                 </Button>
                 <Button 
                   variant="outline" 
