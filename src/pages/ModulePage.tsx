@@ -365,14 +365,39 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-        <Tabs defaultValue="lessons" className="space-y-4 sm:space-y-6">
+        <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
             <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1">
-              <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Overview</TabsTrigger>
+              <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
             </TabsList>
           </div>
+
+          <TabsContent value="overview" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Module Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Learning Objectives</h4>
+                  <ul className="space-y-1 text-sm text-muted-foreground">
+                    <li>• Understand the core concepts and principles</li>
+                    <li>• Apply knowledge through practical exercises</li>
+                    <li>• Analyze real-world case studies</li>
+                    <li>• Demonstrate mastery through assessments</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Prerequisites</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Basic understanding of business concepts and financial principles.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="lessons" className="space-y-4">
                 {lessons.length > 0 ? (
@@ -441,31 +466,6 @@ const ModulePage = () => {
                     </CardContent>
                   </Card>
                 )}
-              </TabsContent>
-
-              <TabsContent value="overview" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Module Overview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-2">Learning Objectives</h4>
-                      <ul className="space-y-1 text-sm text-muted-foreground">
-                        <li>• Understand the core concepts and principles</li>
-                        <li>• Apply knowledge through practical exercises</li>
-                        <li>• Analyze real-world case studies</li>
-                        <li>• Demonstrate mastery through assessments</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">Prerequisites</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Basic understanding of business concepts and financial principles.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
               </TabsContent>
 
               <TabsContent value="assessment" className="space-y-6">
