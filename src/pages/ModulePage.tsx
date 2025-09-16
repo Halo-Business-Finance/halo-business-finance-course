@@ -338,7 +338,7 @@ const ModulePage = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Prerequisites</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-black">
                     Basic understanding of business concepts and financial principles.
                   </p>
                 </div>
