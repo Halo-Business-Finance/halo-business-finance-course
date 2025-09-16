@@ -3,7 +3,7 @@ import { Building2, Mail, Phone, Globe, Linkedin, Twitter, Facebook, Instagram }
 export const FinPilotBrandFooter = () => {
   return (
     <footer className="bg-background border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-4/5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
