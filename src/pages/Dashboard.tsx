@@ -555,7 +555,7 @@ const Dashboard = () => {
                                       {(() => {
                             const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
                             const uniqueLevels = Array.from(new Set(skillLevels)).sort();
-                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <Badge key={level} variant={level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900">
+                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <Badge key={level} variant={level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900 text-white">
                                                 {level.charAt(0).toUpperCase() + level.slice(1)}
                                               </Badge>) : <Badge variant="outline" className="text-xs px-3 py-1">Multiple levels</Badge>;
                           })()}
