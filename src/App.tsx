@@ -41,27 +41,29 @@ import SignUp from "./pages/SignUp";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
 import { ScrollToTop } from "./components/ScrollToTop";
-
 const queryClient = new QueryClient();
-
-const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; setIsChatOpen: (open: boolean) => void }) => {
+const HeaderContent = ({
+  isChatOpen,
+  setIsChatOpen
+}: {
+  isChatOpen: boolean;
+  setIsChatOpen: (open: boolean) => void;
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
-
   const goBack = () => {
     navigate(-1);
   };
-
   const goForward = () => {
     navigate(1);
   };
@@ -79,7 +81,6 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
     }
     return 'User';
   };
-
   const formatDateTime = (date: Date) => {
     return date.toLocaleString('en-US', {
       weekday: 'long',
@@ -90,91 +91,68 @@ const HeaderContent = ({ isChatOpen, setIsChatOpen }: { isChatOpen: boolean; set
       minute: '2-digit'
     });
   };
-
-  return (
-    <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-background z-50 px-2 sm:px-4">
+  return <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-background z-50 px-2 sm:px-4">
       <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
-        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0">
-          {user && <SidebarTrigger className="text-foreground hover:bg-muted h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 text-xl" />}
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0 rounded-2xl">
+          {user && <SidebarTrigger className="h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 font-normal text-blue-800 rounded-lg bg-white mx-[10px] my-[10px] px-[10px] text-2xl" />}
           
-          {user && (
-            <div className="flex items-center gap-1 sm:gap-2">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={goBack}
-                className="h-8 w-8 p-0 text-foreground hover:bg-muted"
-                title="Go back"
-              >
+          {user && <div className="flex items-center gap-1 sm:gap-2">
+              <Button variant="ghost" size="sm" onClick={goBack} title="Go back" className="h-8 w-8 p-0 hover:bg-muted text-slate-950">
                 <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={goForward}
-                className="h-8 w-8 p-0 text-foreground hover:bg-muted"
-                title="Go forward"
-              >
+              <Button variant="ghost" size="sm" onClick={goForward} className="h-8 w-8 p-0 text-foreground hover:bg-muted" title="Go forward">
                 <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
 
-        {user && (
-          <div className="flex-1 flex items-center justify-center min-w-0">
+        {user && <div className="flex-1 flex items-center justify-center min-w-0">
             <NavLink to="/" className="flex items-center gap-3 sm:gap-4 flex-shrink-0 min-w-0">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-primary flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center flex-shrink-0 bg-blue-700">
                 <span className="text-primary-foreground font-bold text-base sm:text-lg md:text-xl">FP</span>
               </div>
               <span className="text-lg sm:text-2xl md:text-3xl font-bold text-foreground truncate">FinPilot</span>
             </NavLink>
-          </div>
-        )}
+          </div>}
 
-        {!user && (
-          <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto min-w-0">
+        {!user && <div className="flex-1 flex items-center justify-center max-w-4xl mx-auto min-w-0">
             <div className="hidden lg:block w-full">
               <HorizontalNav />
             </div>
             <div className="lg:hidden w-full">
               <MobileNav />
             </div>
-          </div>
-        )}
+          </div>}
         
-        {user && (
-          <div className="flex items-start gap-1 sm:gap-2 text-xs text-foreground text-right flex-shrink-0 pt-1">
+        {user && <div className="flex items-start gap-1 sm:gap-2 text-xs text-foreground text-right flex-shrink-0 pt-1">
             <NotificationBell />
             <div className="text-xs min-w-max hidden sm:block">
-              <div className="hidden md:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-              })}</div>
-              <div className="md:hidden whitespace-nowrap">{currentTime.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric' 
-              })}</div>
-              <div className="whitespace-nowrap">{currentTime.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              })}</div>
+              <div className="hidden md:block whitespace-nowrap">{currentTime.toLocaleDateString('en-US', {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}</div>
+              <div className="md:hidden whitespace-nowrap">{currentTime.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric'
+            })}</div>
+              <div className="whitespace-nowrap">{currentTime.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</div>
             </div>
-          </div>
-        )}
+          </div>}
       </div>
-    </header>
-  );
+    </header>;
 };
-
 const AppContent = () => {
-  const { user, loading } = useAuth();
+  const {
+    user,
+    loading
+  } = useAuth();
   const [isChatOpen, setIsChatOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen flex w-full">
+  return <div className="min-h-screen flex w-full">
       {user && <AppSidebar onOpenSupport={() => setIsChatOpen(true)} />}
       
       <div className="flex-1 flex flex-col min-w-0">
@@ -183,49 +161,35 @@ const AppContent = () => {
         <main className="flex-1 relative z-10 bg-background">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
+            <Route path="/dashboard" element={<ProtectedRoute>
                 <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/my-course" element={
-              <ProtectedRoute>
+              </ProtectedRoute>} />
+            <Route path="/my-course" element={<ProtectedRoute>
                 <Progress />
-              </ProtectedRoute>
-            } />
+              </ProtectedRoute>} />
             {/* Redirect old progress and certificates routes to my-course page */}
             <Route path="/progress" element={<Navigate to="/my-course" replace />} />
             <Route path="/certificates" element={<Navigate to="/my-course" replace />} />
             <Route path="/videos" element={<VideoLibrary />} />
             <Route path="/resources" element={<Resources />} />
-            <Route path="/my-account" element={
-              <ProtectedRoute>
+            <Route path="/my-account" element={<ProtectedRoute>
                 <Account />
-              </ProtectedRoute>
-            } />
+              </ProtectedRoute>} />
             {/* Redirect old account route to my-account page */}
             <Route path="/account" element={<Navigate to="/my-account" replace />} />
-            <Route path="/auth" element={
-              <ProtectedRoute requireAuth={false}>
+            <Route path="/auth" element={<ProtectedRoute requireAuth={false}>
                 <Auth />
-              </ProtectedRoute>
-            } />
-            <Route path="/signup" element={
-              <ProtectedRoute requireAuth={false}>
+              </ProtectedRoute>} />
+            <Route path="/signup" element={<ProtectedRoute requireAuth={false}>
                 <SignUp />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/login" element={
-              <ProtectedRoute requireAuth={false}>
+              </ProtectedRoute>} />
+            <Route path="/admin/login" element={<ProtectedRoute requireAuth={false}>
                 <AdminAuth />
-              </ProtectedRoute>
-            } />
+              </ProtectedRoute>} />
             <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="/admin/dashboard" element={
-              <AdminProtectedRoute requiredRole="admin">
+            <Route path="/admin/dashboard" element={<AdminProtectedRoute requiredRole="admin">
                 <AdminDashboard />
-              </AdminProtectedRoute>
-            } />
+              </AdminProtectedRoute>} />
             <Route path="/module/:moduleId" element={<ModulePage />} />
             <Route path="/course-catalog" element={<Courses />} />
             <Route path="/pricing" element={<Pricing />} />
@@ -245,12 +209,9 @@ const AppContent = () => {
 
       {/* Live Chat Support */}
       <LiveChatSupport isOpen={isChatOpen} onOpenChange={setIsChatOpen} />
-    </div>
-  );
+    </div>;
 };
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -267,7 +228,5 @@ const App = () => (
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
-
+  </QueryClientProvider>;
 export default App;
