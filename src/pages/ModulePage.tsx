@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download } from "lucide-react";
 import { LessonModal } from "@/components/LessonModal";
-import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { FloatingNotesButton } from "@/components/notes/FloatingNotesButton";
 import { NotesModal } from "@/components/notes/NotesModal";
@@ -366,23 +365,14 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-        <Tabs defaultValue="adaptive" className="space-y-4 sm:space-y-6">
+        <Tabs defaultValue="lessons" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-4 gap-1">
-              <TabsTrigger value="adaptive" className="text-xs sm:text-sm whitespace-nowrap">Adaptive</TabsTrigger>
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1">
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Lessons</TabsTrigger>
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Overview</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
             </TabsList>
           </div>
-
-          <TabsContent value="adaptive" className="space-y-6">
-            <AdaptiveLessonEngine
-              moduleId={module.id}
-              userId={user?.id || ''}
-              courseId={module.course_id}
-            />
-          </TabsContent>
 
           <TabsContent value="lessons" className="space-y-4">
                 {lessons.length > 0 ? (

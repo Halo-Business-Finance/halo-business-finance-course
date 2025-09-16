@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy, X, Save } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy, X, Save, Brain } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { SEOHead } from "@/components/SEOHead";
@@ -20,6 +20,8 @@ import { ProfileEditForm } from "@/components/profile/ProfileEditForm";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { AdaptiveLessonEngine } from "@/components/AdaptiveLessonEngine";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { UserPreferences, NotificationPreferences, UserProfile } from "@/types";
@@ -46,6 +48,7 @@ const AccountPage = (): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
   const activeTab = new URLSearchParams(location.search).get('tab') || 'account';
+  const { user } = useAuth();
   
   const {
     profile,
@@ -60,6 +63,8 @@ const AccountPage = (): JSX.Element => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [userInfo, setUserInfo] = useState<any>({});
   const [editForm, setEditForm] = useState<any>({});
+  const [currentModuleId, setCurrentModuleId] = useState<string>('');
+  const [currentCourseId, setCurrentCourseId] = useState<string>('');
   
   const [preferences, setPreferences] = useState<UserPreferences>({
     theme: 'light',
@@ -138,6 +143,54 @@ const AccountPage = (): JSX.Element => {
       });
     }
   }, [profile]);
+
+  // Fetch user's current learning context for adaptive learning
+  useEffect(() => {
+    const fetchLearningContext = async () => {
+      if (!user?.id) return;
+
+      try {
+        // Get user's most recent module progress
+        const { data: recentProgress } = await supabase
+          .from('user_progress')
+          .select('module_id')
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false })
+          .limit(1);
+
+        if (recentProgress && recentProgress.length > 0) {
+          const moduleId = recentProgress[0].module_id;
+          setCurrentModuleId(moduleId || '');
+
+          // Get course_id for this module
+          const { data: moduleData } = await supabase
+            .from('course_content_modules')
+            .select('course_id')
+            .eq('id', moduleId)
+            .single();
+
+          if (moduleData) {
+            setCurrentCourseId(moduleData.course_id);
+          }
+        } else {
+          // If no progress found, get first available module
+          const { data: firstModule } = await supabase
+            .from('course_content_modules')
+            .select('id, course_id')
+            .limit(1);
+
+          if (firstModule && firstModule.length > 0) {
+            setCurrentModuleId(firstModule[0].id);
+            setCurrentCourseId(firstModule[0].course_id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching learning context:', error);
+      }
+    };
+
+    fetchLearningContext();
+  }, [user]);
 
   // Apply font size using CSS custom properties
   useEffect(() => {
@@ -407,8 +460,9 @@ const AccountPage = (): JSX.Element => {
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-1 h-auto p-1">
             <TabsTrigger value="account" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">My Account</TabsTrigger>
+            <TabsTrigger value="adaptive" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Adaptive Learning</TabsTrigger>
             <TabsTrigger value="notifications" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Notifications</TabsTrigger>
             <TabsTrigger value="privacy" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Privacy</TabsTrigger>
             <TabsTrigger value="preferences" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Preferences</TabsTrigger>
@@ -687,6 +741,38 @@ const AccountPage = (): JSX.Element => {
           )}
         </div>
       </div>
+          </TabsContent>
+
+          <TabsContent value="adaptive" className="space-y-6">
+            <div className="max-w-4xl mx-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="h-5 w-5" />
+                    Adaptive Learning Engine
+                  </CardTitle>
+                  <CardDescription>
+                    Personalized learning experience tailored to your progress and learning style
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {currentModuleId && currentCourseId && user?.id ? (
+                    <AdaptiveLessonEngine
+                      moduleId={currentModuleId}
+                      userId={user.id}
+                      courseId={currentCourseId}
+                    />
+                  ) : (
+                    <div className="text-center py-8">
+                      <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                      <p className="text-muted-foreground">
+                        Start a course to access your personalized adaptive learning experience.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
