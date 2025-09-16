@@ -231,6 +231,11 @@
 
 /* JP Morgan-inspired component utilities */
 @layer components {
+  /* Container Override */
+  .container {
+    width: 90% !important;
+  }
+
   /* Professional Card Styles */
   .jp-card {
     @apply bg-card border border-border rounded-lg shadow-card backdrop-blur-sm;
