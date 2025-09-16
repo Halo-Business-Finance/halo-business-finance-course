@@ -355,9 +355,6 @@ const ModulePage = () => {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="text-xs">
-                      {module.skill_level || 'Beginner'}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
                       {module.duration || '45 minutes'}
                     </Badge>
                   </div>
