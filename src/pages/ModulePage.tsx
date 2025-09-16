@@ -370,7 +370,7 @@ const ModulePage = () => {
             <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1">
               <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Module Overview</TabsTrigger>
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Module Lessons</TabsTrigger>
-              <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Assessment</TabsTrigger>
+              <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Module Assessment</TabsTrigger>
             </TabsList>
           </div>
 
