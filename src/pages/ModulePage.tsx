@@ -10,6 +10,7 @@ import { LessonModal } from "@/components/LessonModal";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { FloatingNotesButton } from "@/components/notes/FloatingNotesButton";
 import { NotesModal } from "@/components/notes/NotesModal";
+import { QuestionModal } from "@/components/QuestionModal";
 import { useNotes } from "@/contexts/NotesContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -45,6 +46,9 @@ const ModulePage = () => {
     setCurrentContext,
     getNotesByModule 
   } = useNotes();
+  
+  // Question modal state
+  const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
   
   // Get notes count for this module
   const moduleNotesCount = moduleId ? getNotesByModule(moduleId).length : 0;
@@ -273,25 +277,7 @@ const ModulePage = () => {
   };
 
   const handleAskQuestion = () => {
-    // Open support chat or question interface
-    toast({
-      title: "Support Contact",
-      description: "Opening support interface...",
-      variant: "default"
-    });
-    
-    // For now, show a simple prompt - in production this could integrate with support system
-    const question = prompt(`Ask a question about: ${module.title}\n\nWhat would you like to know?`);
-    if (question && question.trim()) {
-      toast({
-        title: "Question Submitted",
-        description: "Your question has been submitted to our support team.",
-        variant: "default"
-      });
-      
-      // Here you would typically send to support system
-      console.log(`Question submitted for module ${moduleId}: ${question}`);
-    }
+    setIsQuestionModalOpen(true);
   };
 
 
@@ -550,6 +536,14 @@ const ModulePage = () => {
         isOpen={isNotesModalOpen} 
         onClose={() => setIsNotesModalOpen(false)}
         moduleTitle={module.title}
+      />
+
+      {/* Question Modal */}
+      <QuestionModal
+        isOpen={isQuestionModalOpen}
+        onClose={() => setIsQuestionModalOpen(false)}
+        moduleTitle={module.title}
+        moduleId={moduleId}
       />
 
       {selectedLesson && (
