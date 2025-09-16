@@ -17,7 +17,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { supabase } from "@/integrations/supabase/client";
-
 interface Lesson {
   id: string;
   title: string;
@@ -28,71 +27,72 @@ interface Lesson {
   url?: string;
   order_index: number;
 }
-
 const ModulePage = () => {
-  const { moduleId } = useParams();
+  const {
+    moduleId
+  } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const { setSelectedCourse, setSelectedCourseForNavigation } = useCourseSelection();
-  const { moduleProgress } = useCourseProgress(user?.id);
+  const {
+    toast
+  } = useToast();
+  const {
+    user
+  } = useAuth();
+  const {
+    setSelectedCourse,
+    setSelectedCourseForNavigation
+  } = useCourseSelection();
+  const {
+    moduleProgress
+  } = useCourseProgress(user?.id);
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
-  
+
   // Notes context
-  const { 
-    isNotesModalOpen, 
-    setIsNotesModalOpen, 
+  const {
+    isNotesModalOpen,
+    setIsNotesModalOpen,
     setCurrentContext,
-    getNotesByModule 
+    getNotesByModule
   } = useNotes();
-  
+
   // Question modal state
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
-  
+
   // Get notes count for this module
   const moduleNotesCount = moduleId ? getNotesByModule(moduleId).length : 0;
   const [module, setModule] = useState<any>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchModuleAndContent = async () => {
       if (!moduleId) return;
-      
       console.log('Raw moduleId from URL:', moduleId);
-      
+
       // Use the moduleId directly as it should match the database ID
       const dbModuleId = decodeURIComponent(moduleId);
       console.log('Using direct moduleId for database query:', dbModuleId);
-      
       try {
         // Fetch module data using the direct module ID
-        const { data: dbModule, error: moduleError } = await supabase
-          .from('course_content_modules')
-          .select('*')
-          .eq('id', dbModuleId)
-          .maybeSingle();
-
+        const {
+          data: dbModule,
+          error: moduleError
+        } = await supabase.from('course_content_modules').select('*').eq('id', dbModuleId).maybeSingle();
         if (moduleError || !dbModule) {
           console.error('Error fetching module:', moduleError);
           setLoading(false);
           return;
         }
-        
         setModule(dbModule);
 
         // **FIX**: Update the CourseSelectionContext with the correct course
         // Fetch the course data and set it as selected so the sidebar shows the right modules
         if (dbModule.course_id) {
           console.log('Setting selected course to:', dbModule.course_id);
-          
-          const { data: courseData, error: courseError } = await supabase
-            .from('courses')
-            .select('id, title, description')
-            .eq('id', dbModule.course_id)
-            .maybeSingle();
-
+          const {
+            data: courseData,
+            error: courseError
+          } = await supabase.from('courses').select('id, title, description').eq('id', dbModule.course_id).maybeSingle();
           if (courseData && !courseError) {
             setSelectedCourseForNavigation({
               id: courseData.id,
@@ -105,37 +105,10 @@ const ModulePage = () => {
 
         // Use the course_id from the module to fetch content
         const moduleForContent = dbModule.id;
-        const [videosResponse, articlesResponse, assessmentsResponse, documentsResponse] = await Promise.all([
-          supabase
-            .from('course_videos')
-            .select('*')
-            .eq('module_id', moduleForContent)
-            .eq('is_active', true)
-            .order('order_index'),
-          
-          supabase
-            .from('course_articles')
-            .select('*')
-            .eq('module_id', moduleForContent)
-            .eq('is_published', true)
-            .order('order_index'),
-          
-          supabase
-            .from('course_assessments')
-            .select('*')
-            .eq('module_id', moduleForContent)
-            .order('order_index'),
-          
-          supabase
-            .from('course_documents')
-            .select('*')
-            .eq('module_id', moduleForContent)
-            .order('title')
-        ]);
+        const [videosResponse, articlesResponse, assessmentsResponse, documentsResponse] = await Promise.all([supabase.from('course_videos').select('*').eq('module_id', moduleForContent).eq('is_active', true).order('order_index'), supabase.from('course_articles').select('*').eq('module_id', moduleForContent).eq('is_published', true).order('order_index'), supabase.from('course_assessments').select('*').eq('module_id', moduleForContent).order('order_index'), supabase.from('course_documents').select('*').eq('module_id', moduleForContent).order('title')]);
 
         // Combine all content into lessons array
         const allLessons: Lesson[] = [];
-
         console.log('Content fetched:', {
           videos: videosResponse.data?.length || 0,
           articles: articlesResponse.data?.length || 0,
@@ -151,7 +124,8 @@ const ModulePage = () => {
               title: video.title,
               type: 'video',
               duration: video.duration_seconds ? `${Math.round(video.duration_seconds / 60)} min` : '15 min',
-              completed: false, // TODO: Get from user progress
+              completed: false,
+              // TODO: Get from user progress
               content: video,
               url: video.video_url,
               order_index: video.order_index
@@ -167,7 +141,8 @@ const ModulePage = () => {
               title: article.title,
               type: 'reading',
               duration: article.reading_time_minutes ? `${article.reading_time_minutes} min` : '10 min',
-              completed: false, // TODO: Get from user progress
+              completed: false,
+              // TODO: Get from user progress
               content: article,
               order_index: article.order_index
             });
@@ -182,7 +157,8 @@ const ModulePage = () => {
               title: assessment.title,
               type: 'quiz',
               duration: assessment.time_limit_minutes ? `${assessment.time_limit_minutes} min` : '20 min',
-              completed: false, // TODO: Get from user progress
+              completed: false,
+              // TODO: Get from user progress
               content: assessment,
               order_index: assessment.order_index
             });
@@ -215,7 +191,10 @@ const ModulePage = () => {
               type: index % 3 === 0 ? 'video' : index % 3 === 1 ? 'reading' : 'quiz',
               duration: '15 min',
               completed: false,
-              content: { title: topic, description: `Learn about ${topic}` },
+              content: {
+                title: topic,
+                description: `Learn about ${topic}`
+              },
               order_index: index
             });
           });
@@ -225,32 +204,25 @@ const ModulePage = () => {
         allLessons.sort((a, b) => a.order_index - b.order_index);
         console.log('Final lessons array:', allLessons);
         setLessons(allLessons);
-
       } catch (error) {
         console.error('Error fetching module content:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchModuleAndContent();
   }, [moduleId, setSelectedCourse]);
-
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
+    return <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Loading Module...</h2>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>;
   }
-
   if (!module) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
+    return <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Module Not Found</h2>
@@ -261,55 +233,47 @@ const ModulePage = () => {
             </Button>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>;
   }
-
   const handleLessonStart = (lesson: any) => {
     setSelectedLesson(lesson);
     setIsLessonModalOpen(true);
   };
-
-
   const handleTakeNotes = () => {
     setCurrentContext(moduleId!, selectedLesson?.id);
     setIsNotesModalOpen(true);
   };
-
   const handleAskQuestion = () => {
     setIsQuestionModalOpen(true);
   };
-
-
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case "video": return <Video className="h-4 w-4" />;
-      case "reading": return <FileText className="h-4 w-4" />;
-      case "quiz": return <Users2 className="h-4 w-4" />;
-      case "document": return <Download className="h-4 w-4" />;
-      case "interactive": return <Zap className="h-4 w-4" />;
-      default: return <BookOpen className="h-4 w-4" />;
+      case "video":
+        return <Video className="h-4 w-4 bg-white" />;
+      case "reading":
+        return <FileText className="h-4 w-4" />;
+      case "quiz":
+        return <Users2 className="h-4 w-4" />;
+      case "document":
+        return <Download className="h-4 w-4" />;
+      case "interactive":
+        return <Zap className="h-4 w-4" />;
+      default:
+        return <BookOpen className="h-4 w-4" />;
     }
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
       <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2"
-            >
+            <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard")} className="flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </Button>
             <div className="h-6 w-px bg-border" />
             <div>
               <h1 className="text-xl font-semibold">{module.title}</h1>
-              <p className="text-sm text-muted-foreground">{module.duration || '45 minutes'} • {lessons.length} lessons</p>
+              <p className="text-sm text-black">{module.duration || '45 minutes'} • {lessons.length} lessons</p>
             </div>
           </div>
         </div>
@@ -323,15 +287,11 @@ const ModulePage = () => {
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="text-2xl">{module.title}</CardTitle>
-                    <CardDescription className="mt-2">{module.description}</CardDescription>
+                    <CardDescription className="mt-2 text-black">{module.description}</CardDescription>
                   </div>
-                  {module.skill_level && module.skill_level.toLowerCase() !== "beginner" && (
-                    <Badge variant={
-                      module.skill_level.toLowerCase() === "expert" ? "success" : "outline"
-                    }>
+                  {module.skill_level && module.skill_level.toLowerCase() !== "beginner" && <Badge variant={module.skill_level.toLowerCase() === "expert" ? "success" : "outline"}>
                       {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
-                    </Badge>
-                  )}
+                    </Badge>}
                 </div>
               </CardHeader>
               <CardContent>
@@ -387,21 +347,13 @@ const ModulePage = () => {
           </TabsContent>
 
           <TabsContent value="lessons" className="space-y-4">
-                {lessons.length > 0 ? (
-                  <div className="grid gap-4">
-                    {lessons.map((lesson, index) => (
-                      <Card key={index} className="group hover:shadow-md transition-all duration-200">
+                {lessons.length > 0 ? <div className="grid gap-4">
+                    {lessons.map((lesson, index) => <Card key={index} className="group hover:shadow-md transition-all duration-200">
                         <CardContent className="p-4 sm:p-6">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                              <div className={`p-2 rounded-lg ${
-                                lesson.completed ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
-                              }`}>
-                                {lesson.completed ? (
-                                  <CheckCircle className="h-5 w-5" />
-                                ) : (
-                                  getTypeIcon(lesson.type)
-                                )}
+                              <div className={`p-2 rounded-lg ${lesson.completed ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"}`}>
+                                {lesson.completed ? <CheckCircle className="h-5 w-5" /> : getTypeIcon(lesson.type)}
                               </div>
                               <div>
                                 <h3 className="font-semibold">{lesson.title}</h3>
@@ -417,29 +369,20 @@ const ModulePage = () => {
                               </div>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0">
-                              {lesson.completed && (
-                                <Badge variant="success" className="text-xs whitespace-nowrap">
+                              {lesson.completed && <Badge variant="success" className="text-xs whitespace-nowrap">
                                   <CheckCircle className="h-3 w-3 mr-1" />
                                   <span className="hidden sm:inline">Completed</span>
                                   <span className="sm:hidden">Done</span>
-                                </Badge>
-                              )}
-                              <Button
-                                size="sm"
-                                className="h-8 px-3 sm:px-4 text-xs sm:text-sm whitespace-nowrap"
-                                onClick={() => handleLessonStart(lesson)}
-                              >
+                                </Badge>}
+                              <Button size="sm" className="h-8 px-3 sm:px-4 text-xs sm:text-sm whitespace-nowrap" onClick={() => handleLessonStart(lesson)}>
                                 <Play className="h-3 w-3 mr-1" />
                                 {lesson.completed ? "Review" : "Start"}
                               </Button>
                             </div>
                           </div>
                         </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                ) : (
-                  <Card>
+                      </Card>)}
+                  </div> : <Card>
                     <CardContent className="p-8 text-center">
                       <div className="space-y-4">
                         <BookOpen className="h-12 w-12 text-muted-foreground mx-auto" />
@@ -451,24 +394,18 @@ const ModulePage = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                )}
+                  </Card>}
               </TabsContent>
 
               <TabsContent value="assessment" className="space-y-6">
-                <ModuleQuiz
-                  moduleId={module.id}
-                  moduleTitle={module.title}
-                  courseId={module.course_id}
-                  onQuizComplete={(passed) => {
-                    if (passed) {
-                      toast({
-                        title: "🎉 Module Quiz Passed!",
-                        description: "You can now proceed to the next module in your learning path.",
-                      });
-                    }
-                  }}
-                />
+                <ModuleQuiz moduleId={module.id} moduleTitle={module.title} courseId={module.course_id} onQuizComplete={passed => {
+                if (passed) {
+                  toast({
+                    title: "🎉 Module Quiz Passed!",
+                    description: "You can now proceed to the next module in your learning path."
+                  });
+                }
+              }} />
               </TabsContent>
             </Tabs>
           </div>
@@ -480,22 +417,22 @@ const ModulePage = () => {
               </CardHeader>
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-muted-foreground">Duration</span>
+                  <span className="text-xs sm:text-sm text-black">Duration</span>
                   <span className="text-sm font-medium">{module.duration || '45 minutes'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-muted-foreground">Lessons</span>
+                  <span className="text-xs sm:text-sm text-black">Lessons</span>
                   <span className="text-sm font-medium">{module.lessons_count || 6}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-muted-foreground">Status</span>
+                  <span className="text-xs sm:text-sm text-black">Status</span>
                   <Badge variant="outline" className="text-xs">
                     {(() => {
-                      const progress = moduleProgress[moduleId!]?.progress_percentage || 0;
-                      if (progress === 100) return "Completed";
-                      if (progress > 0) return "In Progress";
-                      return "Available";
-                    })()}
+                    const progress = moduleProgress[moduleId!]?.progress_percentage || 0;
+                    if (progress === 100) return "Completed";
+                    if (progress > 0) return "In Progress";
+                    return "Available";
+                  })()}
                   </Badge>
                 </div>
               </CardContent>
@@ -506,19 +443,11 @@ const ModulePage = () => {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={handleTakeNotes}
-                >
+                <Button variant="outline" className="w-full justify-start" onClick={handleTakeNotes}>
                   <Book className="h-4 w-4 mr-2" />
                   My Notes
                 </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={handleAskQuestion}
-                >
+                <Button variant="outline" className="w-full justify-start" onClick={handleAskQuestion}>
                   <Users2 className="h-4 w-4 mr-2" />
                   Ask Question
                 </Button>
@@ -532,34 +461,15 @@ const ModulePage = () => {
       <FloatingNotesButton moduleId={moduleId} />
       
       {/* Notes Modal */}
-      <NotesModal 
-        isOpen={isNotesModalOpen} 
-        onClose={() => setIsNotesModalOpen(false)}
-        moduleTitle={module.title}
-      />
+      <NotesModal isOpen={isNotesModalOpen} onClose={() => setIsNotesModalOpen(false)} moduleTitle={module.title} />
 
       {/* Question Modal */}
-      <QuestionModal
-        isOpen={isQuestionModalOpen}
-        onClose={() => setIsQuestionModalOpen(false)}
-        moduleTitle={module.title}
-        moduleId={moduleId}
-      />
+      <QuestionModal isOpen={isQuestionModalOpen} onClose={() => setIsQuestionModalOpen(false)} moduleTitle={module.title} moduleId={moduleId} />
 
-      {selectedLesson && (
-        <LessonModal
-          isOpen={isLessonModalOpen}
-          onClose={() => {
-            setIsLessonModalOpen(false);
-            setSelectedLesson(null);
-          }}
-          lesson={selectedLesson}
-          moduleTitle={module.title}
-          moduleId={moduleId}
-        />
-      )}
-    </div>
-  );
+      {selectedLesson && <LessonModal isOpen={isLessonModalOpen} onClose={() => {
+      setIsLessonModalOpen(false);
+      setSelectedLesson(null);
+    }} lesson={selectedLesson} moduleTitle={module.title} moduleId={moduleId} />}
+    </div>;
 };
-
 export default ModulePage;
