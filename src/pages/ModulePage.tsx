@@ -348,7 +348,7 @@ const ModulePage = () => {
 
           <TabsContent value="lessons" className="space-y-4">
                 {lessons.length > 0 ? <div className="grid gap-4">
-                    {lessons.map((lesson, index) => <Card key={index} className="group hover:shadow-md transition-all duration-200 bg-blue-900">
+                    {lessons.map((lesson, index) => <Card key={index} className="group hover:shadow-md transition-all duration-200 bg-white">
                         <CardContent className="p-4 sm:p-6">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
@@ -356,7 +356,7 @@ const ModulePage = () => {
                                 {lesson.completed ? <CheckCircle className="h-5 w-5" /> : getTypeIcon(lesson.type)}
                               </div>
                               <div>
-                                <h3 className="font-semibold text-white">{lesson.title}</h3>
+                                <h3 className="font-semibold text-inherit">{lesson.title}</h3>
                                 <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
                                   <div className="flex items-center gap-1 bg-white">
                                     <Clock className="h-3 w-3" />
@@ -438,7 +438,7 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-blue-900">
+            <Card className="bg-white">
               <CardHeader>
                 <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
               </CardHeader>
