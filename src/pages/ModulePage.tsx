@@ -337,11 +337,13 @@ const ModulePage = () => {
                     <CardTitle className="text-2xl">{module.title}</CardTitle>
                     <CardDescription className="mt-2">{module.description}</CardDescription>
                   </div>
-                  <Badge variant={
-                    module.skill_level === "expert" ? "success" : "outline"
-                  }>
-                    {module.skill_level?.charAt(0).toUpperCase() + module.skill_level?.slice(1) || "Beginner"}
-                  </Badge>
+                  {module.skill_level && module.skill_level.toLowerCase() !== "beginner" && (
+                    <Badge variant={
+                      module.skill_level.toLowerCase() === "expert" ? "success" : "outline"
+                    }>
+                      {module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1)}
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
@@ -499,7 +501,7 @@ const ModulePage = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Skill Level</span>
-                  <span className="text-sm font-medium">{module.skill_level || 'Beginner'}</span>
+                  <span className="text-sm font-medium">{module.skill_level ? module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1) : '—'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Status</span>
