@@ -500,10 +500,6 @@ const ModulePage = () => {
                   <span className="text-sm font-medium">{module.lessons_count || 6}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs sm:text-sm text-muted-foreground">Skill Level</span>
-                  <span className="text-sm font-medium">{module.skill_level ? module.skill_level.charAt(0).toUpperCase() + module.skill_level.slice(1) : '—'}</span>
-                </div>
-                <div className="flex justify-between">
                   <span className="text-xs sm:text-sm text-muted-foreground">Status</span>
                   <Badge variant="outline" className="text-xs">
                     Available
