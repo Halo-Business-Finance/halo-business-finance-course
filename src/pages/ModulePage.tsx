@@ -314,21 +314,21 @@ const ModulePage = () => {
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1 bg-blue-900">
-              <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap">Module Overview</TabsTrigger>
+            <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1 bg-white">
+              <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap text-black">Module Overview</TabsTrigger>
               <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Module Lessons</TabsTrigger>
               <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Module Assessment</TabsTrigger>
             </TabsList>
           </div>
 
           <TabsContent value="overview" className="space-y-6">
-            <Card className="bg-blue-900">
+            <Card className="bg-white rounded-none">
               <CardHeader>
-                <CardTitle className="text-white">Module Overview</CardTitle>
+                <CardTitle className="text-inherit">Module Overview</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2 text-white">Learning Objectives</h4>
+                  <h4 className="font-semibold mb-2 text-inherit">Learning Objectives</h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     <li>• Understand the core concepts and principles</li>
                     <li>• Apply knowledge through practical exercises</li>
@@ -337,8 +337,8 @@ const ModulePage = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2 text-white">Prerequisites</h4>
-                  <p className="text-sm text-white">
+                  <h4 className="font-semibold mb-2 text-inherit">Prerequisites</h4>
+                  <p className="text-sm text-inherit">
                     Basic understanding of business concepts and financial principles.
                   </p>
                 </div>
@@ -438,7 +438,7 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-white">
+            <Card className="bg-blue-900">
               <CardHeader>
                 <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
               </CardHeader>
