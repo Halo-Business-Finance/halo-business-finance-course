@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, Users, Award, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-finance.jpg";
-
 interface Instructor {
   id: string;
   name: string;
@@ -18,30 +17,31 @@ interface Instructor {
   display_order: number;
   is_active: boolean;
 }
-
 interface CourseHeaderProps {
   progress: number;
   totalModules: number;
   completedModules: number;
   onContinueLearning: () => void;
 }
-
-const CourseHeader = ({ progress, totalModules, completedModules, onContinueLearning }: CourseHeaderProps) => {
+const CourseHeader = ({
+  progress,
+  totalModules,
+  completedModules,
+  onContinueLearning
+}: CourseHeaderProps) => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     loadInstructors();
   }, []);
-
   const loadInstructors = async () => {
     try {
-      const { data, error } = await supabase
-        .from('instructors')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true })
-        .limit(3); // Limit to 3 instructors for header display
+      const {
+        data,
+        error
+      } = await supabase.from('instructors').select('*').eq('is_active', true).order('display_order', {
+        ascending: true
+      }).limit(3); // Limit to 3 instructors for header display
 
       if (error) throw error;
       setInstructors(data || []);
@@ -51,9 +51,7 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
       setLoading(false);
     }
   };
-
-  return (
-    <div className="relative overflow-hidden bg-halo-navy shadow-hero border-b border-border w-full">
+  return <div className="relative overflow-hidden bg-halo-navy shadow-hero border-b border-border w-full">
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
       <div className="relative px-4 lg:px-8 py-12 lg:py-16 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -105,22 +103,16 @@ const CourseHeader = ({ progress, totalModules, completedModules, onContinueLear
               </p>
             </div>
 
-            <Button variant="hero" size="lg" className="shadow-lg" onClick={onContinueLearning}>
+            <Button variant="hero" size="lg" onClick={onContinueLearning} className="shadow-lg text-white bg-blue-800 hover:bg-blue-700">
               Continue Learning
             </Button>
           </div>
 
           <div className="hidden lg:block">
-            <img
-              src={heroImage}
-              alt="Business Finance Learning"
-              className="rounded-xl shadow-elevated max-w-full h-auto"
-            />
+            <img src={heroImage} alt="Business Finance Learning" className="rounded-xl shadow-elevated max-w-full h-auto" />
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CourseHeader;

@@ -57,7 +57,7 @@ export function DashboardCourseFilter({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             
-            <CardTitle className="text-lg">Learning Course Categories</CardTitle>
+            <CardTitle className="text-lg font-medium">Learning Course Categories</CardTitle>
           </div>
           {selectedCategory && <Button variant="ghost" size="sm" onClick={() => onCategorySelect(null)} className="h-6 w-6 p-0">
               <X className="h-3 w-3" />
