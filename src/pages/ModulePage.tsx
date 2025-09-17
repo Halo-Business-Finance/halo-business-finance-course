@@ -282,7 +282,7 @@ const ModulePage = () => {
         <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-            <Card className="bg-blue-900">
+            <Card className="bg-blue-800">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
@@ -315,9 +315,9 @@ const ModulePage = () => {
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
           <div className="overflow-x-auto pb-2">
             <TabsList className="grid w-max min-w-full grid-cols-3 sm:grid-cols-3 gap-1 bg-white">
-              <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap text-black">Module Overview</TabsTrigger>
-              <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap">Module Lessons</TabsTrigger>
-              <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap">Module Assessment</TabsTrigger>
+              <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap bg-blue-800 hover:bg-blue-700 text-white">Module Overview</TabsTrigger>
+              <TabsTrigger value="lessons" className="text-xs sm:text-sm whitespace-nowrap bg-blue-800 hover:bg-blue-700 text-white">Module Lessons</TabsTrigger>
+              <TabsTrigger value="assessment" className="text-xs sm:text-sm whitespace-nowrap bg-blue-800 hover:bg-blue-700 text-white">Module Assessment</TabsTrigger>
             </TabsList>
           </div>
 
@@ -411,7 +411,7 @@ const ModulePage = () => {
           </div>
 
           <div className="space-y-4 sm:space-y-6">
-            <Card className="bg-blue-900">
+            <Card className="bg-blue-800">
               <CardHeader className="pb-3 sm:pb-6">
                 <CardTitle className="text-base sm:text-lg text-white">Module Stats</CardTitle>
               </CardHeader>
@@ -438,7 +438,7 @@ const ModulePage = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-blue-900">
+            <Card className="bg-blue-800">
               <CardHeader>
                 <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
               </CardHeader>
