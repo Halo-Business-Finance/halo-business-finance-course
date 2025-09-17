@@ -1,14 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Lock, ArrowRight } from "lucide-react";
-
 export const HorizontalNav = () => {
-  return (
-    <div className="hidden lg:block bg-white/95 backdrop-blur-sm px-8 py-4 w-full">
+  return <div className="hidden lg:block bg-white/95 backdrop-blur-sm px-8 py-4 w-full">
       <div className="flex items-center gap-12 w-full max-w-7xl mx-auto">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-10 h-10 bg-halo-navy rounded-sm flex items-center justify-center">
+          <div className="w-10 h-10 bg-halo-navy rounded-sm flex items-center justify-center bg-blue-800">
             <span className="text-white font-bold text-base">FP</span>
           </div>
           <span className="text-2xl font-bold text-gray-900">FinPilot</span>
@@ -16,52 +14,34 @@ export const HorizontalNav = () => {
 
         {/* Navigation Menu */}
         <div className="flex items-center gap-6 flex-nowrap flex-1 justify-center">
-          <NavLink 
-            to="/course-catalog" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/course-catalog" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`}>
             Course Catalog
           </NavLink>
-          <NavLink 
-            to="/pricing" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/pricing" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             Pricing
           </NavLink>
-          <NavLink 
-            to="/enterprise" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/enterprise" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             Enterprise
           </NavLink>
-          <NavLink 
-            to="/blog" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/blog" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             Blog
           </NavLink>
-          <NavLink 
-            to="/about" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/about" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             About
           </NavLink>
-          <NavLink 
-            to="/support" 
-            className={({ isActive }) => 
-              `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`
-            }
-          >
+          <NavLink to="/support" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             Support
           </NavLink>
         </div>
@@ -82,6 +62,5 @@ export const HorizontalNav = () => {
           </Button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
