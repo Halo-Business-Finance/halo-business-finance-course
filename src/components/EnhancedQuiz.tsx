@@ -9,35 +9,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  Trophy, 
-  Star, 
-  Brain,
-  Target,
-  Lightbulb,
-  Timer,
-  RotateCcw,
-  ChevronRight,
-  ChevronLeft,
-  Award
-} from "lucide-react";
+import { Clock, CheckCircle, XCircle, Trophy, Star, Brain, Target, Lightbulb, Timer, RotateCcw, ChevronRight, ChevronLeft, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-
-export type QuestionType = 
-  | 'multiple-choice' 
-  | 'multiple-select' 
-  | 'true-false' 
-  | 'short-answer' 
-  | 'essay' 
-  | 'drag-drop' 
-  | 'slider' 
-  | 'fill-blank'
-  | 'scenario';
-
+export type QuestionType = 'multiple-choice' | 'multiple-select' | 'true-false' | 'short-answer' | 'essay' | 'drag-drop' | 'slider' | 'fill-blank' | 'scenario';
 export interface QuizQuestion {
   id: string;
   type: QuestionType;
@@ -59,7 +34,6 @@ export interface QuizQuestion {
   // For fill-in-the-blank
   blanks?: string[];
 }
-
 interface EnhancedQuizProps {
   moduleId: string;
   moduleTitle: string;
@@ -71,7 +45,6 @@ interface EnhancedQuizProps {
   showHints?: boolean;
   allowReview?: boolean;
 }
-
 interface QuizResults {
   totalQuestions: number;
   correctAnswers: number;
@@ -86,7 +59,6 @@ interface QuizResults {
     points: number;
   }[];
 }
-
 export const EnhancedQuiz = ({
   moduleId,
   moduleTitle,
@@ -111,9 +83,9 @@ export const EnhancedQuiz = ({
   const [showHint, setShowHint] = useState(false);
   const [confidence, setConfidence] = useState<Record<string, number>>({});
   const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(new Set());
-
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const currentQ = questions[currentQuestion];
 
   // Timer effect
@@ -129,7 +101,6 @@ export const EnhancedQuiz = ({
         });
         setCurrentQuestionTime(prev => prev + 1);
       }, 1000);
-
       return () => clearInterval(timer);
     }
   }, [quizStarted, quizCompleted, timeRemaining]);
@@ -140,16 +111,14 @@ export const EnhancedQuiz = ({
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
   const startQuiz = () => {
     setQuizStarted(true);
     setAttemptCount(prev => prev + 1);
     toast({
       title: "Quiz Started! 🚀",
-      description: `You have ${timeLimit} minutes to complete this quiz. Good luck!`,
+      description: `You have ${timeLimit} minutes to complete this quiz. Good luck!`
     });
   };
-
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setAnswers({});
@@ -163,15 +132,18 @@ export const EnhancedQuiz = ({
     setConfidence({});
     setFlaggedQuestions(new Set());
   };
-
   const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers(prev => ({ ...prev, [questionId]: answer }));
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: answer
+    }));
   };
-
   const handleConfidence = (questionId: string, level: number) => {
-    setConfidence(prev => ({ ...prev, [questionId]: level }));
+    setConfidence(prev => ({
+      ...prev,
+      [questionId]: level
+    }));
   };
-
   const toggleFlag = (questionId: string) => {
     setFlaggedQuestions(prev => {
       const newSet = new Set(prev);
@@ -183,7 +155,6 @@ export const EnhancedQuiz = ({
       return newSet;
     });
   };
-
   const nextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
       // Save time spent on current question
@@ -196,29 +167,24 @@ export const EnhancedQuiz = ({
       setShowHint(false);
     }
   };
-
   const previousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(prev => prev - 1);
       setShowHint(false);
     }
   };
-
   const calculateResults = (): QuizResults => {
     let correctCount = 0;
     let totalPoints = 0;
     let earnedPoints = 0;
-    
     const answersDetail = questions.map(q => {
       const userAnswer = answers[q.id];
       const isCorrect = checkAnswer(q, userAnswer);
-      
       totalPoints += q.points;
       if (isCorrect) {
         correctCount++;
         earnedPoints += q.points;
       }
-
       return {
         questionId: q.id,
         correct: isCorrect,
@@ -227,10 +193,8 @@ export const EnhancedQuiz = ({
         points: isCorrect ? q.points : 0
       };
     });
-
-    const percentage = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
-    const timeSpent = (timeLimit * 60) - timeRemaining;
-
+    const percentage = totalPoints > 0 ? earnedPoints / totalPoints * 100 : 0;
+    const timeSpent = timeLimit * 60 - timeRemaining;
     return {
       totalQuestions: questions.length,
       correctAnswers: correctCount,
@@ -240,118 +204,76 @@ export const EnhancedQuiz = ({
       answersDetail
     };
   };
-
   const checkAnswer = (question: QuizQuestion, userAnswer: any): boolean => {
     if (!userAnswer || !question.correctAnswers) return false;
-
     switch (question.type) {
       case 'multiple-choice':
       case 'true-false':
         return userAnswer === question.correctAnswers[0];
-      
       case 'multiple-select':
         const userSet = new Set(userAnswer);
         const correctSet = new Set(question.correctAnswers);
-        return userSet.size === correctSet.size && 
-               [...userSet].every(x => correctSet.has(x as string | number));
-      
+        return userSet.size === correctSet.size && [...userSet].every(x => correctSet.has(x as string | number));
       case 'short-answer':
-        return question.correctAnswers.some(correct => 
-          userAnswer.toLowerCase().trim() === String(correct).toLowerCase().trim()
-        );
-      
+        return question.correctAnswers.some(correct => userAnswer.toLowerCase().trim() === String(correct).toLowerCase().trim());
       case 'slider':
         const tolerance = ((question.max || 100) - (question.min || 0)) * 0.05; // 5% tolerance
         const targetValue = Number(question.correctAnswers[0]);
         const userValue = Number(userAnswer);
         return Math.abs(userValue - targetValue) <= tolerance;
-      
       case 'fill-blank':
         const userBlanks = userAnswer || [];
-        return question.correctAnswers.every((correct: any, index: number) => 
-          userBlanks[index]?.toLowerCase().trim() === String(correct).toLowerCase().trim()
-        );
-      
+        return question.correctAnswers.every((correct: any, index: number) => userBlanks[index]?.toLowerCase().trim() === String(correct).toLowerCase().trim());
       default:
         return false;
     }
   };
-
   const handleSubmitQuiz = () => {
     const quizResults = calculateResults();
     setResults(quizResults);
     setQuizCompleted(true);
-    
     const passed = quizResults.percentage >= passingScore;
-    
     onComplete?.(passed, quizResults.score, quizResults);
-    
     toast({
       title: passed ? "🎉 Quiz Passed!" : "📝 Quiz Completed",
-      description: passed 
-        ? `Congratulations! You scored ${quizResults.percentage.toFixed(1)}%`
-        : `You scored ${quizResults.percentage.toFixed(1)}%. Keep studying!`,
+      description: passed ? `Congratulations! You scored ${quizResults.percentage.toFixed(1)}%` : `You scored ${quizResults.percentage.toFixed(1)}%. Keep studying!`,
       variant: passed ? "default" : "destructive"
     });
   };
-
   const getProgressPercentage = () => {
     const answered = Object.keys(answers).length;
-    return (answered / questions.length) * 100;
+    return answered / questions.length * 100;
   };
-
   const renderQuestion = (question: QuizQuestion) => {
     const userAnswer = answers[question.id];
-
     switch (question.type) {
       case 'multiple-choice':
-        return (
-          <RadioGroup
-            value={userAnswer || ""}
-            onValueChange={(value) => handleAnswer(question.id, value)}
-          >
-            {question.options?.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2">
+        return <RadioGroup value={userAnswer || ""} onValueChange={value => handleAnswer(question.id, value)}>
+            {question.options?.map((option, index) => <div key={index} className="flex items-center space-x-2">
                 <RadioGroupItem value={option} id={`${question.id}-${index}`} />
                 <Label htmlFor={`${question.id}-${index}`} className="flex-1 cursor-pointer">
                   {option}
                 </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        );
-
+              </div>)}
+          </RadioGroup>;
       case 'multiple-select':
-        return (
-          <div className="space-y-3">
-            {question.options?.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`${question.id}-${index}`}
-                  checked={(userAnswer || []).includes(option)}
-                  onCheckedChange={(checked) => {
-                    const currentAnswers = userAnswer || [];
-                    if (checked) {
-                      handleAnswer(question.id, [...currentAnswers, option]);
-                    } else {
-                      handleAnswer(question.id, currentAnswers.filter((a: string) => a !== option));
-                    }
-                  }}
-                />
+        return <div className="space-y-3">
+            {question.options?.map((option, index) => <div key={index} className="flex items-center space-x-2">
+                <Checkbox id={`${question.id}-${index}`} checked={(userAnswer || []).includes(option)} onCheckedChange={checked => {
+              const currentAnswers = userAnswer || [];
+              if (checked) {
+                handleAnswer(question.id, [...currentAnswers, option]);
+              } else {
+                handleAnswer(question.id, currentAnswers.filter((a: string) => a !== option));
+              }
+            }} />
                 <Label htmlFor={`${question.id}-${index}`} className="flex-1 cursor-pointer">
                   {option}
                 </Label>
-              </div>
-            ))}
-          </div>
-        );
-
+              </div>)}
+          </div>;
       case 'true-false':
-        return (
-          <RadioGroup
-            value={userAnswer || ""}
-            onValueChange={(value) => handleAnswer(question.id, value)}
-          >
+        return <RadioGroup value={userAnswer || ""} onValueChange={value => handleAnswer(question.id, value)}>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="true" id={`${question.id}-true`} />
               <Label htmlFor={`${question.id}-true`} className="cursor-pointer">True</Label>
@@ -360,87 +282,42 @@ export const EnhancedQuiz = ({
               <RadioGroupItem value="false" id={`${question.id}-false`} />
               <Label htmlFor={`${question.id}-false`} className="cursor-pointer">False</Label>
             </div>
-          </RadioGroup>
-        );
-
+          </RadioGroup>;
       case 'short-answer':
-        return (
-          <Input
-            placeholder="Enter your answer..."
-            value={userAnswer || ""}
-            onChange={(e) => handleAnswer(question.id, e.target.value)}
-          />
-        );
-
+        return <Input placeholder="Enter your answer..." value={userAnswer || ""} onChange={e => handleAnswer(question.id, e.target.value)} />;
       case 'essay':
-        return (
-          <Textarea
-            placeholder="Write your detailed answer here..."
-            value={userAnswer || ""}
-            onChange={(e) => handleAnswer(question.id, e.target.value)}
-            rows={6}
-          />
-        );
-
+        return <Textarea placeholder="Write your detailed answer here..." value={userAnswer || ""} onChange={e => handleAnswer(question.id, e.target.value)} rows={6} />;
       case 'slider':
-        return (
-          <div className="space-y-4">
+        return <div className="space-y-4">
             <div className="text-center">
               <span className="text-2xl font-bold">{userAnswer || question.min}</span>
             </div>
-            <Slider
-              value={[userAnswer || question.min!]}
-              onValueChange={([value]) => handleAnswer(question.id, value)}
-              min={question.min}
-              max={question.max}
-              step={1}
-              className="w-full"
-            />
+            <Slider value={[userAnswer || question.min!]} onValueChange={([value]) => handleAnswer(question.id, value)} min={question.min} max={question.max} step={1} className="w-full" />
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>{question.min}</span>
               <span>{question.max}</span>
             </div>
-          </div>
-        );
-
+          </div>;
       case 'fill-blank':
-        return (
-          <div className="space-y-3">
-            {question.blanks?.map((blank, index) => (
-              <div key={index} className="flex items-center gap-2">
+        return <div className="space-y-3">
+            {question.blanks?.map((blank, index) => <div key={index} className="flex items-center gap-2">
                 <Label className="min-w-0 flex-1">{blank}:</Label>
-                <Input
-                  placeholder="Fill in the blank..."
-                  value={(userAnswer || [])[index] || ""}
-                  onChange={(e) => {
-                    const currentAnswers = userAnswer || [];
-                    const newAnswers = [...currentAnswers];
-                    newAnswers[index] = e.target.value;
-                    handleAnswer(question.id, newAnswers);
-                  }}
-                  className="flex-1"
-                />
-              </div>
-            ))}
-          </div>
-        );
-
+                <Input placeholder="Fill in the blank..." value={(userAnswer || [])[index] || ""} onChange={e => {
+              const currentAnswers = userAnswer || [];
+              const newAnswers = [...currentAnswers];
+              newAnswers[index] = e.target.value;
+              handleAnswer(question.id, newAnswers);
+            }} className="flex-1" />
+              </div>)}
+          </div>;
       case 'scenario':
-        return (
-          <div className="space-y-4">
+        return <div className="space-y-4">
             <div className="p-4 bg-muted rounded-lg">
               <h4 className="font-medium mb-2">Scenario:</h4>
               <p className="text-muted-foreground">{question.scenario}</p>
             </div>
-            <Textarea
-              placeholder="Describe how you would handle this scenario..."
-              value={userAnswer || ""}
-              onChange={(e) => handleAnswer(question.id, e.target.value)}
-              rows={4}
-            />
-          </div>
-        );
-
+            <Textarea placeholder="Describe how you would handle this scenario..." value={userAnswer || ""} onChange={e => handleAnswer(question.id, e.target.value)} rows={4} />
+          </div>;
       default:
         return <div>Question type not supported</div>;
     }
@@ -448,8 +325,7 @@ export const EnhancedQuiz = ({
 
   // Quiz start screen
   if (!quizStarted) {
-    return (
-      <Card className="max-w-2xl mx-auto">
+    return <Card className="max-w-2xl mx-auto">
         <CardHeader className="text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
             <Brain className="h-8 w-8 text-primary" />
@@ -476,44 +352,29 @@ export const EnhancedQuiz = ({
               Test your knowledge with this comprehensive quiz. You'll have {timeLimit} minutes to complete all questions.
             </p>
             
-            {attemptCount > 0 && (
-              <div className="p-4 bg-muted rounded-lg">
+            {attemptCount > 0 && <div className="p-4 bg-muted rounded-lg">
                 <p className="text-sm">
                   Attempt: {attemptCount} of {maxAttempts}
                   {attemptCount >= maxAttempts && " (Final Attempt)"}
                 </p>
-              </div>
-            )}
+              </div>}
 
-            {attemptCount >= maxAttempts ? (
-              <div className="text-center p-4 bg-destructive/10 rounded-lg">
+            {attemptCount >= maxAttempts ? <div className="text-center p-4 bg-destructive/10 rounded-lg">
                 <p className="text-destructive">You have reached the maximum number of attempts.</p>
-              </div>
-            ) : (
-              <Button 
-                onClick={startQuiz} 
-                size="lg" 
-                className="w-full max-w-xs"
-              >
+              </div> : <Button onClick={startQuiz} size="lg" className="w-full max-w-xs bg-blue-800 hover:bg-blue-700">
                 Start Quiz
-              </Button>
-            )}
+              </Button>}
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
 
   // Quiz results screen
   if (quizCompleted && results) {
     const passed = results.percentage >= passingScore;
-    
-    return (
-      <Card className="max-w-4xl mx-auto">
+    return <Card className="max-w-4xl mx-auto">
         <CardHeader className="text-center">
-          <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-            passed ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
-          }`}>
+          <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${passed ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
             {passed ? <Trophy className="h-8 w-8" /> : <XCircle className="h-8 w-8" />}
           </div>
           <CardTitle className="text-2xl">
@@ -539,17 +400,12 @@ export const EnhancedQuiz = ({
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          {allowReview && (
-            <div className="space-y-4">
+          {allowReview && <div className="space-y-4">
               <h3 className="text-lg font-semibold">Review Your Answers</h3>
               {results.answersDetail.map((answer, index) => {
-                const question = questions.find(q => q.id === answer.questionId);
-                if (!question) return null;
-                
-                return (
-                  <Card key={answer.questionId} className={`border-l-4 ${
-                    answer.correct ? 'border-l-green-500' : 'border-l-red-500'
-                  }`}>
+            const question = questions.find(q => q.id === answer.questionId);
+            if (!question) return null;
+            return <Card key={answer.questionId} className={`border-l-4 ${answer.correct ? 'border-l-green-500' : 'border-l-red-500'}`}>
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between mb-2">
                         <h4 className="font-medium">Question {index + 1}</h4>
@@ -563,54 +419,40 @@ export const EnhancedQuiz = ({
                         <div>
                           <span className="font-medium">Your Answer: </span>
                           <span className={answer.correct ? "text-green-600" : "text-red-600"}>
-                            {Array.isArray(answer.userAnswer) 
-                              ? answer.userAnswer.join(", ") 
-                              : String(answer.userAnswer || "No answer")}
+                            {Array.isArray(answer.userAnswer) ? answer.userAnswer.join(", ") : String(answer.userAnswer || "No answer")}
                           </span>
                         </div>
-                        {!answer.correct && (
-                          <div>
+                        {!answer.correct && <div>
                             <span className="font-medium">Correct Answer: </span>
                             <span className="text-green-600">
-                              {Array.isArray(answer.correctAnswer)
-                                ? answer.correctAnswer.join(", ")
-                                : String(answer.correctAnswer)}
+                              {Array.isArray(answer.correctAnswer) ? answer.correctAnswer.join(", ") : String(answer.correctAnswer)}
                             </span>
-                          </div>
-                        )}
-                        {question.explanation && (
-                          <div className="mt-3 p-3 bg-muted rounded">
+                          </div>}
+                        {question.explanation && <div className="mt-3 p-3 bg-muted rounded">
                             <span className="font-medium">Explanation: </span>
                             {question.explanation}
-                          </div>
-                        )}
+                          </div>}
                       </div>
                     </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+                  </Card>;
+          })}
+            </div>}
 
           <div className="flex justify-center gap-4">
-            {attemptCount < maxAttempts && !passed && (
-              <Button onClick={resetQuiz} variant="outline">
+            {attemptCount < maxAttempts && !passed && <Button onClick={resetQuiz} variant="outline">
                 <RotateCcw className="h-4 w-4 mr-2" />
                 Retake Quiz
-              </Button>
-            )}
+              </Button>}
             <Button onClick={() => window.history.back()}>
               Back to Module
             </Button>
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
 
   // Quiz question screen
-  return (
-    <Card className="max-w-4xl mx-auto">
+  return <Card className="max-w-4xl mx-auto">
       <CardHeader>
         {/* Quiz Progress Header */}
         <div className="flex items-center justify-between mb-4">
@@ -618,8 +460,7 @@ export const EnhancedQuiz = ({
             <Badge variant="outline">
               Question {currentQuestion + 1} of {questions.length}
             </Badge>
-            <Badge variant={currentQ.difficulty === 'easy' ? 'success' : 
-                          currentQ.difficulty === 'medium' ? 'default' : 'destructive'}>
+            <Badge variant={currentQ.difficulty === 'easy' ? 'success' : currentQ.difficulty === 'medium' ? 'default' : 'destructive'}>
               {currentQ.difficulty}
             </Badge>
             <Badge variant="outline" className="flex items-center gap-1">
@@ -629,12 +470,7 @@ export const EnhancedQuiz = ({
           </div>
           
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => toggleFlag(currentQ.id)}
-              className={flaggedQuestions.has(currentQ.id) ? "text-yellow-600" : ""}
-            >
+            <Button variant="ghost" size="sm" onClick={() => toggleFlag(currentQ.id)} className={flaggedQuestions.has(currentQ.id) ? "text-yellow-600" : ""}>
               🚩 {flaggedQuestions.has(currentQ.id) ? "Flagged" : "Flag"}
             </Button>
             
@@ -659,23 +495,25 @@ export const EnhancedQuiz = ({
 
       <CardContent className="space-y-6">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentQuestion}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-            className="space-y-6"
-          >
+          <motion.div key={currentQuestion} initial={{
+          opacity: 0,
+          x: 20
+        }} animate={{
+          opacity: 1,
+          x: 0
+        }} exit={{
+          opacity: 0,
+          x: -20
+        }} transition={{
+          duration: 0.3
+        }} className="space-y-6">
             {/* Question */}
             <div>
               <h3 className="text-xl font-semibold mb-4">{currentQ.question}</h3>
-              {currentQ.type === 'scenario' && currentQ.scenario && (
-                <div className="p-4 bg-blue-50 rounded-lg mb-4">
+              {currentQ.type === 'scenario' && currentQ.scenario && <div className="p-4 bg-blue-50 rounded-lg mb-4">
                   <h4 className="font-medium mb-2">Scenario:</h4>
                   <p className="text-muted-foreground">{currentQ.scenario}</p>
-                </div>
-              )}
+                </div>}
             </div>
 
             {/* Answer Options */}
@@ -690,54 +528,39 @@ export const EnhancedQuiz = ({
               </Label>
               <div className="flex items-center gap-4">
                 <span className="text-sm">Not Confident</span>
-                <Slider
-                  value={[confidence[currentQ.id] || 50]}
-                  onValueChange={([value]) => handleConfidence(currentQ.id, value)}
-                  max={100}
-                  step={10}
-                  className="flex-1"
-                />
+                <Slider value={[confidence[currentQ.id] || 50]} onValueChange={([value]) => handleConfidence(currentQ.id, value)} max={100} step={10} className="flex-1" />
                 <span className="text-sm">Very Confident</span>
               </div>
             </div>
 
             {/* Hint */}
-            {showHints && (
-              <div className="space-y-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowHint(!showHint)}
-                  className="text-blue-600 hover:text-blue-700"
-                >
+            {showHints && <div className="space-y-2">
+                <Button variant="ghost" size="sm" onClick={() => setShowHint(!showHint)} className="text-blue-600 hover:text-blue-700">
                   <Lightbulb className="h-4 w-4 mr-2" />
                   {showHint ? "Hide" : "Show"} Hint
                 </Button>
                 
-                {showHint && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="p-3 bg-blue-50 rounded border-l-4 border-l-blue-500"
-                  >
+                {showHint && <motion.div initial={{
+              opacity: 0,
+              height: 0
+            }} animate={{
+              opacity: 1,
+              height: "auto"
+            }} exit={{
+              opacity: 0,
+              height: 0
+            }} className="p-3 bg-blue-50 rounded border-l-4 border-l-blue-500">
                     <p className="text-sm text-blue-800">
                       💡 Think about the key concepts we covered in this module. Consider all options carefully.
                     </p>
-                  </motion.div>
-                )}
-              </div>
-            )}
+                  </motion.div>}
+              </div>}
           </motion.div>
         </AnimatePresence>
 
         {/* Navigation */}
         <div className="flex items-center justify-between pt-6 border-t">
-          <Button
-            variant="outline"
-            onClick={previousQuestion}
-            disabled={currentQuestion === 0}
-          >
+          <Button variant="outline" onClick={previousQuestion} disabled={currentQuestion === 0}>
             <ChevronLeft className="h-4 w-4 mr-2" />
             Previous
           </Button>
@@ -745,37 +568,18 @@ export const EnhancedQuiz = ({
           <div className="flex items-center gap-2">
             {/* Question Navigation Dots */}
             <div className="flex gap-1">
-              {questions.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentQuestion(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentQuestion
-                      ? "bg-primary"
-                      : answers[questions[index].id]
-                      ? "bg-green-500"
-                      : flaggedQuestions.has(questions[index].id)
-                      ? "bg-yellow-500"
-                      : "bg-muted"
-                  }`}
-                />
-              ))}
+              {questions.map((_, index) => <button key={index} onClick={() => setCurrentQuestion(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentQuestion ? "bg-primary" : answers[questions[index].id] ? "bg-green-500" : flaggedQuestions.has(questions[index].id) ? "bg-yellow-500" : "bg-muted"}`} />)}
             </div>
           </div>
 
-          {currentQuestion === questions.length - 1 ? (
-            <Button onClick={handleSubmitQuiz} className="bg-green-600 hover:bg-green-700">
+          {currentQuestion === questions.length - 1 ? <Button onClick={handleSubmitQuiz} className="bg-green-600 hover:bg-green-700">
               Submit Quiz
               <Award className="h-4 w-4 ml-2" />
-            </Button>
-          ) : (
-            <Button onClick={nextQuestion}>
+            </Button> : <Button onClick={nextQuestion}>
               Next
               <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
-          )}
+            </Button>}
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
