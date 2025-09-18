@@ -282,11 +282,9 @@ const ModulePage = () => {
     if (title.includes('lines of credit')) return 'lines-of-credit';
     return 'general';
   };
-
   const getModuleSpecificContent = (module: any) => {
     const moduleType = getModuleType(module);
     const isExpert = module.title.toLowerCase().includes('expert');
-    
     const content = {
       'sba-7a': {
         title: 'SBA 7(a) Loan Program',
@@ -324,97 +322,35 @@ const ModulePage = () => {
         focus: isExpert ? 'Advanced strategies and portfolio management' : 'Core concepts and foundational principles'
       }
     };
-
     const moduleContent = content[moduleType] || content.general;
-    
-    return (
-      <div className="bg-blue-50 p-4 rounded-lg mb-4">
-        <h5 className="font-medium text-blue-900 mb-2">{moduleContent.title}</h5>
-        <p className="text-sm text-blue-800 mb-2">{moduleContent.description}</p>
-        <p className="text-xs text-blue-700 font-medium">Focus: {moduleContent.focus}</p>
-      </div>
-    );
+    return <div className="bg-blue-50 p-4 rounded-lg mb-4">
+        <h5 className="font-medium mb-2 text-black">{moduleContent.title}</h5>
+        <p className="text-sm mb-2 text-black">{moduleContent.description}</p>
+        <p className="text-xs font-medium text-black">Focus: {moduleContent.focus}</p>
+      </div>;
   };
-
   const getModuleLearningObjectives = (module: any) => {
     const moduleType = getModuleType(module);
     const isExpert = module.title.toLowerCase().includes('expert');
-    
     const objectives = {
-      'sba-7a': isExpert ? [
-        'Master advanced SBA 7(a) underwriting techniques and risk assessment',
-        'Develop expertise in complex deal structuring and portfolio optimization',
-        'Implement advanced compliance and regulatory strategies',
-        'Execute sophisticated client relationship management approaches'
-      ] : [
-        'Understand SBA 7(a) program structure and eligibility requirements',
-        'Learn application processes and required documentation',
-        'Master basic underwriting principles and risk assessment',
-        'Develop client consultation and presentation skills'
-      ],
-      'invoice-factoring': isExpert ? [
-        'Master advanced factoring portfolio management strategies',
-        'Develop innovative factoring structures and risk mitigation techniques',
-        'Execute complex client evaluation and due diligence processes',
-        'Implement advanced collection and account management systems'
-      ] : [
-        'Understand invoice factoring fundamentals and cash flow benefits',
-        'Learn client eligibility assessment and account evaluation',
-        'Master basic factoring calculations and fee structures',
-        'Develop client onboarding and account setup processes'
-      ],
-      'equipment-financing': isExpert ? [
-        'Master complex equipment portfolio management and optimization',
-        'Develop advanced equipment valuation and risk assessment techniques',
-        'Execute innovative financing structures and vendor relationships',
-        'Implement sophisticated collection and remarketing strategies'
-      ] : [
-        'Understand equipment financing basics and collateral evaluation',
-        'Learn equipment types, depreciation, and valuation methods',
-        'Master basic financing structures and payment calculations',
-        'Develop vendor relationships and client acquisition strategies'
-      ]
+      'sba-7a': isExpert ? ['Master advanced SBA 7(a) underwriting techniques and risk assessment', 'Develop expertise in complex deal structuring and portfolio optimization', 'Implement advanced compliance and regulatory strategies', 'Execute sophisticated client relationship management approaches'] : ['Understand SBA 7(a) program structure and eligibility requirements', 'Learn application processes and required documentation', 'Master basic underwriting principles and risk assessment', 'Develop client consultation and presentation skills'],
+      'invoice-factoring': isExpert ? ['Master advanced factoring portfolio management strategies', 'Develop innovative factoring structures and risk mitigation techniques', 'Execute complex client evaluation and due diligence processes', 'Implement advanced collection and account management systems'] : ['Understand invoice factoring fundamentals and cash flow benefits', 'Learn client eligibility assessment and account evaluation', 'Master basic factoring calculations and fee structures', 'Develop client onboarding and account setup processes'],
+      'equipment-financing': isExpert ? ['Master complex equipment portfolio management and optimization', 'Develop advanced equipment valuation and risk assessment techniques', 'Execute innovative financing structures and vendor relationships', 'Implement sophisticated collection and remarketing strategies'] : ['Understand equipment financing basics and collateral evaluation', 'Learn equipment types, depreciation, and valuation methods', 'Master basic financing structures and payment calculations', 'Develop vendor relationships and client acquisition strategies']
     };
-
-    return objectives[moduleType] || [
-      'Master core concepts and industry best practices',
-      'Develop practical application skills through case studies',
-      'Build analytical and decision-making capabilities',
-      'Enhance client service and relationship management skills'
-    ];
+    return objectives[moduleType] || ['Master core concepts and industry best practices', 'Develop practical application skills through case studies', 'Build analytical and decision-making capabilities', 'Enhance client service and relationship management skills'];
   };
-
   const getModuleKeyTopics = (module: any) => {
     const moduleType = getModuleType(module);
-    
     const topics = {
-      'sba-7a': [
-        'Program Overview & Structure', 'Eligibility Requirements', 'Loan Terms & Conditions',
-        'Application Process', 'Underwriting Guidelines', 'Documentation Requirements',
-        'Guaranty Procedures', 'Servicing & Compliance'
-      ],
-      'invoice-factoring': [
-        'Factoring Fundamentals', 'Account Evaluation', 'Due Diligence Process',
-        'Rate Structures', 'Advance Rates', 'Collection Procedures',
-        'Client Onboarding', 'Risk Management'
-      ],
-      'equipment-financing': [
-        'Equipment Types & Categories', 'Valuation Methods', 'Depreciation Analysis',
-        'Financing Structures', 'Vendor Programs', 'Documentation Requirements',
-        'Collection Strategies', 'Remarketing Processes'
-      ]
+      'sba-7a': ['Program Overview & Structure', 'Eligibility Requirements', 'Loan Terms & Conditions', 'Application Process', 'Underwriting Guidelines', 'Documentation Requirements', 'Guaranty Procedures', 'Servicing & Compliance'],
+      'invoice-factoring': ['Factoring Fundamentals', 'Account Evaluation', 'Due Diligence Process', 'Rate Structures', 'Advance Rates', 'Collection Procedures', 'Client Onboarding', 'Risk Management'],
+      'equipment-financing': ['Equipment Types & Categories', 'Valuation Methods', 'Depreciation Analysis', 'Financing Structures', 'Vendor Programs', 'Documentation Requirements', 'Collection Strategies', 'Remarketing Processes']
     };
-
-    return topics[moduleType] || [
-      'Industry Overview', 'Market Analysis', 'Risk Assessment',
-      'Documentation', 'Compliance', 'Best Practices'
-    ];
+    return topics[moduleType] || ['Industry Overview', 'Market Analysis', 'Risk Assessment', 'Documentation', 'Compliance', 'Best Practices'];
   };
-
   const getModulePrerequisites = (module: any) => {
     const moduleType = getModuleType(module);
     const isExpert = module.title.toLowerCase().includes('expert');
-    
     if (isExpert) {
       const expertPrereqs = {
         'sba-7a': 'Completion of SBA 7(a) Beginner course and 1+ years of SBA lending experience.',
@@ -423,33 +359,26 @@ const ModulePage = () => {
       };
       return expertPrereqs[moduleType] || 'Completion of beginner-level course and relevant industry experience.';
     }
-
     return 'Basic understanding of commercial lending principles and business finance fundamentals. No prior specialized experience required.';
   };
-
   const getModuleProfessionalSkills = (module: any) => {
     const isExpert = module.title.toLowerCase().includes('expert');
-    
     if (isExpert) {
       return 'Advanced analytical thinking, strategic portfolio management, complex problem-solving, and senior-level client relationship management.';
     }
     return 'Financial analysis fundamentals, client communication, documentation skills, and risk assessment basics.';
   };
-
   const getModuleBusinessImpact = (module: any) => {
     const moduleType = getModuleType(module);
     const isExpert = module.title.toLowerCase().includes('expert');
-    
     if (isExpert) {
       return 'Portfolio optimization, increased deal closure rates, enhanced risk management, and senior-level business development capabilities.';
     }
-
     const impacts = {
       'sba-7a': 'Access to $5M+ financing opportunities and improved small business lending capabilities.',
       'invoice-factoring': 'Enhanced working capital solutions and improved client cash flow management.',
       'equipment-financing': 'Expanded equipment financing opportunities and stronger vendor partnerships.'
     };
-
     return impacts[moduleType] || 'Enhanced lending capabilities and improved client service delivery.';
   };
   return <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
@@ -523,24 +452,20 @@ const ModulePage = () => {
                 <div>
                   <h4 className="font-semibold mb-3 text-inherit">Learning Objectives</h4>
                   <ul className="space-y-2 text-sm text-muted-foreground">
-                    {getModuleLearningObjectives(module).map((objective, index) => (
-                      <li key={index} className="flex items-start gap-2">
+                    {getModuleLearningObjectives(module).map((objective, index) => <li key={index} className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                        <span>{objective}</span>
-                      </li>
-                    ))}
+                        <span className="text-black">{objective}</span>
+                      </li>)}
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-3 text-inherit">Key Topics Covered</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {getModuleKeyTopics(module).map((topic, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    {getModuleKeyTopics(module).map((topic, index) => <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
                         <CheckCircle className="h-3 w-3 text-blue-600" />
-                        <span>{topic}</span>
-                      </div>
-                    ))}
+                        <span className="text-black">{topic}</span>
+                      </div>)}
                   </div>
                 </div>
 
@@ -552,7 +477,7 @@ const ModulePage = () => {
                     </p>
                     <div className="flex items-center gap-2 text-xs text-blue-700">
                       <Clock className="h-3 w-3" />
-                      <span>Recommended preparation time: 15 minutes</span>
+                      <span className="text-black">Recommended preparation time: 15 minutes</span>
                     </div>
                   </div>
                 </div>
@@ -561,12 +486,12 @@ const ModulePage = () => {
                   <h4 className="font-semibold mb-3 text-inherit">Module Outcomes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-green-50 p-3 rounded-lg">
-                      <h5 className="font-medium text-sm text-green-800 mb-1">Professional Skills</h5>
-                      <p className="text-xs text-green-700">{getModuleProfessionalSkills(module)}</p>
+                      <h5 className="font-medium text-sm mb-1 text-black">Professional Skills</h5>
+                      <p className="text-xs text-black">{getModuleProfessionalSkills(module)}</p>
                     </div>
                     <div className="bg-blue-50 p-3 rounded-lg">
-                      <h5 className="font-medium text-sm text-blue-800 mb-1">Business Impact</h5>
-                      <p className="text-xs text-blue-700">{getModuleBusinessImpact(module)}</p>
+                      <h5 className="font-medium text-sm mb-1 text-black">Business Impact</h5>
+                      <p className="text-xs text-black">{getModuleBusinessImpact(module)}</p>
                     </div>
                   </div>
                 </div>
