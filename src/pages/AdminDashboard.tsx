@@ -285,7 +285,7 @@ const AdminDashboard = () => {
                   id: item.user_id,
                   user_id: item.user_id,
                   role: item.role,
-                  is_active: item.role_is_active,
+                  is_active: item.role_is_active ?? item.is_active ?? true,
                   created_at: item.role_created_at || item.created_at,
                   updated_at: item.updated_at,
                   profiles: {
@@ -303,7 +303,7 @@ const AdminDashboard = () => {
                 id: item.user_id,
                 user_id: item.user_id,
                 role: item.role,
-                is_active: item.role_is_active,
+                is_active: item.role_is_active ?? item.is_active ?? true,
                 created_at: item.role_created_at || item.created_at,
                 updated_at: item.updated_at,
                 profiles: {
