@@ -923,8 +923,8 @@ const AdminDashboard = () => {
                 <TrendingUp className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Progress</span>
               </TabsTrigger>
-              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <BookOpen className="h-4 w-4 text-navy-900" />
+              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl bg-white">
+                <BookOpen className="h-4 w-4 text-navy-900 bg-white" />
                 <span className="hidden sm:inline">Courses</span>
               </TabsTrigger>
               <TabsTrigger value="videos" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
@@ -946,7 +946,7 @@ const AdminDashboard = () => {
                       <div className="h-6 bg-muted rounded w-1/2 mt-2"></div>
                     </CardHeader>
                   </Card>)}
-              </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white">
                 <Card className="border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-lg">
@@ -965,7 +965,7 @@ const AdminDashboard = () => {
                           </Badge>
                         </div>)}
                       {securityEvents.length === 0 && <div className="text-center py-6">
-                          <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-2 bg-white">
                             <Activity className="h-6 w-6 text-navy-900" />
                           </div>
                           <p className="text-sm text-muted-foreground">No recent security events</p>
