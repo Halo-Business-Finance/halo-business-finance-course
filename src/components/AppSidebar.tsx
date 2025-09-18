@@ -203,7 +203,7 @@ export function AppSidebar({
                    <SidebarMenuButton asChild>
                      <button onClick={() => handleNavigation(item.url, true, (item as any).action)} className={`w-full flex items-center gap-4 text-black hover:text-black py-2 px-4 rounded-lg transition-all duration-200 min-h-[2.75rem]`}>
                         <item.icon className={`${item.title === 'Dashboard' ? 'h-9 w-9' : 'h-8 w-8'} text-navy-900 flex-shrink-0`} />
-                        {!collapsed && <span className="text-black text-sm font-medium">{item.title}</span>}
+                        {!collapsed && <span className="text-black text-xs font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
                 </SidebarMenuItem>)}
