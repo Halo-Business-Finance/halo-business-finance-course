@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,7 @@ import { useCourses, Course } from "@/hooks/useCourses";
 import { useModules } from "@/hooks/useModules";
 import { CourseImageEditor } from "./CourseImageEditor";
 import { CourseInstructorManager } from "./CourseInstructorManager";
-import { CourseModuleManager } from "./CourseModuleManager";
+import { CourseModuleManager, CourseModuleManagerHandle } from "./CourseModuleManager";
 import { AssociatedModulesView } from "./AssociatedModulesView";
 import { runMigration } from "@/utils/migrateCourseData";
 import { supabase } from "@/integrations/supabase/client";
@@ -51,6 +51,11 @@ export function CourseManager({}: CourseManagerProps) {
   const [editingImageCourse, setEditingImageCourse] = useState<Course | null>(null);
   const [showImageEditor, setShowImageEditor] = useState(false);
   const { toast } = useToast();
+
+  // Ref to control the CourseModuleManager dialog
+  const moduleManagerRef = useRef<CourseModuleManagerHandle>(null);
+  // Control top-level admin tabs (programs/modules)
+  const [adminTabs, setAdminTabs] = useState<'programs' | 'modules'>('programs');
 
   const [formData, setFormData] = useState({
     id: "",
@@ -285,7 +290,7 @@ export function CourseManager({}: CourseManagerProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="programs" className="space-y-6">
+          <Tabs value={adminTabs} onValueChange={(v) => setAdminTabs(v as 'programs' | 'modules')} className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="programs" className="flex items-center gap-2">
                 <GraduationCap className="h-4 w-4" />

@@ -21,9 +21,10 @@ interface CourseModule {
 
 interface AssociatedModulesViewProps {
   courseId: string;
+  onAddFirstModule?: (courseId: string) => void;
 }
 
-export function AssociatedModulesView({ courseId }: AssociatedModulesViewProps) {
+export function AssociatedModulesView({ courseId, onAddFirstModule }: AssociatedModulesViewProps) {
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
@@ -87,7 +88,7 @@ export function AssociatedModulesView({ courseId }: AssociatedModulesViewProps) 
             This course program doesn't have any associated modules yet. 
             You can create modules and assign them to this course in the Course Modules tab.
           </p>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => onAddFirstModule?.(courseId)}>
             <Plus className="h-4 w-4 mr-2" />
             Add First Module
           </Button>

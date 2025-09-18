@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +33,11 @@ interface CourseModule {
   updated_at: string | null;
 }
 
-export function CourseModuleManager() {
+export interface CourseModuleManagerHandle {
+  openCreate: (prefillCourseId?: string) => void;
+}
+
+export const CourseModuleManager = forwardRef<CourseModuleManagerHandle, {}>((_, ref) => {
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | null>(null);
@@ -143,6 +147,17 @@ export function CourseModuleManager() {
       status: "locked",
     });
   };
+
+  useImperativeHandle(ref, () => ({
+    openCreate: (prefillCourseId?: string) => {
+      setEditingModule(null);
+      resetForm();
+      if (prefillCourseId) {
+        setFormData(prev => ({ ...prev, course_id: prefillCourseId }));
+      }
+      setShowAddDialog(true);
+    }
+  }));
 
   const handleCreate = () => {
     console.log('Add module button clicked');
@@ -771,4 +786,4 @@ export function CourseModuleManager() {
       </Dialog>
     </div>
   );
-}
+});
