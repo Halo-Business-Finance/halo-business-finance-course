@@ -1017,7 +1017,7 @@ const AdminDashboard = () => {
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
-                        <span className="text-sm font-medium">Authentication</span>
+                        <span className="text-sm font-medium text-black">Authentication</span>
                         <Badge variant={systemStatus.authentication === 'active' ? 'default' : 'destructive'} className="shadow-sm capitalize">
                           {systemStatus.authentication === 'active' && '🟢'} 
                           {systemStatus.authentication === 'inactive' && '🟡'} 
@@ -1055,7 +1055,7 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-3 text-xl">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
                         <Users className="h-5 w-5 text-navy-900" />
                       </div>
                       User Management

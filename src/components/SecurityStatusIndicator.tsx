@@ -1,16 +1,14 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Shield, AlertTriangle, Lock, Eye, EyeOff } from 'lucide-react';
-
 interface SecurityStatusIndicatorProps {
   level: 'secure' | 'masked' | 'protected' | 'warning';
   message?: string;
   showIcon?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
-
-export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({ 
-  level, 
+export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({
+  level,
   message,
   showIcon = true,
   size = 'md'
@@ -54,21 +52,10 @@ export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = (
         };
     }
   };
-
   const config = getStatusConfig();
   const Icon = config.icon;
   const displayMessage = message || config.defaultMessage;
-  
   const iconSize = size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4';
   const textSize = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs';
-
-  return (
-    <Badge 
-      variant={config.variant}
-      className={`flex items-center gap-1 ${textSize} ${config.className}`}
-    >
-      {showIcon && <Icon className={iconSize} />}
-      {displayMessage}
-    </Badge>
-  );
+  return;
 };
