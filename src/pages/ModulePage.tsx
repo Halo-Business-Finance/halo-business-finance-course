@@ -485,7 +485,7 @@ const ModulePage = () => {
                 <div>
                   <h4 className="font-semibold mb-3 text-inherit">Module Outcomes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-green-50 p-3 rounded-lg">
+                    <div className="p-3 rounded-lg bg-blue-50">
                       <h5 className="font-medium text-sm mb-1 text-black">Professional Skills</h5>
                       <p className="text-xs text-black">{getModuleProfessionalSkills(module)}</p>
                     </div>
