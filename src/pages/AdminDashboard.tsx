@@ -791,8 +791,8 @@ const AdminDashboard = () => {
               Unable to load admin data due to permission restrictions.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4 bg-white">
-            <p className="text-sm text-muted-foreground">
+          <CardContent className="text-center space-y-4">
+            <p className="text-sm text-muted-foreground bg-white">
               This may indicate that your admin privileges are not properly configured.
             </p>
             <Button onClick={() => window.location.reload()} variant="outline" className="w-full">
@@ -809,14 +809,14 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-primary flex items-center justify-center shadow-glow bg-white rounded-none">
-                  <Shield className="h-8 w-8 text-navy-900 bg-white" />
+                <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-glow">
+                  <Shield className="h-8 w-8 text-navy-900" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                     Admin Dashboard
                   </h1>
-                  <p className="text-sm mt-1 text-black">
+                  <p className="text-muted-foreground text-sm mt-1">
                     Enterprise-grade system administration and monitoring
                   </p>
                   <div className="mt-3">
@@ -841,7 +841,7 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Total Users</CardTitle>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 bg-white">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                   <Users className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
@@ -858,7 +858,7 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Active Admins</CardTitle>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 bg-white">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                   <Shield className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
@@ -872,7 +872,7 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Security Events</CardTitle>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 bg-white">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                   <AlertTriangle className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
@@ -886,7 +886,7 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">System Health</CardTitle>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 bg-white">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                   <Activity className="h-6 w-6 text-navy-900" />
                 </div>
               </CardHeader>
@@ -923,8 +923,8 @@ const AdminDashboard = () => {
                 <TrendingUp className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Progress</span>
               </TabsTrigger>
-              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:shadow-elegant transition-all duration-300 bg-white rounded-none">
-                <BookOpen className="h-4 w-4 text-navy-900 bg-white" />
+              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <BookOpen className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Courses</span>
               </TabsTrigger>
               <TabsTrigger value="videos" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
@@ -946,7 +946,7 @@ const AdminDashboard = () => {
                       <div className="h-6 bg-muted rounded w-1/2 mt-2"></div>
                     </CardHeader>
                   </Card>)}
-              </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white">
+              </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card className="border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 text-lg">
@@ -965,7 +965,7 @@ const AdminDashboard = () => {
                           </Badge>
                         </div>)}
                       {securityEvents.length === 0 && <div className="text-center py-6">
-                          <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-2 bg-white">
+                          <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-2">
                             <Activity className="h-6 w-6 text-navy-900" />
                           </div>
                           <p className="text-sm text-muted-foreground">No recent security events</p>
@@ -1016,8 +1016,8 @@ const AdminDashboard = () => {
                           {systemStatus.database}
                         </Badge>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30 text-black">
-                        <span className="text-sm font-medium text-black">Authentication</span>
+                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                        <span className="text-sm font-medium">Authentication</span>
                         <Badge variant={systemStatus.authentication === 'active' ? 'default' : 'destructive'} className="shadow-sm capitalize">
                           {systemStatus.authentication === 'active' && '🟢'} 
                           {systemStatus.authentication === 'inactive' && '🟡'} 
