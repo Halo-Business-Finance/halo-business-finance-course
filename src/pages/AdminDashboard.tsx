@@ -791,14 +791,7 @@ const AdminDashboard = () => {
               Unable to load admin data due to permission restrictions.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground bg-white">
-              This may indicate that your admin privileges are not properly configured.
-            </p>
-            <Button onClick={() => window.location.reload()} variant="outline" className="w-full">
-              Retry
-            </Button>
-          </CardContent>
+          
         </Card>
       </div>;
   }
