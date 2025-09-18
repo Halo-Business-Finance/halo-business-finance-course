@@ -57,5 +57,13 @@ export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = (
   const displayMessage = message || config.defaultMessage;
   const iconSize = size === 'sm' ? 'h-3 w-3' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4';
   const textSize = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs';
-  return;
+  return (
+    <Badge 
+      variant={config.variant}
+      className={`${config.className} ${textSize} flex items-center gap-1`}
+    >
+      {showIcon && <Icon className={iconSize} />}
+      {displayMessage}
+    </Badge>
+  );
 };
