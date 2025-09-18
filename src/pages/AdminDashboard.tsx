@@ -816,7 +816,7 @@ const AdminDashboard = () => {
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                     Admin Dashboard
                   </h1>
-                  <p className="text-muted-foreground text-sm mt-1">
+                  <p className="text-muted-foreground text-sm mt-1 bg-white">
                     Enterprise-grade system administration and monitoring
                   </p>
                   <div className="mt-3">
@@ -846,7 +846,7 @@ const AdminDashboard = () => {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-2">{stats.totalUsers}</div>
+                <div className="text-3xl font-bold text-foreground mb-2 bg-white">{stats.totalUsers}</div>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-navy-900" />
                   <p className="text-sm text-accent font-semibold">+12% from last month</p>
