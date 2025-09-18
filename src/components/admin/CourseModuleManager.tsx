@@ -62,12 +62,15 @@ export function CourseModuleManager() {
   const loadModules = async () => {
     try {
       setLoading(true);
+      console.log('Loading course modules...');
       
       // Load modules from course_content_modules table which contains the migrated static data
       const { data: modules, error } = await supabase
         .from('course_content_modules')
         .select('id, title, description, duration, lessons_count, order_index, is_active, course_id, topics, status, created_at, updated_at')
         .order('order_index', { ascending: true });
+
+      console.log('Modules query result:', { modules, error, count: modules?.length });
 
       if (error) {
         console.error('Error loading course modules:', error);
@@ -142,9 +145,11 @@ export function CourseModuleManager() {
   };
 
   const handleCreate = () => {
+    console.log('Add module button clicked');
     setEditingModule(null);
     resetForm();
     setShowAddDialog(true);
+    console.log('Add dialog should be open:', true);
   };
 
   const handleEdit = (module: CourseModule) => {
