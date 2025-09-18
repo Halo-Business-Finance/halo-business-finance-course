@@ -285,7 +285,7 @@ const AdminDashboard = () => {
                   id: item.user_id,
                   user_id: item.user_id,
                   role: item.role,
-                  is_active: item.role_is_active !== false, // Default to true if undefined
+                  is_active: item.role_is_active,
                   created_at: item.role_created_at || item.created_at,
                   updated_at: item.updated_at,
                   profiles: {
@@ -303,7 +303,7 @@ const AdminDashboard = () => {
                 id: item.user_id,
                 user_id: item.user_id,
                 role: item.role,
-                is_active: item.role_is_active !== false, // Default to true if undefined
+                is_active: item.role_is_active,
                 created_at: item.role_created_at || item.created_at,
                 updated_at: item.updated_at,
                 profiles: {
@@ -809,8 +809,8 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-muted/10 border border-border/20 flex items-center justify-center rounded-lg">
-                  <Shield className="h-8 w-8 text-navy-900" />
+                <div className="w-16 h-16 bg-gradient-primary flex items-center justify-center shadow-glow bg-white rounded-none">
+                  <Shield className="h-8 w-8 text-navy-900 bg-white" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
@@ -923,7 +923,7 @@ const AdminDashboard = () => {
                 <TrendingUp className="h-4 w-4 text-navy-900" />
                 <span className="hidden sm:inline">Progress</span>
               </TabsTrigger>
-              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl bg-white">
+              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:shadow-elegant transition-all duration-300 bg-white rounded-none">
                 <BookOpen className="h-4 w-4 text-navy-900 bg-white" />
                 <span className="hidden sm:inline">Courses</span>
               </TabsTrigger>
@@ -1145,7 +1145,7 @@ const AdminDashboard = () => {
                      {userRoles.map(userRoleItem => <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
                            <TableCell className="py-4">
                              <div className="flex flex-col">
-                                 <SecurePIIDisplay value={userRoleItem.profiles?.name || null} type="name" showMaskingIndicator={false} userRole={userRole || 'user'} />
+                                 <SecurePIIDisplay value={userRoleItem.profiles?.name || null} type="name" showMaskingIndicator={true} userRole={userRole || 'user'} />
                                <span className="font-mono text-xs text-muted-foreground">
                                  {userRoleItem.user_id.slice(0, 8)}...
                                </span>
