@@ -830,7 +830,6 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-6">
-              <SecurityStatusIndicator level="secure" message="Admin Access" size="sm" />
             </div>
           </div>
         </div>
