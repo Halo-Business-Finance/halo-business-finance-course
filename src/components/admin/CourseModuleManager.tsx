@@ -69,7 +69,15 @@ export function CourseModuleManager() {
         .select('id, title, description, duration, lessons_count, order_index, is_active, course_id, topics, status, created_at, updated_at')
         .order('order_index', { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading course modules:', error);
+        console.log('Error details:', {
+          message: error.message,
+          code: error.code,
+          hint: error.hint
+        });
+        throw error;
+      }
       
       // Normalize the data
       const normalizedModules = (modules || []).map(module => ({
