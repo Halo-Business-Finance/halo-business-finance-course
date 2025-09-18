@@ -476,7 +476,7 @@ export function CourseManager({}: CourseManagerProps) {
             </TabsContent>
 
             <TabsContent value="modules" className="space-y-6">
-              <CourseModuleManager />
+              <CourseModuleManager ref={moduleManagerRef} />
             </TabsContent>
           </Tabs>
         </CardContent>
@@ -514,7 +514,7 @@ export function CourseManager({}: CourseManagerProps) {
                   <Layers className="h-4 w-4" />
                   Associated Course Modules
                 </h4>
-                <AssociatedModulesView courseId={selectedCourse.id} />
+                <AssociatedModulesView courseId={selectedCourse.id} onAddFirstModule={(courseId) => { setSelectedCourse(null); setAdminTabs('modules'); setTimeout(() => moduleManagerRef.current?.openCreate(courseId), 0); }} />
               </div>
             </div>
           </DialogContent>
