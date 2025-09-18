@@ -809,8 +809,8 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-primary flex items-center justify-center shadow-glow bg-white rounded-none">
-                  <Shield className="h-8 w-8 text-navy-900 bg-white" />
+                <div className="w-16 h-16 bg-muted/10 border border-border/20 flex items-center justify-center rounded-lg">
+                  <Shield className="h-8 w-8 text-navy-900" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
