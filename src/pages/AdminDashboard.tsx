@@ -784,14 +784,21 @@ const AdminDashboard = () => {
         <Card className="max-w-md shadow-elegant border-border/50">
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-              <AlertTriangle className="h-8 w-8 text-navy-900" />
+              
             </div>
             <CardTitle className="text-destructive">Database Access Issue</CardTitle>
             <CardDescription>
               Unable to load admin data due to permission restrictions.
             </CardDescription>
           </CardHeader>
-          
+          <CardContent className="text-center space-y-4 text-black">
+            <p className="text-sm text-muted-foreground">
+              This may indicate that your admin privileges are not properly configured.
+            </p>
+            <Button onClick={() => window.location.reload()} variant="outline" className="w-full">
+              Retry
+            </Button>
+          </CardContent>
         </Card>
       </div>;
   }
@@ -809,7 +816,7 @@ const AdminDashboard = () => {
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                     Admin Dashboard
                   </h1>
-                  <p className="text-muted-foreground text-sm mt-1 bg-white">
+                  <p className="text-muted-foreground text-sm mt-1">
                     Enterprise-grade system administration and monitoring
                   </p>
                   <div className="mt-3">
@@ -839,7 +846,7 @@ const AdminDashboard = () => {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-2 bg-white">{stats.totalUsers}</div>
+                <div className="text-3xl font-bold text-foreground mb-2">{stats.totalUsers}</div>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-navy-900" />
                   <p className="text-sm text-accent font-semibold">+12% from last month</p>
@@ -852,7 +859,7 @@ const AdminDashboard = () => {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Active Admins</CardTitle>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Shield className="h-6 w-6 text-navy-900" />
+                  
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
