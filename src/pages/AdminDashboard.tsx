@@ -1055,7 +1055,7 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-3 text-xl">
-                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                         <Users className="h-5 w-5 text-navy-900" />
                       </div>
                       User Management
