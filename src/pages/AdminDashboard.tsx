@@ -892,13 +892,13 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground capitalize mb-2">{stats.systemHealth}</div>
-                <Badge variant={getHealthBadgeVariant(stats.systemHealth)} className="text-sm">
+                <div className="text-sm text-muted-foreground">
                   {stats.systemHealth === 'excellent' && '🟢'}
                   {stats.systemHealth === 'good' && '🟡'}
                   {stats.systemHealth === 'warning' && '🟠'}
                   {stats.systemHealth === 'critical' && '🔴'}
                   {' '}{stats.systemHealth}
-                </Badge>
+                </div>
               </CardContent>
             </Card>
           </div>}
