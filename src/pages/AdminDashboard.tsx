@@ -285,7 +285,7 @@ const AdminDashboard = () => {
                   id: item.user_id,
                   user_id: item.user_id,
                   role: item.role,
-                  is_active: item.role_is_active ?? item.is_active ?? true,
+                  is_active: item.role_is_active,
                   created_at: item.role_created_at || item.created_at,
                   updated_at: item.updated_at,
                   profiles: {
@@ -303,7 +303,7 @@ const AdminDashboard = () => {
                 id: item.user_id,
                 user_id: item.user_id,
                 role: item.role,
-                is_active: item.role_is_active ?? item.is_active ?? true,
+                is_active: item.role_is_active,
                 created_at: item.role_created_at || item.created_at,
                 updated_at: item.updated_at,
                 profiles: {
@@ -791,7 +791,7 @@ const AdminDashboard = () => {
               Unable to load admin data due to permission restrictions.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
+          <CardContent className="text-center space-y-4 bg-white">
             <p className="text-sm text-muted-foreground">
               This may indicate that your admin privileges are not properly configured.
             </p>
@@ -830,6 +830,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-6">
+              <SecurityStatusIndicator level="secure" message="Admin Access" size="sm" />
             </div>
           </div>
         </div>
@@ -891,13 +892,13 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground capitalize mb-2">{stats.systemHealth}</div>
-                <div className="text-sm text-muted-foreground">
+                <Badge variant={getHealthBadgeVariant(stats.systemHealth)} className="text-sm">
                   {stats.systemHealth === 'excellent' && '🟢'}
                   {stats.systemHealth === 'good' && '🟡'}
                   {stats.systemHealth === 'warning' && '🟠'}
                   {stats.systemHealth === 'critical' && '🔴'}
                   {' '}{stats.systemHealth}
-                </div>
+                </Badge>
               </CardContent>
             </Card>
           </div>}
@@ -1015,7 +1016,7 @@ const AdminDashboard = () => {
                           {systemStatus.database}
                         </Badge>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30 text-black">
                         <span className="text-sm font-medium text-black">Authentication</span>
                         <Badge variant={systemStatus.authentication === 'active' ? 'default' : 'destructive'} className="shadow-sm capitalize">
                           {systemStatus.authentication === 'active' && '🟢'} 
@@ -1142,11 +1143,16 @@ const AdminDashboard = () => {
                       </TableHeader>
                       <TableBody>
                      {userRoles.map(userRoleItem => <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
-                            <TableCell className="py-4">
-                              <SecurePIIDisplay value={userRoleItem.profiles?.name || null} type="name" showMaskingIndicator={false} userRole={userRole || 'user'} />
-                            </TableCell>
                            <TableCell className="py-4">
-                              <SecurePIIDisplay value={userRoleItem.profiles?.email || null} type="email" showMaskingIndicator={false} userRole={userRole || 'user'} />
+                             <div className="flex flex-col">
+                                 <SecurePIIDisplay value={userRoleItem.profiles?.name || null} type="name" showMaskingIndicator={true} userRole={userRole || 'user'} />
+                               <span className="font-mono text-xs text-muted-foreground">
+                                 {userRoleItem.user_id.slice(0, 8)}...
+                               </span>
+                             </div>
+                           </TableCell>
+                           <TableCell className="py-4">
+                              <SecurePIIDisplay value={userRoleItem.profiles?.email || null} type="email" showMaskingIndicator={true} userRole={userRole || 'user'} />
                            </TableCell>
                           <TableCell className="py-4">
                             <Badge variant={getRoleBadgeVariant(userRoleItem.role)} className="shadow-sm">
