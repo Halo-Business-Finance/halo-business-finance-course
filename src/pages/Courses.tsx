@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award } from "lucide-react";
+import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award, Target } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -427,122 +427,116 @@ const Courses = () => {
                 </h2>
               </div>
 
-              {/* Course Grid - JP Morgan Style */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
-                {filteredCourses.map((course, index) => (
-                  <Card
-                    key={course.id}
-                    className="group hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    {/* Course Image with Professional Overlay */}
-                    <div className="relative overflow-hidden rounded-t-lg">
-                      <img
-                        src={getCourseImage(course.title)}
-                        alt={course.title}
-                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-navy-900/40 to-navy-800/20" />
-                      <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                        <Badge variant="secondary" className="bg-white/90 text-primary font-medium text-xs">
-                          {course.level === 'beginner' ? 'Beginner' : 'Expert'}
-                        </Badge>
-                        <Badge variant="secondary" className="bg-white/90 text-success font-medium text-xs">
-                          {course.modules.length} Modules
-                        </Badge>
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                          <BookOpen className="h-5 w-5 text-white" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card Content */}
-                    <CardContent className="flex-1 flex flex-col">
-                      {/* Header */}
-                      <div className="space-y-3 mb-4">
-                        <h3 className="text-base sm:text-lg font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-3">
-                          {course.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                          {course.description}
-                        </p>
-                      </div>
-
-                      {/* Course Stats */}
-                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="h-3 w-3" />
-                          <span>{course.modules.length} modules</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          <span>4-6 Hours</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Award className="h-3 w-3" />
-                          <span>Certificate</span>
-                        </div>
-                      </div>
-
-                      {/* Course Modules Preview */}
-                      {course.modules.length > 0 && (
-                        <div className="space-y-2 mb-6 flex-1">
-                          <p className="text-xs font-medium text-foreground">Key Topics:</p>
-                          <div className="space-y-1">
-                            {course.modules.slice(0, 2).map((module, idx) => (
-                              <div key={module.id} className="flex items-start gap-2 text-xs text-muted-foreground">
-                                <div className="w-1.5 h-1.5 bg-navy-900 rounded-full mt-1.5 flex-shrink-0" />
-                                <span className="line-clamp-2 leading-relaxed">{module.title}</span>
-                              </div>
-                            ))}
-                            {course.modules.length > 2 && (
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <div className="w-1.5 h-1.5 bg-muted-foreground rounded-full" />
-                                <span>+{course.modules.length - 2} more modules</span>
-                              </div>
-                            )}
+              {/* Course Grid - Dashboard Style */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12">
+                {filteredCourses.map((course, index) => {
+                  const courseName = course.title.split(' - ')[0];
+                  return (
+                    <Card
+                      key={course.id}
+                      className="group relative overflow-hidden hover:shadow-xl transition-all duration-500 border hover:border-primary/30 bg-gradient-to-br from-card via-card to-secondary/5 hover:to-primary/5"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      {/* Modern gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      <CardHeader className="pb-4 relative z-10 space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 space-y-3">
+                            <div className="flex items-center gap-3">
+                              <BookOpen className="h-5 w-5 text-navy-900" />
+                              <Badge variant="outline" className="px-3 py-1 bg-white text-black border-gray-300">
+                                Course Program
+                              </Badge>
+                            </div>
+                            
+                            <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
+                              {courseName}
+                            </CardTitle>
+                            
+                            <CardDescription className="line-clamp-3 text-muted-foreground text-sm leading-relaxed">
+                              {course.description}
+                            </CardDescription>
                           </div>
                         </div>
-                      )}
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-2 pt-4 border-t border-border mt-auto">
+                        
+                        {/* Enhanced Course Details */}
+                        <div className="space-y-4 pt-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Clock className="h-4 w-4 text-navy-900" />
+                              <span className="text-primary font-medium">4-6 Hours</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <span className="text-black">{course.modules.length} modules</span>
+                            </div>
+                          </div>
+                          
+                          {/* Key Topics with enhanced styling */}
+                          <div className="space-y-2">
+                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
+                            <div className="flex flex-wrap gap-2">
+                              {course.modules.slice(0, 3).map((module, idx) => (
+                                <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
+                                  {module.title.length > 20 ? module.title.substring(0, 20) + '...' : module.title}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          {/* Skill Levels with semantic styling */}
+                          <div className="space-y-2">
+                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Available Levels</span>
+                            <div className="flex gap-2">
+                              <Badge variant={course.level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900 text-white">
+                                {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="pt-0 pb-6 relative z-10">
                         {user ? (
                           enrollmentStatus[course.id] ? (
-                            <Link to={`/module/${course.modules[0]?.id}`} className="flex-1">
-                              <Button variant="default" className="w-full bg-navy-900 hover:bg-navy-800 text-white">
-                                <Check className="h-4 w-4 mr-2" />
-                                Continue Learning
+                            <Link to={`/module/${course.modules[0]?.id}`} className="block">
+                              <Button className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300 bg-navy-900 hover:bg-navy-800 text-white">
+                                <span className="flex items-center gap-2">
+                                  <Check className="h-4 w-4 mr-2" />
+                                  Continue Learning
+                                  <Target className="h-4 w-4 text-white group-hover:translate-x-1 transition-transform duration-300" />
+                                </span>
                               </Button>
                             </Link>
                           ) : (
                             <Button
                               onClick={() => handleEnroll(course.id)}
+                              className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300"
                               variant="default"
-                              className="flex-1 bg-navy-900 hover:bg-navy-800 text-white"
                               disabled={loading}
                             >
-                              <BookOpen className="h-4 w-4 mr-2" />
-                              Enroll Now
+                              <span className="flex items-center gap-2">
+                                <BookOpen className="h-4 w-4 mr-2" />
+                                Start Course
+                                <Target className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
+                              </span>
                             </Button>
                           )
                         ) : (
-                          <Link to="/auth" className="flex-1">
-                            <Button variant="default" className="w-full bg-navy-900 hover:bg-navy-800 text-white">
-                              <Lock className="h-4 w-4 mr-2" />
-                              Sign In to Enroll
+                          <Link to="/auth" className="block">
+                            <Button className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300 bg-navy-900 hover:bg-navy-800 text-white">
+                              <span className="flex items-center gap-2">
+                                <Lock className="h-4 w-4 mr-2" />
+                                Sign In to Enroll
+                                <Target className="h-4 w-4 text-white group-hover:translate-x-1 transition-transform duration-300" />
+                              </span>
                             </Button>
                           </Link>
                         )}
-                        <Button variant="outline" size="sm" className="border-navy-900 hover:bg-navy-900 hover:text-white">
-                          <Star className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
               
               {/* Call to Action */}
