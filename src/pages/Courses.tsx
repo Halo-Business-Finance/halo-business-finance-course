@@ -47,6 +47,7 @@ import courseTermLoans from "@/assets/course-term-loans.jpg";
 import courseBusinessAcquisition from "@/assets/course-business-acquisition.jpg";
 interface CourseWithModules extends Course {
   modules: any[];
+  keyTopics: string[];
 }
 const Courses = () => {
   const [loading, setLoading] = useState(false);
@@ -67,12 +68,55 @@ const Courses = () => {
     loading: modulesLoading
   } = useModules();
 
+  // Generate course-specific key topics based on course content
+  const getCourseKeyTopics = (courseId: string, courseTitle: string): string[] => {
+    const courseType = courseTitle.toLowerCase();
+    
+    if (courseType.includes('invoice factoring')) {
+      return ['Accounts Receivable Analysis', 'Credit Risk Assessment', 'Factor Agreements', 'Collection Management', 'Cash Flow Optimization'];
+    } else if (courseType.includes('sba 7(a)')) {
+      return ['SBA Loan Programs', 'Eligibility Requirements', 'Application Process', 'Guaranty Features', 'Portfolio Management'];
+    } else if (courseType.includes('sba express')) {
+      return ['Fast-Track Processing', 'Expedited Approval', 'Lower Guaranty Rates', 'Streamlined Documentation', 'Quick Funding'];
+    } else if (courseType.includes('commercial real estate')) {
+      return ['Property Valuation', 'Market Analysis', 'Debt Service Coverage', 'Loan-to-Value Ratios', 'Environmental Assessments'];
+    } else if (courseType.includes('equipment financing')) {
+      return ['Asset Valuation', 'Depreciation Analysis', 'Equipment Liens', 'Technology Financing', 'Vendor Relationships'];
+    } else if (courseType.includes('lines of credit')) {
+      return ['Revolving Credit Facilities', 'Working Capital Management', 'Credit Line Structures', 'Advance Rates', 'Borrowing Base'];
+    } else if (courseType.includes('merchant cash advance')) {
+      return ['Revenue-Based Financing', 'Daily Collections', 'Factor Rates', 'Sales Volume Analysis', 'Payment Processing'];
+    } else if (courseType.includes('sba 504')) {
+      return ['Real Estate Financing', 'Equipment Purchase', 'CDC Partners', 'Job Creation Requirements', 'Long-Term Fixed Rates'];
+    } else if (courseType.includes('asset-based lending')) {
+      return ['Collateral Analysis', 'Asset Valuation', 'Inventory Financing', 'A/R Financing', 'Field Examinations'];
+    } else if (courseType.includes('construction loan')) {
+      return ['Project Management', 'Draw Schedules', 'Construction Budgets', 'Completion Risk', 'Permanent Financing'];
+    } else if (courseType.includes('franchise financing')) {
+      return ['Franchise Disclosure Documents', 'Brand Recognition', 'Territory Rights', 'Royalty Structures', 'Multi-Unit Development'];
+    } else if (courseType.includes('working capital')) {
+      return ['Cash Flow Analysis', 'Seasonal Financing', 'Inventory Management', 'Payroll Funding', 'Business Expansion'];
+    } else if (courseType.includes('healthcare financing')) {
+      return ['Medical Equipment Financing', 'Practice Acquisition', 'HIPAA Compliance', 'Reimbursement Analysis', 'Regulatory Requirements'];
+    } else if (courseType.includes('restaurant financing')) {
+      return ['Food Service Industry', 'Equipment & Buildout', 'Seasonal Cash Flow', 'Franchise Opportunities', 'Location Analysis'];
+    } else if (courseType.includes('usda loan')) {
+      return ['Rural Development Programs', 'Geographic Eligibility', 'Agricultural Financing', 'Community Development', 'Guaranteed Loans'];
+    } else if (courseType.includes('sba loan processing')) {
+      return ['Application Processing', 'Documentation Requirements', 'Underwriting Guidelines', 'Compliance Standards', 'Loan Servicing'];
+    }
+    
+    // Default topics for general courses
+    return ['Risk Assessment', 'Financial Analysis', 'Regulatory Compliance', 'Market Trends', 'Best Practices'];
+  };
+
   // Combine courses with their modules from database
   const coursesWithModules: CourseWithModules[] = databaseCourses.map(course => {
     const courseModules = databaseModules.filter(module => module.course_id === course.id && module.is_active);
     return {
       ...course,
-      modules: courseModules
+      modules: courseModules,
+      keyTopics: getCourseKeyTopics(course.id, course.title)
     };
   });
 
@@ -479,7 +523,7 @@ const Courses = () => {
                               <span className="text-primary font-medium">4-6 Hours</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <span className="text-black">{course.modules.reduce((acc, module) => acc + (module.topics?.length || 0), 0)} key topics</span>
+                              <span className="text-black">{course.keyTopics?.length || 0} key topics</span>
                             </div>
                           </div>
                           
@@ -487,13 +531,8 @@ const Courses = () => {
                           <div className="space-y-2">
                             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
                             <div className="flex flex-wrap gap-2">
-                              {course.modules.reduce((allTopics, module) => {
-                                if (module.topics && Array.isArray(module.topics)) {
-                                  return [...allTopics, ...module.topics.slice(0, Math.ceil(3 / course.modules.length))];
-                                }
-                                return allTopics;
-                              }, []).slice(0, 3).map((topic, idx) => <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
-                                  {typeof topic === 'string' ? (topic.length > 25 ? topic.substring(0, 25) + '...' : topic) : topic}
+                              {(course.keyTopics || []).slice(0, 3).map((topic, idx) => <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
+                                  {topic.length > 25 ? topic.substring(0, 25) + '...' : topic}
                                 </Badge>)}
                             </div>
                           </div>
