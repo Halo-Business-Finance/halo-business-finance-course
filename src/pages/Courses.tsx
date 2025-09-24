@@ -519,7 +519,7 @@ const Courses = () => {
                                 Start Course
                               </span>
                             </Button> : <Link to="/auth" className="block">
-                            <Button className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 text-white text-sm bg-blue-900 hover:bg-blue-800">
+                            <Button className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 text-white bg-blue-900 hover:bg-blue-800 text-sm">
                               <span className="flex items-center gap-2">
                                 <Lock className="h-4 w-4 mr-2" />
                                 Sign In to Enroll
