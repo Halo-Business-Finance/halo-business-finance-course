@@ -714,20 +714,6 @@ const AdminDashboard = () => {
       setDeletingUser(null);
     }
   };
-  const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
-      case 'super_admin':
-        return 'destructive';
-      case 'admin':
-        return 'default';
-      case 'tech_support_admin':
-        return 'secondary';
-      case 'instructor':
-        return 'outline';
-      default:
-        return 'secondary';
-    }
-  };
   const getHealthBadgeVariant = (health: string) => {
     switch (health) {
       case 'excellent':
@@ -1154,16 +1140,16 @@ const AdminDashboard = () => {
                            <TableCell className="py-4">
                               <SecurePIIDisplay value={userRoleItem.profiles?.email || null} type="email" showMaskingIndicator={true} userRole={userRole || 'user'} />
                            </TableCell>
-                          <TableCell className="py-4">
-                            <Badge variant={getRoleBadgeVariant(userRoleItem.role)} className="shadow-sm">
-                              {userRoleItem.role}
-                           </Badge>
-                         </TableCell>
-                         <TableCell className="py-4">
-                            <Badge variant={userRoleItem.is_active ? "default" : "secondary"} className="shadow-sm">
-                              {userRoleItem.is_active ? "Active" : "Inactive"}
-                            </Badge>
+                           <TableCell className="py-4">
+                             <span className="text-sm font-medium capitalize">
+                               {userRoleItem.role.replace('_', ' ')}
+                            </span>
                           </TableCell>
+                          <TableCell className="py-4">
+                             <span className="text-sm">
+                               {userRoleItem.is_active ? "Active" : "Inactive"}
+                             </span>
+                           </TableCell>
                           <TableCell className="py-4">
                             {new Date(userRoleItem.created_at).toLocaleDateString()}
                          </TableCell>
