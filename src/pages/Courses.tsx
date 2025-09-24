@@ -504,7 +504,6 @@ const Courses = () => {
                                 <span className="flex items-center gap-2">
                                   <Check className="h-4 w-4 mr-2" />
                                   Continue Learning
-                                  <Target className="h-4 w-4 text-white group-hover:translate-x-1 transition-transform duration-300" />
                                 </span>
                               </Button>
                             </Link>
@@ -518,7 +517,6 @@ const Courses = () => {
                               <span className="flex items-center gap-2">
                                 <BookOpen className="h-4 w-4 mr-2" />
                                 Start Course
-                                <Target className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
                               </span>
                             </Button>
                           )
@@ -528,7 +526,6 @@ const Courses = () => {
                               <span className="flex items-center gap-2">
                                 <Lock className="h-4 w-4 mr-2" />
                                 Sign In to Enroll
-                                <Target className="h-4 w-4 text-white group-hover:translate-x-1 transition-transform duration-300" />
                               </span>
                             </Button>
                           </Link>
