@@ -6,7 +6,7 @@ export const HorizontalNav = () => {
       <div className="flex items-center gap-12 w-full max-w-7xl mx-auto">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-10 h-10 bg-halo-navy rounded-sm flex items-center justify-center bg-blue-800">
+          <div className="w-10 h-10 bg-halo-navy rounded-sm flex items-center justify-center">
             <span className="text-white font-bold text-base">FP</span>
           </div>
           <span className="text-2xl font-bold text-gray-900">FinPilot</span>
