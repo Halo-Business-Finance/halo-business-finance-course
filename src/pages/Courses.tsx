@@ -507,13 +507,13 @@ const Courses = () => {
                       
                       <CardContent className="pt-0 pb-6 relative z-10">
                         {user ? enrollmentStatus[course.id] ? <Link to={`/module/${course.modules[0]?.id}`} className="block">
-                              <Button className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300 bg-navy-900 hover:bg-navy-800 text-white">
+                              <Button className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 bg-navy-900 hover:bg-navy-800 text-white">
                                 <span className="flex items-center gap-2">
                                   <Check className="h-4 w-4 mr-2" />
                                   Continue Learning
                                 </span>
                               </Button>
-                            </Link> : <Button onClick={() => handleEnroll(course.id)} className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300" variant="default" disabled={loading}>
+                            </Link> : <Button onClick={() => handleEnroll(course.id)} className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300" variant="default" disabled={loading}>
                               <span className="flex items-center gap-2">
                                 <BookOpen className="h-4 w-4 mr-2" />
                                 Start Course
