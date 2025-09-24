@@ -428,11 +428,11 @@ const Courses = () => {
               </div>
 
               {/* Course Grid - JP Morgan Style */}
-              <div className="jp-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
                 {filteredCourses.map((course, index) => (
-                  <div
+                  <Card
                     key={course.id}
-                    className="jp-card-hover jp-fade-in group"
+                    className="group hover:shadow-lg transition-all duration-300 flex flex-col h-full"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     {/* Course Image with Professional Overlay */}
@@ -442,12 +442,12 @@ const Courses = () => {
                         alt={course.title}
                         className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 jp-gradient-hero opacity-60" />
-                      <div className="absolute top-4 left-4 flex gap-2">
-                        <Badge variant="secondary" className="bg-white/90 text-primary font-medium">
+                      <div className="absolute inset-0 bg-gradient-to-r from-navy-900/40 to-navy-800/20" />
+                      <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
+                        <Badge variant="secondary" className="bg-white/90 text-primary font-medium text-xs">
                           {course.level === 'beginner' ? 'Beginner' : 'Expert'}
                         </Badge>
-                        <Badge variant="secondary" className="bg-white/90 text-success font-medium">
+                        <Badge variant="secondary" className="bg-white/90 text-success font-medium text-xs">
                           {course.modules.length} Modules
                         </Badge>
                       </div>
@@ -459,42 +459,42 @@ const Courses = () => {
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-6 space-y-4">
+                    <CardContent className="flex-1 flex flex-col">
                       {/* Header */}
-                      <div className="space-y-2">
-                        <h3 className="jp-heading text-xl leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                      <div className="space-y-3 mb-4">
+                        <h3 className="text-lg font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem]">
                           {course.title}
                         </h3>
-                        <p className="jp-body text-sm text-muted-foreground line-clamp-3">
+                        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                           {course.description}
                         </p>
                       </div>
 
                       {/* Course Stats */}
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
                         <div className="flex items-center gap-1">
-                          <BookOpen className="h-4 w-4" />
+                          <BookOpen className="h-3 w-3" />
                           <span>{course.modules.length} modules</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
+                          <Clock className="h-3 w-3" />
                           <span>4-6 Hours</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Award className="h-4 w-4" />
+                          <Award className="h-3 w-3" />
                           <span>Certificate</span>
                         </div>
                       </div>
 
                       {/* Course Modules Preview */}
                       {course.modules.length > 0 && (
-                        <div className="space-y-2">
-                          <p className="jp-caption font-medium">Key Topics:</p>
+                        <div className="space-y-2 mb-6 flex-1">
+                          <p className="text-xs font-medium text-foreground">Key Topics:</p>
                           <div className="space-y-1">
                             {course.modules.slice(0, 2).map((module, idx) => (
-                              <div key={module.id} className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <div className="w-1.5 h-1.5 bg-navy-900 rounded-full" />
-                                <span className="line-clamp-1">{module.title}</span>
+                              <div key={module.id} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                <div className="w-1.5 h-1.5 bg-navy-900 rounded-full mt-1.5 flex-shrink-0" />
+                                <span className="line-clamp-1 leading-relaxed">{module.title}</span>
                               </div>
                             ))}
                             {course.modules.length > 2 && (
@@ -508,11 +508,11 @@ const Courses = () => {
                       )}
 
                       {/* Action Buttons */}
-                      <div className="flex gap-2 pt-4 border-t border-border">
+                      <div className="flex gap-2 pt-4 border-t border-border mt-auto">
                         {user ? (
                           enrollmentStatus[course.id] ? (
                             <Link to={`/module/${course.modules[0]?.id}`} className="flex-1">
-                              <Button variant="navy" className="w-full">
+                              <Button variant="default" className="w-full bg-navy-900 hover:bg-navy-800 text-white">
                                 <Check className="h-4 w-4 mr-2" />
                                 Continue Learning
                               </Button>
@@ -520,8 +520,8 @@ const Courses = () => {
                           ) : (
                             <Button
                               onClick={() => handleEnroll(course.id)}
-                              variant="navy"
-                              className="flex-1"
+                              variant="default"
+                              className="flex-1 bg-navy-900 hover:bg-navy-800 text-white"
                               disabled={loading}
                             >
                               <BookOpen className="h-4 w-4 mr-2" />
@@ -530,7 +530,7 @@ const Courses = () => {
                           )
                         ) : (
                           <Link to="/auth" className="flex-1">
-                            <Button variant="navy" className="w-full">
+                            <Button variant="default" className="w-full bg-navy-900 hover:bg-navy-800 text-white">
                               <Lock className="h-4 w-4 mr-2" />
                               Sign In to Enroll
                             </Button>
@@ -540,8 +540,8 @@ const Courses = () => {
                           <Star className="h-4 w-4" />
                         </Button>
                       </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
               
