@@ -479,7 +479,7 @@ const Courses = () => {
                               <span className="text-primary font-medium">4-6 Hours</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <span className="text-black">{course.modules.length} modules</span>
+                              <span className="text-black">{course.modules.reduce((acc, module) => acc + (module.topics?.length || 0), 0)} key topics</span>
                             </div>
                           </div>
                           
@@ -487,8 +487,13 @@ const Courses = () => {
                           <div className="space-y-2">
                             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
                             <div className="flex flex-wrap gap-2">
-                              {course.modules.slice(0, 3).map((module, idx) => <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
-                                  {module.title.length > 20 ? module.title.substring(0, 20) + '...' : module.title}
+                              {course.modules.reduce((allTopics, module) => {
+                                if (module.topics && Array.isArray(module.topics)) {
+                                  return [...allTopics, ...module.topics.slice(0, Math.ceil(3 / course.modules.length))];
+                                }
+                                return allTopics;
+                              }, []).slice(0, 3).map((topic, idx) => <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
+                                  {typeof topic === 'string' ? (topic.length > 25 ? topic.substring(0, 25) + '...' : topic) : topic}
                                 </Badge>)}
                             </div>
                           </div>
