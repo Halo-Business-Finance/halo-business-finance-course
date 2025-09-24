@@ -432,7 +432,7 @@ const Courses = () => {
                 {filteredCourses.map((course, index) => (
                   <Card
                     key={course.id}
-                    className="group hover:shadow-lg transition-all duration-300 flex flex-col h-full"
+                    className="group hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     {/* Course Image with Professional Overlay */}
@@ -462,10 +462,10 @@ const Courses = () => {
                     <CardContent className="flex-1 flex flex-col">
                       {/* Header */}
                       <div className="space-y-3 mb-4">
-                        <h3 className="text-lg font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem]">
+                        <h3 className="text-base sm:text-lg font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-3">
                           {course.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
                           {course.description}
                         </p>
                       </div>
@@ -494,7 +494,7 @@ const Courses = () => {
                             {course.modules.slice(0, 2).map((module, idx) => (
                               <div key={module.id} className="flex items-start gap-2 text-xs text-muted-foreground">
                                 <div className="w-1.5 h-1.5 bg-navy-900 rounded-full mt-1.5 flex-shrink-0" />
-                                <span className="line-clamp-1 leading-relaxed">{module.title}</span>
+                                <span className="line-clamp-2 leading-relaxed">{module.title}</span>
                               </div>
                             ))}
                             {course.modules.length > 2 && (
