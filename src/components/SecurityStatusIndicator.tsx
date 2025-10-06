@@ -1,5 +1,4 @@
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Shield, AlertTriangle, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface SecurityStatusIndicatorProps {
@@ -62,12 +61,9 @@ export const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = (
   const textSize = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-sm' : 'text-xs';
 
   return (
-    <Badge 
-      variant={config.variant}
-      className={`${config.className} ${textSize} flex items-center gap-1`}
-    >
+    <div className={`${config.className} ${textSize} flex items-center gap-1 px-2.5 py-0.5 rounded-full`}>
       {showIcon && <Icon className={iconSize} />}
       {displayMessage}
-    </Badge>
+    </div>
   );
 };

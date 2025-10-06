@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
@@ -390,11 +390,15 @@ export const SecurityDashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant={getSeverityColor(threat.severity)}>
+                    <span className={`text-sm font-medium capitalize ${
+                      threat.severity === 'critical' ? 'text-destructive' : 
+                      threat.severity === 'high' ? 'text-orange-600' : 
+                      'text-yellow-600'
+                    }`}>
                       {threat.severity}
-                    </Badge>
+                    </span>
                     {threat.is_blocked ? (
-                      <Badge variant="destructive">BLOCKED</Badge>
+                      <span className="text-sm font-medium text-destructive">BLOCKED</span>
                     ) : (
                       <div className="flex items-center gap-1">
                         {getRemediationActions(threat).slice(0, 2).map((action) => (
@@ -453,9 +457,13 @@ export const SecurityDashboard = () => {
                       </p>
                     </div>
                   </div>
-                  <Badge variant={getSeverityColor(event.severity)}>
+                  <span className={`text-sm font-medium capitalize ${
+                    event.severity === 'critical' ? 'text-destructive' : 
+                    event.severity === 'high' ? 'text-orange-600' : 
+                    'text-yellow-600'
+                  }`}>
                     {event.severity}
-                  </Badge>
+                  </span>
                 </div>
               ))
             )}

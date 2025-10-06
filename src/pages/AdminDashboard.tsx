@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Shield, AlertTriangle, Activity, Database, Settings, UserCheck, UserX, Lock, Unlock, Crown, Eye, Trash2, GraduationCap, Edit, Plus, Video, FileText, BookOpen, Wrench, TrendingUp } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -714,20 +714,6 @@ const AdminDashboard = () => {
       setDeletingUser(null);
     }
   };
-  const getHealthBadgeVariant = (health: string) => {
-    switch (health) {
-      case 'excellent':
-        return 'default';
-      case 'good':
-        return 'secondary';
-      case 'warning':
-        return 'outline';
-      case 'critical':
-        return 'destructive';
-      default:
-        return 'secondary';
-    }
-  };
 
   // Loading state with modern design
   if (roleLoading) {
@@ -805,18 +791,16 @@ const AdminDashboard = () => {
                   <p className="text-muted-foreground text-sm mt-1 bg-white">
                     Enterprise-grade system administration and monitoring
                   </p>
-                  <div className="mt-3">
-                    <Badge variant="outline" className="flex items-center gap-3 px-6 py-3 bg-card/50 backdrop-blur-sm border-primary/20 text-base">
-                      <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
-                      <Activity className="h-5 w-5 text-navy-900" />
-                      Live Monitoring
-                    </Badge>
+                  <div className="mt-3 flex items-center gap-3 text-base text-muted-foreground">
+                    <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+                    <Activity className="h-5 w-5 text-navy-900" />
+                    <span>Live Monitoring</span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-6">
-              <SecurityStatusIndicator level="secure" message="Admin Access" size="sm" />
+              <span className="text-sm text-muted-foreground">Admin Access</span>
             </div>
           </div>
         </div>
@@ -878,13 +862,13 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground capitalize mb-2">{stats.systemHealth}</div>
-                <Badge variant={getHealthBadgeVariant(stats.systemHealth)} className="text-sm">
+                <div className="text-sm text-muted-foreground">
                   {stats.systemHealth === 'excellent' && '🟢'}
                   {stats.systemHealth === 'good' && '🟡'}
                   {stats.systemHealth === 'warning' && '🟠'}
                   {stats.systemHealth === 'critical' && '🔴'}
-                  {' '}{stats.systemHealth}
-                </Badge>
+                  {' '}<span className="capitalize">{stats.systemHealth}</span>
+                </div>
               </CardContent>
             </Card>
           </div>}
@@ -946,9 +930,9 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {securityEvents.slice(0, 3).map(event => <div key={event.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                           <span className="text-sm font-medium">{event.event_type}</span>
-                          <Badge variant={event.severity === 'critical' ? 'destructive' : 'default'} className="shadow-sm">
+                          <span className={`text-sm font-medium capitalize ${event.severity === 'critical' ? 'text-destructive' : 'text-foreground'}`}>
                             {event.severity}
-                          </Badge>
+                          </span>
                         </div>)}
                       {securityEvents.length === 0 && <div className="text-center py-6">
                           <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-2">
@@ -976,7 +960,7 @@ const AdminDashboard = () => {
                     return acc;
                   }, {} as Record<string, number>)).map(([role, count]) => <div key={role} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                           <span className="text-sm font-medium capitalize">{role.replace('_', ' ')}</span>
-                          <Badge variant="outline" className="shadow-sm font-semibold">{count}</Badge>
+                          <span className="text-sm font-semibold text-foreground">{count}</span>
                         </div>)}
                     </div>
                   </CardContent>
@@ -995,39 +979,39 @@ const AdminDashboard = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Database</span>
-                        <Badge variant={systemStatus.database === 'online' ? 'default' : systemStatus.database === 'degraded' ? 'secondary' : 'destructive'} className="shadow-sm capitalize">
+                        <span className="text-sm capitalize">
                           {systemStatus.database === 'online' && '🟢'} 
                           {systemStatus.database === 'degraded' && '🟡'} 
                           {systemStatus.database === 'offline' && '🔴'} 
                           {systemStatus.database}
-                        </Badge>
+                        </span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Authentication</span>
-                        <Badge variant={systemStatus.authentication === 'active' ? 'default' : 'destructive'} className="shadow-sm capitalize">
+                        <span className="text-sm capitalize">
                           {systemStatus.authentication === 'active' && '🟢'} 
                           {systemStatus.authentication === 'inactive' && '🟡'} 
                           {systemStatus.authentication === 'error' && '🔴'} 
                           {systemStatus.authentication}
-                        </Badge>
+                        </span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Security Monitoring</span>
-                        <Badge variant={systemStatus.securityMonitoring === 'enabled' ? 'default' : systemStatus.securityMonitoring === 'partial' ? 'secondary' : 'destructive'} className="shadow-sm capitalize">
+                        <span className="text-sm capitalize">
                           {systemStatus.securityMonitoring === 'enabled' && '🟢'} 
                           {systemStatus.securityMonitoring === 'partial' && '🟡'} 
                           {systemStatus.securityMonitoring === 'disabled' && '🔴'} 
                           {systemStatus.securityMonitoring}
-                        </Badge>
+                        </span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
                         <span className="text-sm font-medium">Real-time Updates</span>
-                        <Badge variant={systemStatus.realTimeUpdates === 'connected' ? 'default' : systemStatus.realTimeUpdates === 'reconnecting' ? 'secondary' : 'destructive'} className="shadow-sm capitalize">
+                        <span className="text-sm capitalize">
                           {systemStatus.realTimeUpdates === 'connected' && '🟢'} 
                           {systemStatus.realTimeUpdates === 'reconnecting' && '🟡'} 
                           {systemStatus.realTimeUpdates === 'disconnected' && '🔴'} 
                           {systemStatus.realTimeUpdates}
-                        </Badge>
+                        </span>
                       </div>
                     </div>
                   </CardContent>

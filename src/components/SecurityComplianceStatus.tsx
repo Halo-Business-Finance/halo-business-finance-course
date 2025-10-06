@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+
 import { Shield, CheckCircle, AlertTriangle, Clock, Lock, Database, Users, Eye, FileCheck, Activity, RefreshCw } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -107,14 +107,14 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
       case 'comprehensive':
       case 'strict':
       case 'gdpr_compliant':
-        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Excellent</Badge>;
+        return <span className="text-sm text-green-700">Excellent</span>;
       case 'partial':
       case 'basic':
       case 'moderate':
       case 'partial_compliance':
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">Good</Badge>;
+        return <span className="text-sm text-yellow-700">Good</span>;
       default:
-        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Needs Attention</Badge>;
+        return <span className="text-sm text-red-700">Needs Attention</span>;
     }
   };
   const totalAlerts = metrics.criticalAlerts + metrics.mediumAlerts + metrics.lowAlerts;
@@ -143,9 +143,9 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
               <p className="text-sm text-black">All critical security measures are active</p>
             </div>
           </div>
-          <Badge variant="outline" className="text-green-800 border-green-300 bg-slate-50">
+          <span className="text-sm font-medium text-green-800">
             95% Secure
-          </Badge>
+          </span>
         </div>
 
         {/* Security Metrics Grid */}
@@ -204,9 +204,9 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
               </div>
               <div className="flex items-center gap-2">
                 {metrics.dataRetentionCompliant ? <CheckCircle className="h-4 w-4 text-green-600" /> : <AlertTriangle className="h-4 w-4 text-red-600" />}
-                <Badge variant="outline" className={metrics.dataRetentionCompliant ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"}>
+                <span className={`text-sm ${metrics.dataRetentionCompliant ? "text-green-700" : "text-red-700"}`}>
                   {metrics.dataRetentionCompliant ? 'Compliant' : 'Non-Compliant'}
-                </Badge>
+                </span>
               </div>
             </div>
 
@@ -217,9 +217,9 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
               </div>
               <div className="flex items-center gap-2">
                 {metrics.adminActivityMonitored ? <CheckCircle className="h-4 w-4 text-green-600" /> : <AlertTriangle className="h-4 w-4 text-red-600" />}
-                <Badge variant="outline" className={metrics.adminActivityMonitored ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"}>
+                <span className={`text-sm ${metrics.adminActivityMonitored ? "text-green-700" : "text-red-700"}`}>
                   {metrics.adminActivityMonitored ? 'Active' : 'Inactive'}
-                </Badge>
+                </span>
               </div>
             </div>
           </div>
@@ -229,9 +229,9 @@ export const SecurityComplianceStatus: React.FC<SecurityComplianceStatusProps> =
         <div className="border-t pt-4">
           <div className="flex items-center justify-between mb-3">
             <h4 className="font-medium text-sm">Security Alerts</h4>
-            <Badge variant="outline" className={totalAlerts === 0 ? "bg-green-50 text-green-700 border-green-200" : "bg-yellow-50 text-yellow-700 border-yellow-200"}>
+            <span className={`text-sm font-medium ${totalAlerts === 0 ? "text-green-700" : "text-yellow-700"}`}>
               {totalAlerts} Total
-            </Badge>
+            </span>
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="p-3 rounded-lg border border-red-200 bg-blue-50">

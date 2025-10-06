@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/secureLogging";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { Badge } from "@/components/ui/badge";
+
 import { Separator } from "@/components/ui/separator";
 const mainNavItems = [{
   title: "Dashboard",
@@ -155,26 +155,26 @@ export function AppSidebar({
     switch (status) {
       case "completed":
         return <div className="relative">
-            <Badge variant="completed" className="text-xs px-2 py-0.5 bg-gradient-success text-white shadow-lg">
+            <div className="text-xs px-2 py-0.5 bg-gradient-success text-white shadow-lg rounded-full">
               ✓
-            </Badge>
+            </div>
             <div className="absolute -inset-0.5 bg-gradient-success rounded opacity-20 animate-pulse"></div>
           </div>;
       case "in-progress":
         return <div className="relative">
-            <Badge variant="progress" className="text-xs px-2 py-0.5 bg-gradient-primary text-white shadow-lg animate-pulse">
+            <div className="text-xs px-2 py-0.5 bg-gradient-primary text-white shadow-lg animate-pulse rounded-full">
               ●
-            </Badge>
+            </div>
             <div className="absolute -inset-0.5 bg-gradient-primary rounded opacity-30 animate-pulse"></div>
           </div>;
       case "locked":
-        return <Badge variant="outline" className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1 hover:opacity-80 transition-opacity">
+        return <div className="text-xs px-2 py-0.5 opacity-60 flex items-center gap-1 hover:opacity-80 transition-opacity">
                             <Lock size={12} className="text-navy-900 animate-pulse" />
-                          </Badge>;
+                          </div>;
       default:
-        return <Badge variant="success" className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-white shadow-md hover:shadow-lg transition-shadow duration-300">
+        return <div className="text-xs px-2 py-0.5 bg-gradient-to-r from-accent/80 to-accent text-white shadow-md hover:shadow-lg transition-shadow duration-300 rounded-full">
             ○
-          </Badge>;
+          </div>;
     }
   };
   return <Sidebar collapsible="icon" variant="inset" className="bg-sidebar border-sidebar-border border-r">
