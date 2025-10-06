@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
@@ -307,31 +306,31 @@ export function ResourceManager() {
                   <div className="flex items-center gap-2 mt-2">
                     {type === 'documents' && (
                       <>
-                        <Badge variant="outline">{item.file_type}</Badge>
-                        <Badge variant={item.is_downloadable ? 'default' : 'secondary'}>
+                        <span className="text-xs px-2 py-1 border rounded text-muted-foreground">{item.file_type}</span>
+                        <span className={`text-xs px-2 py-1 rounded ${item.is_downloadable ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                           {item.is_downloadable ? 'Downloadable' : 'View Only'}
-                        </Badge>
+                        </span>
                       </>
                     )}
                     {type === 'videos' && (
                       <>
-                        <Badge variant="outline">{item.video_type}</Badge>
-                        <Badge variant={item.is_active ? 'default' : 'secondary'}>
+                        <span className="text-xs px-2 py-1 border rounded text-muted-foreground">{item.video_type}</span>
+                        <span className={`text-xs px-2 py-1 rounded ${item.is_active ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                           {item.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
+                        </span>
                       </>
                     )}
                     {type === 'tools' && (
                       <>
-                        <Badge variant="outline">{item.tool_type}</Badge>
-                        <Badge variant={item.is_active ? 'default' : 'secondary'}>
+                        <span className="text-xs px-2 py-1 border rounded text-muted-foreground">{item.tool_type}</span>
+                        <span className={`text-xs px-2 py-1 rounded ${item.is_active ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                           {item.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
+                        </span>
                       </>
                     )}
                     {type === 'webinars' && (
                       <>
-                        <Badge variant="outline">{item.status}</Badge>
+                        <span className="text-xs px-2 py-1 border rounded text-muted-foreground">{item.status}</span>
                         <span className="text-xs text-muted-foreground">
                           {item.presenter}
                         </span>

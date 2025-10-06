@@ -3,7 +3,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCourseProgress } from '@/hooks/useCourseProgress';
 import { EnhancedQuiz, QuizQuestion } from '@/components/EnhancedQuiz';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, Lock, RotateCcw, Trophy } from 'lucide-react';
@@ -453,16 +452,16 @@ export const ModuleQuiz: React.FC<ModuleQuizProps> = ({
         <CardContent className="space-y-6">
           <div className="text-center space-y-4">
             <div className="flex justify-center gap-4">
-              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300">
-                <CheckCircle className="h-3 w-3 mr-1" />
+              <span className="text-sm px-3 py-1 bg-green-100 text-green-700 border border-green-300 rounded flex items-center gap-1">
+                <CheckCircle className="h-3 w-3" />
                 Passed
-              </Badge>
-              <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300">
+              </span>
+              <span className="text-sm px-3 py-1 bg-blue-100 text-blue-700 border border-blue-300 rounded">
                 Score: {quizStatus.score}%
-              </Badge>
-              <Badge variant="outline" className="bg-gray-100 text-gray-700 border-gray-300">
+              </span>
+              <span className="text-sm px-3 py-1 bg-gray-100 text-gray-700 border border-gray-300 rounded">
                 Attempts: {quizStatus.attempts}
-              </Badge>
+              </span>
             </div>
             
             <Progress value={100} className="w-full" />
@@ -504,12 +503,12 @@ export const ModuleQuiz: React.FC<ModuleQuizProps> = ({
             </p>
             
             <div className="flex justify-center gap-4">
-              <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300">
+              <span className="text-sm px-3 py-1 bg-red-100 text-red-700 border border-red-300 rounded">
                 Last Score: {quizStatus.score}%
-              </Badge>
-              <Badge variant="outline" className="bg-gray-100 text-gray-700 border-gray-300">
+              </span>
+              <span className="text-sm px-3 py-1 bg-gray-100 text-gray-700 border border-gray-300 rounded">
                 Attempts: {quizStatus.attempts}/3
-              </Badge>
+              </span>
             </div>
           </div>
         </CardContent>
@@ -525,12 +524,12 @@ export const ModuleQuiz: React.FC<ModuleQuizProps> = ({
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">
+                <span className="text-sm px-3 py-1 bg-orange-100 text-orange-700 border border-orange-300 rounded">
                   Previous Score: {quizStatus.score}%
-                </Badge>
-                <Badge variant="outline" className="bg-gray-100 text-gray-700 border-gray-300">
+                </span>
+                <span className="text-sm px-3 py-1 bg-gray-100 text-gray-700 border border-gray-300 rounded">
                   Attempt: {quizStatus.attempts + 1}/3
-                </Badge>
+                </span>
               </div>
               <Button onClick={resetQuiz} variant="outline" size="sm">
                 <RotateCcw className="h-4 w-4 mr-2" />

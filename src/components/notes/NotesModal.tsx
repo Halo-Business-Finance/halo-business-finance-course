@@ -5,7 +5,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useNotes } from '@/contexts/NotesContext';
 import { Search, Plus, Edit, Trash2, Save, X, FileText, Clock } from 'lucide-react';
@@ -89,12 +88,12 @@ export const NotesModal: React.FC<NotesModalProps> = ({
 
   const getContextBadge = () => {
     if (lessonTitle) {
-      return <Badge variant="secondary">Lesson: {lessonTitle}</Badge>;
+      return <span className="text-sm text-muted-foreground">Lesson: {lessonTitle}</span>;
     }
     if (moduleTitle) {
-      return <Badge variant="outline">Module: {moduleTitle}</Badge>;
+      return <span className="text-sm text-muted-foreground">Module: {moduleTitle}</span>;
     }
-    return <Badge variant="default">All Notes</Badge>;
+    return <span className="text-sm text-muted-foreground">All Notes</span>;
   };
 
   useEffect(() => {
@@ -232,9 +231,9 @@ export const NotesModal: React.FC<NotesModalProps> = ({
                           <div className="flex items-center justify-between text-xs text-muted-foreground">
                             <div className="flex items-center gap-4">
                               {note.lesson_id && (
-                                <Badge variant="secondary" className="text-xs">
+                                <span className="text-xs text-muted-foreground">
                                   Lesson Note
-                                </Badge>
+                                </span>
                               )}
                             </div>
                             <div className="flex items-center gap-1">

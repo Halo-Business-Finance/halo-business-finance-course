@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -366,7 +365,7 @@ export const AdaptiveLessonEngine = ({ moduleId, userId, courseId }: AdaptiveLes
         <CardContent>
           <div className="grid md:grid-cols-4 gap-4">
             <div className="text-center">
-              <Badge variant="outline">{learningProfile?.learning_style}</Badge>
+              <div className="text-sm font-medium capitalize">{learningProfile?.learning_style}</div>
               <p className="text-sm text-muted-foreground mt-1">Learning Style</p>
             </div>
             <div className="text-center">
@@ -378,7 +377,7 @@ export const AdaptiveLessonEngine = ({ moduleId, userId, courseId }: AdaptiveLes
               <p className="text-sm text-muted-foreground">Engagement</p>
             </div>
             <div className="text-center">
-              <Badge variant="secondary">{learningProfile?.difficulty_preference}</Badge>
+              <div className="text-sm font-medium capitalize">{learningProfile?.difficulty_preference}</div>
               <p className="text-sm text-muted-foreground mt-1">Difficulty</p>
             </div>
           </div>
@@ -449,20 +448,20 @@ export const AdaptiveLessonEngine = ({ moduleId, userId, courseId }: AdaptiveLes
                   <h4 className="font-medium text-sm">Strengths</h4>
                   <div className="flex flex-wrap gap-1">
                     {learningProfile?.strengths.map((strength, index) => (
-                      <Badge key={index} variant="success" className="text-xs">
+                      <span key={index} className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">
                         {strength}
-                      </Badge>
-                    )) || <Badge variant="outline" className="text-xs">Building strengths...</Badge>}
+                      </span>
+                    )) || <span className="text-xs text-muted-foreground">Building strengths...</span>}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <h4 className="font-medium text-sm">Focus Areas</h4>
                   <div className="flex flex-wrap gap-1">
                     {learningProfile?.knowledge_gaps.map((gap, index) => (
-                      <Badge key={index} variant="destructive" className="text-xs">
+                      <span key={index} className="text-xs px-2 py-1 bg-red-100 text-red-800 rounded">
                         {gap}
-                      </Badge>
-                    )) || <Badge variant="outline" className="text-xs">No gaps identified</Badge>}
+                      </span>
+                    )) || <span className="text-xs text-muted-foreground">No gaps identified</span>}
                   </div>
                 </div>
               </CardContent>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { AlertCircle, CheckCircle, Clock, Users, DollarSign } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -196,9 +195,9 @@ export const ScenarioSimulation = ({ element, onScore }: ScenarioSimulationProps
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <span>Overall Score</span>
-              <Badge variant={finalScore >= 70 ? "success" : "destructive"} className="text-lg px-3 py-1">
+              <span className={`text-lg px-3 py-1 font-medium ${finalScore >= 70 ? 'text-green-600' : 'text-red-600'}`}>
                 {Math.round(finalScore)}%
-              </Badge>
+              </span>
             </div>
             
             <div className="space-y-3">
@@ -207,9 +206,9 @@ export const ScenarioSimulation = ({ element, onScore }: ScenarioSimulationProps
                 return (
                   <div key={scenario.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <span className="text-sm font-medium">{scenario.title}</span>
-                    <Badge variant={choice && choice.score >= 70 ? "success" : "secondary"}>
+                    <span className={`text-sm ${choice && choice.score >= 70 ? 'text-green-600' : 'text-muted-foreground'}`}>
                       {choice?.score || 0}%
-                    </Badge>
+                    </span>
                   </div>
                 );
               })}
@@ -311,9 +310,9 @@ export const ScenarioSimulation = ({ element, onScore }: ScenarioSimulationProps
                     </div>
 
                     <div className="flex justify-between items-center pt-4">
-                      <Badge variant={selectedChoice.score >= 70 ? "success" : "secondary"}>
+                      <span className={`text-sm font-medium ${selectedChoice.score >= 70 ? 'text-green-600' : 'text-muted-foreground'}`}>
                         Score: {selectedChoice.score}%
-                      </Badge>
+                      </span>
                       <Button onClick={handleNext}>
                         {currentStep === scenarios.length - 1 ? 'Complete Simulation' : 'Next Scenario'}
                       </Button>
@@ -331,9 +330,9 @@ export const ScenarioSimulation = ({ element, onScore }: ScenarioSimulationProps
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Current Score</span>
-            <Badge variant="outline">
+            <span className="text-sm text-muted-foreground">
               {selectedChoices.length > 0 ? Math.round(totalScore / selectedChoices.length) : 0}%
-            </Badge>
+            </span>
           </div>
         </CardContent>
       </Card>

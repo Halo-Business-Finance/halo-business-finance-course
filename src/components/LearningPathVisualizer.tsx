@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
   CheckCircle, 
@@ -154,10 +153,10 @@ export const LearningPathVisualizer = ({
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Clock className="h-3 w-3" />
                           {pathItem.estimatedCompletionTime} min
-                        </Badge>
+                        </span>
                         {pathItem.status === 'current' && (
                           <Button
                             size="sm"
@@ -229,9 +228,9 @@ export const LearningPathVisualizer = ({
                         <h4 className="text-sm font-medium">Prerequisites:</h4>
                         <div className="flex flex-wrap gap-1">
                           {pathItem.lesson.prerequisites.map((prereq: string, idx: number) => (
-                            <Badge key={idx} variant="secondary" className="text-xs">
+                            <span key={idx} className="text-xs px-2 py-1 bg-secondary text-secondary-foreground rounded">
                               {prereq}
-                            </Badge>
+                            </span>
                           ))}
                         </div>
                       </div>

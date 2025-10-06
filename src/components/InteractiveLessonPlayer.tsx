@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Play, 
@@ -261,13 +260,13 @@ export const InteractiveLessonPlayer = ({ lesson, learningProfile, onComplete }:
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="flex items-center gap-1">
+              <span className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Timer className="h-3 w-3" />
                 {lesson.estimated_duration} min
-              </Badge>
-              <Badge variant="secondary">
+              </span>
+              <span className="text-sm text-muted-foreground">
                 Level {lesson.difficulty_level}
-              </Badge>
+              </span>
             </div>
           </div>
           <div className="space-y-2">
@@ -311,9 +310,9 @@ export const InteractiveLessonPlayer = ({ lesson, learningProfile, onComplete }:
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {showHints && (
-            <Badge variant="outline" className="text-xs">
+            <span className="text-xs text-muted-foreground">
               💡 Hints enabled
-            </Badge>
+            </span>
           )}
           <Button
             variant="ghost"
@@ -379,7 +378,7 @@ const IntroductionSection = ({ content }: { content: any }) => (
         <CardContent className="space-y-3">
           <div className="flex justify-between">
             <span className="text-sm text-muted-foreground">Duration</span>
-            <Badge variant="outline">{content.duration} minutes</Badge>
+            <span className="text-sm text-muted-foreground">{content.duration} minutes</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-muted-foreground">Difficulty</span>
@@ -399,9 +398,9 @@ const IntroductionSection = ({ content }: { content: any }) => (
               <span className="text-sm text-muted-foreground">Prerequisites</span>
               <div className="flex flex-wrap gap-1 mt-1">
                 {content.prerequisites.map((prereq: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="text-xs">
+                  <span key={index} className="text-xs px-2 py-1 bg-secondary text-secondary-foreground rounded">
                     {prereq}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </div>

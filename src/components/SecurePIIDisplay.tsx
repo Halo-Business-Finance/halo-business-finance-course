@@ -1,5 +1,4 @@
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Eye, EyeOff, Shield, AlertTriangle } from 'lucide-react';
 import { SecurityStatusIndicator } from './SecurityStatusIndicator';
 

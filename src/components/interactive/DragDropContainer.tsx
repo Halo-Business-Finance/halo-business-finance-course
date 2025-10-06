@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { CheckCircle, X, RotateCcw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -200,9 +199,9 @@ export const DragDropContainer = ({ element, onScore }: DragDropContainerProps) 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {isComplete && (
-            <Badge variant={score >= 70 ? "success" : "destructive"}>
+            <span className={`text-sm font-medium ${score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
               Score: {score}%
-            </Badge>
+            </span>
           )}
         </div>
         

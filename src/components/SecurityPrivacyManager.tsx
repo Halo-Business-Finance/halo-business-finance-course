@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { 
@@ -241,9 +240,9 @@ export const SecurityPrivacyManager: React.FC<SecurityPrivacyManagerProps> = ({ 
                       {type.replace('_', ' ')}
                     </Label>
                     {type === 'data_processing' && (
-                      <Badge variant="secondary" className="text-xs">
+                      <span className="text-xs text-muted-foreground">
                         Required
-                      </Badge>
+                      </span>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -351,24 +350,24 @@ export const SecurityPrivacyManager: React.FC<SecurityPrivacyManagerProps> = ({ 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm">Data Encryption</span>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                <CheckCircle className="h-3 w-3 mr-1" />
+              <span className="flex items-center gap-1 text-sm text-green-700">
+                <CheckCircle className="h-3 w-3" />
                 Active
-              </Badge>
+              </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">Audit Logging</span>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                <CheckCircle className="h-3 w-3 mr-1" />
+              <span className="flex items-center gap-1 text-sm text-green-700">
+                <CheckCircle className="h-3 w-3" />
                 Enabled
-              </Badge>
+              </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">GDPR Compliance</span>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                <CheckCircle className="h-3 w-3 mr-1" />
+              <span className="flex items-center gap-1 text-sm text-green-700">
+                <CheckCircle className="h-3 w-3" />
                 Compliant
-              </Badge>
+              </span>
             </div>
           </div>
         </CardContent>

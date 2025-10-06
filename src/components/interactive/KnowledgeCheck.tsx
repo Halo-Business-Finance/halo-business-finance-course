@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, X, HelpCircle, Lightbulb } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -147,9 +146,9 @@ export const KnowledgeCheck = ({ element, onScore }: KnowledgeCheckProps) => {
         <div className="text-center space-y-4">
           <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
           <h3 className="text-2xl font-bold">Knowledge Check Complete!</h3>
-          <Badge variant={score >= 70 ? "success" : "destructive"} className="text-lg px-4 py-2">
+          <div className={`text-lg px-4 py-2 font-medium ${score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
             Final Score: {Math.round(score)}%
-          </Badge>
+          </div>
         </div>
 
         <Card>
@@ -170,9 +169,9 @@ export const KnowledgeCheck = ({ element, onScore }: KnowledgeCheckProps) => {
                       )}
                       <span className="text-sm">Question {index + 1}</span>
                     </div>
-                    <Badge variant={isCorrect ? "success" : "destructive"}>
+                    <span className={`text-sm font-medium ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
                       {isCorrect ? 'Correct' : 'Incorrect'}
-                    </Badge>
+                    </span>
                   </div>
                 );
               })}
@@ -225,13 +224,13 @@ export const KnowledgeCheck = ({ element, onScore }: KnowledgeCheckProps) => {
               <HelpCircle className="h-5 w-5" />
               Question {currentQuestion + 1}
             </CardTitle>
-            <Badge variant="outline" className={
-              question.difficulty === 'easy' ? 'border-green-500 text-green-700' :
-              question.difficulty === 'medium' ? 'border-yellow-500 text-yellow-700' :
-              'border-red-500 text-red-700'
-            }>
+            <span className={`text-sm ${
+              question.difficulty === 'easy' ? 'text-green-700' :
+              question.difficulty === 'medium' ? 'text-yellow-700' :
+              'text-red-700'
+            }`}>
               {question.difficulty}
-            </Badge>
+            </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -316,9 +315,9 @@ export const KnowledgeCheck = ({ element, onScore }: KnowledgeCheckProps) => {
           <div className="flex justify-between pt-4">
             <div className="flex items-center gap-2">
               {showFeedback[currentQuestion] && (
-                <Badge variant={answers[currentQuestion] === question.correct ? "success" : "destructive"}>
+                <span className={`text-sm font-medium ${answers[currentQuestion] === question.correct ? 'text-green-600' : 'text-red-600'}`}>
                   {answers[currentQuestion] === question.correct ? '+1' : '+0'} point
-                </Badge>
+                </span>
               )}
             </div>
             

@@ -3,8 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
-import { Badge } from '@/components/ui/badge';
-import { 
+import {
   Accessibility, 
   Type, 
   Eye, 
@@ -383,12 +382,10 @@ export const AccessibilityEnhancer = () => {
             </Button>
           </div>
 
-          {/* Accessibility Compliance Badge */}
-          <div className="text-center pt-4">
-            <Badge variant="outline" className="gap-2">
-              <Accessibility className="h-4 w-4" />
-              WCAG 2.1 AA Compliant
-            </Badge>
+          {/* Accessibility Compliance */}
+          <div className="text-center pt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <Accessibility className="h-4 w-4" />
+            <span>WCAG 2.1 AA Compliant</span>
           </div>
         </CardContent>
       </Card>

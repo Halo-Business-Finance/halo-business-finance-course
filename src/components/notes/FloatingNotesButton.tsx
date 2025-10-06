@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useNotes } from '@/contexts/NotesContext';
 import { StickyNote, Plus } from 'lucide-react';
 
@@ -48,12 +47,9 @@ export const FloatingNotesButton: React.FC<FloatingNotesButtonProps> = ({
         
         {/* Note count badge */}
         {noteCount > 0 && (
-          <Badge 
-            variant="destructive" 
-            className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold"
-          >
+          <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold bg-destructive text-destructive-foreground">
             {noteCount > 99 ? '99+' : noteCount}
-          </Badge>
+          </div>
         )}
         
         {/* Plus icon overlay for quick add */}

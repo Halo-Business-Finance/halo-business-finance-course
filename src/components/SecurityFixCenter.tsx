@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -328,15 +327,15 @@ export const SecurityFixCenter = () => {
   const getIssueBadge = (type: string) => {
     switch (type) {
       case 'critical':
-        return <Badge className="bg-red-100 text-red-800 border-red-200">Critical</Badge>;
+        return <span className="text-sm px-2 py-1 bg-red-100 text-red-800 border border-red-200 rounded">Critical</span>;
       case 'high':
-        return <Badge className="bg-orange-100 text-orange-800 border-orange-200">High</Badge>;
+        return <span className="text-sm px-2 py-1 bg-orange-100 text-orange-800 border border-orange-200 rounded">High</span>;
       case 'medium':
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Medium</Badge>;
+        return <span className="text-sm px-2 py-1 bg-yellow-100 text-yellow-800 border border-yellow-200 rounded">Medium</span>;
       case 'low':
-        return <Badge className="bg-blue-100 text-blue-800 border-blue-200">Low</Badge>;
+        return <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 border border-blue-200 rounded">Low</span>;
       default:
-        return <Badge variant="outline">{type}</Badge>;
+        return <span className="text-sm text-muted-foreground">{type}</span>;
     }
   };
   if (loading) {
@@ -399,12 +398,12 @@ export const SecurityFixCenter = () => {
               </>}
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="px-3 py-1">
+            <span className="text-sm px-3 py-1 text-muted-foreground border rounded">
               {securityIssues.length} Active
-            </Badge>
-            <Badge variant="secondary" className="px-3 py-1">
+            </span>
+            <span className="text-sm px-3 py-1 bg-secondary text-secondary-foreground rounded">
               Real Data
-            </Badge>
+            </span>
           </div>
         </div>
 
@@ -427,11 +426,11 @@ export const SecurityFixCenter = () => {
                   {getIssueBadge(issue.type)}
                   {issue.fixable ? <Button onClick={() => fixSecurityIssue(issue)} disabled={fixing === issue.id} size="sm" className="flex items-center gap-1">
                       {fixing === issue.id ? <div className="animate-spin rounded-full h-3 w-3 border-b border-current" /> : <CheckCircle className="h-3 w-3" />}
-                      {fixing === issue.id ? 'Resolving...' : 'Resolve'}
-                    </Button> : <Badge variant="outline" className="text-xs">
-                      <Eye className="h-3 w-3 mr-1" />
+                    {fixing === issue.id ? 'Resolving...' : 'Resolve'}
+                    </Button> : <span className="text-xs flex items-center gap-1 text-muted-foreground">
+                      <Eye className="h-3 w-3" />
                       Monitor Only
-                    </Badge>}
+                    </span>}
                 </div>
               </div>
             </div>)}
