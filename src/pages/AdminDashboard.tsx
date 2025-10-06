@@ -958,7 +958,7 @@ const AdminDashboard = () => {
                       {Object.entries(userRoles.reduce((acc, role) => {
                     acc[role.role] = (acc[role.role] || 0) + 1;
                     return acc;
-                  }, {} as Record<string, number>)).map(([role, count]) => <div key={role} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                  }, {} as Record<string, number>)).map(([role, count]) => <div key={role} className="flex items-center justify-between py-2 border-b last:border-b-0">
                           <span className="text-sm font-medium capitalize">{role.replace('_', ' ')}</span>
                           <span className="text-sm font-semibold text-foreground">{count}</span>
                         </div>)}
@@ -977,7 +977,7 @@ const AdminDashboard = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                      <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Database</span>
                         <span className="text-sm capitalize">
                           {systemStatus.database === 'online' && '🟢'} 
@@ -986,7 +986,7 @@ const AdminDashboard = () => {
                           {systemStatus.database}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                      <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Authentication</span>
                         <span className="text-sm capitalize">
                           {systemStatus.authentication === 'active' && '🟢'} 
@@ -995,7 +995,7 @@ const AdminDashboard = () => {
                           {systemStatus.authentication}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                      <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Security Monitoring</span>
                         <span className="text-sm capitalize">
                           {systemStatus.securityMonitoring === 'enabled' && '🟢'} 
@@ -1004,7 +1004,7 @@ const AdminDashboard = () => {
                           {systemStatus.securityMonitoring}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/30">
+                      <div className="flex items-center justify-between py-2">
                         <span className="text-sm font-medium">Real-time Updates</span>
                         <span className="text-sm capitalize">
                           {systemStatus.realTimeUpdates === 'connected' && '🟢'} 
