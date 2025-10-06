@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Shield, AlertTriangle, Activity, Database, Settings, UserCheck, UserX, Lock, Unlock, Crown, Eye, Trash2, GraduationCap, Edit, Plus, Video, FileText, BookOpen, Wrench, TrendingUp } from "lucide-react";
+
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 
@@ -719,9 +719,6 @@ const AdminDashboard = () => {
   if (roleLoading) {
     return <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center animate-pulse">
-            <Shield className="h-6 w-6 text-navy-900" />
-          </div>
           <div className="w-8 h-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
           <p className="text-muted-foreground">Loading admin dashboard...</p>
         </div>
@@ -733,9 +730,6 @@ const AdminDashboard = () => {
     return <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <Card className="max-w-md shadow-elegant border-border/50">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-navy-900" />
-            </div>
             <CardTitle className="text-destructive">Access Denied</CardTitle>
             <CardDescription>
               You don't have permission to access this admin dashboard.
@@ -781,9 +775,6 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-glow">
-                  <Shield className="h-8 w-8 text-navy-900" />
-                </div>
                 <div>
                   <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                     Admin Dashboard
@@ -793,7 +784,6 @@ const AdminDashboard = () => {
                   </p>
                   <div className="mt-3 flex items-center gap-3 text-base text-muted-foreground">
                     <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
-                    <Activity className="h-5 w-5 text-navy-900" />
                     <span>Live Monitoring</span>
                   </div>
                 </div>
@@ -811,16 +801,10 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Total Users</CardTitle>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Users className="h-6 w-6 text-navy-900" />
-                </div>
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground mb-2 bg-white">{stats.totalUsers}</div>
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-navy-900" />
-                  <p className="text-sm text-accent font-semibold">+12% from last month</p>
-                </div>
+                <p className="text-sm text-accent font-semibold">+12% from last month</p>
               </CardContent>
             </Card>
             
@@ -828,9 +812,6 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Active Admins</CardTitle>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  
-                </div>
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground mb-2">{stats.activeAdmins}</div>
@@ -842,9 +823,6 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Security Events</CardTitle>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <AlertTriangle className="h-6 w-6 text-navy-900" />
-                </div>
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground mb-2">{stats.securityEvents}</div>
@@ -856,19 +834,10 @@ const AdminDashboard = () => {
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">System Health</CardTitle>
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                  <Activity className="h-6 w-6 text-navy-900" />
-                </div>
               </CardHeader>
               <CardContent className="relative z-10">
                 <div className="text-3xl font-bold text-foreground capitalize mb-2">{stats.systemHealth}</div>
-                <div className="text-sm text-muted-foreground">
-                  {stats.systemHealth === 'excellent' && '🟢'}
-                  {stats.systemHealth === 'good' && '🟡'}
-                  {stats.systemHealth === 'warning' && '🟠'}
-                  {stats.systemHealth === 'critical' && '🔴'}
-                  {' '}<span className="capitalize">{stats.systemHealth}</span>
-                </div>
+                <p className="text-sm text-muted-foreground capitalize">{stats.systemHealth}</p>
               </CardContent>
             </Card>
           </div>}
@@ -877,33 +846,26 @@ const AdminDashboard = () => {
         <Tabs defaultValue="overview" className="space-y-8">
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-3 border border-border/20 shadow-sm">
             <TabsList className="grid w-full grid-cols-7 bg-transparent gap-2">
-              <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Activity className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Overview</span>
+              <TabsTrigger value="overview" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>Overview</span>
               </TabsTrigger>
-              <TabsTrigger value="users" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Users className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Users</span>
+              <TabsTrigger value="users" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>Users</span>
               </TabsTrigger>
-              <TabsTrigger value="security" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Shield className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Security</span>
+              <TabsTrigger value="security" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>Security</span>
               </TabsTrigger>
-              <TabsTrigger value="trainee-progress" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <TrendingUp className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Progress</span>
+              <TabsTrigger value="trainee-progress" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>Progress</span>
               </TabsTrigger>
-              <TabsTrigger value="courses" className="flex items-center gap-2 data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl bg-white">
-                <BookOpen className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Courses</span>
+              <TabsTrigger value="courses" className="data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl bg-white">
+                <span>Courses</span>
               </TabsTrigger>
-              <TabsTrigger value="videos" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <Video className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">Videos</span>
+              <TabsTrigger value="videos" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>Videos</span>
               </TabsTrigger>
-              <TabsTrigger value="cms" className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
-                <FileText className="h-4 w-4 text-navy-900" />
-                <span className="hidden sm:inline">CMS</span>
+              <TabsTrigger value="cms" className="data-[state=active]:bg-background data-[state=active]:shadow-elegant transition-all duration-300 rounded-xl">
+                <span>CMS</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -919,10 +881,7 @@ const AdminDashboard = () => {
               </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card className="border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
                   <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-3 text-lg">
-                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Database className="h-5 w-5 text-navy-900" />
-                      </div>
+                    <CardTitle className="text-lg">
                       Recent Activity
                     </CardTitle>
                   </CardHeader>
@@ -935,9 +894,6 @@ const AdminDashboard = () => {
                           </span>
                         </div>)}
                       {securityEvents.length === 0 && <div className="text-center py-6">
-                          <div className="w-12 h-12 bg-muted/30 rounded-lg flex items-center justify-center mx-auto mb-2">
-                            <Activity className="h-6 w-6 text-navy-900" />
-                          </div>
                           <p className="text-sm text-muted-foreground">No recent security events</p>
                         </div>}
                     </div>
@@ -946,10 +902,7 @@ const AdminDashboard = () => {
 
                 <Card className="border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
                   <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-3 text-lg">
-                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Users className="h-5 w-5 text-navy-900" />
-                      </div>
+                    <CardTitle className="text-lg">
                       User Distribution
                     </CardTitle>
                   </CardHeader>
@@ -968,10 +921,7 @@ const AdminDashboard = () => {
 
                 <Card className="border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
                   <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-3 text-lg">
-                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Settings className="h-5 w-5 text-navy-900" />
-                      </div>
+                    <CardTitle className="text-lg">
                       System Status
                     </CardTitle>
                   </CardHeader>
@@ -980,36 +930,24 @@ const AdminDashboard = () => {
                       <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Database</span>
                         <span className="text-sm capitalize">
-                          {systemStatus.database === 'online' && '🟢'} 
-                          {systemStatus.database === 'degraded' && '🟡'} 
-                          {systemStatus.database === 'offline' && '🔴'} 
                           {systemStatus.database}
                         </span>
                       </div>
                       <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Authentication</span>
                         <span className="text-sm capitalize">
-                          {systemStatus.authentication === 'active' && '🟢'} 
-                          {systemStatus.authentication === 'inactive' && '🟡'} 
-                          {systemStatus.authentication === 'error' && '🔴'} 
                           {systemStatus.authentication}
                         </span>
                       </div>
                       <div className="flex items-center justify-between py-2 border-b last:border-b-0">
                         <span className="text-sm font-medium">Security Monitoring</span>
                         <span className="text-sm capitalize">
-                          {systemStatus.securityMonitoring === 'enabled' && '🟢'} 
-                          {systemStatus.securityMonitoring === 'partial' && '🟡'} 
-                          {systemStatus.securityMonitoring === 'disabled' && '🔴'} 
                           {systemStatus.securityMonitoring}
                         </span>
                       </div>
                       <div className="flex items-center justify-between py-2">
                         <span className="text-sm font-medium">Real-time Updates</span>
                         <span className="text-sm capitalize">
-                          {systemStatus.realTimeUpdates === 'connected' && '🟢'} 
-                          {systemStatus.realTimeUpdates === 'reconnecting' && '🟡'} 
-                          {systemStatus.realTimeUpdates === 'disconnected' && '🔴'} 
                           {systemStatus.realTimeUpdates}
                         </span>
                       </div>
@@ -1024,10 +962,7 @@ const AdminDashboard = () => {
               <CardHeader className="bg-gradient-to-r from-card to-card/80 border-b border-border/20">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <Users className="h-5 w-5 text-navy-900" />
-                      </div>
+                    <CardTitle className="text-xl">
                       User Management
                     </CardTitle>
                     <CardDescription className="text-base mt-2">
@@ -1037,7 +972,6 @@ const AdminDashboard = () => {
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button className="shadow-sm hover:shadow-md transition-all duration-200">
-                        <Plus className="h-4 w-4 mr-2" />
                         Create User
                       </Button>
                     </DialogTrigger>
@@ -1139,27 +1073,27 @@ const AdminDashboard = () => {
                          </TableCell>
                          <TableCell className="min-w-[300px] py-4">
                            <div className="flex flex-wrap items-center gap-2">
-                             <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'trainee')} disabled={userRoleItem.role === 'trainee'} title="Assign Trainee Role" className="min-w-[36px] hover:shadow-sm transition-all duration-200">
-                               <GraduationCap className="h-3 w-3" />
-                             </Button>
-                             <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'tech_support_admin')} disabled={userRoleItem.role === 'tech_support_admin'} title="Assign Tech Support Admin Role" className="min-w-[36px] hover:shadow-sm transition-all duration-200">
-                               <Wrench className="h-3 w-3" />
-                             </Button>
-                             <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'admin')} disabled={userRoleItem.role === 'admin'} title="Assign Admin Role" className="min-w-[36px] hover:shadow-sm transition-all duration-200">
-                               <UserCheck className="h-3 w-3" />
-                             </Button>
-                             <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'super_admin')} disabled={userRoleItem.role === 'super_admin'} title="Assign Super Admin Role" className="min-w-[36px] hover:shadow-sm transition-all duration-200">
-                               <Crown className="h-3 w-3" />
-                             </Button>
-                             <Button size="sm" variant="outline" onClick={() => revokeRole(userRoleItem.user_id)} disabled={!userRoleItem.is_active} title="Revoke Role" className="min-w-[36px] hover:shadow-sm transition-all duration-200">
-                               <UserX className="h-3 w-3" />
-                             </Button>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                 <Button size="sm" variant="outline" disabled={userRoleItem.user_id === user?.id || deletingUser === userRoleItem.user_id} title={userRoleItem.user_id === user?.id ? "Cannot delete your own account" : "Delete User"} className="hover:bg-destructive hover:text-destructive-foreground min-w-[36px] hover:shadow-sm transition-all duration-200">
-                                   {deletingUser === userRoleItem.user_id ? <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" /> : <Trash2 className="h-3 w-3" />}
-                                 </Button>
-                              </AlertDialogTrigger>
+                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'trainee')} disabled={userRoleItem.role === 'trainee'} title="Assign Trainee Role" className="hover:shadow-sm transition-all duration-200">
+                                Trainee
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'tech_support_admin')} disabled={userRoleItem.role === 'tech_support_admin'} title="Assign Tech Support Admin Role" className="hover:shadow-sm transition-all duration-200">
+                                Tech Support
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'admin')} disabled={userRoleItem.role === 'admin'} title="Assign Admin Role" className="hover:shadow-sm transition-all duration-200">
+                                Admin
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'super_admin')} disabled={userRoleItem.role === 'super_admin'} title="Assign Super Admin Role" className="hover:shadow-sm transition-all duration-200">
+                                Super Admin
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => revokeRole(userRoleItem.user_id)} disabled={!userRoleItem.is_active} title="Revoke Role" className="hover:shadow-sm transition-all duration-200">
+                                Revoke
+                              </Button>
+                             <AlertDialog>
+                               <AlertDialogTrigger asChild>
+                                  <Button size="sm" variant="outline" disabled={userRoleItem.user_id === user?.id || deletingUser === userRoleItem.user_id} title={userRoleItem.user_id === user?.id ? "Cannot delete your own account" : "Delete User"} className="hover:bg-destructive hover:text-destructive-foreground hover:shadow-sm transition-all duration-200">
+                                    {deletingUser === userRoleItem.user_id ? <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" /> : 'Delete'}
+                                  </Button>
+                               </AlertDialogTrigger>
                               <AlertDialogContent className="border-border/50 shadow-elegant">
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Delete User</AlertDialogTitle>
@@ -1186,9 +1120,6 @@ const AdminDashboard = () => {
                    </TableBody>
                     </Table>
                   </div> : <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-muted/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <Users className="h-8 w-8 text-muted-foreground" />
-                    </div>
                     <p className="text-muted-foreground text-lg">No users found.</p>
                   </div>}
               </CardContent>
