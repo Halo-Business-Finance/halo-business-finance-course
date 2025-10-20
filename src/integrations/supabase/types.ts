@@ -5058,7 +5058,7 @@ export type Database = {
         Args:
           | Record<PropertyKey, never>
           | { admin_email: string; admin_password: string }
-        Returns: Json
+        Returns: string
       }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
