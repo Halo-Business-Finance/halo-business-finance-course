@@ -12,6 +12,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Play, Plus, Edit, Trash2, ExternalLink, Youtube, Video, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 interface VideoData {
   id: string;
@@ -41,6 +42,7 @@ export function VideoManager() {
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
+  const [previewVideo, setPreviewVideo] = useState<VideoData | null>(null);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -504,8 +506,8 @@ export function VideoManager() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => window.open(video.video_url, "_blank")}
-                        title="Watch Video"
+                        onClick={() => setPreviewVideo(video)}
+                        title="Preview Video"
                       >
                         <Play className="h-3 w-3" />
                       </Button>
@@ -567,6 +569,30 @@ export function VideoManager() {
           )}
         </CardContent>
       </Card>
+
+      {/* Video Preview Modal */}
+      <Dialog open={!!previewVideo} onOpenChange={() => setPreviewVideo(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{previewVideo?.title}</DialogTitle>
+            <DialogDescription>
+              {previewVideo?.description}
+            </DialogDescription>
+          </DialogHeader>
+          {previewVideo && (
+            <div className="mt-4">
+              <VideoPlayer
+                title={previewVideo.title}
+                description={previewVideo.description || ""}
+                videoType={previewVideo.video_type === 'youtube' ? 'youtube' : 'file'}
+                videoUrl={previewVideo.video_url}
+                youtubeId={previewVideo.youtube_id}
+                className="w-full"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
