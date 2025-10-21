@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Play, Plus, Edit, Trash2, ExternalLink, Youtube, Video, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -43,6 +44,7 @@ export function VideoManager() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
   const [previewVideo, setPreviewVideo] = useState<VideoData | null>(null);
+  const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -270,6 +272,72 @@ export function VideoManager() {
     }
   };
 
+  const toggleSelectAll = () => {
+    if (selectedVideos.length === videos.length) {
+      setSelectedVideos([]);
+    } else {
+      setSelectedVideos(videos.map(v => v.id));
+    }
+  };
+
+  const toggleSelectVideo = (videoId: string) => {
+    setSelectedVideos(prev => 
+      prev.includes(videoId) 
+        ? prev.filter(id => id !== videoId)
+        : [...prev, videoId]
+    );
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from("course_videos")
+        .delete()
+        .in("id", selectedVideos);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `${selectedVideos.length} video(s) deleted successfully`,
+      });
+      
+      setSelectedVideos([]);
+      loadData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete videos",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBulkToggleStatus = async (activate: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("course_videos")
+        .update({ is_active: activate })
+        .in("id", selectedVideos);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `${selectedVideos.length} video(s) ${activate ? 'activated' : 'deactivated'} successfully`,
+      });
+      
+      setSelectedVideos([]);
+      loadData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update videos",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -425,15 +493,71 @@ export function VideoManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>All Videos ({videos.length})</CardTitle>
-          <CardDescription>
-            Manage all course videos across modules
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>All Videos ({videos.length})</CardTitle>
+              <CardDescription>
+                Manage all course videos across modules
+              </CardDescription>
+            </div>
+            
+            {selectedVideos.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  {selectedVideos.length} selected
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleBulkToggleStatus(true)}
+                >
+                  Activate
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleBulkToggleStatus(false)}
+                >
+                  Deactivate
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size="sm" variant="destructive">
+                      Delete Selected
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete {selectedVideos.length} Videos</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete {selectedVideos.length} video(s)? This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleBulkDelete}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete All
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={selectedVideos.length === videos.length && videos.length > 0}
+                    onCheckedChange={toggleSelectAll}
+                  />
+                </TableHead>
                 <TableHead>Video</TableHead>
                 <TableHead>Module</TableHead>
                 <TableHead>Type</TableHead>
@@ -445,6 +569,12 @@ export function VideoManager() {
             <TableBody>
               {videos.map((video) => (
                 <TableRow key={video.id}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedVideos.includes(video.id)}
+                      onCheckedChange={() => toggleSelectVideo(video.id)}
+                    />
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0">
