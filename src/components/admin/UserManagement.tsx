@@ -486,17 +486,12 @@ export function UserManagement({
                           />
                         </TableCell>
                         <TableCell className="py-4">
-                          <div className="flex flex-col gap-1">
-                            <SecurePIIDisplay 
-                              value={userRoleItem.profiles?.name || null} 
-                              type="name" 
-                              showMaskingIndicator={true} 
-                              userRole={currentUserRole || 'user'} 
-                            />
-                            <span className="font-mono text-xs text-muted-foreground">
-                              ID: {userRoleItem.user_id.slice(0, 8)}...
-                            </span>
-                          </div>
+                          <SecurePIIDisplay 
+                            value={userRoleItem.profiles?.name || null} 
+                            type="name" 
+                            showMaskingIndicator={true} 
+                            userRole={currentUserRole || 'user'} 
+                          />
                         </TableCell>
                         <TableCell className="py-4">
                           <SecurePIIDisplay 
@@ -507,9 +502,9 @@ export function UserManagement({
                           />
                         </TableCell>
                         <TableCell className="py-4">
-                          <Badge variant={getRoleBadgeVariant(userRoleItem.role)}>
-                            {userRoleItem.role.replace('_', ' ').toUpperCase()}
-                          </Badge>
+                          <span className="text-sm font-medium capitalize">
+                            {userRoleItem.role.replace('_', ' ')}
+                          </span>
                         </TableCell>
                         <TableCell className="py-4">
                           <div className="flex items-center gap-2">
