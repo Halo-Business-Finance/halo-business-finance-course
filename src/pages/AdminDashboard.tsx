@@ -27,6 +27,7 @@ import { SecurePIIDisplay } from "@/components/SecurePIIDisplay";
 import { SecurityStatusIndicator } from "@/components/SecurityStatusIndicator";
 import { SecurityComplianceStatus } from "@/components/SecurityComplianceStatus";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UserManagement } from "@/components/admin/UserManagement";
 interface UserRole {
   id: string;
   user_id: string;
@@ -958,173 +959,19 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="users" className="space-y-6">
-            <Card className="border-border/50 shadow-elegant">
-              <CardHeader className="bg-gradient-to-r from-card to-card/80 border-b border-border/20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-xl">
-                      User Management
-                    </CardTitle>
-                    <CardDescription className="text-base mt-2">
-                      Manage user accounts, roles, and permissions with enterprise-grade security
-                    </CardDescription>
-                  </div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="shadow-sm hover:shadow-md transition-all duration-200">
-                        Create User
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-md border-border/50 shadow-elegant">
-                      <DialogHeader>
-                        <DialogTitle className="text-xl">Create New User</DialogTitle>
-                        <DialogDescription className="text-base">
-                          Create a new user account with initial role assignment
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-6 py-4">
-                        <div className="grid gap-2">
-                          <label htmlFor="email" className="text-sm font-semibold">Email Address</label>
-                          <input id="email" type="email" value={newUserData.email} onChange={e => setNewUserData({
-                          ...newUserData,
-                          email: sanitizeInput(e.target.value)
-                        })} className="flex h-11 w-full rounded-lg border border-border/50 bg-background px-4 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200" placeholder="user@example.com" maxLength={100} autoComplete="off" />
-                        </div>
-                        <div className="grid gap-2">
-                          <label htmlFor="password" className="text-sm font-semibold">Password</label>
-                          <input id="password" type="password" value={newUserData.password} onChange={e => setNewUserData({
-                          ...newUserData,
-                          password: e.target.value
-                        })} className="flex h-11 w-full rounded-lg border border-border/50 bg-background px-4 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200" placeholder="Strong password" minLength={8} maxLength={128} autoComplete="new-password" />
-                        </div>
-                        <div className="grid gap-2">
-                          <label htmlFor="fullName" className="text-sm font-semibold">Full Name</label>
-                           <input id="fullName" type="text" value={newUserData.fullName} onChange={e => setNewUserData({
-                          ...newUserData,
-                          fullName: sanitizeInput(e.target.value)
-                        })} className="flex h-11 w-full rounded-lg border border-border/50 bg-background px-4 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200" placeholder="John Doe" maxLength={50} autoComplete="off" />
-                        </div>
-                        <div className="grid gap-2">
-                          <label htmlFor="role" className="text-sm font-semibold">Initial Role</label>
-                          <select id="role" value={newUserData.role} onChange={e => setNewUserData({
-                          ...newUserData,
-                          role: e.target.value
-                        })} className="flex h-11 w-full rounded-lg border border-border/50 bg-background px-4 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200">
-                            <option value="trainee">Trainee</option>
-                            <option value="admin">Admin</option>
-                            <option value="tech_support_admin">Tech Support Admin</option>
-                            {userRole === 'super_admin' && <option value="super_admin">Super Admin</option>}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="flex justify-end gap-3">
-                        <DialogClose asChild>
-                          <Button variant="outline" disabled={creatingUser}>Cancel</Button>
-                        </DialogClose>
-                        <Button onClick={createNewUser} disabled={creatingUser || !newUserData.email || !newUserData.password}>
-                          {creatingUser ? <>
-                              <div className="w-4 h-4 animate-spin rounded-full border border-current border-t-transparent mr-2" />
-                              Creating...
-                            </> : 'Create User'}
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                {!loading && userRoles.length > 0 ? <div className="overflow-x-auto">
-                    <Table className="min-w-full">
-                      <TableHeader>
-                        <TableRow className="border-border/50">
-                          <TableHead className="min-w-[150px] font-semibold">User</TableHead>
-                          <TableHead className="min-w-[200px] font-semibold">Email</TableHead>
-                          <TableHead className="min-w-[100px] font-semibold">Role</TableHead>
-                          <TableHead className="min-w-[80px] font-semibold">Status</TableHead>
-                          <TableHead className="min-w-[100px] font-semibold">Joined</TableHead>
-                          <TableHead className="min-w-[300px] font-semibold">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                     {userRoles.map(userRoleItem => <TableRow key={userRoleItem.id} className="border-border/30 hover:bg-muted/30 transition-colors duration-200">
-                           <TableCell className="py-4">
-                             <div className="flex flex-col">
-                                 <SecurePIIDisplay value={userRoleItem.profiles?.name || null} type="name" showMaskingIndicator={true} userRole={userRole || 'user'} />
-                               <span className="font-mono text-xs text-muted-foreground">
-                                 {userRoleItem.user_id.slice(0, 8)}...
-                               </span>
-                             </div>
-                           </TableCell>
-                           <TableCell className="py-4">
-                              <SecurePIIDisplay value={userRoleItem.profiles?.email || null} type="email" showMaskingIndicator={true} userRole={userRole || 'user'} />
-                           </TableCell>
-                           <TableCell className="py-4">
-                             <span className="text-sm font-medium capitalize">
-                               {userRoleItem.role.replace('_', ' ')}
-                            </span>
-                          </TableCell>
-                          <TableCell className="py-4">
-                             <span className="text-sm">
-                               {userRoleItem.is_active ? "Active" : "Inactive"}
-                             </span>
-                           </TableCell>
-                          <TableCell className="py-4">
-                            {new Date(userRoleItem.created_at).toLocaleDateString()}
-                         </TableCell>
-                         <TableCell className="min-w-[300px] py-4">
-                           <div className="flex flex-wrap items-center gap-2">
-                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'trainee')} disabled={userRoleItem.role === 'trainee'} title="Assign Trainee Role" className="hover:shadow-sm transition-all duration-200">
-                                Trainee
-                              </Button>
-                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'tech_support_admin')} disabled={userRoleItem.role === 'tech_support_admin'} title="Assign Tech Support Admin Role" className="hover:shadow-sm transition-all duration-200">
-                                Tech Support
-                              </Button>
-                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'admin')} disabled={userRoleItem.role === 'admin'} title="Assign Admin Role" className="hover:shadow-sm transition-all duration-200">
-                                Admin
-                              </Button>
-                              <Button size="sm" variant="outline" onClick={() => assignRole(userRoleItem.user_id, 'super_admin')} disabled={userRoleItem.role === 'super_admin'} title="Assign Super Admin Role" className="hover:shadow-sm transition-all duration-200">
-                                Super Admin
-                              </Button>
-                              <Button size="sm" variant="outline" onClick={() => revokeRole(userRoleItem.user_id)} disabled={!userRoleItem.is_active} title="Revoke Role" className="hover:shadow-sm transition-all duration-200">
-                                Revoke
-                              </Button>
-                             <AlertDialog>
-                               <AlertDialogTrigger asChild>
-                                  <Button size="sm" variant="outline" disabled={userRoleItem.user_id === user?.id || deletingUser === userRoleItem.user_id} title={userRoleItem.user_id === user?.id ? "Cannot delete your own account" : "Delete User"} className="hover:bg-destructive hover:text-destructive-foreground hover:shadow-sm transition-all duration-200">
-                                    {deletingUser === userRoleItem.user_id ? <div className="w-3 h-3 animate-spin rounded-full border border-current border-t-transparent" /> : 'Delete'}
-                                  </Button>
-                               </AlertDialogTrigger>
-                              <AlertDialogContent className="border-border/50 shadow-elegant">
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete User</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to permanently delete this user? This action cannot be undone.
-                                    The user will be completely removed from the system including all their data.
-                                    <br /><br />
-                                     <strong>User ID:</strong> {userRoleItem.user_id}
-                                     <br />
-                                     <strong>Role:</strong> {userRoleItem.role}
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => deleteUser(userRoleItem.user_id)} className="bg-destructive hover:bg-destructive/90">
-                                    Delete Permanently
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
-                        </TableCell>
-                      </TableRow>)}
-                   </TableBody>
-                    </Table>
-                  </div> : <div className="text-center py-12">
-                    <p className="text-muted-foreground text-lg">No users found.</p>
-                  </div>}
-              </CardContent>
-                  </Card>
-                </TabsContent>
+            <UserManagement
+              userRoles={userRoles}
+              currentUserRole={userRole}
+              currentUserId={user?.id}
+              loading={loading}
+              onAssignRole={assignRole}
+              onRevokeRole={revokeRole}
+              onDeleteUser={deleteUser}
+              onCreateUser={createNewUser}
+              deletingUser={deletingUser}
+              creatingUser={creatingUser}
+            />
+          </TabsContent>
 
                 <TabsContent value="security" className="space-y-6">
                   <SecurityComplianceStatus />
