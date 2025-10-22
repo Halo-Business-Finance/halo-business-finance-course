@@ -489,7 +489,7 @@ export function UserManagement({
                           <SecurePIIDisplay 
                             value={userRoleItem.profiles?.name || null} 
                             type="name" 
-                            showMaskingIndicator={true} 
+                            showMaskingIndicator={false} 
                             userRole={currentUserRole || 'user'} 
                           />
                         </TableCell>
@@ -497,7 +497,7 @@ export function UserManagement({
                           <SecurePIIDisplay 
                             value={userRoleItem.profiles?.email || null} 
                             type="email" 
-                            showMaskingIndicator={true} 
+                            showMaskingIndicator={false} 
                             userRole={currentUserRole || 'user'} 
                           />
                         </TableCell>
