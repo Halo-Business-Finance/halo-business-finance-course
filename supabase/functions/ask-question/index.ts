@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,10 +14,101 @@ serve(async (req) => {
   }
 
   try {
+    // Authentication check - CRITICAL SECURITY
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ 
+        error: 'Authentication required'
+      }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    
+    if (userError || !user) {
+      console.error('Authentication failed:', userError?.message);
+      return new Response(JSON.stringify({ 
+        error: 'Invalid authentication credentials'
+      }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const { question, moduleTitle, moduleContext } = await req.json();
     
-    if (!question) {
-      throw new Error('Question is required');
+    // Input validation - CRITICAL SECURITY
+    if (!question || typeof question !== 'string') {
+      return new Response(JSON.stringify({ 
+        error: 'Valid question is required'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Length validation
+    if (question.length > 1000) {
+      return new Response(JSON.stringify({ 
+        error: 'Question must be less than 1000 characters'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (question.length < 3) {
+      return new Response(JSON.stringify({ 
+        error: 'Question must be at least 3 characters'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Prompt injection detection - basic patterns
+    const suspiciousPatterns = [
+      /ignore\s+previous\s+instructions/i,
+      /ignore\s+all\s+previous/i,
+      /system\s*:/i,
+      /assistant\s*:/i,
+      /you\s+are\s+now/i,
+      /disregard/i,
+    ];
+
+    for (const pattern of suspiciousPatterns) {
+      if (pattern.test(question)) {
+        console.warn(`Potential prompt injection attempt by user ${user.id}`);
+        return new Response(JSON.stringify({ 
+          error: 'Invalid question format detected'
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    // Sanitize input - remove excessive whitespace and control characters
+    const sanitizedQuestion = question
+      .replace(/[\x00-\x1F\x7F]/g, '') // Remove control characters
+      .replace(/\s+/g, ' ') // Normalize whitespace
+      .trim();
+    
+    if (!sanitizedQuestion) {
+      return new Response(JSON.stringify({ 
+        error: 'Question cannot be empty'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
@@ -24,8 +116,9 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    console.log(`Processing question for module: ${moduleTitle}`);
-    console.log(`Question: ${question}`);
+    // Audit log the request
+    console.log(`User ${user.id} asking question for module: ${moduleTitle}`);
+    console.log(`Question length: ${sanitizedQuestion.length} characters`);
 
     const systemPrompt = `You are an expert finance and commercial lending instructor helping students with questions about their learning module. 
 
@@ -51,7 +144,7 @@ Keep answers comprehensive but focused on the student's specific question about 
         model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: question }
+          { role: 'user', content: sanitizedQuestion }
         ],
         max_tokens: 800,
         temperature: 0.7,
@@ -79,9 +172,10 @@ Keep answers comprehensive but focused on the student's specific question about 
 
   } catch (error) {
     console.error('Error in ask-question function:', error);
+    // Sanitize error messages - don't expose internal details
     return new Response(JSON.stringify({ 
-      error: error.message,
-      details: 'Failed to process question with ChatGPT'
+      error: 'Unable to process your question at this time. Please try again.',
+      details: 'Service temporarily unavailable'
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

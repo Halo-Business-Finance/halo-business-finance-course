@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { logger } from '@/utils/secureLogging';
+import { sanitizeError, getToastErrorMessage } from '@/utils/errorSanitizer';
 
 interface AuthContextType {
   user: User | null;
@@ -166,9 +167,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       return { data, error: null };
     } catch (error: any) {
       console.error('Sign in error:', error);
+      // Sanitize error to prevent information leakage
+      const errorMessage = getToastErrorMessage(error, 'Unable to sign in. Please check your credentials.');
       toast({
         title: "Sign In Failed",
-        description: error.message || "An error occurred during sign in.",
+        description: errorMessage,
         variant: "destructive",
       });
       return { data: null, error };
@@ -221,9 +224,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     } catch (error) {
       logger.error('Sign out failed', error, { component: 'AuthContext' });
+      // Sanitize error to prevent information leakage
+      const errorMessage = getToastErrorMessage(error, 'Unable to sign out. Please try again.');
       toast({
         title: "Error",
-        description: "Failed to sign out. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
