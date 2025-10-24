@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             isAdmin = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
           }
         } catch (fallbackError) {
-          console.error('Failed to check user role:', fallbackError);
+          // Silent fail - role check will default to non-admin
         }
       }
     }
@@ -200,7 +200,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               isAdmin = ['admin', 'super_admin', 'tech_support_admin', 'instructor'].includes(fallbackData);
             }
           } catch (fallbackError) {
-            console.error('Failed to check user role:', fallbackError);
+            // Silent fail - role check will default to non-admin
           }
         }
       }

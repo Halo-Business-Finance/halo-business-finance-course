@@ -224,7 +224,7 @@ export const InteractiveLearningPath = () => {
       })));
 
     } catch (error) {
-      console.error('Error loading user progress:', error);
+      // Silent fail - will show default progress state
     }
   };
 

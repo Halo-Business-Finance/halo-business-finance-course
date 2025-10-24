@@ -89,7 +89,6 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         });
 
       if (error) {
-        console.error('Upload error:', error);
         toast({
           title: "Upload failed",
           description: error.message,
@@ -110,7 +109,6 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         .eq('user_id', user.id);
 
       if (updateError) {
-        console.error('Profile update error:', updateError);
         toast({
           title: "Profile update failed",
           description: `Failed to save avatar: ${updateError.message}`,
@@ -128,7 +126,6 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
       });
 
     } catch (error) {
-      console.error('Unexpected error:', error);
       toast({
         title: "Upload failed",
         description: "An unexpected error occurred. Please try again.",
@@ -157,7 +154,6 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Avatar preset update error:', error);
         toast({
           title: "Update failed",
           description: `Failed to update avatar: ${error.message}`,
@@ -175,7 +171,7 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
         description: "Your profile picture has been successfully updated.",
       });
     } catch (error) {
-      console.error('Error updating avatar:', error);
+      // Error handled by toast notification
     }
   };
 

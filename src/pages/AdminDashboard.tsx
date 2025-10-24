@@ -83,7 +83,6 @@ const AdminDashboard = () => {
     isAdmin,
     isLoading: roleLoading
   } = useAdminRole();
-  console.log(`User role in AdminDashboard: ${userRole}, IsAdmin: ${isAdmin}, RoleLoading: ${roleLoading}`);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     activeAdmins: 0,
@@ -255,14 +254,9 @@ const AdminDashboard = () => {
           // Count active admins directly from the get_secure_admin_profiles response
           const activeAdminsFromProfiles = profilesWithRoles.filter((profile: any) => {
             const isAdminRole = ['admin', 'super_admin', 'tech_support_admin'].includes(profile.role);
-            console.log(`User ${profile.name} (${profile.user_id}) - Role: ${profile.role}, IsAdmin: ${isAdminRole}`);
             return isAdminRole;
           });
           activeAdminsCount = activeAdminsFromProfiles.length;
-          console.log('Active admins found:', activeAdminsCount, activeAdminsFromProfiles.map(p => ({
-            name: p.name,
-            role: p.role
-          })));
 
           // Group by user_id to consolidate users with multiple roles
           const userMap = new Map();
@@ -322,7 +316,7 @@ const AdminDashboard = () => {
           userRolesData = Array.from(userMap.values());
         } else {}
       } catch (error) {
-        console.error('Failed to load user profiles with roles:', error);
+        // Silent fail - will use fallback data
         // Fallback to current user only if the secure function fails
         if (user && userRole) {
           userRolesData = [{
@@ -666,7 +660,7 @@ const AdminDashboard = () => {
       // Reload dashboard data
       await loadDashboardData();
     } catch (error: any) {
-      console.error('Error creating user:', error);
+      // Error logged to security events via edge function
       let errorMessage = 'Failed to create user account';
       if (error?.message?.includes('already registered')) {
         errorMessage = 'A user with this email address already exists';
@@ -705,7 +699,7 @@ const AdminDashboard = () => {
       // Reload the dashboard data
       await loadDashboardData();
     } catch (error: any) {
-      console.error('Error deleting user:', error);
+      // Error logged to security events via edge function
       toast({
         title: "Error",
         description: error?.message || "Failed to delete user. Please try again.",

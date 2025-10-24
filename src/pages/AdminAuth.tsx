@@ -184,7 +184,6 @@ const AdminAuthPage = () => {
       setShowForgotPassword(false);
       setForgotPasswordEmail('');
     } catch (error) {
-      console.error('Password reset error:', error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",

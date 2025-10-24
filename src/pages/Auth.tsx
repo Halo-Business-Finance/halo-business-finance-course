@@ -111,7 +111,7 @@ const AuthPage = () => {
             user_email: sanitizedEmail
           });
         } catch (logError) {
-          console.warn('Failed to log successful auth:', logError);
+          // Silent fail - auth success is primary concern
         }
         toast({
           title: "Welcome back!",
@@ -183,7 +183,6 @@ const AuthPage = () => {
       setShowForgotPassword(false);
       setForgotPasswordEmail('');
     } catch (error) {
-      console.error('Password reset error:', error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
