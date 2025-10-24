@@ -935,7 +935,7 @@ export type Database = {
           regulation_reference: string | null
           resource_id: string | null
           resource_type: string
-          retention_period: unknown | null
+          retention_period: unknown
           user_id: string | null
         }
         Insert: {
@@ -957,7 +957,7 @@ export type Database = {
           regulation_reference?: string | null
           resource_id?: string | null
           resource_type: string
-          retention_period?: unknown | null
+          retention_period?: unknown
           user_id?: string | null
         }
         Update: {
@@ -979,7 +979,7 @@ export type Database = {
           regulation_reference?: string | null
           resource_id?: string | null
           resource_type?: string
-          retention_period?: unknown | null
+          retention_period?: unknown
           user_id?: string | null
         }
         Relationships: []
@@ -1968,7 +1968,7 @@ export type Database = {
           message: string | null
           phone: string | null
           status: string
-          submission_ip: unknown | null
+          submission_ip: unknown
           timeline: string | null
           updated_at: string
         }
@@ -1997,7 +1997,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           timeline?: string | null
           updated_at?: string
         }
@@ -2026,7 +2026,7 @@ export type Database = {
           message?: string | null
           phone?: string | null
           status?: string
-          submission_ip?: unknown | null
+          submission_ip?: unknown
           timeline?: string | null
           updated_at?: string
         }
@@ -2499,7 +2499,7 @@ export type Database = {
           data_classification:
             | Database["public"]["Enums"]["data_classification"]
             | null
-          destination_ip: unknown | null
+          destination_ip: unknown
           destination_port: number | null
           event_category: string
           event_signature: string
@@ -2527,7 +2527,7 @@ export type Database = {
           data_classification?:
             | Database["public"]["Enums"]["data_classification"]
             | null
-          destination_ip?: unknown | null
+          destination_ip?: unknown
           destination_port?: number | null
           event_category: string
           event_signature: string
@@ -2555,7 +2555,7 @@ export type Database = {
           data_classification?:
             | Database["public"]["Enums"]["data_classification"]
             | null
-          destination_ip?: unknown | null
+          destination_ip?: unknown
           destination_port?: number | null
           event_category?: string
           event_signature?: string
@@ -2618,7 +2618,7 @@ export type Database = {
           consent_type: string
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           updated_at: string
           user_agent: string | null
           user_id: string
@@ -2629,7 +2629,7 @@ export type Database = {
           consent_type: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           updated_at?: string
           user_agent?: string | null
           user_id: string
@@ -2640,7 +2640,7 @@ export type Database = {
           consent_type?: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           updated_at?: string
           user_agent?: string | null
           user_id?: string
@@ -3154,7 +3154,7 @@ export type Database = {
           is_blocked: boolean | null
           request_path: string | null
           severity: string
-          source_ip: unknown | null
+          source_ip: unknown
           threat_indicators: Json | null
           user_agent: string | null
         }
@@ -3167,7 +3167,7 @@ export type Database = {
           is_blocked?: boolean | null
           request_path?: string | null
           severity: string
-          source_ip?: unknown | null
+          source_ip?: unknown
           threat_indicators?: Json | null
           user_agent?: string | null
         }
@@ -3180,7 +3180,7 @@ export type Database = {
           is_blocked?: boolean | null
           request_path?: string | null
           severity?: string
-          source_ip?: unknown | null
+          source_ip?: unknown
           threat_indicators?: Json | null
           user_agent?: string | null
         }
@@ -3462,7 +3462,7 @@ export type Database = {
           is_active: boolean | null
           is_trusted: boolean | null
           language: string | null
-          last_ip: unknown | null
+          last_ip: unknown
           last_seen_at: string | null
           os_info: Json | null
           screen_resolution: string | null
@@ -3487,7 +3487,7 @@ export type Database = {
           is_active?: boolean | null
           is_trusted?: boolean | null
           language?: string | null
-          last_ip?: unknown | null
+          last_ip?: unknown
           last_seen_at?: string | null
           os_info?: Json | null
           screen_resolution?: string | null
@@ -3512,7 +3512,7 @@ export type Database = {
           is_active?: boolean | null
           is_trusted?: boolean | null
           language?: string | null
-          last_ip?: unknown | null
+          last_ip?: unknown
           last_seen_at?: string | null
           os_info?: Json | null
           screen_resolution?: string | null
@@ -3649,7 +3649,7 @@ export type Database = {
           consent_version: string
           created_at: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           updated_at: string | null
           user_agent: string | null
           user_id: string
@@ -3661,7 +3661,7 @@ export type Database = {
           consent_version?: string
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           updated_at?: string | null
           user_agent?: string | null
           user_id: string
@@ -3673,7 +3673,7 @@ export type Database = {
           consent_version?: string
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           updated_at?: string | null
           user_agent?: string | null
           user_id?: string
@@ -3772,7 +3772,7 @@ export type Database = {
           expires_at: string | null
           geolocation: Json | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           is_active: boolean | null
           last_activity_at: string | null
           risk_score: number | null
@@ -3791,7 +3791,7 @@ export type Database = {
           expires_at?: string | null
           geolocation?: Json | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean | null
           last_activity_at?: string | null
           risk_score?: number | null
@@ -3810,7 +3810,7 @@ export type Database = {
           expires_at?: string | null
           geolocation?: Json | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean | null
           last_activity_at?: string | null
           risk_score?: number | null
@@ -3854,7 +3854,7 @@ export type Database = {
           required_trust_score: number | null
           resource_path: string
           risk_tolerance: string | null
-          session_duration: unknown | null
+          session_duration: unknown
           time_restrictions: Json | null
           updated_at: string
         }
@@ -3878,7 +3878,7 @@ export type Database = {
           required_trust_score?: number | null
           resource_path: string
           risk_tolerance?: string | null
-          session_duration?: unknown | null
+          session_duration?: unknown
           time_restrictions?: Json | null
           updated_at?: string
         }
@@ -3902,7 +3902,7 @@ export type Database = {
           required_trust_score?: number | null
           resource_path?: string
           risk_tolerance?: string | null
-          session_duration?: unknown | null
+          session_duration?: unknown
           time_restrictions?: Json | null
           updated_at?: string
         }
@@ -3928,14 +3928,8 @@ export type Database = {
           user_id: string
         }[]
       }
-      analyze_access_patterns: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      analyze_security_events: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      analyze_access_patterns: { Args: never; Returns: undefined }
+      analyze_security_events: { Args: never; Returns: undefined }
       analyze_user_behavior: {
         Args: { p_session_data: Json; p_user_id: string }
         Returns: Json
@@ -3944,22 +3938,25 @@ export type Database = {
         Args: { p_behavior_data: Json }
         Returns: Json
       }
-      assess_device_security_risk: {
-        Args:
-          | {
+      assess_device_security_risk:
+        | {
+            Args: {
               p_device_fingerprint: string
               p_geolocation: Json
               p_ip_address: string
               p_user_agent: string
             }
-          | {
+            Returns: Json
+          }
+        | {
+            Args: {
               p_device_fingerprint: string
               p_geolocation?: Json
               p_ip_address: unknown
               p_user_agent: string
             }
-        Returns: Json
-      }
+            Returns: Json
+          }
       assign_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -3980,32 +3977,23 @@ export type Database = {
         Args: { p_course_id: string; p_user_id?: string }
         Returns: boolean
       }
-      can_access_lead_data: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      can_access_lead_data: { Args: never; Returns: boolean }
       can_assign_role: {
         Args: { requesting_user_id: string; target_role: string }
         Returns: Json
       }
-      can_delete_user: {
-        Args:
-          | { requesting_user_id: string; target_user_id: string }
-          | { target_user_id: string }
-        Returns: Json
-      }
+      can_delete_user:
+        | {
+            Args: { requesting_user_id: string; target_user_id: string }
+            Returns: Json
+          }
+        | { Args: { target_user_id: string }; Returns: boolean }
       can_view_sensitive_profile_data: {
         Args: { profile_user_id: string }
         Returns: boolean
       }
-      check_current_user_admin_status: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      check_lead_rate_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      check_current_user_admin_status: { Args: never; Returns: Json }
+      check_lead_rate_limit: { Args: never; Returns: boolean }
       check_lead_submission_rate_limit: {
         Args: { p_ip_address: unknown }
         Returns: Json
@@ -4031,10 +4019,12 @@ export type Database = {
         }
         Returns: Json
       }
-      check_user_has_role: {
-        Args: { check_role: string }
-        Returns: boolean
-      }
+      check_user_has_role:
+        | {
+            Args: { check_role: string; check_user_id: string }
+            Returns: boolean
+          }
+        | { Args: { check_role: string }; Returns: boolean }
       check_user_has_role_safe: {
         Args: { check_role: string; check_user_id?: string }
         Returns: boolean
@@ -4043,22 +4033,10 @@ export type Database = {
         Args: { check_role: string }
         Returns: boolean
       }
-      cleanup_old_behavioral_data: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_security_events: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_routine_security_events: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_time_based_alerts: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      cleanup_old_behavioral_data: { Args: never; Returns: undefined }
+      cleanup_old_security_events: { Args: never; Returns: undefined }
+      cleanup_routine_security_events: { Args: never; Returns: undefined }
+      cleanup_time_based_alerts: { Args: never; Returns: undefined }
       create_comprehensive_audit_entry: {
         Args: {
           p_action: string
@@ -4088,10 +4066,7 @@ export type Database = {
         }
         Returns: string
       }
-      current_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      current_user_id: { Args: never; Returns: string }
       decrypt_pii_field: {
         Args: { encrypted_data: string; field_name: string }
         Returns: string
@@ -4100,14 +4075,8 @@ export type Database = {
         Args: { context?: string; encrypted_data: string }
         Returns: string
       }
-      detect_advanced_threats: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_bulk_profile_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      detect_advanced_threats: { Args: never; Returns: undefined }
+      detect_bulk_profile_access: { Args: never; Returns: undefined }
       detect_login_anomaly: {
         Args: {
           p_device_data: Json
@@ -4117,34 +4086,13 @@ export type Database = {
         }
         Returns: Json
       }
-      detect_potential_data_breach: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_real_time_threats: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_security_data_tampering: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_security_log_tampering: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_suspicious_lead_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_unusual_profile_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_volume_based_profile_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      detect_potential_data_breach: { Args: never; Returns: undefined }
+      detect_real_time_threats: { Args: never; Returns: undefined }
+      detect_security_data_tampering: { Args: never; Returns: undefined }
+      detect_security_log_tampering: { Args: never; Returns: undefined }
+      detect_suspicious_lead_access: { Args: never; Returns: undefined }
+      detect_unusual_profile_access: { Args: never; Returns: undefined }
+      detect_volume_based_profile_access: { Args: never; Returns: undefined }
       emergency_security_lockdown: {
         Args: {
           p_affected_users?: string[]
@@ -4162,14 +4110,8 @@ export type Database = {
         }
         Returns: string
       }
-      encrypt_existing_customer_pii: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      encrypt_existing_pii_data: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      encrypt_existing_customer_pii: { Args: never; Returns: Json }
+      encrypt_existing_pii_data: { Args: never; Returns: undefined }
       encrypt_pii_data: {
         Args: { data_text: string; encryption_key?: string }
         Returns: string
@@ -4185,9 +4127,9 @@ export type Database = {
         }
         Returns: boolean
       }
-      enhanced_audit_log: {
-        Args:
-          | {
+      enhanced_audit_log:
+        | {
+            Args: {
               p_action: string
               p_admin_user_id: string
               p_data_classification?: string
@@ -4195,25 +4137,25 @@ export type Database = {
               p_target_resource?: string
               p_target_user_id?: string
             }
-          | {
+            Returns: undefined
+          }
+        | {
+            Args: {
               p_action: string
               p_compliance_type?: string
               p_details?: Json
               p_target_resource?: string
               p_target_user_id?: string
             }
-        Returns: undefined
-      }
+            Returns: undefined
+          }
       evaluate_zero_trust_access: {
         Args: { p_context: Json; p_resource_path: string; p_user_id: string }
         Returns: Json
       }
-      export_user_data: {
-        Args: { target_user_id: string }
-        Returns: Json
-      }
+      export_user_data: { Args: { target_user_id: string }; Returns: Json }
       get_active_admins_with_activity: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           email: string
           is_active: boolean
@@ -4225,7 +4167,7 @@ export type Database = {
         }[]
       }
       get_admin_all_users: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           profile_created_at: string
           profile_email: string
@@ -4237,7 +4179,7 @@ export type Database = {
         }[]
       }
       get_admin_mfa_overview: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           backup_codes_masked: string[]
           certificate_fingerprint: string
@@ -4292,7 +4234,7 @@ export type Database = {
         }[]
       }
       get_admin_profile_summary: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           email_masked: string
           is_active: boolean
@@ -4302,7 +4244,7 @@ export type Database = {
         }[]
       }
       get_admin_session_info: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           device_id: string
@@ -4322,7 +4264,7 @@ export type Database = {
         }[]
       }
       get_admin_user_roles_data: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           id: string
@@ -4334,12 +4276,9 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_clean_security_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_clean_security_stats: { Args: never; Returns: Json }
       get_course_modules_with_security_metadata: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           content_classification: string
           created_at: string
@@ -4351,10 +4290,7 @@ export type Database = {
           title: string
         }[]
       }
-      get_current_user_role_safe: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_current_user_role_safe: { Args: never; Returns: string }
       get_leads_secure: {
         Args: { access_justification?: string; include_full_pii?: boolean }
         Returns: {
@@ -4373,7 +4309,7 @@ export type Database = {
         }[]
       }
       get_masked_user_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           company: string
           created_at: string
@@ -4384,10 +4320,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_profile_encryption_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_profile_encryption_stats: { Args: never; Returns: Json }
       get_profile_safe: {
         Args: { target_user_id: string }
         Returns: {
@@ -4420,7 +4353,7 @@ export type Database = {
         }[]
       }
       get_profiles_with_roles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           profile_city: string
           profile_company: string
@@ -4441,7 +4374,7 @@ export type Database = {
         }[]
       }
       get_public_course_catalog: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           course_id: string
           description: string
@@ -4451,7 +4384,7 @@ export type Database = {
         }[]
       }
       get_public_course_previews: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           description: string
           duration: string
@@ -4465,7 +4398,7 @@ export type Database = {
         }[]
       }
       get_safe_user_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           city: string
@@ -4496,7 +4429,7 @@ export type Database = {
         }[]
       }
       get_secure_admin_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           city: string
           company: string
@@ -4558,7 +4491,7 @@ export type Database = {
         }[]
       }
       get_secure_profiles_with_encryption: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           company: string
           email: string
@@ -4601,20 +4534,11 @@ export type Database = {
           total_records: number
         }[]
       }
-      get_security_dashboard_data: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_security_headers: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_security_metrics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      get_security_dashboard_data: { Args: never; Returns: Json }
+      get_security_headers: { Args: never; Returns: Json }
+      get_security_metrics: { Args: never; Returns: Json }
       get_trainee_profiles_secure: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           company: string
           created_at: string
@@ -4627,7 +4551,7 @@ export type Database = {
         }[]
       }
       get_trainee_progress_data: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           completed_courses: number
           course_progress_details: Json
@@ -4644,7 +4568,7 @@ export type Database = {
         }[]
       }
       get_user_encrypted_messages: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           encrypted_body: string
@@ -4658,7 +4582,7 @@ export type Database = {
         }[]
       }
       get_user_profile: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           city: string
@@ -4690,16 +4614,10 @@ export type Database = {
           weekly_progress: boolean
         }[]
       }
-      get_user_role: {
-        Args: { check_user_id?: string }
-        Returns: string
-      }
-      get_user_role_secure: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_user_role: { Args: { check_user_id?: string }; Returns: string }
+      get_user_role_secure: { Args: never; Returns: string }
       get_user_session_info: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           device_id: string
@@ -4717,10 +4635,7 @@ export type Database = {
           user_agent: string
         }[]
       }
-      has_any_role: {
-        Args: { roles: string[] }
-        Returns: boolean
-      }
+      has_any_role: { Args: { roles: string[] }; Returns: boolean }
       has_role_secure: {
         Args: { check_role: string; check_user_id: string }
         Returns: boolean
@@ -4729,38 +4644,18 @@ export type Database = {
         Args: { p_course_id: string; p_user_id: string }
         Returns: undefined
       }
-      is_admin: {
-        Args: { check_user_id?: string }
-        Returns: boolean
-      }
-      is_authenticated: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_current_user_admin_safe: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_admin: { Args: { check_user_id?: string }; Returns: boolean }
+      is_authenticated: { Args: never; Returns: boolean }
+      is_current_user_admin_safe: { Args: never; Returns: boolean }
       is_current_user_session: {
         Args: { session_user_id: string }
         Returns: boolean
       }
-      is_current_user_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_production_environment: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_user_super_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_current_user_super_admin: { Args: never; Returns: boolean }
+      is_production_environment: { Args: never; Returns: boolean }
+      is_super_admin: { Args: { check_user_id?: string }; Returns: boolean }
+      is_user_admin: { Args: never; Returns: boolean }
+      is_user_super_admin: { Args: never; Returns: boolean }
       log_admin_action: {
         Args: {
           p_action: string
@@ -4774,27 +4669,33 @@ export type Database = {
         Args: { target_profile_id: string }
         Returns: undefined
       }
-      log_admin_profile_access_detailed: {
-        Args:
-          | {
-              access_metadata: Json
-              access_type: string
-              accessing_admin_id: string
-              admin_role: string
-            }
-          | {
+      log_admin_profile_access_detailed:
+        | {
+            Args: {
               access_reason?: string
               data_fields?: string[]
               target_user_id: string
             }
-          | {
+            Returns: undefined
+          }
+        | {
+            Args: {
               access_type: string
               fields_accessed: string[]
               reason?: string
               target_user_id: string
             }
-        Returns: undefined
-      }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              access_metadata: Json
+              access_type: string
+              accessing_admin_id: string
+              admin_role: string
+            }
+            Returns: undefined
+          }
       log_admin_profile_view: {
         Args: { viewed_user_id: string }
         Returns: undefined
@@ -4917,10 +4818,7 @@ export type Database = {
         }
         Returns: string
       }
-      make_current_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      make_current_user_admin: { Args: never; Returns: string }
       mask_pii_field: {
         Args: {
           field_type: string
@@ -4945,42 +4843,18 @@ export type Database = {
         Args: { profile_user_id: string }
         Returns: undefined
       }
-      monitor_bulk_pii_access: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_bulk_pii_access_enhanced: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_encryption_security: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_profile_access_patterns: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_role_access_patterns: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_security_policy_violations: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      monitor_suspicious_user_behavior: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      monitor_bulk_pii_access: { Args: never; Returns: undefined }
+      monitor_bulk_pii_access_enhanced: { Args: never; Returns: undefined }
+      monitor_encryption_security: { Args: never; Returns: undefined }
+      monitor_profile_access_patterns: { Args: never; Returns: undefined }
+      monitor_role_access_patterns: { Args: never; Returns: undefined }
+      monitor_security_policy_violations: { Args: never; Returns: undefined }
+      monitor_suspicious_user_behavior: { Args: never; Returns: undefined }
       register_device_fingerprint: {
         Args: { p_device_fingerprint: string; p_device_info?: Json }
         Returns: string
       }
-      report_encryption_statistics: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      report_encryption_statistics: { Args: never; Returns: Json }
       revoke_user_role: {
         Args: {
           p_mfa_verified?: boolean
@@ -4989,38 +4863,14 @@ export type Database = {
         }
         Returns: boolean
       }
-      run_24_7_security_monitoring: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_automated_security_maintenance: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_comprehensive_security_analysis: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_customer_data_security_monitoring: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_enhanced_security_monitoring: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_periodic_security_monitoring: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      run_security_compliance_check: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      run_security_configuration_check: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      run_24_7_security_monitoring: { Args: never; Returns: undefined }
+      run_automated_security_maintenance: { Args: never; Returns: undefined }
+      run_comprehensive_security_analysis: { Args: never; Returns: undefined }
+      run_customer_data_security_monitoring: { Args: never; Returns: undefined }
+      run_enhanced_security_monitoring: { Args: never; Returns: undefined }
+      run_periodic_security_monitoring: { Args: never; Returns: undefined }
+      run_security_compliance_check: { Args: never; Returns: Json }
+      run_security_configuration_check: { Args: never; Returns: undefined }
       sanitize_error_response: {
         Args: { p_error_message: string; p_user_context?: Json }
         Returns: Json
@@ -5041,10 +4891,7 @@ export type Database = {
         Args: { target_user_id: string }
         Returns: boolean
       }
-      security_health_check: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      security_health_check: { Args: never; Returns: Json }
       send_encrypted_message: {
         Args: {
           expires_hours?: number
@@ -5054,12 +4901,12 @@ export type Database = {
         }
         Returns: string
       }
-      setup_initial_admin: {
-        Args:
-          | Record<PropertyKey, never>
-          | { admin_email: string; admin_password: string }
-        Returns: string
-      }
+      setup_initial_admin:
+        | { Args: never; Returns: string }
+        | {
+            Args: { admin_email: string; admin_password: string }
+            Returns: Json
+          }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
         Returns: Json
@@ -5162,44 +5009,26 @@ export type Database = {
         Args: { p_require_mfa?: boolean }
         Returns: Json
       }
-      validate_security_configuration: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      validate_security_configuration: { Args: never; Returns: Json }
       validate_sensitive_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
       }
-      validate_system_process: {
-        Args:
-          | { p_function_name: string; p_process_signature?: string }
-          | { process_type: string }
-        Returns: boolean
-      }
+      validate_system_process:
+        | {
+            Args: { p_function_name: string; p_process_signature?: string }
+            Returns: boolean
+          }
+        | { Args: { process_type: string }; Returns: boolean }
       validate_ultra_secure_profile_access: {
         Args: { target_user_id: string }
         Returns: boolean
       }
-      validate_user_session: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      verify_audit_integrity: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      verify_complete_audit_chain: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      verify_profile_access_security: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      verify_security_implementation: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      validate_user_session: { Args: never; Returns: boolean }
+      verify_audit_integrity: { Args: never; Returns: Json }
+      verify_complete_audit_chain: { Args: never; Returns: Json }
+      verify_profile_access_security: { Args: never; Returns: Json }
+      verify_security_implementation: { Args: never; Returns: Json }
       verify_super_admin_privileges: {
         Args: { requesting_user_id: string }
         Returns: boolean
