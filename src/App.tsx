@@ -16,31 +16,42 @@ import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { NotificationBell } from "@/components/NotificationBell";
 import { LiveChatSupport } from "@/components/LiveChatSupport";
 import { createTestNotifications } from "@/utils/createTestNotifications";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Progress from "./pages/Progress";
-import VideoLibrary from "./pages/VideoLibrary";
-import Resources from "./pages/Resources";
-import Account from "./pages/Account";
-import Auth from "./pages/Auth";
-import AdminAuth from "./pages/AdminAuth";
-import AdminDashboard from "./pages/AdminDashboard";
-import ModulePage from "./pages/ModulePage";
-import NotFound from "./pages/NotFound";
-import Courses from "./pages/Courses";
-import Pricing from "./pages/Pricing";
-import Business from "./pages/Business";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
-import Article from "./pages/Article";
-import Support from "./pages/Support";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import DataSecurity from "./pages/DataSecurity";
-import SignUp from "./pages/SignUp";
+import { lazy, Suspense } from "react";
+import { errorMonitor } from "./utils/errorMonitoring";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
 import { ScrollToTop } from "./components/ScrollToTop";
+
+// Lazy load pages for better performance
+const Index = lazy(() => import("./pages/Index"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Progress = lazy(() => import("./pages/Progress"));
+const VideoLibrary = lazy(() => import("./pages/VideoLibrary"));
+const Resources = lazy(() => import("./pages/Resources"));
+const Account = lazy(() => import("./pages/Account"));
+const Auth = lazy(() => import("./pages/Auth"));
+const AdminAuth = lazy(() => import("./pages/AdminAuth"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const ModulePage = lazy(() => import("./pages/ModulePage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Courses = lazy(() => import("./pages/Courses"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Business = lazy(() => import("./pages/Business"));
+const About = lazy(() => import("./pages/About"));
+const Blog = lazy(() => import("./pages/Blog"));
+const Article = lazy(() => import("./pages/Article"));
+const Support = lazy(() => import("./pages/Support"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const DataSecurity = lazy(() => import("./pages/DataSecurity"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 const queryClient = new QueryClient();
 const HeaderContent = ({
   isChatOpen,
@@ -144,11 +155,12 @@ const AppContent = () => {
         <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
 
         <main className="flex-1 relative z-10 bg-background">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>} />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>} />
             <Route path="/my-course" element={<ProtectedRoute>
                 <Progress />
               </ProtectedRoute>} />
@@ -186,9 +198,10 @@ const AppContent = () => {
            <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/data-security" element={<DataSecurity />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
 

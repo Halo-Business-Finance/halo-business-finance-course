@@ -171,7 +171,26 @@ export function MediaLibrary() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
-        const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+        // Server-side validation
+        const { data: validationResult, error: validationError } = await supabase.functions.invoke('validate-file-upload', {
+          body: {
+            fileName: file.name,
+            fileSize: file.size,
+            mimeType: file.type,
+            maxSize: 10 * 1024 * 1024
+          }
+        });
+
+        if (validationError || !validationResult?.valid) {
+          toast({
+            title: "Validation failed",
+            description: `${file.name}: ${validationResult?.error || "File validation failed"}`,
+            variant: "destructive",
+          });
+          continue;
+        }
+        
+        const filename = validationResult.sanitizedName || `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
         const uploadPath = currentFolder === 'all' || currentFolder === '/' 
           ? filename 
           : `${currentFolder.replace(/^\//, '')}/${filename}`;

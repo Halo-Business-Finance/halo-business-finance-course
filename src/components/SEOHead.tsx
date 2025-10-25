@@ -70,12 +70,31 @@ export const SEOHead = ({
       tag.setAttribute('content', content);
     };
     
+    updateTwitterTag('twitter:card', 'summary_large_image');
     updateTwitterTag('twitter:title', title);
     updateTwitterTag('twitter:description', description);
     
     if (ogImage) {
       updateTwitterTag('twitter:image', ogImage);
     }
+    
+    // Add viewport meta tag for mobile optimization
+    let viewportTag = document.querySelector('meta[name="viewport"]');
+    if (!viewportTag) {
+      viewportTag = document.createElement('meta');
+      viewportTag.setAttribute('name', 'viewport');
+      document.head.appendChild(viewportTag);
+    }
+    viewportTag.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5');
+    
+    // Add theme color
+    let themeColorTag = document.querySelector('meta[name="theme-color"]');
+    if (!themeColorTag) {
+      themeColorTag = document.createElement('meta');
+      themeColorTag.setAttribute('name', 'theme-color');
+      document.head.appendChild(themeColorTag);
+    }
+    themeColorTag.setAttribute('content', '#1e40af'); // halo-navy color
     
     // Add canonical URL if provided
     if (canonicalUrl) {

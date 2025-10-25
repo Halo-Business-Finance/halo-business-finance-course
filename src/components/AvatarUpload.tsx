@@ -46,21 +46,20 @@ export const AvatarUpload = ({ currentAvatar, userInitials, onAvatarUpdate }: Av
       const file = event.target.files?.[0];
       if (!file) return;
 
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please select an image file.",
-          variant: "destructive"
-        });
-        return;
-      }
+      // Server-side validation using edge function
+      const { data: validationResult, error: validationError } = await supabase.functions.invoke('validate-file-upload', {
+        body: {
+          fileName: file.name,
+          fileSize: file.size,
+          mimeType: file.type,
+          maxSize: 5 * 1024 * 1024
+        }
+      });
 
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      if (validationError || !validationResult?.valid) {
         toast({
-          title: "File too large",
-          description: "Please select an image smaller than 5MB.",
+          title: "Validation failed",
+          description: validationResult?.error || "File validation failed. Please try again.",
           variant: "destructive"
         });
         return;
