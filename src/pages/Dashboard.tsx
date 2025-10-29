@@ -8,7 +8,6 @@ import { DocumentLibrary } from "@/components/DocumentLibrary";
 import StatsCard from "@/components/StatsCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CourseHeader from "@/components/CourseHeader";
@@ -510,9 +509,9 @@ const Dashboard = () => {
                                   <div className="flex-1 space-y-3">
                                     <div className="flex items-center gap-3">
                                       <BookOpen className="h-5 w-5 text-navy-900" />
-                                      <Badge variant="outline" className="px-3 py-1 bg-white text-black border-gray-300">
-                                        Course Program
-                                      </Badge>
+                                      <span className="text-xs font-semibold tracking-wider text-navy-900 border-l-4 border-navy-900 pl-2">
+                                        COURSE PROGRAM
+                                      </span>
                                     </div>
                                     
                                     <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
@@ -542,9 +541,9 @@ const Dashboard = () => {
                                   <div className="space-y-2">
                                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
                                     <div className="flex flex-wrap gap-2">
-                                       {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => <Badge key={topicIndex} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
+                                       {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => <span key={topicIndex} className="text-xs font-medium text-muted-foreground border-l-2 border-muted-foreground pl-2">
                                            {topic}
-                                         </Badge>)}
+                                         </span>)}
                                     </div>
                                   </div>
                                   
@@ -555,9 +554,9 @@ const Dashboard = () => {
                                       {(() => {
                             const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
                             const uniqueLevels = Array.from(new Set(skillLevels)).sort();
-                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <Badge key={level} variant={level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900 text-white">
+                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <span key={level} className={`text-xs font-semibold tracking-wider border-l-4 pl-2 ${level === 'expert' ? 'text-red-700 border-red-700' : 'text-emerald-700 border-emerald-700'}`}>
                                                 {level.charAt(0).toUpperCase() + level.slice(1)}
-                                              </Badge>) : <Badge variant="outline" className="text-xs px-3 py-1">Multiple levels</Badge>;
+                                              </span>) : <span className="text-xs font-semibold tracking-wider text-muted-foreground border-l-4 border-muted-foreground pl-2">MULTIPLE LEVELS</span>;
                           })()}
                                     </div>
                                   </div>
@@ -611,9 +610,9 @@ const Dashboard = () => {
                               <img src={getCourseImage(selectedCourse.name)} alt={`${selectedCourse.name} - ${level}`} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
                               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
                               <div className="absolute top-4 left-4">
-                                <Badge variant={level === "beginner" ? "secondary" : "default"} className="px-3 py-1 backdrop-blur-sm bg-background/80 border-primary/20">
-                                  {level.charAt(0).toUpperCase() + level.slice(1)} Level
-                                </Badge>
+                                <span className={`text-xs font-semibold tracking-wider border-l-4 pl-2 backdrop-blur-sm ${level === "beginner" ? 'text-emerald-700 border-emerald-700' : 'text-red-700 border-red-700'}`}>
+                                  {level.charAt(0).toUpperCase() + level.slice(1).toUpperCase()} LEVEL
+                                </span>
                               </div>
                               <div className="absolute bottom-4 right-4">
                                 <Zap className="h-5 w-5 text-navy-900" />

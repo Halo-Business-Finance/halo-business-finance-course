@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, Users, Award, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,11 +56,11 @@ const CourseHeader = ({
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="inline-flex items-center gap-3 border-l-4 border-emerald-400 pl-4">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                <span className="text-sm font-medium text-white tracking-wide">TRAINING PROGRAM</span>
-                <div className="w-px h-4 bg-white/20"></div>
-                <span className="text-xs text-white/80 font-mono">v2.0</span>
+                <span className="text-sm font-semibold text-white tracking-widest">TRAINING PROGRAM</span>
+                <div className="w-px h-4 bg-white/30"></div>
+                <span className="text-xs text-white/90 font-mono tracking-wide">v2.0</span>
               </div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
                 Business Finance Mastery

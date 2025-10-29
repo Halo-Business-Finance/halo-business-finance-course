@@ -10,7 +10,6 @@
  */
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, BookOpen, Users, Star } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,11 +31,11 @@ interface PublicModuleCardProps {
 }
 
 /**
- * Skill level color mapping for consistent styling
+ * Skill level styling for professional display
  */
-const SKILL_LEVEL_COLORS: Record<SkillLevel, string> = {
-  beginner: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  expert: 'bg-blue-100 text-blue-800 border-blue-200'
+const SKILL_LEVEL_STYLES: Record<SkillLevel, string> = {
+  beginner: 'text-xs font-semibold tracking-wider text-emerald-700 border-l-4 border-emerald-700 pl-2',
+  expert: 'text-xs font-semibold tracking-wider text-blue-700 border-l-4 border-blue-700 pl-2'
 };
 
 /**
@@ -53,7 +52,7 @@ const DEFAULT_ENROLLMENT_COUNT = '1.2k+';
  * Gets skill level styling classes
  */
 const getSkillLevelStyling = (level: SkillLevel): string => {
-  return SKILL_LEVEL_COLORS[level] || 'bg-gray-100 text-gray-800 border-gray-200';
+  return SKILL_LEVEL_STYLES[level] || 'text-xs font-semibold tracking-wider text-muted-foreground border-l-4 border-muted-foreground pl-2';
 };
 
 /**
@@ -121,12 +120,9 @@ const PublicModuleCard = ({
       {/* Module Header */}
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between">
-          <Badge 
-            variant="outline" 
-            className={`text-xs font-medium ${getSkillLevelStyling(skillLevel)}`}
-          >
-            {formatSkillLevel(skillLevel)}
-          </Badge>
+          <span className={getSkillLevelStyling(skillLevel)}>
+            {formatSkillLevel(skillLevel).toUpperCase()}
+          </span>
           {/* Social Proof - Rating */}
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Star className="h-4 w-4 fill-current text-yellow-400" />

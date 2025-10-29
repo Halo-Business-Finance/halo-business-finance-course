@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award, Target } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -500,9 +499,9 @@ const Courses = () => {
                           <div className="flex-1 space-y-3">
                             <div className="flex items-center gap-3">
                               <BookOpen className="h-5 w-5 text-navy-900" />
-                              <Badge variant="outline" className="px-3 py-1 bg-white text-black border-gray-300">
-                                Course Program
-                              </Badge>
+                              <span className="text-xs font-semibold tracking-wider text-navy-900 border-l-4 border-navy-900 pl-2">
+                                COURSE PROGRAM
+                              </span>
                             </div>
                             
                             <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
@@ -531,9 +530,9 @@ const Courses = () => {
                           <div className="space-y-2">
                             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
                             <div className="flex flex-wrap gap-2">
-                              {(course.keyTopics || []).slice(0, 3).map((topic, idx) => <Badge key={idx} variant="outline" className="text-xs px-3 py-1 text-secondary-foreground border-secondary/30">
+                              {(course.keyTopics || []).slice(0, 3).map((topic, idx) => <span key={idx} className="text-xs font-medium text-muted-foreground border-l-2 border-muted-foreground pl-2">
                                   {topic.length > 25 ? topic.substring(0, 25) + '...' : topic}
-                                </Badge>)}
+                                </span>)}
                             </div>
                           </div>
                           
@@ -541,9 +540,9 @@ const Courses = () => {
                           <div className="space-y-2">
                             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Available Levels</span>
                             <div className="flex gap-2">
-                              <Badge variant={course.level === 'expert' ? 'default' : 'secondary'} className="text-xs px-3 py-1 bg-blue-900 text-white">
+                              <span className={`text-xs font-semibold tracking-wider border-l-4 pl-2 ${course.level === 'expert' ? 'text-red-700 border-red-700' : 'text-emerald-700 border-emerald-700'}`}>
                                 {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
-                              </Badge>
+                              </span>
                             </div>
                           </div>
                         </div>

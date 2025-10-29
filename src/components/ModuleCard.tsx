@@ -9,7 +9,6 @@
  */
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Clock, CheckCircle, PlayCircle, Lock, Trophy, AlertCircle } from "lucide-react";
@@ -52,14 +51,14 @@ const STATUS_ICONS: Record<ModuleStatus, ReactElement> = {
 };
 
 /**
- * Status badge configuration
+ * Status text configuration with professional styling
  */
-const STATUS_BADGES: Record<ModuleStatus, ReactElement> = {
-  completed: <Badge variant="completed">Completed</Badge>,
-  "in-progress": <Badge variant="progress">In Progress</Badge>,
-  locked: <Badge variant="outline">Locked</Badge>,
-  available: <Badge variant="success">Available</Badge>,
-  "quiz-required": <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">Quiz Required</Badge>
+const STATUS_TEXT: Record<ModuleStatus, { text: string; className: string }> = {
+  completed: { text: "COMPLETED", className: "text-xs font-semibold tracking-wider text-emerald-700 border-l-4 border-emerald-700 pl-2" },
+  "in-progress": { text: "IN PROGRESS", className: "text-xs font-semibold tracking-wider text-primary border-l-4 border-primary pl-2" },
+  locked: { text: "LOCKED", className: "text-xs font-semibold tracking-wider text-muted-foreground border-l-4 border-muted-foreground pl-2" },
+  available: { text: "AVAILABLE", className: "text-xs font-semibold tracking-wider text-emerald-600 border-l-4 border-emerald-600 pl-2" },
+  "quiz-required": { text: "QUIZ REQUIRED", className: "text-xs font-semibold tracking-wider text-orange-700 border-l-4 border-orange-700 pl-2" }
 };
 
 /**
@@ -130,30 +129,31 @@ const ModuleCard = ({
   const getStatusIcon = (): ReactElement => STATUS_ICONS[status];
 
   /**
-   * Gets the appropriate badge for current module status
+   * Gets the appropriate status display for current module status
    */
-  const getStatusBadge = (): ReactElement => {
-    // Show quiz-specific badge if quiz is required but not passed
+  const getStatusDisplay = (): ReactElement => {
+    // Show quiz-specific status if quiz is required but not passed
     if (quizStatus.attempts > 0 && !quizStatus.passed) {
       return (
-        <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300 flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-orange-700 border-l-4 border-orange-700 pl-2">
           <AlertCircle className="h-3 w-3" />
-          Quiz: {quizStatus.score}% (Need 70%)
-        </Badge>
+          <span>QUIZ: {quizStatus.score}% (NEED 70%)</span>
+        </div>
       );
     }
     
     // Show trophy if quiz is passed
     if (quizStatus.passed) {
       return (
-        <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-emerald-700 border-l-4 border-emerald-700 pl-2">
           <Trophy className="h-3 w-3" />
-          Quiz Passed ({quizStatus.score}%)
-        </Badge>
+          <span>QUIZ PASSED ({quizStatus.score}%)</span>
+        </div>
       );
     }
     
-    return STATUS_BADGES[status];
+    const statusConfig = STATUS_TEXT[status];
+    return <span className={statusConfig.className}>{statusConfig.text}</span>;
   };
 
   /**
@@ -201,7 +201,7 @@ const ModuleCard = ({
               </div>
             </div>
           </div>
-          {getStatusBadge()}
+          {getStatusDisplay()}
         </div>
         
         <CardDescription className="text-sm leading-relaxed">

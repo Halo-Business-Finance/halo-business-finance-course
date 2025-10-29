@@ -10,7 +10,6 @@
  */
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Clock, BookOpen, Lock, CheckCircle, Play } from "lucide-react";
@@ -48,11 +47,11 @@ interface EnhancedModuleCardProps {
 }
 
 /**
- * Skill level color mapping for consistent styling
+ * Skill level styling for professional display
  */
-const SKILL_LEVEL_COLORS: Record<SkillLevel, string> = {
-  beginner: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  expert: 'bg-red-100 text-red-800 border-red-200'
+const SKILL_LEVEL_STYLES: Record<SkillLevel, string> = {
+  beginner: 'text-xs font-semibold tracking-wider text-emerald-700 border-l-4 border-emerald-700 pl-2',
+  expert: 'text-xs font-semibold tracking-wider text-red-700 border-l-4 border-red-700 pl-2'
 };
 
 /**
@@ -64,7 +63,7 @@ const MAX_VISIBLE_TOPICS = 4;
  * Gets skill level styling classes
  */
 const getSkillLevelStyling = (level: SkillLevel): string => {
-  return SKILL_LEVEL_COLORS[level] || 'bg-gray-100 text-gray-800 border-gray-200';
+  return SKILL_LEVEL_STYLES[level] || 'text-xs font-semibold tracking-wider text-muted-foreground border-l-4 border-muted-foreground pl-2';
 };
 
 /**
@@ -120,14 +119,9 @@ export function EnhancedModuleCard({ module, userProgress, image }: EnhancedModu
       {/* Module Header */}
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <Badge 
-              variant="outline" 
-              className={`text-xs font-medium ${getSkillLevelStyling(module.skill_level)}`}
-            >
-              {formatSkillLevel(module.skill_level)}
-            </Badge>
-          </div>
+          <span className={getSkillLevelStyling(module.skill_level)}>
+            {formatSkillLevel(module.skill_level).toUpperCase()}
+          </span>
           <div className="text-right">
             {renderStatusIcon(isCompleted, isLocked)}
           </div>
@@ -195,11 +189,11 @@ export function EnhancedModuleCard({ module, userProgress, image }: EnhancedModu
         {hasPrerequisites && !isCompleted && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-muted-foreground">Prerequisites:</p>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               {module.prerequisites.map(prereq => (
-                <Badge key={prereq} variant="outline" className="text-xs">
+                <span key={prereq} className="text-xs font-medium text-muted-foreground border-l-2 border-muted-foreground pl-2">
                   {prereq}
-                </Badge>
+                </span>
               ))}
             </div>
           </div>
