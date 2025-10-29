@@ -550,21 +550,25 @@ const Courses = () => {
                       
                       <CardContent className="pt-0 pb-6 relative z-10">
                         {user ? enrollmentStatus[course.id] ? <Link to={`/module/${course.modules[0]?.id}`} className="block">
-                              <Button size="sm" className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 bg-navy-900 hover:bg-navy-800 text-white text-xs sm:text-xs">
-                                <span className="flex items-center gap-2">
-                                  <Check className="h-4 w-4 mr-2" />
+                              <Button className="w-full h-10 bg-emerald-700 hover:bg-emerald-600 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200">
+                                <span className="flex items-center justify-center gap-2">
+                                  <Check className="h-4 w-4" />
                                   Continue Learning
                                 </span>
                               </Button>
-                            </Link> : <Button onClick={() => handleEnroll(course.id)} size="sm" className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 text-xs sm:text-xs" variant="default" disabled={loading}>
-                              <span className="flex items-center gap-2">
-                                <BookOpen className="h-4 w-4 mr-2" />
+                            </Link> : <Button 
+                              onClick={() => handleEnroll(course.id)} 
+                              className="w-full h-10 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200" 
+                              disabled={loading}
+                            >
+                              <span className="flex items-center justify-center gap-2">
+                                <BookOpen className="h-4 w-4" />
                                 Start Course
                               </span>
                             </Button> : <Link to="/auth" className="block">
-                            <Button size="sm" className="w-full touch-manipulation h-9 font-medium group-hover:shadow-lg transition-all duration-300 text-white bg-blue-900 hover:bg-blue-800 text-xs sm:text-xs">
-                              <span className="flex items-center gap-2">
-                                <Lock className="h-4 w-4 mr-2" />
+                            <Button className="w-full h-10 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200">
+                              <span className="flex items-center justify-center gap-2">
+                                <Lock className="h-4 w-4" />
                                 Sign In to Enroll
                               </span>
                             </Button>

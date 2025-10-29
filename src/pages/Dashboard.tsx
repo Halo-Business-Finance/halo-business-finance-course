@@ -564,15 +564,19 @@ const Dashboard = () => {
                               </CardHeader>
                               
                               <CardContent className="pt-0 pb-6 relative z-10">
-                                <Button type="button" onClick={e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      console.log('Start Course button clicked for:', courseName);
-                      handleStartCourse(courseName);
-                    }} className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300" variant="default">
-                                  <span className="flex items-center gap-2">
+                                <Button 
+                                  type="button" 
+                                  onClick={e => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Start Course button clicked for:', courseName);
+                                    handleStartCourse(courseName);
+                                  }} 
+                                  className="w-full h-11 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200"
+                                >
+                                  <span className="flex items-center justify-center gap-2">
                                     Start Course
-                                    <Target className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
+                                    <Target className="h-4 w-4" />
                                   </span>
                                 </Button>
                               </CardContent>
@@ -645,15 +649,19 @@ const Dashboard = () => {
                             </CardHeader>
                             
                             <CardContent className="pt-0 pb-6 relative z-10">
-                              <Button type="button" onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Proceed to Modules button clicked for level:', level);
-                        handleProceedToModules(level);
-                      }} className="w-full touch-manipulation h-11 font-medium group-hover:shadow-lg transition-all duration-300" variant="default">
-                                <span className="flex items-center gap-2">
+                              <Button 
+                                type="button" 
+                                onClick={e => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  console.log('Proceed to Modules button clicked for level:', level);
+                                  handleProceedToModules(level);
+                                }} 
+                                className="w-full h-11 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200"
+                              >
+                                <span className="flex items-center justify-center gap-2">
                                   Proceed to Modules
-                                  <Brain className="h-4 w-4 text-navy-900 group-hover:translate-x-1 transition-transform duration-300" />
+                                  <Brain className="h-4 w-4" />
                                 </span>
                               </Button>
                             </CardContent>
