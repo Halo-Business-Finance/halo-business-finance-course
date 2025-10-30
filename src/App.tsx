@@ -147,6 +147,7 @@ const HeaderContent = ({
             >
               <Calculator className="h-8 w-8 text-blue-600" />
             </Button>
+            <NotificationBell />
             <Button 
               variant="ghost" 
               size="sm" 
@@ -156,7 +157,6 @@ const HeaderContent = ({
             >
               <User className="h-8 w-8 text-blue-600" />
             </Button>
-            <NotificationBell />
           </div>}
       </div>
       
