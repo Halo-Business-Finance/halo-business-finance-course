@@ -66,30 +66,29 @@ const InstructorInfo = () => {
       </Card>;
   }
   return <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">
           Course Instructors
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {instructors.map(instructor => <div key={instructor.id} className="flex flex-col space-y-3">
+      <CardContent className="pt-0">
+        <div className="grid grid-cols-3 gap-4">
+          {instructors.map(instructor => <div key={instructor.id} className="flex flex-col space-y-2">
               <div>
-                <h4 className="font-semibold">{instructor.name}</h4>
-                <p className="text-sm text-black">{instructor.title}</p>
+                <h4 className="font-semibold text-sm">{instructor.name}</h4>
+                <p className="text-xs text-muted-foreground">{instructor.title}</p>
               </div>
-              <div className="flex flex-col gap-2 text-xs text-muted-foreground">
+              <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Award className="h-3 w-3" />
-                  <span className="text-black">{instructor.years_experience}</span>
+                  <Award className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{instructor.years_experience}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  <span className="text-black">{instructor.company}</span>
+                  <MapPin className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{instructor.company}</span>
                 </div>
               </div>
-              <p className="text-sm">{instructor.bio}</p>
+              <p className="text-xs leading-relaxed line-clamp-3">{instructor.bio}</p>
             </div>)}
         </div>
       </CardContent>
