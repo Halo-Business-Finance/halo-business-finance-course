@@ -27,7 +27,7 @@ import { useLearningStats } from "@/hooks/useLearningStats";
 import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft, Lock } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft, Lock, Users } from "lucide-react";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -501,49 +501,88 @@ const Dashboard = () => {
                 });
                 return <Card 
                               key={courseName} 
-                              className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 rounded-lg bg-white cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleStartCourse(courseName);
-                              }}
+                              className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 rounded-lg bg-white"
                             >
-                              {/* Course Image */}
-                              <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100">
+                              {/* Background Image with Overlay */}
+                              <div className="relative w-full h-48 overflow-hidden bg-gray-200">
                                 <img 
                                   src={getCourseImage(course.title)} 
                                   alt={courseName}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  className="w-full h-full object-cover opacity-60"
                                 />
+                                {/* Gradient overlay for text readability */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/40" />
                               </div>
                               
-                              <CardContent className="p-5 space-y-4">
+                              {/* Card Content - Overlapping the image */}
+                              <CardContent className="relative -mt-20 mx-4 mb-4 p-6 bg-white rounded-lg shadow-lg space-y-4">
+                                {/* Institution Logo Placeholder */}
+                                <div className="flex items-center gap-2 h-12">
+                                  <div className="h-10 w-10 rounded bg-navy-900 flex items-center justify-center text-white font-bold text-xs">
+                                    FP
+                                  </div>
+                                  <span className="text-xs text-gray-600">FinPilot Learning Academy</span>
+                                </div>
+                                
                                 {/* Course Title */}
-                                <h3 className="text-xl font-bold text-gray-900 line-clamp-2 min-h-[3.5rem]">
+                                <h3 className="text-lg font-bold text-gray-900 line-clamp-2 min-h-[3.5rem] leading-tight">
                                   {courseName}
                                 </h3>
                                 
                                 {/* Institution Name */}
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-gray-600 font-medium">
                                   FinPilot Learning Academy
                                 </p>
                                 
-                                {/* Category Badge at bottom */}
-                                <div className="pt-2">
-                                  <span className="inline-block px-4 py-2 bg-gray-100 text-gray-800 text-sm rounded">
-                                    {(() => {
-                                      const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
-                                      const uniqueLevels = Array.from(new Set(skillLevels));
-                                      if (uniqueLevels.includes('expert') && uniqueLevels.includes('beginner')) {
-                                        return 'Professional Development';
-                                      } else if (uniqueLevels.includes('expert')) {
-                                        return 'Advanced Training';
-                                      } else {
-                                        return 'Foundation Course';
-                                      }
-                                    })()}
-                                  </span>
+                                {/* Course Description */}
+                                <p className="text-sm text-gray-700 line-clamp-3 leading-relaxed">
+                                  {getCourseDetails(courseName).description}
+                                </p>
+                                
+                                <Separator className="my-3" />
+                                
+                                {/* Course Meta Information */}
+                                <div className="space-y-2 text-xs">
+                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
+                                    <Users className="h-3.5 w-3.5" />
+                                    <span>Structured, Self-Paced</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
+                                    <Clock className="h-3.5 w-3.5" />
+                                    <span>{getCourseDetails(courseName).duration}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
+                                    <Trophy className="h-3.5 w-3.5" />
+                                    <span>Certificate of Completion</span>
+                                  </div>
                                 </div>
+                                
+                                {/* Topic Tags */}
+                                <div className="flex flex-wrap gap-2 pt-2">
+                                  {getCourseDetails(courseName).topics.slice(0, 3).map((topic, idx) => (
+                                    <span 
+                                      key={idx}
+                                      className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded uppercase font-medium"
+                                    >
+                                      {topic}
+                                    </span>
+                                  ))}
+                                </div>
+                                
+                                {/* Learn More Button */}
+                                <Button 
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleStartCourse(courseName);
+                                  }}
+                                  variant="ghost"
+                                  className="w-full mt-4 text-navy-900 hover:text-navy-800 font-semibold uppercase text-sm flex items-center justify-center gap-2 group/btn"
+                                >
+                                  Learn More
+                                  <ArrowLeft className="h-4 w-4 rotate-180 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
                               </CardContent>
                             </Card>;
               }) : <div className="col-span-full text-center py-8">
