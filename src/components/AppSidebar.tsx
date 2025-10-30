@@ -153,7 +153,7 @@ export function AppSidebar({
       <SidebarContent className="bg-sidebar pt-[60px] sm:pt-[80px]">
         {/* Welcome Message */}
         {user && !collapsed && (
-          <div className="px-4 pb-3" aria-live="polite">
+          <div className="px-4 pb-1" aria-live="polite">
             <div className="text-sm font-semibold text-foreground">
               Welcome back, {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
             </div>
@@ -162,7 +162,7 @@ export function AppSidebar({
 
 
         {/* Main Navigation */}
-        <SidebarGroup className={`pt-3 ${collapsed ? 'px-1' : ''}`}>
+        <SidebarGroup className={`pt-1 ${collapsed ? 'px-1' : ''}`}>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
