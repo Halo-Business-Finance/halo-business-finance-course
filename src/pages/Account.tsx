@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy, X, Save, Brain } from "lucide-react";
+import { User, Mail, Phone, MapPin, Calendar, Award, Target, Clock, Edit, Bell, Shield, Palette, Globe, Settings, CreditCard, MessageCircle, HelpCircle, Download, Trophy, X, Save, Brain, LogOut } from "lucide-react";
 import { LiveLearningStats } from "@/components/LiveLearningStats";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { SEOHead } from "@/components/SEOHead";
@@ -48,7 +48,7 @@ const AccountPage = (): JSX.Element => {
   const location = useLocation();
   const navigate = useNavigate();
   const activeTab = new URLSearchParams(location.search).get('tab') || 'account';
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   
   const {
     profile,
@@ -630,6 +630,18 @@ const AccountPage = (): JSX.Element => {
                 <span className="text-xs">Joined {userInfo.joinDate}</span>
               </div>
             </div>
+          </div>
+          <Separator className="my-4" />
+          <div className="flex justify-end">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => signOut()}
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
         </CardContent>
       </Card>
