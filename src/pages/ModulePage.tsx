@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download } from "lucide-react";
+import { ArrowLeft, Clock, Play, CheckCircle, Book, Video, FileText, Users2, BookOpen, Zap, Download, AlertCircle } from "lucide-react";
 import { LessonModal } from "@/components/LessonModal";
 import { ModuleQuiz } from "@/components/ModuleQuiz";
 import { FloatingNotesButton } from "@/components/notes/FloatingNotesButton";
@@ -236,6 +237,17 @@ const ModulePage = () => {
       </div>;
   }
   const handleLessonStart = (lesson: any) => {
+    // Check if user is authenticated before allowing lesson access
+    if (!user) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to access course content",
+        variant: "destructive"
+      });
+      navigate('/auth');
+      return;
+    }
+    
     setSelectedLesson(lesson);
     setIsLessonModalOpen(true);
   };
@@ -399,6 +411,19 @@ const ModulePage = () => {
       </div>
 
         <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl">
+        {!user && (
+          <Alert className="mb-6 bg-primary/10 border-primary">
+            <AlertCircle className="h-4 w-4" />
+            <div className="flex-1">
+              <AlertDescription className="font-medium">
+                Sign in to access course content and track your progress
+              </AlertDescription>
+            </div>
+            <Button onClick={() => navigate('/auth')} size="sm" className="ml-4">
+              Sign In
+            </Button>
+          </Alert>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card className="bg-blue-800">
