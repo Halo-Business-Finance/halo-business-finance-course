@@ -28,7 +28,6 @@ export const FinancialCalculator = () => {
   const [principal, setPrincipal] = useState<string>("100000");
   const [rate, setRate] = useState<string>("5.5");
   const [years, setYears] = useState<string>("10");
-  const [extraPayment, setExtraPayment] = useState<string>("0");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [amortization, setAmortization] = useState<AmortizationEntry[]>([]);
   const [animatedValues, setAnimatedValues] = useState({ payment: 0, total: 0, interest: 0 });
@@ -63,51 +62,35 @@ export const FinancialCalculator = () => {
     const p = parseFloat(principal);
     const r = parseFloat(rate) / 100 / 12;
     const n = parseInt(years) * 12;
-    const extra = parseFloat(extraPayment) || 0;
 
     if (p > 0 && r > 0 && n > 0) {
       const monthlyPayment = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
       const totalPayment = monthlyPayment * n;
       const totalInterest = totalPayment - p;
       
-      // Calculate with extra payments
+      // Calculate amortization schedule
       let balance = p;
       const schedule: AmortizationEntry[] = [];
-      let totalPaid = 0;
-      let totalInterestPaid = 0;
-      let paymentNumber = 0;
       
-      while (balance > 0.01 && paymentNumber < n) {
+      for (let i = 1; i <= Math.min(12, n); i++) {
         const interestPayment = balance * r;
-        let principalPayment = monthlyPayment - interestPayment;
-        
-        if (principalPayment + extra > balance) {
-          principalPayment = balance;
-        } else {
-          principalPayment += extra;
-        }
-        
+        const principalPayment = monthlyPayment - interestPayment;
         balance -= principalPayment;
-        totalPaid += principalPayment + interestPayment;
-        totalInterestPaid += interestPayment;
-        paymentNumber++;
         
-        if (schedule.length < 12) { // Only store first year for display
-          schedule.push({
-            payment: paymentNumber,
-            principalPayment,
-            interestPayment,
-            remainingBalance: balance
-          });
-        }
+        schedule.push({
+          payment: i,
+          principalPayment,
+          interestPayment,
+          remainingBalance: balance
+        });
       }
 
       setResult({
-        monthlyPayment: monthlyPayment + extra,
-        totalPayment: totalPaid,
-        totalInterest: totalInterestPaid,
-        principalPercentage: (p / totalPaid) * 100,
-        interestPercentage: (totalInterestPaid / totalPaid) * 100
+        monthlyPayment,
+        totalPayment,
+        totalInterest,
+        principalPercentage: (p / totalPayment) * 100,
+        interestPercentage: (totalInterest / totalPayment) * 100
       });
       
       setAmortization(schedule);
@@ -144,7 +127,7 @@ export const FinancialCalculator = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="principal" className="flex items-center gap-2">
                 Loan Amount
@@ -215,29 +198,6 @@ export const FinancialCalculator = () => {
                 className="text-lg"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="extra" className="flex items-center gap-2">
-                Extra Monthly Payment
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Info className="h-4 w-4 text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Additional amount to pay each month to reduce interest</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </Label>
-              <Input
-                id="extra"
-                type="number"
-                value={extraPayment}
-                onChange={(e) => setExtraPayment(e.target.value)}
-                placeholder="0"
-                className="text-lg"
-              />
-            </div>
           </div>
 
           <Button onClick={calculateLoan} className="w-full h-12 text-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
@@ -271,7 +231,7 @@ export const FinancialCalculator = () => {
                         {formatCurrency(animatedValues.payment)}
                       </div>
                       <Badge variant="outline" className="mt-2">
-                        {parseFloat(extraPayment) > 0 ? `+${formatCurrency(parseFloat(extraPayment))} extra` : 'Base payment'}
+                        Base payment
                       </Badge>
                     </CardContent>
                   </Card>
@@ -329,20 +289,6 @@ export const FinancialCalculator = () => {
                     </div>
                   </CardContent>
                 </Card>
-                
-                {parseFloat(extraPayment) > 0 && (
-                  <Card className="border-0 shadow-md bg-green-50">
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-2 text-green-700">
-                        <TrendingUp className="h-5 w-5" />
-                        <span className="font-medium">Extra Payment Impact</span>
-                      </div>
-                      <p className="text-sm text-green-600 mt-1">
-                        Your extra payment of {formatCurrency(parseFloat(extraPayment))} per month will help you pay off your loan faster and save on interest.
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
               </TabsContent>
 
               <TabsContent value="schedule" className="space-y-6">

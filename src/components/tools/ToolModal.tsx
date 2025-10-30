@@ -55,7 +55,7 @@ export const ToolModal = ({ open, onOpenChange, toolType, toolTitle }: ToolModal
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[95vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">{toolTitle}</DialogTitle>
         </DialogHeader>
