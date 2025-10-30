@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, LogOut, Lock } from "lucide-react";
+import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -37,8 +37,7 @@ export function AppSidebar({
   const navigate = useNavigate();
   const {
     user,
-    loading,
-    signOut
+    loading
   } = useAuth();
   const {
     selectedCourse
@@ -49,7 +48,6 @@ export function AppSidebar({
   const {
     toast
   } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedCourseModules, setSelectedCourseModules] = useState([]);
 
   // Fetch modules for the selected course
@@ -117,23 +115,6 @@ export function AppSidebar({
     }
     navigate(url);
   };
-  const handleSignOut = async () => {
-    setIsLoading(true);
-    try {
-      // Close sidebar before signing out on mobile
-      if (isMobile) {
-        toggleSidebar();
-      }
-      // The signOut function now handles the redirect automatically
-      await signOut();
-    } catch (error) {
-      logger.error('Sign out error', error, {
-        userId: user?.id
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
   const handleSignIn = () => {
     // Close sidebar before navigating on mobile
     if (isMobile) {
@@ -174,14 +155,8 @@ export function AppSidebar({
         {user && !collapsed && <div className="px-4 py-3 border-b border-sidebar-border">
             <div className="text-sidebar-foreground">
               <div className="text-sm font-medium text-sidebar-foreground">Welcome back,</div>
-              <div className="flex items-center justify-between">
-                <div className="text-base font-semibold text-sidebar-foreground">
-                  {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
-                </div>
-                <button onClick={handleSignOut} disabled={isLoading} className="flex items-center gap-1 text-sidebar-foreground hover:bg-sidebar-accent px-2 py-1 disabled:opacity-50 transition-all duration-240" title="Sign Out">
-                  <LogOut className="h-4 w-4 text-navy-900" />
-                  {!collapsed && <span className="text-xs text-sidebar-foreground">{isLoading ? "..." : "Sign Out"}</span>}
-                </button>
+              <div className="text-base font-semibold text-sidebar-foreground">
+                {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
               </div>
             </div>
           </div>}
