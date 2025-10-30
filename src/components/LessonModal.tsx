@@ -272,7 +272,7 @@ export const LessonModal = ({ isOpen, onClose, lesson, moduleTitle, moduleId }: 
             <TabsContent value="overview" className="space-y-4">
               <LessonOverview lesson={lesson} moduleTitle={moduleTitle} content={content} />
               <div className="flex justify-end">
-                <Button onClick={() => handleStepComplete('overview')} className="jp-button-primary">
+                <Button onClick={() => { handleStepComplete('overview'); handleTabChange('video'); }} className="jp-button-primary">
                   Continue to Video
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
