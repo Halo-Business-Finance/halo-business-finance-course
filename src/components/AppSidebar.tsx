@@ -170,10 +170,10 @@ export function AppSidebar({
                    <SidebarMenuButton asChild>
                      <button
                        onClick={() => handleNavigation(item.url, true, (item as any).action)}
-                       className={`w-full flex items-center ${collapsed ? 'justify-center px-0' : 'justify-start px-4'} gap-3 text-black hover:text-black py-2 rounded-lg transition-all duration-200 min-h-[2.75rem]`}
+                       className={`w-full flex items-center ${collapsed ? 'justify-center px-2' : 'justify-start px-4 gap-3'} text-black hover:text-black py-2 rounded-lg transition-all duration-200 min-h-[2.75rem]`}
                        aria-label={item.title}
                      >
-                        <item.icon className={`${collapsed ? 'h-6 w-6' : 'h-5 w-5'} text-navy-900 flex-shrink-0`} />
+                        <item.icon className={`h-5 w-5 text-navy-900 flex-shrink-0`} />
                         {!collapsed && <span className="text-black text-xs font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
