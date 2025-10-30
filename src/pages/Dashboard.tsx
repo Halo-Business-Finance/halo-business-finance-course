@@ -450,17 +450,9 @@ const Dashboard = () => {
       <div className="mobile-container mobile-section">
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
-          {/* Course Categories and Instructors side by side - Only show on level 0 */}
-          {currentFilterLevel === 0 && <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-6 sm:mb-8">
-              {/* Course Categories Filter */}
-              <div className="w-full lg:w-80 flex-shrink-0">
-                <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
-              </div>
-              
-              {/* Course Instructors Widget - Responsive width */}
-              <div className="w-full lg:w-[40rem] flex-shrink-0">
-                <InstructorInfo />
-              </div>
+          {/* Course Instructors Widget - Only show on level 0 */}
+          {currentFilterLevel === 0 && <div className="mb-6 sm:mb-8">
+              <InstructorInfo />
             </div>}
           
           {/* Main Content */}
@@ -468,16 +460,32 @@ const Dashboard = () => {
             {/* Section Divider - Only show on level 0 */}
             {currentFilterLevel === 0 && <Separator className="mb-4" />}
             
-            {/* Results Summary */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-4">
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
-                {currentFilterLevel === 0 && <span className="block sm:inline text-xl">Available Course Programs</span>}
-                {currentFilterLevel === 1 && <span className="block sm:inline">2 Skill Levels Available</span>}
-                {currentFilterLevel === 2 && <span className="block sm:inline">
-                    {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Found
-                  </span>}
-              </h3>
-            </div>
+            {/* Course Filter and Results Summary */}
+            {currentFilterLevel === 0 && <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6">
+                {/* Course Categories Filter */}
+                <div className="w-full lg:w-80 flex-shrink-0">
+                  <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
+                </div>
+                
+                {/* Results Summary */}
+                <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
+                      <span className="block sm:inline text-xl">Available Course Programs</span>
+                    </h3>
+                  </div>
+                </div>
+              </div>}
+            
+            {/* Results Summary for other levels */}
+            {currentFilterLevel !== 0 && <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-4">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
+                  {currentFilterLevel === 1 && <span className="block sm:inline">2 Skill Levels Available</span>}
+                  {currentFilterLevel === 2 && <span className="block sm:inline">
+                      {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Found
+                    </span>}
+                </h3>
+              </div>}
 
             {loading ? <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => <div key={i} className="animate-pulse">
