@@ -484,7 +484,7 @@ const Dashboard = () => {
                     
                     {/* Course Cards Grid - Full Width */}
                     <div className="w-full">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ?
               // Show loading skeletons
               Array.from({
