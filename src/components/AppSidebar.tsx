@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, LogOut, Lock, LifeBuoy } from "lucide-react";
+import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, LogOut, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -22,15 +22,6 @@ const mainNavItems = [{
   title: "Learning Resources",
   url: "/resources",
   icon: FileText
-}, {
-  title: "Live Support",
-  url: "#support",
-  icon: LifeBuoy,
-  action: "openSupport"
-}, {
-  title: "My Account",
-  url: "/my-account",
-  icon: User
 }];
 export function AppSidebar({
   onOpenSupport
