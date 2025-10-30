@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Play, Plus, Edit, Trash2, ExternalLink, Youtube, Video, Upload } from "lucide-react";
+import { Play, Plus, Edit, Trash2, ExternalLink, Youtube, Video, Upload, Search, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { VideoPlayer } from "@/components/VideoPlayer";
@@ -45,6 +45,7 @@ export function VideoManager() {
   const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
   const [previewVideo, setPreviewVideo] = useState<VideoData | null>(null);
   const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
+  const [searchingYouTube, setSearchingYouTube] = useState(false);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -338,6 +339,43 @@ export function VideoManager() {
     }
   };
 
+  const handleFindYouTubeVideos = async () => {
+    setSearchingYouTube(true);
+    
+    try {
+      toast({
+        title: "Searching YouTube",
+        description: "Finding relevant videos for all course modules...",
+      });
+
+      const { data, error } = await supabase.functions.invoke('find-youtube-videos');
+
+      if (error) throw error;
+
+      if (data?.success) {
+        const summary = data.summary;
+        toast({
+          title: "YouTube Search Complete!",
+          description: `Created: ${summary.created}, Updated: ${summary.updated}, Errors: ${summary.errors}, No results: ${summary.no_results}`,
+        });
+        
+        // Reload the videos to show the new ones
+        await loadData();
+      } else {
+        throw new Error('Search failed');
+      }
+    } catch (error: any) {
+      console.error('Error finding YouTube videos:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to search YouTube for videos",
+        variant: "destructive",
+      });
+    } finally {
+      setSearchingYouTube(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -359,13 +397,32 @@ export function VideoManager() {
           </p>
         </div>
         
-        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-          <DialogTrigger asChild>
-            <Button onClick={() => resetForm()}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Video
-            </Button>
-          </DialogTrigger>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleFindYouTubeVideos} 
+            disabled={searchingYouTube}
+            variant="outline"
+          >
+            {searchingYouTube ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Searching...
+              </>
+            ) : (
+              <>
+                <Search className="h-4 w-4 mr-2" />
+                Find YouTube Videos
+              </>
+            )}
+          </Button>
+          
+          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+            <DialogTrigger asChild>
+              <Button onClick={() => resetForm()}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Video
+              </Button>
+            </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>
@@ -489,6 +546,7 @@ export function VideoManager() {
             </form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       <Card>

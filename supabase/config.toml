@@ -24,3 +24,6 @@ verify_jwt = false
 
 [functions.anomaly-detector]
 verify_jwt = true
+
+[functions.find-youtube-videos]
+verify_jwt = true
