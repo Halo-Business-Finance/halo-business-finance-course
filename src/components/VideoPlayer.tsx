@@ -142,19 +142,29 @@ export const VideoPlayer = ({
               allowFullScreen
             />
           </div>
-          <div className="p-4 border-t">
-            <p className="text-sm text-muted-foreground mb-2">
-              If the video doesn't play, it may have embedding restrictions.
-            </p>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => window.open(watchUrl, '_blank')}
-              className="gap-2"
-            >
-              <Play className="h-4 w-4" />
-              Watch on YouTube
-            </Button>
+          <div className="p-4 border-t bg-amber-50/50">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-amber-100 rounded-full">
+                <Play className="h-4 w-4 text-amber-700" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-amber-900 mb-1">
+                  Video Not Playing?
+                </p>
+                <p className="text-sm text-amber-700 mb-3">
+                  This video has embedding restrictions. Click below to watch it directly on YouTube.
+                </p>
+                <Button 
+                  variant="default" 
+                  size="sm"
+                  onClick={() => window.open(watchUrl, '_blank')}
+                  className="gap-2 bg-amber-600 hover:bg-amber-700"
+                >
+                  <Play className="h-4 w-4" />
+                  Open in YouTube
+                </Button>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
