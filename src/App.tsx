@@ -107,13 +107,13 @@ const HeaderContent = ({
   return <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-sidebar z-50 px-2 sm:px-4">
       <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0 rounded-2xl">
-          {user && <SidebarTrigger className="h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 font-normal text-blue-800 mx-[10px] my-[10px] px-[10px] rounded-2xl text-3xl" />}
+          {user && <SidebarTrigger className="h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 font-normal text-navy-900 mx-[10px] my-[10px] px-[10px] rounded-2xl text-3xl" />}
           
           {user && <div className="flex items-center gap-1 sm:gap-2">
-              <Button variant="ghost" size="sm" onClick={goBack} title="Go back" className="h-8 w-8 p-0 hover:bg-muted text-slate-950">
+              <Button variant="ghost" size="sm" onClick={goBack} title="Go back" className="h-8 w-8 p-0 hover:bg-muted text-navy-900">
                 <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={goForward} className="h-8 w-8 p-0 text-foreground hover:bg-muted" title="Go forward">
+              <Button variant="ghost" size="sm" onClick={goForward} className="h-8 w-8 p-0 text-navy-900 hover:bg-muted" title="Go forward">
                 <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </div>}
