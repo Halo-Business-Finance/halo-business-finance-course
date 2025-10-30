@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Users, Play, Zap, TrendingUp, Calculator } from "lucide-react";
+import { FileText, Download, ExternalLink, BookOpen, Video, FileSpreadsheet, Play, Zap, TrendingUp, Calculator } from "lucide-react";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ToolModal } from "@/components/tools/ToolModal";
 import { InteractiveLessonComponents } from "@/components/InteractiveLessonComponents";
@@ -16,7 +16,6 @@ const ResourcesPage = () => {
   const [documents, setDocuments] = useState<any[]>([]);
   const [videos, setVideos] = useState<any[]>([]);
   const [tools, setTools] = useState<any[]>([]);
-  const [webinars, setWebinars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTool, setSelectedTool] = useState<{type: string, title: string} | null>(null);
   const { toast } = useToast();
@@ -27,22 +26,19 @@ const ResourcesPage = () => {
 
   const loadResources = async () => {
     try {
-      const [docsRes, videosRes, toolsRes, webinarsRes] = await Promise.all([
+      const [docsRes, videosRes, toolsRes] = await Promise.all([
         supabase.from('course_documents').select('*').eq('is_downloadable', true).order('created_at', { ascending: false }),
         supabase.from('course_videos').select('*').eq('is_active', true).order('created_at', { ascending: false }),
-        supabase.from('learning_tools').select('*').eq('is_active', true).order('order_index', { ascending: true }),
-        supabase.from('learning_webinars').select('*').eq('is_active', true).order('scheduled_date', { ascending: false })
+        supabase.from('learning_tools').select('*').eq('is_active', true).order('order_index', { ascending: true })
       ]);
 
       if (docsRes.error) throw docsRes.error;
       if (videosRes.error) throw videosRes.error;
       if (toolsRes.error) throw toolsRes.error;
-      if (webinarsRes.error) throw webinarsRes.error;
 
       setDocuments(docsRes.data || []);
       setVideos(videosRes.data || []);
       setTools(toolsRes.data || []);
-      setWebinars(webinarsRes.data || []);
     } catch (error) {
       console.error('Error loading resources:', error);
       toast({
@@ -117,12 +113,11 @@ const ResourcesPage = () => {
       </div>
 
       <Tabs defaultValue="interactive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-1 h-auto p-1">
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 gap-1 h-auto p-1">
           <TabsTrigger value="interactive" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Interactive</TabsTrigger>
           <TabsTrigger value="documents" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Documents</TabsTrigger>
           <TabsTrigger value="videos" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Videos</TabsTrigger>
           <TabsTrigger value="tools" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Tools</TabsTrigger>
-          <TabsTrigger value="webinars" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Webinars</TabsTrigger>
           <TabsTrigger value="market-data" className="text-xs md:text-sm px-2 py-2 whitespace-nowrap">Market Data</TabsTrigger>
         </TabsList>
 
@@ -274,69 +269,6 @@ const ResourcesPage = () => {
                         });
                       }}>
                         Launch Tool
-                      </Button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="webinars" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Live Webinars & Events
-              </CardTitle>
-              <CardDescription>
-                Join live sessions with industry experts
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                {webinars.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No webinars available yet.
-                  </div>
-                ) : (
-                  webinars.map((webinar) => (
-                    <div key={webinar.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <h3 className="font-medium text-foreground">{webinar.title}</h3>
-                        <p className="text-sm text-muted-foreground">{webinar.presenter}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground">
-                            {webinar.scheduled_date && webinar.scheduled_time 
-                              ? `${webinar.scheduled_date} at ${webinar.scheduled_time} ${webinar.timezone || 'EST'}`
-                              : 'TBD'}
-                          </span>
-                          <Badge variant={webinar.status === "upcoming" || webinar.status === "scheduled" ? "progress" : "outline"}>
-                            {webinar.status}
-                          </Badge>
-                        </div>
-                      </div>
-                      <Button 
-                        size="sm" 
-                        variant={webinar.status === "upcoming" || webinar.status === "scheduled" ? "default" : "outline"}
-                        onClick={() => {
-                          if (webinar.status === "upcoming" || webinar.status === "scheduled") {
-                            if (webinar.registration_url) {
-                              window.open(webinar.registration_url, '_blank');
-                            } else {
-                              alert(`Registration for "${webinar.title}" coming soon!`);
-                            }
-                          } else {
-                            if (webinar.recording_url) {
-                              window.open(webinar.recording_url, '_blank');
-                            } else {
-                              alert(`Recording for "${webinar.title}" will be available soon!`);
-                            }
-                          }
-                        }}
-                      >
-                        {webinar.status === "upcoming" || webinar.status === "scheduled" ? "Register" : "Watch Recording"}
                       </Button>
                     </div>
                   ))
