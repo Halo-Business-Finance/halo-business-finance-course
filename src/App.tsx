@@ -104,7 +104,7 @@ const HeaderContent = ({
       minute: '2-digit'
     });
   };
-  return <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-background z-50 px-2 sm:px-4">
+  return <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-sidebar z-50 px-2 sm:px-4">
       <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0 rounded-2xl">
           {user && <SidebarTrigger className="h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 font-normal text-blue-800 bg-white mx-[10px] my-[10px] px-[10px] rounded-2xl text-3xl" />}
