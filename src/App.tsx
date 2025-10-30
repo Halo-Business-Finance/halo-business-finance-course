@@ -142,10 +142,10 @@ const HeaderContent = ({
               variant="ghost" 
               size="sm" 
               title="Loan Calculator" 
-              className="relative p-2 h-12 w-12 text-slate-50 bg-white py-0 px-0 text-xl mx-0"
+              className="relative p-2 h-14 w-14 text-slate-50 bg-white py-0 px-0 text-xl mx-0"
               onClick={() => setCalculatorOpen(true)}
             >
-              <Calculator className="h-6 w-6 text-blue-600" />
+              <Calculator className="h-8 w-8 text-blue-600" />
             </Button>
             <NotificationBell />
           </div>}
