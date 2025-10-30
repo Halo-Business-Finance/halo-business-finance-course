@@ -72,13 +72,14 @@ const InstructorInfo = () => {
           Course Instructors
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {instructors.map(instructor => <div key={instructor.id} className="flex items-start gap-4">
-            
-            <div className="flex-1">
-              <h4 className="font-semibold">{instructor.name}</h4>
-              <p className="text-sm text-black">{instructor.title}</p>
-              <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {instructors.map(instructor => <div key={instructor.id} className="flex flex-col space-y-3">
+              <div>
+                <h4 className="font-semibold">{instructor.name}</h4>
+                <p className="text-sm text-black">{instructor.title}</p>
+              </div>
+              <div className="flex flex-col gap-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Award className="h-3 w-3" />
                   <span className="text-black">{instructor.years_experience}</span>
@@ -88,9 +89,9 @@ const InstructorInfo = () => {
                   <span className="text-black">{instructor.company}</span>
                 </div>
               </div>
-              <p className="text-sm mt-2">{instructor.bio}</p>
-            </div>
-          </div>)}
+              <p className="text-sm">{instructor.bio}</p>
+            </div>)}
+        </div>
       </CardContent>
     </Card>;
 };

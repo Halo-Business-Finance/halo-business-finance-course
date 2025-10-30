@@ -475,22 +475,22 @@ const Dashboard = () => {
                     <div className="bg-muted rounded-lg h-64" />
                   </div>)}
               </div> : <>
-                {/* Level 0: Course Filter and Course Program Cards Side by Side */}
-                {currentFilterLevel === 0 && <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
-                    {/* Course Categories Filter - Left Side */}
-                    <div className="w-full lg:w-80 flex-shrink-0">
+                {/* Level 0: Course Filter and Course Program Cards */}
+                {currentFilterLevel === 0 && <div className="space-y-6">
+                    {/* Course Categories Filter - Full Width Above */}
+                    <div className="w-full">
                       <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
                     </div>
                     
-                    {/* Course Cards Grid - Right Side */}
-                    <div className="flex-1">
+                    {/* Course Cards Grid - Full Width */}
+                    <div className="w-full">
                       <div className="mb-4">
                         <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
                           Available Course Programs
                         </h3>
                       </div>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                     {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ?
               // Show loading skeletons
               Array.from({
