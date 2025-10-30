@@ -66,29 +66,29 @@ const InstructorInfo = () => {
       </Card>;
   }
   return <Card className="mb-8">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm">
           Course Instructors
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="grid grid-cols-3 gap-4">
-          {instructors.map(instructor => <div key={instructor.id} className="flex flex-col space-y-2">
+        <div className="grid grid-cols-3 gap-3">
+          {instructors.map(instructor => <div key={instructor.id} className="flex flex-col space-y-1.5">
               <div>
-                <h4 className="font-semibold text-sm">{instructor.name}</h4>
-                <p className="text-xs text-muted-foreground">{instructor.title}</p>
+                <h4 className="font-semibold text-xs">{instructor.name}</h4>
+                <p className="text-[10px] text-muted-foreground">{instructor.title}</p>
               </div>
-              <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+              <div className="flex flex-col gap-0.5 text-[10px] text-muted-foreground">
                 <div className="flex items-center gap-1">
-                  <Award className="h-3 w-3 flex-shrink-0" />
+                  <Award className="h-2.5 w-2.5 flex-shrink-0" />
                   <span className="truncate">{instructor.years_experience}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3 flex-shrink-0" />
+                  <MapPin className="h-2.5 w-2.5 flex-shrink-0" />
                   <span className="truncate">{instructor.company}</span>
                 </div>
               </div>
-              <p className="text-xs leading-relaxed line-clamp-3">{instructor.bio}</p>
+              <p className="text-[10px] leading-snug line-clamp-2">{instructor.bio}</p>
             </div>)}
         </div>
       </CardContent>
