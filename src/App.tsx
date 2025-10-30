@@ -107,7 +107,7 @@ const HeaderContent = ({
   return <header className="sticky top-0 h-[60px] sm:h-[80px] flex flex-col border-b bg-sidebar z-50 px-2 sm:px-4">
       <div className="flex-1 flex items-center justify-between gap-1 sm:gap-2 md:gap-4 min-h-0">
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink-0 rounded-2xl">
-          {user && <SidebarTrigger className="h-[60px] sm:h-[80px] w-16 sm:w-24 flex-shrink-0 font-normal text-navy-900 mx-[10px] my-[10px] px-[10px] rounded-2xl text-3xl" />}
+          {user && <SidebarTrigger variant="ghost" size="icon" className="ml-4 sm:ml-6 h-9 w-9 sm:h-10 sm:w-10 p-0 text-navy-900" />}
           
           {user && <div className="flex items-center gap-1 sm:gap-2">
               <Button variant="ghost" size="sm" onClick={goBack} title="Go back" className="h-8 w-8 p-0 hover:bg-muted text-navy-900">
