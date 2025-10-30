@@ -35,6 +35,7 @@ interface VideoData {
 interface Module {
   id: string;
   title: string;
+  course_id: string;
 }
 
 export function VideoManager() {
@@ -46,6 +47,8 @@ export function VideoManager() {
   const [previewVideo, setPreviewVideo] = useState<VideoData | null>(null);
   const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
   const [searchingYouTube, setSearchingYouTube] = useState(false);
+  const [selectedCourseForSearch, setSelectedCourseForSearch] = useState<string>('all');
+  const [searchLimit, setSearchLimit] = useState<number>(10);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -95,7 +98,7 @@ export function VideoManager() {
       // Load modules from course_content_modules
       const { data: modulesData, error: modulesError } = await supabase
         .from("course_content_modules")
-        .select("id, title")
+        .select("id, title, course_id")
         .eq("is_active", true)
         .order("order_index");
 
@@ -343,12 +346,19 @@ export function VideoManager() {
     setSearchingYouTube(true);
     
     try {
+      const body: any = { limit: searchLimit };
+      
+      // Add course filter if not "all"
+      if (selectedCourseForSearch !== 'all') {
+        body.course_id = selectedCourseForSearch;
+      }
+      
       toast({
         title: "Searching YouTube",
-        description: "Finding relevant videos for all course modules...",
+        description: `Finding videos for ${selectedCourseForSearch === 'all' ? 'all courses' : 'selected course'} (max ${searchLimit})...`,
       });
 
-      const { data, error } = await supabase.functions.invoke('find-youtube-videos');
+      const { data, error } = await supabase.functions.invoke('find-youtube-videos', { body });
 
       if (error) throw error;
 
@@ -387,6 +397,9 @@ export function VideoManager() {
     );
   }
 
+  // Get unique course IDs
+  const uniqueCourseIds = [...new Set(modules.map(m => m.course_id))];
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -397,32 +410,13 @@ export function VideoManager() {
           </p>
         </div>
         
-        <div className="flex gap-2">
-          <Button 
-            onClick={handleFindYouTubeVideos} 
-            disabled={searchingYouTube}
-            variant="outline"
-          >
-            {searchingYouTube ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Searching...
-              </>
-            ) : (
-              <>
-                <Search className="h-4 w-4 mr-2" />
-                Find YouTube Videos
-              </>
-            )}
-          </Button>
-          
-          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-            <DialogTrigger asChild>
-              <Button onClick={() => resetForm()}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Video
-              </Button>
-            </DialogTrigger>
+        <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+          <DialogTrigger asChild>
+            <Button onClick={() => resetForm()}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Video
+            </Button>
+          </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>
@@ -546,8 +540,79 @@ export function VideoManager() {
             </form>
           </DialogContent>
         </Dialog>
-        </div>
       </div>
+
+      {/* YouTube Search Section */}
+      <Card className="border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Youtube className="h-5 w-5 text-red-500" />
+            YouTube Video Search
+          </CardTitle>
+          <CardDescription>
+            Search YouTube for videos matching your course modules. Use filters to avoid hitting API quota limits (100 searches/day free tier).
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="courseFilter">Filter by Course</Label>
+              <Select
+                value={selectedCourseForSearch}
+                onValueChange={setSelectedCourseForSearch}
+              >
+                <SelectTrigger id="courseFilter">
+                  <SelectValue placeholder="All courses" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Courses</SelectItem>
+                  {uniqueCourseIds.map((courseId) => (
+                    <SelectItem key={courseId} value={courseId}>
+                      {courseId}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="searchLimit">Modules per batch</Label>
+              <Input
+                id="searchLimit"
+                type="number"
+                min="1"
+                max="100"
+                value={searchLimit}
+                onChange={(e) => setSearchLimit(parseInt(e.target.value) || 10)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Each search costs 100 quota units
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Actions</Label>
+              <Button 
+                onClick={handleFindYouTubeVideos}
+                disabled={searchingYouTube}
+                className="w-full"
+              >
+                {searchingYouTube ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Youtube className="mr-2 h-4 w-4" />
+                    Search YouTube
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

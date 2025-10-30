@@ -20,17 +20,37 @@ serve(async (req) => {
       throw new Error('YOUTUBE_API_KEY not configured');
     }
 
-    console.log('Starting YouTube video search for course modules...');
+    // Get optional course_id filter and limit from request body
+    const body = await req.json().catch(() => ({}));
+    const courseIdFilter = body?.course_id;
+    const limit = body?.limit || null;
+
+    console.log('Starting YouTube video search for course modules...', {
+      courseIdFilter,
+      limit
+    });
 
     // Create Supabase client with service role for admin access
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
-    // Get all active course modules from course_content_modules
-    const { data: modules, error: modulesError } = await supabase
+    // Build query for course modules
+    let query = supabase
       .from('course_content_modules')
       .select('id, title, description, course_id')
       .eq('is_active', true)
       .order('order_index');
+
+    // Apply course filter if provided
+    if (courseIdFilter) {
+      query = query.eq('course_id', courseIdFilter);
+    }
+
+    // Apply limit if provided
+    if (limit) {
+      query = query.limit(limit);
+    }
+
+    const { data: modules, error: modulesError } = await query;
 
     if (modulesError) {
       console.error('Error fetching modules:', modulesError);
