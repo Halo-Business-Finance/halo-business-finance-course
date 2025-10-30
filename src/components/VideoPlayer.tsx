@@ -35,7 +35,7 @@ export const VideoPlayer = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [ytProvider, setYtProvider] = useState<"youtube" | "proxy">("youtube");
+  const [ytProvider, setYtProvider] = useState<"youtube" | "proxy">("proxy");
 
   useEffect(() => {
     const video = videoRef.current;
