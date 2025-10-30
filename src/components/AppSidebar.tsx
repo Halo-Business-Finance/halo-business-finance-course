@@ -150,19 +150,19 @@ export function AppSidebar({
     }
   };
   return <Sidebar collapsible="icon" variant="inset" className="bg-sidebar border-sidebar-border border-r">
-      <SidebarContent className="bg-sidebar">
+      <SidebarContent className="bg-sidebar pt-4">
         {/* Welcome Message */}
+        {user && !collapsed && (
+          <div className="px-4 pb-3 border-b border-sidebar-border">
+            <div className="text-xs text-muted-foreground">Welcome back,</div>
+            <div className="text-sm font-semibold text-foreground">
+              {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
+            </div>
+          </div>
+        )}
 
         {/* Main Navigation */}
         <SidebarGroup className="pt-3">
-          {user && (
-            <SidebarGroupLabel className="px-4 pb-2">
-              <div className="text-xs text-muted-foreground">Welcome back,</div>
-              <div className="text-sm font-semibold text-foreground">
-                {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
-              </div>
-            </SidebarGroupLabel>
-          )}
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
