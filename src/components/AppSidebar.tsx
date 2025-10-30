@@ -152,12 +152,10 @@ export function AppSidebar({
   return <Sidebar collapsible="icon" variant="inset" className="bg-sidebar border-sidebar-border border-r">
       <SidebarContent className="bg-sidebar">
         {/* Welcome Message */}
-        {user && !collapsed && <div className="px-4 py-3 border-b border-sidebar-border">
-            <div className="text-sidebar-foreground">
-              <div className="text-sm font-medium text-sidebar-foreground">Welcome back,</div>
-              <div className="text-base font-semibold text-sidebar-foreground">
-                {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
-              </div>
+        {user && !collapsed && <div className="px-4 py-4 border-b border-gray-200">
+            <div className="text-sm font-medium text-gray-600">Welcome back,</div>
+            <div className="text-base font-semibold text-gray-900">
+              {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
             </div>
           </div>}
 
