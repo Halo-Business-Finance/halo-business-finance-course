@@ -235,7 +235,7 @@
   .container,
   .mobile-container,
   .jp-container {
-    width: 80% !important;
+    width: 95% !important;
     max-width: 1440px !important;
     margin: 0 auto !important;
   }
@@ -429,7 +429,7 @@
   
   /* Mobile-optimized utilities */
   .mobile-container {
-    @apply px-4 sm:px-6 lg:px-8;
+    @apply px-2 sm:px-4 lg:px-6;
   }
   
   .mobile-section {
