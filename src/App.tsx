@@ -147,6 +147,15 @@ const HeaderContent = ({
             >
               <Calculator className="h-8 w-8 text-blue-600" />
             </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              title="My Account" 
+              className="relative p-2 h-14 w-14 text-slate-50 bg-white py-0 px-0 text-xl mx-0"
+              onClick={() => navigate('/my-account')}
+            >
+              <User className="h-8 w-8 text-blue-600" />
+            </Button>
             <NotificationBell />
           </div>}
       </div>
