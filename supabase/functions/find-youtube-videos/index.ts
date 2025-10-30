@@ -25,10 +25,10 @@ serve(async (req) => {
     // Create Supabase client with service role for admin access
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
-    // Get all active course modules
+    // Get all active course modules from course_content_modules
     const { data: modules, error: modulesError } = await supabase
-      .from('course_modules')
-      .select('id, module_id, title, description, course_id')
+      .from('course_content_modules')
+      .select('id, title, description, course_id')
       .eq('is_active', true)
       .order('order_index');
 
@@ -55,7 +55,7 @@ serve(async (req) => {
         if (!youtubeResponse.ok) {
           console.error(`YouTube API error for "${module.title}":`, await youtubeResponse.text());
           results.push({
-            module_id: module.module_id,
+            module_id: module.id,
             title: module.title,
             status: 'error',
             error: 'YouTube API request failed'
@@ -68,7 +68,7 @@ serve(async (req) => {
         if (!youtubeData.items || youtubeData.items.length === 0) {
           console.log(`No YouTube video found for: ${module.title}`);
           results.push({
-            module_id: module.module_id,
+            module_id: module.id,
             title: module.title,
             status: 'no_results'
           });
@@ -87,7 +87,7 @@ serve(async (req) => {
         const { data: existingVideo } = await supabase
           .from('course_videos')
           .select('id')
-          .eq('module_id', module.module_id)
+          .eq('module_id', module.id)
           .single();
 
         if (existingVideo) {
@@ -109,14 +109,14 @@ serve(async (req) => {
           if (updateError) {
             console.error(`Error updating video for ${module.title}:`, updateError);
             results.push({
-              module_id: module.module_id,
+              module_id: module.id,
               title: module.title,
               status: 'error',
               error: updateError.message
             });
           } else {
             results.push({
-              module_id: module.module_id,
+              module_id: module.id,
               title: module.title,
               video_id: videoId,
               video_title: videoTitle,
@@ -128,7 +128,7 @@ serve(async (req) => {
           const { error: insertError } = await supabase
             .from('course_videos')
             .insert({
-              module_id: module.module_id,
+              module_id: module.id,
               youtube_id: videoId,
               video_url: `https://www.youtube.com/watch?v=${videoId}`,
               title: videoTitle,
@@ -142,14 +142,14 @@ serve(async (req) => {
           if (insertError) {
             console.error(`Error inserting video for ${module.title}:`, insertError);
             results.push({
-              module_id: module.module_id,
+              module_id: module.id,
               title: module.title,
               status: 'error',
               error: insertError.message
             });
           } else {
             results.push({
-              module_id: module.module_id,
+              module_id: module.id,
               title: module.title,
               video_id: videoId,
               video_title: videoTitle,
@@ -164,7 +164,7 @@ serve(async (req) => {
       } catch (error) {
         console.error(`Error processing module ${module.title}:`, error);
         results.push({
-          module_id: module.module_id,
+          module_id: module.id,
           title: module.title,
           status: 'error',
           error: error instanceof Error ? error.message : 'Unknown error'
