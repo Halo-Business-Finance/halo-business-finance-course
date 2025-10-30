@@ -7,7 +7,7 @@ import { useAdminRole } from "@/hooks/useAdminRole";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/secureLogging";
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, useSidebar } from "@/components/ui/sidebar";
 
 import { Separator } from "@/components/ui/separator";
 const mainNavItems = [{
@@ -153,12 +153,12 @@ export function AppSidebar({
       <SidebarContent className="bg-sidebar pt-4">
         {/* Welcome Message */}
         {user && (
-          <div className="px-4 pb-3 border-b border-sidebar-border">
+          <SidebarHeader className="px-2 pb-2 border-b border-sidebar-border">
             <div className="text-xs text-muted-foreground">Welcome back,</div>
             <div className="text-sm font-semibold text-foreground">
               {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
             </div>
-          </div>
+          </SidebarHeader>
         )}
 
         {/* Main Navigation */}
