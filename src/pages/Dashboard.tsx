@@ -440,7 +440,7 @@ const Dashboard = () => {
         </Card>
       </div>;
   }
-  return <div ref={containerRef} className="min-h-screen overflow-y-auto bg-gradient-to-br from-background via-background to-secondary/5" style={{
+  return <div ref={containerRef} className="min-h-screen overflow-y-auto bg-navy-900" style={{
     overflowAnchor: 'none'
   }}>
       {/* Business Finance Mastery Header - Full Width Connected */}
