@@ -211,7 +211,7 @@ export const NotificationBell = () => {
   if (!user) return null;
   return <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" title="Notifications" className="relative p-2 h-14 w-14 text-slate-50 bg-white py-0 px-0 text-xl mx-0">
+        <Button variant="ghost" size="sm" title="Notifications" className="relative p-2 h-14 w-14 text-slate-50 py-0 px-0 text-xl mx-0">
           <Bell className="h-8 w-8 text-amber-500" fill="currentColor" />
           {unreadCount > 0 && <Badge variant="destructive" className="absolute -top-1 -right-1 h-7 w-7 p-0 flex items-center justify-center text-sm min-w-[24px]">
               {unreadCount > 99 ? '99+' : unreadCount}
