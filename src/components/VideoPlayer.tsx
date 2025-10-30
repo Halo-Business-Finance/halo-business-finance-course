@@ -35,6 +35,7 @@ export const VideoPlayer = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [ytProvider, setYtProvider] = useState<"youtube" | "proxy">("youtube");
 
   useEffect(() => {
     const video = videoRef.current;
@@ -128,7 +129,11 @@ export const VideoPlayer = ({
 
     const id = youtubeId || extractId(videoUrl);
     const embedUrl = id
-      ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${origin ? `&origin=${encodeURIComponent(origin)}` : ''}`
+      ? (
+          ytProvider === 'youtube'
+            ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${origin ? `&origin=${encodeURIComponent(origin)}` : ''}`
+            : `https://piped.video/embed/${id}`
+        )
       : videoUrl.replace("watch?v=", "embed/").replace("&", "?").replace("www.youtube.com", "www.youtube-nocookie.com");
     
     const watchUrl = id
@@ -148,7 +153,17 @@ export const VideoPlayer = ({
         </CardHeader>
         <CardContent className="p-0">
           <div className="relative aspect-video bg-muted/30">
-            <div className="absolute right-3 top-3 z-10">
+            <div className="absolute right-3 top-3 z-10 flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setYtProvider(ytProvider === 'youtube' ? 'proxy' : 'youtube')}
+                className="gap-2"
+                aria-label="Toggle video provider"
+              >
+                <RotateCcw className="h-4 w-4" />
+                {ytProvider === 'youtube' ? 'Try alternate player' : 'Use YouTube player'}
+              </Button>
               <Button 
                 variant="secondary" 
                 size="sm"
