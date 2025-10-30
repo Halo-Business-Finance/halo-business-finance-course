@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell, LifeBuoy } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell, LifeBuoy, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -15,6 +15,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
 import { NotificationBell } from "@/components/NotificationBell";
 import { LiveChatSupport } from "@/components/LiveChatSupport";
+import { ToolModal } from "@/components/tools/ToolModal";
 import { createTestNotifications } from "@/utils/createTestNotifications";
 import { lazy, Suspense } from "react";
 import { errorMonitor } from "./utils/errorMonitoring";
@@ -66,6 +67,7 @@ const HeaderContent = ({
     user
   } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [calculatorOpen, setCalculatorOpen] = useState(false);
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -136,10 +138,25 @@ const HeaderContent = ({
           </div>}
         
         {user && <div className="flex items-start gap-1 sm:gap-2 text-xs text-foreground text-right flex-shrink-0 pt-1 rounded-full py-0">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              title="Loan Calculator" 
+              className="relative p-2 h-14 w-14 text-slate-50 bg-white py-0 px-0 text-xl mx-0"
+              onClick={() => setCalculatorOpen(true)}
+            >
+              <Calculator className="h-8 w-8 text-blue-600" />
+            </Button>
             <NotificationBell />
-            
           </div>}
       </div>
+      
+      <ToolModal
+        open={calculatorOpen}
+        onOpenChange={setCalculatorOpen}
+        toolType="loan_calculator"
+        toolTitle="Loan Calculator"
+      />
     </header>;
 };
 const AppContent = () => {
