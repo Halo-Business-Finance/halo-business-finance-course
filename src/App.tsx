@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, NavLink, Navigate, Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell, LifeBuoy, Calculator } from "lucide-react";
+import { ChevronLeft, ChevronRight, User, Building2, LogIn, Play, MessageCircle, Bell, HelpCircle, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -154,7 +154,7 @@ const HeaderContent = ({
               className="relative p-2 h-14 w-14 text-slate-50 bg-white py-0 px-0 text-xl mx-0"
               onClick={() => setIsChatOpen(true)}
             >
-              <LifeBuoy className="h-8 w-8 text-blue-600" />
+              <HelpCircle className="h-8 w-8 text-blue-600" />
             </Button>
             <NotificationBell />
             <Button 
