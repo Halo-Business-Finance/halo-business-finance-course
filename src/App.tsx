@@ -145,7 +145,7 @@ const HeaderContent = ({
               className="relative p-2 h-14 w-14 text-slate-50 py-0 px-0 text-xl mx-0"
               onClick={() => setCalculatorOpen(true)}
             >
-              <Calculator className="h-8 w-8 text-blue-600" />
+              <Calculator className="h-8 w-8 text-navy-900" />
             </Button>
             <Button 
               variant="ghost" 
@@ -154,7 +154,7 @@ const HeaderContent = ({
               className="relative p-2 h-14 w-14 text-slate-50 py-0 px-0 text-xl mx-0"
               onClick={() => setIsChatOpen(true)}
             >
-              <HelpCircle className="h-8 w-8 text-blue-600" />
+              <HelpCircle className="h-8 w-8 text-navy-900" />
             </Button>
             <NotificationBell />
             <Button 
@@ -164,7 +164,7 @@ const HeaderContent = ({
               className="relative p-2 h-14 w-14 text-slate-50 py-0 px-0 text-xl mx-0"
               onClick={() => navigate('/my-account')}
             >
-              <User className="h-8 w-8 text-blue-600" />
+              <User className="h-8 w-8 text-navy-900" />
             </Button>
           </div>}
       </div>
