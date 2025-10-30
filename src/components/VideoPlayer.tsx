@@ -113,12 +113,26 @@ export const VideoPlayer = ({
   const progressPercentage = totalDuration > 0 ? (currentTime / totalDuration) * 100 : 0;
 
   if (videoType === "youtube") {
-    const embedUrl = youtubeId 
-      ? `https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&modestbranding=1`
-      : videoUrl.replace("watch?v=", "embed/").replace("&", "?");
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const extractId = (url: string) => {
+      try {
+        const u = new URL(url);
+        const v = u.searchParams.get('v');
+        if (v) return v;
+        const parts = u.pathname.split('/');
+        return parts[parts.length - 1] || undefined;
+      } catch {
+        return undefined;
+      }
+    };
+
+    const id = youtubeId || extractId(videoUrl);
+    const embedUrl = id
+      ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1${origin ? `&origin=${encodeURIComponent(origin)}` : ''}`
+      : videoUrl.replace("watch?v=", "embed/").replace("&", "?").replace("www.youtube.com", "www.youtube-nocookie.com");
     
-    const watchUrl = youtubeId
-      ? `https://www.youtube.com/watch?v=${youtubeId}`
+    const watchUrl = id
+      ? `https://www.youtube.com/watch?v=${id}`
       : videoUrl;
 
     return (
@@ -138,7 +152,9 @@ export const VideoPlayer = ({
               src={embedUrl}
               title={title}
               className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              loading="lazy"
               allowFullScreen
             />
           </div>
