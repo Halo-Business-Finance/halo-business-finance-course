@@ -148,6 +148,18 @@ export const VideoPlayer = ({
         </CardHeader>
         <CardContent className="p-0">
           <div className="relative aspect-video bg-muted/30">
+            <div className="absolute right-3 top-3 z-10">
+              <Button 
+                variant="secondary" 
+                size="sm"
+                onClick={() => window.open(watchUrl, '_blank', 'noopener')}
+                className="gap-2"
+                aria-label="Open video on YouTube"
+              >
+                <Play className="h-4 w-4" />
+                Watch on YouTube
+              </Button>
+            </div>
             <iframe
               src={embedUrl}
               title={title}
@@ -158,23 +170,21 @@ export const VideoPlayer = ({
               allowFullScreen
             />
           </div>
-          <div className="p-4 border-t bg-amber-50/50">
+          <div className="p-4 border-t bg-muted/40">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-amber-100 rounded-full">
-                <Play className="h-4 w-4 text-amber-700" />
+              <div className="p-2 bg-muted rounded-full">
+                <Play className="h-4 w-4 text-foreground" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-amber-900 mb-1">
-                  Video Not Playing?
-                </p>
-                <p className="text-sm text-amber-700 mb-3">
-                  This video has embedding restrictions. Click below to watch it directly on YouTube.
+                <p className="text-sm font-medium mb-1">Video not playing?</p>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Some YouTube videos block embedding. Use the button to watch directly on YouTube.
                 </p>
                 <Button 
                   variant="default" 
                   size="sm"
                   onClick={() => window.open(watchUrl, '_blank')}
-                  className="gap-2 bg-amber-600 hover:bg-amber-700"
+                  className="gap-2"
                 >
                   <Play className="h-4 w-4" />
                   Open in YouTube
