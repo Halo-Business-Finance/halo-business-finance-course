@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GraduationCap, Building2, FileCheck, X, Filter } from "lucide-react";
 import { useCourses, Course } from "@/hooks/useCourses";
 interface DashboardCourseFilterProps {
   selectedCategory: string | null;
@@ -29,86 +25,78 @@ export function DashboardCourseFilter({
   }, [courses, getCoursesByCategory]);
   const categoryConfig = [{
     key: "Loan Originator",
-    label: "Loan Originator",
-    icon: GraduationCap,
-    description: "Sales and client relationship courses",
-    color: "bg-navy-900/10 text-navy-900 border-navy-900/20"
+    label: "Loan Originator"
   }, {
     key: "Loan Processing",
-    label: "Loan Processor",
-    icon: Building2,
-    description: "Documentation and workflow courses",
-    color: "bg-navy-800/10 text-navy-800 border-navy-800/20"
+    label: "Loan Processor"
   }, {
     key: "Loan Underwriting",
-    label: "Loan Underwriter",
-    icon: FileCheck,
-    description: "Risk assessment and analysis courses",
-    color: "bg-navy-700/10 text-navy-700 border-navy-700/20"
+    label: "Loan Underwriter"
   }];
+  
+  const filterTopics = [
+    "Featured",
+    "SBA Lending",
+    "Commercial Real Estate",
+    "Equipment Financing",
+    "Working Capital",
+    "Credit Analysis",
+    "Risk Management"
+  ];
   const getTotalCourses = () => {
     return Object.values(categorizedCourses).reduce((total, categoryItems) => total + categoryItems.length, 0);
   };
   const getCategoryCount = (categoryKey: string) => {
     return categorizedCourses[categoryKey]?.length || 0;
   };
-  return <Card className={`h-fit ${className}`}>
-      <CardHeader className="pb-2 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            
-            <CardTitle className="text-lg font-medium">Learning Course Categories</CardTitle>
-          </div>
-          {selectedCategory && <Button variant="ghost" size="sm" onClick={() => onCategorySelect(null)} className="h-6 w-6 p-0">
-              <X className="h-3 w-3" />
-            </Button>}
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-2 p-4 pt-0">
-        {/* All Courses Option */}
-        <Button variant={selectedCategory === null ? "default" : "outline"} className="w-full justify-start h-auto p-2 text-left" onClick={() => onCategorySelect(null)}>
-          <div className="flex items-center justify-between w-full">
-            <div className="text-sm font-medium">All Courses</div>
-            <Badge variant="secondary" className="ml-2 text-xs">
-              {getTotalCourses()}
-            </Badge>
-          </div>
+  return <div className={`space-y-4 ${className}`}>
+      {/* Main Category Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+        <Button
+          variant={selectedCategory === null ? "default" : "ghost"}
+          onClick={() => onCategorySelect(null)}
+          className={`flex-shrink-0 h-12 px-8 ${
+            selectedCategory === null 
+              ? "bg-navy-900 hover:bg-navy-800 text-white" 
+              : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+          }`}
+        >
+          All Programs
         </Button>
+        {categoryConfig.map(category => {
+          const count = getCategoryCount(category.key);
+          return (
+            <Button
+              key={category.key}
+              variant={selectedCategory === category.key ? "default" : "ghost"}
+              onClick={() => onCategorySelect(category.key)}
+              disabled={count === 0}
+              className={`flex-shrink-0 h-12 px-8 ${
+                selectedCategory === category.key
+                  ? "bg-navy-900 hover:bg-navy-800 text-white"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+              }`}
+            >
+              {category.label}
+            </Button>
+          );
+        })}
+      </div>
 
-        <Separator />
-
-        <ScrollArea className="h-auto">
-          <div className="space-y-1.5">
-            {categoryConfig.map(category => {
-            const Icon = category.icon;
-            const isSelected = selectedCategory === category.key;
-            const count = getCategoryCount(category.key);
-            return <Button key={category.key} variant={isSelected ? "default" : "outline"} className="w-full justify-start h-auto p-2 text-left" onClick={() => onCategorySelect(category.key)} disabled={count === 0}>
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-2">
-                      <div className={`p-1 rounded ${isSelected ? 'bg-primary-foreground/20' : category.color}`}>
-                        <Icon className="h-3 w-3" />
-                      </div>
-                      <div className="text-xs font-medium">
-                        {category.label}
-                      </div>
-                    </div>
-                    <Badge variant={isSelected ? "secondary" : "outline"} className="ml-2 shrink-0 text-xs px-1.5 py-0.5">
-                      {count}
-                    </Badge>
-                  </div>
-                </Button>;
-          })}
-          </div>
-        </ScrollArea>
-
-        {selectedCategory && <>
-            <Separator />
-            <div className="text-xs text-muted-foreground p-2 bg-muted/50 rounded text-center">
-              {getCategoryCount(selectedCategory)} {selectedCategory} courses
-            </div>
-          </>}
-      </CardContent>
-    </Card>;
+      {/* Filter Pills Row */}
+      <ScrollArea className="w-full">
+        <div className="flex items-center gap-2 pb-2">
+          {filterTopics.map((topic, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              size="sm"
+              className="flex-shrink-0 rounded-full border-2 border-gray-300 hover:border-navy-900 hover:bg-gray-50 px-6 h-10"
+            >
+              {topic}
+            </Button>
+          ))}
+        </div>
+      </ScrollArea>
+    </div>;
 }

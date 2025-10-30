@@ -484,13 +484,7 @@ const Dashboard = () => {
                     
                     {/* Course Cards Grid - Full Width */}
                     <div className="w-full">
-                      <div className="mb-4">
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
-                          Available Course Programs
-                        </h3>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ?
               // Show loading skeletons
               Array.from({
@@ -505,85 +499,51 @@ const Dashboard = () => {
                   const moduleBaseName = m.course_title.replace(/\s*-\s*(Beginner|Expert)$/i, '').trim();
                   return moduleBaseName.toLowerCase() === courseName.toLowerCase();
                 });
-                return <Card key={courseName} className="group relative overflow-hidden hover:shadow-xl transition-all duration-500 border hover:border-primary/30 bg-gradient-to-br from-card via-card to-secondary/5 hover:to-primary/5">
-                              {/* Modern gradient overlay */}
-                              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                return <Card 
+                              key={courseName} 
+                              className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 rounded-lg bg-white cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleStartCourse(courseName);
+                              }}
+                            >
+                              {/* Course Image */}
+                              <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100">
+                                <img 
+                                  src={getCourseImage(course.title)} 
+                                  alt={courseName}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              </div>
                               
-                              <CardHeader className="pb-4 relative z-10 space-y-4">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1 space-y-3">
-                                    <div className="flex items-center gap-3">
-                                      <BookOpen className="h-5 w-5 text-navy-900" />
-                                      <span className="text-xs font-semibold tracking-wider text-navy-900 border-l-4 border-navy-900 pl-2">
-                                        COURSE PROGRAM
-                                      </span>
-                                    </div>
-                                    
-                                    <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
-                                      {courseName}
-                                    </CardTitle>
-                                    
-                                    <CardDescription className="line-clamp-3 text-muted-foreground text-sm leading-relaxed">
-                                      {getCourseDetails(courseName).description}
-                                    </CardDescription>
-                                  </div>
-                                </div>
+                              <CardContent className="p-5 space-y-4">
+                                {/* Course Title */}
+                                <h3 className="text-xl font-bold text-gray-900 line-clamp-2 min-h-[3.5rem]">
+                                  {courseName}
+                                </h3>
                                 
-                                {/* Enhanced Course Details */}
-                                <div className="space-y-4 pt-2">
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2 text-sm">
-                                      <Clock className="h-4 w-4 text-navy-900" />
-                                      <span className="text-primary font-medium">{getCourseDetails(courseName).duration}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                      
-                                      <span className="text-black">{courseModules.length} modules</span>
-                                    </div>
-                                  </div>
-                                  
-                                  {/* Key Topics with enhanced styling */}
-                                  <div className="space-y-2">
-                                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
-                                    <div className="flex flex-wrap gap-2">
-                                       {getCourseDetails(courseName).topics.slice(0, 3).map((topic, topicIndex) => <span key={topicIndex} className="text-xs font-medium text-muted-foreground border-l-2 border-muted-foreground pl-2">
-                                           {topic}
-                                         </span>)}
-                                    </div>
-                                  </div>
-                                  
-                                  {/* Skill Levels with semantic styling */}
-                                  <div className="space-y-2">
-                                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Available Levels</span>
-                                    <div className="flex gap-2">
-                                      {(() => {
-                            const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
-                            const uniqueLevels = Array.from(new Set(skillLevels)).sort();
-                            return uniqueLevels.length > 0 ? uniqueLevels.map(level => <span key={level} className={`text-xs font-semibold tracking-wider border-l-4 pl-2 ${level === 'expert' ? 'text-red-700 border-red-700' : 'text-emerald-700 border-emerald-700'}`}>
-                                                {level.charAt(0).toUpperCase() + level.slice(1)}
-                                              </span>) : <span className="text-xs font-semibold tracking-wider text-muted-foreground border-l-4 border-muted-foreground pl-2">MULTIPLE LEVELS</span>;
-                          })()}
-                                    </div>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              
-                              <CardContent className="pt-0 pb-6 relative z-10">
-                                <Button 
-                                  type="button" 
-                                  onClick={e => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Start Course button clicked for:', courseName);
-                                    handleStartCourse(courseName);
-                                  }} 
-                                  className="w-full h-11 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200"
-                                >
-                                  <span className="flex items-center justify-center gap-2">
-                                    Start Course
-                                    <Target className="h-4 w-4" />
+                                {/* Institution Name */}
+                                <p className="text-sm text-gray-600">
+                                  FinPilot Learning Academy
+                                </p>
+                                
+                                {/* Category Badge at bottom */}
+                                <div className="pt-2">
+                                  <span className="inline-block px-4 py-2 bg-gray-100 text-gray-800 text-sm rounded">
+                                    {(() => {
+                                      const skillLevels = courseModules.map(m => m.skill_level).filter(Boolean);
+                                      const uniqueLevels = Array.from(new Set(skillLevels));
+                                      if (uniqueLevels.includes('expert') && uniqueLevels.includes('beginner')) {
+                                        return 'Professional Development';
+                                      } else if (uniqueLevels.includes('expert')) {
+                                        return 'Advanced Training';
+                                      } else {
+                                        return 'Foundation Course';
+                                      }
+                                    })()}
                                   </span>
-                                </Button>
+                                </div>
                               </CardContent>
                             </Card>;
               }) : <div className="col-span-full text-center py-8">
