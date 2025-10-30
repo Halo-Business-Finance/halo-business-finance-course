@@ -152,7 +152,7 @@ export function AppSidebar({
   return <Sidebar collapsible="icon" variant="inset" className="bg-sidebar border-sidebar-border border-r">
       <SidebarContent className="bg-sidebar pt-4">
         {/* Welcome Message */}
-        {user && (
+        {user && !collapsed && (
           <div className="px-4 pb-3 border-b border-sidebar-border" aria-live="polite">
             <div className="text-xs text-muted-foreground">Welcome back,</div>
             <div className="text-sm font-semibold text-foreground">
@@ -161,14 +161,19 @@ export function AppSidebar({
           </div>
         )}
 
+
         {/* Main Navigation */}
         <SidebarGroup className="pt-3">
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
                    <SidebarMenuButton asChild>
-                     <button onClick={() => handleNavigation(item.url, true, (item as any).action)} className={`w-full flex items-center gap-4 text-black hover:text-black py-2 px-4 rounded-lg transition-all duration-200 min-h-[2.75rem]`}>
-                        <item.icon className={`${item.title === 'Dashboard' ? 'h-9 w-9' : 'h-8 w-8'} text-navy-900 flex-shrink-0`} />
+                     <button
+                       onClick={() => handleNavigation(item.url, true, (item as any).action)}
+                       className={`w-full flex items-center ${collapsed ? 'justify-center px-0' : 'justify-start px-4'} gap-3 text-black hover:text-black py-2 rounded-lg transition-all duration-200 min-h-[2.75rem]`}
+                       aria-label={item.title}
+                     >
+                        <item.icon className={`${collapsed ? 'h-6 w-6' : 'h-5 w-5'} text-navy-900 flex-shrink-0`} />
                         {!collapsed && <span className="text-black text-xs font-medium">{item.title}</span>}
                      </button>
                    </SidebarMenuButton>
