@@ -163,7 +163,7 @@ export function AppSidebar({
 
 
         {/* Main Navigation */}
-        <SidebarGroup className="pt-3">
+        <SidebarGroup className={`pt-3 ${collapsed ? 'px-1' : ''}`}>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainNavItems.map(item => <SidebarMenuItem key={item.title}>
