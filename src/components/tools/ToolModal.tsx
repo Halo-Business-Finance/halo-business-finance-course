@@ -1,4 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { FinancialCalculator } from "./FinancialCalculator";
 import { ROICalculator } from "./ROICalculator";
 import { CreditScoreSimulator } from "./CreditScoreSimulator";
@@ -61,6 +62,14 @@ export const ToolModal = ({ open, onOpenChange, toolType, toolTitle }: ToolModal
         </DialogHeader>
         <div className="py-4">
           {renderTool()}
+        </div>
+        <div className="mt-6">
+          <Button 
+            onClick={() => onOpenChange(false)} 
+            className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700"
+          >
+            Close Calculator
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
