@@ -116,6 +116,10 @@ export const VideoPlayer = ({
     const embedUrl = youtubeId 
       ? `https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&modestbranding=1`
       : videoUrl.replace("watch?v=", "embed/").replace("&", "?");
+    
+    const watchUrl = youtubeId
+      ? `https://www.youtube.com/watch?v=${youtubeId}`
+      : videoUrl;
 
     return (
       <Card className={cn("overflow-hidden", className)}>
@@ -129,7 +133,7 @@ export const VideoPlayer = ({
           )}
         </CardHeader>
         <CardContent className="p-0">
-          <div className="relative aspect-video">
+          <div className="relative aspect-video bg-muted/30">
             <iframe
               src={embedUrl}
               title={title}
@@ -137,6 +141,20 @@ export const VideoPlayer = ({
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
+          </div>
+          <div className="p-4 border-t">
+            <p className="text-sm text-muted-foreground mb-2">
+              If the video doesn't play, it may have embedding restrictions.
+            </p>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => window.open(watchUrl, '_blank')}
+              className="gap-2"
+            >
+              <Play className="h-4 w-4" />
+              Watch on YouTube
+            </Button>
           </div>
         </CardContent>
       </Card>
