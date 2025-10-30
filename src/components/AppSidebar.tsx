@@ -150,7 +150,7 @@ export function AppSidebar({
     }
   };
   return <Sidebar collapsible="icon" variant="inset" className="bg-sidebar border-sidebar-border border-r">
-      <SidebarContent className="bg-sidebar pt-4">
+      <SidebarContent className="bg-sidebar pt-[60px] sm:pt-[80px]">
         {/* Welcome Message */}
         {user && !collapsed && (
           <div className="px-4 pb-3 border-b border-sidebar-border" aria-live="polite">
