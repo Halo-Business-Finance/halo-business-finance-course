@@ -154,9 +154,8 @@ export function AppSidebar({
         {/* Welcome Message */}
         {user && !collapsed && (
           <div className="px-4 pb-3 border-b border-sidebar-border" aria-live="polite">
-            <div className="text-xs text-muted-foreground">Welcome back,</div>
             <div className="text-sm font-semibold text-foreground">
-              {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
+              Welcome back, {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}!
             </div>
           </div>
         )}
