@@ -460,23 +460,6 @@ const Dashboard = () => {
             {/* Section Divider - Only show on level 0 */}
             {currentFilterLevel === 0 && <Separator className="mb-4" />}
             
-            {/* Course Filter and Results Summary */}
-            {currentFilterLevel === 0 && <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6">
-                {/* Course Categories Filter */}
-                <div className="w-full lg:w-80 flex-shrink-0">
-                  <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
-                </div>
-                
-                {/* Results Summary */}
-                <div className="flex-1">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
-                      <span className="block sm:inline text-xl">Available Course Programs</span>
-                    </h3>
-                  </div>
-                </div>
-              </div>}
-            
             {/* Results Summary for other levels */}
             {currentFilterLevel !== 0 && <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-4">
                 <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
@@ -492,8 +475,22 @@ const Dashboard = () => {
                     <div className="bg-muted rounded-lg h-64" />
                   </div>)}
               </div> : <>
-                {/* Level 0: Course Program Cards */}
-                {currentFilterLevel === 0 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                {/* Level 0: Course Filter and Course Program Cards Side by Side */}
+                {currentFilterLevel === 0 && <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+                    {/* Course Categories Filter - Left Side */}
+                    <div className="w-full lg:w-80 flex-shrink-0">
+                      <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
+                    </div>
+                    
+                    {/* Course Cards Grid - Right Side */}
+                    <div className="flex-1">
+                      <div className="mb-4">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
+                          Available Course Programs
+                        </h3>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                     {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ?
               // Show loading skeletons
               Array.from({
@@ -592,6 +589,8 @@ const Dashboard = () => {
               }) : <div className="col-span-full text-center py-8">
                         <p className="text-muted-foreground">No courses available. Contact your administrator to add courses.</p>
                       </div>}
+                      </div>
+                    </div>
                   </div>}
 
                 {/* Level 1: Skill Level Cards */}
