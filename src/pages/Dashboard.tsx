@@ -592,7 +592,6 @@ const Dashboard = () => {
                     </div>
                   </div>}
 
-                {/* Level 1: Skill Level Cards */}
                 {(() => {
               console.log('=== LEVEL 1 RENDER CHECK ===');
               console.log('currentFilterLevel:', currentFilterLevel);
@@ -602,10 +601,15 @@ const Dashboard = () => {
               console.log('Should render Level 1:', shouldRender);
               return shouldRender;
             })() && <div className="space-y-4 sm:space-y-6">
-                    {/* Back button */}
-                    <Button variant="ghost" size="sm" onClick={handleReturnToDashboard} className="mb-3 sm:mb-4">
-                      <ArrowLeft className="h-4 w-4 mr-2 text-navy-900" />
-                      Back to Courses
+                    {/* Back button - Enhanced */}
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      onClick={handleReturnToDashboard} 
+                      className="mb-3 sm:mb-4 hover:bg-navy-900 hover:text-white transition-colors"
+                    >
+                      <ArrowLeft className="h-5 w-5 mr-2" />
+                      Back to All Courses
                     </Button>
                     
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -678,17 +682,32 @@ const Dashboard = () => {
 
                 {/* Level 2: Individual Module Cards */}
                 {currentFilterLevel === 2 && <div className="space-y-4">
-                    {/* Navigation breadcrumb */}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                      <Button variant="ghost" size="sm" onClick={handleReturnToDashboard}>
-                        Dashboard
+                    {/* Navigation breadcrumb - Enhanced */}
+                    <div className="flex items-center gap-3 mb-6 flex-wrap">
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        onClick={handleReturnToDashboard}
+                        className="hover:bg-navy-900 hover:text-white transition-colors"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        All Courses
                       </Button>
-                      <span>/</span>
-                      <Button variant="ghost" size="sm" onClick={() => setCurrentFilterLevel(1)}>
+                      <span className="text-muted-foreground">/</span>
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        onClick={() => {
+                          console.log('Navigating back to level 1');
+                          setCurrentFilterLevel(1);
+                          setFilterNavigationPath([filterNavigationPath[0]]);
+                        }}
+                        className="hover:bg-navy-900 hover:text-white transition-colors"
+                      >
                         {filterNavigationPath[0]?.name}
                       </Button>
-                      <span>/</span>
-                      <span className="text-foreground">{filterNavigationPath[1]?.name}</span>
+                      <span className="text-muted-foreground">/</span>
+                      <span className="text-foreground font-semibold">{filterNavigationPath[1]?.name}</span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
