@@ -91,6 +91,7 @@ const Dashboard = () => {
   const [selectedSkillLevelForCourse, setSelectedSkillLevelForCourse] = useState<string | null>(null);
   const [renderKey, setRenderKey] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   // Scroll position management refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -108,12 +109,41 @@ const Dashboard = () => {
     };
   });
 
-  // Filter courses based on selected category
-  const filteredCoursesWithModules = selectedCategory ? (() => {
-    const categorizedCourses = getCoursesByCategory();
-    const categoryCourseTitles = categorizedCourses[selectedCategory]?.map(course => course.title) || [];
-    return coursesWithModules.filter(course => categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0])));
-  })() : coursesWithModules;
+  // Topic to course title mapping
+  const topicToCourses: Record<string, string[]> = {
+    "Featured": ["SBA 7(a)", "Commercial Real Estate", "Equipment Financing"],
+    "SBA Lending": ["SBA 7(a)", "SBA Express"],
+    "Commercial Real Estate": ["Commercial Real Estate", "Construction Loans", "Bridge Loans"],
+    "Equipment Financing": ["Equipment Financing"],
+    "Working Capital": ["Working Capital", "Business Lines of Credit", "Invoice Factoring"],
+    "Credit Analysis": ["Asset-Based Lending", "Business Acquisition"],
+    "Risk Management": ["Merchant Cash Advances", "Term Loans"]
+  };
+
+  // Filter courses based on selected category and topic
+  const filteredCoursesWithModules = (() => {
+    let filtered = coursesWithModules;
+    
+    // Apply category filter
+    if (selectedCategory) {
+      const categorizedCourses = getCoursesByCategory();
+      const categoryCourseTitles = categorizedCourses[selectedCategory]?.map(course => course.title) || [];
+      filtered = filtered.filter(course => 
+        categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0]))
+      );
+    }
+    
+    // Apply topic filter
+    if (selectedTopic && topicToCourses[selectedTopic]) {
+      const topicCourses = topicToCourses[selectedTopic];
+      filtered = filtered.filter(course => {
+        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
+        return topicCourses.includes(baseTitle);
+      });
+    }
+    
+    return filtered;
+  })();
 
   // Create flattened modules for filtering and display
   const flattenedModules = filteredCoursesWithModules.flatMap(course => course.modules.map(module => ({
@@ -479,7 +509,12 @@ const Dashboard = () => {
                 {currentFilterLevel === 0 && <div className="space-y-6">
                     {/* Course Categories Filter - Full Width Above */}
                     <div className="w-full">
-                      <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
+                      <DashboardCourseFilter 
+                        selectedCategory={selectedCategory} 
+                        onCategorySelect={setSelectedCategory}
+                        selectedTopic={selectedTopic}
+                        onTopicSelect={setSelectedTopic}
+                      />
                     </div>
                     
                     {/* Course Cards Grid - Full Width */}

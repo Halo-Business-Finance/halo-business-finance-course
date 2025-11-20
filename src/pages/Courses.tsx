@@ -52,6 +52,7 @@ const Courses = () => {
   const [loading, setLoading] = useState(false);
   const [enrollmentStatus, setEnrollmentStatus] = useState<Record<string, boolean>>({});
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const {
     user
   } = useAuth();
@@ -358,20 +359,48 @@ const Courses = () => {
     }
   };
 
-  // Filter courses based on selected category  
-  const filteredCourses: CourseWithModules[] = selectedCategory ? allCourses.filter(course => {
-    // Filter based on course title patterns that match categories
-    if (selectedCategory === 'Loan Originator') {
-      return course.title.toLowerCase().includes('originator') || course.title.toLowerCase().includes('sales') || course.title.toLowerCase().includes('sba');
+  // Topic to course title mapping
+  const topicToCourses: Record<string, string[]> = {
+    "Featured": ["SBA 7(a)", "Commercial Real Estate", "Equipment Financing"],
+    "SBA Lending": ["SBA 7(a)", "SBA Express"],
+    "Commercial Real Estate": ["Commercial Real Estate", "Construction Loans", "Bridge Loans"],
+    "Equipment Financing": ["Equipment Financing"],
+    "Working Capital": ["Working Capital", "Business Lines of Credit", "Invoice Factoring"],
+    "Credit Analysis": ["Asset-Based Lending", "Business Acquisition"],
+    "Risk Management": ["Merchant Cash Advances", "Term Loans"]
+  };
+
+  // Filter courses based on selected category and topic
+  const filteredCourses: CourseWithModules[] = (() => {
+    let filtered = allCourses;
+    
+    // Apply category filter
+    if (selectedCategory) {
+      filtered = filtered.filter(course => {
+        if (selectedCategory === 'Loan Originator') {
+          return course.title.toLowerCase().includes('originator') || course.title.toLowerCase().includes('sales') || course.title.toLowerCase().includes('sba');
+        }
+        if (selectedCategory === 'Loan Processing') {
+          return course.title.toLowerCase().includes('processing') || course.title.toLowerCase().includes('equipment') || course.title.toLowerCase().includes('working capital');
+        }
+        if (selectedCategory === 'Loan Underwriting') {
+          return course.title.toLowerCase().includes('underwriting') || course.title.toLowerCase().includes('credit') || course.title.toLowerCase().includes('analysis');
+        }
+        return false;
+      });
     }
-    if (selectedCategory === 'Loan Processing') {
-      return course.title.toLowerCase().includes('processing') || course.title.toLowerCase().includes('equipment') || course.title.toLowerCase().includes('working capital');
+    
+    // Apply topic filter
+    if (selectedTopic && topicToCourses[selectedTopic]) {
+      const topicCourseNames = topicToCourses[selectedTopic];
+      filtered = filtered.filter(course => {
+        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
+        return topicCourseNames.includes(baseTitle);
+      });
     }
-    if (selectedCategory === 'Loan Underwriting') {
-      return course.title.toLowerCase().includes('underwriting') || course.title.toLowerCase().includes('credit') || course.title.toLowerCase().includes('analysis');
-    }
-    return false;
-  }) : allCourses;
+    
+    return filtered;
+  })();
 
   // Calculate counts for each skill level
   const skillLevelCounts = {
@@ -472,7 +501,12 @@ const Courses = () => {
           </Card> : <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Filters - Mobile sheet, Desktop sidebar */}
             <div className="lg:w-80 flex-shrink-0">
-              <DashboardCourseFilter selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
+              <DashboardCourseFilter 
+                selectedCategory={selectedCategory} 
+                onCategorySelect={setSelectedCategory}
+                selectedTopic={selectedTopic}
+                onTopicSelect={setSelectedTopic}
+              />
             </div>
 
             {/* Main Content Area */}
