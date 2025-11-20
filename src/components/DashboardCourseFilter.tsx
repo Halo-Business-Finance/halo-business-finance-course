@@ -5,11 +5,15 @@ import { useCourses, Course } from "@/hooks/useCourses";
 interface DashboardCourseFilterProps {
   selectedCategory: string | null;
   onCategorySelect: (category: string | null) => void;
+  selectedTopic: string | null;
+  onTopicSelect: (topic: string | null) => void;
   className?: string;
 }
 export function DashboardCourseFilter({
   selectedCategory,
   onCategorySelect,
+  selectedTopic,
+  onTopicSelect,
   className = ""
 }: DashboardCourseFilterProps) {
   const {
@@ -91,7 +95,12 @@ export function DashboardCourseFilter({
               key={index}
               variant="outline"
               size="sm"
-              className="flex-shrink-0 rounded-full border-2 border-gray-300 hover:border-navy-900 hover:bg-gray-50 px-6 h-10"
+              onClick={() => onTopicSelect(selectedTopic === topic ? null : topic)}
+              className={`flex-shrink-0 rounded-full border-2 px-6 h-10 ${
+                selectedTopic === topic
+                  ? "border-navy-900 bg-navy-900 text-white hover:bg-navy-800"
+                  : "border-gray-300 hover:border-navy-900 hover:bg-gray-50"
+              }`}
             >
               {topic}
             </Button>
