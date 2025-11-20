@@ -124,48 +124,20 @@ const Dashboard = () => {
     "Risk Management": ["Merchant Cash Advances", "Term Loans"]
   };
 
-  // Filter courses based on selected category and topic (simplified logic)
+  // Filter courses based on selected topic only (simpler logic)
   const filteredCoursesWithModules = (() => {
-    console.log('🔍 === FILTER START ===');
-    console.log('📊 Total courses with modules:', coursesWithModules.length);
-    console.log('🏷️ selectedCategory:', selectedCategory);
-    console.log('🎯 selectedTopic:', selectedTopic);
-    
-    let filtered = coursesWithModules;
-
-    // 1) Category filter: only show courses that belong to the selected category
-    if (selectedCategory) {
-      const categorizedCourses = getCoursesByCategory();
-      console.log('📦 All categorized courses:', categorizedCourses);
-      
-      const categoryCourses = categorizedCourses[selectedCategory] || [];
-      console.log(`📋 Courses in "${selectedCategory}":`, categoryCourses.map(c => ({ id: c.id, title: c.title })));
-      
-      const categoryIds = new Set(categoryCourses.map((course) => course.id));
-      console.log('🆔 Category IDs set:', Array.from(categoryIds));
-
-      filtered = filtered.filter((course) => categoryIds.has(course.id));
-      console.log('✅ After category filter:', filtered.length, 'courses');
-      console.log('📝 Filtered course titles:', filtered.map(c => c.title));
-    }
-
-    // 2) Topic filter: further narrow by mapped topic -> base course titles
+    // If a topic is selected and mapped, filter courses by that topic
     if (selectedTopic && topicToCourses[selectedTopic]) {
-      const topicCourses = topicToCourses[selectedTopic];
-      console.log('🎪 Topic courses for', selectedTopic, ':', topicCourses);
+      const topicCourses = new Set(topicToCourses[selectedTopic]);
 
-      filtered = filtered.filter((course) => {
+      return coursesWithModules.filter((course) => {
         const baseTitle = course.title.replace(/ - (Beginner|Expert)$/i, "").trim();
-        const matches = topicCourses.includes(baseTitle);
-        console.log(`  🔎 Checking "${course.title}" -> base: "${baseTitle}" -> matches: ${matches}`);
-        return matches;
+        return topicCourses.has(baseTitle);
       });
-      
-      console.log('✅ After topic filter:', filtered.length, 'courses');
     }
 
-    console.log('🏁 === FILTER END === Final count:', filtered.length);
-    return filtered;
+    // Otherwise, return all courses with modules (no category filter applied)
+    return coursesWithModules;
   })();
 
   // Create flattened modules for filtering and display
