@@ -12,13 +12,31 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     <style>
+      /* Critical CSS - Inline to prevent render blocking */
       @font-face {
         font-family: 'Aptos';
         src: local('Aptos'), local('Segoe UI'), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         font-weight: 400;
         font-style: normal;
       }
+      
+      /* Critical above-the-fold styles */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { 
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        background: hsl(209, 40%, 96%);
+        color: hsl(222, 47%, 11%);
+      }
+      #root { min-height: 100vh; }
+      
+      /* Prevent flash of unstyled content */
+      .container { max-width: 1440px; margin: 0 auto; padding: 0 1rem; }
     </style>
+    
+    <!-- Load fonts asynchronously -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
     <meta property="og:title" content="FinPilot - Learning Platform" />
     <meta property="og:description" content="Professional business finance training and certification platform for FinPilot interns" />
