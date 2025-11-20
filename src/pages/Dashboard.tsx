@@ -109,6 +109,10 @@ const Dashboard = () => {
     };
   });
 
+  console.log('Total courses from DB:', databaseCourses.length);
+  console.log('Courses with modules:', coursesWithModules.length);
+  console.log('All course titles:', coursesWithModules.map(c => c.title));
+
   // Topic to course title mapping
   const topicToCourses: Record<string, string[]> = {
     "Featured": ["SBA 7(a)", "Commercial Real Estate", "Equipment Financing"],
@@ -124,6 +128,11 @@ const Dashboard = () => {
   const filteredCoursesWithModules = (() => {
     let filtered = coursesWithModules;
     
+    console.log('=== FILTERING START ===');
+    console.log('selectedCategory:', selectedCategory);
+    console.log('selectedTopic:', selectedTopic);
+    console.log('Starting with courses:', filtered.length);
+    
     // Apply category filter
     if (selectedCategory) {
       const categorizedCourses = getCoursesByCategory();
@@ -137,6 +146,7 @@ const Dashboard = () => {
       filtered = filtered.filter(course => 
         categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0]))
       );
+      console.log('After category filter:', filtered.length, 'courses');
       console.log('Filtered courses:', filtered.map(c => c.title));
     }
     
@@ -147,7 +157,11 @@ const Dashboard = () => {
         const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
         return topicCourses.includes(baseTitle);
       });
+      console.log('After topic filter:', filtered.length, 'courses');
     }
+    
+    console.log('=== FILTERING END ===');
+    console.log('Final filtered count:', filtered.length);
     
     return filtered;
   })();
