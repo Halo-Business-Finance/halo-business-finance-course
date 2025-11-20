@@ -315,7 +315,12 @@ const Dashboard = () => {
       const courseSkillId = `${selectedCourse.id}-${level}`;
       setSelectedSkillLevelForCourse(level);
       setCurrentFilterLevel(2);
-      const levelModules = flattenedModules.filter(m => m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase()) && m.skill_level === level);
+      const levelModules = flattenedModules.filter(m => {
+        if (!m.course_title) return false;
+        const matchesCourse = m.course_title.toLowerCase().includes(selectedCourse.name.toLowerCase());
+        const moduleLevel = m.skill_level === 'none' ? 'beginner' : m.skill_level;
+        return matchesCourse && moduleLevel === level;
+      });
       setFilterNavigationPath([selectedCourse, {
         id: courseSkillId,
         name: `${level.charAt(0).toUpperCase() + level.slice(1)} Level`,
@@ -402,7 +407,10 @@ const Dashboard = () => {
     if (currentFilterLevel !== 2) return true;
     const selectedCourse = filterNavigationPath[0];
     const selectedLevel = selectedSkillLevelForCourse;
-    return module.course_title.toLowerCase().includes(selectedCourse?.name.toLowerCase() || '') && (selectedLevel ? module.skill_level === selectedLevel : true);
+    const moduleLevel = module.skill_level === 'none' ? 'beginner' : module.skill_level;
+    const matchesCourse = module.course_title.toLowerCase().includes(selectedCourse?.name.toLowerCase() || '');
+    if (!selectedLevel) return matchesCourse;
+    return matchesCourse && moduleLevel === selectedLevel;
   });
 
   // Function to handle module start
