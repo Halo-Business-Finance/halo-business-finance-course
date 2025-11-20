@@ -150,8 +150,8 @@ const Dashboard = () => {
       console.log('Filtered courses:', filtered.map(c => c.title));
     }
     
-    // Apply topic filter
-    if (selectedTopic && topicToCourses[selectedTopic]) {
+    // Apply topic filter only when viewing all programs
+    if (!selectedCategory && selectedTopic && topicToCourses[selectedTopic]) {
       const topicCourses = topicToCourses[selectedTopic];
       filtered = filtered.filter(course => {
         const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
