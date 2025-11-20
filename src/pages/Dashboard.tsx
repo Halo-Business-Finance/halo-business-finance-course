@@ -126,27 +126,45 @@ const Dashboard = () => {
 
   // Filter courses based on selected category and topic (simplified logic)
   const filteredCoursesWithModules = (() => {
+    console.log('🔍 === FILTER START ===');
+    console.log('📊 Total courses with modules:', coursesWithModules.length);
+    console.log('🏷️ selectedCategory:', selectedCategory);
+    console.log('🎯 selectedTopic:', selectedTopic);
+    
     let filtered = coursesWithModules;
 
     // 1) Category filter: only show courses that belong to the selected category
     if (selectedCategory) {
       const categorizedCourses = getCoursesByCategory();
+      console.log('📦 All categorized courses:', categorizedCourses);
+      
       const categoryCourses = categorizedCourses[selectedCategory] || [];
+      console.log(`📋 Courses in "${selectedCategory}":`, categoryCourses.map(c => ({ id: c.id, title: c.title })));
+      
       const categoryIds = new Set(categoryCourses.map((course) => course.id));
+      console.log('🆔 Category IDs set:', Array.from(categoryIds));
 
       filtered = filtered.filter((course) => categoryIds.has(course.id));
+      console.log('✅ After category filter:', filtered.length, 'courses');
+      console.log('📝 Filtered course titles:', filtered.map(c => c.title));
     }
 
     // 2) Topic filter: further narrow by mapped topic -> base course titles
     if (selectedTopic && topicToCourses[selectedTopic]) {
       const topicCourses = topicToCourses[selectedTopic];
+      console.log('🎪 Topic courses for', selectedTopic, ':', topicCourses);
 
       filtered = filtered.filter((course) => {
         const baseTitle = course.title.replace(/ - (Beginner|Expert)$/i, "").trim();
-        return topicCourses.includes(baseTitle);
+        const matches = topicCourses.includes(baseTitle);
+        console.log(`  🔎 Checking "${course.title}" -> base: "${baseTitle}" -> matches: ${matches}`);
+        return matches;
       });
+      
+      console.log('✅ After topic filter:', filtered.length, 'courses');
     }
 
+    console.log('🏁 === FILTER END === Final count:', filtered.length);
     return filtered;
   })();
 
