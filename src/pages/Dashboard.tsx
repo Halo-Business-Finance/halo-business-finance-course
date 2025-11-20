@@ -124,49 +124,29 @@ const Dashboard = () => {
     "Risk Management": ["Merchant Cash Advances", "Term Loans"]
   };
 
-  // Filter courses based on selected category and topic
+  // Filter courses based on selected category and topic (simplified logic)
   const filteredCoursesWithModules = (() => {
     let filtered = coursesWithModules;
-    
-    console.log('=== FILTERING START ===');
-    console.log('selectedCategory:', selectedCategory);
-    console.log('selectedTopic:', selectedTopic);
-    console.log('Starting with courses:', filtered.length);
-    
-    // Apply category filter
+
+    // 1) Category filter: only show courses that belong to the selected category
     if (selectedCategory) {
       const categorizedCourses = getCoursesByCategory();
-      console.log('Selected category:', selectedCategory);
-      console.log('Categorized courses:', categorizedCourses);
-      console.log('Available category keys:', Object.keys(categorizedCourses));
-      
-      const categoryCourseTitles = categorizedCourses[selectedCategory]?.map(course => course.title) || [];
-      console.log('Category course titles:', categoryCourseTitles);
-      
-      filtered = filtered.filter(course => 
-        categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0]))
-      );
-      console.log('After category filter:', filtered.length, 'courses');
-      console.log('Filtered courses:', filtered.map(c => c.title));
+      const categoryCourses = categorizedCourses[selectedCategory] || [];
+      const categoryIds = new Set(categoryCourses.map((course) => course.id));
+
+      filtered = filtered.filter((course) => categoryIds.has(course.id));
     }
-    
-    // Apply topic filter (works both for All Programs and within a selected category)
+
+    // 2) Topic filter: further narrow by mapped topic -> base course titles
     if (selectedTopic && topicToCourses[selectedTopic]) {
       const topicCourses = topicToCourses[selectedTopic];
-      filtered = filtered.filter(course => {
-        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/i, '').trim();
-        // Match either exact topic course name or titles that contain the topic name
-        return topicCourses.some(topic =>
-          baseTitle.toLowerCase() === topic.toLowerCase() ||
-          baseTitle.toLowerCase().includes(topic.toLowerCase())
-        );
+
+      filtered = filtered.filter((course) => {
+        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/i, "").trim();
+        return topicCourses.includes(baseTitle);
       });
-      console.log('After topic filter:', filtered.length, 'courses');
     }
-    
-    console.log('=== FILTERING END ===');
-    console.log('Final filtered count:', filtered.length);
-    
+
     return filtered;
   })();
 
