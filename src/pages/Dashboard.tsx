@@ -150,12 +150,16 @@ const Dashboard = () => {
       console.log('Filtered courses:', filtered.map(c => c.title));
     }
     
-    // Apply topic filter only when viewing all programs
-    if (!selectedCategory && selectedTopic && topicToCourses[selectedTopic]) {
+    // Apply topic filter (works both for All Programs and within a selected category)
+    if (selectedTopic && topicToCourses[selectedTopic]) {
       const topicCourses = topicToCourses[selectedTopic];
       filtered = filtered.filter(course => {
-        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/, '');
-        return topicCourses.includes(baseTitle);
+        const baseTitle = course.title.replace(/ - (Beginner|Expert)$/i, '').trim();
+        // Match either exact topic course name or titles that contain the topic name
+        return topicCourses.some(topic =>
+          baseTitle.toLowerCase() === topic.toLowerCase() ||
+          baseTitle.toLowerCase().includes(topic.toLowerCase())
+        );
       });
       console.log('After topic filter:', filtered.length, 'courses');
     }
