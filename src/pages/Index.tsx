@@ -99,10 +99,12 @@ const Index = () => {
 
         {/* Hero Section */}
         <div className="relative py-20 sm:py-24 md:py-28 lg:py-32">
-          <div className="absolute inset-0 bg-cover" style={{
-            backgroundImage: `url(${businessTeam})`,
-            backgroundPosition: 'center 20%'
-          }} />
+          <img 
+            src={businessTeam} 
+            alt="Professional business team collaborating on commercial lending"
+            fetchPriority="high"
+            className="absolute inset-0 w-full h-full object-cover object-[center_20%]"
+          />
           <div className="absolute inset-0 bg-black/20" />
           <div className="mobile-container relative z-10">
             <div className="max-w-4xl mx-auto text-left">
