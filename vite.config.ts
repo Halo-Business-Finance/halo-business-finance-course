@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => ({
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-select', '@radix-ui/react-tabs'],
           'query-vendor': ['@tanstack/react-query'],
+          'icons-vendor': ['lucide-react'],
         },
       },
     },
