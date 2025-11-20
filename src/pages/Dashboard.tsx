@@ -127,10 +127,17 @@ const Dashboard = () => {
     // Apply category filter
     if (selectedCategory) {
       const categorizedCourses = getCoursesByCategory();
+      console.log('Selected category:', selectedCategory);
+      console.log('Categorized courses:', categorizedCourses);
+      console.log('Available category keys:', Object.keys(categorizedCourses));
+      
       const categoryCourseTitles = categorizedCourses[selectedCategory]?.map(course => course.title) || [];
+      console.log('Category course titles:', categoryCourseTitles);
+      
       filtered = filtered.filter(course => 
         categoryCourseTitles.some(title => course.title.includes(title.split(' - ')[0]))
       );
+      console.log('Filtered courses:', filtered.map(c => c.title));
     }
     
     // Apply topic filter

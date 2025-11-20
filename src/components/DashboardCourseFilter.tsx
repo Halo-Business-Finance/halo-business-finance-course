@@ -58,7 +58,10 @@ export function DashboardCourseFilter({
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
         <Button
           variant={selectedCategory === null ? "default" : "ghost"}
-          onClick={() => onCategorySelect(null)}
+          onClick={() => {
+            console.log('Clicking All Programs');
+            onCategorySelect(null);
+          }}
           className={`flex-shrink-0 h-12 px-8 ${
             selectedCategory === null 
               ? "bg-navy-900 hover:bg-navy-800 text-white" 
@@ -73,7 +76,10 @@ export function DashboardCourseFilter({
             <Button
               key={category.key}
               variant={selectedCategory === category.key ? "default" : "ghost"}
-              onClick={() => onCategorySelect(category.key)}
+              onClick={() => {
+                console.log('Clicking category:', category.key);
+                onCategorySelect(category.key);
+              }}
               disabled={count === 0}
               className={`flex-shrink-0 h-12 px-8 ${
                 selectedCategory === category.key
