@@ -131,7 +131,13 @@ const Index = () => {
           <div className="mobile-container">
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center mb-8 md:mb-12">
               <div className="order-2 lg:order-1">
-                <img src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" alt="Professional conference room meeting discussing real estate properties and commercial lending" className="w-full h-auto rounded-xl shadow-elevated" />
+                <img 
+                  src="/lovable-uploads/49422402-b861-468e-8955-3f3cdaf3530c.png" 
+                  alt="Professional conference room meeting discussing real estate properties and commercial lending" 
+                  width="1920"
+                  height="861"
+                  className="w-full h-auto rounded-xl shadow-elevated" 
+                />
               </div>
               <div className="text-center lg:text-left space-y-4 order-1 lg:order-2">
                 <h2 id="learning-paths-heading" className="text-responsive-2xl font-bold text-halo-navy">
@@ -209,7 +215,13 @@ const Index = () => {
                 </p>
               </div>
               <div>
-                <img src={softwareTrainingImage} alt="Professional conference room meeting discussing commercial lending and financial services" className="w-full h-auto rounded-xl shadow-elevated" />
+                <img 
+                  src={softwareTrainingImage} 
+                  alt="Professional conference room meeting discussing commercial lending and financial services" 
+                  width="1920"
+                  height="861"
+                  className="w-full h-auto rounded-xl shadow-elevated" 
+                />
               </div>
             </div>
 
@@ -310,7 +322,13 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Image - shows first on mobile/tablet */}
             <div className="order-1 lg:order-2">
-              <img src={careerSuccessImage} alt="Professional career success and advancement" className="w-full h-auto rounded-xl shadow-hero" />
+              <img 
+                src={careerSuccessImage} 
+                alt="Professional career success and advancement" 
+                width="1024"
+                height="768"
+                className="w-full h-auto rounded-xl shadow-hero" 
+              />
             </div>
             
             {/* Content - shows second on mobile/tablet */}
