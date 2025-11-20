@@ -533,7 +533,7 @@ const Dashboard = () => {
                 length: 6
               }).map((_, index) => <div key={index} className="animate-pulse">
                           <div className="bg-muted rounded-lg h-64" />
-                        </div>) : coursesWithModules.length > 0 ? coursesWithModules.filter((course, index, self) => index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])).map((course, index) => {
+                        </div>) : filteredCoursesWithModules.length > 0 ? filteredCoursesWithModules.filter((course, index, self) => index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])).map((course, index) => {
                 const courseName = course.title.split(' - ')[0];
                 const courseModules = flattenedModules.filter(m => {
                   if (!m.course_title) return false;
