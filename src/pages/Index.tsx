@@ -136,6 +136,9 @@ const Index = () => {
                   alt="Professional conference room meeting discussing real estate properties and commercial lending" 
                   width="1920"
                   height="861"
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 586px"
                   className="w-full h-auto rounded-xl shadow-elevated" 
                 />
               </div>
@@ -220,6 +223,9 @@ const Index = () => {
                   alt="Professional conference room meeting discussing commercial lending and financial services" 
                   width="1920"
                   height="861"
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 586px"
                   className="w-full h-auto rounded-xl shadow-elevated" 
                 />
               </div>
@@ -327,6 +333,9 @@ const Index = () => {
                 alt="Professional career success and advancement" 
                 width="1024"
                 height="768"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 586px"
                 className="w-full h-auto rounded-xl shadow-hero" 
               />
             </div>
