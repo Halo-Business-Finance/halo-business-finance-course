@@ -1,5 +1,17 @@
 import { logger } from './secureLogging';
 
+/**
+ * SECURITY NOTICE:
+ * This is a custom HTML sanitization implementation. For production environments,
+ * it is STRONGLY RECOMMENDED to use a well-maintained security library like DOMPurify:
+ * 
+ * Installation: npm install dompurify @types/dompurify
+ * Usage: import DOMPurify from 'dompurify'; const clean = DOMPurify.sanitize(html);
+ * 
+ * Custom sanitizers may have undiscovered vulnerabilities. DOMPurify is regularly
+ * audited and updated to protect against new XSS vectors.
+ */
+
 // Enhanced HTML sanitization utility for user-generated content with DOMPurify-like protection
 export const sanitizeHtml = (html: string): string => {
   if (!html || typeof html !== 'string') return '';

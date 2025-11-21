@@ -3,6 +3,18 @@ import React from 'react';
 import { sanitizeHtml } from './htmlSanitizer';
 import { logger } from './secureLogging';
 
+/**
+ * SECURITY RECOMMENDATION:
+ * Consider implementing Content Security Policy (CSP) headers in your application
+ * to provide an additional layer of protection against XSS attacks:
+ * 
+ * In index.html, add:
+ * <meta http-equiv="Content-Security-Policy" 
+ *       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+ * 
+ * This restricts what sources can be loaded and executed in your application.
+ */
+
 interface SecureHtmlProps {
   content: string;
   className?: string;

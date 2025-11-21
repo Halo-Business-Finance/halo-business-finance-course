@@ -84,7 +84,6 @@ serve(async (req) => {
     }
 
   } catch (error) {
-    console.error('Error in secure admin operations:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
@@ -126,7 +125,7 @@ async function getFilteredProfiles(supabaseAdmin: any, adminUserId: string, { li
     .eq('is_active', true)
 
   if (rolesError) {
-    console.error('Error fetching roles:', rolesError)
+    // Silent error for non-critical operation
   }
 
   // Combine profiles with roles
@@ -325,6 +324,6 @@ async function logAdminAction(supabaseAdmin: any, adminUserId: string, action: s
       p_details: details
     })
   } catch (error) {
-    console.error('Failed to log admin action:', error)
+    // Silent error - logging failure shouldn't break operations
   }
 }
