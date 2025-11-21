@@ -40,9 +40,18 @@ export default defineConfig(({ mode }) => ({
         drop_console: true,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
       },
     },
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: 'no-external',
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
       output: {
         manualChunks: (id) => {
           // Group all node_modules into vendor chunks
@@ -56,12 +65,18 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@tanstack')) {
               return 'query-vendor';
             }
-            // Bundle all lucide-react icons together instead of splitting them
             if (id.includes('lucide-react')) {
               return 'icons-vendor';
             }
+            if (id.includes('framer-motion')) {
+              return 'animation-vendor';
+            }
+            if (id.includes('@supabase')) {
+              return 'supabase-vendor';
+            }
           }
         },
+        experimentalMinChunkSize: 20000,
       },
     },
     chunkSizeWarningLimit: 1000,
