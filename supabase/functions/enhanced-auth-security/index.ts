@@ -31,6 +31,27 @@ serve(async (req) => {
 
     const { action, email, endpoint = '/auth' } = await req.json();
 
+    // Input validation
+    if (!action || typeof action !== 'string') {
+      throw new Error('Invalid action parameter');
+    }
+
+    // Validate allowed actions
+    const allowedActions = ['check_rate_limit', 'log_failed_auth', 'log_successful_auth'];
+    if (!allowedActions.includes(action)) {
+      throw new Error('Invalid action specified');
+    }
+
+    // Validate email format if provided
+    if (email && (typeof email !== 'string' || email.length > 255 || !email.includes('@'))) {
+      throw new Error('Invalid email parameter');
+    }
+
+    // Validate endpoint format
+    if (endpoint && (typeof endpoint !== 'string' || endpoint.length > 200)) {
+      throw new Error('Invalid endpoint parameter');
+    }
+
     // Create Supabase client
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',

@@ -24,17 +24,23 @@ serve(async (req) => {
       }
     )
 
-    console.log('[SECURITY-RETENTION] Starting automated data retention cleanup...');
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('[SECURITY-RETENTION] Starting automated data retention cleanup...');
+    }
 
     // Call the cleanup function
     const { data, error } = await supabaseClient.rpc('cleanup_old_behavioral_data');
 
     if (error) {
-      console.error('[SECURITY-RETENTION] Cleanup failed:', error);
+      if (Deno.env.get('ENV') === 'development') {
+        console.error('[SECURITY-RETENTION] Cleanup failed:', error);
+      }
       throw error;
     }
 
-    console.log('[SECURITY-RETENTION] Data retention cleanup completed successfully');
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('[SECURITY-RETENTION] Data retention cleanup completed successfully');
+    }
 
     // Also clean up old rate limit entries
     const cutoffDate = new Date();
@@ -46,7 +52,9 @@ serve(async (req) => {
       .lt('created_at', cutoffDate.toISOString());
 
     if (rateLimitError) {
-      console.warn('[SECURITY-RETENTION] Rate limit cleanup warning:', rateLimitError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.warn('[SECURITY-RETENTION] Rate limit cleanup warning:', rateLimitError);
+      }
     }
 
     const { error: advancedRateLimitError } = await supabaseClient
@@ -55,7 +63,9 @@ serve(async (req) => {
       .lt('created_at', cutoffDate.toISOString());
 
     if (advancedRateLimitError) {
-      console.warn('[SECURITY-RETENTION] Advanced rate limit cleanup warning:', advancedRateLimitError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.warn('[SECURITY-RETENTION] Advanced rate limit cleanup warning:', advancedRateLimitError);
+      }
     }
 
     // Log the successful cleanup
@@ -75,7 +85,9 @@ serve(async (req) => {
       });
 
     if (logError) {
-      console.warn('[SECURITY-RETENTION] Logging warning:', logError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.warn('[SECURITY-RETENTION] Logging warning:', logError);
+      }
     }
 
     return new Response(
@@ -90,7 +102,9 @@ serve(async (req) => {
     )
 
   } catch (error) {
-    console.error('[SECURITY-RETENTION] Function error:', error);
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('[SECURITY-RETENTION] Function error:', error);
+    }
     
     return new Response(
       JSON.stringify({

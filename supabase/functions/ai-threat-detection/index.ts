@@ -45,7 +45,9 @@ serve(async (req) => {
 
     const { events, analysisType = 'batch' } = await req.json();
 
-    console.log(`[AI-THREAT-DETECTION] Starting ${analysisType} analysis for ${events?.length || 0} events`);
+    if (Deno.env.get('ENV') === 'development') {
+      console.log(`[AI-THREAT-DETECTION] Starting ${analysisType} analysis for ${events?.length || 0} events`);
+    }
 
     // Fetch recent security events for context if not provided
     let securityEvents = events;
@@ -122,7 +124,9 @@ RESPONSE FORMAT (JSON):
 Provide actionable, specific insights that can help secure this business finance platform.
 `;
 
-    console.log('[AI-THREAT-DETECTION] Sending analysis request to OpenAI');
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('[AI-THREAT-DETECTION] Sending analysis request to OpenAI');
+    }
 
     // Call OpenAI GPT-5 for threat analysis
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -149,18 +153,24 @@ Provide actionable, specific insights that can help secure this business finance
 
     if (!response.ok) {
       const error = await response.text();
-      console.error('[AI-THREAT-DETECTION] OpenAI API error:', error);
+      if (Deno.env.get('ENV') === 'development') {
+        console.error('[AI-THREAT-DETECTION] OpenAI API error:', error);
+      }
       throw new Error(`OpenAI API error: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log('[AI-THREAT-DETECTION] Received response from OpenAI');
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('[AI-THREAT-DETECTION] Received response from OpenAI');
+    }
 
     let analysis: ThreatAnalysis;
     try {
       analysis = JSON.parse(data.choices[0].message.content);
     } catch (parseError) {
-      console.error('[AI-THREAT-DETECTION] Failed to parse AI response:', parseError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.error('[AI-THREAT-DETECTION] Failed to parse AI response:', parseError);
+      }
       // Fallback basic analysis
       analysis = {
         threatLevel: 'medium',
@@ -191,7 +201,9 @@ Provide actionable, specific insights that can help secure this business finance
       });
 
     if (insertError) {
-      console.error('[AI-THREAT-DETECTION] Failed to store analysis:', insertError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.error('[AI-THREAT-DETECTION] Failed to store analysis:', insertError);
+      }
     }
 
     // Create security alerts for high/critical threats
@@ -215,11 +227,15 @@ Provide actionable, specific insights that can help secure this business finance
         });
 
       if (alertError) {
-        console.error('[AI-THREAT-DETECTION] Failed to create alert:', alertError);
+        if (Deno.env.get('ENV') === 'development') {
+          console.error('[AI-THREAT-DETECTION] Failed to create alert:', alertError);
+        }
       }
     }
 
-    console.log(`[AI-THREAT-DETECTION] Analysis complete: ${analysis.threatLevel} threat detected with ${analysis.confidence}% confidence`);
+    if (Deno.env.get('ENV') === 'development') {
+      console.log(`[AI-THREAT-DETECTION] Analysis complete: ${analysis.threatLevel} threat detected with ${analysis.confidence}% confidence`);
+    }
 
     return new Response(JSON.stringify({
       success: true,
@@ -232,8 +248,10 @@ Provide actionable, specific insights that can help secure this business finance
     });
 
   } catch (error) {
-    console.error('[AI-THREAT-DETECTION] Error:', error);
-    return new Response(JSON.stringify({ 
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('[AI-THREAT-DETECTION] Error:', error);
+    }
+    return new Response(JSON.stringify({
       success: false,
       error: error.message,
       aiPowered: true 

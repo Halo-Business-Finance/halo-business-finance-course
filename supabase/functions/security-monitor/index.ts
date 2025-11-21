@@ -22,7 +22,9 @@ const securityHeaders = {
 };
 
 serve(async (req) => {
-  console.log('Security monitor function called:', req.method);
+  if (Deno.env.get('ENV') === 'development') {
+    console.log('Security monitor function called:', req.method);
+  }
 
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -177,7 +179,9 @@ serve(async (req) => {
     );
 
   } catch (error: any) {
-    console.error('Security monitor error:', error);
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('Security monitor error:', error);
+    }
     
     return new Response(
       JSON.stringify({ 
