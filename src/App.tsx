@@ -13,15 +13,16 @@ import { CourseSelectionProvider } from "@/contexts/CourseSelectionContext";
 import { NotesProvider } from "@/contexts/NotesContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminProtectedRoute } from "@/components/AdminProtectedRoute";
-import { NotificationBell } from "@/components/NotificationBell";
-import { LiveChatSupport } from "@/components/LiveChatSupport";
-import { ToolModal } from "@/components/tools/ToolModal";
-import { createTestNotifications } from "@/utils/createTestNotifications";
 import { lazy, Suspense } from "react";
 import { errorMonitor } from "./utils/errorMonitoring";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
 import { ScrollToTop } from "./components/ScrollToTop";
+
+// Lazy load heavy components not needed on initial page load
+const NotificationBell = lazy(() => import("@/components/NotificationBell").then(m => ({ default: m.NotificationBell })));
+const LiveChatSupport = lazy(() => import("@/components/LiveChatSupport").then(m => ({ default: m.LiveChatSupport })));
+const ToolModal = lazy(() => import("@/components/tools/ToolModal").then(m => ({ default: m.ToolModal })));
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -156,7 +157,9 @@ const HeaderContent = ({
             >
               <HelpCircle className="h-8 w-8 text-navy-900" />
             </Button>
-            <NotificationBell />
+            <Suspense fallback={<div className="h-14 w-14" />}>
+              <NotificationBell />
+            </Suspense>
             <Button 
               variant="ghost" 
               size="sm" 
@@ -169,12 +172,14 @@ const HeaderContent = ({
           </div>}
       </div>
       
-      <ToolModal
-        open={calculatorOpen}
-        onOpenChange={setCalculatorOpen}
-        toolType="loan_calculator"
-        toolTitle="Loan Calculator"
-      />
+      <Suspense fallback={null}>
+        <ToolModal
+          open={calculatorOpen}
+          onOpenChange={setCalculatorOpen}
+          toolType="loan_calculator"
+          toolTitle="Loan Calculator"
+        />
+      </Suspense>
     </header>;
 };
 const AppContent = () => {
@@ -241,7 +246,9 @@ const AppContent = () => {
       </div>
 
       {/* Live Chat Support */}
-      <LiveChatSupport isOpen={isChatOpen} onOpenChange={setIsChatOpen} />
+      <Suspense fallback={null}>
+        <LiveChatSupport isOpen={isChatOpen} onOpenChange={setIsChatOpen} />
+      </Suspense>
     </div>;
 };
 const App = () => <QueryClientProvider client={queryClient}>
