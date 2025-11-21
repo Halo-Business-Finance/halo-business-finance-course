@@ -1,111 +1,49 @@
+import DOMPurify from 'dompurify';
 import { logger } from './secureLogging';
 
 /**
- * SECURITY NOTICE:
- * This is a custom HTML sanitization implementation. For production environments,
- * it is STRONGLY RECOMMENDED to use a well-maintained security library like DOMPurify:
+ * SECURITY: This implementation uses DOMPurify, a battle-tested HTML sanitization library
+ * that is regularly audited and updated to protect against new XSS vectors.
  * 
- * Installation: npm install dompurify @types/dompurify
- * Usage: import DOMPurify from 'dompurify'; const clean = DOMPurify.sanitize(html);
- * 
- * Custom sanitizers may have undiscovered vulnerabilities. DOMPurify is regularly
- * audited and updated to protect against new XSS vectors.
+ * DOMPurify provides comprehensive protection against:
+ * - Script injection attacks
+ * - Event handler injection
+ * - CSS-based attacks
+ * - DOM clobbering
+ * - And many other XSS vectors
  */
 
-// Enhanced HTML sanitization utility for user-generated content with DOMPurify-like protection
+// Enhanced HTML sanitization utility for user-generated content with DOMPurify
 export const sanitizeHtml = (html: string): string => {
   if (!html || typeof html !== 'string') return '';
   
-  // Enhanced security check for dangerous patterns
-  const dangerousPatterns = [
-    /javascript:/gi,
-    /data:text\/html/gi,
-    /vbscript:/gi,
-    /on\w+\s*=/gi,
-    /<script/gi,
-    /<iframe/gi,
-    /<object/gi,
-    /<embed/gi,
-    /<form/gi,
-    /<input/gi,
-    /<link/gi,
-    /<meta/gi,
-    /<style/gi,
-    /expression\s*\(/gi,
-    /url\s*\(/gi,
-    /@import/gi
-  ];
-  
-  // Check for dangerous patterns and reject if found
-  for (const pattern of dangerousPatterns) {
-    if (pattern.test(html)) {
-      logger.security('HTML_XSS_ATTEMPT', { 
-        pattern: pattern.toString(),
-        htmlLength: html.length,
+  try {
+    // Configure DOMPurify with safe defaults
+    const cleanHtml = DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li'],
+      ALLOWED_ATTR: ['class', 'id'],
+      ALLOW_DATA_ATTR: false,
+      RETURN_DOM: false,
+      RETURN_DOM_FRAGMENT: false,
+      RETURN_TRUSTED_TYPE: false,
+    });
+
+    // Security logging for significant content changes
+    if (html.length > 0 && cleanHtml.length < html.length * 0.5) {
+      logger.security('HTML_SANITIZATION_SIGNIFICANT_REDUCTION', { 
+        originalLength: html.length,
+        sanitizedLength: cleanHtml.length,
+        reductionPercentage: Math.round(((html.length - cleanHtml.length) / html.length) * 100),
         timestamp: new Date().toISOString()
       });
-      return html.replace(/<[^>]*>/g, ''); // Strip all HTML if dangerous patterns found
     }
+
+    return cleanHtml;
+  } catch (error) {
+    logger.error('HTML sanitization failed', error);
+    // Return empty string on sanitization failure for security
+    return '';
   }
-  
-  // Create a temporary div element to parse HTML
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = html;
-  
-  // Define allowed tags and attributes with stricter controls
-  const allowedTags = ['p', 'br', 'strong', 'em', 'u', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li'];
-  const allowedAttributes = ['class', 'id'];
-  const allowedClasses = ['text-', 'bg-', 'font-', 'p-', 'm-', 'flex', 'grid', 'space-']; // Only allow safe Tailwind classes
-  
-  // Recursively clean the DOM tree
-  const cleanNode = (node: Node): void => {
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      const element = node as Element;
-      
-      // Remove disallowed tags
-      if (!allowedTags.includes(element.tagName.toLowerCase())) {
-        // Replace with text content
-        const textNode = document.createTextNode(element.textContent || '');
-        element.parentNode?.replaceChild(textNode, element);
-        return;
-      }
-      
-      // Remove disallowed attributes and validate class names
-      Array.from(element.attributes).forEach(attr => {
-        if (!allowedAttributes.includes(attr.name.toLowerCase())) {
-          element.removeAttribute(attr.name);
-        } else if (attr.name.toLowerCase() === 'class') {
-          // Validate class names
-          const classes = attr.value.split(' ').filter(cls => 
-            allowedClasses.some(allowed => cls.startsWith(allowed))
-          );
-          if (classes.length > 0) {
-            element.setAttribute('class', classes.join(' '));
-          } else {
-            element.removeAttribute('class');
-          }
-        }
-      });
-      
-      // Clean child nodes
-      Array.from(element.childNodes).forEach(cleanNode);
-    } else if (node.nodeType === Node.TEXT_NODE) {
-      // Enhanced text content sanitization
-      const textContent = node.textContent || '';
-      node.textContent = textContent
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#x27;')
-        .replace(/\//g, '&#x2F;')
-        .replace(/&(?!amp;|lt;|gt;|quot;|#x27;|#x2F;)/g, '&amp;'); // Escape unescaped ampersands
-    }
-  };
-  
-  // Clean all child nodes
-  Array.from(tempDiv.childNodes).forEach(cleanNode);
-  
-  return tempDiv.innerHTML;
 };
 
 // Safe component for rendering user HTML content

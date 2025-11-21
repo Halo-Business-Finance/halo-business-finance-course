@@ -4,15 +4,13 @@ import { sanitizeHtml } from './htmlSanitizer';
 import { logger } from './secureLogging';
 
 /**
- * SECURITY RECOMMENDATION:
- * Consider implementing Content Security Policy (CSP) headers in your application
- * to provide an additional layer of protection against XSS attacks:
+ * SECURITY: This component uses DOMPurify for HTML sanitization.
  * 
- * In index.html, add:
- * <meta http-equiv="Content-Security-Policy" 
- *       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
- * 
- * This restricts what sources can be loaded and executed in your application.
+ * Additional security recommendations:
+ * 1. Implement Content Security Policy (CSP) headers in your application
+ * 2. Add CSP meta tag to index.html for defense-in-depth:
+ *    <meta http-equiv="Content-Security-Policy" 
+ *          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
  */
 
 interface SecureHtmlProps {
@@ -28,7 +26,6 @@ export const SecureHtmlRenderer: React.FC<SecureHtmlProps> = ({
   content,
   className = '',
   maxLength = 50000,
-  allowedTags,
   onSecurityViolation
 }) => {
   // Input validation
@@ -48,7 +45,7 @@ export const SecureHtmlRenderer: React.FC<SecureHtmlProps> = ({
     return <div className={className}>Content too large to display safely</div>;
   }
 
-  // Sanitize the content
+  // Sanitize the content using DOMPurify
   const sanitizedContent = sanitizeHtml(content);
   
   // Additional security check - if sanitized content is significantly different, log it
