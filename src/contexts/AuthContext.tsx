@@ -154,7 +154,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             });
           }
         } catch (locationError) {
-          console.error('Location tracking error:', locationError);
+          logger.error('Location tracking error', locationError, { component: 'AuthContext' });
           // Don't block login for location tracking failures
         }
         
@@ -166,7 +166,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       return { data, error: null };
     } catch (error: any) {
-      console.error('Sign in error:', error);
+      logger.error('Sign in error', error, { component: 'AuthContext' });
       // Sanitize error to prevent information leakage
       const errorMessage = getToastErrorMessage(error, 'Unable to sign in. Please check your credentials.');
       toast({
