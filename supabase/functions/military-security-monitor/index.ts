@@ -44,7 +44,9 @@ serve(async (req) => {
           auto_block = false 
         } = data
 
-        console.log(`[MILITARY-SECURITY] Threat detected: ${event_type} from ${clientIP}`)
+        if (Deno.env.get('ENV') === 'development') {
+          console.log(`[MILITARY-SECURITY] Threat detected: ${event_type} from ${clientIP}`);
+        }
 
         // Advanced threat analysis
         const threatScore = analyzeThreatLevel(threat_indicators, userAgent, clientIP)
@@ -68,12 +70,16 @@ serve(async (req) => {
           })
 
         if (threatError) {
-          console.error('[MILITARY-SECURITY] Failed to log threat:', threatError)
+          if (Deno.env.get('ENV') === 'development') {
+            console.error('[MILITARY-SECURITY] Failed to log threat:', threatError);
+          }
         }
 
         // Immediate response for high-level threats
         if (shouldAutoBlock) {
-          console.log(`[MILITARY-SECURITY] AUTO-BLOCKING threat ${event_type} (score: ${threatScore})`)
+          if (Deno.env.get('ENV') === 'development') {
+            console.log(`[MILITARY-SECURITY] AUTO-BLOCKING threat ${event_type} (score: ${threatScore})`);
+          }
           
           // Add to advanced rate limits for blocking
           await supabase
@@ -102,7 +108,9 @@ serve(async (req) => {
       case 'analyze_session': {
         const { user_id, session_data = {} } = data
 
-        console.log(`[MILITARY-SECURITY] Analyzing session for user: ${user_id}`)
+        if (Deno.env.get('ENV') === 'development') {
+          console.log(`[MILITARY-SECURITY] Analyzing session for user: ${user_id}`);
+        }
 
         // Advanced session security analysis
         const sessionRisk = analyzeSessionRisk(session_data, userAgent, clientIP)
@@ -163,7 +171,9 @@ serve(async (req) => {
       }
 
       case 'security_dashboard_data': {
-        console.log('[MILITARY-SECURITY] Generating security dashboard data')
+        if (Deno.env.get('ENV') === 'development') {
+          console.log('[MILITARY-SECURITY] Generating security dashboard data');
+        }
 
         // Get threat summary for last 24 hours
         const { data: threats } = await supabase
@@ -200,7 +210,9 @@ serve(async (req) => {
       case 'remediate_threat': {
         const { threat_id, action_type, target_ip } = data
 
-        console.log(`[MILITARY-SECURITY] Remediating threat ${threat_id} with action: ${action_type}`)
+        if (Deno.env.get('ENV') === 'development') {
+          console.log(`[MILITARY-SECURITY] Remediating threat ${threat_id} with action: ${action_type}`);
+        }
 
         let remediationResult = { success: false, message: 'Unknown remediation action' }
 
@@ -345,7 +357,9 @@ serve(async (req) => {
     }
 
   } catch (error) {
-    console.error('[MILITARY-SECURITY] Error:', error)
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('[MILITARY-SECURITY] Error:', error);
+    }
     return new Response(
       JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: securityHeaders }

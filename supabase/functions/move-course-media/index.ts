@@ -40,7 +40,9 @@ Deno.serve(async (req) => {
           .copy(oldPath, newPath)
 
         if (copyError) {
-          console.error(`Failed to copy ${oldPath} to ${newPath}:`, copyError)
+          if (Deno.env.get('ENV') === 'development') {
+            console.error(`Failed to copy ${oldPath} to ${newPath}:`, copyError);
+          }
           results.push({ id: media.id, status: 'copy_failed', error: copyError.message })
           continue
         }
@@ -51,7 +53,9 @@ Deno.serve(async (req) => {
           .remove([oldPath])
 
         if (deleteError) {
-          console.error(`Failed to delete ${oldPath}:`, deleteError)
+          if (Deno.env.get('ENV') === 'development') {
+            console.error(`Failed to delete ${oldPath}:`, deleteError);
+          }
           // File was copied but not deleted, update path anyway
         }
 
@@ -66,14 +70,18 @@ Deno.serve(async (req) => {
           .eq('id', media.id)
 
         if (updateError) {
-          console.error(`Failed to update database for ${media.id}:`, updateError)
+          if (Deno.env.get('ENV') === 'development') {
+            console.error(`Failed to update database for ${media.id}:`, updateError);
+          }
           results.push({ id: media.id, status: 'db_update_failed', error: updateError.message })
         } else {
           results.push({ id: media.id, status: 'success', oldPath, newPath })
         }
 
       } catch (error) {
-        console.error(`Error processing ${media.id}:`, error)
+        if (Deno.env.get('ENV') === 'development') {
+          console.error(`Error processing ${media.id}:`, error);
+        }
         results.push({ id: media.id, status: 'error', error: error.message })
       }
     }
@@ -84,7 +92,9 @@ Deno.serve(async (req) => {
     )
 
   } catch (error) {
-    console.error('Function error:', error)
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('Function error:', error);
+    }
     return new Response(
       JSON.stringify({ error: error.message }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }

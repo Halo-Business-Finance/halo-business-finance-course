@@ -197,7 +197,9 @@ serve(async (req) => {
               }
             }
           } catch (error) {
-            console.error(`Error analyzing user ${userId}:`, error);
+            if (Deno.env.get('ENV') === 'development') {
+              console.error(`Error analyzing user ${userId}:`, error);
+            }
             bulkResults.push({
               user_id: userId,
               error: error.message
@@ -222,8 +224,10 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Anomaly detection error:', error);
-    return new Response(JSON.stringify({ 
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('Anomaly detection error:', error);
+    }
+    return new Response(JSON.stringify({
       error: error.message,
       success: false 
     }), {
