@@ -34,7 +34,6 @@ serve(async (req) => {
     const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
     
     if (userError || !user) {
-      console.error('Authentication failed:', userError?.message);
       return new Response(JSON.stringify({ 
         error: 'Invalid authentication credentials'
       }), {
@@ -86,7 +85,6 @@ serve(async (req) => {
 
     for (const pattern of suspiciousPatterns) {
       if (pattern.test(question)) {
-        console.warn(`Potential prompt injection attempt by user ${user.id}`);
         return new Response(JSON.stringify({ 
           error: 'Invalid question format detected'
         }), {
@@ -115,10 +113,6 @@ serve(async (req) => {
     if (!openAIApiKey) {
       throw new Error('OpenAI API key not configured');
     }
-
-    // Audit log the request
-    console.log(`User ${user.id} asking question for module: ${moduleTitle}`);
-    console.log(`Question length: ${sanitizedQuestion.length} characters`);
 
     const systemPrompt = `You are an expert finance and commercial lending instructor helping students with questions about their learning module. 
 
@@ -152,15 +146,11 @@ Keep answers comprehensive but focused on the student's specific question about 
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+      throw new Error('OpenAI API request failed');
     }
 
     const data = await response.json();
     const answer = data.choices[0].message.content;
-
-    console.log('Generated answer successfully');
 
     return new Response(JSON.stringify({ 
       answer,
@@ -171,7 +161,6 @@ Keep answers comprehensive but focused on the student's specific question about 
     });
 
   } catch (error) {
-    console.error('Error in ask-question function:', error);
     // Sanitize error messages - don't expose internal details
     return new Response(JSON.stringify({ 
       error: 'Unable to process your question at this time. Please try again.',

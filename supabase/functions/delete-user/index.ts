@@ -17,8 +17,6 @@ const securityHeaders = {
 };
 
 serve(async (req) => {
-  console.log('Delete user function called:', req.method)
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: securityHeaders });
@@ -31,7 +29,6 @@ serve(async (req) => {
     }
 
     const { userId, currentUserId } = await req.json()
-    console.log('Delete user request:', { userId, currentUserId })
 
     if (!userId) {
       throw new Error('User ID is required')
@@ -80,7 +77,6 @@ serve(async (req) => {
       .rpc('can_delete_user', { target_user_id: userId })
 
     if (roleError) {
-      console.error('Error checking delete permissions:', roleError)
       throw new Error('Failed to verify permissions')
     }
 
@@ -92,21 +88,15 @@ serve(async (req) => {
     const { data: targetUser, error: userCheckError } = await supabaseAdmin.auth.admin.getUserById(userId)
 
     if (userCheckError || !targetUser.user) {
-      console.error('User not found:', userCheckError)
       throw new Error('User not found')
     }
-
-    console.log('Target user found:', targetUser.user.email)
 
     // Delete the user from Supabase Auth
     const { data: deleteResult, error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId)
 
     if (deleteError) {
-      console.error('Error deleting user:', deleteError)
       throw new Error(`Failed to delete user: ${deleteError.message}`)
     }
-
-    console.log('User deleted successfully:', deleteResult)
 
     return new Response(
       JSON.stringify({ 
@@ -124,8 +114,6 @@ serve(async (req) => {
     )
 
   } catch (error: any) {
-    console.error('Delete user error:', error)
-    
     return new Response(
       JSON.stringify({ 
         success: false, 

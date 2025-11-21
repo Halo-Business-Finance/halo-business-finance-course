@@ -17,13 +17,37 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { user_id, ip_address, user_agent } = await req.json();
-
-    if (!user_id || !ip_address) {
-      throw new Error('Missing required parameters: user_id and ip_address');
+    // Get authenticated user from JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Authentication required' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
-    console.log(`Tracking location for user ${user_id} from IP ${ip_address}`);
+    const supabaseClient = createClient(
+      supabaseUrl,
+      Deno.env.get('SUPABASE_ANON_KEY')!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: 'Invalid authentication' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Use authenticated user's ID instead of accepting from request
+    const user_id = user.id;
+    const { ip_address, user_agent } = await req.json();
+
+    if (!ip_address) {
+      throw new Error('Missing required parameter: ip_address');
+    }
 
     // Get geographic data from IP
     let locationData = {};
@@ -60,7 +84,6 @@ serve(async (req) => {
         };
       }
     } catch (error) {
-      console.warn('Failed to get location data:', error);
       locationData = {
         country: 'Unknown',
         region: 'Unknown',
@@ -89,7 +112,7 @@ serve(async (req) => {
       .single();
 
     if (locationError) {
-      console.error('Error storing location:', locationError);
+      throw new Error('Failed to store location data');
     }
 
     // Run anomaly detection
@@ -100,15 +123,15 @@ serve(async (req) => {
       p_device_data: deviceData
     });
 
-    console.log('Anomaly detection result:', anomalyResult);
-
     // Update user baseline (async)
     supabase.rpc('update_user_baseline', {
       p_user_id: user_id,
       p_location_data: locationData,
       p_device_data: deviceData
     }).then(({ error }) => {
-      if (error) console.error('Error updating baseline:', error);
+      if (error) {
+        // Silent error - baseline update is non-critical
+      }
     });
 
     // Log successful authentication with location context
@@ -132,9 +155,8 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Geographic tracking error:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error.message || 'Geographic tracking failed',
       success: false 
     }), {
       status: 500,
