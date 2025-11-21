@@ -22,11 +22,23 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-select', '@radix-ui/react-tabs'],
-          'query-vendor': ['@tanstack/react-query'],
-          'icons-vendor': ['lucide-react'],
+        manualChunks: (id) => {
+          // Group all node_modules into vendor chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('@tanstack')) {
+              return 'query-vendor';
+            }
+            // Bundle all lucide-react icons together instead of splitting them
+            if (id.includes('lucide-react')) {
+              return 'icons-vendor';
+            }
+          }
         },
       },
     },
