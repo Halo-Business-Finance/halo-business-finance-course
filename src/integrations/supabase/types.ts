@@ -450,6 +450,45 @@ export type Database = {
           },
         ]
       }
+      badges: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          is_active: boolean | null
+          name: string
+          points: number
+          requirement_type: string
+          requirement_value: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          points?: number
+          requirement_type: string
+          requirement_value?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          points?: number
+          requirement_type?: string
+          requirement_value?: number
+        }
+        Relationships: []
+      }
       case_studies: {
         Row: {
           challenge: string
@@ -506,6 +545,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      certificates: {
+        Row: {
+          certificate_number: string
+          completion_percentage: number
+          course_id: string
+          final_score: number | null
+          id: string
+          issued_at: string
+          pdf_url: string | null
+          user_id: string
+        }
+        Insert: {
+          certificate_number: string
+          completion_percentage?: number
+          course_id: string
+          final_score?: number | null
+          id?: string
+          issued_at?: string
+          pdf_url?: string | null
+          user_id: string
+        }
+        Update: {
+          certificate_number?: string
+          completion_percentage?: number
+          course_id?: string
+          final_score?: number | null
+          id?: string
+          issued_at?: string
+          pdf_url?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       cms_categories: {
         Row: {
@@ -2164,6 +2236,39 @@ export type Database = {
         }
         Relationships: []
       }
+      learning_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_activity_date: string
+          longest_streak: number
+          total_points: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string
+          longest_streak?: number
+          total_points?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_activity_date?: string
+          longest_streak?: number
+          total_points?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       learning_tools: {
         Row: {
           category: string | null
@@ -3236,6 +3341,35 @@ export type Database = {
           threat_type?: string
         }
         Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_behavior_baselines: {
         Row: {
