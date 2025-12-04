@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, Lock } from "lucide-react";
+import { BookOpen, Home, BarChart3, Award, Target, FileText, User, LogIn, Lock, Trophy } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
@@ -18,6 +18,10 @@ const mainNavItems = [{
   title: "My Course",
   url: "/my-course",
   icon: BarChart3
+}, {
+  title: "Achievements",
+  url: "/achievements",
+  icon: Trophy
 }, {
   title: "Learning Resources",
   url: "/resources",
