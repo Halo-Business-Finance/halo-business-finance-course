@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminRole } from "@/hooks/useAdminRole";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
+import { SecurityMonitoringDashboard } from "@/components/admin/SecurityMonitoringDashboard";
 import { SecurityEventManager } from "@/components/SecurityEventManager";
 import { SecurityFixCenter } from "@/components/SecurityFixCenter";
 import { VideoManager } from "@/components/admin/VideoManager";
@@ -968,6 +969,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
                 <TabsContent value="security" className="space-y-6">
+                  <SecurityMonitoringDashboard />
                   <SecurityComplianceStatus />
                   <SecurityFixCenter />
                   <SecurityDashboard />
