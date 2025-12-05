@@ -4657,6 +4657,22 @@ export type Database = {
         }[]
       }
       get_profile_encryption_stats: { Args: never; Returns: Json }
+      get_profile_for_admin: {
+        Args: { p_profile_user_id: string }
+        Returns: {
+          avatar_url: string
+          company: string
+          created_at: string
+          data_classification: Database["public"]["Enums"]["data_classification"]
+          email: string
+          id: string
+          location: string
+          name: string
+          phone: string
+          title: string
+          user_id: string
+        }[]
+      }
       get_profile_safe: {
         Args: { target_user_id: string }
         Returns: {
@@ -5194,6 +5210,20 @@ export type Database = {
       mask_profile_data_advanced: {
         Args: { profile_row: Record<string, unknown>; viewing_user_id: string }
         Returns: Json
+      }
+      mask_profile_pii: {
+        Args: {
+          p_email: string
+          p_name: string
+          p_phone: string
+          p_profile_user_id: string
+          p_viewer_id: string
+        }
+        Returns: {
+          masked_email: string
+          masked_name: string
+          masked_phone: string
+        }[]
       }
       mask_sensitive_data: {
         Args: { data_text: string; data_type: string; user_role?: string }
