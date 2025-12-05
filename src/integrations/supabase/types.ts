@@ -4370,6 +4370,7 @@ export type Database = {
       }
       cleanup_old_behavioral_data: { Args: never; Returns: undefined }
       cleanup_old_security_events: { Args: never; Returns: undefined }
+      cleanup_old_sessions: { Args: never; Returns: Json }
       cleanup_routine_security_events: { Args: never; Returns: undefined }
       cleanup_time_based_alerts: { Args: never; Returns: undefined }
       create_comprehensive_audit_entry: {
@@ -4872,6 +4873,16 @@ export type Database = {
       get_security_dashboard_data: { Args: never; Returns: Json }
       get_security_headers: { Args: never; Returns: Json }
       get_security_metrics: { Args: never; Returns: Json }
+      get_session_analytics_secure: {
+        Args: never
+        Returns: {
+          avg_risk_score: number
+          high_risk_sessions: number
+          sessions_last_24h: number
+          total_active_sessions: number
+          unique_users: number
+        }[]
+      }
       get_trainee_profiles_secure: {
         Args: never
         Returns: {
@@ -4968,6 +4979,19 @@ export type Database = {
           terminated_at: string
           termination_reason: string
           user_agent: string
+        }[]
+      }
+      get_user_sessions_secure: {
+        Args: { p_user_id?: string }
+        Returns: {
+          created_at: string
+          device_type: string
+          id: string
+          is_active: boolean
+          last_activity_at: string
+          masked_ip: string
+          risk_level: string
+          session_type: string
         }[]
       }
       has_any_role: { Args: { roles: string[] }; Returns: boolean }
@@ -5154,6 +5178,7 @@ export type Database = {
         Returns: string
       }
       make_current_user_admin: { Args: never; Returns: string }
+      mask_ip_address: { Args: { ip: unknown }; Returns: string }
       mask_pii_field: {
         Args: {
           field_type: string
@@ -5242,6 +5267,10 @@ export type Database = {
             Args: { admin_email: string; admin_password: string }
             Returns: Json
           }
+      terminate_user_session: {
+        Args: { p_session_id: string }
+        Returns: boolean
+      }
       trigger_emergency_security_lockdown: {
         Args: { p_reason: string; p_target_user_id?: string }
         Returns: Json
