@@ -52,17 +52,34 @@ serve(async (req) => {
       throw new Error('Invalid endpoint parameter');
     }
 
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+    // Note: This function is intentionally callable without authentication for:
+    // - check_rate_limit: Pre-auth rate limiting
+    // - log_failed_auth: Logging failed login attempts
+    // - log_successful_auth: Logging successful logins
+    // However, we verify the auth header if provided for additional security context
+    
+    const authHeader = req.headers.get('Authorization');
+    let authenticatedUser = null;
+    
+    if (authHeader) {
+      const authClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        global: { headers: { Authorization: authHeader } }
+      });
+      const { data: { user } } = await authClient.auth.getUser();
+      authenticatedUser = user;
+    }
+
     // Create Supabase client
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
       }
-    );
+    });
 
     let rateLimitResponse;
 
@@ -98,7 +115,8 @@ serve(async (req) => {
               user_agent: req.headers.get('user-agent'),
               timestamp: new Date().toISOString(),
               failure_reason: 'invalid_credentials'
-            }
+            },
+            logged_via_secure_function: true
           });
 
         if (logError) {
@@ -129,13 +147,15 @@ serve(async (req) => {
           .insert({
             event_type: 'successful_login',
             severity: 'low',
+            user_id: authenticatedUser?.id,
             details: {
               ip_address: clientIP,
               user_email: email,
               endpoint: endpoint,
               user_agent: req.headers.get('user-agent'),
               timestamp: new Date().toISOString()
-            }
+            },
+            logged_via_secure_function: true
           });
 
         if (successLogError) {
