@@ -145,13 +145,18 @@ export function DiscussionForum({ courseId, moduleId }: DiscussionForumProps) {
                 placeholder="Discussion title..."
                 value={newPost.title}
                 onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                maxLength={200}
               />
               <Textarea
                 placeholder="What would you like to discuss?"
                 value={newPost.content}
                 onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
                 rows={4}
+                maxLength={10000}
               />
+              <p className="text-xs text-muted-foreground text-right">
+                {newPost.content.length}/10000 characters
+              </p>
               <Button onClick={handleCreatePost} className="w-full gap-2">
                 <Send className="h-4 w-4" />
                 Post Discussion

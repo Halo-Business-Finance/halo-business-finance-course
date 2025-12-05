@@ -190,13 +190,18 @@ export function CourseReviews({ courseId }: CourseReviewsProps) {
                 placeholder="Review title (optional)"
                 value={newReview.title}
                 onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
+                maxLength={200}
               />
               <Textarea
                 placeholder="Share your experience with this course..."
                 value={newReview.content}
                 onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
                 rows={4}
+                maxLength={5000}
               />
+              <p className="text-xs text-muted-foreground text-right">
+                {newReview.content.length}/5000 characters
+              </p>
               <Button onClick={handleSubmitReview} className="w-full">
                 Submit Review
               </Button>
