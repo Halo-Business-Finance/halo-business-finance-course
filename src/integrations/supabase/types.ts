@@ -2779,6 +2779,7 @@ export type Database = {
           marketing_emails: boolean | null
           name: string
           new_courses: boolean | null
+          onboarding_completed: boolean | null
           phone: string | null
           pii_access_level: string | null
           push_notifications: boolean | null
@@ -2818,6 +2819,7 @@ export type Database = {
           marketing_emails?: boolean | null
           name: string
           new_courses?: boolean | null
+          onboarding_completed?: boolean | null
           phone?: string | null
           pii_access_level?: string | null
           push_notifications?: boolean | null
@@ -2857,6 +2859,7 @@ export type Database = {
           marketing_emails?: boolean | null
           name?: string
           new_courses?: boolean | null
+          onboarding_completed?: boolean | null
           phone?: string | null
           pii_access_level?: string | null
           push_notifications?: boolean | null

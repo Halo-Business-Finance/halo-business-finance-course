@@ -18,6 +18,8 @@ import { errorMonitor } from "./utils/errorMonitoring";
 import { HorizontalNav } from "./components/HorizontalNav";
 import { MobileNav } from "./components/MobileNav";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { SkipLinks } from "./components/accessibility/SkipLinks";
+import { useKeyboardShortcuts } from "./components/accessibility/KeyboardShortcuts";
 
 // Lazy load heavy components not needed on initial page load
 const NotificationBell = lazy(() => import("@/components/NotificationBell").then(m => ({ default: m.NotificationBell })));
@@ -189,13 +191,21 @@ const AppContent = () => {
     loading
   } = useAuth();
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const { ShortcutsDialog } = useKeyboardShortcuts();
+  
   return <div className="min-h-screen flex flex-col w-full">
+      {/* Skip Links for Accessibility */}
+      <SkipLinks />
+      
+      {/* Keyboard Shortcuts Dialog */}
+      {ShortcutsDialog}
+      
       <HeaderContent isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} />
       
       <div className="flex flex-1 min-h-0">
         {user && <AppSidebar onOpenSupport={() => setIsChatOpen(true)} />}
         
-        <main className="flex-1 relative z-10 bg-background">
+        <main id="main-content" className="flex-1 relative z-10 bg-background">
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
