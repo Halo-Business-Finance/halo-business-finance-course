@@ -15,6 +15,40 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+
+    // ===== AUTHENTICATION CHECK =====
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Verify the user's JWT token
+    const authClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired authentication token', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const { data: userRole } = await authClient.rpc('get_user_role');
+    if (!['admin', 'super_admin'].includes(userRole)) {
+      return new Response(
+        JSON.stringify({ error: 'Admin privileges required', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+    // ===== END AUTHENTICATION CHECK =====
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { action, ...params } = await req.json();
@@ -83,10 +117,10 @@ serve(async (req) => {
           severity: 'low',
           details: {
             anomaly_id,
-            resolved_by,
+            resolved_by: resolved_by || user.id,
             timestamp: new Date().toISOString()
           },
-          user_id: resolved_by,
+          user_id: resolved_by || user.id,
           logged_via_secure_function: true
         });
 

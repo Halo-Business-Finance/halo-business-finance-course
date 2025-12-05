@@ -15,20 +15,56 @@ serve(async (req) => {
     const YOUTUBE_API_KEY = Deno.env.get('YOUTUBE_API_KEY');
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY');
 
     if (!YOUTUBE_API_KEY) {
       throw new Error('YOUTUBE_API_KEY not configured');
     }
+
+    // ===== AUTHENTICATION CHECK =====
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Verify the user's JWT token
+    const authClient = createClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired authentication token', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const { data: userRole } = await authClient.rpc('get_user_role');
+    if (!['admin', 'super_admin', 'instructor'].includes(userRole)) {
+      return new Response(
+        JSON.stringify({ error: 'Admin privileges required', success: false }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+    // ===== END AUTHENTICATION CHECK =====
 
     // Get optional course_id filter and limit from request body
     const body = await req.json().catch(() => ({}));
     const courseIdFilter = body?.course_id;
     const limit = body?.limit || null;
 
-    console.log('Starting YouTube video search for course modules...', {
-      courseIdFilter,
-      limit
-    });
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('Starting YouTube video search for course modules...', {
+        courseIdFilter,
+        limit,
+        requestedBy: user.id
+      });
+    }
 
     // Create Supabase client with service role for admin access
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
@@ -53,18 +89,24 @@ serve(async (req) => {
     const { data: modules, error: modulesError } = await query;
 
     if (modulesError) {
-      console.error('Error fetching modules:', modulesError);
+      if (Deno.env.get('ENV') === 'development') {
+        console.error('Error fetching modules:', modulesError);
+      }
       throw modulesError;
     }
 
-    console.log(`Found ${modules?.length || 0} modules to process`);
+    if (Deno.env.get('ENV') === 'development') {
+      console.log(`Found ${modules?.length || 0} modules to process`);
+    }
 
     const results = [];
 
     // Process each module
     for (const module of modules || []) {
       try {
-        console.log(`Searching YouTube for: ${module.title}`);
+        if (Deno.env.get('ENV') === 'development') {
+          console.log(`Searching YouTube for: ${module.title}`);
+        }
 
         // Search YouTube for the module title + "business finance lending"
         const searchQuery = encodeURIComponent(`${module.title} business finance commercial lending tutorial`);
@@ -73,7 +115,9 @@ serve(async (req) => {
         const youtubeResponse = await fetch(youtubeSearchUrl);
         
         if (!youtubeResponse.ok) {
-          console.error(`YouTube API error for "${module.title}":`, await youtubeResponse.text());
+          if (Deno.env.get('ENV') === 'development') {
+            console.error(`YouTube API error for "${module.title}":`, await youtubeResponse.text());
+          }
           results.push({
             module_id: module.id,
             title: module.title,
@@ -86,7 +130,9 @@ serve(async (req) => {
         const youtubeData = await youtubeResponse.json();
 
         if (!youtubeData.items || youtubeData.items.length === 0) {
-          console.log(`No YouTube video found for: ${module.title}`);
+          if (Deno.env.get('ENV') === 'development') {
+            console.log(`No YouTube video found for: ${module.title}`);
+          }
           results.push({
             module_id: module.id,
             title: module.title,
@@ -101,7 +147,9 @@ serve(async (req) => {
         const videoDescription = video.snippet.description;
         const thumbnailUrl = video.snippet.thumbnails.high?.url || video.snippet.thumbnails.default?.url;
 
-        console.log(`Found video: ${videoTitle} (${videoId})`);
+        if (Deno.env.get('ENV') === 'development') {
+          console.log(`Found video: ${videoTitle} (${videoId})`);
+        }
 
         // Check if video already exists for this module
         const { data: existingVideo } = await supabase
@@ -127,7 +175,9 @@ serve(async (req) => {
             .eq('id', existingVideo.id);
 
           if (updateError) {
-            console.error(`Error updating video for ${module.title}:`, updateError);
+            if (Deno.env.get('ENV') === 'development') {
+              console.error(`Error updating video for ${module.title}:`, updateError);
+            }
             results.push({
               module_id: module.id,
               title: module.title,
@@ -160,7 +210,9 @@ serve(async (req) => {
             });
 
           if (insertError) {
-            console.error(`Error inserting video for ${module.title}:`, insertError);
+            if (Deno.env.get('ENV') === 'development') {
+              console.error(`Error inserting video for ${module.title}:`, insertError);
+            }
             results.push({
               module_id: module.id,
               title: module.title,
@@ -182,7 +234,9 @@ serve(async (req) => {
         await new Promise(resolve => setTimeout(resolve, 100));
 
       } catch (error) {
-        console.error(`Error processing module ${module.title}:`, error);
+        if (Deno.env.get('ENV') === 'development') {
+          console.error(`Error processing module ${module.title}:`, error);
+        }
         results.push({
           module_id: module.id,
           title: module.title,
@@ -200,7 +254,9 @@ serve(async (req) => {
       no_results: results.filter(r => r.status === 'no_results').length
     };
 
-    console.log('YouTube video search completed:', summary);
+    if (Deno.env.get('ENV') === 'development') {
+      console.log('YouTube video search completed:', summary);
+    }
 
     return new Response(
       JSON.stringify({ 
@@ -215,7 +271,9 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in find-youtube-videos function:', error);
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('Error in find-youtube-videos function:', error);
+    }
     return new Response(
       JSON.stringify({ 
         error: error instanceof Error ? error.message : 'Unknown error',

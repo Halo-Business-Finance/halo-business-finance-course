@@ -23,10 +23,43 @@ serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+    // ===== AUTHENTICATION CHECK =====
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Verify the user's JWT token
+    const authClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired authentication token' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const { data: userRole } = await authClient.rpc('get_user_role');
+    if (!['admin', 'super_admin'].includes(userRole)) {
+      return new Response(
+        JSON.stringify({ error: 'Admin privileges required' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+    // ===== END AUTHENTICATION CHECK =====
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Get client information
     const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
@@ -128,7 +161,8 @@ serve(async (req) => {
               user_agent: userAgent,
               analysis_timestamp: new Date().toISOString(),
               security_level: 'military_grade'
-            }
+            },
+            logged_via_secure_function: true
           })
 
         return new Response(
@@ -235,13 +269,16 @@ serve(async (req) => {
               await supabase.from('security_events').insert({
                 event_type: 'threat_remediation_ip_blocked',
                 severity: 'medium',
+                user_id: user.id,
                 details: {
                   threat_id,
                   blocked_ip: target_ip,
                   action: 'manual_ip_block',
                   duration_hours: 24,
-                  timestamp: new Date().toISOString()
-                }
+                  timestamp: new Date().toISOString(),
+                  performed_by: user.email
+                },
+                logged_via_secure_function: true
               })
 
               remediationResult = { success: true, message: `IP ${target_ip} blocked for 24 hours` }
@@ -264,12 +301,15 @@ serve(async (req) => {
               await supabase.from('security_events').insert({
                 event_type: 'threat_remediation_sessions_cleared',
                 severity: 'high',
+                user_id: user.id,
                 details: {
                   threat_id,
                   target_ip,
                   action: 'clear_suspicious_sessions',
-                  timestamp: new Date().toISOString()
-                }
+                  timestamp: new Date().toISOString(),
+                  performed_by: user.email
+                },
+                logged_via_secure_function: true
               })
 
               remediationResult = { success: true, message: `All sessions from IP ${target_ip} terminated` }
@@ -282,13 +322,16 @@ serve(async (req) => {
             await supabase.from('security_events').insert({
               event_type: 'enhanced_monitoring_enabled',
               severity: 'low',
+              user_id: user.id,
               details: {
                 threat_id,
                 target_ip,
                 monitoring_duration_hours: 72,
                 enhanced_logging: true,
-                timestamp: new Date().toISOString()
-              }
+                timestamp: new Date().toISOString(),
+                performed_by: user.email
+              },
+              logged_via_secure_function: true
             })
 
             remediationResult = { success: true, message: `Enhanced monitoring enabled for IP ${target_ip}` }
@@ -328,12 +371,15 @@ serve(async (req) => {
                 await supabase.from('security_events').insert({
                   event_type: 'auto_enhanced_monitoring',
                   severity: 'medium',
+                  user_id: user.id,
                   details: {
                     threat_id,
                     target_ip: threat.source_ip,
                     threat_score: threatScore,
-                    auto_remediation: true
-                  }
+                    auto_remediation: true,
+                    performed_by: user.email
+                  },
+                  logged_via_secure_function: true
                 })
 
                 remediationResult = { success: true, message: `Auto-remediation: Enhanced monitoring activated` }

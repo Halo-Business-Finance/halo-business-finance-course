@@ -2914,6 +2914,7 @@ export type Database = {
           onboarding_completed: boolean | null
           phone: string | null
           pii_access_level: string | null
+          pii_last_encrypted_at: string | null
           push_notifications: boolean | null
           reduced_motion: boolean | null
           state: string | null
@@ -2954,6 +2955,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           phone?: string | null
           pii_access_level?: string | null
+          pii_last_encrypted_at?: string | null
           push_notifications?: boolean | null
           reduced_motion?: boolean | null
           state?: string | null
@@ -2994,6 +2996,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           phone?: string | null
           pii_access_level?: string | null
+          pii_last_encrypted_at?: string | null
           push_notifications?: boolean | null
           reduced_motion?: boolean | null
           state?: string | null

@@ -13,16 +13,48 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+    // ===== AUTHENTICATION CHECK =====
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Authentication required' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Verify the user's JWT token
+    const authClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid or expired authentication token' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user is super_admin (only super admins can run data retention cleanup)
+    const { data: userRole } = await authClient.rpc('get_user_role');
+    if (userRole !== 'super_admin') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Super admin privileges required for data retention operations' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+    // ===== END AUTHENTICATION CHECK =====
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
       }
-    )
+    })
 
     if (Deno.env.get('ENV') === 'development') {
       console.log('[SECURITY-RETENTION] Starting automated data retention cleanup...');
@@ -74,12 +106,14 @@ serve(async (req) => {
       .insert({
         event_type: 'automated_data_retention_completed',
         severity: 'low',
+        user_id: user.id,
         details: {
           cleanup_timestamp: new Date().toISOString(),
           cleanup_type: 'scheduled_retention',
           automated: true,
           gdpr_compliant: true,
-          rate_limit_cleanup: true
+          rate_limit_cleanup: true,
+          initiated_by: user.email
         },
         logged_via_secure_function: true
       });
@@ -94,7 +128,8 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         message: 'Data retention cleanup completed successfully',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        initiated_by: user.email
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }

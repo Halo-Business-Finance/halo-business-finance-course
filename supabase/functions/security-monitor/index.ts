@@ -37,19 +37,51 @@ serve(async (req) => {
       throw new Error('Method not allowed');
     }
 
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+
+    // ===== AUTHENTICATION CHECK =====
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Authentication required' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Verify the user's JWT token
+    const authClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await authClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid or expired authentication token' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const { data: userRole } = await authClient.rpc('get_user_role');
+    if (!['admin', 'super_admin'].includes(userRole)) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Admin privileges required' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 403 }
+      );
+    }
+    // ===== END AUTHENTICATION CHECK =====
+
     const { action } = await req.json();
 
     // Create Supabase admin client
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
       }
-    );
+    });
 
     let response;
 
@@ -83,7 +115,7 @@ serve(async (req) => {
           .update({
             is_resolved: true,
             resolved_at: new Date().toISOString(),
-            resolved_by: resolvedBy,
+            resolved_by: resolvedBy || user.id,
             updated_at: new Date().toISOString()
           })
           .eq('id', alertId);
@@ -146,7 +178,7 @@ serve(async (req) => {
             p_description: 'This is a test alert to verify the security monitoring system is working correctly.',
             p_metadata: JSON.stringify({
               test: true,
-              created_by: 'security_monitor_function',
+              created_by: user.email,
               timestamp: new Date().toISOString()
             })
           });
