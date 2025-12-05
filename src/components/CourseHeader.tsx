@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Award, MapPin } from "lucide-react";
+import { BookOpen, Clock, Users, Award, MapPin, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/hero-finance.jpg";
+import { NotificationCenter } from "@/components/engagement/NotificationCenter";
+import { AdvancedSearch } from "@/components/search/AdvancedSearch";
 interface Instructor {
   id: string;
   name: string;
@@ -52,6 +54,25 @@ const CourseHeader = ({
   };
   return <div className="relative overflow-hidden bg-halo-navy shadow-hero border-b border-border w-full">
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+      
+      {/* Top Action Bar */}
+      <div className="relative px-4 lg:px-8 py-3 border-b border-white/10">
+        <div className="flex items-center justify-end gap-3 max-w-7xl mx-auto">
+          <AdvancedSearch 
+            trigger={
+              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10 gap-2">
+                <Search className="h-4 w-4" />
+                <span className="hidden sm:inline">Search</span>
+                <kbd className="hidden md:inline-flex h-5 items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-mono text-[10px]">
+                  ⌘K
+                </kbd>
+              </Button>
+            }
+          />
+          <NotificationCenter />
+        </div>
+      </div>
+      
       <div className="relative px-4 lg:px-8 py-12 lg:py-16 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">

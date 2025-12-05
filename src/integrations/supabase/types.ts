@@ -1484,6 +1484,50 @@ export type Database = {
         }
         Relationships: []
       }
+      course_reviews: {
+        Row: {
+          content: string | null
+          course_id: string
+          created_at: string
+          helpful_count: number | null
+          id: string
+          is_verified_purchase: boolean | null
+          rating: number
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          course_id: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified_purchase?: boolean | null
+          rating: number
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          course_id?: string
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified_purchase?: boolean | null
+          rating?: number
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_reviews_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_videos: {
         Row: {
           created_at: string
@@ -1617,6 +1661,94 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      discussion_posts: {
+        Row: {
+          content: string
+          course_id: string | null
+          created_at: string
+          id: string
+          is_pinned: boolean | null
+          likes_count: number | null
+          module_id: string | null
+          replies_count: number | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          is_pinned?: boolean | null
+          likes_count?: number | null
+          module_id?: string | null
+          replies_count?: number | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          is_pinned?: boolean | null
+          likes_count?: number | null
+          module_id?: string | null
+          replies_count?: number | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_posts_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussion_replies: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_best_answer: boolean | null
+          likes_count: number | null
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_best_answer?: boolean | null
+          likes_count?: number | null
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_best_answer?: boolean | null
+          likes_count?: number | null
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_replies_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "discussion_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       encrypted_course_content: {
         Row: {
@@ -3694,6 +3826,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_learning_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          learning_goals: string[] | null
+          preferred_topics: string[] | null
+          skill_level: string | null
+          updated_at: string
+          user_id: string
+          weekly_time_commitment: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          learning_goals?: string[] | null
+          preferred_topics?: string[] | null
+          skill_level?: string | null
+          updated_at?: string
+          user_id: string
+          weekly_time_commitment?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          learning_goals?: string[] | null
+          preferred_topics?: string[] | null
+          skill_level?: string | null
+          updated_at?: string
+          user_id?: string
+          weekly_time_commitment?: number | null
+        }
+        Relationships: []
+      }
       user_mfa: {
         Row: {
           backup_codes: string[] | null
@@ -3774,6 +3939,39 @@ export type Database = {
           lesson_id?: string | null
           module_id?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          link: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message?: string
+          title?: string
+          type?: string
           user_id?: string
         }
         Relationships: []

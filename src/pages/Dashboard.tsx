@@ -32,6 +32,9 @@ import { WelcomeWizard } from "@/components/onboarding/WelcomeWizard";
 import { QuickResumeCard } from "@/components/navigation/QuickResumeCard";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { StudyReminder } from "@/components/progress/StudyReminder";
+import { SmartRecommendations } from "@/components/recommendations/SmartRecommendations";
+import { DiscussionForum } from "@/components/social/DiscussionForum";
+import { AdvancedSearch } from "@/components/search/AdvancedSearch";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -835,6 +838,14 @@ const Dashboard = () => {
           timeLimit: 30
         }
       }} onClose={() => setSelectedModule(null)} />}
+
+        {/* Smart Recommendations & Community - Only show on level 0 */}
+        {currentFilterLevel === 0 && (
+          <div className="mt-8 space-y-6">
+            <SmartRecommendations />
+            <DiscussionForum />
+          </div>
+        )}
       </div>
 
       <FinPilotBrandFooter />
