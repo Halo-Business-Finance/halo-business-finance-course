@@ -53,7 +53,7 @@ export function WelcomeWizard({ onComplete }: WelcomeWizardProps) {
         .single();
       
       // Check if onboarding_completed exists and is false
-      const profile = data as Record<string, unknown> | null;
+      const profile = data as unknown as Record<string, unknown> | null;
       if (profile && profile.onboarding_completed !== true) {
         setOpen(true);
       }
@@ -80,7 +80,7 @@ export function WelcomeWizard({ onComplete }: WelcomeWizardProps) {
     if (user) {
       await supabase
         .from('profiles')
-        .update({ onboarding_completed: true } as Record<string, unknown>)
+        .update({ onboarding_completed: true } as unknown as Record<string, never>)
         .eq('user_id', user.id);
     }
     setOpen(false);
