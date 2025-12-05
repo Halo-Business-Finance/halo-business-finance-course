@@ -48,11 +48,13 @@ export function WelcomeWizard({ onComplete }: WelcomeWizardProps) {
       
       const { data } = await supabase
         .from('profiles')
-        .select('onboarding_completed')
+        .select('*')
         .eq('user_id', user.id)
         .single();
       
-      if (data && !data.onboarding_completed) {
+      // Check if onboarding_completed exists and is false
+      const profile = data as Record<string, unknown> | null;
+      if (profile && profile.onboarding_completed !== true) {
         setOpen(true);
       }
     };
@@ -78,7 +80,7 @@ export function WelcomeWizard({ onComplete }: WelcomeWizardProps) {
     if (user) {
       await supabase
         .from('profiles')
-        .update({ onboarding_completed: true })
+        .update({ onboarding_completed: true } as Record<string, unknown>)
         .eq('user_id', user.id);
     }
     setOpen(false);

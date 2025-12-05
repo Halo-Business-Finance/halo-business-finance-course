@@ -28,6 +28,10 @@ import { useCourseProgress } from "@/hooks/useCourseProgress";
 import { useCourseSelection } from "@/contexts/CourseSelectionContext";
 import { supabase } from "@/integrations/supabase/client";
 import { BookOpen, Clock, Target, Trophy, Brain, Zap, ArrowLeft, Lock, Users } from "lucide-react";
+import { WelcomeWizard } from "@/components/onboarding/WelcomeWizard";
+import { QuickResumeCard } from "@/components/navigation/QuickResumeCard";
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { StudyReminder } from "@/components/progress/StudyReminder";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -476,11 +480,37 @@ const Dashboard = () => {
   return <div ref={containerRef} className="min-h-screen overflow-y-auto bg-navy-900" style={{
     overflowAnchor: 'none'
   }}>
+      {/* Welcome Wizard for new users */}
+      <WelcomeWizard />
+      
       {/* Business Finance Mastery Header - Full Width Connected */}
       <CourseHeader progress={getOverallProgress()} totalModules={flattenedModules.length} completedModules={getCompletedModulesCount()} onContinueLearning={() => setCurrentFilterLevel(0)} />
 
       {/* Main Dashboard Content */}
       <div className="mobile-container mobile-section">
+        {/* Breadcrumb Navigation */}
+        {currentFilterLevel > 0 && (
+          <div className="mb-4">
+            <Breadcrumbs 
+              items={[
+                { label: 'Dashboard', href: '/dashboard' },
+                ...filterNavigationPath.map((path, index) => ({
+                  label: path.name,
+                  href: index < filterNavigationPath.length - 1 ? undefined : undefined
+                }))
+              ]}
+            />
+          </div>
+        )}
+        
+        {/* Quick Resume Card - Only show on level 0 */}
+        {currentFilterLevel === 0 && (
+          <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <QuickResumeCard />
+            <StudyReminder />
+          </div>
+        )}
+        
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Instructors Widget - Only show on level 0 */}
