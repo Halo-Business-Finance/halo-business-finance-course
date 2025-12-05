@@ -35,6 +35,12 @@ import { StudyReminder } from "@/components/progress/StudyReminder";
 import { SmartRecommendations } from "@/components/recommendations/SmartRecommendations";
 import { DiscussionForum } from "@/components/social/DiscussionForum";
 import { AdvancedSearch } from "@/components/search/AdvancedSearch";
+import { ProgressRing } from "@/components/dashboard/ProgressRing";
+import { StreakCounter } from "@/components/dashboard/StreakCounter";
+import { AchievementBadges } from "@/components/dashboard/AchievementBadges";
+import { EnhancedCourseCard } from "@/components/dashboard/EnhancedCourseCard";
+import { LearningAnalyticsCharts } from "@/components/dashboard/LearningAnalyticsCharts";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 
 // Import new course-specific images (no people)
 import courseSba7a from "@/assets/course-sba-7a.jpg";
@@ -480,14 +486,43 @@ const Dashboard = () => {
         </Card>
       </div>;
   }
-  return <div ref={containerRef} className="min-h-screen overflow-y-auto bg-navy-900" style={{
-    overflowAnchor: 'none'
-  }}>
-      {/* Welcome Wizard for new users */}
-      <WelcomeWizard />
+  // Mock data for achievements
+  const mockBadges = [
+    { id: "1", name: "First Steps", description: "Complete your first module", icon: "target" as const, unlocked: true, color: "bronze" },
+    { id: "2", name: "Quick Learner", description: "Complete 5 modules in a week", icon: "zap" as const, unlocked: true, color: "silver" },
+    { id: "3", name: "SBA Expert", description: "Master all SBA courses", icon: "trophy" as const, unlocked: false, progress: 65, color: "gold" },
+    { id: "4", name: "Perfect Score", description: "Score 100% on any quiz", icon: "star" as const, unlocked: false, progress: 45, color: "platinum" },
+    { id: "5", name: "Dedicated Learner", description: "Maintain a 30-day streak", icon: "medal" as const, unlocked: false, progress: 23, color: "emerald" },
+  ];
+
+  // Calculate current streak (mock data - would come from database in production)
+  const currentStreak = dashboardStats?.currentStreak || 7;
+  const longestStreak = dashboardStats?.longestStreak || 14;
+
+  return (
+    <div className="flex min-h-screen bg-background">
+      {/* Sidebar Navigation */}
+      <DashboardSidebar 
+        overallProgress={getOverallProgress()} 
+        currentStreak={currentStreak}
+      />
       
-      {/* Business Finance Mastery Header - Full Width Connected */}
-      <CourseHeader progress={getOverallProgress()} totalModules={flattenedModules.length} completedModules={getCompletedModulesCount()} onContinueLearning={() => setCurrentFilterLevel(0)} />
+      {/* Main Content Area */}
+      <div 
+        ref={containerRef} 
+        className="flex-1 ml-0 lg:ml-[260px] overflow-y-auto transition-all duration-300"
+        style={{ overflowAnchor: 'none' }}
+      >
+        {/* Welcome Wizard for new users */}
+        <WelcomeWizard />
+        
+        {/* Business Finance Mastery Header - Full Width Connected */}
+        <CourseHeader 
+          progress={getOverallProgress()} 
+          totalModules={flattenedModules.length} 
+          completedModules={getCompletedModulesCount()} 
+          onContinueLearning={() => setCurrentFilterLevel(0)} 
+        />
 
       {/* Main Dashboard Content */}
       <div className="mobile-container mobile-section">
@@ -842,13 +877,24 @@ const Dashboard = () => {
         {/* Smart Recommendations & Community - Only show on level 0 */}
         {currentFilterLevel === 0 && (
           <div className="mt-8 space-y-6">
+            <LearningAnalyticsCharts className="mb-6" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <StreakCounter 
+                currentStreak={currentStreak} 
+                longestStreak={longestStreak}
+                lastActiveDate={new Date().toISOString().split('T')[0]}
+              />
+              <AchievementBadges badges={mockBadges} />
+            </div>
             <SmartRecommendations />
             <DiscussionForum />
           </div>
         )}
-      </div>
+        </div>
 
-      <FinPilotBrandFooter />
-    </div>;
+        <FinPilotBrandFooter />
+      </div>
+    </div>
+  );
 };
 export default Dashboard;
