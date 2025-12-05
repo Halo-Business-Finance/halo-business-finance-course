@@ -5011,6 +5011,10 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_super_admin: { Args: never; Returns: boolean }
+      is_enrolled_in_video_course: {
+        Args: { video_module_id: string }
+        Returns: boolean
+      }
       is_production_environment: { Args: never; Returns: boolean }
       is_super_admin: { Args: { check_user_id?: string }; Returns: boolean }
       is_user_admin: { Args: never; Returns: boolean }
