@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { CourseCard } from "@/components/CourseCard";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Users, Star, AlertCircle, Check, Lock, Shield, Award, Target } from "lucide-react";
+import { AlertCircle, Shield } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -518,98 +519,25 @@ const Courses = () => {
                 </h2>
               </div>
 
-              {/* Course Grid - Dashboard Style */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12">
-                {filteredCourses.map((course, index) => {
-                const courseName = course.title.split(' - ')[0];
-                return <Card key={course.id} className="group relative overflow-hidden hover:shadow-xl transition-all duration-500 border hover:border-primary/30 bg-gradient-to-br from-card via-card to-secondary/5 hover:to-primary/5" style={{
-                  animationDelay: `${index * 100}ms`
-                }}>
-                      {/* Modern gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      <CardHeader className="pb-4 relative z-10 space-y-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 space-y-3">
-                            <div className="flex items-center gap-3">
-                              <BookOpen className="h-5 w-5 text-navy-900" />
-                              <span className="text-xs font-semibold tracking-wider text-navy-900 border-l-4 border-navy-900 pl-2">
-                                COURSE PROGRAM
-                              </span>
-                            </div>
-                            
-                            <CardTitle className="text-lg font-semibold line-clamp-2 text-foreground group-hover:text-primary transition-colors duration-300">
-                              {courseName}
-                            </CardTitle>
-                            
-                            <CardDescription className="line-clamp-3 text-sm leading-relaxed text-black">
-                              {course.description}
-                            </CardDescription>
-                          </div>
-                        </div>
-                        
-                        {/* Enhanced Course Details */}
-                        <div className="space-y-4 pt-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-sm">
-                              <Clock className="h-4 w-4 text-navy-900" />
-                              <span className="text-primary font-medium">4-6 Hours</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <span className="text-black">{course.keyTopics?.length || 0} key topics</span>
-                            </div>
-                          </div>
-                          
-                          {/* Key Topics with enhanced styling */}
-                          <div className="space-y-2">
-                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Key Topics</span>
-                            <div className="flex flex-wrap gap-2">
-                              {(course.keyTopics || []).slice(0, 3).map((topic, idx) => <span key={idx} className="text-xs font-medium text-muted-foreground border-l-2 border-muted-foreground pl-2">
-                                  {topic.length > 25 ? topic.substring(0, 25) + '...' : topic}
-                                </span>)}
-                            </div>
-                          </div>
-                          
-                          {/* Skill Levels with semantic styling */}
-                          <div className="space-y-2">
-                            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Available Levels</span>
-                            <div className="flex gap-2">
-                              <span className={`text-xs font-semibold tracking-wider border-l-4 pl-2 ${course.level === 'expert' ? 'text-red-700 border-red-700' : 'text-emerald-700 border-emerald-700'}`}>
-                                {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent className="pt-0 pb-6 relative z-10">
-                        {user ? enrollmentStatus[course.id] ? <Link to={`/module/${course.modules[0]?.id}`} className="block">
-                              <Button className="w-full h-10 bg-emerald-700 hover:bg-emerald-600 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200">
-                                <span className="flex items-center justify-center gap-2">
-                                  <Check className="h-4 w-4" />
-                                  Continue Learning
-                                </span>
-                              </Button>
-                            </Link> : <Button 
-                              onClick={() => handleEnroll(course.id)} 
-                              className="w-full h-10 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200" 
-                              disabled={loading}
-                            >
-                              <span className="flex items-center justify-center gap-2">
-                                <BookOpen className="h-4 w-4" />
-                                Start Course
-                              </span>
-                            </Button> : <Link to="/auth" className="block">
-                            <Button className="w-full h-10 bg-navy-900 hover:bg-navy-800 text-white font-semibold tracking-wide uppercase text-sm border-none transition-all duration-200">
-                              <span className="flex items-center justify-center gap-2">
-                                <Lock className="h-4 w-4" />
-                                Sign In to Enroll
-                              </span>
-                            </Button>
-                          </Link>}
-                      </CardContent>
-                    </Card>;
-              })}
+              {/* Course Grid - Enhanced Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 mb-12">
+                {filteredCourses.map((course, index) => (
+                  <CourseCard
+                    key={course.id}
+                    id={course.id}
+                    title={course.title}
+                    description={course.description}
+                    level={course.level}
+                    keyTopics={course.keyTopics || []}
+                    modulesCount={course.modules?.length || 0}
+                    isEnrolled={enrollmentStatus[course.id]}
+                    isAuthenticated={!!user}
+                    onEnroll={handleEnroll}
+                    loading={loading}
+                    firstModuleId={course.modules[0]?.id}
+                    index={index}
+                  />
+                ))}
               </div>
               
               {/* Call to Action */}
