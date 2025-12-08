@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCourses, Course } from "@/hooks/useCourses";
+import { GraduationCap, FileText, ClipboardCheck, Sparkles } from "lucide-react";
+
 interface DashboardCourseFilterProps {
   selectedCategory: string | null;
   onCategorySelect: (category: string | null) => void;
@@ -9,6 +10,7 @@ interface DashboardCourseFilterProps {
   onTopicSelect: (topic: string | null) => void;
   className?: string;
 }
+
 export function DashboardCourseFilter({
   selectedCategory,
   onCategorySelect,
@@ -16,102 +18,106 @@ export function DashboardCourseFilter({
   onTopicSelect,
   className = ""
 }: DashboardCourseFilterProps) {
-  const {
-    courses,
-    getCoursesByCategory
-  } = useCourses();
+  const { courses, getCoursesByCategory } = useCourses();
   const [categorizedCourses, setCategorizedCourses] = useState<Record<string, Course[]>>({});
+
   useEffect(() => {
     if (courses.length > 0) {
       const categories = getCoursesByCategory();
       setCategorizedCourses(categories);
     }
   }, [courses, getCoursesByCategory]);
-  const categoryConfig = [{
-    key: "Loan Originator",
-    label: "Loan Originator"
-  }, {
-    key: "Loan Processing",
-    label: "Loan Processor"
-  }, {
-    key: "Loan Underwriting",
-    label: "Loan Underwriter"
-  }];
-  
-  const filterTopics = [
-    "Featured",
-    "SBA Lending",
-    "Commercial Real Estate",
-    "Equipment Financing",
-    "Working Capital",
-    "Credit Analysis",
-    "Risk Management"
+
+  const categoryConfig = [
+    { key: "Loan Originator", label: "Loan Originator", icon: GraduationCap },
+    { key: "Loan Processing", label: "Loan Processor", icon: FileText },
+    { key: "Loan Underwriting", label: "Loan Underwriter", icon: ClipboardCheck },
   ];
-  const getTotalCourses = () => {
-    return Object.values(categorizedCourses).reduce((total, categoryItems) => total + categoryItems.length, 0);
-  };
+
+  const filterTopics = [
+    { label: "Featured", icon: Sparkles },
+    { label: "SBA Lending" },
+    { label: "Commercial Real Estate" },
+    { label: "Equipment Financing" },
+    { label: "Working Capital" },
+    { label: "Credit Analysis" },
+    { label: "Risk Management" },
+  ];
+
   const getCategoryCount = (categoryKey: string) => {
     return categorizedCourses[categoryKey]?.length || 0;
   };
-  return <div className={`space-y-4 ${className}`}>
+
+  return (
+    <div className={`space-y-4 ${className}`}>
       {/* Main Category Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+      <div className="flex flex-wrap items-center gap-3">
         <Button
-          variant={selectedCategory === null ? "default" : "ghost"}
-          onClick={() => {
-            console.log('Clicking All Programs');
-            onCategorySelect(null);
-          }}
-          className={`flex-shrink-0 h-12 px-8 ${
-            selectedCategory === null 
-              ? "bg-navy-900 hover:bg-navy-800 text-white" 
-              : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+          variant={selectedCategory === null ? "default" : "outline"}
+          onClick={() => onCategorySelect(null)}
+          className={`h-11 px-6 rounded-lg font-medium transition-all duration-200 ${
+            selectedCategory === null
+              ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
+              : "bg-background border-border/50 text-muted-foreground hover:bg-accent hover:text-foreground hover:border-primary/30"
           }`}
         >
           All Programs
         </Button>
-        {categoryConfig.map(category => {
+        
+        {categoryConfig.map((category) => {
           const count = getCategoryCount(category.key);
+          const Icon = category.icon;
+          const isSelected = selectedCategory === category.key;
+          
           return (
             <Button
               key={category.key}
-              variant={selectedCategory === category.key ? "default" : "ghost"}
-              onClick={() => {
-                console.log('Clicking category:', category.key);
-                onCategorySelect(category.key);
-              }}
+              variant={isSelected ? "default" : "outline"}
+              onClick={() => onCategorySelect(category.key)}
               disabled={count === 0}
-              className={`flex-shrink-0 h-12 px-8 ${
-                selectedCategory === category.key
-                  ? "bg-navy-900 hover:bg-navy-800 text-white"
-                  : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+              className={`h-11 px-6 rounded-lg font-medium transition-all duration-200 gap-2 ${
+                isSelected
+                  ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
+                  : "bg-background border-border/50 text-muted-foreground hover:bg-accent hover:text-foreground hover:border-primary/30 disabled:opacity-40"
               }`}
             >
+              <Icon className="h-4 w-4" />
               {category.label}
+              {count > 0 && (
+                <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${
+                  isSelected 
+                    ? "bg-primary-foreground/20 text-primary-foreground" 
+                    : "bg-muted text-muted-foreground"
+                }`}>
+                  {count}
+                </span>
+              )}
             </Button>
           );
         })}
       </div>
 
       {/* Filter Pills Row */}
-      <ScrollArea className="w-full">
-        <div className="flex items-center gap-2 pb-2">
-          {filterTopics.map((topic, index) => (
-            <Button
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        {filterTopics.map((topic, index) => {
+          const isSelected = selectedTopic === topic.label;
+          
+          return (
+            <button
               key={index}
-              variant="outline"
-              size="sm"
-              onClick={() => onTopicSelect(selectedTopic === topic ? null : topic)}
-              className={`flex-shrink-0 rounded-full border-2 px-6 h-10 ${
-                selectedTopic === topic
-                  ? "border-navy-900 bg-navy-900 text-white hover:bg-navy-800"
-                  : "border-gray-300 hover:border-navy-900 hover:bg-gray-50"
+              onClick={() => onTopicSelect(isSelected ? null : topic.label)}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                isSelected
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent hover:border-border/50"
               }`}
             >
-              {topic}
-            </Button>
-          ))}
-        </div>
-      </ScrollArea>
-    </div>;
+              {topic.icon && <topic.icon className="h-3.5 w-3.5" />}
+              {topic.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
