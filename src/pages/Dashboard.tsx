@@ -500,7 +500,7 @@ const Dashboard = () => {
   const longestStreak = dashboardStats?.longestStreak || 14;
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar Navigation */}
       <DashboardSidebar 
         overallProgress={getOverallProgress()} 
@@ -525,10 +525,10 @@ const Dashboard = () => {
         />
 
       {/* Main Dashboard Content */}
-      <div className="mobile-container mobile-section">
+      <div className="px-6 lg:px-12 py-8 max-w-7xl mx-auto">
         {/* Breadcrumb Navigation */}
         {currentFilterLevel > 0 && (
-          <div className="mb-4">
+          <div className="mb-6">
             <Breadcrumbs 
               items={[
                 { label: 'Dashboard', href: '/dashboard' },
@@ -543,7 +543,7 @@ const Dashboard = () => {
         
         {/* Quick Resume Card - Only show on level 0 */}
         {currentFilterLevel === 0 && (
-          <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <QuickResumeCard />
             <StudyReminder />
           </div>
@@ -552,33 +552,45 @@ const Dashboard = () => {
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
           {/* Course Instructors Widget - Only show on level 0 */}
-          {currentFilterLevel === 0 && <div className="mb-6 sm:mb-8">
+          {currentFilterLevel === 0 && (
+            <div className="mb-8">
               <InstructorInfo />
-            </div>}
+            </div>
+          )}
           
           {/* Main Content */}
           <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex-1 min-w-0'}`}>
             {/* Section Divider - Only show on level 0 */}
-            {currentFilterLevel === 0 && <Separator className="mb-4" />}
+            {currentFilterLevel === 0 && <Separator className="mb-6" />}
             
             {/* Results Summary for other levels */}
-            {currentFilterLevel !== 0 && <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 sm:gap-4">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold underline">
-                  {currentFilterLevel === 1 && <span className="block sm:inline">2 Skill Levels Available</span>}
-                  {currentFilterLevel === 2 && <span className="block sm:inline">
-                      {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Found
-                    </span>}
+            {currentFilterLevel !== 0 && (
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-2 sm:gap-4">
+                <h3 className="text-xl lg:text-2xl font-bold text-halo-navy">
+                  {currentFilterLevel === 1 && "Select Your Skill Level"}
+                  {currentFilterLevel === 2 && (
+                    <span>
+                      {filteredModules.length} {filteredModules.length === 1 ? 'Module' : 'Modules'} Available
+                    </span>
+                  )}
                 </h3>
-              </div>}
+              </div>
+            )}
 
-            {loading ? <div className="mobile-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => <div key={i} className="animate-pulse">
-                    <div className="bg-muted rounded-lg h-64" />
-                  </div>)}
-              </div> : <>
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map(i => (
+                  <div key={i} className="animate-pulse">
+                    <div className="bg-white rounded-xl h-80 shadow-sm" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
                 {/* Level 0: Course Filter and Course Program Cards */}
-                {currentFilterLevel === 0 && <div className="space-y-6">
-                    {/* Course Categories Filter - Full Width Above */}
+                {currentFilterLevel === 0 && (
+                  <div className="space-y-8">
+                    {/* Course Categories Filter */}
                     <div className="w-full">
                       <DashboardCourseFilter 
                         selectedCategory={selectedCategory} 
@@ -588,115 +600,106 @@ const Dashboard = () => {
                       />
                     </div>
                     
-                    {/* Course Cards Grid - Full Width */}
+                    {/* Course Cards Grid */}
                     <div className="w-full">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ?
-              // Show loading skeletons
-              Array.from({
-                length: 6
-              }).map((_, index) => <div key={index} className="animate-pulse">
-                          <div className="bg-muted rounded-lg h-64" />
-                        </div>) : filteredCoursesWithModules.length > 0 ? filteredCoursesWithModules.filter((course, index, self) => index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])).map((course, index) => {
-                const courseName = course.title.split(' - ')[0];
-                const courseModules = flattenedModules.filter(m => {
-                  if (!m.course_title) return false;
-                  // Extract base course name from the module's course title (remove skill level suffix)
-                  const moduleBaseName = m.course_title.replace(/\s*-\s*(Beginner|Expert)$/i, '').trim();
-                  return moduleBaseName.toLowerCase() === courseName.toLowerCase();
-                });
-                return <Card 
-                              key={courseName} 
-                              className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 rounded-lg bg-white"
-                            >
-                              {/* Background Image with Overlay */}
-                              <div className="relative w-full h-48 overflow-hidden bg-gray-200">
-                                <img 
-                                  src={getCourseImage(course.title)} 
-                                  alt={courseName}
-                                  className="w-full h-full object-cover opacity-60"
-                                />
-                                {/* Gradient overlay for text readability */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/40" />
-                              </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {coursesLoading && (!databaseCourses || databaseCourses.length === 0) ? (
+                          Array.from({ length: 6 }).map((_, index) => (
+                            <div key={index} className="animate-pulse">
+                              <div className="bg-white rounded-xl h-80 shadow-sm" />
+                            </div>
+                          ))
+                        ) : filteredCoursesWithModules.length > 0 ? (
+                          filteredCoursesWithModules
+                            .filter((course, index, self) => 
+                              index === self.findIndex(c => c.title.split(' - ')[0] === course.title.split(' - ')[0])
+                            )
+                            .map((course) => {
+                              const courseName = course.title.split(' - ')[0];
+                              const courseDetails = getCourseDetails(courseName);
                               
-                              {/* Card Content - Overlapping the image */}
-                              <CardContent className="relative -mt-20 mx-4 mb-4 p-6 bg-white rounded-lg shadow-lg space-y-4">
-                                {/* Institution Logo Placeholder */}
-                                <div className="flex items-center gap-2 h-12">
-                                  <div className="h-10 w-10 rounded bg-navy-900 flex items-center justify-center text-white font-bold text-xs">
-                                    FP
-                                  </div>
-                                  <span className="text-xs text-gray-600">FinPilot Learning Academy</span>
-                                </div>
-                                
-                                {/* Course Title */}
-                                <h3 className="text-lg font-bold text-gray-900 line-clamp-2 min-h-[3.5rem] leading-tight">
-                                  {courseName}
-                                </h3>
-                                
-                                {/* Institution Name */}
-                                <p className="text-sm text-gray-600 font-medium">
-                                  FinPilot Learning Academy
-                                </p>
-                                
-                                {/* Course Description */}
-                                <p className="text-sm text-gray-700 line-clamp-3 leading-relaxed">
-                                  {getCourseDetails(courseName).description}
-                                </p>
-                                
-                                <Separator className="my-3" />
-                                
-                                {/* Course Meta Information */}
-                                <div className="space-y-2 text-xs">
-                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
-                                    <Users className="h-3.5 w-3.5" />
-                                    <span>Structured, Self-Paced</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
-                                    <Clock className="h-3.5 w-3.5" />
-                                    <span>{getCourseDetails(courseName).duration}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-gray-600 uppercase font-medium">
-                                    <Trophy className="h-3.5 w-3.5" />
-                                    <span>Certificate of Completion</span>
-                                  </div>
-                                </div>
-                                
-                                {/* Topic Tags */}
-                                <div className="flex flex-wrap gap-2 pt-2">
-                                  {getCourseDetails(courseName).topics.slice(0, 3).map((topic, idx) => (
-                                    <span 
-                                      key={idx}
-                                      className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded uppercase font-medium"
-                                    >
-                                      {topic}
-                                    </span>
-                                  ))}
-                                </div>
-                                
-                                {/* Learn More Button */}
-                                <Button 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    handleStartCourse(courseName);
-                                  }}
-                                  variant="ghost"
-                                  className="w-full mt-4 text-navy-900 hover:text-navy-800 font-semibold uppercase text-sm flex items-center justify-center gap-2 group/btn"
+                              return (
+                                <div 
+                                  key={courseName}
+                                  className="group bg-white rounded-xl border-2 border-slate-200 hover:border-halo-navy/30 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
                                 >
-                                  Learn More
-                                  <ArrowLeft className="h-4 w-4 rotate-180 group-hover/btn:translate-x-1 transition-transform" />
-                                </Button>
-                              </CardContent>
-                            </Card>;
-              }) : <div className="col-span-full text-center py-8">
-                        <p className="text-muted-foreground">No courses available. Contact your administrator to add courses.</p>
-                      </div>}
+                                  {/* Course Image */}
+                                  <div className="relative h-44 overflow-hidden">
+                                    <img 
+                                      src={getCourseImage(course.title)} 
+                                      alt={courseName}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                                    
+                                    {/* Level Badge */}
+                                    <div className="absolute top-4 left-4">
+                                      <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-halo-navy text-xs font-semibold rounded-full uppercase tracking-wide">
+                                        {courseDetails.difficulty}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Card Content */}
+                                  <div className="p-6 space-y-4">
+                                    {/* Title */}
+                                    <h3 className="text-lg font-bold text-halo-navy line-clamp-2 min-h-[3rem] leading-snug">
+                                      {courseName}
+                                    </h3>
+                                    
+                                    {/* Description */}
+                                    <p className="text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                                      {courseDetails.description}
+                                    </p>
+                                    
+                                    {/* Meta Info */}
+                                    <div className="flex items-center gap-4 text-xs text-slate-500 pt-2">
+                                      <div className="flex items-center gap-1.5">
+                                        <Clock className="h-3.5 w-3.5" />
+                                        <span>{courseDetails.duration}</span>
+                                      </div>
+                                      <div className="flex items-center gap-1.5">
+                                        <BookOpen className="h-3.5 w-3.5" />
+                                        <span>Self-Paced</span>
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Topic Tags */}
+                                    <div className="flex flex-wrap gap-2 pt-1">
+                                      {courseDetails.topics.slice(0, 2).map((topic, idx) => (
+                                        <span 
+                                          key={idx}
+                                          className="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs rounded-md font-medium"
+                                        >
+                                          {topic}
+                                        </span>
+                                      ))}
+                                    </div>
+                                    
+                                    {/* CTA Button */}
+                                    <Button 
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleStartCourse(courseName);
+                                      }}
+                                      className="w-full mt-4 h-11 bg-halo-navy hover:bg-halo-navy/90 text-white font-semibold rounded-lg transition-all duration-200"
+                                    >
+                                      Explore Course
+                                    </Button>
+                                  </div>
+                                </div>
+                              );
+                            })
+                        ) : (
+                          <div className="col-span-full text-center py-12">
+                            <p className="text-slate-500">No courses available. Contact your administrator to add courses.</p>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>}
+                  </div>
+                )}
 
                 {(() => {
               console.log('=== LEVEL 1 RENDER CHECK ===');
@@ -841,15 +844,18 @@ const Dashboard = () => {
                   </div>}
 
                 {/* No results message */}
-                {(currentFilterLevel === 2 && filteredModules.length === 0 || currentFilterLevel === 1 && filterNavigationPath.length === 0) && <div className="text-center py-12">
-                    <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                {(currentFilterLevel === 2 && filteredModules.length === 0 || currentFilterLevel === 1 && filterNavigationPath.length === 0) && (
+                  <div className="text-center py-12">
+                    <h3 className="text-lg font-medium text-slate-400 mb-2">
                       No content found
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-slate-500">
                       Try navigating back or adjusting your selection.
                     </p>
-                  </div>}
-              </>}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
 
