@@ -49,16 +49,16 @@ export function DashboardCourseFilter({
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-5 ${className}`}>
       {/* Main Category Tabs */}
       <div className="flex flex-wrap items-center gap-3">
         <Button
-          variant={selectedCategory === null ? "default" : "outline"}
+          variant="outline"
           onClick={() => onCategorySelect(null)}
-          className={`h-11 px-6 rounded-lg font-medium transition-all duration-200 ${
+          className={`h-12 px-6 rounded-xl font-semibold transition-all duration-300 ${
             selectedCategory === null
-              ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-              : "bg-background border-border/50 text-muted-foreground hover:bg-accent hover:text-foreground hover:border-primary/30"
+              ? "bg-halo-navy text-white border-halo-navy shadow-lg hover:bg-halo-navy/90"
+              : "bg-white text-halo-navy border-2 border-halo-navy/20 hover:border-halo-navy hover:bg-halo-navy/5"
           }`}
         >
           All Programs
@@ -72,22 +72,22 @@ export function DashboardCourseFilter({
           return (
             <Button
               key={category.key}
-              variant={isSelected ? "default" : "outline"}
+              variant="outline"
               onClick={() => onCategorySelect(category.key)}
               disabled={count === 0}
-              className={`h-11 px-6 rounded-lg font-medium transition-all duration-200 gap-2 ${
+              className={`h-12 px-6 rounded-xl font-semibold transition-all duration-300 gap-2 ${
                 isSelected
-                  ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-                  : "bg-background border-border/50 text-muted-foreground hover:bg-accent hover:text-foreground hover:border-primary/30 disabled:opacity-40"
+                  ? "bg-halo-navy text-white border-halo-navy shadow-lg hover:bg-halo-navy/90"
+                  : "bg-white text-halo-navy border-2 border-halo-navy/20 hover:border-halo-navy hover:bg-halo-navy/5 disabled:opacity-40"
               }`}
             >
               <Icon className="h-4 w-4" />
               {category.label}
               {count > 0 && (
-                <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${
+                <span className={`ml-1.5 text-xs px-2 py-0.5 rounded-full font-medium ${
                   isSelected 
-                    ? "bg-primary-foreground/20 text-primary-foreground" 
-                    : "bg-muted text-muted-foreground"
+                    ? "bg-white/20 text-white" 
+                    : "bg-halo-navy/10 text-halo-navy"
                 }`}>
                   {count}
                 </span>
@@ -98,7 +98,7 @@ export function DashboardCourseFilter({
       </div>
 
       {/* Filter Pills Row */}
-      <div className="flex flex-wrap items-center gap-2 pt-1">
+      <div className="flex flex-wrap items-center gap-2.5">
         {filterTopics.map((topic, index) => {
           const isSelected = selectedTopic === topic.label;
           
@@ -106,10 +106,10 @@ export function DashboardCourseFilter({
             <button
               key={index}
               onClick={() => onTopicSelect(isSelected ? null : topic.label)}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 isSelected
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent hover:border-border/50"
+                  ? "bg-halo-navy text-white shadow-md"
+                  : "bg-white text-halo-navy border-2 border-halo-navy/15 hover:border-halo-navy/40 hover:bg-halo-navy/5"
               }`}
             >
               {topic.icon && <topic.icon className="h-3.5 w-3.5" />}
