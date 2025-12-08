@@ -541,22 +541,17 @@ const Dashboard = () => {
           </div>
         )}
         
-        {/* Quick Resume Card - Only show on level 0 */}
+        {/* Quick Resume, Study Reminder & Instructor - Only show on level 0 */}
         {currentFilterLevel === 0 && (
-          <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="mb-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <QuickResumeCard />
             <StudyReminder />
+            <InstructorInfo />
           </div>
         )}
         
         {/* Learning Dashboard */}
         <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex flex-col lg:flex-row gap-6 lg:gap-8'}`}>
-          {/* Course Instructors Widget - Only show on level 0 */}
-          {currentFilterLevel === 0 && (
-            <div className="mb-8">
-              <InstructorInfo />
-            </div>
-          )}
           
           {/* Main Content */}
           <div className={`${currentFilterLevel === 0 ? 'w-full' : 'flex-1 min-w-0'}`}>
