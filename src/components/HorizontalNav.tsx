@@ -14,6 +14,11 @@ export const HorizontalNav = () => {
 
         {/* Navigation Menu */}
         <div className="flex items-center gap-6 flex-nowrap flex-1 justify-center">
+          <NavLink to="/about" className={({
+          isActive
+        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
+            About
+          </NavLink>
           <NavLink to="/course-catalog" className={({
           isActive
         }) => `text-black hover:text-blue-600 transition-colors font-medium text-base whitespace-nowrap ${isActive ? 'text-blue-600' : ''}`}>
@@ -33,11 +38,6 @@ export const HorizontalNav = () => {
           isActive
         }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
             Blog
-          </NavLink>
-          <NavLink to="/about" className={({
-          isActive
-        }) => `text-black hover:text-blue-600 transition-colors font-medium text-base ${isActive ? 'text-blue-600' : ''}`}>
-            About
           </NavLink>
           <NavLink to="/support" className={({
           isActive
