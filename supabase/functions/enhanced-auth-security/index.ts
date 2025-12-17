@@ -17,6 +17,17 @@ const securityHeaders = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
 };
 
+// Sanitize error messages to prevent information leakage
+function sanitizeError(error: unknown): string {
+  // Log detailed error server-side for debugging
+  if (Deno.env.get('ENV') === 'development') {
+    console.error('[enhanced-auth-security]', error);
+  }
+  
+  // Return generic message to client
+  return 'Security check failed. Please try again.';
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -33,23 +44,35 @@ serve(async (req) => {
 
     // Input validation
     if (!action || typeof action !== 'string') {
-      throw new Error('Invalid action parameter');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request', code: 'ERR_400' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
     }
 
     // Validate allowed actions
     const allowedActions = ['check_rate_limit', 'log_failed_auth', 'log_successful_auth'];
     if (!allowedActions.includes(action)) {
-      throw new Error('Invalid action specified');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request', code: 'ERR_400' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
     }
 
     // Validate email format if provided
     if (email && (typeof email !== 'string' || email.length > 255 || !email.includes('@'))) {
-      throw new Error('Invalid email parameter');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request', code: 'ERR_400' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
     }
 
     // Validate endpoint format
     if (endpoint && (typeof endpoint !== 'string' || endpoint.length > 200)) {
-      throw new Error('Invalid endpoint parameter');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request', code: 'ERR_400' }),
+        { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
     }
 
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
@@ -95,7 +118,13 @@ serve(async (req) => {
           });
 
         if (rateLimitError) {
-          throw new Error('Rate limit check failed');
+          if (Deno.env.get('ENV') === 'development') {
+            console.error('[rate_limit_check]', rateLimitError);
+          }
+          return new Response(
+            JSON.stringify({ success: false, error: 'Service temporarily unavailable', code: 'ERR_503' }),
+            { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 503 }
+          );
         }
 
         rateLimitResponse = rateLimitData;
@@ -122,7 +151,7 @@ serve(async (req) => {
         if (logError) {
           // Log to console in development only
           if (Deno.env.get('ENV') === 'development') {
-            console.error('Failed to log security event:', logError);
+            console.error('[log_failed_auth]', logError);
           }
         }
 
@@ -133,7 +162,7 @@ serve(async (req) => {
         if (analysisError) {
           // Log to console in development only
           if (Deno.env.get('ENV') === 'development') {
-            console.error('Security analysis error:', analysisError);
+            console.error('[security_analysis]', analysisError);
           }
         }
 
@@ -161,7 +190,7 @@ serve(async (req) => {
         if (successLogError) {
           // Log to console in development only  
           if (Deno.env.get('ENV') === 'development') {
-            console.error('Failed to log successful auth:', successLogError);
+            console.error('[log_successful_auth]', successLogError);
           }
         }
 
@@ -169,7 +198,10 @@ serve(async (req) => {
         break;
 
       default:
-        throw new Error('Invalid action');
+        return new Response(
+          JSON.stringify({ success: false, error: 'Invalid request', code: 'ERR_400' }),
+          { headers: { ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+        );
     }
 
     return new Response(
@@ -184,20 +216,16 @@ serve(async (req) => {
       }
     );
 
-  } catch (error: any) {
-    // Only log errors in development
-    if (Deno.env.get('ENV') === 'development') {
-      console.error('Enhanced auth security error:', error);
-    }
-    
+  } catch (error: unknown) {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || 'Security check failed' 
+        error: sanitizeError(error),
+        code: 'ERR_500'
       }),
       {
         headers: { ...securityHeaders, 'Content-Type': 'application/json' },
-        status: 400,
+        status: 500,
       }
     );
   }

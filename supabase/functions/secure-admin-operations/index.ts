@@ -16,6 +16,36 @@ const securityHeaders = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
 };
 
+// Error sanitization utility to prevent information leakage
+const ERROR_MAP: Record<string, string> = {
+  'duplicate key': 'This operation conflicts with existing data',
+  'foreign key': 'Related data not found',
+  'not found': 'Resource not available',
+  'permission denied': 'You do not have permission to perform this action',
+  'rate limit': 'Too many requests. Please try again later',
+  'constraint': 'Data validation failed',
+  'violation': 'Operation not allowed',
+};
+
+function sanitizeError(error: Error | string | unknown): string {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  const lowerMessage = errorMessage.toLowerCase();
+  
+  for (const [pattern, safeMessage] of Object.entries(ERROR_MAP)) {
+    if (lowerMessage.includes(pattern)) {
+      return safeMessage;
+    }
+  }
+  
+  return 'Operation failed. Please try again or contact support.';
+}
+
+function logError(context: string, error: unknown): void {
+  if (Deno.env.get('ENV') === 'development') {
+    console.error(`[${context}]`, error);
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -48,14 +78,21 @@ serve(async (req) => {
     // Get the authorization header and extract the JWT
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
-      throw new Error('Missing authorization header')
+      return new Response(
+        JSON.stringify({ error: 'Authentication required', code: 'ERR_401' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const jwt = authHeader.replace('Bearer ', '')
     const { data: user, error: userError } = await supabaseClient.auth.getUser(jwt)
     
     if (userError || !user.user) {
-      throw new Error('Invalid authentication token')
+      logError('auth_validation', userError);
+      return new Response(
+        JSON.stringify({ error: 'Authentication failed', code: 'ERR_401' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Verify admin role using secure function
@@ -63,7 +100,11 @@ serve(async (req) => {
       .rpc('check_user_has_role', { check_role: 'admin' })
     
     if (roleError || !hasAdminRole) {
-      throw new Error('Insufficient permissions')
+      logError('role_check', roleError);
+      return new Response(
+        JSON.stringify({ error: 'Access denied', code: 'ERR_403' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const { operation, ...operationData } = await req.json()
@@ -80,12 +121,16 @@ serve(async (req) => {
       case 'create_admin_account':
         return await createAdminAccount(supabaseAdmin, user.user.id, operationData)
       default:
-        throw new Error('Invalid operation')
+        return new Response(
+          JSON.stringify({ error: 'Invalid operation', code: 'ERR_400' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
     }
 
   } catch (error) {
+    logError('secure_admin_operations', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: sanitizeError(error), code: 'ERR_400' }),
       {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -113,11 +158,12 @@ async function getFilteredProfiles(supabaseAdmin: any, adminUserId: string, { li
     .order('created_at', { ascending: false })
   
   if (error) {
-    throw new Error(`Failed to fetch profiles: ${error.message}`)
+    logError('fetch_profiles', error);
+    throw new Error('Failed to retrieve user profiles');
   }
 
   // Get user roles for each profile (only return role info, not full access)
-  const userIds = profiles.map(p => p.user_id)
+  const userIds = profiles.map((p: any) => p.user_id)
   const { data: userRoles, error: rolesError } = await supabaseAdmin
     .from('user_roles')
     .select('user_id, role, is_active')
@@ -125,13 +171,14 @@ async function getFilteredProfiles(supabaseAdmin: any, adminUserId: string, { li
     .eq('is_active', true)
 
   if (rolesError) {
+    logError('fetch_roles', rolesError);
     // Silent error for non-critical operation
   }
 
   // Combine profiles with roles
-  const profilesWithRoles = profiles.map(profile => ({
+  const profilesWithRoles = profiles.map((profile: any) => ({
     ...profile,
-    roles: userRoles?.filter(ur => ur.user_id === profile.user_id).map(ur => ur.role) || []
+    roles: userRoles?.filter((ur: any) => ur.user_id === profile.user_id).map((ur: any) => ur.role) || []
   }))
 
   return new Response(
@@ -142,14 +189,14 @@ async function getFilteredProfiles(supabaseAdmin: any, adminUserId: string, { li
   )
 }
 
-async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserId, role, reason }) {
+async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserId, role, reason }: any) {
   // Verify super admin for super_admin assignments
   if (role === 'super_admin') {
     const { data: isSuperAdmin } = await supabaseAdmin
       .rpc('check_user_has_role', { check_role: 'super_admin' })
     
     if (!isSuperAdmin) {
-      throw new Error('Only super admins can assign super admin roles')
+      throw new Error('Access denied');
     }
   }
 
@@ -158,7 +205,8 @@ async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserI
     // Get the target user's email
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(targetUserId);
     if (userError) {
-      throw new Error(`Failed to get user data: ${userError.message}`);
+      logError('get_user_data', userError);
+      throw new Error('User validation failed');
     }
     
     // Check if email domain is valid for admin roles
@@ -168,11 +216,12 @@ async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserI
     });
     
     if (validationError) {
-      throw new Error(`Email validation failed: ${validationError.message}`);
+      logError('email_domain_validation', validationError);
+      throw new Error('Validation failed');
     }
     
     if (!isValidDomain) {
-      throw new Error(`Admin roles require a @halobusinessfinance.com email address. User email: ${userData.user.email}`);
+      throw new Error('Admin roles require an authorized email domain');
     }
   }
 
@@ -186,7 +235,8 @@ async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserI
     })
 
   if (error) {
-    throw new Error(`Failed to assign role: ${error.message}`)
+    logError('assign_role', error);
+    throw new Error('Role assignment failed');
   }
 
   await logAdminAction(supabaseAdmin, adminUserId, 'role_assigned', targetUserId, 'user_roles', { role, reason })
@@ -199,7 +249,7 @@ async function assignRole(supabaseAdmin: any, adminUserId: string, { targetUserI
   )
 }
 
-async function revokeRole(supabaseAdmin: any, adminUserId: string, { targetUserId, reason }) {
+async function revokeRole(supabaseAdmin: any, adminUserId: string, { targetUserId, reason }: any) {
   const { data, error } = await supabaseAdmin
     .rpc('revoke_user_role', {
       p_target_user_id: targetUserId,
@@ -208,7 +258,8 @@ async function revokeRole(supabaseAdmin: any, adminUserId: string, { targetUserI
     })
 
   if (error) {
-    throw new Error(`Failed to revoke role: ${error.message}`)
+    logError('revoke_role', error);
+    throw new Error('Role revocation failed');
   }
 
   await logAdminAction(supabaseAdmin, adminUserId, 'role_revoked', targetUserId, 'user_roles', { reason })
@@ -221,10 +272,10 @@ async function revokeRole(supabaseAdmin: any, adminUserId: string, { targetUserI
   )
 }
 
-async function deleteUser(supabaseAdmin: any, adminUserId: string, { targetUserId, reason }) {
+async function deleteUser(supabaseAdmin: any, adminUserId: string, { targetUserId, reason }: any) {
   // Prevent self-deletion
   if (targetUserId === adminUserId) {
-    throw new Error('Cannot delete your own account')
+    throw new Error('Cannot delete your own account');
   }
 
   // Use the secure delete-user function
@@ -233,7 +284,8 @@ async function deleteUser(supabaseAdmin: any, adminUserId: string, { targetUserI
   })
 
   if (error) {
-    throw new Error(`Failed to delete user: ${error.message}`)
+    logError('delete_user', error);
+    throw new Error('User deletion failed');
   }
 
   await logAdminAction(supabaseAdmin, adminUserId, 'user_deleted', targetUserId, 'auth.users', { reason })
@@ -246,7 +298,7 @@ async function deleteUser(supabaseAdmin: any, adminUserId: string, { targetUserI
   )
 }
 
-async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string, { email, password, fullName, role }) {
+async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string, { email, password, fullName, role }: any) {
   // Validate email domain for admin roles
   if (role && role !== 'trainee') {
     const { data: isValidDomain, error: domainError } = await supabaseAdmin.rpc('validate_email_domain_for_role', {
@@ -255,11 +307,12 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
     });
 
     if (domainError) {
-      throw new Error(`Email validation failed: ${domainError.message}`);
+      logError('email_domain_validation', domainError);
+      throw new Error('Validation failed');
     }
 
     if (!isValidDomain) {
-      throw new Error(`Admin roles require a @halobusinessfinance.com email address. Provided: ${email}`);
+      throw new Error('Admin roles require an authorized email domain');
     }
   }
 
@@ -269,7 +322,7 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
       .rpc('check_user_has_role', { check_role: 'super_admin' })
     
     if (!isSuperAdmin) {
-      throw new Error('Only super admins can create super admin accounts')
+      throw new Error('Access denied');
     }
   }
 
@@ -282,7 +335,8 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
   })
 
   if (createError) {
-    throw new Error(`Failed to create user: ${createError.message}`)
+    logError('create_user', createError);
+    throw new Error('Account creation failed');
   }
 
   // Assign the role using the secure function (this will be validated by the database trigger)
@@ -297,7 +351,8 @@ async function createAdminAccount(supabaseAdmin: any, requestingAdminId: string,
   if (roleError) {
     // Clean up the user if role assignment fails
     await supabaseAdmin.auth.admin.deleteUser(newUser.user.id)
-    throw new Error(`Failed to assign role: ${roleError.message}`)
+    logError('assign_role_new_user', roleError);
+    throw new Error('Account setup failed');
   }
 
   await logAdminAction(supabaseAdmin, requestingAdminId, 'admin_account_created', newUser.user.id, 'auth.users', { 
@@ -324,6 +379,7 @@ async function logAdminAction(supabaseAdmin: any, adminUserId: string, action: s
       p_details: details
     })
   } catch (error) {
+    logError('log_admin_action', error);
     // Silent error - logging failure shouldn't break operations
   }
 }
