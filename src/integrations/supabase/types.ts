@@ -4280,8 +4280,8 @@ export type Database = {
         | {
             Args: {
               p_device_fingerprint: string
-              p_geolocation: Json
-              p_ip_address: string
+              p_geolocation?: Json
+              p_ip_address: unknown
               p_user_agent: string
             }
             Returns: Json
@@ -4289,8 +4289,8 @@ export type Database = {
         | {
             Args: {
               p_device_fingerprint: string
-              p_geolocation?: Json
-              p_ip_address: unknown
+              p_geolocation: Json
+              p_ip_address: string
               p_user_agent: string
             }
             Returns: Json
@@ -4358,11 +4358,11 @@ export type Database = {
         Returns: Json
       }
       check_user_has_role:
+        | { Args: { check_role: string }; Returns: boolean }
         | {
             Args: { check_role: string; check_user_id: string }
             Returns: boolean
           }
-        | { Args: { check_role: string }; Returns: boolean }
       check_user_has_role_safe: {
         Args: { check_role: string; check_user_id?: string }
         Returns: boolean
@@ -4470,8 +4470,7 @@ export type Database = {
         | {
             Args: {
               p_action: string
-              p_admin_user_id: string
-              p_data_classification?: string
+              p_compliance_type?: string
               p_details?: Json
               p_target_resource?: string
               p_target_user_id?: string
@@ -4481,7 +4480,8 @@ export type Database = {
         | {
             Args: {
               p_action: string
-              p_compliance_type?: string
+              p_admin_user_id: string
+              p_data_classification?: string
               p_details?: Json
               p_target_resource?: string
               p_target_user_id?: string
@@ -5054,6 +5054,15 @@ export type Database = {
       log_admin_profile_access_detailed:
         | {
             Args: {
+              access_metadata: Json
+              access_type: string
+              accessing_admin_id: string
+              admin_role: string
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
               access_reason?: string
               data_fields?: string[]
               target_user_id: string
@@ -5066,15 +5075,6 @@ export type Database = {
               fields_accessed: string[]
               reason?: string
               target_user_id: string
-            }
-            Returns: undefined
-          }
-        | {
-            Args: {
-              access_metadata: Json
-              access_type: string
-              accessing_admin_id: string
-              admin_role: string
             }
             Returns: undefined
           }
