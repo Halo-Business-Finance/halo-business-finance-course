@@ -7,15 +7,19 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+// Use sessionStorage for improved security - clears on browser close
+// This prevents auth tokens from persisting and reduces XSS attack surface
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: localStorage,
+    storage: sessionStorage,
     persistSession: true,
     autoRefreshToken: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce', // Use PKCE flow for improved security
   },
   realtime: {
     params: {
-      eventsPerSecond: 10,
+      eventsPerSecond: 5, // Reduced rate limit per user
     },
   },
   global: {

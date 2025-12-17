@@ -19,6 +19,17 @@ const ALLOWED_TYPES: Record<string, string[]> = {
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB default
 
+// Sanitize error messages to prevent information leakage
+function sanitizeError(error: unknown): string {
+  // Log detailed error server-side for debugging
+  if (Deno.env.get('ENV') === 'development') {
+    console.error('[validate-file-upload]', error);
+  }
+  
+  // Return generic message to client
+  return 'File validation failed. Please try again.';
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -32,7 +43,7 @@ serve(async (req) => {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return new Response(
-        JSON.stringify({ valid: false, error: 'Authentication required' }),
+        JSON.stringify({ valid: false, error: 'Authentication required', code: 'ERR_401' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
       );
     }
@@ -45,7 +56,7 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await authClient.auth.getUser();
     if (authError || !user) {
       return new Response(
-        JSON.stringify({ valid: false, error: 'Invalid or expired authentication token' }),
+        JSON.stringify({ valid: false, error: 'Authentication failed', code: 'ERR_401' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
       );
     }
@@ -58,7 +69,8 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           valid: false, 
-          error: `File size exceeds maximum allowed size of ${maxSize / 1024 / 1024}MB` 
+          error: `File size exceeds maximum allowed size of ${maxSize / 1024 / 1024}MB`,
+          code: 'ERR_FILE_TOO_LARGE'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
@@ -69,7 +81,8 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           valid: false, 
-          error: 'File type not allowed. Please upload an image, PDF, or video file.' 
+          error: 'File type not allowed. Please upload an image, PDF, or video file.',
+          code: 'ERR_INVALID_TYPE'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
@@ -81,7 +94,8 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           valid: false, 
-          error: 'File extension does not match file type' 
+          error: 'File extension does not match file type',
+          code: 'ERR_TYPE_MISMATCH'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       );
@@ -103,7 +117,7 @@ serve(async (req) => {
 
   } catch (error) {
     return new Response(
-      JSON.stringify({ valid: false, error: error.message }),
+      JSON.stringify({ valid: false, error: sanitizeError(error), code: 'ERR_500' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }
