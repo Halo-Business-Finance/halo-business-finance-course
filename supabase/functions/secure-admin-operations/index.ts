@@ -1,20 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-const securityHeaders = {
-  ...corsHeaders,
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:",
-  'X-Frame-Options': 'DENY',
-  'X-Content-Type-Options': 'nosniff',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-};
+import { 
+  handleCorsPreflightRequest, 
+  createSecureJsonResponse, 
+  createSecureErrorResponse,
+  getSecurityHeaders,
+  validateOrigin
+} from '../_shared/corsHelper.ts';
+import { validateInput, adminOperationSchema } from '../_shared/inputValidation.ts';
 
 // Error sanitization utility to prevent information leakage
 const ERROR_MAP: Record<string, string> = {
@@ -47,10 +40,16 @@ function logError(context: string, error: unknown): void {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: securityHeaders });
-  }
+  // Handle CORS preflight
+  const corsResponse = handleCorsPreflightRequest(req);
+  if (corsResponse) return corsResponse;
+
+  // Validate origin
+  const originError = validateOrigin(req);
+  if (originError) return originError;
+
+  // Get security headers for this request
+  const securityHeaders = getSecurityHeaders(req);
 
   try {
     const supabaseClient = createClient(
@@ -80,7 +79,7 @@ serve(async (req) => {
     if (!authHeader) {
       return new Response(
         JSON.stringify({ error: 'Authentication required', code: 'ERR_401' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 401, headers: { ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -91,7 +90,7 @@ serve(async (req) => {
       logError('auth_validation', userError);
       return new Response(
         JSON.stringify({ error: 'Authentication failed', code: 'ERR_401' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 401, headers: { ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -103,27 +102,38 @@ serve(async (req) => {
       logError('role_check', roleError);
       return new Response(
         JSON.stringify({ error: 'Access denied', code: 'ERR_403' }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 403, headers: { ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const { operation, ...operationData } = await req.json()
+    // Parse and validate input
+    const requestBody = await req.json();
+    const validation = validateInput<{ operation: string }>(requestBody, adminOperationSchema);
+
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: validation.errors?.join(', ') || 'Invalid input', code: 'ERR_VALIDATION' }),
+        { status: 400, headers: { ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { operation, ...operationData } = requestBody;
 
     switch (operation) {
       case 'get_filtered_profiles':
-        return await getFilteredProfiles(supabaseAdmin, user.user.id, operationData)
+        return await getFilteredProfiles(supabaseAdmin, user.user.id, operationData, securityHeaders)
       case 'assign_role':
-        return await assignRole(supabaseAdmin, user.user.id, operationData)
+        return await assignRole(supabaseAdmin, user.user.id, operationData, securityHeaders)
       case 'revoke_role':
-        return await revokeRole(supabaseAdmin, user.user.id, operationData)
+        return await revokeRole(supabaseAdmin, user.user.id, operationData, securityHeaders)
       case 'delete_user':
-        return await deleteUser(supabaseAdmin, user.user.id, operationData)
+        return await deleteUser(supabaseAdmin, user.user.id, operationData, securityHeaders)
       case 'create_admin_account':
-        return await createAdminAccount(supabaseAdmin, user.user.id, operationData)
+        return await createAdminAccount(supabaseAdmin, user.user.id, operationData, securityHeaders)
       default:
         return new Response(
           JSON.stringify({ error: 'Invalid operation', code: 'ERR_400' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 400, headers: { ...securityHeaders, 'Content-Type': 'application/json' } }
         );
     }
 
@@ -133,7 +143,7 @@ serve(async (req) => {
       JSON.stringify({ error: sanitizeError(error), code: 'ERR_400' }),
       {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { ...securityHeaders, 'Content-Type': 'application/json' }
       }
     )
   }

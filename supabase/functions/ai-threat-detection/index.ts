@@ -1,11 +1,14 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { 
+  handleCorsPreflightRequest, 
+  createSecureJsonResponse, 
+  createSecureErrorResponse,
+  getSecurityHeaders,
+  validateOrigin
+} from '../_shared/corsHelper.ts';
+import { validateInput, threatDetectionSchema } from '../_shared/inputValidation.ts';
 
 interface ThreatAnalysis {
   threatLevel: 'low' | 'medium' | 'high' | 'critical';
@@ -29,14 +32,19 @@ interface SecurityEvent {
 }
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight
+  const corsResponse = handleCorsPreflightRequest(req);
+  if (corsResponse) return corsResponse;
+
+  // Validate origin
+  const originError = validateOrigin(req);
+  if (originError) return originError;
+  const securityHeaders = getSecurityHeaders(req);
 
   try {
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openAIApiKey) {
-      throw new Error('OpenAI API key not configured');
+      return createSecureErrorResponse(req, 'Service temporarily unavailable', 503);
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -46,10 +54,7 @@ serve(async (req) => {
     // ===== AUTHENTICATION CHECK =====
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Authentication required' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
-      );
+      return createSecureErrorResponse(req, 'Authentication required', 401, 'ERR_401');
     }
 
     // Verify the user's JWT token
@@ -59,25 +64,30 @@ serve(async (req) => {
     
     const { data: { user }, error: authError } = await authClient.auth.getUser();
     if (authError || !user) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Invalid or expired authentication token' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
-      );
+      return createSecureErrorResponse(req, 'Invalid or expired authentication token', 401, 'ERR_401');
     }
 
     // Check if user is admin
     const { data: userRole } = await authClient.rpc('get_user_role');
     if (!['admin', 'super_admin'].includes(userRole)) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Admin privileges required' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 403 }
-      );
+      return createSecureErrorResponse(req, 'Admin privileges required', 403, 'ERR_403');
     }
     // ===== END AUTHENTICATION CHECK =====
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { events, analysisType = 'batch' } = await req.json();
+    // Parse and validate input
+    const requestBody = await req.json();
+    const validation = validateInput<{ events?: any[]; analysisType?: string }>(
+      requestBody,
+      threatDetectionSchema
+    );
+
+    if (!validation.success) {
+      return createSecureErrorResponse(req, validation.errors?.join(', ') || 'Invalid input', 400, 'ERR_VALIDATION');
+    }
+
+    const { events, analysisType = 'batch' } = validation.data!;
 
     if (Deno.env.get('ENV') === 'development') {
       console.log(`[AI-THREAT-DETECTION] Starting ${analysisType} analysis for ${events?.length || 0} events`);
@@ -271,27 +281,18 @@ Provide actionable, specific insights that can help secure this business finance
       console.log(`[AI-THREAT-DETECTION] Analysis complete: ${analysis.threatLevel} threat detected with ${analysis.confidence}% confidence`);
     }
 
-    return new Response(JSON.stringify({
+    return createSecureJsonResponse(req, {
       success: true,
       analysis,
       eventsAnalyzed: securityEvents.length,
       aiPowered: true,
       timestamp: new Date().toISOString()
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (error) {
     if (Deno.env.get('ENV') === 'development') {
       console.error('[AI-THREAT-DETECTION] Error:', error);
     }
-    return new Response(JSON.stringify({
-      success: false,
-      error: error.message,
-      aiPowered: true 
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return createSecureErrorResponse(req, 'Threat analysis failed. Please try again.', 500);
   }
 });

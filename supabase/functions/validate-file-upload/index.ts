@@ -1,10 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { 
+  handleCorsPreflightRequest, 
+  createSecureJsonResponse, 
+  createSecureErrorResponse,
+  getSecurityHeaders,
+  validateOrigin
+} from '../_shared/corsHelper.ts';
+import { validateInput, fileUploadSchema } from '../_shared/inputValidation.ts';
 
 // Allowed MIME types with file extensions
 const ALLOWED_TYPES: Record<string, string[]> = {
@@ -31,9 +34,13 @@ function sanitizeError(error: unknown): string {
 }
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight
+  const corsResponse = handleCorsPreflightRequest(req);
+  if (corsResponse) return corsResponse;
+
+  // Validate origin
+  const originError = validateOrigin(req);
+  if (originError) return originError;
 
   try {
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
@@ -42,10 +49,7 @@ serve(async (req) => {
     // ===== AUTHENTICATION CHECK =====
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ valid: false, error: 'Authentication required', code: 'ERR_401' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
-      );
+      return createSecureErrorResponse(req, 'Authentication required', 401, 'ERR_401');
     }
 
     // Verify the user's JWT token
@@ -55,49 +59,58 @@ serve(async (req) => {
     
     const { data: { user }, error: authError } = await authClient.auth.getUser();
     if (authError || !user) {
-      return new Response(
-        JSON.stringify({ valid: false, error: 'Authentication failed', code: 'ERR_401' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 401 }
-      );
+      return createSecureErrorResponse(req, 'Authentication failed', 401, 'ERR_401');
     }
     // ===== END AUTHENTICATION CHECK =====
 
-    const { fileName, fileSize, mimeType, maxSize = MAX_FILE_SIZE } = await req.json();
+    // Parse and validate input with schema
+    const requestBody = await req.json();
+    const validation = validateInput<{ 
+      fileName: string; 
+      fileSize: number; 
+      mimeType: string; 
+      maxSize?: number 
+    }>(requestBody, fileUploadSchema);
+
+    if (!validation.success) {
+      return createSecureErrorResponse(
+        req, 
+        validation.errors?.join(', ') || 'Invalid input', 
+        400, 
+        'ERR_VALIDATION'
+      );
+    }
+
+    const { fileName, fileSize, mimeType, maxSize = MAX_FILE_SIZE } = validation.data!;
 
     // Validate file size
     if (fileSize > maxSize) {
-      return new Response(
-        JSON.stringify({ 
-          valid: false, 
-          error: `File size exceeds maximum allowed size of ${maxSize / 1024 / 1024}MB`,
-          code: 'ERR_FILE_TOO_LARGE'
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      return createSecureErrorResponse(
+        req,
+        `File size exceeds maximum allowed size of ${maxSize / 1024 / 1024}MB`,
+        400,
+        'ERR_FILE_TOO_LARGE'
       );
     }
 
     // Validate MIME type
     if (!ALLOWED_TYPES[mimeType]) {
-      return new Response(
-        JSON.stringify({ 
-          valid: false, 
-          error: 'File type not allowed. Please upload an image, PDF, or video file.',
-          code: 'ERR_INVALID_TYPE'
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      return createSecureErrorResponse(
+        req,
+        'File type not allowed. Please upload an image, PDF, or video file.',
+        400,
+        'ERR_INVALID_TYPE'
       );
     }
 
     // Validate file extension matches MIME type
     const fileExt = fileName.split('.').pop()?.toLowerCase();
     if (!fileExt || !ALLOWED_TYPES[mimeType].includes(fileExt)) {
-      return new Response(
-        JSON.stringify({ 
-          valid: false, 
-          error: 'File extension does not match file type',
-          code: 'ERR_TYPE_MISMATCH'
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      return createSecureErrorResponse(
+        req,
+        'File extension does not match file type',
+        400,
+        'ERR_TYPE_MISMATCH'
       );
     }
 
@@ -106,19 +119,16 @@ serve(async (req) => {
       .replace(/[^a-zA-Z0-9.-]/g, '_')
       .substring(0, 255);
 
-    return new Response(
-      JSON.stringify({ 
-        valid: true, 
-        sanitizedName,
-        message: 'File validation passed' 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createSecureJsonResponse(req, { 
+      valid: true, 
+      sanitizedName,
+      message: 'File validation passed' 
+    });
 
   } catch (error) {
-    return new Response(
-      JSON.stringify({ valid: false, error: sanitizeError(error), code: 'ERR_500' }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-    );
+    if (Deno.env.get('ENV') === 'development') {
+      console.error('[validate-file-upload]', error);
+    }
+    return createSecureErrorResponse(req, sanitizeError(error), 500, 'ERR_500');
   }
 });
