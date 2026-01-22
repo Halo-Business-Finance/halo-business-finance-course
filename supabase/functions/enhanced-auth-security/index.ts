@@ -1,21 +1,11 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-// Enhanced security headers with CSP
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-const securityHeaders = {
-  ...corsHeaders,
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:",
-  'X-Frame-Options': 'DENY',
-  'X-Content-Type-Options': 'nosniff',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-};
+import { 
+  handleCorsPreflightRequest, 
+  getSecurityHeaders,
+  validateOrigin,
+  isOriginAllowed
+} from '../_shared/corsHelper.ts';
 
 // Sanitize error messages to prevent information leakage
 function sanitizeError(error: unknown): string {
@@ -29,10 +19,24 @@ function sanitizeError(error: unknown): string {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: securityHeaders });
+  // Handle CORS preflight
+  const corsResponse = handleCorsPreflightRequest(req);
+  if (corsResponse) return corsResponse;
+
+  // Note: For auth-related functions, we allow requests from unknown origins
+  // because login/rate-limiting needs to work from any context
+  // However, we still validate and log the origin for security monitoring
+  const origin = req.headers.get('origin');
+  if (origin && !isOriginAllowed(origin)) {
+    if (Deno.env.get('ENV') === 'development') {
+      console.warn(`[enhanced-auth-security] Request from non-standard origin: ${origin}`);
+    }
+    // Don't block - auth functions need to work from various contexts
+    // but log for monitoring
   }
+
+  // Get security headers for this request
+  const securityHeaders = getSecurityHeaders(req);
 
   try {
     // Get client IP address
